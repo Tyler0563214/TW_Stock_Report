@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>欣興電子（3037）投資研究報告 — 2026/06/22</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --red: #E8003D; --green: #00AE55; --blue: #1565C0; --gold: #F59E0B;
+    --dark: #1A1A2E; --card: #FFFFFF; --bg: #F0F4F8; --border: #E2E8F0;
+    --text: #2D3748; --sub: #718096;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.7; }
+
+  /* ── Cover ── */
+  .cover {
+    background: linear-gradient(135deg, #0D1B2A 0%, #1565C0 50%, #E8003D 100%);
+    color: white; padding: 56px 40px 48px; text-align: center;
+  }
+  .cover .badge { display: inline-block; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35); padding: 4px 16px; border-radius: 20px; font-size: 12px; letter-spacing: 1px; margin-bottom: 16px; }
+  .cover h1 { font-size: 36px; font-weight: 900; margin-bottom: 6px; }
+  .cover .sub-title { font-size: 16px; opacity: 0.85; margin-bottom: 24px; }
+  .cover-stats { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; margin-top: 28px; }
+  .cover-stat { text-align: center; }
+  .cover-stat .val { font-size: 28px; font-weight: 800; }
+  .cover-stat .lbl { font-size: 11px; opacity: 0.75; margin-top: 2px; letter-spacing: 0.5px; }
+  .cover-stat .delta-up { color: #FF8FAB; }
+  .cover-stat .delta-dn { color: #80FFAA; }
+
+  /* ── Layout ── */
+  .container { max-width: 1080px; margin: 0 auto; padding: 32px 20px 60px; }
+  .section { margin-bottom: 36px; }
+  .section-title { font-size: 17px; font-weight: 800; color: var(--dark); border-left: 5px solid var(--blue); padding-left: 12px; margin-bottom: 18px; }
+
+  /* ── Cards ── */
+  .card { background: var(--card); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 22px 24px; margin-bottom: 16px; }
+  .card-title { font-size: 13px; font-weight: 700; color: var(--sub); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  @media(max-width:680px){ .grid-2,.grid-3,.grid-4 { grid-template-columns:1fr 1fr; } }
+  @media(max-width:420px){ .grid-2,.grid-3,.grid-4 { grid-template-columns:1fr; } }
+
+  /* ── KPI Tiles ── */
+  .kpi { background: var(--card); border-radius: 10px; padding: 16px 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+  .kpi .label { font-size: 11px; color: var(--sub); font-weight: 600; letter-spacing: 0.5px; }
+  .kpi .value { font-size: 22px; font-weight: 800; margin: 4px 0 2px; }
+  .kpi .note { font-size: 11px; color: var(--sub); }
+  .kpi.up .value { color: var(--red); }
+  .kpi.dn .value { color: var(--green); }
+  .kpi.blue .value { color: var(--blue); }
+
+  /* ── Score Bars ── */
+  .score-row { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+  .score-row .name { width: 130px; font-size: 13px; font-weight: 600; flex-shrink: 0; }
+  .score-bar-wrap { flex: 1; background: #EEF2F7; border-radius: 8px; height: 14px; overflow: hidden; }
+  .score-bar { height: 100%; border-radius: 8px; transition: width 0.8s; }
+  .score-row .num { width: 36px; text-align: right; font-size: 13px; font-weight: 700; }
+
+  /* ── Risk ── */
+  .risk-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; }
+  .risk-high { background: #FEE2E2; color: #B91C1C; }
+  .risk-mid  { background: #FEF3C7; color: #92400E; }
+  .risk-low  { background: #D1FAE5; color: #065F46; }
+
+  /* ── Team labels ── */
+  .team-tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; margin-bottom: 8px; }
+  .tag-bull { background: #FEE2E2; color: var(--red); }
+  .tag-bear { background: #D1FAE5; color: #065F46; }
+  .tag-tech { background: #DBEAFE; color: var(--blue); }
+  .tag-news { background: #FEF3C7; color: #92400E; }
+  .tag-chip { background: #EDE9FE; color: #5B21B6; }
+
+  .point-list { list-style: none; padding: 0; }
+  .point-list li { padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .point-list li:last-child { border-bottom: none; }
+  .point-list li::before { content: '▸ '; color: var(--blue); font-weight: 700; }
+  .point-list.bear li::before { color: var(--green); }
+
+  /* ── Explain box ── */
+  .explain { background: #EFF6FF; border-left: 4px solid #60A5FA; padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; color: #1E40AF; margin-top: 8px; }
+  .explain-warn { background: #FFFBEB; border-left: 4px solid #F59E0B; padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; color: #92400E; margin-top: 8px; }
+
+  /* ── Signal pills ── */
+  .sig { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; margin: 2px 3px; }
+  .sig-up   { background:#FEE2E2; color:#B91C1C; }
+  .sig-dn   { background:#D1FAE5; color:#065F46; }
+  .sig-neu  { background:#F1F5F9; color:#475569; }
+
+  /* ── Buy target table ── */
+  table.price-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.price-table th { background: #1565C0; color: white; padding: 9px 12px; text-align: left; }
+  table.price-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  table.price-table tr:nth-child(even) td { background: #F7FAFC; }
+  table.price-table .buy { color: var(--red); font-weight: 700; }
+  table.price-table .sell { color: var(--green); font-weight: 700; }
+  table.price-table .hold { color: var(--gold); font-weight: 700; }
+
+  /* ── Disclaimer ── */
+  .disclaimer { background: #FEF3C7; border: 1px solid #F59E0B; border-radius: 8px; padding: 14px 18px; font-size: 12px; color: #78350F; margin-top: 32px; }
+  .disclaimer strong { color: #92400E; }
+
+  /* ── Chart containers ── */
+  .chart-wrap { position: relative; height: 220px; }
+
+  /* ── Debate ── */
+  .debate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:600px){ .debate-grid { grid-template-columns: 1fr; } }
+
+  /* ── Verdict box ── */
+  .verdict { background: linear-gradient(135deg, #1565C0, #E8003D); color: white; border-radius: 12px; padding: 24px 28px; text-align: center; }
+  .verdict h3 { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
+  .verdict .sub { font-size: 13px; opacity: 0.85; }
+</style>
+</head>
+<body>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!--   封面                                       -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div class="cover">
+  <div class="badge">🇹🇼 台股個股研究報告　|　AI 基板龍頭</div>
+  <h1>欣興電子（3037）</h1>
+  <div class="sub-title">Unimicron Technology Corporation　|　PCB / ABF 載板　|　上市</div>
+  <div class="cover-stats">
+    <div class="cover-stat">
+      <div class="val">NT$ 981</div>
+      <div class="lbl">最新股價（2026/06/22）</div>
+    </div>
+    <div class="cover-stat">
+      <div class="val delta-up">+3.28 元</div>
+      <div class="lbl">Q1 2026 EPS（13 季新高）</div>
+    </div>
+    <div class="cover-stat">
+      <div class="val delta-up">+446%</div>
+      <div class="lbl">EPS 年增幅</div>
+    </div>
+    <div class="cover-stat">
+      <div class="val">⚠️ 中高</div>
+      <div class="lbl">綜合風險等級</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!--   核心結論摘要                               -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div class="section" style="margin-top:28px;">
+  <div class="verdict">
+    <h3>📋 核心投資結論：中性偏多，分批布局</h3>
+    <div class="sub">欣興電子基本面轉強，AI ABF 載板訂單能見度高；<br>但股價已大幅領先基本面反映，高估值是最大隱憂，建議分批、不追高，嚴設停損。</div>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!--   快速 KPI                                   -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div class="section">
+  <div class="section-title">📊 關鍵財務指標一覽</div>
+  <div class="grid-4">
+    <div class="kpi up">
+      <div class="label">Q1 2026 EPS</div>
+      <div class="value">3.28 元</div>
+      <div class="note">13 季新高 ／ YoY +446%</div>
+    </div>
+    <div class="kpi blue">
+      <div class="label">近四季 EPS 合計</div>
+      <div class="value">6.80 元</div>
+      <div class="note">（Q2 2025 – Q1 2026）</div>
+    </div>
+    <div class="kpi up">
+      <div class="label">2026F EPS（法人預估）</div>
+      <div class="value">8.83～11.62 元</div>
+      <div class="note">各家外資預估區間</div>
+    </div>
+    <div class="kpi">
+      <div class="label">2024 全年 EPS</div>
+      <div class="value">3.34 元</div>
+      <div class="note">2024 全年營收 1,153.7 億元</div>
+    </div>
+    <div class="kpi up">
+      <div class="label">2026/05 月營收</div>
+      <div class="value">140.6 億元</div>
+      <div class="note">YoY +32.37%</div>
+    </div>
+    <div class="kpi up">
+      <div class="label">2026/04 月營收</div>
+      <div class="value">139.3 億元</div>
+      <div class="note">YoY +27.64%</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Q1 2026 毛利率</div>
+      <div class="value">17.96%</div>
+      <div class="note">較去年同期大幅改善</div>
+    </div>
+    <div class="kpi blue">
+      <div class="label">2026F 法人預估全年營收</div>
+      <div class="value">1,569 億元</div>
+      <div class="note">（YoY 約 +36%）</div>
+    </div>
+  </div>
+  <div class="explain">
+    💡 <strong>白話說明：</strong>「EPS 年增 446%」是什麼意思？就是跟去年同一季相比，欣興電子每股賺的錢增加了將近 5 倍。這種增長幅度非常驚人，主要原因是 AI 伺服器需求爆炸性成長，而欣興的 ABF 載板是 AI 晶片不可缺少的零件。
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!--   EPS 趨勢圖 & 月營收圖                      -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div class="section">
+  <div class="section-title">📈 財務趨勢圖</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">每季 EPS 趨勢（元）</div>
+      <div class="chart-wrap"><canvas id="epsChart"></canvas></div>
+      <div class="explain" style="margin-top:10px;">📈 Q1 2026 EPS 3.28 元大幅跳升，代表公司盈利能力進入新的高峰，AI 需求已實質反映在獲利上。</div>
+    </div>
+    <div class="card">
+      <div class="card-title">2026 年月營收趨勢（億元）</div>
+      <div class="chart-wrap"><canvas id="revChart"></canvas></div>
+      <div class="explain" style="margin-top:10px;">📈 月營收持續突破新高，4～5 月連續站上 139 億元，顯示訂單能見度高且需求持續強勁。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!--   公司概覽                                   -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽</div>
+  <div class="card">
+    <div class="grid-2">
+      <div>
+        <p><strong>公司全名：</strong>欣興電子股份有限公司</p>
+        <p><strong>英文名稱：</strong>Unimicron Technology Corporation</p>
+        <p><strong>股票代碼：</strong>3037（台灣證券交易所上市）</p>
+        <p><strong>主要產品：</strong>印刷電路板（PCB）、ABF 載板（IC 基板）</p>
+        <p><strong>成立：</strong>1990 年，總部桃園市</p>
+      </div>
+      <div>
+        <p><strong>主要廠區：</strong>桃園總部、新竹光復廠（高階 ABF）、泰國廠</p>
+        <p><strong>重要客戶：</strong>NVIDIA、AMD、AWS（Amazon）、Meta、Intel</p>
+        <p><strong>AI 產品佔比：</strong>約 30～40%（且持續提升）</p>
+        <p><strong>中國大陸營收：</strong>約佔 30%（地緣政治風險）</p>
+        <p><strong>光復廠稼動率：</strong>80%+（超前量產進度）</p>
+      </div>
+    </div>
+    <div class="explain" style="margin-top:14px;">
+      💡 <strong>欣興是做什麼的？</strong> 簡單說，欣興製造「電路板」——就是各種電子產品裡面，連結所有零件的那一片板子。其中最高端的產品叫「ABF 載板」，是 AI 晶片（如 NVIDIA H100/B200）的重要基座，沒有高品質的載板，AI 晶片就無法正常工作。全球 AI 伺服器需求大爆發，欣興就是直接受益者之一。
+    </div>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!--   基本面分析                                 -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div class="section">
+  <div class="section-title">📋 基本面分析師報告</div>
+  <div class="card">
+    <div class="grid-2">
+      <div>
+        <div class="score-row">
+          <span class="name">財務健康度</span>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:80%;background:#E8003D;"></div></div>
+          <span class="num" style="color:#E8003D;">8/10</span>
+        </div>
+        <div class="score-row">
+          <span class="name">估值（合理性）</span>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:30%;background:#F59E0B;"></div></div>
+          <span class="num" style="color:#F59E0B;">3/10</span>
+        </div>
+        <div class="score-row">
+          <span class="name">競爭優勢</span>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:85%;background:#E8003D;"></div></div>
+          <span class="num" style="color:#E8003D;">8.5/10</span>
+        </div>
+        <div class="score-row">
+          <span class="name">成長動力</span>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:90%;background:#E8003D;"></div></div>
+          <span class="num" style="color:#E8003D;">9/10</span>
+        </div>
+        <div class="score-row">
+          <span class="name">整體基本面</span>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:72%;background:#1565C0;"></div></div>
+          <span class="num" style="color:#1565C0;">7.2/10</span>
+        </div>
+      </div>
+      <div>
+        <table class="price-table" style="font-size:12px;">
+          <tr><th>指標</th><th>數值</th><th>評估</th></tr>
+          <tr><td>Q1 2026 EPS（年增）</td><td>+446%</td><td style="color:#E8003D;">★★★★★</td></tr>
+          <tr><td>月營收年增（5月）</td><td>+32.4%</td><td style="color:#E8003D;">★★★★★</td></tr>
+          <tr><td>Q1 2026 毛利率</td><td>17.96%</td><td style="color:#F59E0B;">★★★☆☆</td></tr>
+          <tr><td>Trailing PE（近四季）</td><td>~144x</td><td style="color:#00AE55;">偏高</td></tr>
+          <tr><td>Forward PE（2026F）</td><td>~84～111x</td><td style="color:#00AE55;">成長股溢價</td></tr>
+          <tr><td>現金殖利率</td><td>~0.2%</td><td style="color:#718096;">非存股標的</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="explain-warn" style="margin-top:14px;">
+      ⚠️ <strong>估值警示（非常重要）：</strong>欣興目前 Trailing PE 約 144 倍，Forward PE（依 2026 年法人預估 EPS 8.83 元計算）也高達約 111 倍。這代表市場已經把未來幾年的成長空間都提前計算進去了。如果未來訂單不如預期、或產業景氣反轉，股價可能大幅修正。<br><br>
+      💡 <strong>白話說明：PE 是什麼？</strong> 本益比（PE）= 股價 ÷ 每股盈餘。PE=111 代表以目前盈利水準，你需要 111 年才能回本。這非常高，代表市場對欣興未來成長抱有極高期待。這種高 PE 股票漲的時候很猛，但一旦業績不達預期，跌幅也會非常大。
+    </div>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!--   籌碼面分析（台股特色）                     -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析（台股三大法人）</div>
+  <div class="card">
+    <div class="team-tag tag-chip">籌碼分析師</div>
+    <div class="grid-3">
+      <div style="text-align:center; padding:14px; background:#FFF5F5; border-radius:10px;">
+        <div style="font-size:11px;color:#718096;font-weight:700;">外資動向</div>
+        <div style="font-size:22px;font-weight:900;color:#E8003D;margin:6px 0;">積極買超</div>
+        <div style="font-size:11px;color:#E8003D;">曾連 6 日獲法人買超</div>
+        <div style="font-size:11px;color:#718096;margin-top:4px;">外資目標價：1,060～1,225 元</div>
+      </div>
+      <div style="text-align:center; padding:14px; background:#F5F3FF; border-radius:10px;">
+        <div style="font-size:11px;color:#718096;font-weight:700;">投信動向</div>
+        <div style="font-size:22px;font-weight:900;color:#5B21B6;margin:6px 0;">小幅買超</div>
+        <div style="font-size:11px;color:#5B21B6;">台灣本土基金追蹤中</div>
+        <div style="font-size:11px;color:#718096;margin-top:4px;">AI 題材持續吸引法人</div>
+      </div>
+      <div style="text-align:center; padding:14px; background:#F0FDF4; border-radius:10px;">
+        <div style="font-size:11px;color:#718096;font-weight:700;">外資目標價</div>
+        <div style="font-size:22px;font-weight:900;color:#065F46;margin:6px 0;">1,060～1,225</div>
+        <div style="font-size:11px;color:#065F46;">野村、美系大行上調目標</div>
+        <div style="font-size:11px;color:#718096;margin-top:4px;">較目前股價有 8～25% 上行空間</div>
+      </div>
+    </div>
+    <div class="explain" style="margin-top:14px;">
+      💡 <strong>白話說明：</strong>外資（國際大型機構投資人）積極看好欣興，這是很正面的訊號。外資資金量大，持續買超代表他們願意把大筆錢押注在這檔股票上。野村、美系大行等研究機構也調高目標價，代表專業機構都認為股價還有上漲空間，但要注意這些目標價是在特定條件下的預估，不代表保證。
+    </div>
+    <div class="explain-warn" style="margin-top:8px;">
+      ⚠️ <strong>注意：</strong>由於本報告撰寫時三大法人當日即時數據尚未完整公布，以上籌碼分析為近期趨勢判斷。建議讀者直接至台灣證券交易所官網或各大股市平台查看最新數據。
+    </div>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!--   技術面分析                                 -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div class="section">
+  <div class="section-title">📉 技術分析師報告</div>
+  <div class="card">
+    <div class="team-tag tag-tech">技術分析師</div>
+    <div class="grid-2">
+      <div>
+        <h4 style="font-size:13px;margin-bottom:10px;color:#1565C0;">技術訊號</h4>
+        <p style="margin-bottom:6px;">均線系統：<span class="sig sig-up">多頭排列</span></p>
+        <div class="explain" style="margin-bottom:10px;">股價長期站在各條均線之上，代表中長期趨勢向上，是偏多的好訊號。</div>
+
+        <p style="margin-bottom:6px;">MACD：<span class="sig sig-up">金叉偏多</span></p>
+        <div class="explain" style="margin-bottom:10px;">MACD 維持多頭動能，代表上漲力道尚未明顯衰竭。</div>
+
+        <p style="margin-bottom:6px;">RSI：<span class="sig sig-neu">約 60～70</span></p>
+        <div class="explain" style="margin-bottom:10px;">RSI 在多方區間，但接近超買邊緣，短期需留意回調風險。</div>
+
+        <p style="margin-bottom:6px;">布林通道：<span class="sig sig-up">中軌以上</span></p>
+        <div class="explain">股價在布林通道中軌偏上方運行，趨勢偏多，但若觸及上軌則需謹慎。</div>
+      </div>
+      <div>
+        <h4 style="font-size:13px;margin-bottom:10px;color:#1565C0;">關鍵價位</h4>
+        <table class="price-table">
+          <tr><th>類型</th><th>價位（元）</th><th>說明</th></tr>
+          <tr><td class="buy">外資目標價</td><td>1,060～1,225</td><td>上行目標</td></tr>
+          <tr><td>現價</td><td>981</td><td>2026/06/22</td></tr>
+          <tr><td class="hold">短期支撐</td><td>930～950</td><td>MA20 附近</td></tr>
+          <tr><td class="hold">中期支撐</td><td>850～900</td><td>重要整理平台</td></tr>
+          <tr><td class="sell">止損參考</td><td>&lt; 880</td><td>跌破則保守觀望</td></tr>
+        </table>
+        <div class="explain-warn" style="margin-top:10px;">
+          ⚠️ 高股價股票波動金額很大，981 元的股票若跌 10%，就是每股跌 98 元。請依自身承受風險能力決定是否投資，並設定好停損。
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <h4 style="font-size:13px;margin-bottom:8px;color:#1565C0;">📊 估值評比（PE 河流圖概念）</h4>
+      <div class="chart-wrap" style="height:160px;"><canvas id="peChart"></canvas></div>
+      <div class="explain" style="margin-top:8px;">依本益比河流圖，目前欣興股價處於歷史偏高區間（紅色區），代表市場期待值極高，估值已充分反映樂觀預期。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!--   產業與新聞分析                             -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div class="section">
+  <div class="section-title">📰 產業與新聞分析師報告</div>
+  <div class="card">
+    <div class="team-tag tag-news">新聞分析師</div>
+    <div class="grid-2">
+      <div>
+        <h4 style="color:#065F46;font-size:13px;margin-bottom:8px;">✅ 利多（看好的理由）</h4>
+        <ul class="point-list">
+          <li>AI 伺服器需求爆炸，ABF 載板供不應求，欣興市場地位強勢</li>
+          <li>NVIDIA B200/Rubin 供應商，市佔約 30%+（野村研究）</li>
+          <li>Meta 2026 ASIC 主要載板供應商，新客戶多元化</li>
+          <li>AWS Trainium 3、Intel EMIB-T 合作，覆蓋多條 AI 供應鏈</li>
+          <li>T-glass（玻璃基板）原料缺料 → ABF 漲價循環預期加強</li>
+          <li>客戶與欣興簽訂 3～7 年長約（LTA），訂單能見度高</li>
+          <li>光復新廠（新竹）量產進度超前，稼動率達 80%+</li>
+          <li>Q1 2026 EPS 3.28 元創 13 季新高，季增 58%</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color:#B91C1C;font-size:13px;margin-bottom:8px;">❌ 利空（需注意的風險）</h4>
+        <ul class="point-list bear">
+          <li>估值極高（Forward PE 84～111 倍），業績若不達預期將大幅修正</li>
+          <li>中國大陸業務約佔 30% 營收，美中出口管制是隱患</li>
+          <li>折舊費用大增（光復新廠新產能帶來大量折舊，壓縮獲利）</li>
+          <li>T-glass 原料供應不確定性（雖然缺料短期利好漲價，長期是變數）</li>
+          <li>全球總體經濟不確定性（美國關稅政策、升息環境）</li>
+          <li>毛利率 17.96% 雖改善但仍屬中等，技術升級成本壓力</li>
+          <li>競爭者（揖斐電、日月光等）持續擴產，長期可能影響定價</li>
+        </ul>
+      </div>
+    </div>
+    <div class="explain" style="margin-top:14px;">
+      💡 <strong>什麼是 ABF 載板（IC 基板）？為什麼這麼重要？</strong><br>
+      ABF 載板就像是 AI 晶片的「底座」，晶片必須固定在這個載板上，才能與電路板連接運作。AI 晶片（如 NVIDIA H100、B200）設計越來越複雜，需要用到高精密的 ABF 載板。目前全球高端 ABF 載板的供應商非常少（台灣欣興、南亞電路板、日本揖斐電等），因為技術門檻很高。AI 需求持續增長，供不應求的狀況讓欣興有很強的定價能力。
+    </div>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!--   研究員辯論                                 -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div class="section">
+  <div class="section-title">⚖️ 研究員辯論：看多 VS 看空</div>
+  <div class="debate-grid">
+    <div class="card">
+      <div class="team-tag tag-bull">👆 看多研究員</div>
+      <ul class="point-list">
+        <li><strong>超級週期才剛開始：</strong>野村報告明確指出「載板現在已成為賣方市場」，長約鎖定多年成長，這不是普通景氣循環，而是結構性需求轉變</li>
+        <li><strong>EPS 成長動能強勁：</strong>Q1 2026 EPS 3.28 元 YoY +446%，若 2026F EPS 達 10 元，Forward PE 約 98 倍，以成長速度看並非高不可攀</li>
+        <li><strong>客戶黏性極高：</strong>NVIDIA、Meta、AWS 與欣興簽 3～7 年長約，代表確定性極高的訂單，大幅降低需求波動風險</li>
+        <li><strong>T-glass 缺料催化漲價：</strong>玻璃基板原料缺料進一步強化 ABF 載板漲價預期，毛利率有望持續擴張</li>
+        <li><strong>股價仍有上行空間：</strong>外資目標價最高 1,225 元，較現價還有約 25% 空間</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="team-tag tag-bear">👇 看空研究員</div>
+      <ul class="point-list bear">
+        <li><strong>估值過高，已定價完美：</strong>Forward PE 84～111 倍，任何負面消息（訂單延遲、競爭者擴產）都可能造成股價大幅下修，風險報酬比不佳</li>
+        <li><strong>中國業務是定時炸彈：</strong>中國大陸約佔 30% 營收，美國出口管制隨時可能加碼，一旦對台灣 PCB 廠商限制增加，影響嚴重</li>
+        <li><strong>折舊壓力持續：</strong>光復廠大量新產能帶來高額折舊，即使營收增長，獲利轉換效率仍受限，毛利率不容易快速突破 20%</li>
+        <li><strong>競爭風險低估：</strong>日本揖斐電、台灣南亞電路板、中國本土廠商持續投資 ABF 載板，長期供需格局可能改變</li>
+        <li><strong>高股價高波動：</strong>981 元的高價股，一天波動可能就達 30～50 元，散戶資金容易被洗出</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="background: linear-gradient(135deg, #EFF6FF, #FFF5F5);">
+    <div style="font-size:13px;font-weight:700;margin-bottom:10px;">⚖️ 辯論總結</div>
+    <div class="grid-2" style="font-size:13px;">
+      <div>
+        <p>看多權重：<strong style="color:#E8003D;">55%</strong></p>
+        <p style="margin-top:4px;">核心支撐：AI 長約訂單確定性、EPS 高速成長、法人積極看好</p>
+      </div>
+      <div>
+        <p>看空權重：<strong style="color:#00AE55;">45%</strong></p>
+        <p style="margin-top:4px;">核心風險：極高估值、地緣政治、折舊壓力、高股價波動</p>
+      </div>
+    </div>
+    <div class="explain" style="margin-top:12px;">
+      <strong>給一般投資人的話：</strong>欣興是一家非常好的公司，位於 AI 供應鏈核心，但「好公司」不等於「現在買一定賺錢」。以目前的高估值，股票更適合已有台股投資經驗、能夠承受高波動的投資人，並應以分批布局、嚴設停損為原則。如果你是新手投資人，建議先從風險較低的 ETF 入門。
+    </div>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!--   風險評估                                   -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div class="section">
+  <div class="section-title">🛡️ 風控評估</div>
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
+      <div style="font-size:14px;font-weight:700;">綜合風險等級：</div>
+      <div class="risk-badge risk-mid">⚠️ 中高風險（6.5 / 10）</div>
+    </div>
+    <div class="grid-2">
+      <div>
+        <div class="score-row">
+          <span class="name">估值風險</span>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:90%;background:#E8003D;"></div></div>
+          <span class="num" style="color:#E8003D;">9/10</span>
+        </div>
+        <div class="score-row">
+          <span class="name">地緣政治風險</span>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:70%;background:#F59E0B;"></div></div>
+          <span class="num" style="color:#F59E0B;">7/10</span>
+        </div>
+        <div class="score-row">
+          <span class="name">產業競爭風險</span>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:50%;background:#F59E0B;"></div></div>
+          <span class="num" style="color:#F59E0B;">5/10</span>
+        </div>
+      </div>
+      <div>
+        <div class="score-row">
+          <span class="name">業績不達預期</span>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:60%;background:#F59E0B;"></div></div>
+          <span class="num" style="color:#F59E0B;">6/10</span>
+        </div>
+        <div class="score-row">
+          <span class="name">流動性風險</span>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:30%;background:#00AE55;"></div></div>
+          <span class="num" style="color:#00AE55;">3/10</span>
+        </div>
+        <div class="score-row">
+          <span class="name">財務槓桿風險</span>
+          <div class="score-bar-wrap"><div class="score-bar" style="width:40%;background:#00AE55;"></div></div>
+          <span class="num" style="color:#00AE55;">4/10</span>
+        </div>
+      </div>
+    </div>
+    <div class="explain-warn" style="margin-top:14px;">
+      ⚠️ <strong>最大風險提示：</strong>欣興最大的風險在「估值」，而不是公司本身。若 2026 年 EPS 實際達成不如法人預估（8.83 元）、或市場對 AI 題材降溫，以目前高 PE 評價來看，股價修正幅度可能達 30～50%。這不代表公司變差，而是股價已提前反映太多好消息。
+    </div>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!--   投資策略建議                               -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div class="section">
+  <div class="section-title">💼 台股三段式市場策略：目前判斷</div>
+  <div class="card">
+    <div class="grid-3">
+      <div style="text-align:center;padding:14px;background:#FFF5F5;border-radius:10px;border:2px solid #E8003D;">
+        <div style="font-size:20px;">🚀</div>
+        <div style="font-weight:800;color:#E8003D;margin:4px 0;">進攻</div>
+        <div style="font-size:11px;color:#718096;">外資連續買超<br>法說展望樂觀<br>題材熱度高</div>
+      </div>
+      <div style="text-align:center;padding:14px;background:#FFFBEB;border-radius:10px;border:2px solid #F59E0B;">
+        <div style="font-size:20px;">⚖️</div>
+        <div style="font-weight:800;color:#F59E0B;margin:4px 0;">均衡（目前建議）</div>
+        <div style="font-size:11px;color:#718096;">估值高，分批進場<br>訂單確定但股價已貴<br>停損嚴格設定</div>
+      </div>
+      <div style="text-align:center;padding:14px;background:#F0FDF4;border-radius:10px;">
+        <div style="font-size:20px;">🛡️</div>
+        <div style="font-weight:800;color:#065F46;margin:4px 0;">防守</div>
+        <div style="font-size:11px;color:#718096;">若跌破 880 元<br>或外資大量賣超<br>立即轉為觀望</div>
+      </div>
+    </div>
+    <div style="margin-top:18px;">
+      <table class="price-table">
+        <tr><th>建議動作</th><th>條件</th><th>建議部位</th><th>說明</th></tr>
+        <tr>
+          <td class="hold">分批觀察進場</td>
+          <td>股價回測 930～950 元</td>
+          <td>不超過 5%</td>
+          <td>等待技術面回測支撐再介入，不追高</td>
+        </tr>
+        <tr>
+          <td class="buy">積極加碼</td>
+          <td>Q2 2026 EPS 優於預期，且股價未大漲</td>
+          <td>可提升至 8～10%</td>
+          <td>業績確認後才加碼，降低估值風險</td>
+        </tr>
+        <tr>
+          <td class="sell">減碼 / 停損</td>
+          <td>跌破 880 元，或外資連續 5 日賣超</td>
+          <td>減至 0～2%</td>
+          <td>嚴格執行停損，不凹單</td>
+        </tr>
+      </table>
+    </div>
+    <div class="explain" style="margin-top:14px;">
+      💡 <strong>台股漲跌停板提示：</strong>以昨收 981 元計算，漲停板約 1,079 元（+9.99%），跌停板約 883 元（-9.99%）。台股限制單日最大漲跌幅為 10%，但一天也可能跌 98 元，請務必評估自身承受能力。
+    </div>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!--   名詞解釋                                   -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div class="section">
+  <div class="section-title">📖 名詞小教室（給非專業投資人）</div>
+  <div class="card">
+    <div class="grid-2" style="font-size:13px;">
+      <div>
+        <p style="margin-bottom:8px;"><strong>ABF 載板（IC 基板）：</strong>AI 晶片的「底座」，非常精密，全球供應商很少，欣興是少數能做高端 ABF 的廠商。</p>
+        <p style="margin-bottom:8px;"><strong>EPS（每股盈餘）：</strong>公司每股賺了多少錢。EPS 越高，代表公司獲利能力越強。</p>
+        <p style="margin-bottom:8px;"><strong>本益比（PE）：</strong>股價 ÷ EPS，代表你需要幾年回本。PE 越高，股票越貴（但也可能是因為市場對未來成長很期待）。</p>
+        <p style="margin-bottom:8px;"><strong>Forward PE：</strong>用「未來預估 EPS」計算的本益比，比 Trailing PE 更能反映市場對未來的期待。</p>
+      </div>
+      <div>
+        <p style="margin-bottom:8px;"><strong>三大法人：</strong>外資（外國機構）、投信（台灣基金）、自營商（券商自有資金），法人買超代表機構看好，是重要籌碼訊號。</p>
+        <p style="margin-bottom:8px;"><strong>LTA（長期協議）：</strong>Long-Term Agreement，客戶與供應商簽訂的長期合作合約，代表未來多年訂單有保障。</p>
+        <p style="margin-bottom:8px;"><strong>稼動率：</strong>工廠實際開工率，80% 以上代表幾乎全力生產，需求旺盛。</p>
+        <p style="margin-bottom:8px;"><strong>T-glass（玻璃基板）：</strong>下一代先進封裝材料，目前原料缺貨，導致現有的 ABF 載板需求更旺、漲價空間更大。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗ -->
+<!--   免責聲明                                   -->
+<!-- ╚══════════════════════════════════════════╝ -->
+<div class="disclaimer">
+  <strong>⚠️ 重要免責聲明</strong><br>
+  本報告由 AI 系統依公開資料自動生成，<strong>不構成任何投資建議</strong>，亦不代表任何券商或金融機構立場。
+  所有財務數據、法人資料及技術分析均來自公開資訊，不保證其即時性與完整性。
+  投資一定有風險，股市可能使您虧損本金，入市前請審慎評估個人財務狀況與風險承受能力，
+  必要時請諮詢持有合法執照的金融理財規劃師。
+  過去績效不代表未來報酬。<br>
+  <strong>報告生成日期：2026 年 06 月 22 日</strong>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ── EPS 趨勢圖 ───────────────────────────────
+const epsCtx = document.getElementById('epsChart').getContext('2d');
+new Chart(epsCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Q4\n2024','Q1\n2025','Q2\n2025','Q3\n2025','Q4\n2025','Q1\n2026'],
+    datasets: [{
+      label: 'EPS（元）',
+      data: [1.65, 0.60, 1.05, 1.22, 1.25, 3.28],
+      backgroundColor: ['#90CAF9','#90CAF9','#90CAF9','#90CAF9','#90CAF9','#E8003D'],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `EPS: ${ctx.raw} 元` } } },
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#EEF2F7' }, ticks: { font:{size:11} } },
+      x: { grid: { display: false }, ticks: { font:{size:10} } }
+    }
+  }
+});
+
+// ── 月營收趨勢圖 ────────────────────────────
+const revCtx = document.getElementById('revChart').getContext('2d');
+new Chart(revCtx, {
+  type: 'line',
+  data: {
+    labels: ['1月','2月','3月','4月','5月'],
+    datasets: [{
+      label: '月營收（億元）',
+      data: [110.5, 100.2, 125.8, 139.3, 140.6],
+      borderColor: '#E8003D', backgroundColor: 'rgba(232,0,61,0.12)',
+      tension: 0.4, fill: true, pointRadius: 5, pointBackgroundColor: '#E8003D', borderWidth: 2.5,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.raw} 億元` } } },
+    scales: {
+      y: { beginAtZero: false, min: 90, grid: { color: '#EEF2F7' }, ticks: { font:{size:11} } },
+      x: { grid: { display: false }, ticks: { font:{size:11} } }
+    }
+  }
+});
+
+// ── PE 評估圖 ────────────────────────────────
+const peCtx = document.getElementById('peChart').getContext('2d');
+new Chart(peCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Trailing PE\n（近四季）', 'Forward PE\n（2026F EPS 8.83）', 'Forward PE\n（2026F EPS 11.62）', '台股平均\nPE 參考'],
+    datasets: [{
+      label: 'PE 倍數',
+      data: [144, 111, 84, 17],
+      backgroundColor: ['#E8003D','#F59E0B','#F59E0B','#90CAF9'],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.raw} 倍` } } },
+    scales: {
+      x: { beginAtZero: true, max: 160, grid: { color: '#EEF2F7' }, ticks: { font:{size:11} } },
+      y: { grid: { display: false }, ticks: { font:{size:10} } }
+    }
+  }
+});
+</script>
+</body>
+</html>
