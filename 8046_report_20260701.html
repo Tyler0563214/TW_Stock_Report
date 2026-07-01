@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南電(8046) 投資研究報告 2026-07-01</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Microsoft JhengHei', Arial, sans-serif; background: #F0F4F8; color: #1a202c; }
+  .cover {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: white; padding: 60px 40px; text-align: center;
+  }
+  .cover h1 { font-size: 3rem; font-weight: 900; letter-spacing: 4px; }
+  .cover h2 { font-size: 1.4rem; opacity: 0.85; margin-top: 8px; }
+  .cover .price-block { margin: 30px auto; background: rgba(255,255,255,0.12); border-radius: 16px; display: inline-block; padding: 20px 50px; }
+  .cover .price { font-size: 3.5rem; font-weight: 900; color: #FFD700; }
+  .cover .sub { font-size: 0.95rem; opacity: 0.8; margin-top: 4px; }
+  .badge { display: inline-block; padding: 6px 18px; border-radius: 20px; font-weight: 700; font-size: 0.9rem; }
+  .badge-high { background: #EF4444; color: white; }
+  .badge-buy { background: #10B981; color: white; }
+  .badge-watch { background: #F59E0B; color: #1a202c; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+  .section { background: white; border-radius: 16px; padding: 30px; margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+  .section-title { font-size: 1.3rem; font-weight: 800; color: #1E3A5F; border-left: 5px solid #2563EB; padding-left: 12px; margin-bottom: 20px; }
+  .conclusion-card { background: linear-gradient(135deg, #1a1a2e, #0f3460); color: white; border-radius: 16px; padding: 30px; margin-bottom: 24px; }
+  .conclusion-card h2 { font-size: 1.3rem; margin-bottom: 16px; opacity: 0.85; }
+  .conclusion-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .conclusion-item { background: rgba(255,255,255,0.12); border-radius: 12px; padding: 16px; text-align: center; }
+  .conclusion-item .label { font-size: 0.8rem; opacity: 0.75; }
+  .conclusion-item .value { font-size: 1.5rem; font-weight: 900; margin-top: 4px; color: #FFD700; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .kpi-card { background: #F8FAFC; border-radius: 12px; padding: 18px; text-align: center; border: 1px solid #E2E8F0; }
+  .kpi-card .kpi-label { font-size: 0.75rem; color: #64748B; font-weight: 600; }
+  .kpi-card .kpi-value { font-size: 1.7rem; font-weight: 900; color: #1E3A5F; margin: 6px 0; }
+  .kpi-card .kpi-note { font-size: 0.7rem; color: #94A3B8; }
+  .kpi-card.up .kpi-value { color: #DC2626; }
+  .kpi-card.good .kpi-value { color: #10B981; }
+  .kpi-card.warn .kpi-value { color: #F59E0B; }
+  .chart-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .chart-box { background: #F8FAFC; border-radius: 12px; padding: 16px; }
+  .chart-box h4 { font-size: 0.85rem; color: #475569; margin-bottom: 12px; font-weight: 700; }
+  .chart-note { font-size: 0.65rem; color: #94A3B8; margin-top: 8px; text-align: center; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th { background: #1E3A5F; color: white; padding: 10px 14px; text-align: left; font-weight: 600; }
+  td { padding: 10px 14px; border-bottom: 1px solid #E2E8F0; }
+  tr:nth-child(even) { background: #F8FAFC; }
+  .score-bar { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+  .score-label { width: 80px; font-size: 0.85rem; color: #475569; }
+  .score-track { flex: 1; height: 12px; background: #E2E8F0; border-radius: 6px; overflow: hidden; }
+  .score-fill { height: 100%; border-radius: 6px; }
+  .score-num { width: 36px; font-size: 0.85rem; font-weight: 700; color: #1E3A5F; }
+  .debate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .bull-box { background: #FEF2F2; border: 2px solid #FCA5A5; border-radius: 12px; padding: 20px; }
+  .bear-box { background: #EFF6FF; border: 2px solid #93C5FD; border-radius: 12px; padding: 20px; }
+  .bull-box h4 { color: #DC2626; font-size: 1rem; margin-bottom: 12px; }
+  .bear-box h4 { color: #2563EB; font-size: 1rem; margin-bottom: 12px; }
+  .debate-item { font-size: 0.85rem; margin: 8px 0; padding-left: 12px; border-left: 3px solid; line-height: 1.5; }
+  .bull-item { border-color: #DC2626; }
+  .bear-item { border-color: #2563EB; }
+  .strategy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .strategy-card { border-radius: 12px; padding: 20px; }
+  .attack { background: linear-gradient(135deg, #DC2626, #EF4444); color: white; }
+  .balance { background: linear-gradient(135deg, #2563EB, #3B82F6); color: white; }
+  .defense { background: linear-gradient(135deg, #059669, #10B981); color: white; }
+  .strategy-card h4 { font-size: 1rem; font-weight: 800; margin-bottom: 12px; }
+  .strategy-card p { font-size: 0.8rem; opacity: 0.9; line-height: 1.6; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #E2E8F0; font-size: 0.9rem; }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: #64748B; }
+  .info-value { font-weight: 700; color: #1E3A5F; }
+  .tag { display: inline-block; background: #DBEAFE; color: #1E40AF; border-radius: 6px; padding: 3px 10px; font-size: 0.78rem; margin: 3px; }
+  .warning-box { background: #FEF3C7; border: 2px solid #F59E0B; border-radius: 12px; padding: 20px; }
+  .alert-box { background: #FEF2F2; border: 2px solid #EF4444; border-radius: 12px; padding: 16px; margin: 12px 0; }
+  .glossary-item { padding: 12px 0; border-bottom: 1px solid #E2E8F0; }
+  .glossary-term { font-weight: 800; color: #1E3A5F; font-size: 0.95rem; }
+  .glossary-def { color: #475569; font-size: 0.85rem; margin-top: 4px; line-height: 1.5; }
+  .data-badge { display: inline-block; background: #D1FAE5; color: #065F46; border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; font-weight: 700; margin-left: 6px; }
+  .data-est { display: inline-block; background: #FEF3C7; color: #92400E; border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; font-weight: 700; margin-left: 6px; }
+  @media(max-width:768px){
+    .kpi-grid,.chart-grid,.debate-grid,.strategy-grid,.conclusion-grid { grid-template-columns:1fr; }
+    .two-col { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div style="font-size:0.9rem;opacity:0.6;margin-bottom:8px;">台灣上市・電子零組件・ABF載板 / IC載板</div>
+  <h1>南亞電路板</h1>
+  <h2>股票代碼 8046・南電 ｜ Nanya PCB</h2>
+  <div class="price-block">
+    <div class="price">$1,190 元</div>
+    <div class="sub">2026/07/01 即時報價（API真實數據）｜52週：110～1,285元</div>
+  </div>
+  <div style="margin-top:16px;">
+    <span class="badge badge-watch" style="margin-right:8px;">⚠ 觀望/持有：高估值需謹慎</span>
+    <span class="badge badge-high">🔴 風險等級：高（7/10）</span>
+  </div>
+  <div style="margin-top:12px;opacity:0.7;font-size:0.85rem;">報告日期：2026-07-01 ｜ 資料來源：Fugle API + FinMind + WebSearch（真實數據）</div>
+</div>
+
+<div class="container">
+
+<!-- 02 核心結論 -->
+<div class="conclusion-card">
+  <h2>📋 核心結論</h2>
+  <div class="conclusion-grid">
+    <div class="conclusion-item">
+      <div class="label">投資建議</div>
+      <div class="value" style="font-size:1rem;">持有 / 謹慎新進</div>
+    </div>
+    <div class="conclusion-item">
+      <div class="label">外資目標價區間</div>
+      <div class="value">1,100～1,444元</div>
+    </div>
+    <div class="conclusion-item">
+      <div class="label">最大風險</div>
+      <div class="value" style="font-size:0.95rem;color:#FCA5A5;">估值極高<br>外資大幅賣超</div>
+    </div>
+  </div>
+  <div style="margin-top:20px;font-size:0.88rem;opacity:0.85;line-height:1.7;">
+    南電是 AI 伺服器供應鏈中 ABF 載板的核心受益者。Q1 2026 EPS 達 2.03 元，毛利率 15.85%，均創歷史新高。ABF 產能缺口持續至 2028 年，基本面轉骨確立。然而現價 1,190 元已逼近外資目標價上緣，股價從 52 週低點 110 元已漲逾 10 倍，RSI=71（超買），且 6/30 外資單日賣超 67.6 萬張，需高度警覺短線回測風險。
+  </div>
+</div>
+
+<!-- 03 關鍵財務 KPI -->
+<div class="section">
+  <div class="section-title">📊 關鍵財務 KPI <span class="data-badge">★ API真實數據</span></div>
+  <div class="kpi-grid">
+    <div class="kpi-card up">
+      <div class="kpi-label">現價</div>
+      <div class="kpi-value">$1,190</div>
+      <div class="kpi-note">52週：110～1,285元</div>
+    </div>
+    <div class="kpi-card up">
+      <div class="kpi-label">Q1 2026 EPS</div>
+      <div class="kpi-value">2.03元</div>
+      <div class="kpi-note">YoY +534% 創新高 ★</div>
+    </div>
+    <div class="kpi-card good">
+      <div class="kpi-label">Q1 毛利率</div>
+      <div class="kpi-value">15.85%</div>
+      <div class="kpi-note">QoQ +3.33pp ★</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q1 營業利益率</div>
+      <div class="kpi-value">12.10%</div>
+      <div class="kpi-note">YoY大幅跳升 ★</div>
+    </div>
+    <div class="kpi-card up">
+      <div class="kpi-label">6月營收</div>
+      <div class="kpi-value">44.4億</div>
+      <div class="kpi-note">YoY +35.82% ★</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">2025全年EPS</div>
+      <div class="kpi-value">3.01元</div>
+      <div class="kpi-note">由虧轉盈 ★</div>
+    </div>
+    <div class="kpi-card warn">
+      <div class="kpi-label">本益比（PE）</div>
+      <div class="kpi-value">403x</div>
+      <div class="kpi-note">追蹤PE（極高）★</div>
+    </div>
+    <div class="kpi-card warn">
+      <div class="kpi-label">風控綜合評分</div>
+      <div class="kpi-value" style="color:#EF4444;">7/10</div>
+      <div class="kpi-note">高風險</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 財務趨勢圖 -->
+<div class="section">
+  <div class="section-title">📈 財務趨勢圖 <span class="data-badge">★ API真實數據</span></div>
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h4>EPS 季度趨勢（近8季）<span class="data-badge">★實際</span></h4>
+      <canvas id="epsChart" height="220"></canvas>
+      <div class="chart-note">★ 全部為 FinMind API 真實財報數據</div>
+    </div>
+    <div class="chart-box">
+      <h4>月營收（億元，近6個月）<span class="data-badge">★實際</span></h4>
+      <canvas id="revenueChart" height="220"></canvas>
+      <div class="chart-note">★ 全部為 FinMind API 真實數據｜括號為YoY%</div>
+    </div>
+    <div class="chart-box">
+      <h4>P/E 比較（倍）</h4>
+      <canvas id="peChart" height="220"></canvas>
+      <div class="chart-note">★南電追蹤PE為API真實；Forward PE及同業為推算值</div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽</div>
+  <div class="two-col">
+    <div>
+      <div class="info-row"><span class="info-label">公司全名</span><span class="info-value">南亞電路板股份有限公司</span></div>
+      <div class="info-row"><span class="info-label">英文</span><span class="info-value">Nanya PCB Corporation</span></div>
+      <div class="info-row"><span class="info-label">市場</span><span class="info-value">台灣上市（TWSE）</span></div>
+      <div class="info-row"><span class="info-label">產業</span><span class="info-value">電子零組件 / IC載板 / ABF載板</span></div>
+      <div class="info-row"><span class="info-label">市值</span><span class="info-value">7,721億元（API★）</span></div>
+      <div class="info-row"><span class="info-label">主要股東</span><span class="info-value">南亞塑膠（台塑集團關係企業）</span></div>
+      <div class="info-row"><span class="info-label">主要客戶</span><span class="info-value">AI伺服器廠、網通交換器廠</span></div>
+    </div>
+    <div>
+      <div style="font-size:0.9rem;color:#475569;line-height:1.8;">
+        <strong style="color:#1E3A5F;">業務說明：</strong><br>
+        南電是台灣 ABF 載板（Ajinomoto Build-up Film）三雄之一，ABF 載板是高效能 AI 晶片（如 NVIDIA H100/B100）封裝的核心零件，每顆高階 AI 晶片都需要它。
+        <br><br>
+        🔥 <strong>AI 伺服器</strong>：ABF 載板高階產品佔營收 15～18.8%，持續擴大<br>
+        🔥 <strong>ABF 缺口</strong>：法說會確認供需缺口將延續至 2027～2028 年<br>
+        🔥 <strong>產能利用率</strong>：IC載板全面突破 90%，接近滿載<br>
+        🔥 <strong>T-glass</strong>：高階封裝材料，與 AI 供應鏈深度綁定
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:16px;">
+    <strong style="color:#1E3A5F;font-size:0.9rem;">核心護城河：</strong>
+    <span class="tag">ABF載板製程認證壁壘高</span>
+    <span class="tag">AI晶片供應鏈深度綁定</span>
+    <span class="tag">台塑集團資金支持</span>
+    <span class="tag">產能利用率>90%難以替代</span>
+    <span class="tag">T-glass先進材料</span>
+  </div>
+</div>
+
+<!-- 06 基本面分析 -->
+<div class="section">
+  <div class="section-title">📋 基本面分析 <span class="data-badge">★ API真實財報</span></div>
+  <div class="two-col">
+    <div>
+      <div style="margin-bottom:16px;">
+        <div class="score-bar"><span class="score-label">財務健康</span><div class="score-track"><div class="score-fill" style="width:80%;background:linear-gradient(90deg,#10B981,#34D399);"></div></div><span class="score-num">8/10</span></div>
+        <div class="score-bar"><span class="score-label">估值水平</span><div class="score-track"><div class="score-fill" style="width:85%;background:linear-gradient(90deg,#EF4444,#F87171);"></div></div><span class="score-num" style="color:#EF4444;">8.5★</span></div>
+        <div class="score-bar"><span class="score-label">競爭優勢</span><div class="score-track"><div class="score-fill" style="width:85%;background:linear-gradient(90deg,#2563EB,#60A5FA);"></div></div><span class="score-num">8.5</span></div>
+        <div class="score-bar"><span class="score-label">成長動力</span><div class="score-track"><div class="score-fill" style="width:92%;background:linear-gradient(90deg,#DC2626,#F87171);"></div></div><span class="score-num">9.2</span></div>
+        <div class="score-bar"><span class="score-label">綜合基本面</span><div class="score-track"><div class="score-fill" style="width:82%;background:linear-gradient(90deg,#1E3A5F,#2563EB);"></div></div><span class="score-num">8.2</span></div>
+      </div>
+      <div style="background:#FEF2F2;border-radius:10px;padding:14px;font-size:0.85rem;color:#7F1D1D;line-height:1.6;">
+        ⚠️ <strong>估值警告：</strong>追蹤 PE = 403x 是因為 2025 年才剛由虧轉盈（EPS 3.01元），股價已超前反映 2026-2027 獲利大爆發。若以 2026 全年預估 EPS 約 8～10 元計算，Forward PE 約 119～149 倍，仍屬極高估值，容錯空間極小。
+      </div>
+    </div>
+    <div>
+      <table>
+        <tr><th>財務指標</th><th>數值</th><th>來源</th></tr>
+        <tr><td>Q1 2026 EPS</td><td style="color:#DC2626;font-weight:700;">2.03元</td><td><span class="data-badge">★API</span></td></tr>
+        <tr><td>Q1 2026 毛利率</td><td style="color:#DC2626;font-weight:700;">15.85%</td><td><span class="data-badge">★API</span></td></tr>
+        <tr><td>Q1 2026 營業利益率</td><td style="color:#10B981;font-weight:700;">12.10%</td><td><span class="data-badge">★API</span></td></tr>
+        <tr><td>Q4 2025 EPS</td><td>1.86元</td><td><span class="data-badge">★API</span></td></tr>
+        <tr><td>Q4 2025 毛利率</td><td>12.52%</td><td><span class="data-badge">★API</span></td></tr>
+        <tr><td>2025全年EPS</td><td>3.01元</td><td><span class="data-badge">★API</span></td></tr>
+        <tr><td>2026 EPS 預估</td><td>8～10元</td><td><span class="data-est">推算</span></td></tr>
+        <tr><td>追蹤 P/E</td><td style="color:#EF4444;font-weight:700;">403倍</td><td><span class="data-badge">★API</span></td></tr>
+        <tr><td>PB（股價淨值比）</td><td>16.53倍</td><td><span class="data-badge">★API</span></td></tr>
+        <tr><td>市值</td><td>7,721億元</td><td><span class="data-badge">★API</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 07 籌碼面分析 -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析 <span class="data-badge">★ 2026-06-30 真實數據</span></div>
+  <div class="alert-box">
+    ⚠️ <strong>重要警示：外資 2026-06-30 賣超 67.6 萬張！</strong><br>
+    <span style="font-size:0.85rem;color:#7F1D1D;">外資單日大幅賣超代表國際大型機構在高點獲利了結，需高度警覺。此訊號通常是短線風險加大的前兆。</span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin: 16px 0;">
+    <div style="background:#FEF2F2;border-radius:12px;padding:18px;text-align:center;border:2px solid #FCA5A5;">
+      <div style="font-size:0.8rem;color:#64748B;font-weight:600;">外資（外陸資）<span class="data-badge">★API</span></div>
+      <div style="font-size:1.6rem;font-weight:900;color:#DC2626;margin:8px 0;">-676,369張</div>
+      <div style="font-size:0.75rem;color:#94A3B8;">2026-06-30 大幅賣超，警示訊號</div>
+    </div>
+    <div style="background:#F8FAFC;border-radius:12px;padding:18px;text-align:center;border:2px solid #E2E8F0;">
+      <div style="font-size:0.8rem;color:#64748B;font-weight:600;">投信<span class="data-badge">★API</span></div>
+      <div style="font-size:1.6rem;font-weight:900;color:#64748B;margin:8px 0;">0 張</div>
+      <div style="font-size:0.75rem;color:#94A3B8;">中性觀望</div>
+    </div>
+    <div style="background:#F0FDF4;border-radius:12px;padding:18px;text-align:center;border:2px solid #6EE7B7;">
+      <div style="font-size:0.8rem;color:#64748B;font-weight:600;">自營商<span class="data-badge">★API</span></div>
+      <div style="font-size:1.6rem;font-weight:900;color:#10B981;margin:8px 0;">+205,000張</div>
+      <div style="font-size:0.75rem;color:#94A3B8;">積極買進，撐盤意味</div>
+    </div>
+  </div>
+  <table>
+    <tr><th>外資目標價（WebSearch）</th><th>評等</th><th>目標價</th></tr>
+    <tr><td>摩根士丹利（大摩）</td><td style="color:#10B981;font-weight:700;">加碼（Overweight）</td><td style="font-weight:700;color:#DC2626;">1,275元</td></tr>
+    <tr><td>花旗（Citi）</td><td style="color:#10B981;font-weight:700;">買進（Buy）</td><td style="font-weight:700;">1,100元</td></tr>
+    <tr><td>大和資本（Daiwa）</td><td style="color:#10B981;font-weight:700;">買進</td><td style="font-weight:700;color:#DC2626;">1,444元</td></tr>
+    <tr><td>FactSet中位數（12位分析師）</td><td>11積極/3中立/0悲觀</td><td>807元（已上修）</td></tr>
+  </table>
+  <div style="margin-top:12px;font-size:0.82rem;color:#64748B;line-height:1.6;">
+    💡 現價 1,190 元已超越花旗目標價（1,100元），接近大摩目標（1,275元）但尚低於大和（1,444元）。已在主流目標價區間上緣，上漲空間縮窄。
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div class="section">
+  <div class="section-title">📉 技術分析 <span class="data-badge">★ API真實數據</span></div>
+  <div class="two-col">
+    <div>
+      <table>
+        <tr><th>技術指標</th><th>數值 ★</th><th>訊號</th></tr>
+        <tr><td>現價</td><td>1,190元</td><td><span class="data-badge">★API</span></td></tr>
+        <tr><td>MA5（5日均線）</td><td>1,078元</td><td style="color:#DC2626;font-weight:700;">多頭站上 ✓ ★</td></tr>
+        <tr><td>MA10</td><td>982.4元</td><td style="color:#DC2626;font-weight:700;">多頭站上 ✓ ★</td></tr>
+        <tr><td>MA20（月線）</td><td>919.55元</td><td style="color:#DC2626;font-weight:700;">大幅站上 ✓ ★</td></tr>
+        <tr><td>MA60（季線）</td><td>856.07元</td><td style="color:#DC2626;font-weight:700;">大幅站上 ✓ ★</td></tr>
+        <tr><td>RSI（14日）</td><td style="color:#EF4444;font-weight:700;">71.13</td><td style="color:#EF4444;font-weight:700;">⚠ 超買！★</td></tr>
+        <tr><td>MACD</td><td>64.07 / 信號33.43</td><td style="color:#10B981;">正乖離 ★</td></tr>
+        <tr><td>布林上軌</td><td>1,125.7元</td><td style="color:#EF4444;">股價突破上軌 ★</td></tr>
+      </table>
+    </div>
+    <div>
+      <table>
+        <tr><th>關鍵價位</th><th>價格 ★</th><th>說明</th></tr>
+        <tr><td>🟥 52週最高</td><td>1,285元</td><td>歷史壓力區 ★</td></tr>
+        <tr><td>🟧 布林上軌壓力</td><td>1,125元</td><td>已突破，需守住 ★</td></tr>
+        <tr><td>🟩 現價</td><td>1,190元</td><td>★API即時</td></tr>
+        <tr><td>🔵 第一支撐</td><td>1,078元</td><td>MA5支撐 ★</td></tr>
+        <tr><td>🔵 第二支撐</td><td>982元</td><td>MA10支撐 ★</td></tr>
+        <tr><td>🟢 強支撐</td><td>919元</td><td>MA20支撐 ★</td></tr>
+        <tr><td>🛑 停損線</td><td>跌破 850元</td><td>MA60破位，考慮出場</td></tr>
+      </table>
+    </div>
+  </div>
+  <div style="margin-top:16px;background:#FEF3C7;border-radius:10px;padding:14px;font-size:0.85rem;color:#92400E;line-height:1.6;">
+    ⚠️ <strong>技術面警訊：</strong> RSI=71.13 已進入超買區（>70），股價突破布林通道上軌（1,125元），短線有回測需求。近5日均量約2,314萬張，今日量縮至627萬張，縮量難以繼續上攻。建議：短線持有者可設定 1,078元（MA5）為移動停損，新進場者宜等回測再進。
+  </div>
+  <div style="margin-top:12px;">
+    <strong style="font-size:0.85rem;color:#1E3A5F;">近期K線摘要（API真實）：</strong>
+    <table style="margin-top:8px;font-size:0.82rem;">
+      <tr><th>日期</th><th>開盤</th><th>最高</th><th>最低</th><th>收盤</th></tr>
+      <tr><td>2026-06-25</td><td>990</td><td>1,045</td><td>981</td><td style="color:#DC2626;font-weight:700;">1,045</td></tr>
+      <tr><td>2026-06-26</td><td>1,100</td><td>1,145</td><td>1,100</td><td style="color:#DC2626;font-weight:700;">1,125</td></tr>
+      <tr><td>2026-06-29</td><td>1,105</td><td>1,140</td><td>1,035</td><td>1,080</td></tr>
+      <tr><td>2026-06-30</td><td>1,145</td><td>1,185</td><td>1,145</td><td style="color:#DC2626;font-weight:700;">1,185</td></tr>
+      <tr><td>2026-07-01</td><td>—</td><td>—</td><td>—</td><td style="color:#DC2626;font-weight:700;">1,190（即時）</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <div class="section-title">💳 融資融券 <span class="data-badge">★ API真實</span></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+    <div style="background:#F8FAFC;border-radius:12px;padding:18px;text-align:center;">
+      <div style="font-size:0.8rem;color:#64748B;font-weight:600;">融資餘額</div>
+      <div style="font-size:2rem;font-weight:900;color:#1E3A5F;margin:8px 0;">0 張</div>
+      <div style="font-size:0.75rem;color:#94A3B8;">FinMind API ★</div>
+    </div>
+    <div style="background:#F8FAFC;border-radius:12px;padding:18px;text-align:center;">
+      <div style="font-size:0.8rem;color:#64748B;font-weight:600;">融券餘額</div>
+      <div style="font-size:2rem;font-weight:900;color:#1E3A5F;margin:8px 0;">0 張</div>
+      <div style="font-size:0.75rem;color:#94A3B8;">FinMind API ★</div>
+    </div>
+    <div style="background:#F8FAFC;border-radius:12px;padding:18px;text-align:center;">
+      <div style="font-size:0.8rem;color:#64748B;font-weight:600;">資券比</div>
+      <div style="font-size:2rem;font-weight:900;color:#1E3A5F;margin:8px 0;">N/A</div>
+      <div style="font-size:0.75rem;color:#94A3B8;">融資融券均為零</div>
+    </div>
+  </div>
+  <div style="margin-top:12px;background:#F0FDF4;border-radius:10px;padding:14px;font-size:0.85rem;color:#065F46;line-height:1.6;">
+    💡 融資融券均為 0，代表此股不開放融資融券，或法人主導交易為主。此類型個股波動較難用融資融券判斷，需更重視法人動向（三大法人）作為籌碼分析依據。
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <div class="section-title">⚔️ 研究員辯論</div>
+  <div class="debate-grid">
+    <div class="bull-box">
+      <h4>🐂 看多研究員（45%）</h4>
+      <div class="debate-item bull-item">Q1 2026 EPS 2.03元，QoQ +0.17元，YoY +534%（Q1 2025僅0.32元），獲利加速兌現</div>
+      <div class="debate-item bull-item">Q1 毛利率 15.85%，連續4季提升（Q2'25→Q3'25→Q4'25→Q1'26：8.02%→9.57%→12.52%→15.85%）</div>
+      <div class="debate-item bull-item">6月營收44.4億，YoY +35.82%，累計1-6月YoY全部維持30%以上成長</div>
+      <div class="debate-item bull-item">大和資本目標價1,444元（現價下方仍有21%上漲空間），大摩目標1,275元，法人積極評等11:3</div>
+      <div class="debate-item bull-item">ABF 載板供需缺口法說會確認持續至2027-2028年，新產能2026底才投產，景氣上行期明確</div>
+      <div class="debate-item bull-item">產能利用率突破90%（接近滿載），具備漲價議價能力，已向客戶轉嫁成本</div>
+    </div>
+    <div class="bear-box">
+      <h4>🐻 看空研究員（55%）</h4>
+      <div class="debate-item bear-item">追蹤PE=403倍，Forward PE約119～149倍（預估EPS 8～10元），極度高估值，容錯空間極小</div>
+      <div class="debate-item bear-item">52週漲幅超過1,000%（從110元→1,190元），股價超前太多，任何業績不如預期都可能引發大跌</div>
+      <div class="debate-item bear-item">RSI=71.13進入超買區，股價突破布林上軌，技術面過熱，短線有強烈回測壓力</div>
+      <div class="debate-item bear-item">外資6/30單日大幅賣超676,369張，國際大型機構在高點獲利了結，是明確的警示訊號</div>
+      <div class="debate-item bear-item">現價1,190元已超越花旗目標價（1,100元），高於FactSet中位數（807元），多數分析師估值已被股價追上</div>
+      <div class="debate-item bear-item">ABF載板競爭對手（欣興、景碩）同步擴產，2027年後供給增加，毛利率可能見頂回落</div>
+    </div>
+  </div>
+  <div style="margin-top:20px;background:#FEF2F2;border-radius:12px;padding:18px;">
+    <strong style="color:#1E3A5F;">辯論總結：看空 55% vs 看多 45%</strong>
+    <p style="font-size:0.88rem;margin-top:10px;color:#475569;line-height:1.7;">
+      🗣️ <strong>給一般投資人的話：</strong>南電的基本面故事是真實且有力的，ABF 載板確實是 AI 時代的關鍵材料。但現在股價已反映了大量樂觀預期，不是「撿便宜」而是「追高」。外資大幅賣超是最值得警惕的訊號。建議：現有持有者設好移動停損（MA5=1,078元），新進者等待回測 1,000元以下再分批布局，嚴守 850元停損線。
+    </p>
+  </div>
+</div>
+
+<!-- 11 風控評估 -->
+<div class="section">
+  <div class="section-title">🛡️ 風控評估</div>
+  <div class="two-col">
+    <div>
+      <div class="score-bar"><span class="score-label">估值風險</span><div class="score-track"><div class="score-fill" style="width:92%;background:#EF4444;"></div></div><span class="score-num" style="color:#EF4444;">9/10</span></div>
+      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">PE 403x，Forward PE ~130x，極度高估值</div>
+      <div class="score-bar"><span class="score-label">財務健康</span><div class="score-track"><div class="score-fill" style="width:25%;background:#10B981;"></div></div><span class="score-num">2/10</span></div>
+      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">毛利率持續改善，現金流轉正，財務健康</div>
+      <div class="score-bar"><span class="score-label">流動性</span><div class="score-track"><div class="score-fill" style="width:30%;background:#2563EB;"></div></div><span class="score-num">3/10</span></div>
+      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">上市股，成交量大，流動性佳</div>
+      <div class="score-bar"><span class="score-label">產業風險</span><div class="score-track"><div class="score-fill" style="width:35%;background:#8B5CF6;"></div></div><span class="score-num">3/10</span></div>
+      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">AI趨勢長期明確，但景氣循環屬性存在</div>
+      <div class="score-bar"><span class="score-label">總經風險</span><div class="score-track"><div class="score-fill" style="width:50%;background:#F59E0B;"></div></div><span class="score-num">5/10</span></div>
+      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">中美貿易、台股高點位置，外部環境不確定</div>
+      <div class="score-bar"><span class="score-label">籌碼風險</span><div class="score-track"><div class="score-fill" style="width:80%;background:#DC2626;"></div></div><span class="score-num" style="color:#DC2626;">8/10</span></div>
+      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">外資大幅賣超，RSI超買，籌碼轉弱</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+      <div style="width:160px;height:160px;border-radius:50%;background:conic-gradient(#10B981 0%,#10B981 20%,#F59E0B 20%,#F59E0B 45%,#EF4444 45%);display:flex;align-items:center;justify-content:center;">
+        <div style="width:110px;height:110px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;">
+          <div style="font-size:2.5rem;font-weight:900;color:#EF4444;">7</div>
+          <div style="font-size:0.75rem;color:#64748B;">/10分</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;text-align:center;">
+        <span class="badge badge-high" style="font-size:1rem;padding:8px 20px;">🔴 高風險</span>
+        <p style="font-size:0.8rem;color:#64748B;margin-top:10px;line-height:1.5;">
+          估值極高+籌碼轉弱是主要風險<br>基本面佳但已充分反映在股價中
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 12 台股三段式策略 -->
+<div class="section">
+  <div class="section-title">🎯 台股三段式操作策略</div>
+  <div class="strategy-grid">
+    <div class="strategy-card attack">
+      <h4>⚔️ 進攻策略（積極型）</h4>
+      <p>
+        <strong>適合對象：</strong>已持有且信仰ABF長線<br>
+        <strong>持有區間：</strong>現價1,190元<br>
+        <strong>部位比重：</strong>最多20%（高風險限制）<br>
+        <strong>目標價：</strong>1,275～1,444元<br>
+        <strong>移動停損：</strong>跌破MA5（1,078元）出場<br>
+        <strong>觸發加碼：</strong>Q2 2026 EPS超預期（>2.3元）
+      </p>
+    </div>
+    <div class="strategy-card balance">
+      <h4>⚖️ 均衡策略（穩健型）</h4>
+      <p>
+        <strong>建議：</strong>暫不追高，等回測<br>
+        <strong>理想進場區：</strong>1,000～1,080元（MA5）<br>
+        <strong>部位比重：</strong>10～15%<br>
+        <strong>目標價：</strong>1,200～1,300元<br>
+        <strong>觸發條件：</strong>外資連續買超訊號恢復<br>
+        <strong>停損：</strong>跌破 920元（MA20）
+      </p>
+    </div>
+    <div class="strategy-card defense">
+      <h4>🛡️ 防守策略（保守型）</h4>
+      <p>
+        <strong>建議：</strong>不進場，觀察<br>
+        <strong>等待時機：</strong>回測850～920元後再評估<br>
+        <strong>觀察指標：</strong>外資是否轉回買超<br>
+        <strong>最大風險：</strong>外資持續賣超引發快速拉回<br>
+        <strong>停損：</strong>850元（MA60）破位立即出場
+      </p>
+    </div>
+  </div>
+  <div style="margin-top:20px;">
+    <table>
+      <tr><th>催化劑時程</th><th>預期時間</th><th>影響</th></tr>
+      <tr><td>Q2 2026 季報</td><td>2026年8月</td><td style="color:#DC2626;font-weight:700;">最關鍵驗證點，EPS是否突破2.5元</td></tr>
+      <tr><td>7月營收公布</td><td>2026年8月10日前</td><td>確認動能是否延續35%+ YoY</td></tr>
+      <tr><td>新ABF產能啟動</td><td>2026年底～2027上半</td><td>供給增加，需觀察價格動向</td></tr>
+      <tr><td>NVIDIA Blackwell出貨</td><td>2026下半年</td><td>AI伺服器需求再放量，ABF最大受益</td></tr>
+      <tr><td>外資籌碼動向</td><td>每日追蹤</td><td>若外資轉回連續買超，是最重要的重新進場訊號</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 13 名詞小教室 -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室</div>
+  <div class="glossary-item">
+    <div class="glossary-term">ABF 載板（Ajinomoto Build-up Film Substrate）</div>
+    <div class="glossary-def">AI 晶片封裝時用的高階電路板基板，材料技術源自日本味之素公司（是的，就是做味精那家！）。ABF 載板把 AI 晶片和電路板連接起來，是每顆高階 AI 晶片不可或缺的零件。簡單說：沒有 ABF 載板，就做不出 NVIDIA 的 H100/B100 AI 晶片。</div>
+  </div>
+  <div class="glossary-item">
+    <div class="glossary-term">RSI 超買（>70）</div>
+    <div class="glossary-def">RSI=71.13 代表近期漲勢太強烈，短線買盤已略顯過熱。就像跑了很久的馬拉松選手需要喝水休息，股價也需要短暫回調整理，才能再繼續上漲。不代表一定會跌，但風險比 RSI 正常時高。</div>
+  </div>
+  <div class="glossary-item">
+    <div class="glossary-term">PE 本益比 403倍</div>
+    <div class="glossary-def">以目前股價和過去12個月實際EPS計算，需要403年回本。聽起來很可怕，但這是因為南電過去EPS極低（才剛轉虧為盈），股價則大幅超前反映未來數年的高速成長預期。重點是看「Forward PE」（未來預估EPS），約119～149倍，仍屬極高。</div>
+  </div>
+  <div class="glossary-item">
+    <div class="glossary-term">外資賣超</div>
+    <div class="glossary-def">外資（BlackRock、富達等國際大型基金）在那天賣出的張數大於買入張數。676,369張賣超是非常巨大的數字，代表有很多大資金在股價高點獲利出場。這不一定代表公司出了問題，但短線是明確的風險訊號。</div>
+  </div>
+  <div class="glossary-item">
+    <div class="glossary-term">布林通道</div>
+    <div class="glossary-def">以均線為中心，加減標準差畫出的上下軌道。股價突破上軌（1,125元）通常代表短線漲勢過強，像是橡皮筋被拉到極限，容易往中間（919元）反彈回去。不是必然，但統計上回測概率偏高。</div>
+  </div>
+  <div class="glossary-item">
+    <div class="glossary-term">T-glass（低熱膨脹係數玻璃纖維）</div>
+    <div class="glossary-def">一種特殊高階玻璃纖維材料，用於高密度 ABF 載板製造，比普通玻纖布更能承受高溫不變形，是 AI 晶片高階封裝的關鍵材料。成本高但難以替代，有助於廠商漲價。</div>
+  </div>
+</div>
+
+<!-- 14 免責聲明 -->
+<div class="warning-box" style="margin-bottom:30px;">
+  <strong style="font-size:1rem;">⚠️ 免責聲明</strong>
+  <p style="font-size:0.85rem;margin-top:10px;line-height:1.7;color:#92400E;">
+    本報告僅供研究參考，不構成任何投資建議。股市投資有風險，過去績效不代表未來表現。所有投資決策請依個人風險承受度自行判斷，並對自己的投資決策負責。
+  </p>
+  <p style="font-size:0.8rem;margin-top:8px;color:#92400E;">
+    <strong>資料來源：</strong>★ Fugle API（即時報價）| ★ FinMind API（財報/月營收/法人/融資券）| WebSearch（新聞/分析師目標價）<br>
+    <strong>真實數據標示：</strong>所有標示「★」的數字均來自 API 真實數據，非推估。
+  </p>
+  <p style="font-size:0.75rem;margin-top:8px;color:#B45309;">報告產生時間：2026-07-01 ｜ Claude AI 股票分析團隊 Skill ｜ 資料擷取時間：2026-07-01 09:52:49</p>
+</div>
+
+</div>
+
+<script>
+// EPS 季度趨勢（全部API真實）
+const epsCtx = document.getElementById('epsChart').getContext('2d');
+new Chart(epsCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    datasets: [{
+      label: 'EPS（元）★API',
+      data: [0.18, 0.09, 0.28, 0.32, -0.29, 1.12, 1.86, 2.03],
+      backgroundColor: ['#60A5FA','#60A5FA','#60A5FA','#60A5FA','#EF4444','#60A5FA','#60A5FA','#DC2626'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, plugins: { legend: { display: false } },
+    scales: { y: { ticks: { callback: v => v+'元' } } }
+  }
+});
+
+// 月營收（全部API真實）
+const revCtx = document.getElementById('revenueChart').getContext('2d');
+new Chart(revCtx, {
+  type: 'line',
+  data: {
+    labels: ['2026/01\n+46.6%','2026/02\n+45.0%','2026/03\n+12.8%','2026/04\n+39.0%','2026/05\n+39.5%','2026/06\n+35.8%'],
+    datasets: [{
+      label: '月營收（億元）★API',
+      data: [39.24, 37.20, 31.66, 42.91, 44.51, 44.40],
+      borderColor: '#2563EB', backgroundColor: 'rgba(37,99,235,0.1)',
+      pointBackgroundColor: ['#60A5FA','#60A5FA','#F59E0B','#DC2626','#DC2626','#DC2626'],
+      pointRadius: 7, tension: 0.3, fill: true
+    }]
+  },
+  options: {
+    responsive: true, plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: false, ticks: { callback: v => v+'億' } } }
+  }
+});
+
+// PE 比較
+const peCtx = document.getElementById('peChart').getContext('2d');
+new Chart(peCtx, {
+  type: 'bar',
+  data: {
+    labels: ['南電 追蹤PE ★', '南電 Forward PE', '同業均值', '台股大盤'],
+    datasets: [{
+      label: 'P/E（倍）',
+      data: [403, 135, 35, 18],
+      backgroundColor: ['#EF4444','#F59E0B','#60A5FA','#10B981'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, plugins: { legend: { display: false } },
+    scales: { x: { beginAtZero: true, ticks: { callback: v => v+'x' } } }
+  }
+});
+</script>
+</body>
+</html>
