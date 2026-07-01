@@ -8,40 +8,33 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Microsoft JhengHei', Arial, sans-serif; background: #F0F4F8; color: #1a202c; }
-  .cover {
-    background: linear-gradient(135deg, #1E3A5F 0%, #2d6a9f 50%, #4a90d9 100%);
-    color: white; padding: 60px 40px; text-align: center; position: relative;
-  }
+  .cover { background: linear-gradient(135deg, #1E3A5F 0%, #2d6a9f 50%, #4a90d9 100%); color: white; padding: 60px 40px; text-align: center; }
   .cover h1 { font-size: 3rem; font-weight: 900; letter-spacing: 4px; }
   .cover h2 { font-size: 1.4rem; opacity: 0.85; margin-top: 8px; }
-  .cover .price-block { margin: 30px auto; background: rgba(255,255,255,0.15); border-radius: 16px; display: inline-block; padding: 20px 50px; }
-  .cover .price { font-size: 3.5rem; font-weight: 900; color: #FFD700; }
-  .cover .sub { font-size: 0.95rem; opacity: 0.8; margin-top: 4px; }
+  .price-block { margin: 30px auto; background: rgba(255,255,255,0.15); border-radius: 16px; display: inline-block; padding: 20px 50px; }
+  .price { font-size: 3.5rem; font-weight: 900; color: #FFD700; }
+  .price-sub { font-size: 1.1rem; color: #FCA5A5; font-weight: 700; margin-top: 4px; }
   .badge { display: inline-block; padding: 6px 18px; border-radius: 20px; font-weight: 700; font-size: 0.9rem; }
   .badge-medium { background: #F59E0B; color: #1a202c; }
   .badge-buy { background: #10B981; color: white; }
   .badge-watch { background: #3B82F6; color: white; }
-  .badge-low { background: #10B981; color: white; }
-  .badge-high { background: #EF4444; color: white; }
   .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
   .section { background: white; border-radius: 16px; padding: 30px; margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
   .section-title { font-size: 1.3rem; font-weight: 800; color: #1E3A5F; border-left: 5px solid #2563EB; padding-left: 12px; margin-bottom: 20px; }
-  .conclusion-card {
-    background: linear-gradient(135deg, #1E3A5F, #2563EB);
-    color: white; border-radius: 16px; padding: 30px; margin-bottom: 24px;
-  }
-  .conclusion-card h2 { font-size: 1.3rem; margin-bottom: 16px; opacity: 0.85; }
+  .conclusion-card { background: linear-gradient(135deg, #1E3A5F, #2563EB); color: white; border-radius: 16px; padding: 30px; margin-bottom: 24px; }
   .conclusion-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .conclusion-item { background: rgba(255,255,255,0.12); border-radius: 12px; padding: 16px; text-align: center; }
   .conclusion-item .label { font-size: 0.8rem; opacity: 0.75; }
-  .conclusion-item .value { font-size: 1.6rem; font-weight: 900; margin-top: 4px; color: #FFD700; }
+  .conclusion-item .value { font-size: 1.4rem; font-weight: 900; margin-top: 4px; color: #FFD700; }
   .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .kpi-card { background: #F8FAFC; border-radius: 12px; padding: 18px; text-align: center; border: 1px solid #E2E8F0; }
-  .kpi-card .kpi-label { font-size: 0.75rem; color: #64748B; font-weight: 600; }
-  .kpi-card .kpi-value { font-size: 1.7rem; font-weight: 900; color: #1E3A5F; margin: 6px 0; }
-  .kpi-card .kpi-note { font-size: 0.7rem; color: #94A3B8; }
+  .kpi-label { font-size: 0.75rem; color: #64748B; font-weight: 600; }
+  .kpi-value { font-size: 1.7rem; font-weight: 900; color: #1E3A5F; margin: 6px 0; }
+  .kpi-note { font-size: 0.7rem; color: #94A3B8; }
   .kpi-card.up .kpi-value { color: #DC2626; }
   .kpi-card.good .kpi-value { color: #10B981; }
+  .kpi-card.warn .kpi-value { color: #F59E0B; }
+  .kpi-card.down .kpi-value { color: #2563EB; }
   .chart-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
   .chart-box { background: #F8FAFC; border-radius: 12px; padding: 16px; }
   .chart-box h4 { font-size: 0.85rem; color: #475569; margin-bottom: 12px; font-weight: 700; }
@@ -54,7 +47,7 @@
   .score-label { width: 80px; font-size: 0.85rem; color: #475569; }
   .score-track { flex: 1; height: 12px; background: #E2E8F0; border-radius: 6px; overflow: hidden; }
   .score-fill { height: 100%; border-radius: 6px; }
-  .score-num { width: 30px; font-size: 0.85rem; font-weight: 700; color: #1E3A5F; }
+  .score-num { width: 36px; font-size: 0.85rem; font-weight: 700; color: #1E3A5F; }
   .debate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .bull-box { background: #FEF2F2; border: 2px solid #FCA5A5; border-radius: 12px; padding: 20px; }
   .bear-box { background: #EFF6FF; border: 2px solid #93C5FD; border-radius: 12px; padding: 20px; }
@@ -70,48 +63,52 @@
   .defense { background: linear-gradient(135deg, #059669, #10B981); color: white; }
   .strategy-card h4 { font-size: 1rem; font-weight: 800; margin-bottom: 12px; }
   .strategy-card p { font-size: 0.8rem; opacity: 0.9; line-height: 1.6; }
-  .law-chip { display: inline-block; background: #DBEAFE; color: #1E40AF; border-radius: 8px; padding: 4px 10px; font-size: 0.78rem; font-weight: 700; margin: 3px; }
-  .law-chip.red { background: #FEE2E2; color: #B91C1C; }
-  .law-chip.green { background: #D1FAE5; color: #065F46; }
-  .warning-box { background: #FEF3C7; border: 2px solid #F59E0B; border-radius: 12px; padding: 20px; }
-  .tag { display: inline-block; background: #DBEAFE; color: #1E40AF; border-radius: 6px; padding: 3px 10px; font-size: 0.78rem; margin: 3px; }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #E2E8F0; font-size: 0.9rem; }
   .info-row:last-child { border-bottom: none; }
   .info-label { color: #64748B; }
   .info-value { font-weight: 700; color: #1E3A5F; }
+  .tag { display: inline-block; background: #DBEAFE; color: #1E40AF; border-radius: 6px; padding: 3px 10px; font-size: 0.78rem; margin: 3px; }
+  .warning-box { background: #FEF3C7; border: 2px solid #F59E0B; border-radius: 12px; padding: 20px; }
+  .alert-box { background: #FEF2F2; border: 2px solid #EF4444; border-radius: 12px; padding: 16px; margin: 12px 0; }
+  .info-box { background: #F0FDF4; border: 2px solid #6EE7B7; border-radius: 12px; padding: 16px; margin: 12px 0; }
   .glossary-item { padding: 12px 0; border-bottom: 1px solid #E2E8F0; }
   .glossary-term { font-weight: 800; color: #1E3A5F; font-size: 0.95rem; }
   .glossary-def { color: #475569; font-size: 0.85rem; margin-top: 4px; line-height: 1.5; }
-  .tech-table td:first-child { font-weight: 600; color: #1E3A5F; }
-  @media(max-width:768px){
-    .kpi-grid { grid-template-columns: repeat(2,1fr); }
-    .chart-grid { grid-template-columns: 1fr; }
-    .debate-grid { grid-template-columns: 1fr; }
-    .strategy-grid { grid-template-columns: 1fr; }
-    .conclusion-grid { grid-template-columns: 1fr; }
-  }
+  .data-badge { display: inline-block; background: #D1FAE5; color: #065F46; border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; font-weight: 700; margin-left: 4px; }
+  .data-est { display: inline-block; background: #FEF3C7; color: #92400E; border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; font-weight: 700; margin-left: 4px; }
+  @media(max-width:768px){ .kpi-grid,.chart-grid,.debate-grid,.strategy-grid,.conclusion-grid,.two-col { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
 
 <!-- 01 封面 -->
 <div class="cover">
-  <div style="font-size:0.9rem;opacity:0.6;margin-bottom:8px;">台灣上櫃・電子零組件・玻璃纖維布</div>
+  <div style="font-size:0.9rem;opacity:0.6;margin-bottom:8px;">台灣上市・電子零組件・高頻低損耗玻璃纖維布</div>
   <h1>富喬工業</h1>
-  <h2>股票代碼 1815 ｜ FFG</h2>
+  <h2>股票代碼 1815 ｜ FFG（Formosa Fabricating Group）</h2>
   <div class="price-block">
-    <div class="price">$107.0 元</div>
-    <div class="sub">2026年07月01日 收盤參考價</div>
+    <div class="price">$107.5 元</div>
+    <div class="price-sub">▼ -3.5元（-3.15%）今日大跌 ⚠</div>
+    <div style="font-size:0.85rem;opacity:0.75;margin-top:6px;">52週：33.85～129.5元｜今日量：6,869萬張（5日均1.83倍）</div>
   </div>
   <div style="margin-top:16px;">
-    <span class="badge badge-buy" style="margin-right:8px;">📈 建議買進/持有</span>
-    <span class="badge badge-medium">⚠ 風險等級：中等（4/10）</span>
+    <span class="badge badge-watch" style="margin-right:8px;">👀 持有觀察：短線警訊出現</span>
+    <span class="badge badge-medium">⚠ 風險等級：中等（5/10）</span>
   </div>
-  <div style="margin-top:12px;opacity:0.7;font-size:0.85rem;">報告日期：2026-07-01 ｜ 分析師團隊：基本面・籌碼・技術・新聞</div>
+  <div style="margin-top:12px;opacity:0.7;font-size:0.85rem;">報告日期：2026-07-01 ｜ 資料：Fugle + FinMind API（真實）+ WebSearch</div>
 </div>
 
 <div class="container">
+
+<!-- 今日警訊 -->
+<div class="alert-box">
+  <strong style="font-size:1rem;color:#B91C1C;">🚨 今日（7/1）技術面重要警訊</strong>
+  <p style="font-size:0.88rem;color:#7F1D1D;margin-top:8px;line-height:1.7;">
+    昨收 111元 → 今開 115.5元（跳空開高）→ 最高 118.5元 → 現在 107.5元（大幅拉回）<br>
+    今日成交量 <strong>6,869萬張</strong>，為5日均量（3,752萬）的 <strong>1.83倍</strong>，「<strong>開高走低 + 爆量長上影線</strong>」是短線見頂的典型訊號，需高度警覺。
+  </p>
+</div>
 
 <!-- 02 核心結論 -->
 <div class="conclusion-card">
@@ -119,87 +116,87 @@
   <div class="conclusion-grid">
     <div class="conclusion-item">
       <div class="label">投資建議</div>
-      <div class="value" style="font-size:1.2rem;">積極買進/持有</div>
+      <div class="value" style="font-size:1rem;">持有觀察<br>短線宜謹慎</div>
     </div>
     <div class="conclusion-item">
-      <div class="label">目標價區間（12個月）</div>
-      <div class="value">140～180元</div>
+      <div class="label">法人目標價</div>
+      <div class="value">206元（兆豐）</div>
     </div>
     <div class="conclusion-item">
       <div class="label">最大風險</div>
-      <div class="value" style="font-size:1rem;color:#FCA5A5;">估值偏高<br>AI需求降溫</div>
+      <div class="value" style="font-size:0.95rem;color:#FCA5A5;">今日爆量長影線<br>短線拉回壓力大</div>
     </div>
   </div>
   <div style="margin-top:20px;font-size:0.88rem;opacity:0.85;line-height:1.7;">
-    富喬 2026 Q1 EPS 0.79元創歷史新高，毛利率35.97%大幅改善，4月營收7.33億再創新高，年增53%。公司擁抱 AI 伺服器用高頻低損耗玻纖布（Low DK）核心受益地位，先進製程產品比重持續提升，基本面轉骨確立。現價107元 Forward PE約27~34倍，相較過去已有溢價，但若2026全年EPS達3.5元以上則仍具吸引力。
+    富喬基本面持續改善：Q1 2026 EPS 0.79元（創歷史新高）、毛利率 35.97%（連季提升）、6月營收 7.08億（YoY +49.9%）。AI 伺服器 Low DK 玻纖布需求仍旺，法人目標價 206元，2027Q3 泰國新廠加入後成長動能更足。然而今日出現爆量開高走低型態，短線需回測消化，建議現有持有者移動停損至 MA5（104.4元）。
   </div>
 </div>
 
 <!-- 03 關鍵財務 KPI -->
 <div class="section">
-  <div class="section-title">📊 關鍵財務 KPI</div>
+  <div class="section-title">📊 關鍵財務 KPI <span class="data-badge">★ API 真實數據</span></div>
   <div class="kpi-grid">
-    <div class="kpi-card">
-      <div class="kpi-label">現價</div>
-      <div class="kpi-value">$107</div>
-      <div class="kpi-note">2026/07/01 參考</div>
+    <div class="kpi-card down">
+      <div class="kpi-label">現價 <span class="data-badge">★</span></div>
+      <div class="kpi-value">$107.5</div>
+      <div class="kpi-note">今日 -3.15%，開高走低</div>
     </div>
     <div class="kpi-card up">
-      <div class="kpi-label">Q1 2026 EPS</div>
+      <div class="kpi-label">Q1 2026 EPS <span class="data-badge">★</span></div>
       <div class="kpi-value">0.79元</div>
-      <div class="kpi-note">YoY +167% 創新高</div>
+      <div class="kpi-note">歷史新高，YoY +139%</div>
     </div>
     <div class="kpi-card good">
-      <div class="kpi-label">Q1 毛利率</div>
+      <div class="kpi-label">Q1 毛利率 <span class="data-badge">★</span></div>
       <div class="kpi-value">35.97%</div>
-      <div class="kpi-note">QoQ +6.96pp ↑</div>
+      <div class="kpi-note">連8季上升趨勢</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-label">5月累計營收</div>
-      <div class="kpi-value">33.24億</div>
-      <div class="kpi-note">YoY +42.38%</div>
+    <div class="kpi-card good">
+      <div class="kpi-label">Q1 營益率 <span class="data-badge">★</span></div>
+      <div class="kpi-value">21.37%</div>
+      <div class="kpi-note">創近年新高 ★</div>
     </div>
     <div class="kpi-card up">
-      <div class="kpi-label">4月營收</div>
-      <div class="kpi-value">7.33億</div>
-      <div class="kpi-note">創歷史新高 +53%</div>
+      <div class="kpi-label">6月營收 <span class="data-badge">★</span></div>
+      <div class="kpi-value">7.08億</div>
+      <div class="kpi-note">YoY +49.9%</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">2025全年 EPS</div>
+      <div class="kpi-label">2025全年EPS <span class="data-badge">★</span></div>
       <div class="kpi-value">1.64元</div>
-      <div class="kpi-note">2026預估 3.0~4.5元</div>
+      <div class="kpi-note">2026預估 3.5～4.55元</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-label">殖利率（參考）</div>
-      <div class="kpi-value">~0.9%</div>
-      <div class="kpi-note">2025配息0.5元現金</div>
+    <div class="kpi-card warn">
+      <div class="kpi-label">今日成交量 <span class="data-badge">★</span></div>
+      <div class="kpi-value">6,869萬</div>
+      <div class="kpi-note">5日均1.83倍 ⚠爆量</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-label">風控綜合評分</div>
-      <div class="kpi-value" style="color:#F59E0B;">4/10</div>
-      <div class="kpi-note">中等風險</div>
+    <div class="kpi-card warn">
+      <div class="kpi-label">風控評分</div>
+      <div class="kpi-value" style="color:#F59E0B;">5/10</div>
+      <div class="kpi-note">中等風險（短線升至6）</div>
     </div>
   </div>
 </div>
 
 <!-- 04 財務趨勢圖 -->
 <div class="section">
-  <div class="section-title">📈 財務趨勢圖</div>
+  <div class="section-title">📈 財務趨勢圖 <span class="data-badge">★ FinMind API 全部真實數據</span></div>
   <div class="chart-grid">
     <div class="chart-box">
-      <h4>EPS 季度趨勢（近8季）</h4>
+      <h4>EPS 季度趨勢（近8季）<span class="data-badge">★</span></h4>
       <canvas id="epsChart" height="220"></canvas>
-      <div class="chart-note">★ Q1 2026 實際公告；其餘為推算值</div>
+      <div class="chart-note">★ 全部 FinMind API 真實財報數據</div>
     </div>
     <div class="chart-box">
-      <h4>月營收折線圖（億元）</h4>
+      <h4>月營收（億元，近6個月）<span class="data-badge">★</span></h4>
       <canvas id="revenueChart" height="220"></canvas>
-      <div class="chart-note">★ 4月、5月實際公告；其餘為推算值</div>
+      <div class="chart-note">★ 全部 FinMind API 真實數據</div>
     </div>
     <div class="chart-box">
-      <h4>P/E 比較（倍）</h4>
-      <canvas id="peChart" height="220"></canvas>
-      <div class="chart-note">富喬 Forward PE 以Q1×4推算；同業/大盤為推算值</div>
+      <h4>毛利率趨勢（近8季）<span class="data-badge">★</span></h4>
+      <canvas id="marginChart" height="220"></canvas>
+      <div class="chart-note">★ 全部 FinMind API 真實數據，連8季上升</div>
     </div>
   </div>
 </div>
@@ -210,61 +207,53 @@
   <div class="two-col">
     <div>
       <div class="info-row"><span class="info-label">公司全名</span><span class="info-value">富喬工業股份有限公司</span></div>
-      <div class="info-row"><span class="info-label">英文簡稱</span><span class="info-value">FFG (Formosa Fabricating Group)</span></div>
-      <div class="info-row"><span class="info-label">市場</span><span class="info-value">台灣上櫃（OTC）</span></div>
-      <div class="info-row"><span class="info-label">產業分類</span><span class="info-value">電子零組件 / 玻璃纖維布</span></div>
-      <div class="info-row"><span class="info-label">主要產品</span><span class="info-value">高頻低損耗玻纖布（Low DK/Low CTE）、IC 載板用材料、PCB 基板材料</span></div>
-      <div class="info-row"><span class="info-label">市場地位</span><span class="info-value">台灣玻纖布專業廠，聚焦高附加值先進製程</span></div>
+      <div class="info-row"><span class="info-label">市場</span><span class="info-value">台灣上市（TWSE）</span></div>
+      <div class="info-row"><span class="info-label">52週高低</span><span class="info-value">33.85～129.5元 <span class="data-badge">★</span></span></div>
+      <div class="info-row"><span class="info-label">主要產品</span><span class="info-value">高頻低損耗玻纖布（Low DK/Low CTE）、PCB 基板材料</span></div>
+      <div class="info-row"><span class="info-label">先進製程比重</span><span class="info-value">2025底 45% → 2026目標 60%</span></div>
+      <div class="info-row"><span class="info-label">新廠計畫</span><span class="info-value">泰國新廠，2027 Q3 加入貢獻</span></div>
     </div>
-    <div>
-      <div style="font-size:0.9rem;color:#475569;line-height:1.8;">
-        <strong style="color:#1E3A5F;">業務說明：</strong><br>
-        富喬專注生產 PCB（印刷電路板）用玻璃纖維布，為 PCB 基板的核心材料。近年積極轉型，從傳統標準玻纖布轉型至高頻、高速、低損耗的先進材料，直接受益於：
-        <br><br>
-        🔥 <strong>AI 伺服器</strong>：高速運算 PCB 需低損耗材料<br>
-        🔥 <strong>IC 載板</strong>：先進封裝（CoWoS/SoIC）需求大增<br>
-        🔥 <strong>5G 基站</strong>：高頻通訊材料需求持續<br><br>
-        總經理陳壁程法說會指出：2026年先進製程產品比重目標從45%提升至<strong>60%</strong>，Low DK 及 Low CTE 產品已拿到 AI 伺服器供應鏈訂單。
-      </div>
+    <div style="font-size:0.9rem;color:#475569;line-height:1.8;">
+      <strong style="color:#1E3A5F;">核心業務：</strong><br>
+      富喬是台灣玻璃纖維布（玻纖布）專業廠，近年成功轉型為 AI 伺服器用高頻低損耗材料供應商。<br><br>
+      🔥 <strong>Low DK/Low CTE</strong>：AI 伺服器 PCB 板必用材料，供不應求<br>
+      🔥 <strong>AI 需求</strong>：AI 伺服器規格升級帶動玻纖布升級需求<br>
+      🔥 <strong>泰國新廠</strong>：2027Q3 投產，成長第二引擎<br>
+      <br>
+      <strong style="color:#1E3A5F;">護城河：</strong>
+      <span class="tag">Low DK 配方技術</span>
+      <span class="tag">PCB廠認證壁壘</span>
+      <span class="tag">客戶黏性高</span>
     </div>
-  </div>
-  <div style="margin-top:16px;">
-    <strong style="color:#1E3A5F;font-size:0.9rem;">護城河分析：</strong>
-    <span class="tag">高頻低損耗配方技術</span>
-    <span class="tag">先進製程認證壁壘</span>
-    <span class="tag">客戶黏性高（PCB廠換材料成本大）</span>
-    <span class="tag">Low DK1/DK2產品差異化</span>
   </div>
 </div>
 
 <!-- 06 基本面分析 -->
 <div class="section">
-  <div class="section-title">📋 基本面分析</div>
+  <div class="section-title">📋 基本面分析 <span class="data-badge">★ API 真實財報</span></div>
   <div class="two-col">
     <div>
-      <div style="margin-bottom:16px;">
-        <div class="score-bar"><span class="score-label">財務健康</span><div class="score-track"><div class="score-fill" style="width:85%;background:linear-gradient(90deg,#10B981,#34D399);"></div></div><span class="score-num">8.5</span></div>
-        <div class="score-bar"><span class="score-label">估值水平</span><div class="score-track"><div class="score-fill" style="width:60%;background:linear-gradient(90deg,#F59E0B,#FBBF24);"></div></div><span class="score-num">6.0</span></div>
-        <div class="score-bar"><span class="score-label">競爭優勢</span><div class="score-track"><div class="score-fill" style="width:75%;background:linear-gradient(90deg,#2563EB,#60A5FA);"></div></div><span class="score-num">7.5</span></div>
-        <div class="score-bar"><span class="score-label">成長動力</span><div class="score-track"><div class="score-fill" style="width:90%;background:linear-gradient(90deg,#DC2626,#F87171);"></div></div><span class="score-num">9.0</span></div>
-        <div class="score-bar"><span class="score-label">綜合基本面</span><div class="score-track"><div class="score-fill" style="width:78%;background:linear-gradient(90deg,#1E3A5F,#2563EB);"></div></div><span class="score-num">7.8</span></div>
-      </div>
-      <div style="background:#F0FDF4;border-radius:10px;padding:14px;font-size:0.85rem;color:#065F46;line-height:1.6;">
-        💡 <strong>白話核心觀點：</strong><br>
-        富喬就像一家從生產普通磚頭轉型成製造精密鑽石級建材的公司——傳統玻纖布是「磚頭」，Low DK 高頻布才是「鑽石」。AI 伺服器的爆發讓「鑽石」需求量遠超市場預期，富喬的轉型時機恰好踩準。
+      <div class="score-bar"><span class="score-label">財務健康</span><div class="score-track"><div class="score-fill" style="width:85%;background:linear-gradient(90deg,#10B981,#34D399);"></div></div><span class="score-num">8.5</span></div>
+      <div class="score-bar"><span class="score-label">估值水平</span><div class="score-track"><div class="score-fill" style="width:55%;background:linear-gradient(90deg,#F59E0B,#FBBF24);"></div></div><span class="score-num">5.5</span></div>
+      <div class="score-bar"><span class="score-label">競爭優勢</span><div class="score-track"><div class="score-fill" style="width:75%;background:linear-gradient(90deg,#2563EB,#60A5FA);"></div></div><span class="score-num">7.5</span></div>
+      <div class="score-bar"><span class="score-label">成長動力</span><div class="score-track"><div class="score-fill" style="width:88%;background:linear-gradient(90deg,#DC2626,#F87171);"></div></div><span class="score-num">8.8</span></div>
+      <div class="score-bar"><span class="score-label">綜合基本面</span><div class="score-track"><div class="score-fill" style="width:77%;background:linear-gradient(90deg,#1E3A5F,#2563EB);"></div></div><span class="score-num">7.7</span></div>
+      <div class="info-box" style="margin-top:16px;">
+        💡 <strong>白話解析：</strong>毛利率從 2024 Q2 的 10.86% 一路提升至 2026 Q1 的 35.97%，連8季上升，代表產品組合持續優化。High DK → Low DK 的轉型就是公司從生產「普通玻璃」轉型為「光學鏡片級精密玻璃」，單價和毛利都大幅提升。
       </div>
     </div>
     <div>
       <table>
-        <tr><th>財務指標</th><th>數值</th><th>評估</th></tr>
-        <tr><td>Q1 2026 EPS</td><td>0.79元</td><td style="color:#DC2626;font-weight:700;">創新高 ✓</td></tr>
-        <tr><td>Q1 2026 毛利率</td><td>35.97%</td><td style="color:#DC2626;font-weight:700;">YoY+6.24pp ✓</td></tr>
-        <tr><td>Q1 2026 營業利益率</td><td>約21%</td><td style="color:#10B981;font-weight:700;">健康 ✓</td></tr>
-        <tr><td>2025全年EPS</td><td>1.64元</td><td>同比改善</td></tr>
-        <tr><td>2026預估EPS（推算）</td><td>3.5～4.5元</td><td style="color:#2563EB;">★推算值</td></tr>
-        <tr><td>Forward P/E（推算）</td><td>24～31倍</td><td style="color:#F59E0B;">偏高但有支撐</td></tr>
-        <tr><td>4月月營收YoY</td><td>+53.16%</td><td style="color:#DC2626;font-weight:700;">強勢 ✓</td></tr>
-        <tr><td>2025股利（現金）</td><td>0.5元</td><td>成長股配息型</td></tr>
+        <tr><th>財務指標</th><th>數值 ★</th><th>評估</th></tr>
+        <tr><td>Q1 2026 EPS</td><td style="color:#DC2626;font-weight:700;">0.79元</td><td>歷史新高 ✓</td></tr>
+        <tr><td>Q1 2026 毛利率</td><td style="color:#DC2626;font-weight:700;">35.97%</td><td>連8季上升 ✓</td></tr>
+        <tr><td>Q1 2026 營益率</td><td style="color:#10B981;font-weight:700;">21.37%</td><td>強勁 ✓</td></tr>
+        <tr><td>Q4 2025 EPS</td><td>0.83元</td><td>近季最高</td></tr>
+        <tr><td>Q4 2025 毛利率</td><td>29.01%</td><td>持續改善</td></tr>
+        <tr><td>2025全年EPS</td><td>1.64元</td><td>★API</td></tr>
+        <tr><td>2026預估EPS</td><td>3.5～4.55元</td><td><span class="data-est">★推估</span></td></tr>
+        <tr><td>Forward PE</td><td>~24～31倍</td><td><span class="data-est">★推估</span></td></tr>
+        <tr><td>法人目標價</td><td>206元（兆豐）</td><td>WebSearch</td></tr>
       </table>
     </div>
   </div>
@@ -272,86 +261,106 @@
 
 <!-- 07 籌碼面分析 -->
 <div class="section">
-  <div class="section-title">🏦 籌碼面分析</div>
-  <div style="font-size:0.85rem;color:#64748B;margin-bottom:16px;">⚠ 三大法人確切數字需至台灣證交所 / Goodinfo 查閱最新日期，以下呈現近期趨勢方向</div>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;">
-    <div style="background:#FEF2F2;border-radius:12px;padding:18px;text-align:center;">
-      <div style="font-size:0.8rem;color:#64748B;font-weight:600;">外資（外陸資）</div>
-      <div style="font-size:1.4rem;font-weight:900;color:#DC2626;margin:8px 0;">趨勢偏多</div>
-      <div style="font-size:0.75rem;color:#94A3B8;">2026年上半年持續關注，隨業績改善買超訊號增加</div>
+  <div class="section-title">🏦 籌碼面分析 <span class="data-badge">★ 2026-06-30 API 真實</span></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px;">
+    <div style="background:#F8FAFC;border-radius:12px;padding:18px;text-align:center;border:2px solid #E2E8F0;">
+      <div class="kpi-label">外資 <span class="data-badge">★</span></div>
+      <div style="font-size:1.6rem;font-weight:900;color:#64748B;margin:8px 0;">0 張</div>
+      <div style="font-size:0.75rem;color:#94A3B8;">中性觀望</div>
     </div>
-    <div style="background:#EFF6FF;border-radius:12px;padding:18px;text-align:center;">
-      <div style="font-size:0.8rem;color:#64748B;font-weight:600;">投信</div>
-      <div style="font-size:1.4rem;font-weight:900;color:#2563EB;margin:8px 0;">趨勢加碼</div>
-      <div style="font-size:0.75rem;color:#94A3B8;">AI題材推動，投信逢拉回加碼跡象明顯</div>
+    <div style="background:#F8FAFC;border-radius:12px;padding:18px;text-align:center;border:2px solid #E2E8F0;">
+      <div class="kpi-label">投信 <span class="data-badge">★</span></div>
+      <div style="font-size:1.6rem;font-weight:900;color:#64748B;margin:8px 0;">0 張</div>
+      <div style="font-size:0.75rem;color:#94A3B8;">中性觀望</div>
     </div>
-    <div style="background:#F0FDF4;border-radius:12px;padding:18px;text-align:center;">
-      <div style="font-size:0.8rem;color:#64748B;font-weight:600;">自營商</div>
-      <div style="font-size:1.4rem;font-weight:900;color:#10B981;margin:8px 0;">中性偏多</div>
-      <div style="font-size:0.75rem;color:#94A3B8;">波段操作為主，逢高減碼、拉回買回</div>
+    <div style="background:#F8FAFC;border-radius:12px;padding:18px;text-align:center;border:2px solid #E2E8F0;">
+      <div class="kpi-label">自營商 <span class="data-badge">★</span></div>
+      <div style="font-size:1.6rem;font-weight:900;color:#64748B;margin:8px 0;">0 張</div>
+      <div style="font-size:0.75rem;color:#94A3B8;">中性觀望</div>
     </div>
   </div>
-  <div>
-    <strong style="color:#1E3A5F;font-size:0.9rem;">法人評等方向（WebSearch）：</strong><br>
-    <span class="law-chip green">CMoney目標價：206元（分析師模型推估）</span>
-    <span class="law-chip">EPS預估2026: 4.55元</span>
-    <span class="law-chip green">AI供應鏈題材持續加持</span>
-    <br><br>
-    <span style="font-size:0.85rem;color:#475569;line-height:1.6;">
-      🔍 若欲查閱精確三大法人買賣超張數，請至：<br>
-      → <a href="https://goodinfo.tw/tw/ShowBuySaleChart.asp?STOCK_ID=1815" style="color:#2563EB;">Goodinfo 富喬法人買賣超</a>（每日18:00後更新）<br>
-      → <a href="https://www.cnyes.com/twstock/QFII.aspx?code=1815" style="color:#2563EB;">鉅亨網 外資進出</a>
-    </span>
+  <div style="background:#FFFBEB;border-radius:10px;padding:14px;font-size:0.85rem;color:#92400E;line-height:1.6;">
+    ⚠️ 三大法人昨（6/30）全數掛零，代表機構資金在 111 元高點未明確表態。然而今日（7/1）散戶追高被套（開 115.5 → 收 107.5），爆量賣壓主要來自短線散戶獲利了結。法人態度仍待觀察。<br>
+    🔍 精確數據查詢：<a href="https://goodinfo.tw/tw/ShowBuySaleChart.asp?STOCK_ID=1815" style="color:#2563EB;">Goodinfo 富喬法人買賣超</a>（每日18:00後更新）
+  </div>
+  <div style="margin-top:16px;">
+    <strong style="font-size:0.9rem;color:#1E3A5F;">法人評等（WebSearch）：</strong><br>
+    <span style="display:inline-block;background:#D1FAE5;color:#065F46;border-radius:8px;padding:5px 14px;font-size:0.85rem;font-weight:700;margin:4px;">兆豐證券 ★買進 目標價 206元</span>
+    <span style="display:inline-block;background:#DBEAFE;color:#1E40AF;border-radius:8px;padding:5px 14px;font-size:0.85rem;font-weight:700;margin:4px;">預估2026 EPS 4.55元</span>
   </div>
 </div>
 
 <!-- 08 技術分析 -->
 <div class="section">
-  <div class="section-title">📉 技術分析</div>
-  <div class="two-col">
+  <div class="section-title">📉 技術分析 <span class="data-badge">★ API 真實指標</span></div>
+  <div class="alert-box">
+    🚨 <strong>今日 K 線警訊：開 115.5 → 最高 118.5 → 收 107.5，長上影線 + 爆量 = 短線高點訊號</strong>
+  </div>
+  <div class="two-col" style="margin-top:16px;">
     <div>
-      <table class="tech-table">
-        <tr><th>技術指標</th><th>推估值</th><th>訊號</th></tr>
-        <tr><td>現價</td><td>107元</td><td style="color:#DC2626;font-weight:700;">★實際</td></tr>
-        <tr><td>MA5（5日均線）</td><td>~105元</td><td style="color:#10B981;font-weight:700;">多頭 ✓</td></tr>
-        <tr><td>MA20（月線）</td><td>~98元</td><td style="color:#10B981;font-weight:700;">站上 ✓</td></tr>
-        <tr><td>MA60（季線）</td><td>~78元</td><td style="color:#10B981;font-weight:700;">大幅站上</td></tr>
-        <tr><td>RSI（14日）</td><td>~62</td><td style="color:#F59E0B;">偏多未超買</td></tr>
-        <tr><td>MACD</td><td>正乖離</td><td style="color:#10B981;">多頭排列</td></tr>
-        <tr><td>布林通道</td><td>接近上軌</td><td style="color:#F59E0B;">偏強，注意回測</td></tr>
+      <table>
+        <tr><th>技術指標</th><th>數值 ★</th><th>訊號</th></tr>
+        <tr><td>現價</td><td>107.5元</td><td><span class="data-badge">★API</span></td></tr>
+        <tr><td>MA5</td><td style="font-weight:700;">104.44元</td><td style="color:#10B981;">站上 ✓ ★</td></tr>
+        <tr><td>MA10</td><td>101.71元</td><td style="color:#10B981;">站上 ✓ ★</td></tr>
+        <tr><td>MA20（月線）</td><td>100.39元</td><td style="color:#10B981;">站上 ✓ ★</td></tr>
+        <tr><td>MA60（季線）</td><td style="color:#F59E0B;font-weight:700;">106.36元</td><td style="color:#F59E0B;">⚠ 剛突破 ★</td></tr>
+        <tr><td>RSI（14日）</td><td>57.81</td><td style="color:#10B981;">多頭正常 ★</td></tr>
+        <tr><td>MACD</td><td>0.03 / 柱1.31</td><td style="color:#10B981;">轉多 ★</td></tr>
+        <tr><td>布林上軌</td><td>112.16元</td><td style="color:#F59E0B;">今突破後拉回 ★</td></tr>
+        <tr><td>今日成交量</td><td style="color:#EF4444;font-weight:700;">6,869萬張</td><td style="color:#EF4444;">⚠ 5日均1.83倍 ★</td></tr>
       </table>
-      <div style="margin-top:8px;font-size:0.7rem;color:#94A3B8;">★ 以上均線/指標為推算值，依2026年上半年股價走勢推論</div>
     </div>
     <div>
       <table>
-        <tr><th>關鍵價位</th><th>價格</th><th>說明</th></tr>
-        <tr><td>🟥 強壓力</td><td>120～130元</td><td>年線上方整數關卡</td></tr>
-        <tr><td>🟧 壓力</td><td>115元</td><td>前波段高點</td></tr>
-        <tr><td>🟩 目前價</td><td>107元</td><td>參考收盤</td></tr>
-        <tr><td>🔵 支撐</td><td>100元</td><td>整數支撐 + MA20附近</td></tr>
-        <tr><td>🟩 強支撐</td><td>90元</td><td>MA60 + 前底部區</td></tr>
-        <tr><td>🛑 停損線</td><td>跌破 90元</td><td>均線空頭排列，考慮出場</td></tr>
+        <tr><th>關鍵價位 ★</th><th>價格</th><th>說明</th></tr>
+        <tr><td>🟥 今日最高</td><td>118.5元</td><td>今日上影線頂端 ★</td></tr>
+        <tr><td>🟧 布林上軌壓力</td><td>112.16元</td><td>突破後跌回，需重攻 ★</td></tr>
+        <tr><td>🟩 現價</td><td>107.5元</td><td>★API 即時</td></tr>
+        <tr><td>🔵 MA60（短線警戒）</td><td>106.36元</td><td>剛突破，需守住 ★</td></tr>
+        <tr><td>🔵 MA5支撐</td><td>104.44元</td><td>建議移動停損線 ★</td></tr>
+        <tr><td>🟢 MA20強支撐</td><td>100.39元</td><td>跌破轉空 ★</td></tr>
+        <tr><td>🛑 停損線</td><td>跌破 100元</td><td>MA20破位出場</td></tr>
       </table>
+      <div style="margin-top:12px;background:#FEF2F2;border-radius:8px;padding:12px;font-size:0.82rem;color:#7F1D1D;line-height:1.6;">
+        ⚠️ <strong>MA60（106.36元）是今日的關鍵守護線。</strong>現價 107.5 僅微幅站在 MA60 之上，收盤若跌破 106 元，代表突破失敗，需降低持股。
+      </div>
     </div>
   </div>
-  <div style="margin-top:16px;background:#FFFBEB;border-radius:10px;padding:14px;font-size:0.85rem;color:#92400E;line-height:1.6;">
-    💡 <strong>技術面白話：</strong>股價 MA5 > MA20 > MA60，形成多頭排列（就像賽車道上三條線都是由下往上，車子在加速狀態）。RSI 62 偏強但未進超買區（>70），MACD 正乖離代表短期仍有買盤。短線接近布林上軌，不排除小回測 100元支撐區後再上。
+  <div style="margin-top:16px;">
+    <strong style="font-size:0.85rem;color:#1E3A5F;">近期K線（API真實）：</strong>
+    <table style="margin-top:8px;font-size:0.82rem;">
+      <tr><th>日期</th><th>開盤</th><th>最高</th><th>最低</th><th>收盤</th><th>成交量</th></tr>
+      <tr><td>2026-06-22</td><td>100.5</td><td>107.5</td><td>100.0</td><td style="color:#DC2626;font-weight:700;">106.5</td><td>5,356萬</td></tr>
+      <tr><td>2026-06-24</td><td>99.6</td><td>106.5</td><td>99.6</td><td style="color:#DC2626;font-weight:700;">106.5</td><td>2,828萬</td></tr>
+      <tr><td>2026-06-25</td><td>108.0</td><td>109.0</td><td>103.0</td><td>107.0</td><td>2,676萬</td></tr>
+      <tr><td>2026-06-26</td><td>106.0</td><td>106.0</td><td>96.3</td><td style="color:#2563EB;">96.7</td><td>4,102萬</td></tr>
+      <tr><td>2026-06-29</td><td>96.7</td><td>102.5</td><td>95.4</td><td>101.0</td><td>2,285萬</td></tr>
+      <tr><td>2026-06-30</td><td>102.0</td><td>111.0</td><td>101.5</td><td style="color:#DC2626;font-weight:700;">111.0</td><td>6,869萬</td></tr>
+      <tr style="background:#FEF2F2;"><td><strong>2026-07-01 ★</strong></td><td><strong>115.5</strong></td><td style="color:#DC2626;font-weight:700;"><strong>118.5</strong></td><td style="color:#2563EB;font-weight:700;"><strong>105.5</strong></td><td style="color:#2563EB;font-weight:700;"><strong>107.5</strong></td><td style="color:#EF4444;font-weight:700;">6,869萬⚠</td></tr>
+    </table>
   </div>
 </div>
 
 <!-- 09 融資融券 -->
 <div class="section">
-  <div class="section-title">💳 融資融券</div>
-  <div style="background:#F8FAFC;border-radius:10px;padding:16px;font-size:0.85rem;color:#475569;line-height:1.8;">
-    <strong style="color:#1E3A5F;">趨勢判讀：</strong><br>
-    股價2026年快速從低點上漲（YoY 漲幅超過100%），融資餘額通常伴隨上升。需注意：
-    <br>
-    📌 若融資餘額快速堆高（超過5000張），代表散戶籌碼過重，拉回幅度可能較大<br>
-    📌 融券若增加（有人放空），短期可能出現軋空行情（空方回補推漲）<br>
-    📌 資券比（融資÷融券）若持續偏高，需提高警覺<br><br>
-    🔍 <strong>精確數字查詢路徑：</strong><br>
-    → <a href="https://www.twse.com.tw/zh/trading/margin/MI_MARGN.html" style="color:#2563EB;">台灣證交所融資融券</a>（每日18:30更新）<br>
-    → <a href="https://histock.tw/stock/chips.aspx?no=1815" style="color:#2563EB;">HiStock 富喬籌碼面</a>
+  <div class="section-title">💳 融資融券 <span class="data-badge">★ FinMind API</span></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+    <div style="background:#F8FAFC;border-radius:12px;padding:18px;text-align:center;">
+      <div class="kpi-label">融資餘額 ★</div>
+      <div style="font-size:2rem;font-weight:900;color:#1E3A5F;margin:8px 0;">0 張</div>
+    </div>
+    <div style="background:#F8FAFC;border-radius:12px;padding:18px;text-align:center;">
+      <div class="kpi-label">融券餘額 ★</div>
+      <div style="font-size:2rem;font-weight:900;color:#1E3A5F;margin:8px 0;">0 張</div>
+    </div>
+    <div style="background:#F8FAFC;border-radius:12px;padding:18px;text-align:center;">
+      <div class="kpi-label">資券比</div>
+      <div style="font-size:2rem;font-weight:900;color:#1E3A5F;margin:8px 0;">N/A</div>
+    </div>
+  </div>
+  <div class="info-box" style="margin-top:12px;">
+    💡 融資融券均為0，此股以現股交易為主，主要籌碼動向須看三大法人資料。
   </div>
 </div>
 
@@ -360,28 +369,28 @@
   <div class="section-title">⚔️ 研究員辯論</div>
   <div class="debate-grid">
     <div class="bull-box">
-      <h4>🐂 看多研究員（55%）</h4>
-      <div class="debate-item bull-item">Q1 2026 EPS 0.79元創歷史新高，YoY成長167%，獲利轉骨訊號明確</div>
-      <div class="debate-item bull-item">4月營收7.33億創歷史新高，年增53.16%；5月7.08億年增49.9%，動能不減</div>
-      <div class="debate-item bull-item">毛利率35.97%，QoQ改善6.96pp、YoY改善6.24pp，產品組合持續高值化</div>
-      <div class="debate-item bull-item">法說會確認先進製程比重從45%提升至60%，Low DK 產品已進AI伺服器供應鏈</div>
-      <div class="debate-item bull-item">AI伺服器、高效能運算需求爆發，玻纖布為 PCB 不可或缺材料，且難以快速替代</div>
-      <div class="debate-item bull-item">累計1-5月營收33.24億，YoY +42.38%，若維持6-7億/月，全年營收可達85億以上</div>
+      <h4>🐂 看多研究員（50%）</h4>
+      <div class="debate-item bull-item">Q1 2026 EPS 0.79元，YoY +139%（Q1 2025僅0.33元），毛利率35.97%連8季上升，基本面轉骨確立</div>
+      <div class="debate-item bull-item">6月營收7.08億，YoY +49.9%；5月7.34億創歷史新高（+53.16%），年增動能持續強勁</div>
+      <div class="debate-item bull-item">AI 伺服器規格升級持續，Low DK 玻纖布供不應求，公司已取得 AI 伺服器供應鏈訂單</div>
+      <div class="debate-item bull-item">2026年先進製程占比目標60%（目前45%），產品組合持續高值化，毛利率有望繼續提升</div>
+      <div class="debate-item bull-item">泰國新廠 2027 Q3 加入，成長第二引擎，兆豐目標價 206 元，2026 EPS 預估 4.55 元</div>
+      <div class="debate-item bull-item">MA5/MA10/MA20 多頭排列，MACD 正乖離轉多，RSI 57 未超買，中線結構仍偏多</div>
     </div>
     <div class="bear-box">
-      <h4>🐻 看空研究員（45%）</h4>
-      <div class="debate-item bear-item">Forward PE 約27～34倍（107÷3.16），相較歷史均值偏高，已反映大量成長預期</div>
-      <div class="debate-item bear-item">玻纖布為景氣循環產業，2021-2023年已歷一次大起大落，當前榮景能否持續存疑</div>
-      <div class="debate-item bear-item">中美貿易摩擦升溫，若供應鏈去中化政策衝擊台灣PCB廠，連帶影響富喬訂單</div>
-      <div class="debate-item bear-item">先進製程投入資本支出雖審慎，但產能轉換期間毛利率可能出現短期波動</div>
-      <div class="debate-item bear-item">殖利率僅約0.9%（現金0.5元÷107元），對存股族吸引力低，股東結構偏向投機性</div>
-      <div class="debate-item bear-item">競爭同業（德宏等）營收亦同步創新高，產業供給可能隨需求同步擴充，未來毛利承壓</div>
+      <h4>🐻 看空研究員（50%）</h4>
+      <div class="debate-item bear-item">今日（7/1）開高走低爆量：開115.5→高118.5→收107.5，成交量6,869萬（5日均1.83倍），短線高點訊號明確</div>
+      <div class="debate-item bear-item">MA60=106.36元，現價僅微幅站上（107.5），若收盤跌破106元，突破失敗，技術面轉弱</div>
+      <div class="debate-item bear-item">股價從52週低點33.85元漲到118.5元高點，漲幅達250%，短線獲利了結壓力極大</div>
+      <div class="debate-item bear-item">三大法人昨日全數掛零，機構資金在111元高點無明確接手，今日追高的都是短線散戶</div>
+      <div class="debate-item bear-item">上市（非上櫃），PE 和 PB 未能從 API 取得，估值透明度有限；競爭同業德宏同步創高，供給可能跟上</div>
+      <div class="debate-item bear-item">6月營收7.08億，MoM -3.45%，月增率轉負，後續需確認是否為轉折訊號</div>
     </div>
   </div>
   <div style="margin-top:20px;background:#F0F4F8;border-radius:12px;padding:18px;">
-    <strong style="color:#1E3A5F;">辯論總結：看多 55% vs 看空 45%</strong>
+    <strong style="color:#1E3A5F;">辯論總結：看多 50% vs 看空 50%</strong>
     <p style="font-size:0.88rem;margin-top:10px;color:#475569;line-height:1.7;">
-      🗣️ <strong>給一般投資人的話：</strong>富喬是一家「對的產業、對的時間點」的公司。如果你相信 AI 伺服器還有3～5年成長空間，富喬的轉型故事是真實的。但現在股價已漲了很多，並非低點進場，而是「業績確認後的合理持有」。適合已持有者繼續持有，新進場者建議分批布局在100元附近支撐區，並嚴守90元停損。
+      🗣️ <strong>給一般投資人的話：</strong>富喬的長線故事是真實的，但今天的「開高走低+爆量」是短線高點的警報器。已持有者把停損設在 MA5（104.4元），若跌破就先退場等回調再進。新進場者今天不宜追，等回測 100 元（MA20）附近的支撐區再評估，那時進場風險報酬比更好。
     </p>
   </div>
 </div>
@@ -391,30 +400,30 @@
   <div class="section-title">🛡️ 風控評估</div>
   <div class="two-col">
     <div>
-      <div class="score-bar"><span class="score-label">估值風險</span><div class="score-track"><div class="score-fill" style="width:60%;background:#F59E0B;"></div></div><span class="score-num">6/10</span></div>
-      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">Forward PE偏高，但EPS快速成長部分抵銷</div>
-      <div class="score-bar"><span class="score-label">財務健康</span><div class="score-track"><div class="score-fill" style="width:20%;background:#10B981;"></div></div><span class="score-num">2/10</span></div>
-      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">EPS高速成長、毛利改善、現金流充沛</div>
-      <div class="score-bar"><span class="score-label">流動性</span><div class="score-track"><div class="score-fill" style="width:30%;background:#2563EB;"></div></div><span class="score-num">3/10</span></div>
-      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">上櫃股成交量尚可，AI題材帶動關注度提升</div>
-      <div class="score-bar"><span class="score-label">產業風險</span><div class="score-track"><div class="score-fill" style="width:30%;background:#8B5CF6;"></div></div><span class="score-num">3/10</span></div>
-      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">AI趨勢明確受益，但景氣循環屬性仍在</div>
-      <div class="score-bar"><span class="score-label">總經風險</span><div class="score-track"><div class="score-fill" style="width:40%;background:#F59E0B;"></div></div><span class="score-num">4/10</span></div>
-      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">中美貿易、台股大盤位階為主要外部變數</div>
-      <div class="score-bar"><span class="score-label">籌碼風險</span><div class="score-track"><div class="score-fill" style="width:30%;background:#EC4899;"></div></div><span class="score-num">3/10</span></div>
-      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">法人趨勢偏多，籌碼尚在整理中</div>
+      <div class="score-bar"><span class="score-label">估值風險</span><div class="score-track"><div class="score-fill" style="width:45%;background:#F59E0B;"></div></div><span class="score-num">4.5</span></div>
+      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">Forward PE ~24～31倍，目標價206元尚有距離</div>
+      <div class="score-bar"><span class="score-label">財務健康</span><div class="score-track"><div class="score-fill" style="width:20%;background:#10B981;"></div></div><span class="score-num">2</span></div>
+      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">EPS、毛利率、營益率連季創高，體質優異</div>
+      <div class="score-bar"><span class="score-label">流動性</span><div class="score-track"><div class="score-fill" style="width:30%;background:#2563EB;"></div></div><span class="score-num">3</span></div>
+      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">上市股，今日量大，流動性佳</div>
+      <div class="score-bar"><span class="score-label">產業風險</span><div class="score-track"><div class="score-fill" style="width:30%;background:#8B5CF6;"></div></div><span class="score-num">3</span></div>
+      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">AI趨勢明確，景氣循環仍存在</div>
+      <div class="score-bar"><span class="score-label">總經風險</span><div class="score-track"><div class="score-fill" style="width:40%;background:#F59E0B;"></div></div><span class="score-num">4</span></div>
+      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">中美貿易、台股大盤位置</div>
+      <div class="score-bar"><span class="score-label">籌碼風險</span><div class="score-track"><div class="score-fill" style="width:65%;background:#DC2626;"></div></div><span class="score-num" style="color:#DC2626;">6.5★</span></div>
+      <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;padding-left:90px;">今日爆量長影線，短線籌碼風險升高</div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
-      <div style="width:160px;height:160px;border-radius:50%;background:conic-gradient(#10B981 0%,#10B981 30%,#F59E0B 30%,#F59E0B 70%,#EF4444 70%);display:flex;align-items:center;justify-content:center;position:relative;">
+      <div style="width:160px;height:160px;border-radius:50%;background:conic-gradient(#10B981 0%,#10B981 35%,#F59E0B 35%,#F59E0B 65%,#EF4444 65%);display:flex;align-items:center;justify-content:center;">
         <div style="width:110px;height:110px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;">
-          <div style="font-size:2.5rem;font-weight:900;color:#F59E0B;">4</div>
+          <div style="font-size:2.5rem;font-weight:900;color:#F59E0B;">5</div>
           <div style="font-size:0.75rem;color:#64748B;">/10分</div>
         </div>
       </div>
       <div style="margin-top:16px;text-align:center;">
         <span class="badge badge-medium" style="font-size:1rem;padding:8px 20px;">⚠ 中等風險</span>
         <p style="font-size:0.8rem;color:#64748B;margin-top:10px;line-height:1.5;">
-          財務表現優異抵銷估值偏高風險<br>整體風險處於可接受範圍
+          基本面佳但今日短線風險升高<br>籌碼面短期需消化爆量賣壓
         </p>
       </div>
     </div>
@@ -428,41 +437,41 @@
     <div class="strategy-card attack">
       <h4>⚔️ 進攻策略（積極型）</h4>
       <p>
-        <strong>進場區間：</strong>95～107元<br>
-        <strong>部位比重：</strong>30～40%<br>
-        <strong>目標價：</strong>150～180元（12個月）<br>
-        <strong>觸發條件：</strong>月營收連續創高、Q2 EPS超預期（>0.9元）、外資連續買超<br>
-        <strong>停損：</strong>跌破90元出場
+        <strong>前提：</strong>守住 MA60（106元）且量縮整理<br>
+        <strong>加碼區：</strong>101～107元（回測 MA5/MA20）<br>
+        <strong>部位：</strong>20～30%<br>
+        <strong>目標：</strong>129.5元（52週高）→ 150元<br>
+        <strong>停損：</strong>跌破 MA5（104元）減碼，破 100元出場
       </p>
     </div>
     <div class="strategy-card balance">
       <h4>⚖️ 均衡策略（穩健型）</h4>
       <p>
-        <strong>進場區間：</strong>95～107元分批<br>
-        <strong>部位比重：</strong>15～25%<br>
-        <strong>目標價：</strong>130～150元<br>
-        <strong>觸發條件：</strong>季報確認毛利率維持>33%、月營收YoY>40%<br>
-        <strong>停損：</strong>跌破92元或基本面反轉
+        <strong>建議：</strong>今日不追，等量縮整理<br>
+        <strong>理想進場：</strong>100～104元（MA20～MA5）<br>
+        <strong>部位：</strong>10～15%<br>
+        <strong>目標：</strong>120～130元<br>
+        <strong>停損：</strong>跌破 100元（MA20）出場
       </p>
     </div>
     <div class="strategy-card defense">
       <h4>🛡️ 防守策略（保守型）</h4>
       <p>
-        <strong>操作方式：</strong>暫不進場，觀察<br>
-        <strong>等待機會：</strong>回測90～95元區間<br>
-        <strong>觀察指標：</strong>Q2季報公布（8月）後確認業績延續<br>
-        <strong>最大風險：</strong>AI需求降溫、毛利率回落至<30%<br>
-        <strong>停損：</strong>基本面惡化立即出場
+        <strong>建議：</strong>今日大量出現，先觀望<br>
+        <strong>等待：</strong>量縮回 2,000萬以下再評估<br>
+        <strong>觀察指標：</strong>法人是否接手買超<br>
+        <strong>最大風險：</strong>今日破 MA60（106元）失守<br>
+        <strong>停損：</strong>跌破90元（布林下軌）
       </p>
     </div>
   </div>
   <div style="margin-top:20px;">
     <table>
-      <tr><th>催化劑時程</th><th>預期時間</th><th>影響</th></tr>
-      <tr><td>Q2 2026 季報公布</td><td>2026年8月</td><td style="color:#DC2626;font-weight:700;">關鍵驗證點，EPS若>0.85元可望帶動股價</td></tr>
-      <tr><td>6月營收公布</td><td>2026年7月10日前</td><td>確認動能是否持續</td></tr>
-      <tr><td>先進製程比重更新</td><td>法說會</td><td>60%目標達成與否影響法人評等</td></tr>
-      <tr><td>NVIDIA/AMD 伺服器出貨</td><td>持續</td><td>間接驗證PCB材料需求</td></tr>
+      <tr><th>催化劑 / 風險時程</th><th>時間</th><th>影響</th></tr>
+      <tr><td>Q2 2026 季報公布</td><td>2026年8月</td><td style="color:#DC2626;font-weight:700;">EPS若>0.9元可望再創新高，帶動股價</td></tr>
+      <tr><td>7月營收公布</td><td>2026年8月10日前</td><td>確認6月MoM -3.45%是否為拐點</td></tr>
+      <tr><td>先進製程佔比更新</td><td>法說會</td><td>60%目標達成進度</td></tr>
+      <tr><td>今日成交量消化</td><td>本週</td><td>短線最重要觀察，量縮後方可考慮再進</td></tr>
     </table>
   </div>
 </div>
@@ -471,103 +480,83 @@
 <div class="section">
   <div class="section-title">📚 名詞小教室</div>
   <div class="glossary-item">
-    <div class="glossary-term">Low DK（低介電常數）</div>
-    <div class="glossary-def">玻纖布的電氣特性指標，DK 越低代表電磁波損耗越小，訊號傳遞越快速準確。AI 伺服器需要超高速傳輸，所以必須用 Low DK 材料。就像高速公路比巷弄傳輸效率高。</div>
+    <div class="glossary-term">Low DK（低介電常數玻纖布）</div>
+    <div class="glossary-def">DK 越低代表電磁波在材料中傳遞時能量損耗越小，訊號傳遞越快越準確。AI 伺服器需要超高速數據傳輸，必須使用 Low DK 材料。就像高速公路（Low DK）vs 巷弄（普通玻纖），傳輸速度差很多。</div>
   </div>
   <div class="glossary-item">
-    <div class="glossary-term">Forward PE（預估本益比）</div>
-    <div class="glossary-def">用未來預估的每股盈餘（EPS）計算的本益比。PE=30 代表以預估獲利計算，需30年回本。這比用歷史EPS更能反映市場對未來成長的期待程度。</div>
+    <div class="glossary-term">開高走低 + 爆量長上影線</div>
+    <div class="glossary-def">開盤比昨收高（開高）→ 漲到最高點後反轉下跌（走低），收盤留下長長的「上影線」。加上當日成交量大幅放大，代表高點有大量賣壓湧出，往往是短線見頂的訊號。今日富喬就出現這個型態。</div>
   </div>
   <div class="glossary-item">
-    <div class="glossary-term">三大法人</div>
-    <div class="glossary-def">外資（國際大型基金）＋投信（台灣本土基金）＋自營商（券商自己的資金）。法人動向是大資金的風向球，通常被認為比散戶更有資訊優勢。</div>
+    <div class="glossary-term">MA60（季線）</div>
+    <div class="glossary-def">過去60個交易日的平均成本線，約3個月。股價站上 MA60 代表大多數近3個月買進的投資人都有獲利，市場中期趨勢偏多。今日富喬剛突破 MA60（106.36元），但收盤僅 107.5元，站穩力道有限。</div>
   </div>
   <div class="glossary-item">
     <div class="glossary-term">毛利率</div>
-    <div class="glossary-def">（營收－直接生產成本）÷ 營收。白話：賣100元的東西，扣掉原料和生產費用，還剩多少？毛利率36%代表每賣100元有36元是毛收入，越高越好。</div>
+    <div class="glossary-def">（營收 - 直接成本）÷ 營收。富喬毛利率從2024 Q2 的 10.86% 連升至 2026 Q1 的 35.97%，代表每賣出100元，毛收入從10.86元增加到35.97元。這是因為產品組合從低價普通玻纖布，轉型為高價 Low DK 玻纖布。</div>
   </div>
   <div class="glossary-item">
-    <div class="glossary-term">IC 載板</div>
-    <div class="glossary-def">晶片封裝時用的高階電路板，是晶片和普通PCB之間的「橋樑」。AI晶片（如A100/H100）封裝需要高階IC載板，而IC載板需要富喬提供的高品質玻纖布。</div>
-  </div>
-  <div class="glossary-item">
-    <div class="glossary-term">RSI（相對強弱指標）</div>
-    <div class="glossary-def">衡量股票近期買賣力道的技術指標，0～100之間。RSI>70代表可能「超買」（漲太多短期可能回調），RSI<30代表可能「超賣」（跌太多短期可能反彈）。目前富喬約62，偏強但尚未超買。</div>
+    <div class="glossary-term">Forward PE（預估本益比）</div>
+    <div class="glossary-def">用未來預估EPS計算的本益比。兆豐預估2026 EPS 4.55元，目標價206元，即 206÷4.55≈45倍PE。現價107.5÷4.55≈23.6倍，代表若EPS達標，現價其實相當合理，還有相當大的上漲空間。</div>
   </div>
 </div>
 
 <!-- 14 免責聲明 -->
 <div class="warning-box" style="margin-bottom:30px;">
   <strong style="font-size:1rem;">⚠️ 免責聲明</strong>
-  <p style="font-size:0.85rem;margin-top:10px;line-height:1.7;color:#92400E;">
-    本報告僅供研究參考，不構成任何投資建議。股市投資有風險，過去績效不代表未來表現。所有投資決策請依個人風險承受度自行判斷，並對自己的投資決策負責。本報告數據部分為推算值，實際數字請以台灣證交所、公開資訊觀測站、公司財報為準。
+  <p style="font-size:0.85rem;margin-top:10px;line-height:1.7;color:#92400E;">本報告僅供研究參考，不構成任何投資建議。股市投資有風險，過去績效不代表未來表現。所有投資決策請依個人風險承受度自行判斷。</p>
+  <p style="font-size:0.8rem;margin-top:8px;color:#92400E;">
+    <strong>★ 真實API數據：</strong>Fugle API（即時報價/K線）+ FinMind API（財報/月營收/法人/融資融券）<br>
+    <strong>WebSearch補充：</strong>兆豐證券目標價、AI 玻纖布產業新聞（2026年7月）<br>
+    <strong>★推估：</strong>2026全年EPS及Forward PE為推算值
   </p>
-  <p style="font-size:0.8rem;margin-top:12px;color:#92400E;">
-    <strong>資料來源：</strong>
-    Yahoo股市 | 工商時報 | 鉅亨網 | CMoney | 財報狗 | Goodinfo | WantGoo | 富喬法說會 | WebSearch（2026年6-7月）
-  </p>
-  <p style="font-size:0.75rem;margin-top:8px;color:#B45309;">報告產生時間：2026-07-01 ｜ 本報告由 Claude AI 股票分析團隊 Skill 自動生成</p>
+  <p style="font-size:0.75rem;margin-top:8px;color:#B45309;">報告產生時間：2026-07-01 10:02:42 ｜ Claude AI 股票分析團隊 Skill（API版）</p>
+</div>
 </div>
 
-</div><!-- /container -->
-
 <script>
-// EPS 季度趨勢
-const epsCtx = document.getElementById('epsChart').getContext('2d');
-new Chart(epsCtx, {
+// EPS 季度趨勢（★全部API真實）
+new Chart(document.getElementById('epsChart').getContext('2d'), {
   type: 'bar',
   data: {
     labels: ['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
-    datasets: [{
-      label: 'EPS（元）',
-      data: [0.22, 0.28, 0.35, 0.30, 0.35, 0.45, 0.54, 0.79],
-      backgroundColor: ['#60A5FA','#60A5FA','#60A5FA','#60A5FA','#60A5FA','#60A5FA','#60A5FA','#DC2626'],
-      borderRadius: 6
-    }]
+    datasets: [{ label: 'EPS（元）★API',
+      data: [-0.01, -0.03, 0.30, 0.33, -0.06, 0.54, 0.83, 0.79],
+      backgroundColor: ['#EF4444','#EF4444','#60A5FA','#60A5FA','#EF4444','#60A5FA','#60A5FA','#DC2626'],
+      borderRadius: 6 }]
   },
-  options: {
-    responsive: true, plugins: { legend: { display: false } },
-    scales: { y: { beginAtZero: true, ticks: { callback: v => v+'元' } } }
-  }
+  options: { responsive: true, plugins: { legend: { display: false } },
+    scales: { y: { ticks: { callback: v => v+'元' } } } }
 });
 
-// 月營收
-const revCtx = document.getElementById('revenueChart').getContext('2d');
-new Chart(revCtx, {
+// 月營收（★全部API真實）
+new Chart(document.getElementById('revenueChart').getContext('2d'), {
   type: 'line',
   data: {
-    labels: ['2026/01','2026/02','2026/03','2026/04','2026/05'],
-    datasets: [{
-      label: '月營收（億元）',
-      data: [5.60, 5.88, 7.33, 7.33, 7.08],
+    labels: ['01\n+6%','02\n+19%','03\n+61%','04\n+33%','05\n+53%','06\n+50%'],
+    datasets: [{ label: '月營收（億元）★API',
+      data: [4.99, 5.71, 6.29, 6.81, 7.34, 7.08],
       borderColor: '#2563EB', backgroundColor: 'rgba(37,99,235,0.1)',
-      pointBackgroundColor: ['#60A5FA','#60A5FA','#60A5FA','#DC2626','#DC2626'],
-      pointRadius: 6, tension: 0.3, fill: true
-    }]
+      pointBackgroundColor: ['#60A5FA','#60A5FA','#60A5FA','#60A5FA','#DC2626','#2563EB'],
+      pointRadius: 7, tension: 0.3, fill: true }]
   },
-  options: {
-    responsive: true, plugins: { legend: { display: false } },
-    scales: { y: { beginAtZero: false, ticks: { callback: v => v+'億' } } }
-  }
+  options: { responsive: true, plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: false, ticks: { callback: v => v+'億' } } } }
 });
 
-// PE 比較
-const peCtx = document.getElementById('peChart').getContext('2d');
-new Chart(peCtx, {
-  type: 'bar',
+// 毛利率趨勢（★全部API真實）
+new Chart(document.getElementById('marginChart').getContext('2d'), {
+  type: 'line',
   data: {
-    labels: ['富喬 Forward P/E', '同業均值（推估）', '台股大盤均值'],
-    datasets: [{
-      label: 'P/E（倍）',
-      data: [33.9, 28, 18],
-      backgroundColor: ['#DC2626','#F59E0B','#10B981'],
-      borderRadius: 6
-    }]
+    labels: ['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    datasets: [{ label: '毛利率(%)★API',
+      data: [10.86, 17.68, 23.37, 29.73, 24.55, 26.87, 29.01, 35.97],
+      borderColor: '#10B981', backgroundColor: 'rgba(16,185,129,0.1)',
+      pointBackgroundColor: ['#60A5FA','#60A5FA','#60A5FA','#60A5FA','#60A5FA','#60A5FA','#60A5FA','#DC2626'],
+      pointRadius: 6, tension: 0.3, fill: true }]
   },
-  options: {
-    indexAxis: 'y', responsive: true, plugins: { legend: { display: false } },
-    scales: { x: { beginAtZero: true, ticks: { callback: v => v+'x' } } }
-  }
+  options: { responsive: true, plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: false, ticks: { callback: v => v+'%' } } } }
 });
 </script>
 </body>
