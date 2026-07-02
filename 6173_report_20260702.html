@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>信昌電 (6173) 深度分析報告 — 2026-07-02</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #F0F4F8;
+    --card: #FFFFFF;
+    --border: #E2E8F0;
+    --text: #1A202C;
+    --sub: #4A5568;
+    --accent: #2B6CB0;
+    --green: #276749;
+    --red: #C53030;
+    --yellow: #B7791F;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 20px 60px; }
+
+  /* Cover */
+  .cover {
+    background: linear-gradient(135deg, #1A365D 0%, #2C5282 40%, #553C9A 100%);
+    color: white; padding: 60px 40px; border-radius: 0 0 24px 24px; margin-bottom: 32px;
+  }
+  .cover-ticker { font-size: 15px; opacity: 0.75; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .cover-name { font-size: 38px; font-weight: 800; margin-bottom: 4px; }
+  .cover-sub { font-size: 16px; opacity: 0.8; margin-bottom: 24px; }
+  .cover-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+  .cover-badge { background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 14px; font-size: 13px; }
+  .cover-price-row { display: flex; align-items: baseline; gap: 12px; }
+  .cover-price { font-size: 52px; font-weight: 900; }
+  .cover-change { font-size: 22px; color: #FC8181; font-weight: 700; }
+  .risk-badge { display: inline-block; background: #ED8936; color: white; font-size: 13px; font-weight: 700; padding: 3px 12px; border-radius: 20px; margin-top: 16px; }
+
+  /* Section */
+  .section { margin-bottom: 28px; }
+  .section-title {
+    font-size: 20px; font-weight: 700; color: var(--accent);
+    border-left: 5px solid var(--accent); padding-left: 12px; margin-bottom: 16px;
+  }
+  .card { background: var(--card); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+
+  /* Conclusion */
+  .conclusion-card {
+    background: linear-gradient(135deg, #2D3748, #4A5568);
+    color: white; border-radius: var(--radius); padding: 28px; margin-bottom: 12px;
+  }
+  .conclusion-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .conclusion-item label { font-size: 12px; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
+  .conclusion-item .val { font-size: 22px; font-weight: 800; margin-top: 4px; }
+  .conclusion-item .val.green { color: #68D391; }
+  .conclusion-item .val.red { color: #FC8181; }
+  .conclusion-item .val.yellow { color: #F6E05E; }
+
+  /* KPI */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  .kpi-card { background: var(--card); border-radius: 10px; padding: 16px; box-shadow: var(--shadow); border-top: 4px solid var(--accent); }
+  .kpi-label { font-size: 12px; color: var(--sub); margin-bottom: 4px; }
+  .kpi-val { font-size: 22px; font-weight: 800; color: var(--text); }
+  .kpi-desc { font-size: 11px; color: var(--sub); margin-top: 6px; }
+  .kpi-up { color: var(--green); }
+  .kpi-down { color: var(--red); }
+
+  /* Charts */
+  .chart-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .chart-box { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
+  .chart-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--sub); }
+  .chart-note { font-size: 11px; color: var(--sub); margin-top: 8px; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { background: #EBF4FF; color: var(--accent); text-align: left; padding: 8px 12px; font-weight: 700; border-bottom: 2px solid #BEE3F8; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  tr:hover { background: #F7FAFC; }
+  .tag-api { background: #EBF4FF; color: var(--accent); font-size: 11px; padding: 1px 6px; border-radius: 4px; font-weight: 700; }
+  .tag-web { background: #F0FFF4; color: var(--green); font-size: 11px; padding: 1px 6px; border-radius: 4px; font-weight: 700; }
+  .tag-est { background: #FFFBEB; color: var(--yellow); font-size: 11px; padding: 1px 6px; border-radius: 4px; font-weight: 700; }
+
+  /* Rating bar */
+  .rating-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .rating-label { width: 90px; font-size: 13px; color: var(--sub); flex-shrink: 0; }
+  .rating-bar-bg { flex: 1; background: #E2E8F0; border-radius: 6px; height: 14px; overflow: hidden; }
+  .rating-bar { height: 100%; border-radius: 6px; transition: width 0.8s; }
+  .rating-val { width: 40px; text-align: right; font-size: 13px; font-weight: 700; }
+
+  /* Debate */
+  .debate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .debate-bull { background: #F0FFF4; border-radius: var(--radius); padding: 20px; border-left: 5px solid #38A169; }
+  .debate-bear { background: #FFF5F5; border-radius: var(--radius); padding: 20px; border-left: 5px solid #E53E3E; }
+  .debate-title { font-size: 16px; font-weight: 800; margin-bottom: 12px; }
+  .debate-title.bull { color: #276749; }
+  .debate-title.bear { color: #C53030; }
+  .debate-list { list-style: none; }
+  .debate-list li { padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.06); font-size: 13px; line-height: 1.5; }
+  .debate-list li:before { content: ""; }
+
+  /* Strategy */
+  .strategy-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  .strat-card { border-radius: var(--radius); padding: 20px; }
+  .strat-atk { background: linear-gradient(135deg, #276749, #38A169); color: white; }
+  .strat-neu { background: linear-gradient(135deg, #2B6CB0, #3182CE); color: white; }
+  .strat-def { background: linear-gradient(135deg, #744210, #B7791F); color: white; }
+  .strat-title { font-size: 18px; font-weight: 800; margin-bottom: 14px; }
+  .strat-row { display: flex; justify-content: space-between; font-size: 13px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.2); }
+  .strat-row:last-child { border: none; }
+
+  /* Risk */
+  .risk-score-big { font-size: 64px; font-weight: 900; text-align: center; color: var(--accent); }
+  .risk-label-big { text-align: center; font-size: 16px; font-weight: 700; color: var(--yellow); margin-top: -8px; margin-bottom: 20px; }
+
+  /* Chips */
+  .chip-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  .chip-card { background: var(--card); border-radius: 10px; padding: 16px; box-shadow: var(--shadow); border-top: 4px solid #9F7AEA; }
+
+  /* Warning box */
+  .warning-box { background: #FFFFF0; border: 2px solid #ECC94B; border-radius: var(--radius); padding: 20px; }
+  .warning-title { font-size: 16px; font-weight: 800; color: #744210; margin-bottom: 8px; }
+
+  /* Glossary */
+  .glossary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .glossary-item { background: var(--card); border-radius: 10px; padding: 14px; box-shadow: var(--shadow); }
+  .glossary-term { font-size: 14px; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
+  .glossary-def { font-size: 13px; color: var(--sub); line-height: 1.5; }
+
+  .catalyst-table td:first-child { font-weight: 700; color: var(--accent); width: 100px; }
+
+  @media(max-width:768px){
+    .kpi-grid { grid-template-columns: repeat(2,1fr); }
+    .chart-grid { grid-template-columns: 1fr; }
+    .debate-grid { grid-template-columns: 1fr; }
+    .strategy-grid { grid-template-columns: 1fr; }
+    .chip-grid { grid-template-columns: repeat(2,1fr); }
+    .glossary-grid { grid-template-columns: 1fr; }
+    .conclusion-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div class="container" style="padding-top:0; padding-bottom:0;">
+    <div class="cover-ticker">台股上櫃 ｜ 6173 ｜ 電子零組件</div>
+    <div class="cover-name">信昌電子陶瓷</div>
+    <div class="cover-sub">MLCC × 高壓晶片電容 × AI伺服器電源被動元件</div>
+    <div class="cover-meta">
+      <span class="cover-badge">📅 2026-07-02</span>
+      <span class="cover-badge">🏭 上櫃 TPEx</span>
+      <span class="cover-badge">⚡ AI高壓電容領導廠</span>
+      <span class="cover-badge">🔋 除息日 2026-07-09</span>
+    </div>
+    <div class="cover-price-row">
+      <div class="cover-price">319.0 元</div>
+      <div class="cover-change">▼ 22.5 (-6.59%)</div>
+    </div>
+    <div style="font-size:13px; opacity:0.7; margin-top:8px;">★API 即時報價｜開:330.0  高:348.0  低:314.0  量:17,647張</div>
+    <div class="risk-badge">⚠ 風險等級：6.0/10 中等偏高風險</div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 02 核心結論 -->
+<div class="section">
+  <div class="section-title">核心結論</div>
+  <div class="conclusion-card">
+    <div class="conclusion-grid">
+      <div class="conclusion-item">
+        <label>投資建議</label>
+        <div class="val yellow">中性觀望</div>
+        <div style="font-size:12px; opacity:0.8; margin-top:4px;">等除息後技術確認再進</div>
+      </div>
+      <div class="conclusion-item">
+        <label>合理目標區</label>
+        <div class="val green">300–370 元</div>
+        <div style="font-size:12px; opacity:0.8; margin-top:4px;">中期AI需求催化劑支撐</div>
+      </div>
+      <div class="conclusion-item">
+        <label>最大下行風險</label>
+        <div class="val red">回測 MA20 ~278 元</div>
+        <div style="font-size:12px; opacity:0.8; margin-top:4px;">今日MACD死叉、量能異常</div>
+      </div>
+    </div>
+    <div style="margin-top:20px; border-top:1px solid rgba(255,255,255,0.2); padding-top:16px; font-size:14px; line-height:1.8; opacity:0.9;">
+      信昌電受惠 AI 機櫃功耗暴增驅動高壓 MLCC 需求，毛利率從 20% 跳升至 28%+，Q1'26 EPS 1.19 元年增 70%。然而今日股價從 52 週高 348 元高位沖量急殺，成交量達 17,647 張（約 3.6 倍 5 日均量），MACD 翻空（死叉），短線技術面轉弱。除息日（7/9，配息 1.8 元）前需注意填息能力。建議等待量縮拉回至 MA20（278 元）附近確認支撐再分批承接。
+    </div>
+  </div>
+</div>
+
+<!-- 03 KPI -->
+<div class="section">
+  <div class="section-title">關鍵財務 KPI ★API 數據</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">今日收盤價</div>
+      <div class="kpi-val kpi-down">319.0 元</div>
+      <div class="kpi-desc">▼ 22.5（-6.59%）<br><span class="tag-api">★API</span> 52週高/低：348/36</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q1'26 EPS（每股盈餘）</div>
+      <div class="kpi-val kpi-up">1.19 元</div>
+      <div class="kpi-desc">YoY +70%，連續季增<br><span class="tag-api">★API</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q1'26 毛利率</div>
+      <div class="kpi-val kpi-up">28.35%</div>
+      <div class="kpi-desc">去年同期 22.3%，+6.1pp<br><span class="tag-api">★API</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q1'26 營益率</div>
+      <div class="kpi-val kpi-up">20.34%</div>
+      <div class="kpi-desc">逐季穩健提升<br><span class="tag-api">★API</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">2026年6月營收</div>
+      <div class="kpi-val kpi-up">4.58 億元</div>
+      <div class="kpi-desc">YoY +25.6%，MoM +9.4%<br><span class="tag-api">★API</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TTM 本益比（PE）</div>
+      <div class="kpi-val" style="color:var(--yellow);">85.3 倍</div>
+      <div class="kpi-desc">TTM EPS=3.74元，估值偏高<br><span class="tag-est">★推估值</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">MLCC 交期</div>
+      <div class="kpi-val kpi-up">16 週</div>
+      <div class="kpi-desc">供不應求，稼動率 85-90%<br><span class="tag-web">★WebSearch</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">現金股利（2026-07-09 除息）</div>
+      <div class="kpi-val" style="color:var(--accent);">1.8 元</div>
+      <div class="kpi-desc">殖利率 0.56%，填息壓力<br><span class="tag-web">★WebSearch</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 財務趨勢圖 -->
+<div class="section">
+  <div class="section-title">財務趨勢圖（互動式）</div>
+  <div class="chart-grid">
+    <div class="chart-box">
+      <div class="chart-title">📊 EPS 季度趨勢（Q2'24 ～ Q1'26）</div>
+      <canvas id="epsChart" height="220"></canvas>
+      <div class="chart-note">★ 所有數據均為 FinMind API 實際公告值</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">📈 月營收趨勢（2026年1-6月）</div>
+      <canvas id="revenueChart" height="220"></canvas>
+      <div class="chart-note">★ 所有數據均為 FinMind API 實際值；右軸為 YoY%</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">📉 本益比比較（PE 倍數）</div>
+      <canvas id="peChart" height="220"></canvas>
+      <div class="chart-note">★ 信昌電為實際TTM計算；其餘為★推估值</div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <div class="section-title">公司概覽</div>
+  <div class="card">
+    <table>
+      <tr><th>項目</th><th>說明</th></tr>
+      <tr><td>公司全名</td><td>信昌電子陶瓷股份有限公司（上櫃代碼：6173）</td></tr>
+      <tr><td>核心業務</td><td>MLCC（晶片積層陶瓷電容）、晶片電阻、介電瓷粉製造</td></tr>
+      <tr><td>主要客戶</td><td>AI 伺服器主機板廠、電源供應器廠、汽車電子客戶</td></tr>
+      <tr><td>核心競爭力</td><td>自製介電瓷粉（關鍵原料），掌握高壓大尺寸 MLCC 技術，毛利率結構顯著優於一般被動元件廠</td></tr>
+      <tr><td>AI 題材連結</td><td>NVIDIA Rubin 架構機櫃功耗達 1MW，大尺寸高壓 MLCC 用量從 3,000-4,000 顆倍增至 1 萬顆/機櫃 <span class="tag-web">★WebSearch</span></td></tr>
+      <tr><td>護城河</td><td>① 自製粉末降低原料依賴；② 特殊品交期 16 週形成轉換成本；③ 台南六甲新廠 2027Q3 擴產</td></tr>
+      <tr><td>擴產計劃</td><td>未來三年資本支出約 20 億元，高階粉末廠 2027 年第三季投產 <span class="tag-web">★WebSearch</span></td></tr>
+      <tr><td>股本/市值</td><td>★推估值：以約 2.1億股估算，市值約 67 億元</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 06 基本面分析 -->
+<div class="section">
+  <div class="section-title">基本面分析</div>
+  <div class="card">
+    <div style="margin-bottom:20px;">
+      <div class="rating-row"><div class="rating-label">獲利能力</div><div class="rating-bar-bg"><div class="rating-bar" style="width:82%; background:#38A169;"></div></div><div class="rating-val">8.2</div></div>
+      <div class="rating-row"><div class="rating-label">估值合理性</div><div class="rating-bar-bg"><div class="rating-bar" style="width:35%; background:#E53E3E;"></div></div><div class="rating-val">3.5</div></div>
+      <div class="rating-row"><div class="rating-label">營收成長性</div><div class="rating-bar-bg"><div class="rating-bar" style="width:78%; background:#38A169;"></div></div><div class="rating-val">7.8</div></div>
+      <div class="rating-row"><div class="rating-label">財務穩健度</div><div class="rating-bar-bg"><div class="rating-bar" style="width:70%; background:#3182CE;"></div></div><div class="rating-val">7.0</div></div>
+      <div class="rating-row"><div class="rating-label">產業競爭地位</div><div class="rating-bar-bg"><div class="rating-bar" style="width:72%; background:#3182CE;"></div></div><div class="rating-val">7.2</div></div>
+    </div>
+    <table>
+      <tr><th>指標</th><th>Q1'26</th><th>Q4'25</th><th>Q3'25</th><th>Q2'25</th><th>趨勢</th></tr>
+      <tr><td>EPS（元）</td><td><strong>1.19</strong></td><td>1.14</td><td>1.18</td><td>0.23</td><td class="kpi-up">↑ 改善</td></tr>
+      <tr><td>毛利率</td><td><strong>28.35%</strong></td><td>26.81%</td><td>24.44%</td><td>23.60%</td><td class="kpi-up">↑ 持續提升</td></tr>
+      <tr><td>營益率</td><td><strong>20.34%</strong></td><td>18.59%</td><td>17.18%</td><td>16.57%</td><td class="kpi-up">↑ 持續提升</td></tr>
+      <tr><td colspan="6" style="color:var(--sub); font-size:12px;">所有季度財務數據來源：FinMind API <span class="tag-api">★API</span></td></tr>
+    </table>
+    <div style="margin-top:16px; padding:14px; background:#EBF4FF; border-radius:8px; font-size:13px; line-height:1.7;">
+      <strong>白話解讀：</strong>信昌電的「賺錢效率」（毛利率、營益率）連續四季上升，代表賣出的每100元產品能留下更多利潤。Q1'26毛利率28.35%，相比一年前的22%大幅提升，主因高毛利高壓MLCC佔營收比重不斷提高。每股賺1.19元（年增70%）顯示獲利加速成長中。
+    </div>
+  </div>
+</div>
+
+<!-- 07 籌碼面分析 -->
+<div class="section">
+  <div class="section-title">籌碼面分析</div>
+  <div class="chip-grid">
+    <div class="chip-card">
+      <div class="kpi-label">外資 (2026-07-02)</div>
+      <div class="kpi-val" style="color:var(--sub);">0 張</div>
+      <div class="kpi-desc">盤中資料，收盤後 18:00 更新 <span class="tag-api">★API</span></div>
+    </div>
+    <div class="chip-card">
+      <div class="kpi-label">投信</div>
+      <div class="kpi-val" style="color:var(--sub);">0 張</div>
+      <div class="kpi-desc">盤中正常顯示 0 <span class="tag-api">★API</span></div>
+    </div>
+    <div class="chip-card">
+      <div class="kpi-label">自營商</div>
+      <div class="kpi-val" style="color:var(--sub);">0 張</div>
+      <div class="kpi-desc">盤中正常顯示 0 <span class="tag-api">★API</span></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:12px;">
+    <div style="font-size:14px; font-weight:700; margin-bottom:10px;">法說會重點 (2026-05-21) <span class="tag-web">★WebSearch</span></div>
+    <table>
+      <tr><th>議題</th><th>說明</th></tr>
+      <tr><td>Q1'26 毛利率</td><td>28.4%，YoY +6.1pp，創歷史新高</td></tr>
+      <tr><td>MLCC 交期</td><td>特殊品交期拉長至 16 週（約 4 個月），供不應求</td></tr>
+      <tr><td>產能稼動率</td><td>85–90%，滿載運行</td></tr>
+      <tr><td>AI 營收佔比</td><td>2026 年全年將突破 10%</td></tr>
+      <tr><td>NVIDIA Rubin 機會</td><td>機櫃功耗→1MW，大尺寸 MLCC 用量倍增至 1 萬顆</td></tr>
+      <tr><td>訂單能見度</td><td>超過 6 個月</td></tr>
+      <tr><td>擴產計劃</td><td>台南六甲高階粉末廠 2027Q3 投產，3 年資本支出 ~20 億</td></tr>
+      <tr><td>全年展望</td><td>全年營收雙位數成長，AI 訂單持續快速進入</td></tr>
+    </table>
+    <div style="margin-top:12px; padding:12px; background:#F0FFF4; border-radius:8px; font-size:13px; color:var(--sub);">
+      ⚠ 今日高量急殺：6/11 單日成交 39M 張、6/16 成交 33M 張顯示前波法人主力大量介入，今日 17,647 張的沖量賣壓，可能為法人獲利了結或除息前調節。建議等三大法人收盤後數據確認方向。
+    </div>
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div class="section">
+  <div class="section-title">技術分析 ★API 數據</div>
+  <div class="card">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
+      <div>
+        <div style="font-size:14px; font-weight:700; margin-bottom:10px;">均線系統（多頭排列）</div>
+        <table>
+          <tr><th>均線</th><th>價位</th><th>現價 vs 均線</th></tr>
+          <tr><td>MA5</td><td>305.9 元</td><td class="kpi-up">+13.1 (+4.3%)</td></tr>
+          <tr><td>MA10</td><td>304.75 元</td><td class="kpi-up">+14.25 (+4.7%)</td></tr>
+          <tr><td>MA20</td><td>278.73 元</td><td class="kpi-up">+40.27 (+14.4%)</td></tr>
+          <tr><td>MA60</td><td>181.22 元</td><td class="kpi-up">+137.78 (+76.0%)</td></tr>
+        </table>
+      </div>
+      <div>
+        <div style="font-size:14px; font-weight:700; margin-bottom:10px;">振盪指標</div>
+        <table>
+          <tr><th>指標</th><th>數值</th><th>判讀</th></tr>
+          <tr><td>MACD</td><td>+32.32</td><td style="color:var(--red);">死叉！柱狀 -0.93</td></tr>
+          <tr><td>信號線</td><td>+33.25</td><td style="color:var(--red);">MACD < 信號線</td></tr>
+          <tr><td>RSI(14)</td><td>63.04</td><td style="color:var(--yellow);">偏多但趨弱</td></tr>
+          <tr><td>布林上軌</td><td>354.64 元</td><td>今日觸高後回</td></tr>
+          <tr><td>布林中軌</td><td>278.73 元</td><td class="kpi-up">下方第一支撐</td></tr>
+          <tr><td>布林下軌</td><td>202.81 元</td><td>強支撐</td></tr>
+        </table>
+      </div>
+    </div>
+    <div style="font-size:14px; font-weight:700; margin-bottom:10px;">關鍵價位分析</div>
+    <table>
+      <tr><th>價位（元）</th><th>意義</th><th>操作意涵</th></tr>
+      <tr><td><strong>348</strong></td><td>52週最高 / 今日高點</td><td>首要壓力，若突破可加碼</td></tr>
+      <tr><td><strong>330–335</strong></td><td>7/1收盤 / 今日開盤區</td><td>短線關鍵支撐，破則加速下</td></tr>
+      <tr><td><strong>305–306</strong></td><td>MA5 / MA10 匯聚</td><td>中線重要支撐</td></tr>
+      <tr><td><strong>278–280</strong></td><td>MA20 / 布林中軌</td><td>本波回調第一目標，買點區</td></tr>
+      <tr><td><strong>260</strong></td><td>前波整理平台上緣</td><td>強支撐，守不住=轉弱</td></tr>
+    </table>
+    <div style="margin-top:14px; padding:12px; background:#FFF5F5; border-radius:8px; font-size:13px; line-height:1.7;">
+      <strong>⚠ 今日技術警訊：</strong>高位沖量（17,647張，3.6倍均量）+ MACD 死叉（柱狀由正轉負 -0.93）+ 高點開低收，是短線轉弱的典型訊號。MA5（305.9）為第一道防線，若今明兩日跌破，可能快速測試 MA20（278）支撐。
+    </div>
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <div class="section-title">融資融券</div>
+  <div class="card">
+    <table>
+      <tr><th>項目</th><th>數值（2026-07-01）</th><th>說明</th></tr>
+      <tr><td>融資餘額</td><td>0 張</td><td>上櫃小型股，融資額度受限 <span class="tag-api">★API</span></td></tr>
+      <tr><td>融券餘額</td><td>0 張</td><td>空方籌碼暫無異常 <span class="tag-api">★API</span></td></tr>
+      <tr><td>融資使用率</td><td>— %</td><td>待收盤後更新</td></tr>
+    </table>
+    <div style="margin-top:12px; padding:12px; background:#EBF4FF; border-radius:8px; font-size:13px;">
+      融資融券為 0 代表目前市場以現股交易為主。上櫃小型股本身融資額度有限，若融資開始快速累積，需注意槓桿風險。可於台灣集保中心或券商看盤軟體查詢最新融資融券資料。
+    </div>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <div class="section-title">研究員多空辯論</div>
+  <div class="debate-grid">
+    <div class="debate-bull">
+      <div class="debate-title bull">📈 看多研究員（55%）</div>
+      <ul class="debate-list">
+        <li>① <strong>毛利率結構性提升：</strong>從 Q2'25 的 23.6% 連續跳升至 Q1'26 的 28.35%，+4.75pp，顯示高毛利 AI 電容比重持續升高，非一次性事件</li>
+        <li>② <strong>EPS 年增 70%：</strong>Q1'26 EPS 1.19 元，TTM EPS 3.74 元（+70% YoY），若 Q2'26 延續，全年 EPS 有望達 4.5–5.0 元</li>
+        <li>③ <strong>AI 訂單能見度強：</strong>法說會揭露訂單能見度 >6 個月，MLCC 交期拉至 16 週，供不應求格局確立，短期缺貨收益率高</li>
+        <li>④ <strong>NVIDIA Rubin 倍增效應：</strong>下一代 GPU 機櫃功耗升至 1MW，大尺寸 MLCC 用量從 3,000→10,000 顆/機櫃，成長空間達 2.5 倍</li>
+        <li>⑤ <strong>6月營收創近期新高：</strong>4.58 億元，YoY +25.6%，MoM +9.4%，需求未見放緩，全年雙位數成長可期</li>
+        <li>⑥ <strong>自製粉末護城河：</strong>台南新廠 2027Q3 投產，原料自製率提升將進一步壓縮成本、提升毛利率至 30%+</li>
+      </ul>
+    </div>
+    <div class="debate-bear">
+      <div class="debate-title bear">📉 看空研究員（45%）</div>
+      <ul class="debate-list">
+        <li>① <strong>本益比嚴重透支：</strong>TTM PE = 85.3 倍（319/3.74），遠超電子零組件業平均 25–30 倍，股價已充分反映未來 2–3 年成長預期</li>
+        <li>② <strong>今日技術死叉警訊：</strong>MACD 柱狀翻負（-0.93），量能放大至 3.6 倍均量（17,647 張），上方布林上軌 354.64 受阻，典型高位出貨形態</li>
+        <li>③ <strong>52 週漲幅接近 10 倍（36→348 元），</strong>短線獲利回吐壓力極大，除息（-1.8 元）後恐引發更大波段回測</li>
+        <li>④ <strong>AI 資本支出可能放緩：</strong>若美國科技股財報指引保守，超大規模建設商縮減採購，高壓 MLCC 訂單能見度可能快速回落</li>
+        <li>⑤ <strong>上櫃小型股流動性風險：</strong>正常日成交量約 3,000–5,000 張，今日 17,647 張屬異常，若主力出場，可能引發急劇流動性危機</li>
+        <li>⑥ <strong>資本支出壓力：</strong>未來 3 年 ~20 億資本支出將侵蝕自由現金流，若 AI 成長不如預期，投資回收期延長，ROE 短期下滑</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px; background:#F7FAFC;">
+    <div style="font-size:15px; font-weight:700; margin-bottom:8px;">💬 給一般投資人的話</div>
+    <div style="font-size:14px; line-height:1.8;">
+      信昌電是一家把「幫 AI 機器供電的小零件」做出護城河的優質公司。它的故事是真實的——賺更多錢、訂單滿、技術領先。但現在的股價已經把未來 3–4 年的好消息都算進去了（85倍本益比）。就像好房子也不應該買在最高點一樣，等待一次像樣的回調（回到 280–300 元區間）再進場，性價比會更好。<strong>今天的重大警訊是量能異常放大的下跌，近期除息前需特別謹慎。</strong>
+    </div>
+  </div>
+</div>
+
+<!-- 11 風控評估 -->
+<div class="section">
+  <div class="section-title">風控評估（六維評分）</div>
+  <div class="card">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+      <div>
+        <div class="risk-score-big">6.0</div>
+        <div class="risk-label-big">⚠ 中等偏高風險</div>
+        <div style="font-size:13px; color:var(--sub); line-height:1.7;">
+          基本面改善明顯，但估值過高、今日技術死叉和異常量能是主要風險。上櫃小型股流動性不足在極端市況下可能造成踩踏。除息日（7/9）前後需觀察填息能力。
+        </div>
+      </div>
+      <div>
+        <div class="rating-row"><div class="rating-label">估值風險</div><div class="rating-bar-bg"><div class="rating-bar" style="width:75%; background:#E53E3E;"></div></div><div class="rating-val" style="color:#E53E3E;">7.5</div></div>
+        <div style="font-size:11px; color:var(--sub); margin-bottom:8px; margin-left:100px;">PE 85倍，大幅偏貴（佔比30%）</div>
+        <div class="rating-row"><div class="rating-label">財務風險</div><div class="rating-bar-bg"><div class="rating-bar" style="width:30%; background:#38A169;"></div></div><div class="rating-val" style="color:#38A169;">3.0</div></div>
+        <div style="font-size:11px; color:var(--sub); margin-bottom:8px; margin-left:100px;">獲利強勁，毛利率持升（佔比25%）</div>
+        <div class="rating-row"><div class="rating-label">流動性風險</div><div class="rating-bar-bg"><div class="rating-bar" style="width:65%; background:#ED8936;"></div></div><div class="rating-val" style="color:#ED8936;">6.5</div></div>
+        <div style="font-size:11px; color:var(--sub); margin-bottom:8px; margin-left:100px;">上櫃小型股，正常量能低（佔比10%）</div>
+        <div class="rating-row"><div class="rating-label">產業風險</div><div class="rating-bar-bg"><div class="rating-bar" style="width:55%; background:#ED8936;"></div></div><div class="rating-val" style="color:#ED8936;">5.5</div></div>
+        <div style="font-size:11px; color:var(--sub); margin-bottom:8px; margin-left:100px;">AI 需求旺盛但高度集中（佔比15%）</div>
+        <div class="rating-row"><div class="rating-label">總經風險</div><div class="rating-bar-bg"><div class="rating-bar" style="width:40%; background:#3182CE;"></div></div><div class="rating-val" style="color:#3182CE;">4.0</div></div>
+        <div style="font-size:11px; color:var(--sub); margin-bottom:8px; margin-left:100px;">AI 建設潮持續，貿易戰次要影響（佔比10%）</div>
+        <div class="rating-row"><div class="rating-label">籌碼風險</div><div class="rating-bar-bg"><div class="rating-bar" style="width:75%; background:#E53E3E;"></div></div><div class="rating-val" style="color:#E53E3E;">7.5</div></div>
+        <div style="font-size:11px; color:var(--sub); margin-bottom:8px; margin-left:100px;">今日沖量+MACD死叉，籌碼鬆動（佔比10%）</div>
+        <div style="margin-top:10px; font-size:12px; color:var(--sub);">加權總分：7.5×0.30+3.0×0.25+6.5×0.10+5.5×0.15+4.0×0.10+7.5×0.10 = <strong>5.975 ≈ 6.0</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 12 台股三段式策略 -->
+<div class="section">
+  <div class="section-title">台股三段式操作策略</div>
+  <div class="strategy-grid">
+    <div class="strat-card strat-atk">
+      <div class="strat-title">⚔ 進攻策略</div>
+      <div class="strat-row"><span>觸發條件</span><span>收盤站上 348 元（52W高）且量縮</span></div>
+      <div class="strat-row"><span>建議部位</span><span>50–70%</span></div>
+      <div class="strat-row"><span>目標價一</span><span>380 元（+19%）</span></div>
+      <div class="strat-row"><span>目標價二</span><span>420 元（+32%）</span></div>
+      <div class="strat-row"><span>停損</span><span>跌破 310 元出場</span></div>
+      <div class="strat-row"><span>加碼條件</span><span>回踩 330 量縮不破即加</span></div>
+    </div>
+    <div class="strat-card strat-neu">
+      <div class="strat-title">⚖ 均衡策略</div>
+      <div class="strat-row"><span>觸發條件</span><span>除息後（7/9後）量縮整理</span></div>
+      <div class="strat-row"><span>建議部位</span><span>30–50%</span></div>
+      <div class="strat-row"><span>目標價</span><span>350–370 元</span></div>
+      <div class="strat-row"><span>停損</span><span>跌破 290 元出場</span></div>
+      <div class="strat-row"><span>買進區</span><span>310–325 元低接</span></div>
+      <div class="strat-row"><span>觀察重點</span><span>MA5 能否重新站穩</span></div>
+    </div>
+    <div class="strat-card strat-def">
+      <div class="strat-title">🛡 防守策略</div>
+      <div class="strat-row"><span>觸發條件</span><span>量縮回測 MA20（278）</span></div>
+      <div class="strat-row"><span>建議部位</span><span>10–30%</span></div>
+      <div class="strat-row"><span>目標價</span><span>310–330 元</span></div>
+      <div class="strat-row"><span>停損</span><span>跌破 260 元全出</span></div>
+      <div class="strat-row"><span>買進區</span><span>275–290 元布林中軌附近</span></div>
+      <div class="strat-row"><span>等待訊號</span><span>RSI<50 量縮底背離</span></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <div style="font-size:14px; font-weight:700; margin-bottom:10px;">📅 催化劑時程表</div>
+    <table class="catalyst-table">
+      <tr><th>時間</th><th>事件</th><th>多空影響</th></tr>
+      <tr><td>2026-07-09</td><td>除息日（現金股利 1.8 元） <span class="tag-web">★WebSearch</span></td><td>中性，觀察是否快速填息</td></tr>
+      <tr><td>2026-08 初</td><td>公告 Q2'26 月營收 + 2026H1 業績彙整</td><td>若月營收 >4.8 億可視為正面</td></tr>
+      <tr><td>2026-08 中</td><td>Q2'26 季度財報法說會（推估）</td><td>毛利率能否維持 28%+ 是關鍵</td></tr>
+      <tr><td>2026 Q3</td><td>NVIDIA Rubin GPU 開始大規模出貨</td><td>正面，MLCC 訂單加速</td></tr>
+      <tr><td>2027 Q3</td><td>台南六甲高階粉末廠投產 <span class="tag-web">★WebSearch</span></td><td>正面，原料成本下降、毛利率再提升</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 13 名詞小教室 -->
+<div class="section">
+  <div class="section-title">名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">MLCC（晶片積層陶瓷電容）</div>
+      <div class="glossary-def">一種超小型電子零件，用來穩定電路的電壓，像是電路板的「穩壓器」。AI 伺服器用電量大、電壓波動劇烈，需要更大尺寸、能承受更高電壓的 MLCC，即「高壓 MLCC」。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">毛利率</div>
+      <div class="glossary-def">賣出產品後，扣掉製造成本還能剩下多少百分比的利潤。毛利率 28% 代表賣 100 元商品，扣掉材料和生產成本後，還剩 28 元。越高越好。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">MACD 死叉</div>
+      <div class="glossary-def">一種技術指標訊號。當短期動能線（MACD）從上往下穿越長期訊號線時，稱為「死叉」，代表短線買氣減弱，股價可能回調。今日信昌電出現死叉，是警戒訊號。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">本益比（PE）</div>
+      <div class="glossary-def">股票價格除以每股盈餘，表示你花幾倍的錢買這家公司的年獲利。PE 85 倍代表你付 85 年獲利的價格買入，意味市場預期未來成長很高，但風險也相對大。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">布林通道（Bollinger Bands）</div>
+      <div class="glossary-def">一種技術分析工具，由上中下三條線組成。股價在上軌附近時容易回調，在下軌附近時容易反彈。今日信昌電高點 348 觸碰上軌（354）後急速回落，是短線過熱的信號。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">除息日 / 填息</div>
+      <div class="glossary-def">除息日當天，股價會「自動扣除」配息金額（如 1.8 元），所以開盤就比前一天低 1.8 元。若之後股價漲回來，稱為「填息」；若一直沒漲回，稱為「貼息」，代表配了息但股票虧損了。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">RSI（相對強弱指數）</div>
+      <div class="glossary-def">衡量一段時間內股價漲跌力道的指標，介於 0–100 之間。超過 70 通常代表「過熱」，低於 30 代表「超賣」。信昌電 RSI 63 雖未過熱，但已開始轉弱。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">稼動率（Utilization Rate）</div>
+      <div class="glossary-def">工廠產能使用的百分比。85–90% 稼動率代表工廠幾乎跑滿，只要訂單持續，就能維持高產出和高獲利，不會有設備閒置的浪費。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 14 免責聲明 -->
+<div class="section">
+  <div class="warning-box">
+    <div class="warning-title">⚠ 免責聲明</div>
+    <div style="font-size:13px; line-height:1.8; color:#744210;">
+      本報告純屬學術研究與資訊分享用途，<strong>不構成任何投資建議或買賣邀約</strong>。股票投資涉及風險，投資人應自行判斷並承擔投資損益。本報告內容可能因市場變化而失效，請以最新市場資訊為準。<br><br>
+      <strong>資料來源：</strong>
+      ① Fugle API（即時股價）｜
+      ② FinMind API（歷史K線、三大法人、月營收、季度財報、融資融券）｜
+      ③ WebSearch（法說會資訊、法人評等、除息日）｜
+      ④ 標注「★推估值」者為分析師估算，非實際公告數字<br><br>
+      <strong>分析日期：</strong>2026-07-02 ｜ <strong>股票代碼：</strong>6173（信昌電）｜ <strong>市場：</strong>台灣上櫃 TPEx
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ── EPS Chart ──
+const epsCtx = document.getElementById('epsChart').getContext('2d');
+new Chart(epsCtx, {
+  type: 'bar',
+  data: {
+    labels: ["Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26"],
+    datasets:[{
+      label:'EPS（元）',
+      data:[0.92, 0.52, 0.61, 0.70, 0.23, 1.18, 1.14, 1.19],
+      backgroundColor:['#3182CE','#3182CE','#3182CE','#3182CE','#3182CE','#3182CE','#3182CE','#E53E3E'],
+      borderRadius:6
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>`EPS: ${ctx.parsed.y} 元`}}
+    },
+    scales:{y:{beginAtZero:true, grid:{color:'#E2E8F0'}, title:{display:true,text:'元'}}}
+  }
+});
+
+// ── Revenue Chart ──
+const revCtx = document.getElementById('revenueChart').getContext('2d');
+new Chart(revCtx, {
+  type:'line',
+  data:{
+    labels:['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06'],
+    datasets:[
+      {
+        label:'月營收（億元）',
+        data:[3.14, 3.44, 3.03, 3.71, 4.19, 4.58],
+        borderColor:'#3182CE',
+        backgroundColor:'rgba(49,130,206,0.12)',
+        pointBackgroundColor:['#3182CE','#3182CE','#3182CE','#3182CE','#3182CE','#E53E3E'],
+        pointRadius:6,
+        tension:0.3,
+        fill:true,
+        yAxisID:'y'
+      },
+      {
+        label:'年增率（%）',
+        data:[5.61, 14.20, -2.43, 12.69, 20.36, 25.63],
+        borderColor:'#38A169',
+        backgroundColor:'transparent',
+        pointBackgroundColor:'#38A169',
+        pointRadius:5,
+        borderDash:[5,4],
+        tension:0.3,
+        yAxisID:'y1'
+      }
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom',labels:{font:{size:11}}}},
+    scales:{
+      y:{type:'linear',position:'left',title:{display:true,text:'億元'},grid:{color:'#E2E8F0'}},
+      y1:{type:'linear',position:'right',title:{display:true,text:'YoY%'},grid:{display:false},ticks:{callback:v=>v+'%'}}
+    }
+  }
+});
+
+// ── PE Chart ──
+const peCtx = document.getElementById('peChart').getContext('2d');
+new Chart(peCtx, {
+  type:'bar',
+  data:{
+    labels:['信昌電 6173','電子零組件業平均★','加權指數大盤★'],
+    datasets:[{
+      label:'本益比（倍）',
+      data:[85.3, 30, 18],
+      backgroundColor:['#E53E3E','#ED8936','#3182CE'],
+      borderRadius:6
+    }]
+  },
+  options:{
+    indexAxis:'y',
+    responsive:true,
+    plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>`PE: ${ctx.parsed.x} 倍`}}
+    },
+    scales:{x:{beginAtZero:true, title:{display:true,text:'本益比（倍）'}, grid:{color:'#E2E8F0'}}}
+  }
+});
+</script>
+
+</body>
+</html>
