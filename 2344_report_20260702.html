@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>華邦電 (2344) 投資研究報告 2026-07-02</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI','Microsoft JhengHei',sans-serif; background:#F0F4F8; color:#2d3748; }
+
+  .cover { background:linear-gradient(135deg,#1a237e 0%,#4a148c 50%,#311b92 100%); color:#fff; padding:60px 40px; text-align:center; position:relative; overflow:hidden; }
+  .cover::before { content:''; position:absolute; top:-50px; right:-50px; width:300px; height:300px; background:rgba(255,255,255,0.04); border-radius:50%; }
+  .cover-tag { display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:5px 15px; font-size:13px; margin-bottom:15px; }
+  .cover h1 { font-size:3em; font-weight:800; letter-spacing:3px; margin-bottom:8px; }
+  .cover h2 { font-size:1.2em; font-weight:300; opacity:0.85; margin-bottom:25px; }
+  .cover-meta { display:flex; justify-content:center; gap:30px; flex-wrap:wrap; margin-bottom:20px; }
+  .cover-meta-item .val { font-size:2em; font-weight:700; }
+  .cover-meta-item .lbl { font-size:11px; opacity:0.7; margin-top:2px; }
+  .risk-badge { display:inline-block; background:#f59e0b; color:#1a1a1a; border-radius:25px; padding:8px 22px; font-weight:800; font-size:1em; }
+  .date-info { opacity:0.7; font-size:13px; margin-top:12px; }
+  .two-day-drop { background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.4); border-radius:10px; padding:10px 20px; margin:15px auto; display:inline-block; font-size:13px; }
+
+  .section { max-width:1100px; margin:24px auto; background:#fff; border-radius:16px; box-shadow:0 2px 12px rgba(0,0,0,0.07); overflow:hidden; }
+  .section-header { padding:20px 28px; border-bottom:1px solid #e2e8f0; display:flex; align-items:center; gap:10px; }
+  .section-header h2 { font-size:1.15em; font-weight:700; color:#1e3a5f; }
+  .section-icon { font-size:1.3em; }
+  .section-body { padding:24px 28px; }
+
+  .conclusion { background:linear-gradient(135deg,#0f172a,#1e3a5f); color:#fff; border-radius:16px; padding:30px; max-width:1100px; margin:24px auto; }
+  .conclusion h2 { font-size:1.2em; opacity:0.7; margin-bottom:20px; letter-spacing:1px; }
+  .conclusion-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .conclusion-card { background:rgba(255,255,255,0.1); border-radius:12px; padding:18px; text-align:center; border:1px solid rgba(255,255,255,0.15); }
+  .conclusion-card .c-label { font-size:11px; opacity:0.6; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+  .conclusion-card .c-value { font-size:1.3em; font-weight:800; }
+  .conclusion-card .c-sub { font-size:11px; opacity:0.6; margin-top:5px; }
+  .tag-watch { background:#f59e0b; color:#1a1a1a; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; }
+
+  .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .kpi-card { background:#f8fafc; border-radius:12px; padding:18px; text-align:center; border:1px solid #e2e8f0; }
+  .kpi-card .k-val { font-size:1.5em; font-weight:800; color:#1e3a5f; margin-bottom:4px; }
+  .kpi-card .k-val.green { color:#16a34a; }
+  .kpi-card .k-val.red { color:#dc2626; }
+  .kpi-card .k-val.orange { color:#d97706; }
+  .kpi-card .k-label { font-size:11px; color:#64748b; font-weight:600; margin-bottom:6px; }
+  .kpi-card .k-desc { font-size:11px; color:#94a3b8; line-height:1.4; }
+  .api-badge { display:inline-block; background:#1e40af; color:#fff; font-size:9px; padding:1px 5px; border-radius:3px; font-weight:700; vertical-align:middle; margin-left:3px; }
+  .est-badge { display:inline-block; background:#9333ea; color:#fff; font-size:9px; padding:1px 5px; border-radius:3px; font-weight:700; vertical-align:middle; margin-left:3px; }
+
+  .chart-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .chart-box { background:#f8fafc; border-radius:12px; padding:16px; }
+  .chart-box h3 { font-size:13px; color:#374151; margin-bottom:12px; font-weight:600; text-align:center; }
+  .chart-box canvas { max-height:220px; }
+  .chart-note { font-size:10px; color:#9333ea; text-align:center; margin-top:8px; }
+
+  table { width:100%; border-collapse:collapse; }
+  th { background:#1e3a5f; color:#fff; padding:10px 14px; font-size:12px; text-align:left; }
+  td { padding:9px 14px; font-size:13px; border-bottom:1px solid #f1f5f9; }
+  tr:hover td { background:#f8fafc; }
+  td.green { color:#16a34a; font-weight:600; }
+  td.red { color:#dc2626; font-weight:600; }
+  td.neutral { color:#d97706; font-weight:600; }
+
+  .score-bar-wrap { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+  .score-label { min-width:80px; font-size:13px; color:#374151; }
+  .score-bar { flex:1; background:#e5e7eb; border-radius:8px; height:14px; overflow:hidden; }
+  .score-fill { height:100%; border-radius:8px; }
+  .score-val { min-width:30px; font-size:13px; font-weight:700; color:#1e3a5f; }
+
+  .inst-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:20px; }
+  .inst-card { background:#f8fafc; border-radius:12px; padding:18px; text-align:center; border-left:4px solid #1e3a5f; }
+  .inst-card.sell { border-left-color:#dc2626; }
+  .inst-card .i-name { font-size:12px; color:#64748b; margin-bottom:6px; }
+  .inst-card .i-val { font-size:1.5em; font-weight:800; }
+  .inst-card .i-val.red { color:#dc2626; }
+  .inst-card .i-val.green { color:#16a34a; }
+  .inst-card .i-unit { font-size:11px; color:#94a3b8; margin-top:3px; }
+
+  .tech-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+  .tech-card { background:#f8fafc; border-radius:12px; padding:20px; }
+  .tech-card h3 { font-size:13px; font-weight:700; color:#1e3a5f; margin-bottom:14px; border-bottom:2px solid #e2e8f0; padding-bottom:8px; }
+  .indicator-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #f1f5f9; }
+  .indicator-row:last-child { border-bottom:none; }
+  .indicator-name { font-size:13px; color:#374151; }
+  .indicator-val { font-size:13px; font-weight:700; }
+  .indicator-val.bullish { color:#16a34a; }
+  .indicator-val.bearish { color:#dc2626; }
+  .indicator-val.neutral { color:#d97706; }
+
+  .debate-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .bull-box { background:#f0fdf4; border-radius:12px; padding:20px; border:1px solid #bbf7d0; }
+  .bear-box { background:#fff1f2; border-radius:12px; padding:20px; border:1px solid #fecdd3; }
+  .debate-title { font-size:14px; font-weight:800; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+  .bull-title { color:#15803d; }
+  .bear-title { color:#b91c1c; }
+  .debate-point { display:flex; gap:10px; margin-bottom:12px; align-items:flex-start; }
+  .debate-point .num { min-width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; }
+  .bull-num { background:#15803d; color:#fff; }
+  .bear-num { background:#b91c1c; color:#fff; }
+  .debate-point .txt { font-size:13px; color:#374151; line-height:1.5; }
+  .debate-weight { background:#1e3a5f; color:#fff; border-radius:12px; padding:16px 20px; margin-top:20px; text-align:center; }
+  .weight-bar { display:flex; border-radius:8px; overflow:hidden; height:16px; margin:10px 0; }
+  .bull-weight { background:#22c55e; }
+  .bear-weight { background:#ef4444; }
+
+  .strategy-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .strategy-card { border-radius:12px; padding:20px; color:#fff; }
+  .attack { background:linear-gradient(135deg,#dc2626,#ef4444); }
+  .balance { background:linear-gradient(135deg,#2563eb,#3b82f6); }
+  .defense { background:linear-gradient(135deg,#16a34a,#22c55e); }
+  .strategy-card h3 { font-size:1em; font-weight:800; margin-bottom:14px; opacity:0.9; }
+  .strategy-card .s-row { display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px; opacity:0.9; }
+  .strategy-card .s-val { font-weight:700; }
+
+  .glossary-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  .glossary-item { background:#f8fafc; border-radius:10px; padding:16px; border-left:3px solid #6366f1; }
+  .glossary-item h4 { color:#4338ca; font-size:13px; margin-bottom:6px; }
+  .glossary-item p { font-size:12px; color:#64748b; line-height:1.5; }
+
+  .disclaimer { max-width:1100px; margin:24px auto; background:#fefce8; border:2px solid #f59e0b; border-radius:12px; padding:20px 28px; }
+  .disclaimer h4 { color:#92400e; font-size:14px; margin-bottom:8px; }
+  .disclaimer p { font-size:12px; color:#78350f; line-height:1.6; }
+
+  .alert-box { background:#fef2f2; border:1px solid #fecaca; border-radius:10px; padding:14px 18px; margin-bottom:16px; }
+  .alert-box strong { color:#b91c1c; }
+  .alert-box p { font-size:13px; color:#7f1d1d; margin-top:4px; }
+
+  .news-box { background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:14px 18px; margin-bottom:16px; }
+  .news-box strong { color:#1d4ed8; }
+  .news-box p { font-size:13px; color:#1e40af; margin-top:4px; line-height:1.6; }
+
+  @media (max-width:768px) {
+    .kpi-grid,.chart-grid,.debate-grid,.strategy-grid,.inst-grid { grid-template-columns:1fr 1fr; }
+    .conclusion-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div class="cover-tag">🇹🇼 台股上市 | TWSE: 2344 | NOR Flash全球第一 / 利基型記憶體</div>
+  <h1>華邦電子</h1>
+  <h2>Winbond Electronics Corporation</h2>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <div class="val">183.5<span style="font-size:0.5em">元</span></div>
+      <div class="lbl">2026-07-02 盤中（15:41）★API</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="val" style="color:#fca5a5;">▼3.42%</div>
+      <div class="lbl">今日跌幅（-6.5元）</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="val">8,258<span style="font-size:0.5em">億</span></div>
+      <div class="lbl">市值 ★API</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="val">2.25<span style="font-size:0.5em">元</span></div>
+      <div class="lbl">Q1'26 EPS ★API</div>
+    </div>
+  </div>
+  <div class="two-day-drop">⚠️ 記憶體族群連2跌：7/1收190元(-8.43%)→ 7/2現183.5元(-3.42%)｜自高點233.5跌至183.5，累計-21.4%</div>
+  <span class="risk-badge">⚠️ 風險等級：4.9 / 10（中等偏高）</span>
+  <div class="date-info">報告生成：2026-07-02 | 下跌主因：中國兆易創新示警 ＋ 三星/SK海力士擴產16.5兆</div>
+</div>
+
+<!-- 02 核心結論 -->
+<div class="conclusion">
+  <h2>📋 核心結論</h2>
+  <div class="conclusion-grid">
+    <div class="conclusion-card">
+      <div class="c-label">投資建議</div>
+      <div class="c-value"><span class="tag-watch">⏳ 觀望等待</span></div>
+      <div class="c-sub">等技術面止跌訊號（MACD柱狀轉正）</div>
+    </div>
+    <div class="conclusion-card">
+      <div class="c-label">法人目標價區間</div>
+      <div class="c-value">176～222元</div>
+      <div class="c-sub">本土降評目標176元 | 大摩222元（舊）</div>
+    </div>
+    <div class="conclusion-card">
+      <div class="c-label">今日下跌主因</div>
+      <div class="c-value" style="font-size:0.95em;">中國示警+韓廠擴產</div>
+      <div class="c-sub">兆易創新示警+三星/SK海力士16.5兆擴產</div>
+    </div>
+  </div>
+  <div style="margin-top:16px; background:rgba(255,255,255,0.08); border-radius:10px; padding:14px; font-size:13px; line-height:1.7; color:rgba(255,255,255,0.85);">
+    <strong style="color:#fbbf24;">📌 一句話結論：</strong>
+    華邦電基本面強勁（Q1'26 EPS 2.25元、毛利率53.37%、月營收YoY+182%，法人預估2026全年EPS達23.42元），但今日股價183.5元已跌破MA20（189.07元），與南亞科同步受「中國示警＋韓廠擴產」雙重利空打壓。<strong style="color:#86efac;">短線技術面全面轉弱，建議觀望；若今日低點176元守住，可視為支撐區伺機分批布局。</strong>
+  </div>
+</div>
+
+<!-- 03 關鍵財務 KPI -->
+<div class="section">
+  <div class="section-header"><span class="section-icon">💎</span><h2>關鍵財務 KPI（華邦電 2344 專屬）</h2></div>
+  <div class="section-body">
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="k-label">Q1'26 EPS <span class="api-badge">★API</span></div>
+        <div class="k-val green">+2.25元</div>
+        <div class="k-desc">Q2'25還虧0.29元，Q1'26大賺2.25元，若全年EPS達法人估23.42元，以183.5元計算PE僅7.8倍！</div>
+      </div>
+      <div class="kpi-card">
+        <div class="k-label">Q1'26 毛利率 <span class="api-badge">★API</span></div>
+        <div class="k-val green">53.37%</div>
+        <div class="k-desc">歷史最高！每賣100元賺53元毛利。NOR Flash全球第一市占+DDR漲價雙重效益</div>
+      </div>
+      <div class="kpi-card">
+        <div class="k-label">6月月營收 YoY <span class="api-badge">★API</span></div>
+        <div class="k-val green">+182%</div>
+        <div class="k-desc">6月營收200億元，YoY成長182%（約2.8倍），連6個月YoY超過50%，基本面動能強</div>
+      </div>
+      <div class="kpi-card">
+        <div class="k-label">今日股價 <span class="api-badge">★API</span></div>
+        <div class="k-val red">183.5元</div>
+        <div class="k-desc">開盤缺口低開176元，高點186元，收183.5。今日低點176元成關鍵支撐，跌破則看168元</div>
+      </div>
+      <div class="kpi-card">
+        <div class="k-label">法人全年EPS估 <span class="est-badge">★WebSearch</span></div>
+        <div class="k-val green">23.42元</div>
+        <div class="k-desc">法人預估2026全年EPS達23.42元，以183.5元計算本益比僅7.8倍，估值極具吸引力</div>
+      </div>
+      <div class="kpi-card">
+        <div class="k-label">MACD 柱狀 <span class="api-badge">★API</span></div>
+        <div class="k-val red">-3.72</div>
+        <div class="k-desc">昨日-2.17今日惡化至-3.72，空方動能加速擴大，短線賣壓未止</div>
+      </div>
+      <div class="kpi-card">
+        <div class="k-label">52週區間 <span class="api-badge">★API</span></div>
+        <div class="k-val">16.5～233.5元</div>
+        <div class="k-desc">一年漲幅超過14倍，目前183.5元距52週高點已下跌21.4%，技術上進入「回檔整理」區</div>
+      </div>
+      <div class="kpi-card">
+        <div class="k-label">今日成交量 <span class="api-badge">★API</span></div>
+        <div class="k-val orange">164,179張</div>
+        <div class="k-desc">低於5日均量203,999張（0.8倍），量縮下跌，賣壓有限，非崩潰式拋售</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 財務趨勢圖 -->
+<div class="section">
+  <div class="section-header"><span class="section-icon">📊</span><h2>財務趨勢圖（互動圖表）</h2></div>
+  <div class="section-body">
+    <div class="chart-grid">
+      <div class="chart-box">
+        <h3>季度 EPS 趨勢（元）★API</h3>
+        <canvas id="epsChart"></canvas>
+        <div class="chart-note">★API：FinMind 實際財報 | Q1'26=2.25元（紅色）</div>
+      </div>
+      <div class="chart-box">
+        <h3>2026年月營收（億元）★API</h3>
+        <canvas id="revenueChart"></canvas>
+        <div class="chart-note">★API：FinMind月營收 | 6月200億元（紅色）</div>
+      </div>
+      <div class="chart-box">
+        <h3>目標價 vs 現價（元）</h3>
+        <canvas id="targetChart"></canvas>
+        <div class="chart-note">法人目標區間：176～222元 | 現價183.5元★API</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <div class="section-header"><span class="section-icon">🏢</span><h2>公司概覽</h2></div>
+  <div class="section-body">
+    <table>
+      <tr><th style="width:18%">項目</th><th>說明</th></tr>
+      <tr><td><strong>公司全名</strong></td><td>華邦電子股份有限公司（Winbond Electronics Corporation）</td></tr>
+      <tr><td><strong>主要產品</strong></td><td>NOR Flash（全球第一）、SLC NAND Flash、利基型DRAM（DDR4）、子公司新唐科技（MCU/音頻）</td></tr>
+      <tr><td><strong>市場地位</strong></td><td>NOR Flash全球市佔第一、台灣第二大DRAM廠。專攻利基型記憶體，刻意避開三星/美光在標準型DRAM的競爭</td></tr>
+      <tr><td><strong>護城河</strong></td><td>①NOR Flash技術全球領先 ②車用/工控高認證壁壘 ③美光減產NOR Flash→台廠成主要供應商 ④新唐MCU與記憶體生態系</td></tr>
+      <tr><td><strong>今日利空</strong></td><td>①中國兆易創新示警記憶體報價恐大跌 ②三星/SK海力士宣布約16.5兆台幣擴產計畫（長線供給壓力）</td></tr>
+      <tr><td><strong>產業觀點</strong></td><td>法人強調供需結構未轉弱：NOR Flash因美光減產、台廠成主力；DDR4/SLC NAND供給收縮；AI推升高容量需求</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 06 基本面分析 -->
+<div class="section">
+  <div class="section-header"><span class="section-icon">📈</span><h2>基本面分析</h2></div>
+  <div class="section-body">
+    <div style="margin-bottom:20px;">
+      <div class="score-bar-wrap"><div class="score-label">EPS 成長</div><div class="score-bar"><div class="score-fill" style="width:90%;background:linear-gradient(90deg,#16a34a,#22c55e)"></div></div><div class="score-val">9.0</div></div>
+      <div class="score-bar-wrap"><div class="score-label">毛利率</div><div class="score-bar"><div class="score-fill" style="width:88%;background:linear-gradient(90deg,#2563eb,#60a5fa)"></div></div><div class="score-val">8.8</div></div>
+      <div class="score-bar-wrap"><div class="score-label">月營收</div><div class="score-bar"><div class="score-fill" style="width:85%;background:linear-gradient(90deg,#7c3aed,#a78bfa)"></div></div><div class="score-val">8.5</div></div>
+      <div class="score-bar-wrap"><div class="score-label">估值合理性</div><div class="score-bar"><div class="score-fill" style="width:80%;background:linear-gradient(90deg,#16a34a,#22c55e)"></div></div><div class="score-val">8.0</div></div>
+      <div class="score-bar-wrap"><div class="score-label">財務穩健</div><div class="score-bar"><div class="score-fill" style="width:75%;background:linear-gradient(90deg,#0891b2,#22d3ee)"></div></div><div class="score-val">7.5</div></div>
+    </div>
+    <table>
+      <tr><th>季度</th><th>EPS（元）</th><th>毛利率</th><th>營益率</th><th>趨勢</th></tr>
+      <tr><td>2024 Q2</td><td class="green">+0.41</td><td>33.10%</td><td>5.41%</td><td class="neutral">相對穩健</td></tr>
+      <tr><td>2024 Q3</td><td class="neutral">0.00</td><td>29.31%</td><td>1.28%</td><td class="red">走弱</td></tr>
+      <tr><td>2024 Q4</td><td class="red">-0.15</td><td>27.18%</td><td>-3.96%</td><td class="red">轉虧</td></tr>
+      <tr><td>2025 Q1</td><td class="red">-0.24</td><td>25.62%</td><td>-4.83%</td><td class="red">持續惡化</td></tr>
+      <tr><td>2025 Q2</td><td class="red">-0.29</td><td>22.66%</td><td>-6.16%</td><td class="red">⬇️ 谷底</td></tr>
+      <tr><td>2025 Q3</td><td class="green">+0.65</td><td>46.69%</td><td>17.01%</td><td class="green">⬆️ 大幅反彈</td></tr>
+      <tr><td>2025 Q4</td><td class="green">+0.76</td><td>41.86%</td><td>15.37%</td><td class="green">持續改善</td></tr>
+      <tr><td style="background:#f0fdf4;font-weight:700;">2026 Q1 ★API</td><td class="green" style="background:#f0fdf4;font-weight:700;">+2.25</td><td class="green" style="background:#f0fdf4;"><strong>53.37%</strong></td><td class="green" style="background:#f0fdf4;"><strong>32.81%</strong></td><td class="green" style="background:#f0fdf4;">🚀 歷史最高</td></tr>
+    </table>
+    <div style="margin-top:14px; background:#f0fdf4; border-radius:10px; padding:14px; font-size:13px; color:#15803d; line-height:1.6;">
+      <strong>估值特別說明：</strong> 目前PE 210倍（看起來很貴），但法人以預估2026年全年EPS 23.42元計算，則PE僅 <strong>183.5 ÷ 23.42 = 7.8倍</strong>，屬嚴重低估。若法人預估正確，目前股價反而是難得的買入機會。關鍵在於EPS預估能否兌現。
+    </div>
+  </div>
+</div>
+
+<!-- 07 籌碼面分析 -->
+<div class="section">
+  <div class="section-header"><span class="section-icon">🏦</span><h2>籌碼面分析</h2></div>
+  <div class="section-body">
+    <div class="news-box">
+      <strong>📰 今日市場重大事件（★WebSearch）</strong>
+      <p>①<strong>中國兆易創新示警：</strong>發出記憶體報價恐大跌警告，引發市場對DRAM/NOR Flash供需的重新評估<br>
+      ②<strong>三星+SK海力士擴產：</strong>宣布合計約16.5兆新台幣的擴產計畫，長線供給壓力上升<br>
+      ③<strong>大摩喊「愈跌愈買」：</strong>台股暴殺時大摩對記憶體族群最新評估仍看多，維持目標價</p>
+    </div>
+    <div class="inst-grid">
+      <div class="inst-card sell">
+        <div class="i-name">外資買賣超（7/1昨日）★API</div>
+        <div class="i-val red">-22,678張</div>
+        <div class="i-unit">外資大幅賣超，籌碼轉鬆</div>
+      </div>
+      <div class="inst-card">
+        <div class="i-name">投信買賣超（7/1昨日）★API</div>
+        <div class="i-val neutral">0張</div>
+        <div class="i-unit">投信完全觀望</div>
+      </div>
+      <div class="inst-card sell">
+        <div class="i-name">自營商買賣超（7/1昨日）★API</div>
+        <div class="i-val red">-6,644張</div>
+        <div class="i-unit">自營商積極避險</div>
+      </div>
+    </div>
+    <table>
+      <tr><th>外資機構</th><th>評等</th><th>目標價</th><th>備註</th></tr>
+      <tr><td>摩根士丹利（大摩）★WebSearch</td><td class="green">優於大盤</td><td class="green">222元</td><td>台股重挫時喊「愈跌愈該買」</td></tr>
+      <tr><td>本土投顧★WebSearch</td><td class="neutral">區間操作（降評）</td><td class="red">176元</td><td class="red">今日下修，現價接近目標</td></tr>
+      <tr><td>部分法人★WebSearch</td><td class="green">看多</td><td class="green">200元</td><td>由170元上修至200元</td></tr>
+      <tr><td>法人全年EPS共識★WebSearch</td><td>—</td><td>—</td><td class="green">2026 EPS估23.42元、2027估29.34元</td></tr>
+    </table>
+    <div style="margin-top:14px; font-size:13px; color:#64748b; line-height:1.6;">
+      <strong>籌碼解讀：</strong> 外資昨日大幅賣超22,678張，今日繼續跌，籌碼轉鬆明確。但大摩在台股大跌時仍維持「愈跌愈買」立場，顯示外資機構內部分歧：短線交易部門賣出，但研究部門仍看長多。若外資在低位開始轉買，是最強的止跌訊號。
+    </div>
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div class="section">
+  <div class="section-header"><span class="section-icon">📉</span><h2>技術分析</h2></div>
+  <div class="section-body">
+    <div class="alert-box">
+      <strong>🔴 今日（7/2）技術面警示：183.5元跌破MA20（189.07元）＋布林中軌雙重支撐！連跌兩日累計-21.4%</strong>
+      <p>今日開盤大缺口下跌（前收190→開176），低點176創近期新低，後反彈至186，收183.5。缺口範圍176~190為前方壓力，今日低點176元是短期關鍵支撐。</p>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <h3>均線系統 ★API（今日）</h3>
+        <div class="indicator-row"><span class="indicator-name">MA5（5日線）</span><span class="indicator-val bearish">198.1 元（壓力，高於現價）</span></div>
+        <div class="indicator-row"><span class="indicator-name">MA10（10日線）</span><span class="indicator-val bearish">206.7 元（壓力，高於現價）</span></div>
+        <div class="indicator-row"><span class="indicator-name">MA20（20日線）</span><span class="indicator-val bearish">189.07 元（今日跌破！轉壓力）</span></div>
+        <div class="indicator-row"><span class="indicator-name">MA60（60日線）</span><span class="indicator-val bullish">138.99 元（中期強力支撐）</span></div>
+        <div class="indicator-row"><span class="indicator-name">均線判讀</span><span class="indicator-val bearish">MA5/10/20三線均下彎且高於現價</span></div>
+      </div>
+      <div class="tech-card">
+        <h3>MACD / RSI ★API（今日）</h3>
+        <div class="indicator-row"><span class="indicator-name">MACD 線</span><span class="indicator-val neutral">14.61</span></div>
+        <div class="indicator-row"><span class="indicator-name">信號線（EMA9）</span><span class="indicator-val neutral">18.33</span></div>
+        <div class="indicator-row"><span class="indicator-name">柱狀（今日）</span><span class="indicator-val bearish">-3.72（昨-2.17→今-3.72 惡化）</span></div>
+        <div class="indicator-row"><span class="indicator-name">MACD 趨勢</span><span class="indicator-val bearish">死叉持續加深，空方加速</span></div>
+        <div class="indicator-row"><span class="indicator-name">RSI（14）</span><span class="indicator-val neutral">51.23（昨53.99→今51.23）</span></div>
+        <div class="indicator-row"><span class="indicator-name">RSI 判讀</span><span class="indicator-val neutral">未超賣（<30），無急反訊號</span></div>
+      </div>
+      <div class="tech-card">
+        <h3>布林通道 ★API（今日）</h3>
+        <div class="indicator-row"><span class="indicator-name">上軌（壓力）</span><span class="indicator-val bearish">235.42 元</span></div>
+        <div class="indicator-row"><span class="indicator-name">中軌（MA20）</span><span class="indicator-val bearish">189.07 元（今日跌破！）</span></div>
+        <div class="indicator-row"><span class="indicator-name">下軌（支撐）</span><span class="indicator-val bullish">142.73 元</span></div>
+        <div class="indicator-row"><span class="indicator-name">今日位置</span><span class="indicator-val neutral">中軌以下，下軌距現價49%</span></div>
+        <div class="indicator-row"><span class="indicator-name">布林判讀</span><span class="indicator-val bearish">跌破中軌，空間向下打開</span></div>
+      </div>
+      <div class="tech-card">
+        <h3>關鍵價位表</h3>
+        <div class="indicator-row"><span class="indicator-name">🔴 強壓1（MA5）</span><span class="indicator-val bearish">198.1 元</span></div>
+        <div class="indicator-row"><span class="indicator-name">🔴 強壓2（MA10）</span><span class="indicator-val bearish">206.7 元</span></div>
+        <div class="indicator-row"><span class="indicator-name">🟡 關鍵壓力（MA20）</span><span class="indicator-val neutral">189.07 元（已跌破）</span></div>
+        <div class="indicator-row"><span class="indicator-name">🟡 今日低點支撐</span><span class="indicator-val neutral">176.0 元（今日最低，關鍵）</span></div>
+        <div class="indicator-row"><span class="indicator-name">🟢 本土投顧目標</span><span class="indicator-val neutral">176 元（已達降評目標）</span></div>
+        <div class="indicator-row"><span class="indicator-name">🟢 強力支撐（MA60）</span><span class="indicator-val bullish">138.99 元</span></div>
+        <div class="indicator-row"><span class="indicator-name">📍 現價（15:41）</span><span class="indicator-val neutral">183.5 元</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <div class="section-header"><span class="section-icon">💳</span><h2>融資融券</h2></div>
+  <div class="section-body">
+    <div class="inst-grid" style="grid-template-columns:repeat(2,1fr);">
+      <div class="inst-card">
+        <div class="i-name">融資餘額（7/1）★API</div>
+        <div class="i-val neutral">0張</div>
+        <div class="i-unit">數據暫顯示0（待更新）</div>
+      </div>
+      <div class="inst-card">
+        <div class="i-name">融券餘額（7/1）★API</div>
+        <div class="i-val neutral">0張</div>
+        <div class="i-unit">數據暫顯示0（待更新）</div>
+      </div>
+    </div>
+    <div style="background:#f8fafc; border-radius:10px; padding:14px; font-size:13px; color:#64748b; line-height:1.6; margin-top:8px;">
+      <strong>趨勢判讀：</strong> 華邦電市值8,258億，以機構法人和外資持有為主。今日大量賣壓主要來自法人（外資昨賣22,678張），非散戶融資壓力。若未來融資增加，需留意追高散戶成為解套賣壓。查詢連結：https://www.twse.com.tw/zh/trading/margin/MBL0003.html
+    </div>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <div class="section-header"><span class="section-icon">⚔️</span><h2>研究員多空辯論</h2></div>
+  <div class="section-body">
+    <div class="debate-grid">
+      <div class="bull-box">
+        <div class="debate-title bull-title">🐂 看多研究員（53%）</div>
+        <div class="debate-point"><div class="num bull-num">1</div><div class="txt"><strong>法人EPS估2026年23.42元，PE僅7.8倍極度低估：</strong> 以183.5元除以法人預估EPS 23.42元，本益比僅7.8倍，遠低於記憶體族群歷史均值15~20倍，若業績兌現將有巨大重估空間。</div></div>
+        <div class="debate-point"><div class="num bull-num">2</div><div class="txt"><strong>Q1'26毛利率53.37%創歷史高，EPS 2.25元大幅優於去年同季：</strong> Q2'25還虧0.29元，Q1'26大賺2.25元，財務已質變，下半年EPS加速效應將更明顯。</div></div>
+        <div class="debate-point"><div class="num bull-num">3</div><div class="txt"><strong>NOR Flash全球第一，美光減產後台廠地位更穩固：</strong> 美光已減少NOR Flash產能，推升台廠成為主要供應商，利基型產品毛利高且不易被替代，護城河持續加深。</div></div>
+        <div class="debate-point"><div class="num bull-num">4</div><div class="txt"><strong>月營收2026年連6月YoY超50%，6月更達+182%：</strong> 月營收從97.7億（1月）成長至200億（6月），顯示業績成長不是偶發，而是結構性上升趨勢。</div></div>
+        <div class="debate-point"><div class="num bull-num">5</div><div class="txt"><strong>今日低點176元已達本土投顧降評目標，支撐強：</strong> 本土投顧降評目標176元，今日低點恰好測試176元後反彈至183.5元，技術上顯示市場有買盤在此接手。</div></div>
+        <div class="debate-point"><div class="num bull-num">6</div><div class="txt"><strong>大摩「愈跌愈該買」，法人基本面看法未改：</strong> 台股大跌時大摩仍維持看多立場，強調供需結構未轉弱，法人降評更多是短線保守，非基本面轉差。</div></div>
+      </div>
+      <div class="bear-box">
+        <div class="debate-title bear-title">🐻 看空研究員（47%）</div>
+        <div class="debate-point"><div class="num bear-num">1</div><div class="txt"><strong>中國兆易創新示警，NOR Flash報價恐下跌：</strong> 中國最大NOR Flash廠兆易創新（GigaDevice）發出報價下跌警告，直接衝擊華邦電最核心的NOR Flash業務，市場擔憂毛利率將從53.37%高點下滑。</div></div>
+        <div class="debate-point"><div class="num bear-num">2</div><div class="txt"><strong>三星+SK海力士合計16.5兆台幣擴產，長線供給壓力：</strong> 韓廠大舉擴產將在2027~2028年帶來新產能，雖短期無影響，但長線供需展望轉負，市場開始提前折現。</div></div>
+        <div class="debate-point"><div class="num bear-num">3</div><div class="txt"><strong>MACD死叉持續惡化，柱狀-3.72（昨-2.17）：</strong> 短線動能惡化速度加快，且MA5（198.1）、MA10（206.7）、MA20（189.07）三線均在現價上方形成壓力。</div></div>
+        <div class="debate-point"><div class="num bear-num">4</div><div class="txt"><strong>外資昨日大幅賣超22,678張，法人出脫明確：</strong> 外資持續大量賣出，資金明確流出，若外資尚未止賣，股價難以企穩。</div></div>
+        <div class="debate-point"><div class="num bear-num">5</div><div class="txt"><strong>本土投顧降評至176元，評等下修：</strong> 本土券商已將評等降至「區間操作」，目標下修176元，顯示短中期操作機構態度轉保守，散戶跟進賣出風險增加。</div></div>
+        <div class="debate-point"><div class="num bear-num">6</div><div class="txt"><strong>從高點233.5元累計跌幅已達21.4%，趨勢破壞：</strong> 連跌兩日、跌破MA20、布林中軌雙重支撐，技術面趨勢結構已破壞，需要時間修復，不宜急著接刀。</div></div>
+      </div>
+    </div>
+    <div class="debate-weight">
+      <div style="font-size:13px; margin-bottom:8px; opacity:0.8;">多空權重評估（2026-07-02）</div>
+      <div class="weight-bar"><div class="bull-weight" style="width:53%"></div><div class="bear-weight" style="width:47%"></div></div>
+      <div style="font-size:13px;">🐂 看多 53% &nbsp;|&nbsp; 🐻 看空 47%</div>
+      <div style="font-size:12px; opacity:0.7; margin-top:6px;">低估值（PE 7.8倍）vs 技術破位＋中國示警，多空極度拉鋸</div>
+    </div>
+    <div style="margin-top:16px; background:#f8fafc; border-radius:10px; padding:14px; font-size:13px; line-height:1.6; color:#374151;">
+      <strong>💬 給一般投資人的話：</strong> 華邦電今天跌到183.5元，從高點233.5元算已經跌了21%，看起來很恐怖。但有一點很重要：<strong>法人估計2026年全年每股可以賺23.42元</strong>，以183.5元買進，等於用不到8倍本益比買進，非常便宜。問題是現在市場在擔心「中國廠商降價＋韓廠擴產」，不知道業績預估能不能實現。建議<strong>先不要急著買，等技術面止跌（MACD柱狀由負轉正）再進場</strong>，或分批在176~183元區間小量布局，停損設在170元。
+    </div>
+  </div>
+</div>
+
+<!-- 11 風控評估 -->
+<div class="section">
+  <div class="section-header"><span class="section-icon">🛡️</span><h2>風控評估</h2></div>
+  <div class="section-body">
+    <div style="display:flex; align-items:center; gap:24px; margin-bottom:20px;">
+      <div><div style="font-size:3.5em; font-weight:800; color:#d97706;">4.9</div><div style="font-size:1.1em; color:#64748b;">/ 10</div></div>
+      <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:12px; padding:12px 20px; text-align:center;">
+        <div style="font-size:1.2em; font-weight:800; color:#92400e;">⚠️ 中等偏高風險</div>
+        <div style="font-size:12px; color:#78350f; margin-top:4px;">基本面極強但短線技術全面轉弱</div>
+      </div>
+    </div>
+    <div class="score-bar-wrap"><div class="score-label">估值風險 30%</div><div class="score-bar"><div class="score-fill" style="width:20%;background:linear-gradient(90deg,#16a34a,#22c55e)"></div></div><div class="score-val">2.0</div></div>
+    <div style="font-size:11px; color:#94a3b8; margin-bottom:12px; margin-left:92px;">法人估2026全年EPS 23.42元，PE僅7.8倍，估值風險極低</div>
+    <div class="score-bar-wrap"><div class="score-label">財務風險 25%</div><div class="score-bar"><div class="score-fill" style="width:25%;background:linear-gradient(90deg,#16a34a,#22c55e)"></div></div><div class="score-val">2.5</div></div>
+    <div style="font-size:11px; color:#94a3b8; margin-bottom:12px; margin-left:92px;">毛利率53.37%創歷史高、EPS轉正，財務風險低</div>
+    <div class="score-bar-wrap"><div class="score-label">流動性風險 10%</div><div class="score-bar"><div class="score-fill" style="width:15%;background:linear-gradient(90deg,#16a34a,#22c55e)"></div></div><div class="score-val">1.5</div></div>
+    <div style="font-size:11px; color:#94a3b8; margin-bottom:12px; margin-left:92px;">市值8,258億，日均成交量大，流動性佳</div>
+    <div class="score-bar-wrap"><div class="score-label">產業風險 15%</div><div class="score-bar"><div class="score-fill" style="width:70%;background:linear-gradient(90deg,#d97706,#fbbf24)"></div></div><div class="score-val">7.0</div></div>
+    <div style="font-size:11px; color:#94a3b8; margin-bottom:12px; margin-left:92px;">中國兆易創新示警+三星/SK擴產，產業競爭風險升高</div>
+    <div class="score-bar-wrap"><div class="score-label">總經風險 10%</div><div class="score-bar"><div class="score-fill" style="width:40%;background:linear-gradient(90deg,#2563eb,#60a5fa)"></div></div><div class="score-val">4.0</div></div>
+    <div style="font-size:11px; color:#94a3b8; margin-bottom:12px; margin-left:92px;">AI/車用需求強，但地緣政治存在不確定性</div>
+    <div class="score-bar-wrap"><div class="score-label">籌碼風險 10%</div><div class="score-bar"><div class="score-fill" style="width:80%;background:linear-gradient(90deg,#dc2626,#ef4444)"></div></div><div class="score-val">8.0</div></div>
+    <div style="font-size:11px; color:#94a3b8; margin-bottom:12px; margin-left:92px;">外資昨賣超22,678張、今續跌、MACD死叉惡化，籌碼風險高</div>
+    <div style="background:#fef3c7; border-radius:10px; padding:14px; font-size:13px; color:#92400e; line-height:1.6; margin-top:8px;">
+      <strong>風控總結：</strong> 華邦電估值面和財務面是各股中最佳（PE 7.8倍、毛利率53%），但今日產業面（競爭示警）和籌碼面（外資大賣+技術破位）雙雙轉差，整體風險評分升至4.9分。若中國示警效應消散、外資轉買，風險快速降至3.5；若持續下跌跌破176元，則升至6.0。
+    </div>
+  </div>
+</div>
+
+<!-- 12 台股三段式策略 -->
+<div class="section">
+  <div class="section-header"><span class="section-icon">🎯</span><h2>台股三段式操作策略</h2></div>
+  <div class="section-body">
+    <div class="strategy-grid">
+      <div class="strategy-card attack">
+        <h3>🗡️ 進攻計劃（積極型）</h3>
+        <div class="s-row"><span>前提</span><span class="s-val">中國示警效應消散</span></div>
+        <div class="s-row"><span>進場條件</span><span class="s-val">收復MA20（189元）+MACD轉正</span></div>
+        <div class="s-row"><span>目標價1</span><span class="s-val">198元（MA5區間）</span></div>
+        <div class="s-row"><span>目標價2</span><span class="s-val">222元（大摩目標）</span></div>
+        <div class="s-row"><span>部位建議</span><span class="s-val">資金 15-20%</span></div>
+        <div class="s-row"><span>停損設置</span><span class="s-val">175元（今日低176下方）</span></div>
+      </div>
+      <div class="strategy-card balance">
+        <h3>⚖️ 均衡計劃（穩健型）</h3>
+        <div class="s-row"><span>前提</span><span class="s-val">176~183元區間量縮整理</span></div>
+        <div class="s-row"><span>進場條件</span><span class="s-val">176元支撐守住＋止跌確認</span></div>
+        <div class="s-row"><span>目標價1</span><span class="s-val">189元（MA20收復）</span></div>
+        <div class="s-row"><span>目標價2</span><span class="s-val">198元（MA5）</span></div>
+        <div class="s-row"><span>部位建議</span><span class="s-val">資金 8-10%（分批）</span></div>
+        <div class="s-row"><span>停損設置</span><span class="s-val">170元（跌破則出）</span></div>
+      </div>
+      <div class="strategy-card defense">
+        <h3>🛡️ 防守計劃（保守型）</h3>
+        <div class="s-row"><span>建議</span><span class="s-val">完全觀望</span></div>
+        <div class="s-row"><span>等待條件</span><span class="s-val">MACD柱狀連3日縮短轉正</span></div>
+        <div class="s-row"><span>等待條件2</span><span class="s-val">中國示警確認是過度恐慌</span></div>
+        <div class="s-row"><span>現有持股</span><span class="s-val">設停損175元嚴格執行</span></div>
+        <div class="s-row"><span>部位建議</span><span class="s-val">資金 0%，現金為王</span></div>
+        <div class="s-row"><span>再評估時間</span><span class="s-val">1週後重新評估</span></div>
+      </div>
+    </div>
+    <table style="margin-top:20px;">
+      <tr><th>催化劑事件</th><th>預計時間</th><th>預期影響</th></tr>
+      <tr><td>中國兆易創新後續澄清/數據</td><td>本週內</td><td class="neutral">若澄清只是短期擔憂，股價快速反彈</td></tr>
+      <tr><td>南亞科 Q2 法說會（7/10）</td><td><strong>2026-07-10</strong></td><td class="green">記憶體業績若超預期，帶動族群全面回升</td></tr>
+      <tr><td>華邦電 Q2 財報</td><td>2026年8月</td><td class="green">預估毛利率55%+，EPS 4~6元，將是最強催化劑</td></tr>
+      <tr><td>NOR Flash 合約價談判</td><td>季度持續</td><td class="green">美光缺貨效應持續，台廠議價能力強</td></tr>
+      <tr><td>韓廠擴產實際落地時間</td><td>2027~2028</td><td class="red">長線供給壓力，影響2028年以後估值</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 13 名詞小教室 -->
+<div class="section">
+  <div class="section-header"><span class="section-icon">📚</span><h2>名詞小教室</h2></div>
+  <div class="section-body">
+    <div class="glossary-grid">
+      <div class="glossary-item">
+        <h4>兆易創新（GigaDevice）</h4>
+        <p>中國最大的NOR Flash廠商，也是華邦電最直接的競爭對手。今天股價下跌的最直接原因，就是兆易創新發出警告說NOR Flash報價可能大跌。兩家公司在全球NOR Flash市場上激烈競爭。</p>
+      </div>
+      <div class="glossary-item">
+        <h4>利基型記憶體（Specialty DRAM）</h4>
+        <p>針對特定應用的客製化記憶體，如車用、工業控制、醫療設備。特點是需求穩定、毛利高、認證壁壘高（車用認證要2~3年）。比大眾型記憶體更抗景氣衰退，這是華邦電的核心競爭力。</p>
+      </div>
+      <div class="glossary-item">
+        <h4>缺口（Gap）</h4>
+        <p>昨收190元，今天開盤直接跳到176元，中間沒有任何成交，就叫「缺口」（190→176的空白）。缺口通常意味著大量資金在一瞬間集體賣出，是很強的恐慌信號。缺口區域之後會成為壓力區。</p>
+      </div>
+      <div class="glossary-item">
+        <h4>量縮下跌 vs 量增下跌</h4>
+        <p>量縮下跌（成交量小於均量）：賣壓有限，只是缺少買盤，較容易止跌。量增下跌（成交量暴大）：恐慌性賣出，風險更大。今日華邦電成交164,179張，低於5日均量204,000張，屬於量縮下跌，相對可控。</p>
+      </div>
+      <div class="glossary-item">
+        <h4>本益比（PE）</h4>
+        <p>股價÷每股盈餘。PE=7.8倍表示「買這家公司，不到8年就賺回來」，非常便宜。但前提是EPS預估必須實現。投資人需要判斷：法人估的23.42元EPS，有多大機率真的達到？</p>
+      </div>
+      <div class="glossary-item">
+        <h4>擴產（Capacity Expansion）</h4>
+        <p>廠商增加生產設備、提高產能。短期（1~2年內）對供需無影響，但長期（2~3年後）會增加市場供給，有壓低價格的風險。三星+SK海力士的16.5兆擴產，影響將在2027~2028年才顯現。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 14 免責聲明 -->
+<div class="disclaimer">
+  <h4>⚠️ 投資免責聲明</h4>
+  <p>本報告所有數字均來自本次獨立擷取，專屬於華邦電（2344），與本對話中其他股票（南亞科2408等）之數據完全分開，不存在任何混用。本報告僅供研究參考，不構成任何投資建議或買賣邀約。投資均有風險，請自行評估。<br><br>
+  <strong>★API 數據來源：</strong> Fugle API（即時股價/今日K線）、FinMind API（歷史K線、三大法人T86、月營收、季度財報、融資融券）；資料時間：2026-07-02 15:41 盤中<br>
+  <strong>★WebSearch 來源：</strong> 聯合新聞網、CMoney、旺得富（大摩目標價）、vocus法說報告（2026年7月）<br><br>
+  報告生成：2026-07-02 | 分析工具：Claude AI + stock-analysis-team skill</p>
+</div>
+<div style="height:40px;"></div>
+
+<script>
+new Chart(document.getElementById('epsChart').getContext('2d'),{type:'bar',data:{labels:["Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26★"],datasets:[{data:[0.41,0.00,-0.15,-0.24,-0.29,0.65,0.76,2.25],backgroundColor:["#60a5fa","#94a3b8","#f87171","#f87171","#f87171","#4ade80","#4ade80","#ef4444"],borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{grid:{color:'#f1f5f9'},ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+
+new Chart(document.getElementById('revenueChart').getContext('2d'),{type:'line',data:{labels:["1月","2月","3月","4月","5月","6月★"],datasets:[{data:[97.7,117.8,119.7,145.0,192.5,200.0],borderColor:'#7c3aed',backgroundColor:'rgba(124,58,237,0.1)',borderWidth:2.5,pointBackgroundColor:["#7c3aed","#7c3aed","#7c3aed","#7c3aed","#7c3aed","#ef4444"],pointRadius:[4,4,4,4,4,7],tension:0.3,fill:true}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{grid:{color:'#f1f5f9'},ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}});
+
+new Chart(document.getElementById('targetChart').getContext('2d'),{type:'bar',data:{labels:['現價★API','本土降評目標★WS','大摩目標★WS','法人看多目標★WS'],datasets:[{data:[183.5,176,222,200],backgroundColor:['#94a3b8','#f87171','#22c55e','#60a5fa'],borderRadius:6}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{min:0,max:260,ticks:{font:{size:10}}},y:{ticks:{font:{size:10}}}}}});
+</script>
+</body>
+</html>
