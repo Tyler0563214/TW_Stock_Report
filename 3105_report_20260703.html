@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>穩懋半導體 (3105) 深度分析報告 2026-07-03</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #7c3aed;
+    --primary-dark: #5b21b6;
+    --secondary: #1A56DB;
+    --accent: #059669;
+    --danger: #dc2626;
+    --warning: #d97706;
+    --bg: #F0F4F8;
+    --card: #FFFFFF;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --green: #059669;
+    --red: #dc2626;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+
+  .cover {
+    background: linear-gradient(135deg, #1e1b4b 0%, #5b21b6 50%, #7c3aed 100%);
+    color: white; padding: 60px 40px; border-radius: 20px; margin-bottom: 28px; position: relative; overflow: hidden;
+  }
+  .cover::before { content:''; position:absolute; top:-80px; right:-80px; width:320px; height:320px; border-radius:50%; background:rgba(255,255,255,0.06); }
+  .cover-badge { display:inline-block; background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.3); border-radius:999px; padding:4px 14px; font-size:13px; margin-bottom:20px; }
+  .cover h1 { font-size:38px; font-weight:800; margin-bottom:6px; }
+  .cover .subtitle { font-size:18px; opacity:0.85; margin-bottom:28px; }
+  .cover-meta { display:flex; gap:32px; flex-wrap:wrap; }
+  .cover-meta-item label { font-size:12px; opacity:0.7; display:block; margin-bottom:2px; }
+  .cover-meta-item .val { font-size:22px; font-weight:700; }
+  .cover-meta-item .val.up { color:#6ee7b7; }
+  .risk-badge { display:inline-block; padding:6px 18px; border-radius:8px; font-weight:700; font-size:14px; margin-top:20px; }
+  .risk-high { background:#ef4444; color:white; }
+
+  .section { background: var(--card); border-radius: 16px; padding: 28px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .section-title { font-size:20px; font-weight:700; color:var(--primary-dark); margin-bottom:20px; padding-bottom:10px; border-bottom:2px solid var(--border); display:flex; align-items:center; gap:8px; }
+  .section-title .icon { font-size:22px; }
+
+  .conclusion-card { background:linear-gradient(135deg,#1e1b4b,#5b21b6); color:white; border-radius:14px; padding:28px; margin-bottom:20px; }
+  .conclusion-card h2 { font-size:22px; font-weight:700; margin-bottom:16px; }
+  .conclusion-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .conclusion-item { background:rgba(255,255,255,0.12); border-radius:10px; padding:16px; }
+  .conclusion-item label { font-size:12px; opacity:0.75; display:block; margin-bottom:4px; }
+  .conclusion-item .cval { font-size:20px; font-weight:700; }
+  .rec-tag { display:inline-block; background:#fbbf24; color:#1e293b; border-radius:6px; padding:4px 14px; font-weight:700; font-size:14px; margin-top:12px; }
+
+  .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .kpi-card { background:linear-gradient(135deg,#f8fafc,#f1f5f9); border-radius:12px; padding:16px; border-left:4px solid var(--primary); }
+  .kpi-card .kpi-label { font-size:11px; color:var(--text-light); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+  .kpi-card .kpi-value { font-size:22px; font-weight:700; color:var(--primary-dark); margin-bottom:4px; }
+  .kpi-card .kpi-note { font-size:12px; color:var(--text-light); }
+  .kpi-card.green { border-left-color:var(--green); }
+  .kpi-card.green .kpi-value { color:var(--green); }
+  .kpi-card.red { border-left-color:var(--red); }
+  .kpi-card.red .kpi-value { color:var(--red); }
+  .kpi-card.orange { border-left-color:var(--warning); }
+  .kpi-card.orange .kpi-value { color:var(--warning); }
+
+  .chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:8px; }
+  .chart-full { margin-bottom:0; }
+  .chart-box { background:#f8fafc; border-radius:12px; padding:16px; }
+  .chart-title { font-size:14px; font-weight:600; color:var(--text); margin-bottom:12px; }
+  .chart-note { font-size:11px; color:var(--text-light); margin-top:8px; text-align:center; }
+  canvas { max-height:240px; }
+
+  table { width:100%; border-collapse:collapse; }
+  th { background:#f1f5f9; padding:10px 14px; text-align:left; font-size:13px; font-weight:600; color:var(--text-light); }
+  td { padding:10px 14px; border-bottom:1px solid var(--border); font-size:14px; }
+  tr:last-child td { border-bottom:none; }
+  .td-up { color:var(--green); font-weight:600; }
+  .td-down { color:var(--red); font-weight:600; }
+
+  .tag { display:inline-block; border-radius:5px; padding:2px 10px; font-size:12px; font-weight:600; margin:2px; }
+  .tag-blue { background:#dbeafe; color:#1e40af; }
+  .tag-green { background:#d1fae5; color:#065f46; }
+  .tag-red { background:#fee2e2; color:#991b1b; }
+  .tag-orange { background:#fef3c7; color:#92400e; }
+  .tag-purple { background:#ede9fe; color:#5b21b6; }
+
+  .score-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .score-label { width:90px; font-size:13px; }
+  .score-bar-bg { flex:1; background:#e2e8f0; border-radius:6px; height:10px; }
+  .score-bar-fill { height:100%; border-radius:6px; }
+  .score-val { width:40px; text-align:right; font-weight:700; font-size:13px; }
+
+  .strategy-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .strategy-card { border-radius:12px; padding:20px; }
+  .strategy-card.attack { background:linear-gradient(135deg,#fef3c7,#fde68a); border:1px solid #fbbf24; }
+  .strategy-card.balance { background:linear-gradient(135deg,#dbeafe,#bfdbfe); border:1px solid #60a5fa; }
+  .strategy-card.defense { background:linear-gradient(135deg,#d1fae5,#a7f3d0); border:1px solid #34d399; }
+  .strategy-card h3 { font-size:15px; font-weight:700; margin-bottom:10px; }
+  .strategy-card ul { padding-left:16px; font-size:13px; }
+  .strategy-card li { margin-bottom:5px; }
+
+  .debate-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .debate-bull { background:#f0fdf4; border-radius:12px; padding:20px; border:1px solid #bbf7d0; }
+  .debate-bear { background:#fff1f2; border-radius:12px; padding:20px; border:1px solid #fecdd3; }
+  .debate-bull h3 { color:#166534; margin-bottom:12px; font-size:15px; }
+  .debate-bear h3 { color:#991b1b; margin-bottom:12px; font-size:15px; }
+  .debate-bull li, .debate-bear li { margin-bottom:8px; font-size:13px; }
+
+  .glossary-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .glossary-item { background:#f8fafc; border-radius:8px; padding:14px; border-left:3px solid var(--primary); }
+  .glossary-item strong { color:var(--primary-dark); display:block; margin-bottom:4px; font-size:14px; }
+  .glossary-item p { font-size:13px; color:var(--text-light); }
+
+  .disclaimer { background:#fffbeb; border:1px solid #fcd34d; border-radius:12px; padding:20px; }
+  .disclaimer h3 { color:#92400e; margin-bottom:10px; }
+  .disclaimer p, .disclaimer li { font-size:13px; color:#78350f; }
+  .disclaimer ul { padding-left:18px; }
+
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .info-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border); font-size:14px; }
+  .info-row:last-child { border:none; }
+  .info-label { color:var(--text-light); }
+  .info-val { font-weight:600; }
+  .signal-card { border-radius:10px; padding:14px; margin-bottom:10px; }
+  .signal-bull { background:#f0fdf4; border:1px solid #86efac; }
+  .signal-bear { background:#fff1f2; border:1px solid #fca5a5; }
+  .signal-neutral { background:#f8fafc; border:1px solid #cbd5e1; }
+
+  @media(max-width:768px){
+    .kpi-grid { grid-template-columns:repeat(2,1fr); }
+    .chart-grid { grid-template-columns:1fr; }
+    .conclusion-grid { grid-template-columns:1fr 1fr; }
+    .strategy-grid { grid-template-columns:1fr; }
+    .debate-grid { grid-template-columns:1fr; }
+    .two-col { grid-template-columns:1fr; }
+    .glossary-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ① COVER -->
+<div class="cover">
+  <div class="cover-badge">⚗️ GaAs × 光通訊 × LEO衛星 × AI資料中心</div>
+  <h1>穩懋半導體</h1>
+  <div class="subtitle">3105 · 全球最大GaAs晶圓代工廠 · 2026-07-03 深度分析報告</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><label>今日收盤</label><div class="val up">416.0元 ▲1.22%</div></div>
+    <div class="cover-meta-item"><label>52W區間</label><div class="val">79.7 — 637元</div></div>
+    <div class="cover-meta-item"><label>市值(估)</label><div class="val">~1,290億元</div></div>
+    <div class="cover-meta-item"><label>TTM PE(估)</label><div class="val">79.7x</div></div>
+    <div class="cover-meta-item"><label>Q1'26 EPS</label><div class="val up">1.26元</div></div>
+  </div>
+  <div>
+    <span class="risk-badge risk-high">🔴 風險等級：7.5 / 10 高風險</span>
+  </div>
+</div>
+
+<!-- ② CONCLUSION -->
+<div class="conclusion-card">
+  <h2>⚡ 核心投資結論</h2>
+  <div class="conclusion-grid">
+    <div class="conclusion-item">
+      <label>投資建議</label>
+      <div class="cval">高風險 積極觀察</div>
+      <div style="font-size:13px;opacity:0.8;margin-top:4px;">技術面確認止跌後考慮介入</div>
+    </div>
+    <div class="conclusion-item">
+      <label>分析師舊目標價(已超越)</label>
+      <div class="cval">292~324元</div>
+      <div style="font-size:13px;opacity:0.8;margin-top:4px;">現價416已遠超；長線看好者喊800元</div>
+    </div>
+    <div class="conclusion-item">
+      <label>最大下行支撐</label>
+      <div class="cval">397元</div>
+      <div style="font-size:13px;opacity:0.8;margin-top:4px;">布林下軌 / 400整數關卡</div>
+    </div>
+  </div>
+  <div style="margin-top:16px;font-size:14px;opacity:0.9;line-height:1.7;">
+    穩懋是全球最大GaAs晶圓代工廠，從手機PA出發，正快速布局AI光通訊（50G VCSEL量產、100G驗證中）、LEO衛星與AI資料中心。月營收連續大幅YoY成長（5月+48.9%、6月+40.3%）。但技術面強烈空頭排列（MACD柱狀-11.02強烈死叉、RSI 36.25接近超賣），且現價416元已大幅超越所有舊版分析師目標價，估值偏高（TTM PE≈79.7x）。屬於高波動成長股，適合積極型投資人，建議等待技術確認後布局。
+  </div>
+  <div><span class="rec-tag">📋 積極型：380~400元止跌確認後分批；停損370元破位；長線目標520~600元（光通訊放量兌現）</span></div>
+</div>
+
+<!-- ③ KPI -->
+<div class="section">
+  <div class="section-title"><span class="icon">📊</span>關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card green">
+      <div class="kpi-label">今日股價 ★API</div>
+      <div class="kpi-value">416.0元</div>
+      <div class="kpi-note">+1.22%，從400低點反彈</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">TTM PE ★推估</div>
+      <div class="kpi-value">79.7x</div>
+      <div class="kpi-note">手算：416÷5.22元；估值偏高</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">Q1'26 EPS ★API</div>
+      <div class="kpi-value">1.26元</div>
+      <div class="kpi-note">Q1淡季；YoY大幅改善</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">Q1'26 毛利率 ★WebSearch</div>
+      <div class="kpi-value">32.2%</div>
+      <div class="kpi-note">高毛利代工廠！Q4'25峰值31.8%</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">2026-06 月營收 ★API</div>
+      <div class="kpi-value">17.55億</div>
+      <div class="kpi-note">YoY +40.3%，連續創新高</div>
+    </div>
+    <div class="kpi-card orange">
+      <div class="kpi-label">Q1'26 營業利益率 ★API</div>
+      <div class="kpi-value">9.39%</div>
+      <div class="kpi-note">Q4'25曾達13.87%（高峰）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">FY2025 EPS ★推算</div>
+      <div class="kpi-value">4.00元</div>
+      <div class="kpi-note">Q1+Q2+Q3+Q4'25合計；V型反轉</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">52W波動幅度</div>
+      <div class="kpi-value">+699%</div>
+      <div class="kpi-note">79.7→637元（極高波動！）</div>
+    </div>
+  </div>
+</div>
+
+<!-- ④ CHARTS -->
+<div class="section">
+  <div class="section-title"><span class="icon">📈</span>財務趨勢圖表</div>
+  <div class="chart-grid">
+    <div class="chart-box">
+      <div class="chart-title">EPS 季度趨勢（元）</div>
+      <canvas id="epsChart"></canvas>
+      <div class="chart-note">★API數據；最新季Q1'26紅色；V型反轉後再成長中</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">月營收趨勢（億元，2026年）</div>
+      <canvas id="revChart"></canvas>
+      <div class="chart-note">★API數據；月月創新高，YoY持續40%+高成長</div>
+    </div>
+  </div>
+  <div class="chart-full" style="margin-top:16px;">
+    <div class="chart-box">
+      <div class="chart-title">毛利率季度趨勢（%）— 完美復甦曲線</div>
+      <canvas id="marginChart"></canvas>
+      <div class="chart-note">★API+WebSearch數據；Q4'25毛利率達31.8%，Q1'26維持32.2%高檔</div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑤ OVERVIEW -->
+<div class="section">
+  <div class="section-title"><span class="icon">🏢</span>公司概覽</div>
+  <div class="two-col">
+    <div>
+      <div class="info-row"><span class="info-label">公司全名</span><span class="info-val">穩懋半導體股份有限公司</span></div>
+      <div class="info-row"><span class="info-label">英文名稱</span><span class="info-val">Win Semiconductors Corp.</span></div>
+      <div class="info-row"><span class="info-label">股票代碼</span><span class="info-val">3105（上櫃 TPEX）</span></div>
+      <div class="info-row"><span class="info-label">市場地位</span><span class="info-val">全球最大GaAs晶圓代工廠</span></div>
+      <div class="info-row"><span class="info-label">主要技術</span><span class="info-val">GaAs(砷化鎵) / GaN / InP / 光電元件</span></div>
+      <div class="info-row"><span class="info-label">主要客戶</span><span class="info-val">Broadcom, Lumentum, Qorvo, Skyworks</span></div>
+      <div class="info-row"><span class="info-label">Q1'26合併營收</span><span class="info-val">45.90億元（YoY+28%）</span></div>
+    </div>
+    <div>
+      <p style="font-size:14px;line-height:1.8;color:var(--text-light);">穩懋成立於1999年，以 GaAs（砷化鎵）HBT（異質接面雙極電晶體）為核心技術，是全球最大純GaAs代工廠。四大應用：</p>
+      <ul style="font-size:14px;margin:12px 0;padding-left:18px;line-height:2.2;">
+        <li>📱 <strong>手機PA（射頻功放）</strong>：5G智慧型手機的射頻前端，仍佔最大比重</li>
+        <li>🌐 <strong>Wi-Fi 7</strong>：新世代Wi-Fi高頻應用</li>
+        <li>🔬 <strong>AI光通訊</strong>：50G VCSEL已量產、100G PD/VCSEL驗證中；與Broadcom、Lumentum合作</li>
+        <li>🛰️ <strong>LEO衛星</strong>：2026年衛星佔基礎建設比重目標達40%，毛利率優於平均</li>
+      </ul>
+      <div style="background:#ede9fe;border-radius:8px;padding:10px;font-size:13px;">
+        <strong>護城河：</strong>GaAs晶圓代工技術門檻極高，全球主要競爭者僅IQE（英）、TriQuint/RFMD（現Qorvo自有）。穩懋的成本優勢與製程深度使其難以被替代。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑥ FUNDAMENTALS -->
+<div class="section">
+  <div class="section-title"><span class="icon">💰</span>基本面分析</div>
+  <div class="two-col">
+    <div>
+      <h3 style="font-size:15px;margin-bottom:12px;">季度EPS vs 毛利率</h3>
+      <table>
+        <tr><th>季度</th><th>EPS(元)</th><th>毛利率</th><th>營益率</th></tr>
+        <tr><td>Q2'24</td><td>1.14</td><td>27.24%</td><td>10.1%</td></tr>
+        <tr><td>Q3'24</td><td>0.54</td><td>21.58%</td><td>2.89%</td></tr>
+        <tr><td>Q4'24</td><td class="td-down">-0.83</td><td>20.44%</td><td>-1.3%</td></tr>
+        <tr><td>Q1'25</td><td>0.04</td><td>16.73%</td><td>-6.06%</td></tr>
+        <tr><td>Q2'25</td><td class="td-down">-0.99</td><td>18.46%</td><td>-3.15%</td></tr>
+        <tr><td>Q3'25</td><td class="td-up">2.52</td><td>26.86%</td><td>8.59%</td></tr>
+        <tr><td>Q4'25</td><td class="td-up">2.43</td><td>31.80%</td><td>13.87%</td></tr>
+        <tr><td>Q1'26 ★</td><td style="color:var(--red);font-weight:700;">1.26</td><td>32.2%</td><td>9.39%</td></tr>
+      </table>
+      <div style="font-size:12px;color:var(--text-light);margin-top:6px;">FY2025 EPS=4.00元（推算）；TTM EPS=5.22元（推算）</div>
+    </div>
+    <div>
+      <h3 style="font-size:15px;margin-bottom:12px;">2026年月營收明細</h3>
+      <table>
+        <tr><th>月份</th><th>金額（億）</th><th>YoY</th></tr>
+        <tr><td>2026-01</td><td>16.14</td><td class="td-up">+31.3%</td></tr>
+        <tr><td>2026-02</td><td>14.68</td><td class="td-up">+24.7%</td></tr>
+        <tr><td>2026-03</td><td>14.74</td><td class="td-up">+25.9%</td></tr>
+        <tr><td>2026-04</td><td>16.49</td><td class="td-up">+34.3%</td></tr>
+        <tr><td>2026-05</td><td>17.34</td><td class="td-up">+48.9%</td></tr>
+        <tr><td>2026-06 ★</td><td style="color:var(--red);font-weight:700;">17.55</td><td class="td-up">+40.3%</td></tr>
+      </table>
+      <div style="font-size:12px;color:var(--text-light);margin-top:6px;">連續6月YoY正成長，且5月達+48.9%加速！</div>
+      <div style="background:#d1fae5;border-radius:8px;padding:10px;margin-top:10px;font-size:13px;">
+        ✅ 月營收趨勢是所有分析個股中最強！連6月YoY成長率全部30%+，且持續加速
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:20px;">
+    <h3 style="font-size:15px;margin-bottom:12px;">基本面評分</h3>
+    <div class="score-row"><span class="score-label">成長性</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:#059669;"></div></div><span class="score-val">9.0</span></div>
+    <div class="score-row"><span class="score-label">獲利能力</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:75%;background:#1A56DB;"></div></div><span class="score-val">7.5</span></div>
+    <div class="score-row"><span class="score-label">財務健康</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:65%;background:#1A56DB;"></div></div><span class="score-val">6.5</span></div>
+    <div class="score-row"><span class="score-label">估值吸引力</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:30%;background:#dc2626;"></div></div><span class="score-val">3.0</span></div>
+  </div>
+</div>
+
+<!-- ⑦ CHIPS -->
+<div class="section">
+  <div class="section-title"><span class="icon">🏦</span>籌碼面分析</div>
+  <div class="two-col">
+    <div>
+      <h3 style="font-size:15px;margin-bottom:12px;">三大法人（7/2）</h3>
+      <div class="signal-card signal-neutral">
+        <strong>法人資料：無數據（上櫃TPEX股）</strong>
+        <div style="font-size:13px;margin-top:6px;">穩懋為上櫃（TPEX）掛牌股票，FinMind API對部分上櫃股三大法人數據覆蓋較不完整。精確數值請至 <a href="https://www.tpex.org.tw" target="_blank">TPEX官網</a> 或 <a href="https://goodinfo.tw/tw/StockDetail.asp?STOCK_ID=3105" target="_blank">Goodinfo</a> 查詢。</div>
+      </div>
+      <div style="margin-top:10px;">
+        <h3 style="font-size:14px;margin-bottom:8px;">近期技術性籌碼觀察</h3>
+        <ul style="font-size:13px;padding-left:18px;line-height:2;">
+          <li>5/27衝高637元後，5/28高量黑K（爆量4900萬張）確認頭部，大量籌碼套牢</li>
+          <li>6/26大跌至424元（量3400萬），套牢盤集中在500~637元區間</li>
+          <li>現價416元已下破多個成本區間，短線空頭持有者佔優勢</li>
+          <li>量能從最高日均量5200萬縮至今日1290萬，量縮顯示賣方力道也在衰竭</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size:15px;margin-bottom:12px;">分析師評等 ★WebSearch</h3>
+      <div class="signal-card signal-bull">
+        <strong>Q1'26 法說會重點（2026-04-30）</strong>
+        <ul style="font-size:13px;padding-left:16px;margin-top:6px;line-height:2;">
+          <li>50G VCSEL GaAs光學驅動器已量產</li>
+          <li>100G PD/VCSEL正在與大客戶驗證</li>
+          <li>光通訊GaAs驅動器市場YoY +344%預估</li>
+          <li>2026年衛星占基礎建設比重目標40%</li>
+          <li>Q2'26 revenue預計續揚</li>
+        </ul>
+      </div>
+      <div class="signal-card signal-neutral" style="margin-top:10px;">
+        <strong>分析師目標價（已過時，供參考）</strong>
+        <div style="font-size:13px;margin-top:6px;">
+          • 永豐投顧：買進，目標292元（2026/02時）<br>
+          • 其他法人：300~324元區間（2026/02~03）<br>
+          • ⚠️ 現價416已遠超所有舊版目標價<br>
+          • 長線看多：3年目標800元（含光通訊+衛星放量）<br>
+          • FactSet 2026E EPS中位數：5.79元（舊估）
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑧ TECHNICAL -->
+<div class="section">
+  <div class="section-title"><span class="icon">📉</span>技術分析</div>
+  <div class="two-col">
+    <div>
+      <h3 style="font-size:15px;margin-bottom:12px;">均線狀態 ★API</h3>
+      <div class="signal-card signal-bear">
+        <strong>⛔ 強烈空頭排列！所有均線向下且現價全部在均線以下</strong>
+        <table style="margin-top:10px;width:100%;font-size:13px;">
+          <tr><th>均線</th><th>數值（元）</th><th>現價vs均線</th></tr>
+          <tr><td>MA5</td><td>418.1</td><td class="td-down">↓現價416 < MA5</td></tr>
+          <tr><td>MA10</td><td>462.25</td><td class="td-down">↓現價416 < MA10</td></tr>
+          <tr><td>MA20</td><td>476.45</td><td class="td-down">↓現價416 < MA20</td></tr>
+          <tr><td>MA60</td><td>498.41</td><td class="td-down">↓現價416 < MA60</td></tr>
+        </table>
+        <div style="font-size:12px;margin-top:8px;">MA60(498) > MA20(476) > MA10(462) > MA5(418) > 現價(416)<br>現價甚至低於MA5，均線完全空頭，反彈面臨多重壓力</div>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size:15px;margin-bottom:12px;">動能指標 ★API</h3>
+      <div class="signal-card signal-bear" style="margin-bottom:10px;">
+        <strong>MACD：強烈死叉 ⛔</strong>
+        <div style="font-size:13px;margin-top:6px;">DIF: -20.78 / Signal: -9.77 / 柱狀: <strong>-11.02</strong><br>柱狀-11.02是本輪分析個股中最強死叉訊號！動能嚴重偏空</div>
+      </div>
+      <div class="signal-card signal-bear" style="margin-bottom:10px;">
+        <strong>RSI(14)：36.25 — 接近超賣</strong>
+        <div style="font-size:13px;margin-top:6px;">超賣線=30，目前36.25接近但尚未超賣<br>若跌至30以下可能出現技術反彈；但也可能繼續向下</div>
+      </div>
+      <div class="signal-card signal-neutral">
+        <strong>布林通道</strong>
+        <div style="font-size:13px;margin-top:6px;">上軌: 555.96 / 中軌: 476.45 / 下軌: 396.94<br>現價416在中下軌間，下軌397是重要支撐<br>若跌破下軌恐測380~370元</div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:16px;">
+    <h3 style="font-size:15px;margin-bottom:12px;">關鍵價位</h3>
+    <table>
+      <tr><th>方向</th><th>價位（元）</th><th>依據</th></tr>
+      <tr><td><span class="tag tag-red">52W高</span></td><td>637</td><td>52週最高點（套牢壓力最大區）</td></tr>
+      <tr><td><span class="tag tag-green">壓力3</span></td><td>498</td><td>MA60（最強壓力）</td></tr>
+      <tr><td><span class="tag tag-green">壓力2</span></td><td>476</td><td>MA20</td></tr>
+      <tr><td><span class="tag tag-green">壓力1</span></td><td>462</td><td>MA10</td></tr>
+      <tr><td><span class="tag tag-green">壓力0</span></td><td>418</td><td>MA5（近期壓力）</td></tr>
+      <tr><td><span class="tag tag-orange">現價</span></td><td>416</td><td>今日收盤</td></tr>
+      <tr><td><span class="tag tag-red">支撐1</span></td><td>400</td><td>整數關卡/心理防線</td></tr>
+      <tr><td><span class="tag tag-red">支撐2</span></td><td>397</td><td>布林下軌（強支撐）</td></tr>
+      <tr><td><span class="tag tag-red">強支</span></td><td>370~380</td><td>前高整理區/風險區底部</td></tr>
+    </table>
+  </div>
+  <div style="margin-top:14px;font-size:13px;color:var(--text-light);">
+    📅 K線要點：5/27 衝上高點637元（52W高），5/28高量黑K（-6.6%，量4900萬）確認頭部，6/8 跌至451.5（第一波支撐），6/22反彈至541，6/23衝高573但收522（長上影線，頭部確認），6/26大跌至424（量3400萬），6/29再探低412→今日7/3反彈至416，量縮（1290萬 vs 近期日均2100萬）。
+  </div>
+</div>
+
+<!-- ⑨ MARGIN -->
+<div class="section">
+  <div class="section-title"><span class="icon">🔄</span>融資融券</div>
+  <div class="signal-card signal-neutral">
+    <strong>趨勢判讀（精確數值請至TPEX或券商平台查詢）</strong>
+    <ul style="font-size:13px;padding-left:18px;margin-top:8px;line-height:2;">
+      <li>股價從637高點回落至416（跌幅-34.7%），融資戶套牢情況嚴重</li>
+      <li>5/28、6/26兩次爆量黑K為融資強制斷頭賣壓，目前槓桿買盤大幅去化</li>
+      <li>穩懋為上櫃股，融資上限一般較上市股低（約5~6成），融資風險已部分釋放</li>
+      <li>量縮至1290萬（今日），顯示空方力道也在減弱，可能進入盤底整理期</li>
+      <li>融券空方在400元整數關卡附近可能回補，觸發小幅反彈</li>
+      <li>建議現股操作，避免使用融資；上櫃股融資規定請參閱 <a href="https://www.tpex.org.tw" target="_blank">TPEX官網</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ⑩ DEBATE -->
+<div class="section">
+  <div class="section-title"><span class="icon">⚔️</span>研究員多空辯論</div>
+  <div class="debate-grid">
+    <div class="debate-bull">
+      <h3>🐂 看多論點（40% 權重）</h3>
+      <ul>
+        <li><strong>月營收超強成長</strong>：2026-05 YoY+48.9%（加速！），2026-06 YoY+40.3%，連續6月全部30%+，基本面動能完全不需要擔心。</li>
+        <li><strong>AI光通訊是顛覆性機會</strong>：50G VCSEL GaAs光學驅動器已量產，光通訊市場YoY +344%預估，穩懋切入正確時機，毛利率更優於手機PA。</li>
+        <li><strong>毛利率維持高檔</strong>：Q1'26毛利率32.2%（WebSearch），Q4'25達31.8%，相較Q1'25的16.73%翻倍改善，顯示產品組合升級成功。</li>
+        <li><strong>LEO衛星高毛利貢獻</strong>：2026年衛星占基礎建設比重目標40%，且衛星產品毛利率明顯優於公司平均，未來ASP和毛利均有改善空間。</li>
+        <li><strong>技術面接近超賣</strong>：RSI 36.25接近超賣（30），布林下軌在397，量能萎縮（1290萬 vs 日均2100萬），底部反彈條件正在成熟。</li>
+        <li><strong>全球最大GaAs代工護城河</strong>：技術壁壘極高，全球幾乎沒有能夠在規模和技術上替代穩懋的競爭對手，長期競爭優勢穩固。</li>
+      </ul>
+    </div>
+    <div class="debate-bear">
+      <h3>🐻 看空論點（60% 權重）</h3>
+      <ul>
+        <li><strong>技術面最強烈死叉訊號</strong>：MACD柱狀-11.02（本次分析五檔中最強空頭訊號），均線完全空頭排列（MA5/10/20/60全向下），短線動能嚴重偏空。</li>
+        <li><strong>估值已大幅超越分析師目標</strong>：2026/02最新分析師目標價292~324元，現價416元已超過最高目標價+28%；市場顯然給了光通訊大量premium，但若進度延遲股價將大幅回落。</li>
+        <li><strong>TTM PE 79.7x偏高</strong>：手算TTM EPS僅5.22元（含2季虧損），PE 79.7x相當昂貴；即使用FY2026E~7元，Forward PE=59x仍屬高估值。</li>
+        <li><strong>Q1'26 EPS季減明顯</strong>：Q4'25 EPS=2.43元→Q1'26=1.26元（QoQ -48.1%），淡季效應明顯，Q2能否回升是關鍵觀察點。</li>
+        <li><strong>三大法人數據不透明</strong>：上櫃股法人資料覆蓋不完整，無法判斷主力籌碼動向，增加投資不確定性。</li>
+        <li><strong>高波動率增加持股難度</strong>：52W從79.7到637元（+699%），從637到今日416（-34.7%）；這種波動率意味著持股者需要極強的風險承受力。</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top:16px;background:#f8fafc;border-radius:10px;padding:16px;font-size:14px;">
+    <strong>📌 給一般投資人的話：</strong> 穩懋的基本面（月營收、毛利率）非常強，AI光通訊轉型也很有說服力。但現在股價在技術面弱勢、且估值已超越舊分析師目標，屬於「好公司、目前股價需要等入場點」的情況。建議等布林下軌（397元）守住、MACD開始收斂後再考慮布局；不要追高（現價416元已比分析師目標高出28%以上），萬一光通訊進度延遲，評價重新定價風險很大。
+  </div>
+</div>
+
+<!-- ⑪ RISK -->
+<div class="section">
+  <div class="section-title"><span class="icon">🛡️</span>風控評估</div>
+  <div class="two-col">
+    <div>
+      <div class="score-row"><span class="score-label">估值風險(30%)</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:#dc2626;"></div></div><span class="score-val">8.0</span></div>
+      <div class="score-row"><span class="score-label">財務風險(25%)</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:55%;background:#d97706;"></div></div><span class="score-val">5.5</span></div>
+      <div class="score-row"><span class="score-label">流動性風險(10%)</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:#d97706;"></div></div><span class="score-val">6.0</span></div>
+      <div class="score-row"><span class="score-label">產業風險(15%)</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:65%;background:#d97706;"></div></div><span class="score-val">6.5</span></div>
+      <div class="score-row"><span class="score-label">總經風險(10%)</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:#d97706;"></div></div><span class="score-val">7.0</span></div>
+      <div class="score-row"><span class="score-label">籌碼風險(10%)</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:#dc2626;"></div></div><span class="score-val">8.5</span></div>
+      <div style="margin-top:16px;font-size:20px;font-weight:700;color:var(--red);">綜合風險評分：7.5 / 10</div>
+      <div style="font-size:13px;color:var(--text-light);">高風險 — 估值偏高+技術面強烈空頭+籌碼不透明</div>
+    </div>
+    <div>
+      <h3 style="font-size:15px;margin-bottom:10px;">主要風險說明</h3>
+      <ul style="font-size:13px;line-height:2;padding-left:18px;">
+        <li>估值溢價風險（最高風險）：光通訊題材若進度延遲，PE收斂空間大</li>
+        <li>技術面強烈空頭：MACD死叉-11.02，均線全空頭排列，短線壓力大</li>
+        <li>上櫃流動性：上櫃股日均量通常低於上市股，大單進出容易影響價格</li>
+        <li>手機PA需求波動：手機市場景氣循環，若2H2026手機不如預期，主業承壓</li>
+        <li>GaAs vs SiGe替代：部分應用場景矽基製程（SiGe BiCMOS）正在競爭，長期替代風險</li>
+        <li>52W高點637元套牢壓力：大量籌碼在400~637套牢，反彈時賣壓持續</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ⑫ STRATEGY -->
+<div class="section">
+  <div class="section-title"><span class="icon">🎯</span>台股三段式投資策略</div>
+  <div class="strategy-grid">
+    <div class="strategy-card attack">
+      <h3>🔥 進攻計畫（積極型）</h3>
+      <ul>
+        <li>進場條件：RSI跌破30後反彈，量縮至800萬以下後放量反彈</li>
+        <li>入場區間：380~400元（布林下軌附近）</li>
+        <li>加碼：站穩MA5（418）且MACD開始收斂</li>
+        <li>目標：500元（MA60收復）；長線520~600元</li>
+        <li>停損：日收盤跌破370元</li>
+        <li>部位：不超過組合5%（高波動）</li>
+      </ul>
+    </div>
+    <div class="strategy-card balance">
+      <h3>⚖️ 均衡計畫（穩健型）</h3>
+      <ul>
+        <li>現階段：等待，不急著進場</li>
+        <li>觀察：MACD柱狀開始收斂（從-11往-8改善）</li>
+        <li>初步試倉：380~397元（布林下軌支撐確認）</li>
+        <li>加碼：站穩420元以上（MA5翻多）</li>
+        <li>目標：460~480元（MA10/MA20）</li>
+        <li>停損：370元</li>
+      </ul>
+    </div>
+    <div class="strategy-card defense">
+      <h3>🛡️ 防守計畫（保守型）</h3>
+      <ul>
+        <li>不參與：等技術面徹底轉多再說</li>
+        <li>轉多條件：現價站穩MA20（476元），MACD翻正</li>
+        <li>若已持有（套牢）：397元守住可繼續持有</li>
+        <li>跌破370：嚴格執行停損</li>
+        <li>觀察指標：月營收持續YoY+40%+；Q2'26 EPS>2.0元</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top:20px;">
+    <h3 style="font-size:15px;margin-bottom:12px;">催化劑時程表</h3>
+    <table>
+      <tr><th>時間</th><th>催化劑</th><th>預期影響</th></tr>
+      <tr><td>2026-07</td><td>6月營收公布（已公布17.55億，YoY+40.3%）</td><td class="td-up">正向確認</td></tr>
+      <tr><td>2026-08</td><td>Q2'26財報暨法說會</td><td>關鍵！100G VCSEL驗證進度</td></tr>
+      <tr><td>2026 Q3</td><td>100G PD/VCSEL量產開始</td><td class="td-up">強烈正向（若成功）</td></tr>
+      <tr><td>2026 Q3</td><td>Broadcom/Lumentum大單確認</td><td class="td-up">可能引發大幅重估</td></tr>
+      <tr><td>2026 H2</td><td>iPhone 18 RF備貨旺季</td><td class="td-up">正向：手機PA傳統旺季</td></tr>
+      <tr><td>隨時</td><td>GaAs光學驅動器市場數據更新</td><td>若低於344%成長預估 → 下行風險</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ⑬ GLOSSARY -->
+<div class="section">
+  <div class="section-title"><span class="icon">📚</span>名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <strong>GaAs砷化鎵（Gallium Arsenide）</strong>
+      <p>一種化合物半導體材料（鎵+砷），電子移動速度比矽快6倍，特別適合高頻、高功率應用。用於5G手機射頻晶片是GaAs最大市場。</p>
+    </div>
+    <div class="glossary-item">
+      <strong>VCSEL（垂直共振腔面射型雷射）</strong>
+      <p>一種微型雷射，可以垂直方向射出光束。50G/100G VCSEL是AI資料中心內部高速光纖傳輸的核心元件，穩懋正是這種元件的關鍵製造廠。</p>
+    </div>
+    <div class="glossary-item">
+      <strong>PA（Power Amplifier，功率放大器）</strong>
+      <p>手機射頻訊號的「擴音器」，負責把無線訊號放大到能發射出去的強度。5G手機需要更多PA，是穩懋傳統核心業務。</p>
+    </div>
+    <div class="glossary-item">
+      <strong>HBT（異質接面雙極電晶體）</strong>
+      <p>GaAs晶圓上的一種電晶體結構，是手機PA的主流製程。穩懋是全球GaAs HBT代工的最大廠商，全球市占遙遙領先。</p>
+    </div>
+    <div class="glossary-item">
+      <strong>上櫃（TPEX）vs 上市（TSE）</strong>
+      <p>台灣股票市場分上市（台灣證交所TSE，大公司）和上櫃（台灣證券商業同業公會TPEX，規模較小但成長性強的公司）。穩懋是上櫃股，日均交易量和流動性略低於上市股。</p>
+    </div>
+    <div class="glossary-item">
+      <strong>RSI接近超賣（RSI Near Oversold）</strong>
+      <p>RSI（相對強弱指數）跌到30以下叫「超賣」，理論上此時賣壓已宣洩完畢，容易出現技術性反彈。穩懋目前RSI=36.25，還沒到30，但已接近，需密切觀察。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ⑭ DISCLAIMER -->
+<div class="disclaimer">
+  <h3>⚠️ 免責聲明</h3>
+  <p style="margin-bottom:8px;">本報告僅供研究參考，不構成任何投資建議或買賣邀約。投資人應自行承擔投資風險，本報告不保證未來投資績效。穩懋屬高波動股票，投資前請務必評估個人風險承受能力。</p>
+  <ul>
+    <li>資料來源：Fugle即時行情 API（股價、技術指標）、FinMind（月營收、季度EPS）；PE/PB/市值因上櫃yfinance覆蓋不完整，均為手工推算值</li>
+    <li>WebSearch補充資料：<a href="https://www.stockfeel.com.tw/%E7%A9%A9%E6%87%8B-2026-q1-%E6%B3%95%E8%AA%AA%E6%9C%83-%E9%87%8D%E9%BB%9E%E6%95%B4%E7%90%86/" target="_blank">StockFeel法說整理</a>、<a href="https://www.sinotrade.com.tw/richclub/hotstock/%E7%A9%A9%E6%87%8B%E5%8D%8A%E5%B0%8E%E9%AB%94-3105-%E5%81%9A%E4%BB%80%E9%BA%BC-%E6%B3%95%E8%AA%AA%E9%87%8D%E9%BB%9E%E6%9C%89%E5%93%AA%E4%BA%9B-%E7%AC%AC%E4%B8%80%E5%AD%A3-EPS-1-26%E5%85%83-%E6%AF%9B%E5%88%A9%E7%8E%8732-2--%E4%BC%B0%E7%AC%AC%E4%BA%8C%E5%AD%A3%E7%87%9F%E6%94%B6%E7%BA%8C%E6%8F%9A-%E5%85%89%E5%82%B3%E8%BC%B8%E8%BA%8D%E5%8D%87%E7%82%BA%E6%9C%AC%E5%AD%A3%E6%9C%80%E5%8F%97%E7%9F%9A%E7%9B%AE%E7%9A%84%E6%96%B0%E8%88%88%E6%88%90%E9%95%B7%E5%BC%95%E6%93%8E-%E8%82%A1%E5%B8%82%E8%A9%B1%E9%A1%8C-69f32719d4f77d0110440053" target="_blank">豐雲學堂</a>、<a href="https://www.moneyweekly.com.tw/ArticleData/Info/Article/221576/" target="_blank">理財周刊</a></li>
+    <li>★推估值：TTM PE、市值、FY2025 EPS等為作者依公開資料計算之推估，非官方數字</li>
+    <li>報告日期：2026-07-03；市場資訊持續變動，請以最新公告為準</li>
+  </ul>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// EPS Chart
+new Chart(document.getElementById('epsChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26★'],
+    datasets: [{
+      label: 'EPS (元)',
+      data: [1.14, 0.54, -0.83, 0.04, -0.99, 2.52, 2.43, 1.26],
+      backgroundColor: ['#c4b5fd','#c4b5fd','#fca5a5','#fde68a','#fca5a5','#6ee7b7','#6ee7b7','#dc2626'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: { y: { title: { display: true, text: '元' } } }
+  }
+});
+
+// Revenue Chart
+new Chart(document.getElementById('revChart'), {
+  type: 'line',
+  data: {
+    labels: ['1月','2月','3月','4月','5月','6月★'],
+    datasets: [{
+      label: '月營收（億元）',
+      data: [16.14, 14.68, 14.74, 16.49, 17.34, 17.55],
+      borderColor: '#7c3aed',
+      backgroundColor: 'rgba(124,58,237,0.1)',
+      pointBackgroundColor: ['#7c3aed','#7c3aed','#7c3aed','#7c3aed','#7c3aed','#dc2626'],
+      pointRadius: 5,
+      fill: true, tension: 0.3
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: { y: { title: { display: true, text: '億元' }, min: 12 } }
+  }
+});
+
+// Margin Chart (instead of PE chart — to showcase the recovery story)
+new Chart(document.getElementById('marginChart'), {
+  type: 'line',
+  data: {
+    labels: ['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26★'],
+    datasets: [{
+      label: '毛利率 (%)',
+      data: [27.24, 21.58, 20.44, 16.73, 18.46, 26.86, 31.80, 32.20],
+      borderColor: '#7c3aed',
+      backgroundColor: 'rgba(124,58,237,0.1)',
+      pointBackgroundColor: ['#7c3aed','#7c3aed','#7c3aed','#7c3aed','#7c3aed','#7c3aed','#7c3aed','#dc2626'],
+      pointRadius: 5,
+      fill: true, tension: 0.4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { y: { title: { display: true, text: '毛利率 (%)' }, min: 10, max: 40 } }
+  }
+});
+document.getElementById('marginChart').style.height = '200px';
+</script>
+</body>
+</html>
