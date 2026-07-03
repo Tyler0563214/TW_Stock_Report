@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股盤後總結 2026-07-03</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --bg2: #161b22; --bg3: #1c2128; --bg4: #21262d;
+    --border: #30363d; --text: #c9d1d9; --text2: #8b949e; --text3: #6e7681;
+    --green: #3fb950; --red: #f85149; --yellow: #d29922; --blue: #58a6ff;
+    --purple: #bc8cff; --orange: #e3b341; --cyan: #39d353;
+    --green-dim: rgba(63,185,80,0.15); --red-dim: rgba(248,81,73,0.15);
+    --blue-dim: rgba(88,166,255,0.15); --yellow-dim: rgba(210,153,34,0.15);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'SF Pro Display',-apple-system,'Segoe UI',sans-serif; font-size:14px; line-height:1.5; }
+  .container { max-width:1300px; margin:0 auto; padding:16px; }
+
+  .header { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:20px 24px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+  .header-left h1 { font-size:22px; font-weight:700; color:#fff; }
+  .header-left .subtitle { color:var(--text2); font-size:13px; margin-top:4px; }
+  .header-right { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .badge { padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; }
+  .badge-bullish { background:var(--green-dim); color:var(--green); border:1px solid var(--green); }
+  .badge-bearish { background:var(--red-dim); color:var(--red); border:1px solid var(--red); }
+  .badge-caution { background:var(--yellow-dim); color:var(--yellow); border:1px solid var(--yellow); }
+  .close-box { background:var(--bg4); border:1px solid var(--border); border-radius:8px; padding:8px 14px; text-align:center; }
+  .close-box .label { font-size:11px; color:var(--text3); }
+  .close-box .value { font-size:18px; font-weight:700; color:var(--green); }
+  .close-box .sub { font-size:11px; color:var(--green); }
+
+  .ticker-bar { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:12px 16px; margin-bottom:16px; display:flex; flex-wrap:wrap; gap:16px; align-items:center; }
+  .ticker-item { display:flex; flex-direction:column; align-items:center; min-width:90px; }
+  .ticker-name { font-size:11px; color:var(--text3); font-weight:600; text-transform:uppercase; }
+  .ticker-val { font-size:15px; font-weight:700; color:#fff; }
+  .ticker-chg { font-size:12px; font-weight:600; }
+  .up { color:var(--green); } .dn { color:var(--red); } .neu { color:var(--text2); }
+  .ticker-divider { width:1px; height:40px; background:var(--border); }
+
+  .section-title { font-size:16px; font-weight:700; color:#fff; margin-bottom:12px; display:flex; align-items:center; gap:8px; margin-top:24px; }
+  .section-title::before { content:''; display:block; width:3px; height:18px; background:var(--blue); border-radius:2px; }
+  .section-title:first-of-type { margin-top:0; }
+
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px; }
+  @media(max-width:900px){.grid-2{grid-template-columns:1fr;}}
+
+  .card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:14px; }
+  .card-title { font-size:13px; font-weight:700; color:var(--blue); margin-bottom:10px; }
+  .card p { font-size:13px; color:var(--text); margin-bottom:6px; line-height:1.6; }
+
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { background:var(--bg3); color:var(--text2); font-weight:600; padding:8px 10px; text-align:left; border-bottom:1px solid var(--border); white-space:nowrap; }
+  td { padding:8px 10px; border-bottom:1px solid var(--bg3); white-space:nowrap; }
+  tr:hover { background:var(--bg3); }
+  tr:last-child td { border-bottom:none; }
+  .tag { display:inline-block; padding:1px 7px; border-radius:4px; font-size:11px; font-weight:600; }
+  .tag-green { background:var(--green-dim); color:var(--green); }
+  .tag-red { background:var(--red-dim); color:var(--red); }
+  .tag-yellow { background:var(--yellow-dim); color:var(--yellow); }
+
+  .highlight { background:var(--yellow-dim); border-left:3px solid var(--yellow); padding:10px 14px; border-radius:0 6px 6px 0; margin:8px 0; font-size:13px; }
+  .highlight-red { background:var(--red-dim); border-left:3px solid var(--red); }
+  .highlight-blue { background:var(--blue-dim); border-left:3px solid var(--blue); }
+  .highlight-green { background:var(--green-dim); border-left:3px solid var(--green); }
+
+  .chart-wrap { position:relative; height:220px; }
+
+  .disclaimer { background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:12px 16px; margin-top:24px; font-size:11px; color:var(--text3); text-align:center; }
+  .table-wrap { overflow-x:auto; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="header-left">
+    <h1>🇹🇼 台股盤後總結</h1>
+    <div class="subtitle">2026年07月03日（星期五）· 收盤 13:30 · 早盤預測 → 盤中追蹤 → 收盤結算 全日回顧</div>
+  </div>
+  <div class="header-right">
+    <div class="badge badge-bullish">🔄 深V反轉：早盤偏空警戒未應驗</div>
+    <div class="close-box">
+      <div class="label">加權指數收盤</div>
+      <div class="value">46,780.62</div>
+      <div class="sub">+36.46 (+0.08%)</div>
+    </div>
+    <div class="close-box">
+      <div class="label">日內波動</div>
+      <div class="value" style="color:var(--yellow);font-size:15px;">-1.4% → +0.08%</div>
+      <div class="sub" style="color:var(--yellow);">盤中最深跌幅至收盤反彈約1.5個百分點</div>
+    </div>
+  </div>
+</div>
+
+<div class="ticker-bar">
+  <div class="ticker-item">
+    <div class="ticker-name">加權指數</div>
+    <div class="ticker-val">46,780.62</div>
+    <div class="ticker-chg up">+0.08%</div>
+  </div>
+  <div class="ticker-divider"></div>
+  <div class="ticker-item">
+    <div class="ticker-name">櫃買指數</div>
+    <div class="ticker-val">445.38</div>
+    <div class="ticker-chg up">+1.34%</div>
+  </div>
+  <div class="ticker-divider"></div>
+  <div class="ticker-item">
+    <div class="ticker-name">早盤預測開盤</div>
+    <div class="ticker-val">45,600-46,100</div>
+    <div class="ticker-chg dn">-1.4%~-2.4%</div>
+  </div>
+  <div class="ticker-divider"></div>
+  <div class="ticker-item">
+    <div class="ticker-name">09:16盤中最深</div>
+    <div class="ticker-val">46,092</div>
+    <div class="ticker-chg dn">-1.39%</div>
+  </div>
+  <div class="ticker-divider"></div>
+  <div class="ticker-item">
+    <div class="ticker-name">昨收(07/02)</div>
+    <div class="ticker-val">46,744.16</div>
+    <div class="ticker-chg neu">-0.28%</div>
+  </div>
+</div>
+
+<!-- 全日走勢比對 -->
+<div class="section-title">全日走勢比對：早盤預測 vs 盤中追蹤 vs 收盤結算</div>
+<div class="card">
+  <p>早盤報告（06:20數據，看空62% vs 看多38%）預估開盤 45,600-46,100（較昨收-1.4%~-2.4%），主因費半(SOX)前一夜重挫-5.44%、台積電ADR-2.27%。實際開盤後確實低開，09:16盤中一度跌到 <span class="tag tag-red">46,092（-1.39%）</span>，落在早盤預測區間的樂觀端。但盤面在上午到下午出現持續性買盤進場，尾盤大幅拉抬，最終以 <span class="tag tag-green">46,780.62（+0.08%）</span> 收紅作收，等於盤中到收盤反彈約 1.5 個百分點，屬於明顯的 <strong>深V反轉</strong>，早盤「偏空警戒」的判定沒有應驗。</p>
+  <div class="highlight-green">💡 這代表早盤報告抓對了「開盤跳空方向」（費半連動的低開確實發生），但低估了台股當天的承接力道——尤其金融/傳產族群的買盤，加上被錯殺的被動元件股尾盤明顯回補，是拉動指數翻紅的主力。</div>
+</div>
+
+<div class="chart-wrap card">
+  <canvas id="intradayChart"></canvas>
+</div>
+
+<!-- 類股輪動收盤 vs 盤中 -->
+<div class="section-title">類股輪動：09:16盤中 vs 16:50收盤</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">收盤領漲類股</div>
+    <table>
+      <tr><th>類股</th><th>收盤漲跌幅</th></tr>
+      <tr><td>化學類</td><td class="up">+3.62%</td></tr>
+      <tr><td>紡織纖維類</td><td class="up">+3.60%</td></tr>
+      <tr><td>航運類</td><td class="up">+3.47%</td></tr>
+      <tr><td>造紙類</td><td class="up">+3.21%</td></tr>
+      <tr><td>電子零組件類</td><td class="up">+3.05%</td></tr>
+      <tr><td>橡膠類</td><td class="up">+2.85%</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">收盤領跌類股</div>
+    <table>
+      <tr><th>類股</th><th>收盤漲跌幅</th></tr>
+      <tr><td>玻璃陶瓷類</td><td class="dn">-1.82%</td></tr>
+      <tr><td>半導體類</td><td class="dn">-1.13%</td></tr>
+      <tr><td>光電類</td><td class="dn">-0.98%</td></tr>
+      <tr><td>電子工業類</td><td class="dn">-0.27%</td></tr>
+      <tr><td>通信網路類</td><td class="neu">+0.07%</td></tr>
+    </table>
+  </div>
+</div>
+<div class="highlight-blue">📌 值得注意：09:16盤中「電子零組件類」還是跌幅第4大的類股（-1.84%），收盤卻反轉成漲幅第5大（+3.05%）——這正是國巨、華新科被錯殺後大幅回補的直接反映（見下方個股表）。「半導體類」則是全天唯一從頭跌到尾的族群，早盤「②費半修正」🔴迴避的判定全天有效。</div>
+
+<!-- 焦點個股全日追蹤 -->
+<div class="section-title">焦點個股全日追蹤：早盤題材判定 → 09:16-09:32盤中 → 收盤結算</div>
+<div class="card">
+  <div class="table-wrap">
+  <table>
+    <tr>
+      <th>代碼/名稱</th><th>早盤題材判定</th><th>盤中(~09:20)</th><th>收盤價</th><th>收盤漲跌</th>
+      <th>今日外資(張)</th><th>今日三大法人合計(張)</th><th>結論</th>
+    </tr>
+    <tr>
+      <td><strong>2330</strong> 台積電</td>
+      <td><span class="tag tag-red">②迴避</span></td>
+      <td class="dn">-1.83%</td>
+      <td>2,445</td>
+      <td class="dn">-0.81%</td>
+      <td class="dn">-12,537</td>
+      <td class="dn">-11,065</td>
+      <td>跌幅遠比早盤預測(-2.3~-3%)輕，外資雖仍賣但力道不重</td>
+    </tr>
+    <tr>
+      <td><strong>2881</strong> 富邦金</td>
+      <td><span class="tag tag-green">①進攻</span></td>
+      <td class="up">+0.84%</td>
+      <td>121.0</td>
+      <td class="up">+1.26%</td>
+      <td class="up">+6,328</td>
+      <td class="up">+4,854</td>
+      <td>全天走揚收在最高區，外資實質買超，題材完全兌現</td>
+    </tr>
+    <tr style="background:rgba(248,81,73,0.06);">
+      <td><strong>2327</strong> 國巨</td>
+      <td><span class="tag tag-green">③進攻</span></td>
+      <td class="dn">-3.79% ⚡</td>
+      <td>1,045</td>
+      <td class="dn">-0.95%</td>
+      <td class="dn">-183</td>
+      <td class="dn">-270</td>
+      <td>盤中一度重挫觸發警示，尾盤大幅收復，法人幾乎持平＝錯殺回補</td>
+    </tr>
+    <tr>
+      <td><strong>2344</strong> 華邦電</td>
+      <td><span class="tag tag-yellow">④觀望</span></td>
+      <td class="up">+1.63%</td>
+      <td>184.5</td>
+      <td class="up">+0.54%</td>
+      <td class="dn">-10,317</td>
+      <td class="dn">-26,730</td>
+      <td class="tag tag-red" style="display:inline;">⚡股價背離</td>
+    </tr>
+    <tr style="background:rgba(248,81,73,0.06);">
+      <td><strong>2454</strong> 聯發科</td>
+      <td><span class="tag tag-yellow">⑤觀望</span></td>
+      <td class="dn">-4.14% ⚡</td>
+      <td>4,195</td>
+      <td class="dn">-3.45%</td>
+      <td class="dn">-3,367</td>
+      <td class="dn">-3,273</td>
+      <td>股癌「相對抗跌」全天未兌現，收盤仍是跌幅最重個股之一</td>
+    </tr>
+    <tr>
+      <td><strong>2492</strong> 華新科</td>
+      <td><span class="tag tag-green">③進攻</span></td>
+      <td class="dn">-4.63% ⚡</td>
+      <td>563.0</td>
+      <td class="up">+0.36%</td>
+      <td class="dn">-410</td>
+      <td class="dn">-438</td>
+      <td>跟國巨同樣尾盤翻紅，錯殺回補模式</td>
+    </tr>
+    <tr style="background:rgba(248,81,73,0.1);">
+      <td><strong>3711</strong> 日月光投控</td>
+      <td>早盤誤植為「力積電」</td>
+      <td class="dn">-7.36% ⚡</td>
+      <td>682.0</td>
+      <td class="dn">-5.28%</td>
+      <td class="dn">-18,338</td>
+      <td class="dn">-18,339</td>
+      <td>全天最弱，外資實質大賣，非錯殺，是今日唯一收黑幅度擴大的追蹤股</td>
+    </tr>
+  </table>
+  </div>
+  <div class="highlight" style="margin-top:10px;">⚡ <strong>股價與法人背離：華邦電</strong>今日股價收紅+0.54%，但三大法人（尤其投信）合計大賣 26,730 張，是今天所有追蹤個股中賣壓最重的一檔卻逆勢收紅——研判由非法人買盤（融資/主力）撐盤，隔日續強需要外資/投信轉向支持，否則有補跌風險。</div>
+</div>
+
+<!-- 三大法人（今日正式結算，已修正資料錯誤） -->
+<div class="section-title">三大法人籌碼（07/03 收盤後正式結算）</div>
+<div class="highlight-blue">
+  🔧 <strong>資料修正說明：</strong>先前抓取三大法人資料時發現 TWSE T86 官方 API 的欄位結構已改版（新增了外資自營商、自營商自行買賣/避險等細項欄位），導致舊的欄位對照寫死了錯誤索引，「投信」「自營商」「三大法人合計」三個數字實際上讀到了錯的欄位，且原始數字單位是「股」而非「張」，換算也少除以1000。已修正為依欄位名稱動態定位＋正確換算，以下數字為修正後結果。
+</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">外資買超前10名（今日正式結算）</div>
+    <table>
+      <tr><th>代碼</th><th>名稱</th><th>外資淨買超(張)</th><th>三大法人合計(張)</th></tr>
+      <tr><td>2887</td><td>台新新光金</td><td class="up">+47,477</td><td class="up">+44,058</td></tr>
+      <tr><td>2303</td><td>聯電</td><td class="up">+35,293</td><td class="up">+23,269</td></tr>
+      <tr><td>1314</td><td>中石化</td><td class="up">+34,370</td><td class="up">+35,588</td></tr>
+      <tr><td>00981A</td><td>主動統一台股增長</td><td class="up">+26,359</td><td class="up">+41,016</td></tr>
+      <tr><td>2883</td><td>凱基金</td><td class="up">+24,649</td><td class="up">+22,709</td></tr>
+      <tr><td>2834</td><td>臺企銀</td><td class="up">+19,913</td><td class="up">+19,855</td></tr>
+      <tr><td>2884</td><td>玉山金</td><td class="up">+14,073</td><td class="up">+11,520</td></tr>
+      <tr><td>1717</td><td>長興</td><td class="up">+13,846</td><td class="up">+14,953</td></tr>
+      <tr><td>2105</td><td>正新</td><td class="up">+13,642</td><td class="up">+13,765</td></tr>
+      <tr><td>2002</td><td>中鋼</td><td class="up">+13,479</td><td class="up">+13,791</td></tr>
+    </table>
+    <div class="highlight-green" style="margin-top:10px;">📊 買超前10中金融股佔4席（台新新光金、凱基金、臺企銀、玉山金），跟早盤「①金融/傳產輪動」的判斷完全吻合，且聯電（半導體）也進榜，顯示外資今天也在半導體逢低承接，並非全面撤出科技股。</div>
+  </div>
+  <div class="card">
+    <div class="card-title">外資賣超前10名（今日正式結算）</div>
+    <table>
+      <tr><th>代碼</th><th>名稱</th><th>外資淨買超(張)</th><th>三大法人合計(張)</th></tr>
+      <tr><td>3481</td><td>群創</td><td class="dn">-57,892</td><td class="dn">-59,811</td></tr>
+      <tr><td>00988A</td><td>主動統一全球創新</td><td class="dn">-29,370</td><td class="dn">-57,323</td></tr>
+      <tr><td>00990A</td><td>主動元大AI新經濟</td><td class="dn">-24,971</td><td class="dn">-39,861</td></tr>
+      <tr><td>2409</td><td>友達</td><td class="dn">-22,902</td><td class="dn">-24,758</td></tr>
+      <tr><td>0050</td><td>元大台灣50</td><td class="dn">-19,987</td><td class="dn">-35,220</td></tr>
+      <tr><td>3711</td><td>日月光投控</td><td class="dn">-18,338</td><td class="dn">-18,339</td></tr>
+      <tr><td>1301</td><td>台塑</td><td class="dn">-17,407</td><td class="dn">-17,714</td></tr>
+      <tr><td>6770</td><td>力積電（早盤誤植成3711）</td><td class="dn">-15,107</td><td class="dn">-18,174</td></tr>
+      <tr><td>1802</td><td>台玻</td><td class="dn">-15,033</td><td class="dn">-15,565</td></tr>
+      <tr><td>2337</td><td>旺宏</td><td class="dn">-14,988</td><td class="dn">-14,905</td></tr>
+    </table>
+    <div class="highlight-red" style="margin-top:10px;">⚠️ AI主題ETF（00988A、00990A）持續遭外資賣超，跟前一交易日（00631L）邏輯一致，是連續性行為。日月光投控(3711)外資實質大賣1.8萬張，是今天追蹤個股中賣壓最重、跌幅也最深的一檔，不是錯殺，值得留意隔日走勢。</div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-title">全市場三大法人合計（今日）</div>
+  <table>
+    <tr><th>外資</th><th>投信</th><th>自營商</th><th>三大法人合計</th></tr>
+    <tr>
+      <td class="up">+187,252 張</td>
+      <td class="up">+16,530 張</td>
+      <td class="dn">-187,293 張</td>
+      <td class="up">+16,837 張</td>
+    </tr>
+  </table>
+  <p style="margin-top:8px;">外資今日全市場合計小幅買超，投信同步買超，僅自營商賣超（幾乎完全對沖掉外資買超規模），三大法人合計小買超 16,837 張——跟指數逆勢翻紅的走勢一致，籌碼面沒有出現系統性出貨訊號。</p>
+</div>
+
+<!-- 結論 -->
+<div class="section-title">盤後結論</div>
+<div class="card">
+  <p><strong>1. 早盤「偏空警戒」判定過度悲觀</strong>：費半-5.44%確實帶來開盤跳空壓力，但沒有延續成全天系統性下跌，台股當天展現獨立於美股隔夜氛圍的承接力，最終逆勢收紅。</p>
+  <p><strong>2. 「①金融/傳產輪動」是今天唯一從早盤到收盤全程兌現的題材</strong>：富邦金、台新新光金、凱基金、玉山金等金融股全天走強，外資實質買超佐證。</p>
+  <p><strong>3. 「③被動元件」題材盤中被錯殺，尾盤大幅回補</strong>：國巨、華新科盤中一度重挫超過大盤2-3倍，但法人並未大幅出脫，收盤大幅收復甚至翻紅，符合「錯殺非基本面轉壞」的判斷。</p>
+  <p><strong>4. 「⑤IC設計」與「日月光投控」是今天真正的落後族群</strong>：聯發科全天未能兌現「相對抗跌」的預期，日月光投控更是外資實質大賣、跌幅持續擴大，這兩檔是唯一該保持警戒的落後訊號。</p>
+  <p><strong>5. 華邦電股價與籌碼背離</strong>，需留意是否為非法人資金撐盤，若外資/投信持續賣超但股價續強，是短線風險訊號。</p>
+</div>
+
+<div class="disclaimer">
+  ⚠️ <strong>免責聲明</strong>：本報告由 Claude AI 根據公開資料（台灣證券交易所 TWSE MIS/T86 官方 API、FinMind、Fugle 富果 API）自動生成，僅供研究參考，不構成任何投資建議。投資有風險，進場需謹慎。過去績效不代表未來表現。
+  <br>📅 報告生成時間：2026-07-03 約17:00 · 收盤時間：13:30 · 三大法人數據：07/03 官方結算（已修正 T86 欄位對照錯誤）
+</div>
+
+</div>
+
+<script>
+const ctx = document.getElementById('intradayChart').getContext('2d');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ['昨收(07/02)', '早盤預測(悲觀端)', '早盤預測(樂觀端)', '09:16盤中', '13:30收盤'],
+    datasets: [{
+      label: '加權指數',
+      data: [46744.16, 45600, 46100, 46092.18, 46780.62],
+      borderColor: '#58a6ff',
+      backgroundColor: 'rgba(88,166,255,0.1)',
+      borderWidth: 2,
+      pointRadius: 5,
+      pointBackgroundColor: ['#8b949e','#f85149','#d29922','#f85149','#3fb950'],
+      tension: 0.2,
+      fill: true
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: '#8b949e' } },
+      tooltip: { backgroundColor: '#1c2128', borderColor: '#30363d', borderWidth: 1 }
+    },
+    scales: {
+      x: { ticks: { color: '#6e7681', font: { size: 11 } }, grid: { color: 'rgba(48,54,61,0.5)' } },
+      y: { ticks: { color: '#8b949e', callback: v => v.toLocaleString() }, grid: { color: 'rgba(48,54,61,0.5)' }, min: 45000 }
+    }
+  }
+});
+</script>
+</body>
+</html>
