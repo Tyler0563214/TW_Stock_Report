@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3037 欣興電子 深度分析報告 2026-07-03</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #F0F4F8; --card: #FFFFFF; --primary: #1A56DB; --accent: #E53E3E;
+    --green: #38A169; --yellow: #D69E2E; --purple: #6B46C1; --text: #2D3748; --sub: #718096; --border: #E2E8F0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.6; }
+  .page { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+  .cover {
+    background: linear-gradient(135deg, #1A0A4A 0%, #2D1B7A 35%, #3D2090 65%, #1E0A60 100%);
+    border-radius: 16px; padding: 60px 40px; color: #fff; margin-bottom: 24px; position: relative; overflow: hidden;
+  }
+  .cover::before { content:''; position:absolute; top:-80px; right:-80px; width:300px; height:300px; border-radius:50%; background:rgba(255,255,255,0.04); }
+  .cover-badge { display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:4px 14px; font-size:12px; margin-bottom:16px; }
+  .cover h1 { font-size:36px; font-weight:700; margin-bottom:6px; }
+  .cover .sub { font-size:16px; opacity:.85; margin-bottom:6px; }
+  .cover-row { display:flex; gap:14px; flex-wrap:wrap; margin-top:24px; }
+  .cover-stat { background:rgba(255,255,255,0.1); border-radius:10px; padding:14px 20px; }
+  .cover-stat .label { font-size:11px; opacity:.7; text-transform:uppercase; letter-spacing:1px; }
+  .cover-stat .value { font-size:21px; font-weight:700; margin-top:2px; }
+  .cover-stat .delta { font-size:12px; opacity:.85; }
+  .risk-badge { position:absolute; top:32px; right:32px; text-align:center; }
+  .risk-circle { width:72px; height:72px; border-radius:50%; background:rgba(214,158,46,0.9); display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .risk-circle .score { font-size:22px; font-weight:700; }
+  .risk-circle .label { font-size:10px; }
+  .risk-text { font-size:11px; opacity:.75; margin-top:4px; }
+
+  .conclusion { background:linear-gradient(135deg,#2D1B7A,#3D2090); border-radius:14px; padding:32px; color:#fff; margin-bottom:24px; }
+  .conclusion h2 { font-size:20px; margin-bottom:20px; }
+  .con-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .con-card { background:rgba(255,255,255,0.12); border-radius:10px; padding:18px; }
+  .con-card .title { font-size:11px; opacity:.7; text-transform:uppercase; margin-bottom:8px; }
+  .con-card .main { font-size:18px; font-weight:700; }
+  .con-card .detail { font-size:12px; opacity:.8; margin-top:4px; }
+
+  .section { background:var(--card); border-radius:14px; padding:28px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .section h2 { font-size:18px; font-weight:700; margin-bottom:20px; color:var(--primary); border-bottom:2px solid var(--border); padding-bottom:10px; }
+  .section h3 { font-size:15px; font-weight:600; margin:16px 0 10px; }
+
+  .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .kpi-card { background:var(--bg); border-radius:10px; padding:16px; border-left:4px solid var(--primary); }
+  .kpi-card .label { font-size:11px; color:var(--sub); text-transform:uppercase; letter-spacing:.5px; }
+  .kpi-card .value { font-size:21px; font-weight:700; margin:4px 0; }
+  .badge-api { background:#EBF8FF; color:#2B6CB0; font-size:10px; padding:2px 6px; border-radius:10px; display:inline-block; }
+  .badge-web { background:#F0FFF4; color:#276749; font-size:10px; padding:2px 6px; border-radius:10px; display:inline-block; }
+  .badge-est { background:#FFFBEB; color:#744210; font-size:10px; padding:2px 6px; border-radius:10px; display:inline-block; }
+  .kpi-card .note { font-size:11px; color:var(--sub); margin-top:4px; }
+  .pos { color:var(--green); } .neg { color:var(--accent); }
+
+  .charts-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .chart-box { background:var(--bg); border-radius:10px; padding:16px; }
+  .chart-box h3 { font-size:13px; margin-bottom:10px; color:var(--sub); }
+  .chart-source { font-size:10px; color:var(--sub); margin-top:6px; }
+
+  table { width:100%; border-collapse:collapse; }
+  th { background:var(--bg); color:var(--sub); font-size:11px; font-weight:600; text-transform:uppercase; padding:8px 12px; text-align:left; }
+  td { padding:8px 12px; border-bottom:1px solid var(--border); font-size:13px; }
+  tr:last-child td { border-bottom:none; }
+  .cp { color:var(--green); font-weight:600; }
+  .cn { color:var(--accent); font-weight:600; }
+
+  .analyst-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
+  .analyst-card { background:var(--bg); border-radius:10px; padding:14px; }
+  .analyst-card .firm { font-size:11px; color:var(--sub); }
+  .analyst-card .rating { font-size:13px; font-weight:700; margin:4px 0; color:var(--green); }
+  .analyst-card .target { font-size:18px; font-weight:700; }
+
+  .tech-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  .tech-card { background:var(--bg); border-radius:10px; padding:14px; }
+  .tech-card .name { font-size:12px; color:var(--sub); }
+  .tech-card .val { font-size:16px; font-weight:700; margin:4px 0; }
+  .sb { color:var(--green); font-size:12px; font-weight:600; }
+  .sw { color:var(--accent); font-size:12px; font-weight:600; }
+  .sn { color:var(--yellow); font-size:12px; font-weight:600; }
+
+  .debate-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .bull-box { background:#F0FFF4; border-radius:10px; padding:20px; border-left:4px solid var(--green); }
+  .bear-box { background:#FFF5F5; border-radius:10px; padding:20px; border-left:4px solid var(--accent); }
+  .debate-title { font-size:16px; font-weight:700; margin-bottom:14px; }
+  .debate-item { margin-bottom:12px; font-size:13px; }
+  .debate-item strong { display:block; font-weight:600; }
+  .debate-item span { color:var(--sub); font-size:12px; }
+
+  .risk-bars { display:grid; gap:12px; }
+  .risk-row { display:flex; align-items:center; gap:12px; }
+  .risk-label { width:110px; font-size:13px; color:var(--sub); }
+  .risk-bar-bg { flex:1; background:var(--border); border-radius:4px; height:10px; }
+  .risk-bar { height:10px; border-radius:4px; }
+  .rsc { width:40px; font-size:13px; font-weight:700; }
+
+  .strategy-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:20px; }
+  .strat-card { border-radius:12px; padding:20px; color:#fff; }
+  .sa { background:linear-gradient(135deg,#C53030,#E53E3E); }
+  .sb2 { background:linear-gradient(135deg,#276749,#38A169); }
+  .sc { background:linear-gradient(135deg,#1A3A7A,#2B6CB0); }
+  .strat-card .type { font-size:11px; opacity:.8; text-transform:uppercase; margin-bottom:8px; }
+  .strat-card h3 { font-size:17px; font-weight:700; margin-bottom:12px; }
+  .strat-card p { font-size:12px; opacity:.9; line-height:1.7; }
+
+  .weight-row { display:flex; border-radius:6px; overflow:hidden; height:30px; margin:16px 0; }
+  .wb { background:var(--green); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:13px; }
+  .wbe { background:var(--accent); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:13px; }
+
+  .gloss-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .gloss-item { background:var(--bg); border-radius:8px; padding:14px; }
+  .gloss-item .term { font-weight:700; margin-bottom:4px; }
+  .gloss-item .def { font-size:12px; color:var(--sub); }
+
+  .disclaimer { background:#FFFBEB; border:1px solid #F6E05E; border-radius:10px; padding:20px; font-size:12px; color:#744210; }
+  .disclaimer strong { display:block; font-size:14px; margin-bottom:8px; }
+  .hb { background:linear-gradient(135deg,#EBF8FF,#E6FFFA); border-radius:10px; padding:14px; border-left:4px solid var(--primary); margin:12px 0; font-size:13px; }
+  .wb2 { background:#FFF5F5; border-radius:8px; padding:14px; border-left:4px solid var(--accent); font-size:13px; margin:12px 0; }
+  .yb { background:#FFFBEB; border-radius:8px; padding:14px; border-left:4px solid var(--yellow); font-size:13px; margin:12px 0; }
+
+  @media (max-width:768px) {
+    .kpi-grid,.charts-grid,.con-grid,.strategy-grid,.analyst-grid { grid-template-columns:1fr 1fr; }
+    .debate-grid,.tech-grid,.gloss-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div class="cover-badge">★ 深度分析報告</div>
+  <h1>欣興電子 3037</h1>
+  <div class="sub">Unimicron Technology ｜ 台灣第一大 PCB 廠 ｜ ABF 載板 × AI 供應鏈</div>
+  <div style="font-size:12px;opacity:.65;margin-top:4px;">分析日期：2026-07-03　｜　資料截止：2026-07-03 盤中　｜　7/31 配息 2.00 元</div>
+  <div class="risk-badge">
+    <div class="risk-circle">
+      <div class="score">5.8</div>
+      <div class="label">/10</div>
+    </div>
+    <div class="risk-text">中高風險</div>
+  </div>
+  <div class="cover-row">
+    <div class="cover-stat">
+      <div class="label">最新股價</div>
+      <div class="value">955 元</div>
+      <div class="delta" style="color:#FF9999;">▼ 24.0 (-2.45%)</div>
+    </div>
+    <div class="cover-stat">
+      <div class="label">52週高 / 低</div>
+      <div class="value">1,130 / 113</div>
+      <div class="delta" style="opacity:.7;">從低點漲幅 +745%</div>
+    </div>
+    <div class="cover-stat">
+      <div class="label">市值</div>
+      <div class="value">1.51 兆</div>
+      <div class="delta" style="opacity:.7;">台幣　★API</div>
+    </div>
+    <div class="cover-stat">
+      <div class="label">FY2026E / 2027E EPS</div>
+      <div class="value" style="color:#90EE90;">11.62 / 24.03</div>
+      <div class="delta" style="opacity:.7;">Forward PE 82x / 39.7x ★WebSearch</div>
+    </div>
+    <div class="cover-stat">
+      <div class="label">投資建議</div>
+      <div class="value" style="font-size:15px;">均衡觀望</div>
+      <div class="delta" style="opacity:.7;">等MACD轉正或MA20確守</div>
+    </div>
+  </div>
+</div>
+
+<!-- 02 核心結論 -->
+<div class="conclusion">
+  <h2>📌 核心結論</h2>
+  <div class="con-grid">
+    <div class="con-card">
+      <div class="title">投資建議</div>
+      <div class="main">均衡觀望</div>
+      <div class="detail">MACD 剛死叉、破 MA5/MA10，技術面轉弱。等 MA20 (964) 守穩或外資止跌轉買再進場；7/31 除息 2元前留意填息動態</div>
+    </div>
+    <div class="con-card">
+      <div class="title">目標價區間</div>
+      <div class="main">1,200 – 1,350 元</div>
+      <div class="detail">野村1350、元富1300、國票/統一1200　★WebSearch；2027E EPS 24.03元空間大</div>
+    </div>
+    <div class="con-card">
+      <div class="title">最大風險</div>
+      <div class="main">外資大量賣超</div>
+      <div class="detail">7/2 外資大幅賣超（-11,430千）；MACD死叉；7/1~7/3 三日從1,115高點連跌；短線殺壓未止</div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 KPI -->
+<div class="section">
+  <h2>03 關鍵財務 KPI</h2>
+  <div class="kpi-grid">
+    <div class="kpi-card" style="border-left-color:#E53E3E;">
+      <div class="label">現價</div>
+      <div class="value neg">955 元</div>
+      <span class="badge-api">★API</span>
+      <div class="note">▼ -24元 (-2.45%)　7/1高點1,115→今1天-14%</div>
+    </div>
+    <div class="kpi-card" style="border-left-color:#D69E2E;">
+      <div class="label">TTM PE / Forward PE</div>
+      <div class="value">135x / 82x</div>
+      <span class="badge-est">★推估值</span>
+      <div class="note">TTM EPS 7.06元；FY2026E 11.62元 ★WebSearch</div>
+    </div>
+    <div class="kpi-card" style="border-left-color:#38A169;">
+      <div class="label">Q1'26 EPS</div>
+      <div class="value pos">3.28 元</div>
+      <span class="badge-api">★API</span>
+      <div class="note">13季新高！YoY +447% (Q1'25: 0.60元)</div>
+    </div>
+    <div class="kpi-card" style="border-left-color:#38A169;">
+      <div class="label">Q1'26 毛利率</div>
+      <div class="value pos">17.96%</div>
+      <span class="badge-api">★API</span>
+      <div class="note">連續改善；Q4'24 僅 11.57% 的大逆轉</div>
+    </div>
+    <div class="kpi-card" style="border-left-color:#38A169;">
+      <div class="label">6月營收 (億)</div>
+      <div class="value pos">140.6</div>
+      <span class="badge-api">★API</span>
+      <div class="note">YoY +32.4%　單月歷史新高！前5月累計654億</div>
+    </div>
+    <div class="kpi-card" style="border-left-color:#6B46C1;">
+      <div class="label">ABF供需缺口</div>
+      <div class="value" style="color:#6B46C1;">22%</div>
+      <span class="badge-web">★WebSearch</span>
+      <div class="note">2026漲15~20%；2027漲>20%；缺口擴大中</div>
+    </div>
+    <div class="kpi-card" style="border-left-color:#D69E2E;">
+      <div class="label">MACD 柱狀</div>
+      <div class="value neg">-0.02 ⚠️</div>
+      <span class="badge-api">★API</span>
+      <div class="note">剛剛死叉！從 +7.63 變負，趨勢轉弱警訊</div>
+    </div>
+    <div class="kpi-card" style="border-left-color:#6B46C1;">
+      <div class="label">7/31 配息</div>
+      <div class="value" style="color:#6B46C1;">2.00 元</div>
+      <span class="badge-web">★WebSearch</span>
+      <div class="note">除息日 7/31，配發現金股利；需關注填息動態</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 財務圖表 -->
+<div class="section">
+  <h2>04 財務趨勢圖</h2>
+  <div class="charts-grid">
+    <div class="chart-box">
+      <h3>EPS 季度趨勢（Q2'24~Q1'26）</h3>
+      <canvas id="epsChart" height="200"></canvas>
+      <div class="chart-source">★API 實際數據</div>
+    </div>
+    <div class="chart-box">
+      <h3>月營收趨勢（2026年1~6月）</h3>
+      <canvas id="revenueChart" height="200"></canvas>
+      <div class="chart-source">★API 實際數據</div>
+    </div>
+    <div class="chart-box">
+      <h3>PE 估值比較（★推估值）</h3>
+      <canvas id="peChart" height="200"></canvas>
+      <div class="chart-source">★推估值：以市場一致預估為基礎</div>
+    </div>
+  </div>
+  <div style="margin-top:20px;">
+    <h3>季度財務改善軌跡</h3>
+    <table>
+      <tr><th>季度</th><th>EPS (元)</th><th>毛利率</th><th>營益率</th><th>趨勢</th></tr>
+      <tr><td>Q2'24</td><td>1.05</td><td>13.21%</td><td>3.22%</td><td style="color:#718096;">→ 基期</td></tr>
+      <tr><td>Q3'24</td><td>0.66</td><td>15.58%</td><td>6.19%</td><td style="color:#718096;">↘ 下滑</td></tr>
+      <tr><td>Q4'24</td><td>0.04</td><td>11.57%</td><td>2.31%</td><td style="color:#E53E3E;">▼ 最低谷（幾乎歸零）</td></tr>
+      <tr><td>Q1'25</td><td>0.60</td><td>13.38%</td><td>4.21%</td><td style="color:#D69E2E;">↗ 回穩</td></tr>
+      <tr><td>Q2'25</td><td>0.02</td><td>13.08%</td><td>4.65%</td><td style="color:#E53E3E;">▼ 再度滑落</td></tr>
+      <tr><td>Q3'25</td><td>1.44</td><td>13.38%</td><td>4.51%</td><td style="color:#38A169;">↑ 爆發起點</td></tr>
+      <tr><td>Q4'25</td><td>2.32</td><td>15.77%</td><td>6.82%</td><td style="color:#38A169;">↑↑ 大幅跳升</td></tr>
+      <tr><td><strong>Q1'26</strong></td><td><strong style="color:#38A169;">3.28</strong></td><td><strong style="color:#38A169;">17.96%</strong></td><td><strong style="color:#38A169;">7.36%</strong></td><td style="color:#38A169;"><strong>↑↑↑ 13季新高</strong></td></tr>
+    </table>
+    <div class="hb" style="margin-top:12px;">
+      <strong>亮點：Q4'24 EPS 僅 0.04元（毛利僅11.57%），到 Q1'26 EPS 達 3.28元，僅四季內暴增 82 倍！</strong>這是典型「景氣大拐點」的走法。驅動力：ABF 供需缺口擴大 + T-glass 缺料漲價 + 稼動率回升 + 產品組合改善（移向高端ABF）。
+    </div>
+  </div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <h2>05 公司概覽</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div>
+      <h3>業務組合（台灣第一大 PCB 廠）</h3>
+      <ul style="font-size:13px;padding-left:18px;line-height:2.2;">
+        <li><strong>ABF 載板</strong>：AI HPC GPU/CPU 封裝基板（最高毛利）</li>
+        <li><strong>HDI 板</strong>：高密度互連板（手機/筆電，量大）</li>
+        <li><strong>一般 PCB</strong>：伺服器、工控、汽車電子</li>
+        <li><strong>IC 基板</strong>：BGA/CSP 傳統封裝</li>
+        <li><strong>子公司群策科技</strong>：蘇州廠，赴港申請 IPO ★WebSearch</li>
+      </ul>
+      <h3 style="margin-top:14px;">護城河</h3>
+      <ul style="font-size:13px;padding-left:18px;line-height:2;">
+        <li>ABF 技術稀缺，全球五大供應商</li>
+        <li>客戶含 Intel、NVIDIA、AMD、Marvell</li>
+        <li>擴產計畫：光復廠、楊梅廠、泰國廠三路並進</li>
+        <li>外資持股 38.16%、投信 10.92%，法人合計 50.54%</li>
+        <li>法人高度持有 = 籌碼穩定，長線配置標的</li>
+      </ul>
+    </div>
+    <div>
+      <h3>ABF 三雄比較（2026-07-03）</h3>
+      <table>
+        <tr><th>指標</th><th>欣興 3037</th><th>南電 8046</th></tr>
+        <tr><td>現價</td><td>955元</td><td>1,105元</td></tr>
+        <tr><td>52W 低→高</td><td>113→1,130 (+900%)</td><td>113.5→1,285 (+1032%)</td></tr>
+        <tr><td>Q1'26 毛利率</td><td style="color:#38A169;font-weight:600;">17.96%</td><td>15.85%</td></tr>
+        <tr><td>TTM PE</td><td>135x</td><td>234x（更貴）</td></tr>
+        <tr><td>Forward PE(26E)</td><td>82x</td><td>~93x（更貴）</td></tr>
+        <tr><td>2027E EPS</td><td>24.03元</td><td>推估偏低</td></tr>
+        <tr><td>外資(7/2)</td><td style="color:#E53E3E;">大量賣超</td><td style="color:#E53E3E;">賣超-2,304張</td></tr>
+        <tr><td>MACD</td><td style="color:#E53E3E;">剛死叉(-0.02)</td><td style="color:#D69E2E;">+28.88（黃金）</td></tr>
+      </table>
+      <div class="hb" style="margin-top:12px;">
+        <strong>欣興 vs 南電：</strong>欣興毛利率已超越南電，TTM PE 和 Forward PE 更便宜，是 ABF 三雄中估值相對合理的選擇；但技術面目前較南電弱（MACD死叉）。
+      </div>
+      <h3 style="margin-top:12px;">催化劑：T-glass 缺料漲價</h3>
+      <div style="background:var(--bg);border-radius:8px;padding:12px;font-size:13px;">
+        T-glass（低熱膨脹係數玻璃布，LowCTE）是 ABF 高端基板的關鍵原料。全球供應緊缺 → 欣興法說會點名此為 ABF 漲價的新驅動力，形成「原料缺貨 → 供需缺口擴大 → 報價上漲」的正循環。★WebSearch
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 06 基本面分析 -->
+<div class="section">
+  <h2>06 基本面分析</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div>
+      <h3>基本面評分</h3>
+      <div class="risk-bars">
+        <div class="risk-row"><div class="risk-label">成長性</div><div class="risk-bar-bg"><div class="risk-bar" style="width:90%;background:#38A169;"></div></div><div class="rsc" style="color:#38A169;">9.0</div></div>
+        <div class="risk-row"><div class="risk-label">獲利能力</div><div class="risk-bar-bg"><div class="risk-bar" style="width:72%;background:#38A169;"></div></div><div class="rsc" style="color:#38A169;">7.2</div></div>
+        <div class="risk-row"><div class="risk-label">財務品質</div><div class="risk-bar-bg"><div class="risk-bar" style="width:65%;background:#D69E2E;"></div></div><div class="rsc" style="color:#D69E2E;">6.5</div></div>
+        <div class="risk-row"><div class="risk-label">估值合理度</div><div class="risk-bar-bg"><div class="risk-bar" style="width:38%;background:#D69E2E;"></div></div><div class="rsc" style="color:#D69E2E;">3.8</div></div>
+        <div class="risk-row"><div class="risk-label">護城河</div><div class="risk-bar-bg"><div class="risk-bar" style="width:78%;background:#38A169;"></div></div><div class="rsc" style="color:#38A169;">7.8</div></div>
+      </div>
+    </div>
+    <div>
+      <h3>關鍵財務數據</h3>
+      <table>
+        <tr><th>指標</th><th>數值</th><th>說明</th></tr>
+        <tr><td>TTM EPS</td><td>7.06 元</td><td>Q2'25~Q1'26合計　★推估</td></tr>
+        <tr><td>FY2025 EPS</td><td>4.38 元</td><td>全年合計　★API計算</td></tr>
+        <tr><td>FY2026E EPS</td><td>11.62 元</td><td>美系外資預估　★WebSearch</td></tr>
+        <tr><td>FY2027E EPS</td><td>24.03 元</td><td>美系外資預估（超高！）★WebSearch</td></tr>
+        <tr><td>TTM PE</td><td>135x</td><td>955/7.06 ★推估</td></tr>
+        <tr><td>Forward PE (FY26E)</td><td>82x</td><td>955/11.62 ★推估</td></tr>
+        <tr><td>2027 Forward PE</td><td>39.7x</td><td>955/24.03（具吸引力）★推估</td></tr>
+        <tr><td>PB</td><td>13.45x</td><td>★API</td></tr>
+        <tr><td>6月營收 YoY</td><td>+32.4%</td><td>連續6月雙位數YoY成長</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="hb">
+    <strong>FY2027E EPS 24.03元 的含義：</strong>以目前股價955元計算，若以 2027E 視角持有，等效「只用 39.7倍 PE 買到一個 EPS 成長率 107%（11.62→24.03）的公司」。這是高成長股吸引力所在，也是外資目標喊到 1,200~1,400元的邏輯基礎。
+  </div>
+</div>
+
+<!-- 07 籌碼面分析 -->
+<div class="section">
+  <h2>07 籌碼面分析</h2>
+  <h3>三大法人買賣超（2026-07-02 收盤後）</h3>
+  <table>
+    <tr><th>法人</th><th>買賣超</th><th>解讀</th></tr>
+    <tr><td>外資</td><td class="cn">大量賣超（-11,430 千）</td><td style="color:#E53E3E;">⚠️ 嚴重警示！外資在7/1高點後持續出貨</td></tr>
+    <tr><td>投信</td><td style="color:var(--sub);">0</td><td>靜觀其變</td></tr>
+    <tr><td>自營商</td><td class="cp">+285,415</td><td>小量買入，緩衝賣壓</td></tr>
+    <tr><td><strong>合計</strong></td><td class="cp">+117,979</td><td>外資賣壓被自營商部分抵消</td></tr>
+  </table>
+  <div class="wb2">
+    <strong>⚠️ 外資大賣超警訊：</strong>7/2 外資大幅賣超，結合 MACD 死叉、破 MA5/MA10，技術與籌碼面雙重轉弱。外資持股 38.16% 仍高，意味後續可能仍有賣壓。需等外資止賣轉買才考慮積極進場。
+  </div>
+  <div style="margin-top:16px;">
+    <h3>外資機構目標價（★WebSearch）</h3>
+    <div class="analyst-grid">
+      <div class="analyst-card">
+        <div class="firm">美系外資</div>
+        <div class="rating">買進</div>
+        <div class="target">1,225 元</div>
+        <div style="font-size:11px;color:var(--sub);margin-top:4px;">2027E EPS 24.03元</div>
+      </div>
+      <div class="analyst-card">
+        <div class="firm">野村證券</div>
+        <div class="rating">買進</div>
+        <div class="target">1,350 元</div>
+        <div style="font-size:11px;color:var(--sub);margin-top:4px;">ABF報價上漲模型</div>
+      </div>
+      <div class="analyst-card">
+        <div class="firm">元富投顧</div>
+        <div class="rating">買進</div>
+        <div class="target">1,300 元</div>
+        <div style="font-size:11px;color:var(--sub);margin-top:4px;">供需缺口22%支撐</div>
+      </div>
+      <div class="analyst-card">
+        <div class="firm">國票/統一證</div>
+        <div class="rating">買進</div>
+        <div class="target">1,200 元</div>
+        <div style="font-size:11px;color:var(--sub);margin-top:4px;">最保守目標</div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--sub);">目標價最高可達 1,400元（某分析師，ABF超級週期假設）★WebSearch</div>
+  </div>
+  <div class="yb" style="margin-top:14px;">
+    <strong>⏰ 7/31 配息提醒：</strong>欣興預計 2026-07-31 配發現金股利 2.00 元（除息）。除息前股價有時有「填息布局買盤」，除息後則需觀察是否快速填息。以現價 955元計，殖利率約 0.21%（偏低，不是以殖利率取勝的股票）。
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div class="section">
+  <h2>08 技術分析</h2>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="name">均線系統</div>
+      <div class="val">MA5:1,008 / MA10:994 / MA20:965 / MA60:876</div>
+      <div class="sw">⚠️ 今日 955 已跌破 MA5 與 MA10！僅剩 MA20 (965) 勉強支撐中</div>
+    </div>
+    <div class="tech-card">
+      <div class="name">MACD（剛死叉⚠️）</div>
+      <div class="val" style="color:#E53E3E;">MACD:27.8 / 信號:27.82 / 柱狀:-0.02</div>
+      <div class="sw">⚠️ 柱狀由正轉負，死叉確認！趨勢轉弱的第一個明確技術信號</div>
+    </div>
+    <div class="tech-card">
+      <div class="name">RSI（14日）</div>
+      <div class="val" style="color:#D69E2E;">51.63（中立）</div>
+      <div class="sn">→ RSI 尚未超賣（>30才超賣），有進一步下跌空間而不觸發反彈</div>
+    </div>
+    <div class="tech-card">
+      <div class="name">布林通道</div>
+      <div class="val">上:1,065 / 中:965 / 下:864</div>
+      <div class="sn">→ 股價從上軌拉回中軌（965）；中軌即 MA20，是短線關鍵防線</div>
+    </div>
+  </div>
+  <div style="margin-top:20px;">
+    <h3>關鍵價位支撐壓力表</h3>
+    <table>
+      <tr><th>類型</th><th>價位</th><th>說明</th></tr>
+      <tr><td style="color:#E53E3E;font-weight:600;">壓力1</td><td>993 – 1,008 元</td><td>MA10 / MA5（今日跌破，反轉即壓力）</td></tr>
+      <tr><td style="color:#E53E3E;font-weight:600;">壓力2</td><td>1,065 元</td><td>布林上軌</td></tr>
+      <tr><td style="color:#E53E3E;font-weight:600;">壓力3</td><td>1,115 – 1,130 元</td><td>7/1 高點 / 52週最高</td></tr>
+      <tr><td style="color:#38A169;font-weight:600;">支撐1</td><td>964 元</td><td>MA20 / 布林中軌（今日最重要防線）</td></tr>
+      <tr><td style="color:#38A169;font-weight:600;">支撐2</td><td>876 元</td><td>MA60，長線強支撐</td></tr>
+      <tr><td style="color:#38A169;font-weight:600;">支撐3</td><td>864 元</td><td>布林下軌</td></tr>
+    </table>
+  </div>
+  <div style="margin-top:16px;background:var(--bg);border-radius:8px;padding:14px;font-size:13px;line-height:1.8;">
+    <strong>K線關鍵事件解析：</strong><br>
+    5/21: 905 → 5/28: 衝高 1,130 (52W高，量26M)，但上影線長（收1,025）→ 5/29~6/5 震盪整理 → 6/8: 840 低點（大跌！收911，長下影線抄底） → 6/10~6/11: 再殺至 811 → 整理反彈 → <strong style="color:#E53E3E;">6/26: 爆量 7.79萬張黑K</strong>（開1,000衝1,090又殺回964低，收975），此為確認高點的關鍵K線 → 7/1: 1,115（再次衝高）→ <strong style="color:#E53E3E;">7/2: 開998 (-12%)，低978，收979</strong> → 今日繼續跌至955。<br><br>
+    <strong>總結：</strong>6/26 爆量黑K 和 7/1→7/2 的 -12% 急跌是短線轉弱的明確信號，配合 MACD 死叉，建議等待整理完畢再進場。
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <h2>09 融資融券</h2>
+  <div style="background:var(--bg);border-radius:8px;padding:16px;font-size:13px;">
+    <p><strong>API 數據：</strong>融資餘額 0 張，融券餘額 0 張（FinMind 7/2）。</p>
+    <p style="margin-top:8px;"><strong>趨勢判斷：</strong>欣興市值 1.51 兆，機構投資人主導交易。法人持股達 50.54%，散戶融資比例極低。今日急跌為外資出貨主導，非融資斷頭引發，較不會有「瀑布式連鎖斷頭」風險。</p>
+    <p style="margin-top:8px;"><strong>查詢方式：</strong>前往<a href="https://www.twse.com.tw/zh/trading/margin/MI_MARGN.html" style="color:var(--primary);">台灣證交所官網</a>查詢最新融資融券餘額（代碼：3037）。</p>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <h2>10 研究員辯論：看多 vs 看空</h2>
+  <div class="debate-grid">
+    <div class="bull-box">
+      <div class="debate-title" style="color:#276749;">🐂 看多論點（55%）</div>
+      <div class="debate-item">
+        <strong>① Q1'26 EPS 3.28元，13季新高！趨勢明確</strong>
+        <span>EPS 從 Q4'24 的 0.04元爆升至 Q1'26 的 3.28元（僅4季 82倍）。FY2026E 11.62元，隱含 Q2~Q4 均值約 2.78元，且 T-glass 缺料持續推升，大概率達標甚至超標。</span>
+      </div>
+      <div class="debate-item">
+        <strong>② ABF 供需缺口 22%，2026~2027 持續漲價</strong>
+        <span>外資報告：ABF供需缺口擴大至22%，2026 漲15-20%，2027 漲超20%。報價上漲直接提升毛利率，欣興身為供給端受惠者利潤大幅提升。</span>
+      </div>
+      <div class="debate-item">
+        <strong>③ 2027E EPS 24.03元，2027 Forward PE 僅 39.7x</strong>
+        <span>外資預估2027 EPS達24.03元（YoY+107%！），以現價955元計算2027年 PE 只有39.7倍。對一個EPS成長超過100%的公司，這個估值便宜。</span>
+      </div>
+      <div class="debate-item">
+        <strong>④ T-glass 缺料 = ABF 漲價新引擎</strong>
+        <span>法說會點名 LowCTE 玻璃布缺料是新催化劑。T-glass 全球供應商極少，缺料使ABF廠具備提價能力，欣興受益最深（高端ABF佔比高）。</span>
+      </div>
+      <div class="debate-item">
+        <strong>⑤ 外資/投信法人合計持股 50.54%，籌碼穩定</strong>
+        <span>法人持股比例高意味籌碼集中於機構，散戶恐慌性賣壓有限。外資短期出貨為技術性調節，長線配置邏輯未改。</span>
+      </div>
+      <div class="debate-item">
+        <strong>⑥ 泰國廠量產在即 + 光復/楊梅擴產</strong>
+        <span>泰國廠為地緣政治分散風險，同時增加整體產能。光復廠、楊梅廠擴建完成後，2027 ABF 產能大幅提升，支撐 FY2027E EPS 24.03元目標。</span>
+      </div>
+      <div class="debate-item">
+        <strong>⑦ 群策科技赴港 IPO 具未實現價值</strong>
+        <span>子公司蘇州群策科技申請港股 IPO，一旦上市，欣興持股的隱含市值將顯性化，可能帶來估值重估效應。</span>
+      </div>
+    </div>
+    <div class="bear-box">
+      <div class="debate-title" style="color:#C53030;">🐻 看空論點（45%）</div>
+      <div class="debate-item">
+        <strong>① MACD 剛死叉，技術面轉弱</strong>
+        <span>MACD 柱狀 -0.02，從 +7.63 轉負，死叉確認。歷史上死叉出現後，常有 5~15% 的整理走勢。配合 RSI 51（未超賣），尚有進一步下跌空間。</span>
+      </div>
+      <div class="debate-item">
+        <strong>② 7/1 高點 1,115 → 今 955，三天跌 -14.4%</strong>
+        <span>從 7/1 高點1,115到今日955，三天快速下跌 -14.4%，且 7/2 外資大量賣超。跌勢未止，技術底部尚未確認。</span>
+      </div>
+      <div class="debate-item">
+        <strong>③ 6/26 爆量黑K（7.79萬張）為高點確認</strong>
+        <span>6/26 量爆7.79萬張，是過去一個月最大量，且衝高後收低（大量黑K）。技術上此為高點換手、主力出貨的典型形態。</span>
+      </div>
+      <div class="debate-item">
+        <strong>④ TTM PE 135x，Forward PE 82x 仍高</strong>
+        <span>雖然比南電便宜，但 82x Forward PE 對一個毛利率僅 18% 的代工廠仍屬偏高。若毛利率改善不如預期，EPS 達標風險高。</span>
+      </div>
+      <div class="debate-item">
+        <strong>⑤ 毛利率 17.96% 仍低，天花板未知</strong>
+        <span>相比台積電 55%、南電 15.85%，欣興毛利率 17.96% 雖已改善，但PCB/HDI業務結構使毛利率天花板約 22-25%。難以達到純ABF廠的高毛利。</span>
+      </div>
+      <div class="debate-item">
+        <strong>⑥ ABF 周期性風險，Q4'24 曾歸零</strong>
+        <span>2024年Q4 EPS 0.04元（毛利11.57%）是警示：ABF景氣一旦逆轉，欣興受傷最快。2022~2024曾有嚴重過剩。AI需求若降溫，歷史恐重演。</span>
+      </div>
+    </div>
+  </div>
+  <div class="weight-row" style="margin-top:20px;">
+    <div class="wb" style="width:55%;">看多 55%</div>
+    <div class="wbe" style="width:45%;">看空 45%</div>
+  </div>
+  <div style="background:var(--bg);border-radius:8px;padding:14px;margin-top:14px;font-size:13px;">
+    <strong>給一般投資人的話：</strong>欣興的故事比南電更「多元」（PCB+HDI+ABF），本質上是「ABF 景氣週期 × PCB 回升」的複合題材。2027E EPS 24.03元的想像空間很大，但現在技術面轉弱，不適合追高。建議等技術整理（MACD轉正或 MA20 確守），再分批布局。7/31 除息 2元是短線事件，配息前後都可能有波動，要提前規劃。
+  </div>
+</div>
+
+<!-- 11 風控評估 -->
+<div class="section">
+  <h2>11 風控評估（六維評分）</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div>
+      <div class="risk-bars">
+        <div class="risk-row"><div class="risk-label">估值風險(30%)</div><div class="risk-bar-bg"><div class="risk-bar" style="width:72%;background:#E53E3E;"></div></div><div class="rsc" style="color:#E53E3E;">7.2</div></div>
+        <div class="risk-row"><div class="risk-label">財務風險(25%)</div><div class="risk-bar-bg"><div class="risk-bar" style="width:45%;background:#D69E2E;"></div></div><div class="rsc" style="color:#D69E2E;">4.5</div></div>
+        <div class="risk-row"><div class="risk-label">流動性(10%)</div><div class="risk-bar-bg"><div class="risk-bar" style="width:25%;background:#38A169;"></div></div><div class="rsc" style="color:#38A169;">2.5</div></div>
+        <div class="risk-row"><div class="risk-label">產業風險(15%)</div><div class="risk-bar-bg"><div class="risk-bar" style="width:55%;background:#D69E2E;"></div></div><div class="rsc" style="color:#D69E2E;">5.5</div></div>
+        <div class="risk-row"><div class="risk-label">總經風險(10%)</div><div class="risk-bar-bg"><div class="risk-bar" style="width:50%;background:#D69E2E;"></div></div><div class="rsc" style="color:#D69E2E;">5.0</div></div>
+        <div class="risk-row"><div class="risk-label">籌碼風險(10%)</div><div class="risk-bar-bg"><div class="risk-bar" style="width:68%;background:#E53E3E;"></div></div><div class="rsc" style="color:#E53E3E;">6.8</div></div>
+      </div>
+    </div>
+    <div>
+      <div style="background:linear-gradient(135deg,#C08000,#D69E2E);border-radius:12px;padding:20px;color:#fff;text-align:center;">
+        <div style="font-size:14px;opacity:.85;">綜合風險等級</div>
+        <div style="font-size:48px;font-weight:700;margin:10px 0;">5.8</div>
+        <div style="font-size:18px;font-weight:600;">中高風險</div>
+        <div style="font-size:12px;opacity:.8;margin-top:8px;">MACD死叉 × 外資賣超 × 估值仍高</div>
+      </div>
+      <div style="margin-top:14px;font-size:12px;color:var(--sub);line-height:1.8;">
+        <strong>評分說明：</strong><br>
+        估值7.2：TTM PE 135x，Forward PE 82x，偏高<br>
+        財務4.5：EPS 改善趨勢強，但毛利率17.96%天花板<br>
+        流動性2.5：1.51兆市值，流動性佳<br>
+        產業5.5：ABF週期性強，2024曾歸零<br>
+        籌碼6.8：外資大賣超+MACD死叉+破均線，短線弱
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 12 台股三段式策略 -->
+<div class="section">
+  <h2>12 台股三段式策略</h2>
+  <div class="strategy-grid">
+    <div class="strat-card sa">
+      <div class="type">🔴 進攻策略（短線積極）</div>
+      <h3>MA20 (964) 站穩再進</h3>
+      <p>
+        <strong>進場：</strong>955~975元，今日盤中試探<br>
+        <strong>條件：</strong>收盤守上 MA20 (964) + 外資轉買<br>
+        <strong>目標：</strong>1,008 (MA5) → 1,115 (前高)<br>
+        <strong>停損：</strong>跌破 930元（MA20 下3%）<br>
+        <strong>7/31除息：</strong>需考慮配息前後波動<br>
+        <strong>部位：</strong>20% 試單，守住再加
+      </p>
+    </div>
+    <div class="strat-card sb2">
+      <div class="type">🟢 均衡策略（一般投資人）</div>
+      <h3>等技術訊號確認再進</h3>
+      <p>
+        <strong>等待條件一：</strong>MACD 柱狀轉回正值<br>
+        <strong>等待條件二：</strong>連續 2 日收在 MA10 (994) 之上<br>
+        <strong>等待條件三：</strong>外資轉買超<br>
+        <strong>全達成後：</strong>第一批 1,000~1,020元 買1/3<br>
+        <strong>第二批：</strong>突破前高 1,115時 加1/3<br>
+        <strong>目標：</strong>1,200~1,350元<br>
+        <strong>部位：</strong>最多25%
+      </p>
+    </div>
+    <div class="strat-card sc">
+      <div class="type">🔵 防守策略（保守投資人）</div>
+      <h3>觀望，等更深整理</h3>
+      <p>
+        <strong>目前：</strong>0% 部位，不進場<br>
+        <strong>觀察：</strong>是否跌到 876 元（MA60）形成黃金買點<br>
+        <strong>進場條件：</strong>MA60 附近量縮止跌 + 外資買超 + MACD 黃金交叉<br>
+        <strong>目標：</strong>等上述全部達成後，1,000元以下分批，目標 1,200元<br>
+        <strong>耐心：</strong>等待比追高更重要
+      </p>
+    </div>
+  </div>
+  <div style="margin-top:20px;">
+    <h3>催化劑時程表</h3>
+    <table>
+      <tr><th>時間</th><th>事件</th><th>預期影響</th></tr>
+      <tr><td>7/3~7/7</td><td>外資賣壓是否止歇</td><td>短線最關鍵，決定能否 MA20 站穩</td></tr>
+      <tr><td>2026-07-31</td><td>配息 2.00 元（除息日）</td><td>除息前後可能有波動；填息速度是強弱指標</td></tr>
+      <tr><td>2026年8月</td><td>Q2'26 財報公布</td><td>若 EPS > 3.0元，確認上升趨勢，大利多</td></tr>
+      <tr><td>2026下半</td><td>ABF 報價逐季調漲</td><td>供需缺口22%，漲價是毛利率提升主引擎</td></tr>
+      <tr><td>2026年</td><td>泰國新廠量產</td><td>地緣分散 + 新產能，強化客戶信心</td></tr>
+      <tr><td>2026~2027</td><td>T-glass 缺料持續</td><td>ABF報價持續受支撐，超出市場預期</td></tr>
+      <tr><td>2026~2027</td><td>群策科技港股 IPO</td><td>隱含資產顯性化，估值重估潛力</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 13 名詞小教室 -->
+<div class="section">
+  <h2>13 名詞小教室</h2>
+  <div class="gloss-grid">
+    <div class="gloss-item">
+      <div class="term">ABF 載板（ABF Substrate）</div>
+      <div class="def">Ajinomoto Build-up Film 基板，用於 AI GPU/CPU 晶片封裝。需求由 AI 計算需求爆炸驅動，全球只有五家廠商能生產高端產品，供需嚴重失衡推動報價持續上漲。</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">HDI 板（高密度互連板）</div>
+      <div class="def">High Density Interconnect，用於智慧手機、筆電等消費電子。特點是線路細密、孔徑小。欣興 HDI 業務占整體約 40-50%，是傳統基本盤。</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">T-glass / LowCTE 玻璃布</div>
+      <div class="def">特殊低熱膨脹係數玻璃布，是 ABF 高端基板的關鍵原料。全球供應商極少（主要是日本廠），缺料造成 ABF 基板供給受限，推升報價上漲——欣興法說會點名的新催化劑。</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">MACD 死叉</div>
+      <div class="def">MACD 線從上方穿越訊號線（由正轉負），是賣出或觀望的技術信號。欣興今日 MACD 柱狀剛從 +7.63 轉為 -0.02，是死叉的起點，短線轉弱。</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">爆量黑K（高量長黑K）</div>
+      <div class="def">成交量大幅放大且收盤低於開盤的陰線K棒。6/26 欣興爆量7.79萬張（大盤量的數倍）但收黑，是主力在高點換手的典型形態，後續常見回落。</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">Forward PE（前向本益比）</div>
+      <div class="def">以未來12個月預估 EPS 計算的本益比。欣興 FY2026E Forward PE = 955/11.62 = 82x，看起來貴；但若以 FY2027E 24.03元，PE = 39.7x，就顯得很便宜。</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">稼動率（Utilization Rate）</div>
+      <div class="def">工廠機器開動的比例。ABF 廠稼動率從 2024 年底的 60-70% 恢復到 2026 年的 90%+，是毛利率大幅改善的主因——固定成本攤提減少，利潤率快速提升。</div>
+    </div>
+    <div class="gloss-item">
+      <div class="term">除息（Ex-Dividend）</div>
+      <div class="def">配息當天股價會自動扣除股息金額。7/31 配息 2元，若配息前股價 1,000元，除息後股價變為 998元（自動調整）。之後股價重回 1,000元以上稱為「填息」，是股東實際獲益的關鍵。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 14 免責聲明 -->
+<div class="disclaimer">
+  <strong>⚠️ 免責聲明</strong>
+  <ul>
+    <li>本報告僅供研究參考用途，不構成任何投資建議或要約。</li>
+    <li>過去績效不代表未來表現，所有投資均有損失風險。</li>
+    <li>所有推估值（★推估值）為基於公開資訊之合理推算，非精確預測。</li>
+    <li>資料來源：台灣證交所 API (Fugle/FinMind/TWSE)、
+      <a href="https://cmnews.com.tw/article/newsyoudeservetoknow-632eb271-5336-11f1-909b-fe5a779bfccf" style="color:#744210;">CMoney 外資目標價1,225元</a>、
+      <a href="https://money.udn.com/money/story/5607/9511223" style="color:#744210;">經濟日報 ABF供需缺口</a>、
+      <a href="https://cmnews.com.tw/article/zhouzhehan-38c23f5f-73b2-11f1-be7b-438467eb7f39" style="color:#744210;">CMoney 目標價1,400元</a>、
+      <a href="https://www.sinotrade.com.tw/richclub/hotstock/%E6%AC%A3%E8%88%88-3037" style="color:#744210;">豐雲學堂法說會摘要</a>、
+      <a href="https://readmo.cmoney.tw/article/8a76d15c-8a9d-4310-8850-e2d0cb248c19" style="color:#744210;">CMoney AI營收展望</a>
+    </li>
+    <li>分析基準日：2026-07-03 盤中數據；台股三大法人數據為 2026-07-02 收盤後公布。</li>
+    <li>投資人應自行進行盡職調查並諮詢合格財務顧問後再做決策。</li>
+  </ul>
+  <div style="margin-top:8px;font-style:italic;">報告產生時間：2026-07-03 ｜ 分析工具：Claude Code + 台股多層 API</div>
+</div>
+
+</div>
+<script>
+// EPS
+const epsCtx = document.getElementById('epsChart').getContext('2d');
+const epsData = [1.05, 0.66, 0.04, 0.60, 0.02, 1.44, 2.32, 3.28];
+const epsLabels = ["Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26"];
+const epsColors = epsData.map((v,i) => i===7?'rgba(229,62,62,0.85)':v<0.1?'rgba(229,62,62,0.5)':'rgba(26,86,219,0.70)');
+new Chart(epsCtx,{type:'bar',data:{labels:epsLabels,datasets:[{label:'EPS(元)',data:epsData,backgroundColor:epsColors,borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{callback:v=>v+'元'}},x:{grid:{display:false}}}}});
+
+// Revenue
+const revCtx = document.getElementById('revenueChart').getContext('2d');
+const revData = [118.2,127.7,116.0,130.8,139.3,140.6];
+const revLabels = ['1月','2月','3月','4月','5月','6月'];
+const revPC = revData.map((_,i)=>i===5?'rgba(229,62,62,0.85)':'rgba(56,161,105,0.85)');
+new Chart(revCtx,{type:'line',data:{labels:revLabels,datasets:[{label:'月營收(億)',data:revData,borderColor:'#6B46C1',backgroundColor:'rgba(107,70,193,0.10)',pointBackgroundColor:revPC,pointRadius:5,tension:0.3,fill:true}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{callback:v=>v+'億'},min:100},x:{grid:{display:false}}}}});
+
+// PE
+const peCtx = document.getElementById('peChart').getContext('2d');
+new Chart(peCtx,{type:'bar',data:{labels:['欣興 TTM','欣興 FY26E','欣興 FY27E','南電 TTM','日月光 FY26E'],datasets:[{label:'PE',data:[135,82,39.7,234,36.3],backgroundColor:['rgba(214,158,46,0.8)','rgba(107,70,193,0.75)','rgba(56,161,105,0.85)','rgba(229,62,62,0.6)','rgba(26,86,219,0.7)'],borderRadius:4}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{callback:v=>v+'x'}},y:{grid:{display:false},ticks:{font:{size:10}}}}}});
+</script>
+</body>
+</html>
