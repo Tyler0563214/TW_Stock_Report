@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>寶雅國際 (5904) 深度分析報告 2026-07-04</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #e11d48;
+    --primary-dark: #9f1239;
+    --secondary: #7c3aed;
+    --accent: #059669;
+    --danger: #dc2626;
+    --warning: #d97706;
+    --bg: #F0F4F8;
+    --card: #FFFFFF;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --green: #059669;
+    --red: #dc2626;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+
+  .cover {
+    background: linear-gradient(135deg, #4c0519 0%, #9f1239 45%, #e11d48 80%, #f43f5e 100%);
+    color: white; padding: 60px 40px; border-radius: 20px; margin-bottom: 28px; position: relative; overflow: hidden;
+  }
+  .cover::before { content:''; position:absolute; top:-60px; right:-60px; width:280px; height:280px; border-radius:50%; background:rgba(255,255,255,0.07); }
+  .cover::after { content:''; position:absolute; bottom:-80px; left:60px; width:200px; height:200px; border-radius:50%; background:rgba(255,255,255,0.05); }
+  .cover-badge { display:inline-block; background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.3); border-radius:999px; padding:4px 14px; font-size:13px; margin-bottom:20px; }
+  .cover h1 { font-size:38px; font-weight:800; margin-bottom:6px; }
+  .cover .subtitle { font-size:18px; opacity:0.85; margin-bottom:28px; }
+  .cover-meta { display:flex; gap:32px; flex-wrap:wrap; }
+  .cover-meta-item label { font-size:12px; opacity:0.7; display:block; margin-bottom:2px; }
+  .cover-meta-item .val { font-size:22px; font-weight:700; }
+  .cover-meta-item .val.up { color:#bbf7d0; }
+  .risk-badge { display:inline-block; padding:6px 18px; border-radius:8px; font-weight:700; font-size:14px; margin-top:20px; }
+  .risk-low { background:#4ade80; color:#14532d; }
+  .split-badge { display:inline-block; background:#fbbf24; color:#1e293b; border-radius:8px; padding:6px 16px; font-weight:700; font-size:14px; margin-top:10px; margin-left:10px; }
+
+  .section { background: var(--card); border-radius: 16px; padding: 28px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .section-title { font-size:20px; font-weight:700; color:var(--primary-dark); margin-bottom:20px; padding-bottom:10px; border-bottom:2px solid var(--border); display:flex; align-items:center; gap:8px; }
+
+  .conclusion-card { background:linear-gradient(135deg,#4c0519,#9f1239); color:white; border-radius:14px; padding:28px; margin-bottom:20px; }
+  .conclusion-card h2 { font-size:22px; font-weight:700; margin-bottom:16px; }
+  .conclusion-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .conclusion-item { background:rgba(255,255,255,0.12); border-radius:10px; padding:16px; }
+  .conclusion-item label { font-size:12px; opacity:0.75; display:block; margin-bottom:4px; }
+  .conclusion-item .cval { font-size:20px; font-weight:700; }
+  .rec-tag { display:inline-block; background:#fbbf24; color:#1e293b; border-radius:6px; padding:4px 14px; font-weight:700; font-size:14px; margin-top:12px; }
+
+  .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .kpi-card { background:linear-gradient(135deg,#f8fafc,#f1f5f9); border-radius:12px; padding:16px; border-left:4px solid var(--primary); }
+  .kpi-card .kpi-label { font-size:11px; color:var(--text-light); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+  .kpi-card .kpi-value { font-size:22px; font-weight:700; color:var(--primary-dark); margin-bottom:4px; }
+  .kpi-card .kpi-note { font-size:12px; color:var(--text-light); }
+  .kpi-card.green { border-left-color:var(--green); }
+  .kpi-card.green .kpi-value { color:var(--green); }
+  .kpi-card.gold { border-left-color:#d97706; }
+  .kpi-card.gold .kpi-value { color:#b45309; }
+
+  .chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:8px; }
+  .chart-box { background:#f8fafc; border-radius:12px; padding:16px; }
+  .chart-title { font-size:14px; font-weight:600; color:var(--text); margin-bottom:12px; }
+  .chart-note { font-size:11px; color:var(--text-light); margin-top:8px; text-align:center; }
+  canvas { max-height:240px; }
+
+  table { width:100%; border-collapse:collapse; }
+  th { background:#f1f5f9; padding:10px 14px; text-align:left; font-size:13px; font-weight:600; color:var(--text-light); }
+  td { padding:10px 14px; border-bottom:1px solid var(--border); font-size:14px; }
+  tr:last-child td { border-bottom:none; }
+  .td-up { color:var(--green); font-weight:600; }
+  .td-down { color:var(--red); font-weight:600; }
+  .td-new { color:var(--primary); font-weight:700; }
+
+  .tag { display:inline-block; border-radius:5px; padding:2px 10px; font-size:12px; font-weight:600; margin:2px; }
+  .tag-green { background:#d1fae5; color:#065f46; }
+  .tag-red { background:#fee2e2; color:#991b1b; }
+  .tag-orange { background:#fef3c7; color:#92400e; }
+  .tag-pink { background:#fce7f3; color:#9d174d; }
+  .tag-purple { background:#ede9fe; color:#5b21b6; }
+  .tag-gold { background:#fef3c7; color:#92400e; }
+
+  .score-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .score-label { width:90px; font-size:13px; }
+  .score-bar-bg { flex:1; background:#e2e8f0; border-radius:6px; height:10px; }
+  .score-bar-fill { height:100%; border-radius:6px; }
+  .score-val { width:40px; text-align:right; font-weight:700; font-size:13px; }
+
+  .strategy-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .strategy-card { border-radius:12px; padding:20px; }
+  .strategy-card.attack { background:linear-gradient(135deg,#fce7f3,#fbcfe8); border:1px solid #f9a8d4; }
+  .strategy-card.balance { background:linear-gradient(135deg,#dbeafe,#bfdbfe); border:1px solid #60a5fa; }
+  .strategy-card.defense { background:linear-gradient(135deg,#d1fae5,#a7f3d0); border:1px solid #34d399; }
+  .strategy-card h3 { font-size:15px; font-weight:700; margin-bottom:10px; }
+  .strategy-card ul { padding-left:16px; font-size:13px; }
+  .strategy-card li { margin-bottom:5px; }
+
+  .debate-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .debate-bull { background:#f0fdf4; border-radius:12px; padding:20px; border:1px solid #bbf7d0; }
+  .debate-bear { background:#fff1f2; border-radius:12px; padding:20px; border:1px solid #fecdd3; }
+  .debate-bull h3 { color:#166534; margin-bottom:12px; font-size:15px; }
+  .debate-bear h3 { color:#991b1b; margin-bottom:12px; font-size:15px; }
+  .debate-bull li, .debate-bear li { margin-bottom:8px; font-size:13px; }
+
+  .glossary-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .glossary-item { background:#f8fafc; border-radius:8px; padding:14px; border-left:3px solid var(--primary); }
+  .glossary-item strong { color:var(--primary-dark); display:block; margin-bottom:4px; font-size:14px; }
+  .glossary-item p { font-size:13px; color:var(--text-light); }
+
+  .disclaimer { background:#fffbeb; border:1px solid #fcd34d; border-radius:12px; padding:20px; }
+  .disclaimer h3 { color:#92400e; margin-bottom:10px; }
+  .disclaimer p, .disclaimer li { font-size:13px; color:#78350f; }
+  .disclaimer ul { padding-left:18px; }
+
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .info-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border); font-size:14px; }
+  .info-row:last-child { border:none; }
+  .info-label { color:var(--text-light); }
+  .info-val { font-weight:600; }
+  .signal-card { border-radius:10px; padding:14px; margin-bottom:10px; }
+  .signal-bull { background:#f0fdf4; border:1px solid #86efac; }
+  .signal-bear { background:#fff1f2; border:1px solid #fca5a5; }
+  .signal-neutral { background:#f8fafc; border:1px solid #cbd5e1; }
+  .signal-gold { background:#fffbeb; border:1px solid #fde68a; }
+
+  .highlight-box { background:linear-gradient(135deg,#fce7f3,#fdf2f8); border:1px solid #f9a8d4; border-radius:12px; padding:16px; margin:12px 0; }
+
+  @media(max-width:768px){
+    .kpi-grid { grid-template-columns:repeat(2,1fr); }
+    .chart-grid { grid-template-columns:1fr; }
+    .conclusion-grid { grid-template-columns:1fr 1fr; }
+    .strategy-grid { grid-template-columns:1fr; }
+    .debate-grid { grid-template-columns:1fr; }
+    .two-col { grid-template-columns:1fr; }
+    .glossary-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ① COVER -->
+<div class="cover">
+  <div class="cover-badge">💄 台灣美妝生活零售一姐 × 500店夢想 × 1拆10重磅利多</div>
+  <h1>寶雅國際</h1>
+  <div class="subtitle">5904 · POYA · 2026-07-04 深度分析報告</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><label>今日收盤</label><div class="val up">721.0元 ▲3.15%</div></div>
+    <div class="cover-meta-item"><label>今日高點(52W新高)</label><div class="val up">736元 🆕</div></div>
+    <div class="cover-meta-item"><label>52W低點</label><div class="val">392.5元</div></div>
+    <div class="cover-meta-item"><label>TTM PE ★推估</label><div class="val">22.9x</div></div>
+    <div class="cover-meta-item"><label>Q1'26 EPS 歷史新高</label><div class="val up">9.3元 🔴</div></div>
+  </div>
+  <div>
+    <span class="risk-badge risk-low">✅ 風險等級：4.5 / 10 中等偏低</span>
+    <span class="split-badge">🎉 1拆10股票分割即將執行！</span>
+  </div>
+</div>
+
+<!-- ② CONCLUSION -->
+<div class="conclusion-card">
+  <h2>⚡ 核心投資結論</h2>
+  <div class="conclusion-grid">
+    <div class="conclusion-item">
+      <label>投資建議</label>
+      <div class="cval">長線看多 · 等回調布局</div>
+      <div style="font-size:13px;opacity:0.8;margin-top:4px;">短線已超買，等拉回建倉</div>
+    </div>
+    <div class="conclusion-item">
+      <label>FY2026E Forward PE</label>
+      <div class="cval">20.7x</div>
+      <div style="font-size:13px;opacity:0.8;margin-top:4px;">EPS估34.82元，估值仍合理</div>
+    </div>
+    <div class="conclusion-item">
+      <label>關鍵支撐</label>
+      <div class="cval">660~680元</div>
+      <div style="font-size:13px;opacity:0.8;margin-top:4px;">近期壓力轉支撐/MA10區間</div>
+    </div>
+  </div>
+  <div style="margin-top:16px;font-size:14px;opacity:0.9;line-height:1.7;">
+    寶雅是台灣美妝生活零售的領頭羊，Q1'26 EPS 9.3元創歷史新高（YoY+24.3%），毛利率45.13%遠高於一般零售業，POYA Beauty高毛利店型持續擴張（佔比目標42%），2026年計畫衝破500店大關。技術面完美多頭排列、MACD黃金交叉，但RSI 74.44已超買；加上股票1拆10利多即將落地，長線基本面強勁。建議等短線回調至680元附近再分批買進。
+  </div>
+  <div><span class="rec-tag">📋 均衡策略：680~700元分批建倉，長線目標800元（FY2026E PE 23x）；停損650元</span></div>
+</div>
+
+<!-- ③ KPI -->
+<div class="section">
+  <div class="section-title">📊 關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card green">
+      <div class="kpi-label">今日股價 ★API</div>
+      <div class="kpi-value">721.0元</div>
+      <div class="kpi-note">今日衝52W新高736元；+3.15%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TTM PE ★推估</div>
+      <div class="kpi-value">22.9x</div>
+      <div class="kpi-note">合理估值區間；EPS推估31.45元</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">Q1'26 EPS 歷史新高 ★API</div>
+      <div class="kpi-value">9.3元</div>
+      <div class="kpi-note">YoY +24.3%！連三季創新高</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">FY2025 EPS ★推算</div>
+      <div class="kpi-value">29.63元</div>
+      <div class="kpi-note">EPS連三年創高！</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">Q1'26 毛利率 ★API</div>
+      <div class="kpi-value">45.13%</div>
+      <div class="kpi-note">零售業罕見高毛利！YoY +0.68pp</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">Q1'26 營業利益率 ★API</div>
+      <div class="kpi-value">17.34%</div>
+      <div class="kpi-note">Q1'26 op profit 12.3億，YoY+27.8%</div>
+    </div>
+    <div class="kpi-card gold">
+      <div class="kpi-label">2026-06 月營收 ★API</div>
+      <div class="kpi-value">24.39億</div>
+      <div class="kpi-note">YoY +19.24%；連續4個月YoY+15%+</div>
+    </div>
+    <div class="kpi-card gold">
+      <div class="kpi-label">FY2026E EPS ★WebSearch</div>
+      <div class="kpi-value">34.82元</div>
+      <div class="kpi-note">Forward PE 20.7x；估值極具吸引力</div>
+    </div>
+  </div>
+</div>
+
+<!-- ④ CHARTS -->
+<div class="section">
+  <div class="section-title">📈 財務趨勢圖表</div>
+  <div class="chart-grid">
+    <div class="chart-box">
+      <div class="chart-title">EPS 季度趨勢（元）— 持續創新高！</div>
+      <canvas id="epsChart"></canvas>
+      <div class="chart-note">★API數據；最新季Q1'26紅色；EPS持續強勢成長</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">月營收趨勢（億元，2026年）</div>
+      <canvas id="revChart"></canvas>
+      <div class="chart-note">★API數據；最新月紅色；YoY連續+15~23%</div>
+    </div>
+  </div>
+  <div style="margin-top:16px;">
+    <div class="chart-box">
+      <div class="chart-title">PE 比較 — 本股 vs 同業 vs 美股美妝零售（TTM PE）</div>
+      <canvas id="peChart"></canvas>
+      <div class="chart-note">★推估值；寶雅PE在台股零售同業中偏低，相較美股Ulta更具吸引力</div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑤ OVERVIEW -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽</div>
+  <div class="two-col">
+    <div>
+      <div class="info-row"><span class="info-label">公司全名</span><span class="info-val">寶雅國際股份有限公司</span></div>
+      <div class="info-row"><span class="info-label">英文名稱</span><span class="info-val">POYA International Co., Ltd.</span></div>
+      <div class="info-row"><span class="info-label">股票代碼</span><span class="info-val">5904（上市 TSE）</span></div>
+      <div class="info-row"><span class="info-label">市場地位</span><span class="info-val">台灣美妝生活零售 No.1</span></div>
+      <div class="info-row"><span class="info-label">門市數（截至最新）</span><span class="info-val">473家（目標2026年500+）</span></div>
+      <div class="info-row"><span class="info-label">POYA Beauty占比</span><span class="info-val">目標2026年達42%</span></div>
+      <div class="info-row"><span class="info-label">FY2025 年度營收</span><span class="info-val">約252.6億元（推算）</span></div>
+      <div class="info-row"><span class="info-label">股票分割</span><span class="info-val span" style="color:var(--primary);font-weight:700;">1拆10（即將執行！）</span></div>
+    </div>
+    <div>
+      <p style="font-size:14px;line-height:1.8;color:var(--text-light);margin-bottom:10px;">寶雅成立於1994年，從單一生活百貨起家，現已成為全台最大美妝生活用品專賣連鎖。核心競爭力在於：</p>
+      <ul style="font-size:14px;padding-left:18px;line-height:2.2;">
+        <li>💄 <strong>美妝+生活一站購足</strong>：彩妝、保養、香水、日用品、文具全品類，客單價高且回購率強</li>
+        <li>🏪 <strong>POYA Beauty高毛利店型</strong>：聚焦彩妝/保養/醫美，毛利率更高，2026年目標42%占比</li>
+        <li>📱 <strong>POYA Pay數位會員</strong>：掌握精準消費數據，提升顧客黏性與再購率</li>
+        <li>📍 <strong>地點護城河</strong>：早期卡位精華路段，後進者難以複製</li>
+        <li>📦 <strong>規模議價能力</strong>：473+門市的採購規模使其毛利率長期維持45%高水準</li>
+      </ul>
+    </div>
+  </div>
+  <div class="highlight-box">
+    <strong>🔑 為何寶雅能做到45%毛利率？</strong>
+    <p style="font-size:13px;margin-top:6px;">一般便利商店毛利率~30%、超市~25%，但寶雅能達45%，原因在於：（1）自有品牌比重提升、（2）選品專注「高毛利消費品」（美妝遠高於民生用品）、（3）POYA Beauty占比提升拉高整體組合毛利、（4）規模擴大帶來採購議價力。</p>
+  </div>
+</div>
+
+<!-- ⑥ FUNDAMENTALS -->
+<div class="section">
+  <div class="section-title">💰 基本面分析</div>
+  <div class="two-col">
+    <div>
+      <h3 style="font-size:15px;margin-bottom:12px;">季度EPS vs 毛利率（8季走勢）</h3>
+      <table>
+        <tr><th>季度</th><th>EPS(元)</th><th>毛利率</th><th>營益率</th></tr>
+        <tr><td>Q2'24</td><td>5.61</td><td>43.87%</td><td>12.35%</td></tr>
+        <tr><td>Q3'24</td><td>7.27</td><td>46.00%</td><td>15.53%</td></tr>
+        <tr><td>Q4'24</td><td>7.15</td><td>46.31%</td><td>15.28%</td></tr>
+        <tr><td>Q1'25</td><td>7.48</td><td>44.45%</td><td>15.29%</td></tr>
+        <tr><td>Q2'25</td><td>5.58</td><td>42.64%</td><td>12.09%</td></tr>
+        <tr><td>Q3'25</td><td class="td-up">7.59</td><td>45.90%</td><td>15.66%</td></tr>
+        <tr><td>Q4'25</td><td class="td-up">8.98</td><td>47.62%</td><td>17.92%</td></tr>
+        <tr><td>Q1'26 ★</td><td class="td-new">9.3 🆕歷史高</td><td>45.13%</td><td>17.34%</td></tr>
+      </table>
+      <div style="font-size:12px;color:var(--text-light);margin-top:6px;">★ TTM EPS = 31.45元（推算）；FY2025 EPS = 29.63元</div>
+    </div>
+    <div>
+      <h3 style="font-size:15px;margin-bottom:12px;">2026年月營收明細</h3>
+      <table>
+        <tr><th>月份</th><th>金額（億）</th><th>YoY</th><th>MoM</th></tr>
+        <tr><td>2026-01</td><td>22.55</td><td class="td-up">+2.5%</td><td class="td-up">+3.6%</td></tr>
+        <tr><td>2026-02</td><td>23.75</td><td class="td-down">-1.86%</td><td class="td-up">+5.3%</td></tr>
+        <tr><td>2026-03</td><td>24.14</td><td class="td-up">+22.87%</td><td class="td-up">+1.6%</td></tr>
+        <tr><td>2026-04</td><td>23.06</td><td class="td-up">+20.63%</td><td class="td-down">-4.5%</td></tr>
+        <tr><td>2026-05</td><td>22.48</td><td class="td-up">+16.68%</td><td class="td-down">-2.5%</td></tr>
+        <tr><td>2026-06 ★</td><td class="td-new">24.39</td><td class="td-up">+19.24%</td><td class="td-up">+8.5%</td></tr>
+      </table>
+      <div style="font-size:12px;color:var(--text-light);margin-top:6px;">H1 2026合計：140.4億（YoY +12.6%）</div>
+      <div style="background:#d1fae5;border-radius:8px;padding:10px;margin-top:10px;font-size:13px;">
+        ✅ 3~6月YoY連續+15~23%，新店開出效應明顯！
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:20px;">
+    <h3 style="font-size:15px;margin-bottom:12px;">基本面評分</h3>
+    <div class="score-row"><span class="score-label">成長性</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:82%;background:#059669;"></div></div><span class="score-val">8.2</span></div>
+    <div class="score-row"><span class="score-label">獲利能力</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:88%;background:#059669;"></div></div><span class="score-val">8.8</span></div>
+    <div class="score-row"><span class="score-label">財務健康</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:#059669;"></div></div><span class="score-val">8.5</span></div>
+    <div class="score-row"><span class="score-label">估值吸引力</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:75%;background:#059669;"></div></div><span class="score-val">7.5</span></div>
+  </div>
+</div>
+
+<!-- ⑦ CHIPS -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析</div>
+  <div class="two-col">
+    <div>
+      <h3 style="font-size:15px;margin-bottom:12px;">三大法人（7/3）★API</h3>
+      <div class="signal-neutral signal-card">
+        <strong>盤後更新中（收盤後18:00更新）</strong>
+        <div style="font-size:13px;margin-top:6px;">今日三大法人數據等待FinMind更新。根據技術面，外資過去數週持續買超為本波上漲主因，請至 <a href="https://goodinfo.tw/tw/StockDetail.asp?STOCK_ID=5904" target="_blank">Goodinfo</a> 查詢最新數字。</div>
+      </div>
+      <div style="margin-top:10px;">
+        <h3 style="font-size:14px;margin-bottom:8px;">近期籌碼趨勢觀察</h3>
+        <ul style="font-size:13px;padding-left:18px;line-height:2;">
+          <li>6/9 量能爆發（93萬張），股價單日+6.8%（566→622），外資大量買進</li>
+          <li>6/12 再度爆量（120萬張），股價+3.9%（625→647），確認機構性買盤</li>
+          <li>6/24 量能放大（92萬張），股價衝688元後出現獲利了結</li>
+          <li>今日（7/4）量89萬張，衝新高736元，但收在721元（上影線）</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size:15px;margin-bottom:12px;">外資評等 ★WebSearch</h3>
+      <div class="signal-card signal-bull">
+        <strong>花旗美邦（Citi）</strong>
+        <div style="font-size:22px;font-weight:700;color:var(--green);margin:6px 0;">630元</div>
+        <div style="font-size:13px;">看多評等；但現價721已超越目標（評等未更新）</div>
+      </div>
+      <div class="signal-card signal-gold" style="margin-top:10px;">
+        <strong>🎉 重磅催化劑：1拆10股票分割</strong>
+        <ul style="font-size:13px;padding-left:16px;margin-top:6px;line-height:2;">
+          <li>宣佈後股價大漲，分割後每股~72元，散戶更易入手</li>
+          <li>通常股票分割後提升流動性與散戶參與度</li>
+          <li>EPS/股利/股價均÷10，但PE/本質不變</li>
+          <li>分割後預期有重新定價效應</li>
+        </ul>
+      </div>
+      <div class="signal-card signal-neutral" style="margin-top:10px;">
+        <strong>Q1'26 法說亮點</strong>
+        <ul style="font-size:13px;padding-left:16px;margin-top:6px;line-height:2;">
+          <li>門市數473家，2026目標衝破500店</li>
+          <li>POYA Beauty占比目標2026年42%</li>
+          <li>EPS連三年創高！Q1'26稅後9.9億（YoY+26.2%）</li>
+          <li>配息5.6%（以宣告時股價計算）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑧ TECHNICAL -->
+<div class="section">
+  <div class="section-title">📉 技術分析</div>
+  <div class="two-col">
+    <div>
+      <h3 style="font-size:15px;margin-bottom:12px;">均線狀態 ★API</h3>
+      <div class="signal-card signal-bull">
+        <strong>✅ 完美多頭排列！強勢上攻格局</strong>
+        <table style="margin-top:10px;width:100%;font-size:13px;">
+          <tr><th>均線</th><th>數值（元）</th><th>現價vs均線</th></tr>
+          <tr><td>MA5</td><td>681.4</td><td class="td-up">↑現價721 > MA5 ✓（+5.8%）</td></tr>
+          <tr><td>MA10</td><td>666.3</td><td class="td-up">↑現價721 > MA10 ✓（+8.2%）</td></tr>
+          <tr><td>MA20</td><td>641.05</td><td class="td-up">↑現價721 > MA20 ✓（+12.5%）</td></tr>
+          <tr><td>MA60</td><td>580.23</td><td class="td-up">↑現價721 > MA60 ✓（+24.3%）</td></tr>
+        </table>
+        <div style="font-size:12px;margin-top:8px;">現價(721) > MA5(681) > MA10(666) > MA20(641) > MA60(580)<br>完美多頭排列！所有均線向上，但現價已大幅偏離均線，短線回調風險高</div>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size:15px;margin-bottom:12px;">動能指標 ★API</h3>
+      <div class="signal-card signal-bull" style="margin-bottom:10px;">
+        <strong>MACD：黃金交叉（強烈看多）</strong>
+        <div style="font-size:13px;margin-top:6px;">DIF: 30.47 / Signal: 24.81 / 柱狀: <strong>+5.67</strong><br>黃金交叉且柱狀持續擴大，中線多頭動能強</div>
+      </div>
+      <div class="signal-card signal-bear" style="margin-bottom:10px;">
+        <strong>RSI(14)：74.44 — 超買區 ⚠️</strong>
+        <div style="font-size:13px;margin-top:6px;">超買線=70，RSI 74.44已進入超買區<br>短線股價可能需要休息或小幅回調消化超買</div>
+      </div>
+      <div class="signal-card signal-bear">
+        <strong>布林通道：突破上軌 ⚠️</strong>
+        <div style="font-size:13px;margin-top:6px;">上軌: 710.74 / 中軌: 641.05 / 下軌: 571.36<br>今日收盤721 > 上軌710.74，股價在上軌外<br>短線過熱，但上突上軌也是強勢訊號</div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:16px;">
+    <h3 style="font-size:15px;margin-bottom:12px;">關鍵價位</h3>
+    <table>
+      <tr><th>方向</th><th>價位（元）</th><th>依據</th></tr>
+      <tr><td><span class="tag tag-pink">新高</span></td><td>736</td><td>今日52W高點（歷史性突破！）</td></tr>
+      <tr><td><span class="tag tag-pink">現價</span></td><td>721</td><td>今日收盤</td></tr>
+      <tr><td><span class="tag tag-green">壓力轉支撐1</span></td><td>710</td><td>布林上軌</td></tr>
+      <tr><td><span class="tag tag-green">支撐1</span></td><td>681</td><td>MA5均線（短期支撐）</td></tr>
+      <tr><td><span class="tag tag-green">支撐2</span></td><td>660~666</td><td>MA10均線（優質買點）</td></tr>
+      <tr><td><span class="tag tag-green">強支撐</span></td><td>641</td><td>MA20均線（長線買點）</td></tr>
+      <tr><td><span class="tag tag-orange">風險線</span></td><td>620</td><td>若跌破此位代表趨勢轉弱</td></tr>
+    </table>
+  </div>
+  <div style="margin-top:14px;font-size:13px;color:var(--text-light);">
+    📅 K線要點：股價5/26低點552元後，6/9開始爆量拉升（566→622元，+9.9%），6/12再度爆量（120萬張）衝647元，6/22~24再度拉升衝688元，6/29~7/2持續上攻至699元，7/3（今昨）721元，今日7/4更衝至736元（52W新高）後收721元（有獲利了結，留下上影線）。整體呈現強勢多頭格局，但短線已快速上漲+30%，技術面超買訊號需注意。
+  </div>
+</div>
+
+<!-- ⑨ MARGIN -->
+<div class="section">
+  <div class="section-title">🔄 融資融券</div>
+  <div class="signal-card signal-neutral">
+    <strong>趨勢判讀（★API數據）</strong>
+    <ul style="font-size:13px;padding-left:18px;margin-top:8px;line-height:2;">
+      <li>融資餘額: 0張（7/3，FinMind數據）；融券: 0張 — 數字可能為盤中更新延遲</li>
+      <li>寶雅屬中型消費股，法人持股比重高（外資+投信），融資戶比重相對較低</li>
+      <li>股價快速上漲+30%期間，融資追高風險高 — 建議以現股操作為主</li>
+      <li>融券方（放空者）在高毛利、強基本面股票上的存活率偏低，軋空風險存在</li>
+      <li>精確融資融券數字請至 <a href="https://goodinfo.tw/tw/StockDetail.asp?STOCK_ID=5904" target="_blank">Goodinfo</a> 或券商平台查詢</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ⑩ DEBATE -->
+<div class="section">
+  <div class="section-title">⚔️ 研究員多空辯論</div>
+  <div class="debate-grid">
+    <div class="debate-bull">
+      <h3>🐂 看多論點（65% 權重）</h3>
+      <ul>
+        <li><strong>EPS歷史新高動能延續</strong>：Q1'26 EPS 9.3元（YoY+24.3%），Q4'25 EPS 8.98元（YoY+25.6%），連續四季超預期，FY2026E估34.82元，成長可見度高。</li>
+        <li><strong>毛利率在零售業中罕見地高</strong>：Q1'26毛利率45.13%，Q4'25達47.62%（歷史峰值），遠高於便利商店（~30%）和超市（~25%），POYA Beauty高毛利店型擴張中（目標2026年42%）。</li>
+        <li><strong>500店里程碑催化劑</strong>：現有473家，2026年計畫淨增50家突破500店，每新店開出直接貢獻月營收+0.5億元，擴店效應清晰可量化。</li>
+        <li><strong>1拆10大利多</strong>：股票分割後每股價格降至~72元，散戶門檻大降，通常引發買盤增加；同時釋放管理層對股價的信心訊號。</li>
+        <li><strong>Forward PE 20.7x極具吸引力</strong>：FY2026E EPS 34.82元、股價721元 → PE=20.7x；同業統一超~25x、全家~22x；美股Ulta Beauty~25x，寶雅評價被低估。</li>
+        <li><strong>月營收持續加速</strong>：3月+22.9%、4月+20.6%、5月+16.7%、6月+19.2%，連續高雙位數YoY成長，反映展店效果+同店銷售雙輪驅動。</li>
+      </ul>
+    </div>
+    <div class="debate-bear">
+      <h3>🐻 看空論點（35% 權重）</h3>
+      <ul>
+        <li><strong>技術面嚴重超買</strong>：RSI 74.44超過70（超買線），股價突破布林上軌，短線在5週內上漲+30.6%（552→721元），獲利了結壓力大。</li>
+        <li><strong>已超越分析師目標價</strong>：花旗美邦目標價630元已被股價超越（現在721元），需等待分析師上調目標才有新資金進場。</li>
+        <li><strong>Q2傳統淡季EPS偏低</strong>：Q2歷來是寶雅最弱的季度（Q2'24=5.61元、Q2'25=5.58元），下季財報可能不如前兩季亮眼，引發短線賣壓。</li>
+        <li><strong>展店成本壓力</strong>：2026年淨展50家需大量前期裝潢、租金、人力投入，若選點不佳或消費力不如預期，反而侵蝕獲利。</li>
+        <li><strong>電商競爭加劇</strong>：蝦皮、Momo、美妝電商持續搶攻線上美妝市場，若線上占比持續提升，實體門市客流可能受壓。</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top:16px;background:#fce7f3;border-radius:10px;padding:16px;font-size:14px;">
+    <strong>📌 給一般投資人的話：</strong> 寶雅是「好公司，但要等好價格」的典型例子。基本面非常強（高毛利、EPS創高、展店計畫清晰），但最近股價漲太快（5週+30%），短線難免需要喘一口氣。如果你是長期投資者，等回調到 660~680元再買，風險報酬比更好；如果你現在就想參與1拆10的熱度，可以先以很小的部位試水，後續回調再加碼。
+  </div>
+</div>
+
+<!-- ⑪ RISK -->
+<div class="section">
+  <div class="section-title">🛡️ 風控評估</div>
+  <div class="two-col">
+    <div>
+      <div class="score-row"><span class="score-label">估值風險(30%)</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:40%;background:#059669;"></div></div><span class="score-val">4.0</span></div>
+      <div class="score-row"><span class="score-label">財務風險(25%)</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:25%;background:#059669;"></div></div><span class="score-val">2.5</span></div>
+      <div class="score-row"><span class="score-label">流動性風險(10%)</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:30%;background:#059669;"></div></div><span class="score-val">3.0</span></div>
+      <div class="score-row"><span class="score-label">產業風險(15%)</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:45%;background:#d97706;"></div></div><span class="score-val">4.5</span></div>
+      <div class="score-row"><span class="score-label">總經風險(10%)</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:50%;background:#d97706;"></div></div><span class="score-val">5.0</span></div>
+      <div class="score-row"><span class="score-label">籌碼風險(10%)</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:55%;background:#d97706;"></div></div><span class="score-val">5.5</span></div>
+      <div style="margin-top:16px;font-size:20px;font-weight:700;color:var(--accent);">綜合風險評分：4.5 / 10</div>
+      <div style="font-size:13px;color:var(--text-light);">中等偏低風險 — 財務極健康，短線技術過熱是主要風險</div>
+    </div>
+    <div>
+      <h3 style="font-size:15px;margin-bottom:10px;">主要風險說明</h3>
+      <ul style="font-size:13px;line-height:2;padding-left:18px;">
+        <li>短線技術超買：RSI 74.44 + 布林突破上軌，5週上漲30%，需要消化</li>
+        <li>Q2淡季效應：歷史上Q2 EPS只有Q1的60%，下季財報公布前可能震盪</li>
+        <li>電商/競爭：屈臣氏、蝦皮美妝等線上競爭持續，但寶雅靠品類廣度和體驗差異化應對</li>
+        <li>消費力波動：若台灣消費信心下滑，美妝非必需品消費可能受影響</li>
+        <li>展店效益：新店需12~18個月才能達到損益平衡，前期費用壓低短期獲利</li>
+      </ul>
+      <div style="background:#d1fae5;border-radius:8px;padding:10px;margin-top:10px;font-size:13px;">
+        ✅ 寶雅財務極健康：低負債、高現金流、毛利率45%+，幾乎無財務危機風險
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑫ STRATEGY -->
+<div class="section">
+  <div class="section-title">🎯 台股三段式投資策略</div>
+  <div class="strategy-grid">
+    <div class="strategy-card attack">
+      <h3>🔥 進攻計畫（積極型）</h3>
+      <ul>
+        <li>若認同長期故事：現價721元小量試水（5~10%部位）</li>
+        <li>主要加碼：等1拆10落地後，以分割後價格~72元附近買</li>
+        <li>目標：拆後~80~90元（相當於拆前800~900元）</li>
+        <li>參考：FY2026E EPS 34.82元 × 25x PE = 870元</li>
+        <li>停損：拆前660元（拆後66元）</li>
+        <li>持有期：12~18個月</li>
+      </ul>
+    </div>
+    <div class="strategy-card balance">
+      <h3>⚖️ 均衡計畫（穩健型）✅推薦</h3>
+      <ul>
+        <li>現階段：等回調，不追高</li>
+        <li>第一買點：680元（布林上軌壓力轉支撐）</li>
+        <li>主力買點：660元（MA10附近）</li>
+        <li>加碼：確認站穩720元以上（突破確認）</li>
+        <li>目標：800元（FY2026E PE 23x）</li>
+        <li>停損：日收盤跌破640元（MA20）</li>
+      </ul>
+    </div>
+    <div class="strategy-card defense">
+      <h3>🛡️ 防守計畫（保守型）</h3>
+      <ul>
+        <li>等1拆10完成後再觀察</li>
+        <li>確認Q3季報EPS>7元（季節淡季合格水準）</li>
+        <li>若RSI回落至55以下再建倉</li>
+        <li>等MA20（641元）附近回測支撐確認</li>
+        <li>最保守：等下一個季報公布後確認方向</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top:20px;">
+    <h3 style="font-size:15px;margin-bottom:12px;">催化劑時程表</h3>
+    <table>
+      <tr><th>時間</th><th>催化劑</th><th>預期影響</th></tr>
+      <tr><td>近期（待公告）</td><td>股票1拆10執行日期公告</td><td class="td-up">強烈正向 — 散戶參與度爆增</td></tr>
+      <tr><td>2026-08</td><td>Q2'26 財報公布</td><td>觀察：淡季EPS能否優於Q2'25(5.58元)</td></tr>
+      <tr><td>2026-09</td><td>Q3旺季開始（秋季換妝季）</td><td class="td-up">正向：Q3歷來是全年次高季</td></tr>
+      <tr><td>2026 H2</td><td>500店達標里程碑</td><td class="td-up">媒體效應 + 市場信心</td></tr>
+      <tr><td>2026 H2</td><td>POYA Beauty占比突破40%</td><td class="td-up">毛利率繼續改善，帶動EPS</td></tr>
+      <tr><td>2026-11</td><td>雙11促銷 + 尾牙旺季</td><td class="td-up">Q4傳統旺季，月營收創高機率大</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ⑬ GLOSSARY -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <strong>POYA Beauty（高端美妝店）</strong>
+      <p>寶雅的高毛利版本門市，裝潢更精緻，專注彩妝、保養、醫美保健等高毛利品類。一般寶雅店毛利~43%，POYA Beauty可達47%+。目前113家，目標2026年底達到全體門市的42%。</p>
+    </div>
+    <div class="glossary-item">
+      <strong>股票分割1拆10（Stock Split）</strong>
+      <p>公司決定將1股分成10股。股價從~721元變成~72元，但每人持股的「市值總額」不變。好處是讓股票更便宜（散戶更能買），通常帶來買氣。公司EPS也會÷10，但成長故事沒變。</p>
+    </div>
+    <div class="glossary-item">
+      <strong>毛利率（Gross Margin）</strong>
+      <p>賣出商品後，扣掉進貨成本，剩多少比率。寶雅毛利率45%代表：賣100元商品，扣掉約55元成本後，還有45元用來付房租、人工、廣告等費用，再賺錢。45%對實體零售業來說極高！</p>
+    </div>
+    <div class="glossary-item">
+      <strong>Forward PE（預估本益比）</strong>
+      <p>用「未來EPS預估值」來算股票貴不貴。股價721元 ÷ 分析師預估FY2026E EPS 34.82元 = 20.7倍。表示你買這股票，等於花20.7年的獲利來買這家公司。20倍對高成長零售股算便宜。</p>
+    </div>
+    <div class="glossary-item">
+      <strong>RSI超買（Overbought）</strong>
+      <p>RSI（相對強弱指數）超過70，代表最近上漲速度太快、買盤過熱，短線容易出現休息或小回調。不代表一定下跌，但追高的風險比平時高。寶雅目前RSI=74.4，需注意。</p>
+    </div>
+    <div class="glossary-item">
+      <strong>同店成長（Same-Store-Sales Growth）</strong>
+      <p>去掉「新開門市」的影響後，同一批舊店的業績有沒有變好。寶雅不只靠開新店，舊店也在成長，代表品牌力在提升而非只靠擴張數量。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ⑭ DISCLAIMER -->
+<div class="disclaimer">
+  <h3>⚠️ 免責聲明</h3>
+  <p style="margin-bottom:8px;">本報告僅供研究參考，不構成任何投資建議或買賣邀約。投資人應自行承擔投資風險，本報告不保證未來投資績效。</p>
+  <ul>
+    <li>資料來源：Fugle即時行情 API（股價、技術指標）、FinMind（三大法人、月營收、季度EPS/毛利率）</li>
+    <li>WebSearch補充：<a href="https://www.sinotrade.com.tw/richclub/hotstock/%E5%AF%B6%E9%9B%85-5904-EPS%E9%80%A3%E4%B8%89%E5%B9%B4%E5%89%B5%E9%AB%98-%E5%AE%A3%E4%BD%88%E9%85%8D%E6%81%AF5-6--%E4%B8%A6%E6%8B%9C%E6%9D%BF%E8%82%A1%E7%A5%A81%E6%8B%8610-%E8%82%A1%E5%B8%82%E8%A9%B1%E9%A1%8C-699d36f184092b4b9eb40dc7" target="_blank">豐雲學堂（EPS/分割）</a>、<a href="https://blog.fugle.tw/poya-report/" target="_blank">富果（護城河分析）</a>、<a href="https://uanalyze.com.tw/articles/2476426561" target="_blank">優分析（POYA Beauty）</a></li>
+    <li>★推估值：TTM PE、市值、FY2026E EPS等為依公開資料計算之推估，非官方數字；花旗美邦目標價630元為WebSearch搜尋結果，非即時更新</li>
+    <li>報告日期：2026-07-04；市場資訊持續變動，請以最新公告為準</li>
+  </ul>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// EPS Chart
+new Chart(document.getElementById('epsChart'), {
+  type: 'bar',
+  data: {
+    labels: ["Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26★"],
+    datasets: [{
+      label: 'EPS (元)',
+      data: [5.61, 7.27, 7.15, 7.48, 5.58, 7.59, 8.98, 9.30],
+      backgroundColor: ['#fda4af','#fda4af','#fda4af','#fda4af','#fda4af','#fda4af','#fda4af','#dc2626'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: false, min: 4, title: { display: true, text: '元' } } }
+  }
+});
+
+// Revenue Chart
+new Chart(document.getElementById('revChart'), {
+  type: 'line',
+  data: {
+    labels: ['1月','2月','3月','4月','5月','6月★'],
+    datasets: [{
+      label: '月營收（億元）',
+      data: [22.55, 23.75, 24.14, 23.06, 22.48, 24.39],
+      borderColor: '#e11d48',
+      backgroundColor: 'rgba(225,29,72,0.1)',
+      pointBackgroundColor: ['#e11d48','#e11d48','#e11d48','#e11d48','#e11d48','#dc2626'],
+      pointRadius: 6,
+      fill: true, tension: 0.3
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: { y: { min: 20, title: { display: true, text: '億元' } } }
+  }
+});
+
+// PE Comparison Chart
+new Chart(document.getElementById('peChart'), {
+  type: 'bar',
+  data: {
+    labels: ['統一超 2912', '寶雅 5904★', '全家 5903', 'Ulta Beauty(美股)', '台股零售平均'],
+    datasets: [{
+      label: 'TTM PE (x)',
+      data: [26, 22.9, 22, 25, 19],
+      backgroundColor: ['#93c5fd','#dc2626','#93c5fd','#c084fc','#94a3b8'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { x: { min: 10, title: { display: true, text: 'TTM PE (倍)' } } }
+  }
+});
+document.getElementById('peChart').parentElement.style.height = '220px';
+document.getElementById('peChart').style.maxHeight = '200px';
+</script>
+</body>
+</html>
