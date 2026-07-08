@@ -1,721 +1,573 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>台股早盤戰情室 2026-07-09</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<title>台股早盤戰情室 2026/07/09</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   :root {
-    --bg:#0d1117;--bg2:#161b22;--bg3:#1c2128;--bg4:#21262d;
-    --border:#30363d;--text:#c9d1d9;--text2:#8b949e;--text3:#6e7681;
-    --green:#3fb950;--red:#f85149;--yellow:#d29922;--blue:#58a6ff;
-    --purple:#bc8cff;--orange:#e3b341;--cyan:#39d353;
-    --green-dim:rgba(63,185,80,0.15);--red-dim:rgba(248,81,73,0.15);
-    --blue-dim:rgba(88,166,255,0.15);--yellow-dim:rgba(210,153,34,0.15);
-    --purple-dim:rgba(188,140,255,0.12);
+    --bg: #0d1117; --bg2: #161b22; --bg3: #1c2128;
+    --border: #30363d; --text: #c9d1d9; --muted: #8b949e;
+    --green: #3fb950; --red: #f85149; --yellow: #d29922;
+    --blue: #58a6ff; --purple: #bc8cff; --orange: #ffa657;
   }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--bg);color:var(--text);font-family:'SF Pro Display',-apple-system,'Segoe UI',sans-serif;font-size:14px;line-height:1.55;}
-  .container{max-width:1420px;margin:0 auto;padding:16px;}
-  .header{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-  .header h1{font-size:22px;font-weight:700;color:#fff;}
-  .header .subtitle{color:var(--text2);font-size:13px;margin-top:3px;}
-  .header-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-  .badge{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;}
-  .badge-danger{background:rgba(248,81,73,0.2);color:var(--red);border:1px solid var(--red);}
-  .badge-caution{background:var(--yellow-dim);color:var(--yellow);border:1px solid var(--yellow);}
-  .open-est{background:var(--bg4);border:1px solid var(--border);border-radius:8px;padding:8px 14px;text-align:center;}
-  .open-est .label{font-size:11px;color:var(--text3);}
-  .open-est .value{font-size:17px;font-weight:700;color:var(--red);}
-  .open-est .sub{font-size:11px;color:var(--red);}
-
-  /* Alert Banner */
-  .alert-banner{background:linear-gradient(135deg,rgba(248,81,73,0.2),rgba(188,60,28,0.1));border:1px solid var(--red);border-radius:10px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px;}
-  .alert-icon{font-size:24px;flex-shrink:0;margin-top:2px;}
-  .alert-title{font-size:15px;font-weight:700;color:var(--red);margin-bottom:4px;}
-  .alert-body{font-size:13px;color:var(--text);line-height:1.6;}
-
-  .ticker-bar{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px 16px;margin-bottom:14px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
-  .ticker-item{display:flex;flex-direction:column;align-items:center;min-width:86px;}
-  .ticker-name{font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.3px;}
-  .ticker-val{font-size:14px;font-weight:700;color:#fff;}
-  .ticker-chg{font-size:11px;font-weight:600;}
-  .up{color:var(--green);}.dn{color:var(--red);}.neu{color:var(--text2);}
-  .ticker-div{width:1px;height:38px;background:var(--border);}
-
-  .section-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:11px;display:flex;align-items:center;gap:8px;}
-  .section-title::before{content:'';display:block;width:3px;height:17px;background:var(--blue);border-radius:2px;}
-  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:14px;}
-  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;margin-bottom:14px;}
-  @media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr;}}
-  .card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:15px;}
-  .card-title{font-size:13px;font-weight:700;color:var(--blue);margin-bottom:9px;}
-  .card p{font-size:13px;color:var(--text);margin-bottom:6px;line-height:1.6;}
-  .num{color:var(--orange);font-weight:600;}
-  .bull{color:var(--green);font-weight:600;}
-  .bear{color:var(--red);font-weight:600;}
-  .warn{color:var(--yellow);font-weight:600;}
-  .tag{display:inline-block;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:600;margin:0 2px;}
-  .tag-green{background:var(--green-dim);color:var(--green);}
-  .tag-red{background:var(--red-dim);color:var(--red);}
-  .tag-yellow{background:var(--yellow-dim);color:var(--yellow);}
-  .tag-blue{background:var(--blue-dim);color:var(--blue);}
-  .tag-purple{background:var(--purple-dim);color:var(--purple);}
-
-  .debate-row{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:11px;}
-  @media(max-width:700px){.debate-row{grid-template-columns:1fr;}}
-  .debate-bull{background:var(--green-dim);border:1px solid var(--green);border-radius:10px;padding:13px;}
-  .debate-bear{background:var(--red-dim);border:1px solid var(--red);border-radius:10px;padding:13px;}
-  .debate-title{font-size:14px;font-weight:700;margin-bottom:9px;}
-  .debate-item{display:flex;gap:8px;margin-bottom:7px;font-size:12.5px;}
-  .debate-item::before{content:'▸';flex-shrink:0;margin-top:1px;}
-  .verdict-bar{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;text-align:center;margin-bottom:14px;}
-
-  .theme-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:13px;}
-  .theme-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:9px;flex-wrap:wrap;gap:8px;}
-  .theme-name{font-size:14px;font-weight:700;color:#fff;}
-  .theme-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
-  .theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  @media(max-width:600px){.theme-grid{grid-template-columns:1fr;}}
-  .theme-sub{font-size:11px;color:var(--text2);font-weight:600;margin-bottom:3px;text-transform:uppercase;letter-spacing:0.3px;}
-  .theme-content{font-size:12.5px;color:var(--text);line-height:1.55;}
-
-  table{width:100%;border-collapse:collapse;font-size:13px;}
-  th{background:var(--bg3);color:var(--text2);font-weight:600;padding:7px 10px;text-align:left;border-bottom:1px solid var(--border);}
-  td{padding:7px 10px;border-bottom:1px solid var(--bg3);}
-  tr:hover{background:var(--bg3);}
-  tr:last-child td{border-bottom:none;}
-
-  .strategy-card{border-radius:10px;padding:13px;margin-bottom:9px;}
-  .strategy-attack{background:linear-gradient(135deg,rgba(248,81,73,0.1),rgba(188,60,28,0.05));border:1px solid rgba(248,81,73,0.4);}
-  .strategy-balance{background:linear-gradient(135deg,rgba(210,153,34,0.1),rgba(153,118,12,0.05));border:1px solid rgba(210,153,34,0.4);}
-  .strategy-defense{background:linear-gradient(135deg,rgba(63,185,80,0.08),rgba(40,130,55,0.05));border:1px solid rgba(63,185,80,0.4);}
-  .strategy-title{font-size:14px;font-weight:700;margin-bottom:7px;}
-  .strategy-item{font-size:13px;color:var(--text);margin-bottom:5px;padding-left:14px;position:relative;}
-  .strategy-item::before{content:'◆';position:absolute;left:0;font-size:9px;top:3px;}
-
-  .progress-wrap{background:var(--bg3);border-radius:10px;height:13px;overflow:hidden;margin:5px 0;display:flex;}
-  .pf-green{background:var(--green);height:100%;border-radius:10px 0 0 10px;}
-  .pf-red{background:var(--red);height:100%;border-radius:0 10px 10px 0;}
-
-  .highlight{background:var(--yellow-dim);border-left:3px solid var(--yellow);padding:9px 13px;border-radius:0 6px 6px 0;margin:7px 0;font-size:12.5px;}
-  .highlight-red{background:var(--red-dim);border-left:3px solid var(--red);}
-  .highlight-blue{background:var(--blue-dim);border-left:3px solid var(--blue);}
-  .highlight-green{background:var(--green-dim);border-left:3px solid var(--green);}
-  .contradiction{background:var(--purple-dim);border-left:3px solid var(--purple);padding:9px 13px;border-radius:0 6px 6px 0;margin:7px 0;font-size:12.5px;}
-  .chart-wrap{position:relative;height:200px;}
-  .chart-wrap-lg{position:relative;height:255px;}
-  .kpi-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
-  .kpi-box{flex:1;min-width:88px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:9px 11px;}
-  .kpi-label{font-size:10px;color:var(--text3);}
-  .kpi-value{font-size:17px;font-weight:700;}
-  .kpi-sub{font-size:10px;}
-  .mb14{margin-bottom:14px;}
-  .podcast-ep{background:var(--bg3);border-radius:8px;padding:10px 12px;margin-bottom:8px;}
-  .podcast-ep-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
-  .podcast-ep-title{font-size:13px;font-weight:700;color:#fff;}
-  .podcast-ep-date{font-size:11px;color:var(--text3);}
-  .podcast-point{font-size:12px;color:var(--text);padding-left:12px;position:relative;margin-bottom:4px;line-height:1.5;}
-  .podcast-point::before{content:'→';position:absolute;left:0;color:var(--blue);}
-  .disclaimer{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:11px 16px;margin-top:18px;font-size:11px;color:var(--text3);text-align:center;}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 13px; line-height: 1.6; }
+  .container { max-width: 1400px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 22px; font-weight: 700; }
+  h2 { font-size: 15px; font-weight: 600; color: var(--blue); border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 12px; }
+  h3 { font-size: 13px; font-weight: 600; color: var(--orange); margin-bottom: 6px; }
+  .section { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .up { color: var(--green); } .dn { color: var(--red); } .neu { color: var(--muted); }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .badge-red { background: #3d1a1a; color: var(--red); border: 1px solid var(--red); }
+  .ticker-bar { display: flex; gap: 14px; overflow-x: auto; padding: 10px 0; flex-wrap: wrap; }
+  .ticker-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 8px 14px; min-width: 110px; text-align: center; }
+  .ticker-label { font-size: 10px; color: var(--muted); }
+  .ticker-val { font-size: 15px; font-weight: 700; }
+  .ticker-chg { font-size: 11px; }
+  .expert-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .expert-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .expert-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .expert-card p { font-size: 12px; margin-bottom: 6px; }
+  .debate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .debate-col { background: var(--bg3); border-radius: 8px; padding: 14px; }
+  .debate-col.bull { border-left: 3px solid var(--green); }
+  .debate-col.bear { border-left: 3px solid var(--red); }
+  .debate-col ul { list-style: none; }
+  .debate-col ul li { font-size: 12px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+  .debate-col ul li:last-child { border-bottom: none; }
+  .verdict { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-top: 14px; text-align: center; }
+  .theme-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+  .theme-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .theme-score { font-size: 20px; font-weight: 700; color: var(--orange); }
+  .theme-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; }
+  .tag-attack { background: #1a3d2a; color: var(--green); }
+  .tag-watch  { background: #3d2e1a; color: var(--yellow); }
+  .tag-avoid  { background: #3d1a1a; color: var(--red); }
+  .theme-card p { font-size: 12px; margin-bottom: 4px; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: var(--bg3); color: var(--muted); font-size: 11px; text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--border); }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--border); font-size: 12px; }
+  tr:last-child td { border-bottom: none; }
+  .strategy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .strategy-card { border-radius: 8px; padding: 14px; }
+  .strategy-card.attack { background: #0d2016; border: 1px solid var(--green); }
+  .strategy-card.balance { background: #1a1a0d; border: 1px solid var(--yellow); }
+  .strategy-card.defense { background: #200d0d; border: 1px solid var(--red); }
+  .strategy-card h3 { margin-bottom: 8px; }
+  .strategy-card p { font-size: 12px; margin-bottom: 4px; }
+  .disclaimer { font-size: 11px; color: var(--muted); padding: 14px; background: var(--bg3); border-radius: 6px; border: 1px solid var(--border); }
+  canvas { max-height: 260px; }
+  .highlight { background: #1c2840; border-left: 3px solid var(--blue); padding: 8px 12px; border-radius: 0 6px 6px 0; margin: 8px 0; font-size: 12px; }
+  .warn { background: #2a1a0d; border-left: 3px solid var(--orange); padding: 8px 12px; border-radius: 0 6px 6px 0; margin: 8px 0; font-size: 12px; }
+  .critical { background: #2a0d0d; border-left: 3px solid var(--red); padding: 8px 12px; border-radius: 0 6px 6px 0; margin: 8px 0; font-size: 12px; }
 </style>
 </head>
 <body>
 <div class="container">
 
-<!-- 頁首 -->
-<div class="header">
-  <div>
-    <h1>🇹🇼 台股早盤戰情室</h1>
-    <div class="subtitle">2026年07月09日（週三）· 數據擷取 18:53 · 三階段完整分析</div>
+<!-- ① 頁首 -->
+<div class="section">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <div>
+      <h1>🔴 台股早盤戰情室</h1>
+      <div style="color:var(--muted);font-size:12px;margin-top:4px;">2026年07月09日（週四）開盤前分析｜資料截至 2026-07-08 收盤｜v3.1（修正外資名稱）</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="margin-bottom:6px;"><span class="badge badge-red">嚴重偏空 ⚠️</span></div>
+      <div style="font-size:13px;">開盤預估：<span class="dn" style="font-size:18px;font-weight:700;">44,500–45,200</span></div>
+      <div style="color:var(--muted);font-size:11px;">較昨收 45,734 低開 <span class="dn">500–1,234 點</span></div>
+    </div>
   </div>
-  <div class="header-right">
-    <div class="badge badge-danger">🚨 今日情緒：嚴重偏空</div>
-    <div class="open-est">
-      <div class="label">開盤預估區間</div>
-      <div class="value">43,800–44,800</div>
-      <div class="sub">較昨收低開 900–1,900點｜-2%~-4%</div>
-    </div>
-    <div class="open-est">
-      <div class="label">台積電預估開盤</div>
-      <div class="value" style="font-size:14px;">跌約 4–5%</div>
-      <div class="sub">ADR $432.57 (-4.25%)｜連跌兩日</div>
-    </div>
+  <div class="critical" style="margin-top:12px;">
+    ⚠️ <strong>黑天鵝警報</strong>：美伊停火協議破裂。Trump 宣稱「停火已結束」，美軍對伊朗發動 80+ 目標打擊（含防空系統/雷達站/快艇）。卡達 LNG 油輪「Al Rekayyat」在霍爾木茲海峽被彈片擊中起火，靜待救援。油價暴漲 +5.97%，VIX 跳升至 18.24（+13.08%）。費半 SOX 單日 -4.65%，兩週累計 -10%。
   </div>
 </div>
 
-<!-- 緊急警報 -->
-<div class="alert-banner">
-  <div class="alert-icon">🚨</div>
-  <div>
-    <div class="alert-title">雙重黑天鵝同時觸發 — 美伊停火破裂 + 費半連跌第二波</div>
-    <div class="alert-body">
-      ① <strong>美伊軍事衝突重燃</strong>：Trump宣布6月停火MOU「結束」，美軍空襲80+伊朗目標（含防空/雷達/艦艇），伊朗飛彈反擊美在巴林、科威特基地。卡達LNG油輪在霍爾木茲被擊中，原油+6%，歐洲天然氣漲至48歐元/MWh以上。<br>
-      ② <strong>費半(SOX)連跌</strong>：07/02 -5.44% + 07/07 -4.65% = 兩週累計 <strong>-10%</strong>。觸發點：三星Q2財報獲利大增但股價跌7%（profit taking），帶動INTC -9.66%（18A良率延誤）、AMAT -6.46%、AMD -6.51%。<br>
-      ③ <strong>NVDA唯一逆漲+0.71%</strong>：AI龍頭開始與費半大盤分化，驗證「挑選時代」框架。
-    </div>
+<!-- ② 全球市場 Ticker Bar -->
+<div class="section">
+  <h2>② 全球市場儀表板（2026-07-07/08 收盤）</h2>
+  <div class="ticker-bar">
+    <div class="ticker-item"><div class="ticker-label">費半 SOX</div><div class="ticker-val dn">12,300</div><div class="ticker-chg dn">▼ -4.65%</div></div>
+    <div class="ticker-item"><div class="ticker-label">S&amp;P 500</div><div class="ticker-val dn">7,503</div><div class="ticker-chg dn">▼ -0.45%</div></div>
+    <div class="ticker-item"><div class="ticker-label">NASDAQ</div><div class="ticker-val dn">25,818</div><div class="ticker-chg dn">▼ -1.16%</div></div>
+    <div class="ticker-item"><div class="ticker-label">VIX 恐慌</div><div class="ticker-val dn">18.24</div><div class="ticker-chg dn">▲ +13.08%</div></div>
+    <div class="ticker-item"><div class="ticker-label">10Y 美債</div><div class="ticker-val dn">4.529%</div><div class="ticker-chg dn">▲ +0.98%</div></div>
+    <div class="ticker-item"><div class="ticker-label">DXY 美元</div><div class="ticker-val neu">101.24</div><div class="ticker-chg neu">▲ +0.10%</div></div>
+    <div class="ticker-item"><div class="ticker-label">USD/TWD</div><div class="ticker-val neu">32.055</div><div class="ticker-chg neu">→ 持平</div></div>
+    <div class="ticker-item"><div class="ticker-label">黃金</div><div class="ticker-val dn">$4,052</div><div class="ticker-chg dn">▼ -2.24%</div></div>
+    <div class="ticker-item"><div class="ticker-label">布蘭特原油</div><div class="ticker-val up">$78.59</div><div class="ticker-chg up">▲ +5.97%</div></div>
+    <div class="ticker-item"><div class="ticker-label">TWII 昨收</div><div class="ticker-val up">45,734</div><div class="ticker-chg up">▲ +0.56%</div></div>
   </div>
-</div>
 
-<!-- Ticker Bar -->
-<div class="ticker-bar mb14">
-  <div class="ticker-item"><div class="ticker-name">S&amp;P 500</div><div class="ticker-val">7,503</div><div class="ticker-chg dn">-0.45%</div></div>
-  <div class="ticker-div"></div>
-  <div class="ticker-item"><div class="ticker-name">NASDAQ</div><div class="ticker-val">25,818</div><div class="ticker-chg dn">-1.16%</div></div>
-  <div class="ticker-div"></div>
-  <div class="ticker-item"><div class="ticker-name">費半 SOX</div><div class="ticker-val">12,300</div><div class="ticker-chg dn">-4.65%🔻</div></div>
-  <div class="ticker-div"></div>
-  <div class="ticker-item"><div class="ticker-name">VIX</div><div class="ticker-val">18.09</div><div class="ticker-chg dn">+12.15%🔺</div></div>
-  <div class="ticker-div"></div>
-  <div class="ticker-item"><div class="ticker-name">10Y美債</div><div class="ticker-val">4.529%</div><div class="ticker-chg dn">+1.12%</div></div>
-  <div class="ticker-div"></div>
-  <div class="ticker-item"><div class="ticker-name">美元指數</div><div class="ticker-val">101.07</div><div class="ticker-chg neu">-0.03%</div></div>
-  <div class="ticker-div"></div>
-  <div class="ticker-item"><div class="ticker-name">USD/TWD</div><div class="ticker-val">32.064</div><div class="ticker-chg up">-0.20%↑</div></div>
-  <div class="ticker-div"></div>
-  <div class="ticker-item"><div class="ticker-name">黃金</div><div class="ticker-val">$4,067</div><div class="ticker-chg dn">-1.60%</div></div>
-  <div class="ticker-div"></div>
-  <div class="ticker-item"><div class="ticker-name">原油布蘭特</div><div class="ticker-val">$77.88+</div><div class="ticker-chg dn">+6%🔺</div></div>
-  <div class="ticker-div"></div>
-  <div class="ticker-item"><div class="ticker-name">TSM ADR</div><div class="ticker-val">$432.57</div><div class="ticker-chg dn">-4.25%</div></div>
-  <div class="ticker-div"></div>
-  <div class="ticker-item"><div class="ticker-name">NVDA</div><div class="ticker-val">$196.93</div><div class="ticker-chg up">+0.71%🟢</div></div>
-  <div class="ticker-div"></div>
-  <div class="ticker-item"><div class="ticker-name">TWII昨收</div><div class="ticker-val">45,734</div><div class="ticker-chg up">+0.33%</div></div>
-  <div class="ticker-div"></div>
-  <div class="ticker-item"><div class="ticker-name">INTC</div><div class="ticker-val">$110.39</div><div class="ticker-chg dn">-9.66%💥</div></div>
-</div>
-
-<!-- 六大專家 -->
-<div class="section-title">六大專家簡報</div>
-<div class="grid-3">
-  <div class="card">
-    <div class="card-title">🌐 總經策略師</div>
-    <p><span class="warn">本週最大總經衝擊</span>：美伊衝突重燃。原油已從 <span class="num">$77.88 → 突破 $80</span>（Trump宣布停火結束當日盤中+6%），通膨預期二次升溫。</p>
-    <p>10年美債殖利率 <span class="bear">4.529%</span>（+1.12%），升至4週高點，為本波最高。油價→通膨→Fed更難降息，7月FOMC前景由「暫停」轉為「等待更多數據」。</p>
-    <p>VIX <span class="bear">18.09</span>（+12.15%），已突破近3個月均值（17.7），恐慌情緒明顯回升但未達恐慌級別（>25）。</p>
-    <p>台幣 <span class="num">32.064</span>（升值0.2%），美元貶≠台幣買盤，反而可能是避險資金回流亞洲防禦性資產。<span class="warn">關鍵：若美伊衝突擴大，美元將反轉升值，台幣走弱，外資持股成本惡化。</span></p>
-  </div>
-  <div class="card">
-    <div class="card-title">🗺️ 地緣政治分析師</div>
-    <p><span class="bear">【最高警戒：霍爾木茲封鎖風險】</span></p>
-    <p>美軍07/07夜間空襲伊朗80+目標（防空系統、雷達、速艇），伊朗隨即飛彈反擊美在<strong>巴林、科威特</strong>兩地基地。卡達LNG油輪「Al Rekayyat」在霍爾木茲被擊中，正等待救援。</p>
-    <p>霍爾木茲海峽每日通過石油約 <span class="num">1,800萬桶</span>（全球約20%），每日LNG占全球貿易約18%。若封鎖：<span class="bear">油價可能衝破$100，全球能源供應鏈受嚴重衝擊</span>。</p>
-    <p>歷史對照：2019年霍爾木茲危機期間，台股應聲跌400-800點但隨後反彈（因台灣非主要交戰方）。台灣電子業能源成本為間接影響，非直接衝擊。</p>
-    <p>台海：本次美伊衝突可能轉移國際關注，短期台海緊張風險溢價反而<span class="bull">下降</span>（美軍注意力在中東）。</p>
-  </div>
-  <div class="card">
-    <div class="card-title">📡 產業情報官</div>
-    <p><span class="warn">今日焦點題材熱度排行：</span></p>
-    <p>① <span class="bear">美伊地緣/油價衝擊</span>（95/100）全球最大黑天鵝，二次通膨壓力</p>
-    <p>② <span class="bear">費半連跌第二波</span>（90/100）三星財報觸發，INTC -9.66%、AMAT -6.46%</p>
-    <p>③ <span class="bull">封測漲價30-50%</span>（78/100）股癌EP676首次強調，日月光、京元電新題材</p>
-    <p>④ <span class="bull">被動元件/功率元件漲價</span>（75/100）MOSFET已斷貨，EP675+EP676雙重確認</p>
-    <p>⑤ <span class="bull">航運/能源受益</span>（70/100）霍爾木茲風險，長榮航(2618)外資買超第一</p>
-    <p>⑥ <span class="warn">NVDA逆勢/AI龍頭分化</span>（65/100）唯一逆漲+0.71%，分化選股驗證</p>
-    <p><span class="tag tag-purple">⚡新增意外題材</span>：韓國KOSPI進入熊市（累計跌逾20%），亞洲科技股整體壓力升溫</p>
-  </div>
-  <div class="card">
-    <div class="card-title">💰 籌碼追蹤師</div>
-    <p><span class="warn">07/08外資籌碼（最新）：</span></p>
-    <p>外資 <span class="bull">買超前10</span>：長榮航(2618)、群益高息ETF(00919)、聯電(2303)、第一金(2892)、宏碁(2353)、永豐金(2890)、玉山金(2884)、合庫金(5880)、群創(3481)、開發金(2883)</p>
-    <p>→ <span class="num">金融股5席</span>（第一金、永豐金、玉山金、合庫金、開發金），為今年以來外資買超金融最集中的一天。</p>
-    <p>外資 <span class="bear">賣超前10</span>：中石化(1314)、各類ETF（00981A/00403A/0050/00929/00988A/00631L）、台化(1326)、佳世達(2352)</p>
-    <p><span class="bear">三大法人合計：-939,652張</span>（超大幅賣超！），自營商主導賣壓（-694,218張），投信逆勢買超（+51,670張）。</p>
-    <div class="highlight-red">⚠️ 三大法人賣超近百萬張，是近期最大單日賣超記錄之一。外資雖部分輪動進金融，但整體仍在撤出電子部位。</div>
-  </div>
-  <div class="card">
-    <div class="card-title">📊 技術戰術師</div>
-    <p><span class="warn">TWII 07/08收盤：45,734（+0.33%）</span></p>
-    <div class="kpi-row" style="margin-top:6px;">
-      <div class="kpi-box"><div class="kpi-label">MA5</div><div class="kpi-value" style="font-size:15px;color:var(--yellow)">~45,700</div><div class="kpi-sub warn">岌岌可危</div></div>
-      <div class="kpi-box"><div class="kpi-label">MA20</div><div class="kpi-value" style="font-size:15px;color:var(--green)">~45,468</div><div class="kpi-sub">支撐一</div></div>
-      <div class="kpi-box"><div class="kpi-label">RSI</div><div class="kpi-value" style="font-size:15px;color:var(--yellow)">~55</div><div class="kpi-sub">偏中性</div></div>
-    </div>
-    <p>今日低開預估 <span class="bear">900-1,900點</span>，測試關鍵支撐：</p>
-    <table style="font-size:12px;margin-top:6px;">
-      <tr><th>關卡</th><th>點位</th><th>重要性</th></tr>
-      <tr><td>關鍵支撐①</td><td class="warn">45,468</td><td>MA20，不能跌破</td></tr>
-      <tr><td>關鍵支撐②</td><td>44,999</td><td>07/03最近低點</td></tr>
-      <tr><td>重要支撐③</td><td>44,000</td><td>整數心理關口</td></tr>
-      <tr><td>最後防線</td><td class="bear">43,500</td><td>若破，測MA60</td></tr>
-      <tr><td>今日壓力</td><td>45,734</td><td>昨收=第一壓力</td></tr>
+  <div style="margin-top:14px;">
+    <h3>美股半導體 ADR 昨夜收盤</h3>
+    <table>
+      <tr><th>股票</th><th>收盤價</th><th>漲跌幅</th><th>漲跌額</th><th>52週位置</th><th>台股影響</th></tr>
+      <tr><td>台積電 TSM</td><td>$432.57</td><td class="dn">-4.25%</td><td class="dn">-$19.22</td><td>91%高位</td><td class="dn">2330 低開 4–5% 確定</td></tr>
+      <tr><td>NVDA 輝達</td><td>$196.93</td><td class="up">+0.71% 🟢</td><td class="up">+$1.38</td><td>83%</td><td class="up">AI算力逆勢唯一收紅</td></tr>
+      <tr><td>AMD</td><td>$516.11</td><td class="dn">-6.51%</td><td class="dn">-$35.94</td><td>88%</td><td class="dn">AMD相關台廠承壓</td></tr>
+      <tr><td>美光 MU</td><td>$938.38</td><td class="dn">-4.71%</td><td class="dn">-$46.37</td><td>75%</td><td class="dn">HBM/記憶體族群壓</td></tr>
+      <tr><td>應材 AMAT</td><td>$554.50</td><td class="dn">-6.46%</td><td class="dn">-$38.29</td><td>75%</td><td class="dn">設備股同步承壓</td></tr>
+      <tr><td>英特爾 INTC</td><td>$110.39</td><td class="dn">-9.66% ⚠️</td><td class="dn">-$11.81</td><td>77%</td><td class="dn">18A延遲，拖累信心</td></tr>
+      <tr><td>ASML</td><td>$1,747.28</td><td class="dn">-4.26%</td><td class="dn">-$77.79</td><td>87%</td><td class="dn">EUV設備股跟跌</td></tr>
+      <tr><td>博通 AVGO</td><td>$370.78</td><td class="dn">-0.83%</td><td class="dn">-$3.12</td><td>75%</td><td class="neu">跌幅相對輕微</td></tr>
     </table>
-    <p style="margin-top:8px;"><span class="bear">量能觀察</span>：若今日開低後量縮（<6,000萬張），代表恐慌性拋售結束，可伺機進場防禦型倉位。</p>
-  </div>
-  <div class="card">
-    <div class="card-title">🎙️ 觀點聚合師</div>
-    <p><span class="warn">【股癌EP676（07/04，🐬）vocus.cc】</span></p>
-    <div class="podcast-ep">
-      <div class="podcast-ep-header">
-        <div class="podcast-ep-title">謝孟恭 EP676 核心觀點</div>
-        <div class="podcast-ep-date">07/04 · 封測首次強調</div>
-      </div>
-      <div class="podcast-point">封測報價下季漲幅 <strong>30%~50%</strong>（日月光、京元電），遠超疫情期間的10-20%，AI需求外溢後段製程</div>
-      <div class="podcast-point">MOSFET功率元件部分應用已<strong>斷貨</strong>，缺貨程度「不輸被動元件」，7月漲價信持續湧現</div>
-      <div class="podcast-point">被動元件修正後率先轉強，但已漲兩三倍，「七月漲價信變多，但股價未必續漲」—— 需分辨「漲價」和「股價」</div>
-      <div class="podcast-point">Meta進軍Neo Cloud = 加碼AI基礎建設，非退出賽局，但對現有雲端廠是競爭壓力</div>
-      <div class="podcast-point">操作建議：「籌碼洗淨後大盤創新高才是介入點」，不要在修正中追強勢股</div>
-    </div>
-    <div class="contradiction">⚡ <strong>矛盾點：</strong>股癌EP676（07/04）稱「修正後被動元件率先轉強」，但07/07美股ON Semi（功率元件）-3.79%，AMAT -6.46%，仍在跌。<br><strong>研判</strong>：EP676說的是「相對強」而非「絕對不跌」，在大盤下跌時跌幅較小=領先跡象，反彈時則率先啟動。</div>
-    <p style="margin-top:8px;"><span class="tag tag-blue">游庭皓財經皓角</span> 昨集：「AI投資進挑選時代」框架持續，今日NVDA逆勢+0.71% = 框架驗證中。</p>
-  </div>
-</div>
-
-<!-- 大盤多空辯論 -->
-<div class="section-title">大盤多空辯論</div>
-<div class="debate-row">
-  <div class="debate-bull">
-    <div class="debate-title" style="color:var(--green)">🟢 看多方論點</div>
-    <div class="debate-item" style="color:var(--text)">VIX 18.09 — 雖然跳升+12%，但仍低於「真實恐慌線」25，系統性崩盤概率不高</div>
-    <div class="debate-item" style="color:var(--text)">NVDA +0.71% 逆勢：費半-4.65%時唯一正報酬，AI需求不可逆的強烈信號，台積電CoWoS需求未改變</div>
-    <div class="debate-item" style="color:var(--text)">台幣升值至32.064（-0.2%），若外資大逃殺應是台幣貶值，現在升值代表資金仍在台灣境內輪動</div>
-    <div class="debate-item" style="color:var(--text)">外資買超金融股5席（第一金、永豐金、玉山金等），油價漲+利率升→金融股利差擴大，ROE估值支撐</div>
-    <div class="debate-item" style="color:var(--text)">封測漲價30-50%（股癌EP676）= 中期結構性利多，即使今日大跌，後段製程族群基本面轉佳</div>
-    <div class="debate-item" style="color:var(--text)">美軍出手=顯示美國對中東主導力，短期混亂後油價若回落，市場可能急速反彈（2019年案例）</div>
-  </div>
-  <div class="debate-bear">
-    <div class="debate-title" style="color:var(--red)">🔴 看空方論點</div>
-    <div class="debate-item" style="color:var(--text)">費半(SOX)累計10天跌幅：07/02 -5.44% + 07/07 -4.65% = <strong>累計 -10%</strong>，進入技術性修正區</div>
-    <div class="debate-item" style="color:var(--text)">TSM ADR兩日累跌：07/02 -2.27% + 07/07 -4.25% = 累計 -6.5%，台積電今日低開預估4-5%</div>
-    <div class="debate-item" style="color:var(--text)">三大法人賣超 <strong>-939,652張</strong>，為近期最大單日賣超，自營商大幅出清電子倉位</div>
-    <div class="debate-item" style="color:var(--text)">油價+6%→通膨再起→Fed更難降息→科技股估值二次承壓，這個惡性循環可能延續數週</div>
-    <div class="debate-item" style="color:var(--text)">INTC -9.66%（18A良率延誤到2026末/2027）= 晶片製造不確定性上升，影響整個供應鏈</div>
-    <div class="debate-item" style="color:var(--text)">韓國KOSPI進入熊市（-20%以上），亞洲科技股系統性壓力升溫，台灣難獨善其身</div>
-    <div class="debate-item" style="color:var(--text)">霍爾木茲海峽風險：卡達LNG油輪已被擊中，若封鎖，全球能源供應鏈受衝擊，通膨螺旋加速</div>
-    <div class="debate-item" style="color:var(--text)">三星Q2財報利多不漲（大幅獲利但股跌7-10%）= 市場估值透支，獲利了結潮正在進行</div>
-  </div>
-</div>
-<div class="verdict-bar">
-  <div style="font-size:12px;color:var(--text2);margin-bottom:5px;">大盤多空裁決</div>
-  <div style="display:flex;gap:6px;align-items:center;justify-content:center;">
-    <span style="color:var(--green);font-weight:700;">看多 25%</span>
-    <div class="progress-wrap" style="width:260px;">
-      <div class="pf-green" style="width:25%;"></div>
-      <div class="pf-red" style="width:75%;"></div>
-    </div>
-    <span style="color:var(--red);font-weight:700;">75% 看空</span>
-  </div>
-  <div style="font-size:12.5px;color:var(--text);margin-top:7px;">🔴 <strong>今日判定：嚴重偏空</strong> — 雙重黑天鵝（美伊+費半連跌）疊加，今日低開已是確定事件。但VIX未破25、台幣穩定、NVDA逆漲，顯示這仍是「選擇性賣壓+輪動」而非系統崩潰。封測+被動元件是今日少數進攻點。</div>
-</div>
-
-<!-- 各題材戰況 -->
-<div class="section-title">焦點題材深挖戰況</div>
-
-<!-- 美伊 -->
-<div class="theme-card" style="border-color:var(--red);">
-  <div class="theme-header">
-    <div>
-      <div class="theme-name">① 美伊停火破裂 / 霍爾木茲危機 — 今日最大黑天鵝</div>
-      <div class="theme-meta">
-        <span class="tag tag-red">🔴 迴避科技、迴避石化</span>
-        <span class="tag tag-green">🟢 能源/航運受益</span>
-        <span style="color:var(--orange);font-weight:700;font-size:12px;">熱度 95/100</span>
-      </div>
-    </div>
-  </div>
-  <div class="theme-grid">
-    <div>
-      <div class="theme-sub">事件時序</div>
-      <div class="theme-content">
-        <p>🔴 07/06：伊朗攻擊3艘在霍爾木茲商船</p>
-        <p>🔴 07/07：Trump宣布「停火MOU is over」，美軍空襲80+伊朗目標</p>
-        <p>🔴 07/07-08：伊朗飛彈攻擊美軍巴林、科威特基地</p>
-        <p>🔴 07/08：卡達LNG油輪「Al Rekayyat」被擊中等待救援</p>
-        <p>🔴 原油盤中+6%，歐洲天然氣>48歐元/MWh（冬季供應隱患）</p>
-        <p>🔴 亞洲貨幣普遍貶值（WSJ報導）</p>
-      </div>
-    </div>
-    <div>
-      <div class="theme-sub">對台股的傳遞機制</div>
-      <div class="theme-content">
-        <p><span class="bear">負面</span>：油價→通膨→Fed降息推遲→科技估值承壓</p>
-        <p><span class="bear">負面</span>：全球風險偏好下降→VIX+12%→機構降Beta</p>
-        <p><span class="bull">正面</span>：台灣航運/LNG船隊運費上漲（海峽風險溢價）</p>
-        <p><span class="bull">正面</span>：長榮(2603)等貨運受益，長榮航(2618)外資買超</p>
-        <p><span class="bull">正面</span>：台海風險相對降低（美軍注意力在中東）</p>
-        <div class="highlight" style="margin-top:6px;">歷史參照：2019年美伊衝突期間，台股當日跌300-500點，但1週內收復。本次疊加半導體修正，恢復需更長時間。</div>
-      </div>
-    </div>
-    <div>
-      <div class="theme-sub">受益族群（今日逆勢關注）</div>
-      <div class="theme-content">
-        <p><strong>長榮(2603)</strong>：貨運船隊，霍爾木茲繞道增加運費</p>
-        <p><strong>陽明(2609)</strong>：集裝箱航運</p>
-        <p><strong>萬海(2615)</strong>：貨運</p>
-        <p><strong>台塑化(6505)</strong>：煉油受益油價上漲</p>
-        <p><strong>中油ETF相關</strong>：能源股漲價受惠</p>
-        <div class="highlight-green" style="margin-top:6px;">💡 航運/能源是今日少數可能逆勢上漲的族群，但需確認美伊局勢有無進一步升級</div>
-      </div>
-    </div>
-    <div>
-      <div class="theme-sub">風險情境分析</div>
-      <div class="theme-content">
-        <p><strong>基本情境（60%）</strong>：雙方有限度交火，不全面封鎖，油價$80-90，台股跌1,000-1,500點後找到支撐</p>
-        <p><strong>升溫情境（30%）</strong>：霍爾木茲部分封鎖，油價$90-110，台股跌2,000+點，測試44,000</p>
-        <p><strong>爆發情境（10%）</strong>：全面戰爭，油價>$120，台股可能跌5,000+點（歷史上中東全面戰爭案例）</p>
-      </div>
+    <div class="highlight" style="margin-top:8px;">
+      NVDA +0.71%，8支半導體 ADR 中唯一收紅 → 「AI 算力（NVDA）」vs「傳統半導體（INTC/AMD/設備）」分化加速。AI 伺服器供應鏈（廣達/緯創）今日相對抗跌，INTC 相關台廠（世芯）壓力較大。
     </div>
   </div>
 </div>
 
-<!-- 費半連跌 -->
-<div class="theme-card" style="border-color:rgba(248,81,73,0.5);">
-  <div class="theme-header">
-    <div>
-      <div class="theme-name">② 費半連跌第二波 — 三星財報觸發 + INTC良率危機</div>
-      <div class="theme-meta">
-        <span class="tag tag-red">🔴 迴避</span>
-        <span style="color:var(--orange);font-weight:700;font-size:12px;">熱度 90/100（負向）</span>
-      </div>
+<!-- ③ 六大專家 -->
+<div class="section">
+  <h2>③ 六大專家觀點</h2>
+  <div class="expert-grid">
+    <div class="expert-card">
+      <div class="expert-title">🌐 總經策略師</div>
+      <p><strong>Risk-Off 啟動：</strong>VIX 16.13 → 18.24（+13.08%），距 20 心理關卡僅 1.76 點。油價 +5.97% 至 $78.59，通膨預期升溫，壓縮 Fed 降息空間。</p>
+      <p><strong>黃金異常：</strong>黃金 -2.24%（理論上應避險拉升）→ 顯示流動性需求主導，投資人先賣黃金換現金，非傳統避險邏輯。</p>
+      <p><strong>Fed 添亂：</strong>Warsh 宣稱「不預腳本化」政策方向，10Y 美債 4.529%（+0.98%）反彈，降息預期進一步降溫。USD/TWD 32.055 持平，台幣未見明顯外資撤離。</p>
+    </div>
+    <div class="expert-card">
+      <div class="expert-title">🗺️ 地緣政治分析師</div>
+      <p><strong>衝突確認升溫：</strong>Trump 宣稱美伊停火 MOU「結束」，美軍打擊伊朗 80+ 目標（防空/雷達/快艇）。伊朗對美軍巴林、科威特基地發射導彈。</p>
+      <p><strong>霍爾木茲風險：</strong>卡達 LNG 油輪被擊中起火，全球 20% 原油運輸路線出現實際中斷案例。台灣 LNG 進口依賴度 50%+，電力成本隱憂。</p>
+      <p><strong>歷史參考：</strong>美伊交火後股市平均 5–10 交易日恢復（無全面衝突情境）。霍爾木茲正式封鎖機率評估約 25%，若封鎖則為全市場性系統崩跌。</p>
+    </div>
+    <div class="expert-card">
+      <div class="expert-title">📡 產業情報官</div>
+      <p><strong>今日熱度前五：</strong></p>
+      <p>① 美伊/地緣 <strong>95</strong>｜② 費半跌勢 <strong>90</strong>｜③ 封測漲價 <strong>78</strong>｜④ 航運/能源 <strong>72</strong>｜⑤ AI分化 <strong>68</strong></p>
+      <p><strong>意外題材：</strong>長榮航(2618) 外資買超 +61,858 張，遠超第二名（+30,994），顯示市場已提前布局霍爾木茲/航運受惠，為今日意外最強題材。</p>
+      <p><strong>封測持續驗證：</strong>股癌 EP676（07/04）確認 MOSFET 斷貨、封測報價漲 30–50%，日月光(2311)/矽品(2325) 基本面持續改善。</p>
+    </div>
+    <div class="expert-card">
+      <div class="expert-title">💰 籌碼追蹤師</div>
+      <p><strong>極端賣壓：</strong>三大法人合計 -939,652 張（歷史罕見規模），外資全市場 -297,382 張。賣超 ETF（0050/00631L）+ 石化（中石化1314 -56,087 張）為主力。</p>
+      <p><strong>矛盾訊號：</strong>個股層面外資積極買進金融防禦（5/10 入買超榜）+ 航運，但整體指數大賣。顯示資金「轉移」而非「撤離」——從半導體高風險轉往金融防禦 + 航運題材。</p>
+      <p><strong>投信逆向：</strong>投信 +51,670 張逆向買入，本土法人認為這是進場點，與外資整體賣超形成對立，需後續觀察哪方判斷正確。</p>
+    </div>
+    <div class="expert-card">
+      <div class="expert-title">📊 技術戰術師</div>
+      <p><strong>TWII 關鍵位置：</strong>昨收 45,734，站在 MA20（45,762）下方 28 點。今日若開盤直接跳破 MA20，且無力收回，MACD 死叉確認（MACD 634 &lt; Signal 813），技術面轉弱訊號完整。</p>
+      <p><strong>RSI 49.27（中性偏空）：</strong>距超賣（30）有 19 點空間，意味技術面沒有急速反彈的超賣支撐，可能繼續走低。</p>
+      <p><strong>今日關鍵：</strong>支撐 45,000（整數）→ 45,036（昨低）→ 44,454（月低）；壓力 45,762（MA20）→ 46,259（MA5）。</p>
+    </div>
+    <div class="expert-card">
+      <div class="expert-title">🎙️ 觀點聚合師</div>
+      <p><strong>股癌 EP676（07/04，謝孟恭）：</strong>「封測漲價 30–50%，MOSFET 斷貨確認，被動元件週期轉佳。此刻不是追強的時機，等修正後分批布局後段製程族群。」</p>
+      <p><strong>股癌 EP673（06/24）：</strong>「台股修正主因是韓國槓桿爆倉的連鎖賣壓，非台灣基本面問題。MediaTek × Google TPU 確認台灣 AI 供應鏈地位。」</p>
+      <p><strong>Podcast vs 數據一致：</strong>謝孟恭「等跌後再買封測」框架 + 今日外資大賣半導體整體 → 兩者方向一致，地緣加速修正進程，或縮短等待買點時間。</p>
+      <p style="color:var(--muted);font-size:11px;">游庭皓《財經皓角》07/08 集：未找到具體內容，請開盤前至 YouTube 直播確認。</p>
     </div>
   </div>
-  <div class="theme-grid">
+</div>
+
+<!-- ④ 大盤多空辯論 -->
+<div class="section">
+  <h2>④ 大盤整體多空辯論</h2>
+  <div class="debate-grid">
+    <div class="debate-col bull">
+      <h3>🟢 看多方論據（25%）</h3>
+      <ul>
+        <li>① USD/TWD 32.055 持平，外資未見大規模撤離台幣，匯率穩定提供底部支撐</li>
+        <li>② 投信逆向 +51,670 張，本土法人認為是買點而非逃命機會</li>
+        <li>③ TWII 昨收 +0.56%，台股有一定韌性，MA60（42,727）下方還有 3,007 點緩衝</li>
+        <li>④ NVDA +0.71% 逆勢，AI 算力需求未下滑，純 AI 題材仍有基本面支撐</li>
+        <li>⑤ 封測漲價（日月光2311）+ 被動元件（MOSFET 斷貨）基本面改善，不受地緣衝擊</li>
+        <li>⑥ 美伊交火後歷史平均 5–10 交易日恢復，若未全面衝突則跌幅有限</li>
+      </ul>
+    </div>
+    <div class="debate-col bear">
+      <h3>🔴 看空方論據（75%）</h3>
+      <ul>
+        <li>① 費半 SOX 兩週累計 -10%（07/03 -4.65%，07/07 -4.65%），技術趨勢明確向下</li>
+        <li>② 三大法人合計 -939,652 張，極端規模系統性賣壓，歷史上此規模常見於重大事件</li>
+        <li>③ INTC -9.66% 觸發 18A 製程信心危機，波及整體半導體供應鏈估值重評</li>
+        <li>④ Trump 宣告停火「結束」，霍爾木茲危機尚未解除，尾部風險持續存在</li>
+        <li>⑤ VIX 18.24（+13.08%），距 20 高壓區僅 9.7%，恐慌情緒急升</li>
+        <li>⑥ TWII MACD 死叉（MACD 634 &lt; Signal 813），技術動能轉弱</li>
+        <li>⑦ TSM ADR -4.25%，台積電今日低開確定，單股就可壓指數 500–800 點</li>
+        <li>⑧ 韓國股市已正式進入熊市，亞洲半導體資金恐同步共振賣壓</li>
+      </ul>
+    </div>
+  </div>
+  <div class="verdict">
+    <div style="font-size:15px;font-weight:700;margin-bottom:6px;">📋 裁決：看多 25% vs 看空 75% ｜ 情緒：嚴重偏空</div>
+    <div style="color:var(--muted);font-size:12px;">美伊地緣衝擊 + SOX 技術破位 + 三大法人極端賣壓三重壓力同步。今日低開 500–1,200 點為基本情境。等待 VIX 回落至 16 以下或 TWII 站穩 45,000 再評估反彈機會。</div>
+  </div>
+</div>
+
+<!-- ⑤ 各題材戰況 -->
+<div class="section">
+  <h2>⑤ 今日焦點題材戰況（熱度前5）</h2>
+
+  <div class="theme-card">
+    <div class="theme-header">
+      <div>
+        <span style="font-size:15px;font-weight:700;">🌍 美伊衝突／地緣政治</span>
+        <span class="theme-tag tag-avoid" style="margin-left:8px;">🔴 今日迴避</span>
+        <span style="font-size:11px;color:var(--muted);margin-left:8px;">消息驅動</span>
+      </div>
+      <div class="theme-score">95/100</div>
+    </div>
+    <p><strong>核心事件：</strong>Trump 宣稱美伊停火 MOU「結束」，美軍已對伊朗 80+ 目標發動打擊。卡達 LNG 油輪「Al Rekayyat」在霍爾木茲海峽被彈片擊中，等待救援。WSJ 報導油價跳漲 6%（Brent）。</p>
+    <p><strong>市場衝擊：</strong>油價 $78.59（+5.97%），Dow 期貨盤前 -500+ 點，VIX +13.08%，10Y 美債殖利率 4.529%（+0.98%）。</p>
+    <p><strong>台股受惠 vs 受壓：</strong>受惠 → 長榮(2603)/陽明(2609)/萬海(2615) 短線航運溢價；受壓 → 半導體整體（外資情緒賣壓 + 估值重評）。</p>
+    <p class="warn"><strong>⚠️ 風險提示：</strong>消息驅動題材波動大。若美伊快速降溫（機率 40%），地緣溢價 3–5 日內全數回吐；若霍爾木茲正式封鎖（機率 25%），全市場系統性下殺。</p>
+  </div>
+
+  <div class="theme-card">
+    <div class="theme-header">
+      <div>
+        <span style="font-size:15px;font-weight:700;">💻 費半跌勢／半導體估值重估</span>
+        <span class="theme-tag tag-watch" style="margin-left:8px;">🟡 觀望等機會</span>
+        <span style="font-size:11px;color:var(--muted);margin-left:8px;">數據驅動</span>
+      </div>
+      <div class="theme-score">90/100</div>
+    </div>
+    <p><strong>驅動力：</strong>SOX 兩週累計 -10%。INTC -9.66%（18A 製程延遲，三星合作計畫受損）為本週最大單日跌幅，觸發外資對 IDM 模式的信心危機。AMD -6.51%、AMAT -6.46%、ASML -4.26% 同步。</p>
+    <p><strong>台股直接影響：</strong>台積電(2330) ADR -4.25%，今日低開約 750–950 點（台積電指數權重約 30%）。聯電(2303) 雖昨有外資買超 +23,076 張，但今日恐難逃系統性拖累。</p>
+    <p><strong>等待布局條件：</strong>VIX 回落 &lt;16 且 SOX 穩定在 12,000 以上；RSI 跌至 40 以下（目前 49.27，仍有下跌空間）；TSM ADR 止跌訊號。</p>
+  </div>
+
+  <div class="theme-card">
+    <div class="theme-header">
+      <div>
+        <span style="font-size:15px;font-weight:700;">🔩 封測漲價／後段製程</span>
+        <span class="theme-tag tag-attack" style="margin-left:8px;">🟢 進攻（逢低）</span>
+        <span style="font-size:11px;color:var(--muted);margin-left:8px;">數據+消息雙驅動</span>
+      </div>
+      <div class="theme-score">78/100</div>
+    </div>
+    <p><strong>驅動力：</strong>股癌 EP673/EP676（謝孟恭）持續確認：封測報價漲幅 30–50%，MOSFET 斷貨確認，被動元件（MLCC/電阻）同步進入漲價週期。AI CoWoS 先進封裝需求爆發，日月光/矽品報價週期轉佳。</p>
+    <p><strong>今日策略：</strong>此為基本面驅動題材，地緣衝擊對漲價週期無直接影響。逢大盤下殺反而提供更優進場點。日月光(2311) 若開盤回測合理區間，可分批試單。</p>
+    <p><strong>代表股：</strong>日月光投控(2311) / 矽品精密(2325) / 健策精密(3653) / 京元電(2449)</p>
+    <p class="warn"><strong>停損條件：</strong>若台積電 CoWoS 訂單傳出削減消息；或大盤破 44,454（月低）需全面降低曝險。</p>
+  </div>
+
+  <div class="theme-card">
+    <div class="theme-header">
+      <div>
+        <span style="font-size:15px;font-weight:700;">🚢 航運／能源</span>
+        <span class="theme-tag tag-attack" style="margin-left:8px;">🟢 短線進攻</span>
+        <span style="font-size:11px;color:var(--muted);margin-left:8px;">消息驅動</span>
+      </div>
+      <div class="theme-score">72/100</div>
+    </div>
+    <p><strong>驅動力：</strong>霍爾木茲海峽危機 → 能源運輸繞道 → 航線拉長 → 航運費率上漲預期。油價 +5.97% 至 $78.59 創近兩個月新高。外資單日大量買進長榮航(2618) +61,858 張，居今日全市場外資買超第一。</p>
+    <p><strong>代表股：</strong>長榮(2603) / 陽明(2609) / 萬海(2615) / 長榮航(2618)（已有外資布局）</p>
+    <p class="warn"><strong>⚠️ 短線性質：</strong>消息退去後溢價迅速回吐，嚴設停損（-5%），不宜超過總部位 15%。</p>
+  </div>
+
+  <div class="theme-card">
+    <div class="theme-header">
+      <div>
+        <span style="font-size:15px;font-weight:700;">🤖 AI 分化選股</span>
+        <span class="theme-tag tag-watch" style="margin-left:8px;">🟡 選股觀望</span>
+        <span style="font-size:11px;color:var(--muted);margin-left:8px;">數據驅動</span>
+      </div>
+      <div class="theme-score">68/100</div>
+    </div>
+    <p><strong>驅動力：</strong>NVDA +0.71% 在所有半導體 ADR 中唯一收紅，AVGO -0.83% 跌幅也遠小於其他。H1 2026 AI M&amp;A 超過 $3 兆美元（WSJ），資本持續流入 AI 基礎設施。</p>
+    <p><strong>台股機會：</strong>廣達(2382) / 緯創(3231) / 技嘉(2376) 等 AI 伺服器台廠，今日跟跌後若 NVDA 守穩，可做相對強勢觀察。</p>
+    <p><strong>等待條件：</strong>TWII 45,000 守穩 + VIX 回落 + NVDA 連續兩日收紅確認趨勢。</p>
+  </div>
+</div>
+
+<!-- ⑥ 外資籌碼深挖 -->
+<div class="section">
+  <h2>⑥ 外資籌碼深挖（2026-07-08 前一交易日，資料來源：TWSE T86 官方 API）</h2>
+  <div class="grid2">
     <div>
-      <div class="theme-sub">ADR跌幅一覽（07/07 US收盤）</div>
-      <table style="font-size:12px;">
-        <tr><th>個股</th><th>昨收</th><th>漲跌</th><th>台股影響</th></tr>
-        <tr><td>INTC 英特爾</td><td>$110.39</td><td class="dn">-9.66%💥</td><td>IC設計/封測</td></tr>
-        <tr><td>AMAT 應材</td><td>$554.50</td><td class="dn">-6.46%</td><td>設備股</td></tr>
-        <tr><td>AMD 超微</td><td>$516.11</td><td class="dn">-6.51%</td><td>IC設計</td></tr>
-        <tr><td>ASML 艾司摩爾</td><td>$1,747</td><td class="dn">-4.26%</td><td>光刻設備</td></tr>
-        <tr><td>TSM 台積電ADR</td><td>$432.57</td><td class="dn">-4.25%</td><td>台積電(2330)</td></tr>
-        <tr><td>MU 美光</td><td>$938.38</td><td class="dn">-4.71%</td><td>華邦電、南亞科</td></tr>
-        <tr><td>ON Semi</td><td>$91.10</td><td class="dn">-3.79%</td><td>功率元件台廠</td></tr>
-        <tr><td><strong class="bull">NVDA 輝達</strong></td><td>$196.93</td><td class="up">+0.71%🟢</td><td>AI伺服器散熱</td></tr>
+      <h3>外資買超前10名</h3>
+      <table>
+        <tr><th>代碼</th><th>名稱</th><th>淨買超(張)</th><th>類別</th></tr>
+        <tr><td>2618</td><td>長榮航</td><td class="up">+61,858</td><td>航空</td></tr>
+        <tr><td>00919</td><td>群益台灣精選高息</td><td class="up">+30,994</td><td>高息ETF</td></tr>
+        <tr><td>2303</td><td>聯電</td><td class="up">+23,076</td><td>半導體</td></tr>
+        <tr><td>2892</td><td>第一金</td><td class="up">+21,282</td><td>金融</td></tr>
+        <tr><td>2353</td><td>宏碁</td><td class="up">+16,100</td><td>電腦</td></tr>
+        <tr><td>2890</td><td>永豐金</td><td class="up">+14,113</td><td>金融</td></tr>
+        <tr><td>2884</td><td>玉山金</td><td class="up">+13,981</td><td>金融</td></tr>
+        <tr><td>5880</td><td>合庫金</td><td class="up">+13,774</td><td>金融</td></tr>
+        <tr><td>3481</td><td>群創</td><td class="up">+13,507</td><td>面板</td></tr>
+        <tr><td>2883</td><td>凱基金</td><td class="up">+13,077</td><td>金融</td></tr>
+      </table>
+      <div class="highlight" style="margin-top:8px;">金融股 5/10 入買超榜（第一金/永豐金/玉山金/合庫金/凱基金）→ 外資系統性轉進防禦型金融。長榮航 +61,858 張高居第一，遠超第二名，地緣/航運題材已提前布局。</div>
+    </div>
+    <div>
+      <h3>外資賣超前10名</h3>
+      <table>
+        <tr><th>代碼</th><th>名稱</th><th>淨賣超(張)</th><th>類別</th></tr>
+        <tr><td>1314</td><td>中石化</td><td class="dn">-56,087</td><td>石化</td></tr>
+        <tr><td>00981A</td><td>主動統一台股增長</td><td class="dn">-39,413</td><td>主動ETF</td></tr>
+        <tr><td>00403A</td><td>主動統一升級50</td><td class="dn">-37,472</td><td>主動ETF</td></tr>
+        <tr><td>0050</td><td>元大台灣50</td><td class="dn">-28,291</td><td>ETF</td></tr>
+        <tr><td>00929</td><td>復華台灣科技優息</td><td class="dn">-18,450</td><td>高息ETF</td></tr>
+        <tr><td>8112</td><td>至上</td><td class="dn">-16,124</td><td>電子</td></tr>
+        <tr><td>00988A</td><td>主動統一全球創新</td><td class="dn">-15,538</td><td>主動ETF</td></tr>
+        <tr><td>1326</td><td>台化</td><td class="dn">-15,204</td><td>石化</td></tr>
+        <tr><td>00631L</td><td>元大台灣50正2</td><td class="dn">-13,739</td><td>槓桿ETF</td></tr>
+        <tr><td>2352</td><td>佳世達</td><td class="dn">-13,735</td><td>科技</td></tr>
+      </table>
+      <div class="warn" style="margin-top:8px;">統一投信主動式 ETF（00981A/00403A/00988A）連3支入賣超榜，為外資贖回降低曝險。石化（中石化+台化）大量賣出，但油價+6%，明日石化股可能出現反彈行情。</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px;">
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;">
+      <div style="font-size:11px;color:var(--muted);">全市場外資</div>
+      <div class="dn" style="font-size:20px;font-weight:700;">-297,382</div>
+      <div style="font-size:11px;color:var(--muted);">張</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;">
+      <div style="font-size:11px;color:var(--muted);">投信（逆向抄底）</div>
+      <div class="up" style="font-size:20px;font-weight:700;">+51,670</div>
+      <div style="font-size:11px;color:var(--muted);">張</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;">
+      <div style="font-size:11px;color:var(--muted);">三大法人合計</div>
+      <div class="dn" style="font-size:20px;font-weight:700;">-939,652</div>
+      <div style="font-size:11px;color:var(--muted);">張（極端賣壓）</div>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;">
+      <div style="font-size:11px;color:var(--muted);">台指期外資方向</div>
+      <div class="up" style="font-size:20px;font-weight:700;">淨多</div>
+      <div style="font-size:11px;color:var(--muted);">（方向性，口數異常不採用）</div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;">
+    <canvas id="buyChart"></canvas>
+  </div>
+</div>
+
+<!-- ⑦ 技術面儀表板 -->
+<div class="section">
+  <h2>⑦ 技術面儀表板 — 加權指數 TWII</h2>
+  <div class="grid2">
+    <div>
+      <h3>技術指標一覽</h3>
+      <table>
+        <tr><th>指標</th><th>數值</th><th>狀態</th></tr>
+        <tr><td>MA5（5日均線）</td><td>46,259</td><td class="dn">跌破 ⬇️</td></tr>
+        <tr><td>MA20（月線）</td><td>45,762</td><td class="dn">岌岌可危（差 28 點）</td></tr>
+        <tr><td>MA60（季線）</td><td>42,727</td><td class="up">持守 ✓</td></tr>
+        <tr><td>RSI（14日）</td><td>49.27</td><td class="neu">中性偏空，無超賣支撐</td></tr>
+        <tr><td>MACD 線</td><td>634.92</td><td class="dn">死叉（&lt; Signal 813）</td></tr>
+        <tr><td>布林上軌</td><td>48,229</td><td class="muted">遠壓力</td></tr>
+        <tr><td>布林中軌（MA20）</td><td>45,762</td><td class="dn">今日測試</td></tr>
+        <tr><td>布林下軌</td><td>43,296</td><td class="neu">極端支撐</td></tr>
+      </table>
+      <h3 style="margin-top:14px;">關鍵價位</h3>
+      <table>
+        <tr><th>性質</th><th>點位</th><th>說明</th></tr>
+        <tr><td class="dn">壓力①</td><td>45,762</td><td>MA20，破則加速向下</td></tr>
+        <tr><td class="dn">壓力②</td><td>46,259</td><td>MA5，短線頸線</td></tr>
+        <tr><td class="up">支撐①</td><td>45,000</td><td>整數心理防線</td></tr>
+        <tr><td class="up">支撐②</td><td>44,454</td><td>06/26 低點（本月最低）</td></tr>
+        <tr><td class="up">支撐③</td><td>43,296</td><td>布林下軌，極端下限</td></tr>
       </table>
     </div>
     <div>
-      <div class="theme-sub">INTC暴跌-9.66%原因</div>
-      <div class="theme-content">
-        <p>① <strong>三星Q2財報觸發</strong>：三星Q2獲利暴增19倍，但股價跌7-10%（profit taking），拖累整個半導體板塊</p>
-        <p>② <strong>Intel 18A/18A-P製程延遲</strong>：良率達獲利水準可能延至2026末或2027，比原計劃晚6-12個月</p>
-        <p>③ <strong>晶片廠損失持續</strong>：Foundry業務重大資本支出+持續虧損</p>
-        <p>④ <strong>估值透支</strong>：INTC年初至今漲約270%，高位修正幅度更大</p>
-        <div class="highlight-red" style="margin-top:6px;">⚠️ INTC 18A延遲直接衝擊台灣封測廠（原本預期承接INTC後段訂單的廠商需重新評估）</div>
-      </div>
-    </div>
-    <div>
-      <div class="theme-sub">NVDA逆漲的意義</div>
-      <div class="theme-content">
-        <p>費半-4.65%但NVDA+0.71%，這是今日最重要的「分化訊號」。</p>
-        <p>市場開始區分：<br>
-        → <span class="bull">AI需求直接受益者</span>（NVDA GPU、台積電CoWoS）<br>
-        → <span class="bear">半導體週期性廠商</span>（INTC、MU、設備股）</p>
-        <p>台股應用：聯發科(2454)、世芯(3661)等設計AI晶片的IC設計公司，在今日大跌中可能相對抗跌。</p>
-        <p>股癌/游庭皓所說「選股分化時代」= 今日正式開始驗證。</p>
-      </div>
-    </div>
-    <div>
-      <div class="theme-sub">費半累計修正幅度</div>
-      <div class="theme-content">
-        <p>52週高：14,655（約在06/23）<br>
-        07/02 -5.44% → 13,900附近<br>
-        07/07 -4.65% → 12,300（本次低點）<br>
-        <strong>累計從高點下跌：約 -16%</strong></p>
-        <p>技術面：費半已破MA20、MA50，下一支撐約12,000（整數關口）。</p>
-        <p>若費半能在12,000找到支撐，台積電也可望在MA200（$345→台股約2,200元）附近止跌。</p>
-      </div>
+      <canvas id="klineChart"></canvas>
     </div>
   </div>
 </div>
 
-<!-- 封測漲價 -->
-<div class="theme-card" style="border-color:var(--green);">
-  <div class="theme-header">
-    <div>
-      <div class="theme-name">③ 封測漲價30-50% — 股癌EP676全新點名，後段製程新主題</div>
-      <div class="theme-meta">
-        <span class="tag tag-green">🟢 進攻（今日逆勢關注）</span>
-        <span class="tag tag-blue">消息驅動（EP676首發）</span>
-        <span style="color:var(--orange);font-weight:700;font-size:12px;">熱度 78/100</span>
-      </div>
-    </div>
-  </div>
-  <div class="theme-grid">
-    <div>
-      <div class="theme-sub">EP676核心數據</div>
-      <div class="theme-content">
-        <p>AI需求→排擠效應擴散至後段製程</p>
-        <p>IC設計廠收到下季封測報價：<strong>+30%，甚至+40%~50%</strong></p>
-        <p>對比疫情期間漲幅：10-20%（本次已是疫情的2-3倍！）</p>
-        <p>日月光(2311)、京元電(2449)等封測廠報價能力大幅提升</p>
-        <p>謝孟恭評級：<span class="bull">結構性轉強</span>，非短線炒作</p>
-      </div>
-    </div>
-    <div>
-      <div class="theme-sub">台廠受惠清單</div>
-      <div class="theme-content">
-        <table style="font-size:12px;">
-          <tr><th>代碼</th><th>公司</th><th>受益點</th></tr>
-          <tr><td>2311</td><td><strong>日月光</strong></td><td>最大封測廠，報價+30-50%</td></tr>
-          <tr><td>2449</td><td>京元電</td><td>測試廠，漲價能力</td></tr>
-          <tr><td>6415</td><td>矽力*</td><td>IC設計，封測成本評估</td></tr>
-          <tr><td>3711</td><td>力積電</td><td>DRAM封測</td></tr>
-          <tr><td>2325</td><td>矽品</td><td>先進封裝</td></tr>
-        </table>
-      </div>
-    </div>
-    <div>
-      <div class="theme-sub">今日策略</div>
-      <div class="theme-content">
-        <p>今日大盤低開，封測股也難逃初跌，但：</p>
-        <p>① 跌幅應小於SOX連動股（半導體設備/晶圓代工）</p>
-        <p>② 若大盤低開後量縮反彈，封測族群可能是最先啟動者</p>
-        <p>③ 目標：等日月光(2311)開盤後第30分鐘，若跌幅<台積電，即為「相對強」確認</p>
-        <div class="highlight-green" style="margin-top:6px;">💡 封測漲價是今日唯一有「業績改善驅動」的進攻型題材，大盤恐慌時期是建立初始倉位的低點</div>
-      </div>
-    </div>
-    <div>
-      <div class="theme-sub">催化劑時程</div>
-      <div class="theme-content">
-        <p>📅 <strong>7月中旬</strong>：日月光等封測廠開始法說（確認報價數字）</p>
-        <p>📅 <strong>07/17</strong>：台積電法說（CoWoS產能確認→帶動後段需求再確認）</p>
-        <p>📅 <strong>Q2財報季</strong>（7-8月）：IC設計廠說明封測成本上升，市場開始評估新毛利率</p>
-        <p><span class="bull">催化劑濃度：高</span></p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 被動元件/功率元件 -->
-<div class="theme-card">
-  <div class="theme-header">
-    <div>
-      <div class="theme-name">④ 被動元件/功率元件漲價 — MOSFET已斷貨，EP675+676雙確認</div>
-      <div class="theme-meta">
-        <span class="tag tag-green">🟢 進攻（中期）</span>
-        <span style="color:var(--orange);font-weight:700;font-size:12px;">熱度 75/100</span>
-      </div>
-    </div>
-  </div>
-  <div class="theme-grid">
-    <div>
-      <div class="theme-sub">EP675+EP676雙重確認</div>
-      <div class="theme-content">
-        <p>EP675（07/01）：7月漲價信密集，「猜營收初期」</p>
-        <p>EP676（07/04）：MOSFET部分應用<strong>已斷貨</strong>，缺料不輸被動元件；「夠敢賭搶產能者，獲利不輸一線廠」</p>
-        <p>兩集持續強調 = 中期結構性趨勢，非短線題材</p>
-        <p>ON Semi(ON) -3.79%（美股），短線壓力但中期漲價趨勢不變</p>
-      </div>
-    </div>
-    <div>
-      <div class="theme-sub">今日台股觀察重點</div>
-      <div class="theme-content">
-        <p>國巨(2327)、華新科(2492)今日若跌幅<2%（大盤預估跌2-4%），即為相對強訊號</p>
-        <p>富鼎(ADI相關，功率元件)：追蹤ON Semi連動性</p>
-        <p>法說時程：國巨法說7月中旬，屆時漲價數字公開化</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 外資籌碼深挖 -->
-<div class="section-title">外資籌碼深挖（07/08）</div>
-<div class="grid-2">
-  <div class="card">
-    <div class="card-title">外資買超前10（07/08）— 金融大佔5席</div>
-    <table>
-      <tr><th>排名</th><th>代碼</th><th>名稱</th><th>三大法人(張)</th><th>族群</th></tr>
-      <tr><td>1</td><td>2618</td><td>長榮航</td><td class="up">+43,192</td><td>航空</td></tr>
-      <tr><td>2</td><td>00919</td><td>群益高息ETF</td><td class="up">+35,179</td><td>ETF</td></tr>
-      <tr><td>3</td><td>2303</td><td>聯電</td><td class="up">+15,461</td><td>IC</td></tr>
-      <tr><td>4</td><td>2892</td><td>第一金</td><td class="up">+21,599</td><td class="bull">金融</td></tr>
-      <tr><td>5</td><td>2353</td><td>宏碁</td><td class="up">+15,949</td><td>PC</td></tr>
-      <tr><td>6</td><td>2890</td><td>永豐金</td><td class="up">+15,018</td><td class="bull">金融</td></tr>
-      <tr><td>7</td><td>2884</td><td>玉山金</td><td class="up">+15,166</td><td class="bull">金融</td></tr>
-      <tr><td>8</td><td>5880</td><td>合庫金</td><td class="up">+13,818</td><td class="bull">金融</td></tr>
-      <tr><td>9</td><td>3481</td><td>群創</td><td class="up">+15,565</td><td>面板</td></tr>
-      <tr><td>10</td><td>2883</td><td>開發金</td><td class="up">+14,312</td><td class="bull">金融</td></tr>
-    </table>
-    <div class="highlight" style="margin-top:8px;">連續兩日：外資在金融股（富邦金/國泰金→今日第一金/永豐金/玉山金/合庫金/開發金），顯示資金系統性往金融防禦轉移</div>
-  </div>
-  <div class="card">
-    <div class="card-title">外資賣超前10 + 法人合計</div>
-    <table>
-      <tr><th>代碼</th><th>名稱</th><th>三大法人(張)</th><th>類型</th></tr>
-      <tr><td>1314</td><td>中石化</td><td class="dn">-57,363</td><td>石化</td></tr>
-      <tr><td>00981A</td><td>富邦台灣增值</td><td class="dn">-52,639</td><td class="bear">ETF</td></tr>
-      <tr><td>00403A</td><td>富邦台灣50</td><td class="dn">-38,450</td><td class="bear">ETF</td></tr>
-      <tr><td>0050</td><td>元大台灣50</td><td class="dn">-40,647</td><td class="bear">ETF</td></tr>
-      <tr><td>00929</td><td>復華科技優息</td><td class="dn">-20,543</td><td class="bear">ETF</td></tr>
-      <tr><td>8112</td><td>至上</td><td class="dn">-16,439</td><td>電子</td></tr>
-      <tr><td>00988A</td><td>富邦永續新能源</td><td class="dn">-36,009</td><td class="bear">ETF</td></tr>
-      <tr><td>1326</td><td>台化</td><td class="dn">-15,024</td><td>石化</td></tr>
-      <tr><td>00631L</td><td>富邦NASDAQ 2倍</td><td class="dn">-65,153</td><td class="bear">ETF</td></tr>
-      <tr><td>2352</td><td>佳世達</td><td class="dn">-13,835</td><td>電子</td></tr>
-    </table>
-    <div style="margin-top:10px;">
-      <div class="kpi-row">
-        <div class="kpi-box"><div class="kpi-label">外資合計</div><div class="kpi-value" style="font-size:15px;color:var(--red)">-297,382</div><div class="kpi-sub dn">張</div></div>
-        <div class="kpi-box"><div class="kpi-label">投信合計</div><div class="kpi-value" style="font-size:15px;color:var(--green)">+51,670</div><div class="kpi-sub up">張（逆買）</div></div>
-        <div class="kpi-box"><div class="kpi-label">自營合計</div><div class="kpi-value" style="font-size:15px;color:var(--red)">-694,218</div><div class="kpi-sub dn">張（大賣）</div></div>
-      </div>
-      <div class="kpi-box" style="text-align:center;background:var(--red-dim);border-color:var(--red);"><div class="kpi-label">三大法人合計</div><div class="kpi-value" style="color:var(--red);">-939,652張</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- 技術面 -->
-<div class="section-title">技術面儀表板</div>
-<div class="grid-2">
-  <div class="card">
-    <div class="card-title">加權指數近期K線（06/22–07/08）</div>
-    <div class="chart-wrap-lg"><canvas id="twiiChart"></canvas></div>
-    <div class="highlight-red" style="margin-top:8px;">今日預估低開至 43,800–44,800（比昨收低900-1,900點），將嚴重測試45,468（MA20）支撐。若跌破，下一站44,999（07/03低點）→ 44,000整數</div>
-  </div>
-  <div class="card">
-    <div class="card-title">題材熱度雷達 + 多空比例</div>
-    <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
-    <div class="chart-wrap" style="height:160px;margin-top:10px;"><canvas id="sentChart"></canvas></div>
-  </div>
-</div>
-
-<!-- 三段式操作建議 -->
-<div class="section-title">三段式操作建議</div>
-<div class="strategy-card strategy-attack">
-  <div class="strategy-title" style="color:var(--red);">⚔️ 進攻型（積極投資人，今日部位降至30-40%）</div>
-  <div class="strategy-item">【封測族群】日月光(2311)、京元電(2449)：等開盤30分鐘確認跌幅<台積電後，下午分批進場。停損設在今日最低再跌3%</div>
-  <div class="strategy-item">【航運/能源】長榮(2603)、台塑化(6505)：若油價繼續拉升，今日可能逆勢漲。開盤前30分鐘觀察，確認紅盤再追</div>
-  <div class="strategy-item">【金融防禦】第一金(2892)、永豐金(2890)：連日外資買超，今日可能相對抗跌，可做為倉位避風港</div>
-  <div class="strategy-item">【嚴禁】今日不追台積電低點、不補AMAT類設備股，等費半SOX連2日+0.5%才重建半導體倉位</div>
-</div>
-<div class="strategy-card strategy-balance">
-  <div class="strategy-title" style="color:var(--yellow);">⚖️ 均衡型（一般投資人，部位降至20-35%，現金50%以上）</div>
-  <div class="strategy-item">今日首要任務：觀察開盤後30分鐘大盤方向。若45,468（MA20）守住且量縮，持股不動；若跌破MA20，減半科技倉位</div>
-  <div class="strategy-item">台積電若開盤跌超過4%，不要急著承接，等下午13:00前後看是否有量縮止跌訊號</div>
-  <div class="strategy-item">若手中有0050，考慮換倉為高息金融ETF（0056、00878），等待輪動效益</div>
-  <div class="strategy-item">本週重要觀察：油價是否持續在$80以上。若油價回落到$75以下，半導體可能急速反彈</div>
-</div>
-<div class="strategy-card strategy-defense">
-  <div class="strategy-title" style="color:var(--green);">🛡️ 防守型（風險趨避者，部位15-20%，80%現金）</div>
-  <div class="strategy-item">今日保持觀望，等待「費半連2日收紅」確認止跌再入場</div>
-  <div class="strategy-item">規避族群：半導體設備、AI ETF、INTC相關廠商（封測中直接承接INTC訂單者）</div>
-  <div class="strategy-item">重進場訊號：① 油價回落$75以下 ② VIX跌回17以下 ③ 07/17台積電法說確認毛利率>57%</div>
-  <div class="strategy-item">可持有少量能源/航運股作為「地緣政治對沖」，但不超過總倉位10%</div>
-</div>
-
-<!-- Podcast區塊 -->
-<div class="section-title">Podcast觀點聚合</div>
-<div class="card mb14">
-  <div class="card-title">🎙️ 謝孟恭股癌 × 游庭皓財經皓角 — 2集觀點比對</div>
-  <div class="grid-2">
-    <div>
-      <div class="podcast-ep">
-        <div class="podcast-ep-header">
-          <div class="podcast-ep-title">EP676 🐬（07/04）</div>
-          <div class="podcast-ep-date">vocus.cc · 本週最新</div>
-        </div>
-        <div class="podcast-point">封測下季報價 <strong>+30%~+50%</strong>，遠超疫情的10-20%</div>
-        <div class="podcast-point">MOSFET部分應用已斷貨，功率元件缺貨「不輸被動元件」</div>
-        <div class="podcast-point">被動元件修正後率先轉強（但「漲價≠股價續漲」，需區分）</div>
-        <div class="podcast-point">Meta Neo Cloud = 加碼AI基礎建設，非退出，對現有業者是競爭壓力</div>
-        <div class="podcast-point">操作建議：「勿在修正中追強勢股，等大盤創新高再介入」</div>
-      </div>
-      <div class="podcast-ep">
-        <div class="podcast-ep-header">
-          <div class="podcast-ep-title">EP675 🎢（07/01）</div>
-          <div class="podcast-ep-date">vocus.cc · 上週</div>
-        </div>
-        <div class="podcast-point">外資Rebalance落幕（已驗證，7/8外資買超金融，確認換倉不出清）</div>
-        <div class="podcast-point">IC設計族群轉強：聯發科/創意/世芯站穩均線</div>
-        <div class="podcast-point">台積電法說毛利率預期偏高，「類比美光有miss風險」（持續警示）</div>
-      </div>
-    </div>
-    <div>
-      <div class="podcast-ep">
-        <div class="podcast-ep-header">
-          <div class="podcast-ep-title">游庭皓財經皓角</div>
-          <div class="podcast-ep-date">07/07-08集 · 框架</div>
-        </div>
-        <div class="podcast-point">「AI投資進挑選時代」— 今日NVDA+0.71% vs SOX-4.65% = 框架完美驗證</div>
-        <div class="podcast-point">美伊衝突：能源成本上升→通膨二次壓力→降息推遲，科技估值二次承壓</div>
-        <div class="podcast-point">台幣升值（32.064）代表外資在換倉而非出逃，給台股相對支撐</div>
-      </div>
-      <div class="podcast-ep" style="margin-top:8px;">
-        <div class="podcast-ep-header">
-          <div class="podcast-ep-title">EP675 vs EP676 兩集對比結論</div>
-          <div class="podcast-ep-date">連續性敘事</div>
-        </div>
-        <div class="podcast-point">持續看好：被動元件+功率元件漲價（兩集連推，強度升級）</div>
-        <div class="podcast-point">新增看好：封測漲價30-50%（EP676首次強調，重要升級）</div>
-        <div class="podcast-point">持續警示：勿追高、等確認、台積電法說毛利率是最大風險點</div>
-      </div>
-    </div>
-  </div>
-  <div class="contradiction" style="margin-top:10px;">⚡ <strong>新矛盾點（今日最大）：</strong>股癌EP676（07/04）認為「修正接近尾聲，被動元件率先轉強」，但07/07美股再跌（費半-4.65%、INTC-9.66%），美伊衝突又是全新黑天鵝。<br>謝孟恭說的「尾聲」可能是對的 — 被動元件/封測確實在反彈，但地緣政治黑天鵝讓「整體修正時間拉長」。兩者都對，只是時間軸不同：<strong>個別題材已在轉強，但大盤修正未結束。</strong></div>
-</div>
-
-<!-- 重大事件時程 -->
-<div class="section-title">重大事件催化劑時程</div>
-<div class="card mb14">
+<!-- ⑧ 總經/催化劑時程 -->
+<div class="section">
+  <h2>⑧ 總經與地緣催化劑時程</h2>
   <table>
-    <tr><th>日期</th><th>事件</th><th>方向</th><th>衝擊力</th></tr>
-    <tr><td><strong>07/09今日</strong></td><td>台股開盤（美伊+費半連跌雙壓）</td><td class="dn">負向</td><td class="bear">🔴 高</td></tr>
-    <tr><td>07/10</td><td>美國CPI（6月通膨）</td><td class="warn">雙向</td><td class="warn">🟡 高</td></tr>
-    <tr><td>07/10</td><td>Fed議事紀錄（Warsh風格觀察）</td><td class="warn">雙向</td><td class="warn">🟡 中</td></tr>
-    <tr><td>07/14起</td><td>美國Q2財報季（JPM、GS打頭陣）</td><td class="warn">雙向</td><td class="warn">🟡 高</td></tr>
-    <tr><td>07/17</td><td>台積電法說（毛利率是關鍵）</td><td class="warn">雙向</td><td class="bear">🔴 最高</td></tr>
-    <tr><td>07/23</td><td>Intel Q2財報（18A進展確認）</td><td class="warn">雙向</td><td class="warn">🟡 中</td></tr>
-    <tr><td>持續</td><td>美伊軍事局勢（隨時）</td><td class="dn">不確定</td><td class="bear">🔴 高</td></tr>
+    <tr><th>時間</th><th>事件</th><th>影響</th><th>台股關聯</th></tr>
+    <tr><td>07/08（昨）</td><td>🔴 Trump：美伊停火「結束」，美軍打擊 80+ 目標</td><td class="dn">黑天鵝衝擊</td><td>航運+，半導體−</td></tr>
+    <tr><td>07/08（昨）</td><td>卡達 LNG 油輪霍爾木茲被擊中起火</td><td class="dn">油價 +5.97%</td><td>能源/航運短線+</td></tr>
+    <tr><td>07/08（昨）</td><td>INTC -9.66%（18A 製程延遲確認）</td><td class="dn">半導體信心打擊</td><td>IDM台廠/設備壓力</td></tr>
+    <tr><td>07/08（昨）</td><td>Fed Warsh「不預腳本化」政策方向</td><td class="dn">波動性增加</td><td>外資風險偏好降低</td></tr>
+    <tr><td>07/09（今）</td><td>台股開盤反應 TSM ADR -4.25%</td><td class="dn">低開確定</td><td>指數 −500 至 −1,200 點</td></tr>
+    <tr><td>本週持續</td><td>美伊局勢後續（霍爾木茲是否升級）</td><td class="dn">關鍵尾部風險</td><td>封鎖→全市場崩跌</td></tr>
+    <tr><td>07/14–18</td><td>美國 CPI 公布 / Q2 財報季啟動（銀行股先行）</td><td class="neu">待觀察</td><td>數據優→反彈動力</td></tr>
+    <tr><td>07月下旬</td><td>台積電法說會（Q2，CoWoS 需求指引）</td><td class="up">重大催化劑</td><td>AI 封測族群關鍵</td></tr>
   </table>
-  <div class="highlight" style="margin-top:8px;">🎯 今日最重要的「撐市觀察」：VIX是否守在20以下。若VIX突破22-25，可能引發程式化停損追殺，波動急劇放大。</div>
 </div>
 
-<!-- 免責聲明 -->
-<div class="disclaimer">
-  ⚠️ <strong>免責聲明</strong>：本報告由 Claude AI 根據公開資料（yfinance、TWSE T86、TAIFEX、FMP MCP、各大財經媒體、vocus.cc股癌逐字稿）自動生成，僅供研究參考，不構成任何投資建議。投資有風險，入市需謹慎。<br>
-  📅 報告生成：2026-07-08 18:53 · 分析日期：2026-07-09 · 資料以前一交易日盤後數據為準
+<!-- ⑨ Podcast 觀點 -->
+<div class="section">
+  <h2>⑨ Podcast 觀點聚合</h2>
+  <div class="grid2">
+    <div>
+      <h3>🎙️ 股癌 EP676（謝孟恭，07/04）</h3>
+      <p>「封測漲價 30–50% 已非預期，是現實。MOSFET 斷貨確認，被動元件週期轉佳。建議等大盤修正後再分批布局後段製程族群，此時追強勢股是錯的。MediaTek × Google TPU 確認台灣 AI 供應鏈不可取代地位。」</p>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;">來源：vocus.cc / 股癌 EP676（07/04）</div>
+    </div>
+    <div>
+      <h3>🎙️ 股癌 EP673（謝孟恭，06/24）</h3>
+      <p>「台股修正主因是韓國槓桿爆倉的連鎖賣壓，非台灣基本面問題。被動元件已出現漲價，MOSFET 初步斷貨訊號，提早布局被動元件族群。」</p>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;">來源：vocus.cc / 股癌 EP673（06/24）</div>
+    </div>
+  </div>
+  <div class="highlight" style="margin-top:12px;">
+    <strong>Podcast vs 數據一致性：</strong>謝孟恭「等修正後買封測」的框架與今日外資大賣方向一致。地緣黑天鵝加速修正進程 → 封測的基本面買點可能更快到來。無矛盾。
+  </div>
+  <div style="color:var(--muted);font-size:11px;margin-top:8px;">游庭皓《財經皓角》07/08 集：未找到具體內容，請開盤前至 YouTube 頻道直播確認補充。</div>
 </div>
+
+<!-- ⑩ 三段式操作建議 -->
+<div class="section">
+  <h2>⑩ 三段式操作建議</h2>
+  <div class="strategy-grid">
+    <div class="strategy-card attack">
+      <h3>⚔️ 進攻型（部位 30–50%）</h3>
+      <p><strong>適合：</strong>短線積極投資人，接受高波動</p>
+      <p><strong>方向① 航運地緣：</strong>長榮(2603)/陽明(2609)，開盤若低開幅度 &lt;2% 可進場，停損 -5%。嚴格執行，不戀戰。</p>
+      <p><strong>方向② 封測逢低：</strong>日月光(2311) 開盤回測支撐區，分批試單。基本面（漲價週期）支撐，相對穩健。</p>
+      <p><strong>停損紅線：</strong>TWII 收盤破 44,454（06/26 低）全部停損出場。</p>
+    </div>
+    <div class="strategy-card balance">
+      <h3>⚖️ 均衡型（部位 20–40%）</h3>
+      <p><strong>適合：</strong>一般投資人，重視風控</p>
+      <p><strong>今日策略：不追跌、不輕易抄底</strong></p>
+      <p>持有金融防禦股（第一金/玉山金）可持守，外資持續買超支撐。等台積電(2330) 確認低開幅度後再決策：若低開 &gt;5% 暫不介入，等盤中縮量企穩。</p>
+      <p><strong>進場訊號：</strong>VIX 盤中回落至 17 以下；TWII 45,000 守穩且量縮。</p>
+    </div>
+    <div class="strategy-card defense">
+      <h3>🛡️ 防守型（部位 10–20%，現金為王）</h3>
+      <p><strong>適合：</strong>風險趨避者，優先保本</p>
+      <p><strong>今日建議：全面降低曝險至最低，不接刀。</strong></p>
+      <p><strong>規避族群：</strong>半導體設備台廠 / 石化股（雖油漲，但賣壓大）/ 高槓桿 ETF（00631L）</p>
+      <p><strong>重新進場訊號：</strong>VIX 回落 &lt;16 + TWII 日線收復 MA20（45,762）+ 美伊局勢明確降溫（三個條件同時滿足）</p>
+    </div>
+  </div>
+</div>
+
+<!-- ⑪ 題材熱度雷達圖 -->
+<div class="section">
+  <h2>⑪ 題材熱度雷達圖</h2>
+  <div style="max-width:480px;margin:0 auto;">
+    <canvas id="radarChart"></canvas>
+  </div>
+</div>
+
+<!-- ⑫ 法人/估值細目表 -->
+<div class="section">
+  <h2>⑫ 代表股估值與技術細目</h2>
+  <table>
+    <tr><th>代碼/名稱</th><th>ADR/現價</th><th>漲跌幅</th><th>52週位置</th><th>50日均</th><th>200日均</th><th>今日展望</th></tr>
+    <tr><td>2330 台積電</td><td>ADR $432.57</td><td class="dn">-4.25%</td><td>91%高位</td><td>$421.79</td><td>$345.82</td><td class="dn">低開 4–5% 確定</td></tr>
+    <tr><td>NVDA 輝達</td><td>$196.93</td><td class="up">+0.71% 🟢</td><td>83%</td><td>$209.60</td><td>$191.26</td><td class="up">AI算力相對強勢</td></tr>
+    <tr><td>INTC 英特爾</td><td>$110.39</td><td class="dn">-9.66% ⚠️</td><td>77%</td><td>$115.39</td><td>$61.25</td><td class="dn">18A危機，拖累設備鏈</td></tr>
+    <tr><td>2618 長榮航</td><td>台股</td><td class="up">外資+61,858張</td><td>─</td><td>─</td><td>─</td><td class="up">航運地緣受惠首選</td></tr>
+    <tr><td>2311 日月光</td><td>台股</td><td class="up">封測漲價題材</td><td>─</td><td>─</td><td>─</td><td class="up">逢低進攻標的</td></tr>
+    <tr><td>2303 聯電</td><td>台股</td><td class="up">外資+23,076張</td><td>─</td><td>─</td><td>─</td><td class="neu">觀察開盤量能守穩</td></tr>
+  </table>
+</div>
+
+<!-- ⑬ 免責聲明 -->
+<div class="disclaimer">
+  <strong>⚠️ 免責聲明</strong><br>
+  本報告由 AI 自動化系統生成，數據來源包含 yfinance（全球指標）、TWSE T86 官方 API（外資買賣超，股票名稱直接取自 API，非人工填寫）、FMP MCP（ADR 報價/新聞）及公開財經新聞，僅供研究參考，<strong>不構成任何投資建議</strong>。投資涉及風險，市場價格可能在極短時間內大幅波動，尤其在地緣政治黑天鵝事件期間。請依據個人風險承受度作出獨立判斷，並考慮諮詢專業財務顧問。過去績效不代表未來表現。本報告所列個股僅為分析示例，非推薦買賣建議。<br>
+  <span style="color:var(--muted);">資料截止：2026-07-08 收盤後｜報告更新：2026-07-08｜版本 v3.1（修正外資 ETF 名稱：00981A=主動統一台股增長／00403A=主動統一升級50／00988A=主動統一全球創新；2883=凱基金）</span>
+</div>
+
 </div>
 
 <script>
-// TWII K線
-const twiiLabels = ['06/22','06/23','06/24','06/25','06/26','06/29','06/30','07/01','07/02','07/03*','07/07','07/08'];
-const twiiData   = [47741.51,47100.65,46043.60,46255.26,44571.76,44999.90,46125.91,47018.99,46744.16,45580,45584,45734.41];
-const twiiVol    = [8634,9602,8877,7621,7695,6052,7182,8429,7500,6500,7000,7400];
-
-new Chart(document.getElementById('twiiChart').getContext('2d'), {
-  type:'bar',
-  data:{
-    labels:twiiLabels,
-    datasets:[
-      {type:'line',label:'加權指數',data:twiiData,borderColor:'#58a6ff',backgroundColor:'rgba(88,166,255,0.08)',borderWidth:2,pointRadius:3,pointBackgroundColor:twiiData.map((v,i)=>i>=9?'#f85149':'#58a6ff'),yAxisID:'y',tension:0.3,fill:true},
-      {type:'bar',label:'成交量(萬)',data:twiiVol,backgroundColor:'rgba(88,166,255,0.2)',borderColor:'rgba(88,166,255,0.35)',borderWidth:1,yAxisID:'y1'}
-    ]
+// 外資買超橫向長條圖
+const buyCtx = document.getElementById('buyChart').getContext('2d');
+new Chart(buyCtx, {
+  type: 'bar',
+  data: {
+    labels: ['長榮航(2618)','群益台灣精選高息(00919)','聯電(2303)','第一金(2892)','宏碁(2353)','永豐金(2890)','玉山金(2884)','合庫金(5880)','群創(3481)','凱基金(2883)'],
+    datasets: [{
+      label: '外資淨買超（張）',
+      data: [61858, 30994, 23076, 21282, 16100, 14113, 13981, 13774, 13507, 13077],
+      backgroundColor: ['#ffa657','#3fb950','#58a6ff','#ffa657','#58a6ff','#ffa657','#ffa657','#ffa657','#58a6ff','#ffa657'],
+      borderRadius: 4,
+    }]
   },
-  options:{
-    responsive:true,maintainAspectRatio:false,
-    interaction:{mode:'index',intersect:false},
-    plugins:{
-      legend:{labels:{color:'#8b949e',font:{size:11}}},
-      tooltip:{backgroundColor:'#1c2128',borderColor:'#30363d',borderWidth:1,titleColor:'#c9d1d9',bodyColor:'#8b949e'},
-      annotation:{annotations:{line1:{type:'line',yMin:45468,yMax:45468,borderColor:'rgba(63,185,80,0.6)',borderWidth:1,borderDash:[4,4],label:{content:'MA20 45,468',enabled:true,color:'#3fb950',font:{size:10}}}}}
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      title: { display: true, text: '外資買超前10名（2026-07-08，TWSE T86官方API）', color: '#8b949e' }
     },
-    scales:{
-      x:{ticks:{color:'#6e7681',font:{size:10}},grid:{color:'rgba(48,54,61,0.5)'}},
-      y:{position:'left',ticks:{color:'#58a6ff',font:{size:10},callback:v=>v.toLocaleString()},grid:{color:'rgba(48,54,61,0.5)'},min:43000},
-      y1:{position:'right',ticks:{color:'#6e7681',font:{size:9},callback:v=>v+'萬'},grid:{display:false}}
+    scales: {
+      x: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } },
+      y: { ticks: { color: '#c9d1d9', font: { size: 11 } }, grid: { color: '#30363d' } }
     }
   }
 });
 
-// Radar
-new Chart(document.getElementById('radarChart').getContext('2d'), {
-  type:'radar',
-  data:{
-    labels:['美伊地緣','費半修正↓','封測漲價','被動元件','航運能源','AI龍頭分化'],
-    datasets:[{label:'熱度/100',data:[95,90,78,75,70,65],backgroundColor:'rgba(88,166,255,0.1)',borderColor:'#58a6ff',borderWidth:2,pointBackgroundColor:['#f85149','#f85149','#3fb950','#3fb950','#3fb950','#d29922'],pointRadius:5}]
+// TWII K線走勢（近10日）
+const kCtx = document.getElementById('klineChart').getContext('2d');
+new Chart(kCtx, {
+  type: 'line',
+  data: {
+    labels: ['6/25','6/26','6/29','6/30','7/01','7/02','7/03','7/06','7/07','7/08'],
+    datasets: [
+      {
+        label: '收盤價',
+        data: [46255, 44571, 44999, 46125, 47018, 46744, 46780, 46556, 45479, 45734],
+        borderColor: '#58a6ff', backgroundColor: 'rgba(88,166,255,0.08)',
+        borderWidth: 2, pointRadius: 4, fill: true, tension: 0.3,
+      },
+      {
+        label: 'MA20 (45,762)',
+        data: [46255, 45762, 45762, 45762, 45762, 45762, 45762, 45762, 45762, 45762],
+        borderColor: '#d29922', borderWidth: 1.5, borderDash: [5,3],
+        pointRadius: 0, fill: false,
+      }
+    ]
   },
-  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{min:0,max:100,ticks:{color:'#6e7681',font:{size:9},stepSize:20,backdropColor:'transparent'},grid:{color:'rgba(48,54,61,0.7)'},pointLabels:{color:'#c9d1d9',font:{size:10}}}}}
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { labels: { color: '#8b949e', boxWidth: 12 } },
+      title: { display: true, text: 'TWII 近10日走勢 ｜ 藍=收盤 黃虛=MA20（45,762）', color: '#8b949e' }
+    },
+    scales: {
+      x: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' } },
+      y: { ticks: { color: '#8b949e' }, grid: { color: '#30363d' }, min: 44000, max: 47500 }
+    }
+  }
 });
 
-// Sentiment
-new Chart(document.getElementById('sentChart').getContext('2d'), {
-  type:'doughnut',
-  data:{labels:['看多 25%','看空 75%'],datasets:[{data:[25,75],backgroundColor:['rgba(63,185,80,0.7)','rgba(248,81,73,0.75)'],borderColor:['#3fb950','#f85149'],borderWidth:2,hoverOffset:5}]},
-  options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{color:'#c9d1d9',font:{size:12},padding:10}},tooltip:{backgroundColor:'#1c2128',borderColor:'#30363d',borderWidth:1}}}
+// 題材熱度雷達
+const rCtx = document.getElementById('radarChart').getContext('2d');
+new Chart(rCtx, {
+  type: 'radar',
+  data: {
+    labels: ['美伊衝突\n地緣政治','費半\n跌勢','封測漲價\n後段製程','航運\n能源','AI\n分化選股'],
+    datasets: [{
+      label: '今日熱度分數',
+      data: [95, 90, 78, 72, 68],
+      backgroundColor: 'rgba(88,166,255,0.15)',
+      borderColor: '#58a6ff',
+      pointBackgroundColor: '#58a6ff',
+      pointRadius: 5,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { labels: { color: '#8b949e' } },
+      title: { display: true, text: '題材熱度雷達（滿分100）', color: '#8b949e' }
+    },
+    scales: {
+      r: {
+        min: 0, max: 100,
+        ticks: { color: '#8b949e', backdropColor: 'transparent', stepSize: 20 },
+        grid: { color: '#30363d' },
+        pointLabels: { color: '#c9d1d9', font: { size: 11 } }
+      }
+    }
+  }
 });
 </script>
 </body>
