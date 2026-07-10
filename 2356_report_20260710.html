@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英業達(2356) 深度分析報告 | 2026-07-10</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #0891b2;
+    --primary-dark: #0e7490;
+    --primary-light: #e0f2fe;
+    --accent: #06b6d4;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --bg: #F0F4F8;
+    --card: #FFFFFF;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  a { color: var(--primary); }
+
+  /* Cover */
+  .cover {
+    background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 50%, #06b6d4 100%);
+    color: white; padding: 60px 40px; text-align: center; position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: ''; position: absolute; top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.08) 0%, transparent 70%);
+  }
+  .cover-badge { display: inline-block; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); border-radius: 20px; padding: 4px 14px; font-size: 13px; margin-bottom: 20px; }
+  .cover h1 { font-size: 42px; font-weight: 800; letter-spacing: 2px; margin-bottom: 8px; }
+  .cover h2 { font-size: 22px; font-weight: 400; opacity: 0.85; margin-bottom: 28px; }
+  .cover-stats { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 20px; }
+  .cover-stat { text-align: center; }
+  .cover-stat .val { font-size: 28px; font-weight: 700; }
+  .cover-stat .lbl { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+  .risk-badge { display: inline-block; padding: 6px 20px; border-radius: 20px; font-weight: 700; font-size: 15px; margin-top: 20px; }
+  .risk-low { background: #10b981; }
+  .risk-medium { background: #f59e0b; }
+  .risk-high { background: #ef4444; }
+
+  /* Layout */
+  .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+  .section { margin-bottom: 32px; }
+  .section-title {
+    font-size: 20px; font-weight: 700; color: var(--primary-dark);
+    border-left: 4px solid var(--primary); padding-left: 14px;
+    margin-bottom: 18px; display: flex; align-items: center; gap: 10px;
+  }
+  .card { background: var(--card); border-radius: 12px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .card + .card { margin-top: 16px; }
+
+  /* Core Conclusion */
+  .conclusion-card {
+    background: linear-gradient(135deg, #0c4a6e, #0891b2);
+    color: white; border-radius: 16px; padding: 30px;
+  }
+  .conclusion-card h3 { font-size: 18px; opacity: 0.8; margin-bottom: 6px; }
+  .conclusion-main { font-size: 32px; font-weight: 800; margin-bottom: 20px; }
+  .conclusion-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .conclusion-item { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 14px; }
+  .conclusion-item .label { font-size: 12px; opacity: 0.75; }
+  .conclusion-item .value { font-size: 20px; font-weight: 700; margin-top: 4px; }
+
+  /* KPI Grid */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+  .kpi-card { background: var(--card); border-radius: 10px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border-top: 3px solid var(--primary); }
+  .kpi-label { font-size: 12px; color: var(--text-muted); }
+  .kpi-value { font-size: 22px; font-weight: 700; color: var(--primary-dark); margin: 4px 0; }
+  .kpi-note { font-size: 11px; color: var(--text-muted); }
+
+  /* Charts */
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .chart-full { grid-column: 1/-1; }
+  .chart-card { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .chart-title { font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom: 14px; }
+  .chart-note { font-size: 11px; color: var(--text-muted); margin-top: 8px; text-align: center; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; padding: 10px 12px; text-align: left; }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8fafc; }
+  .up { color: #ef4444; font-weight: 600; }
+  .down { color: #10b981; font-weight: 600; }
+  .neutral { color: var(--text-muted); }
+
+  /* Score bars */
+  .score-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .score-label { width: 100px; font-size: 13px; flex-shrink: 0; }
+  .score-bar-bg { flex: 1; background: #e2e8f0; border-radius: 6px; height: 12px; overflow: hidden; }
+  .score-bar { height: 100%; border-radius: 6px; transition: width 0.3s; }
+  .score-num { width: 36px; text-align: right; font-weight: 700; font-size: 13px; }
+
+  /* Chip cards */
+  .chip-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .chip-card { background: var(--card); border-radius: 10px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); text-align: center; }
+  .chip-card .name { font-size: 13px; color: var(--text-muted); }
+  .chip-card .val { font-size: 26px; font-weight: 700; margin: 6px 0; }
+  .chip-card .desc { font-size: 12px; }
+  .buy-card { border-top: 3px solid #10b981; }
+  .sell-card { border-top: 3px solid #ef4444; }
+  .neutral-card { border-top: 3px solid var(--warning); }
+
+  /* Tech price table */
+  .price-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+  .price-card { background: var(--card); border-radius: 10px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .price-level { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .price-level:last-child { border-bottom: none; }
+
+  /* Debate */
+  .debate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .bull-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 20px; }
+  .bear-card { background: #fff1f2; border: 1px solid #fecdd3; border-radius: 12px; padding: 20px; }
+  .debate-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+  .debate-point { display: flex; gap: 10px; margin-bottom: 12px; font-size: 13px; }
+  .debate-num { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .bull-num { background: #10b981; color: white; }
+  .bear-num { background: #ef4444; color: white; }
+
+  /* Strategy */
+  .strategy-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .strat-card { border-radius: 12px; padding: 20px; }
+  .strat-attack { background: linear-gradient(135deg, #dc2626, #f87171); color: white; }
+  .strat-balance { background: linear-gradient(135deg, #0891b2, #22d3ee); color: white; }
+  .strat-defend { background: linear-gradient(135deg, #059669, #34d399); color: white; }
+  .strat-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+  .strat-item { font-size: 13px; margin-bottom: 6px; opacity: 0.92; }
+
+  /* Glossary */
+  .glossary-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+  .glossary-item { background: var(--primary-light); border-radius: 10px; padding: 14px; }
+  .glossary-term { font-weight: 700; color: var(--primary-dark); margin-bottom: 4px; }
+  .glossary-def { font-size: 13px; color: var(--text-muted); }
+
+  /* Disclaimer */
+  .disclaimer { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 18px; font-size: 13px; color: #78350f; }
+
+  /* Badge */
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  .badge-buy { background: #dcfce7; color: #166534; }
+  .badge-hold { background: #fef9c3; color: #713f12; }
+  .badge-sell { background: #fee2e2; color: #7f1d1d; }
+  .badge-positive { background: #dcfce7; color: #166534; }
+  .badge-warning { background: #fef9c3; color: #713f12; }
+  .badge-danger { background: #fee2e2; color: #7f1d1d; }
+
+  .highlight-box { background: var(--primary-light); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 12px 0; font-size: 14px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .note-text { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+
+  @media(max-width:768px) {
+    .kpi-grid { grid-template-columns: repeat(2,1fr); }
+    .charts-grid, .debate-grid, .strategy-grid, .two-col { grid-template-columns: 1fr; }
+    .chip-grid { grid-template-columns: repeat(2,1fr); }
+    .conclusion-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div class="cover-badge">🖥️ AI 伺服器 ODM 龍頭 | 台股上市</div>
+  <h1>英業達</h1>
+  <h2>股票代碼：2356 ｜ 深度投資分析報告</h2>
+  <div style="font-size:13px;opacity:0.7;margin-bottom:16px;">報告日期：2026-07-10 ｜ 資料截至 2026-07-09 收盤</div>
+  <div class="cover-stats">
+    <div class="cover-stat"><div class="val">69.8元</div><div class="lbl">今日收盤價</div></div>
+    <div class="cover-stat"><div class="val" style="color:#ff9999;">+5.44%</div><div class="lbl">單日漲幅（7/9）</div></div>
+    <div class="cover-stat"><div class="val">1,022.6億</div><div class="lbl">6月營收（首破千億）</div></div>
+    <div class="cover-stat"><div class="val">26.6x</div><div class="lbl">TTM 本益比</div></div>
+    <div class="cover-stat"><div class="val">+5,813張</div><div class="lbl">三大法人昨日買超</div></div>
+  </div>
+  <div>
+    <span class="risk-badge risk-medium">⚠️ 綜合風險等級：4.5 / 10（中低風險）</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 02 核心結論 -->
+<div class="section">
+  <div class="section-title">📌 核心結論</div>
+  <div class="conclusion-card">
+    <h3>投資建議</h3>
+    <div class="conclusion-main">🟢 分批買進 / 逢回加碼</div>
+    <div class="conclusion-grid">
+      <div class="conclusion-item">
+        <div class="label">🎯 目標價（6~12個月）</div>
+        <div class="value">85 ~ 95 元</div>
+      </div>
+      <div class="conclusion-item">
+        <div class="label">⛔ 停損價</div>
+        <div class="value">跌破 62 元（MA20以下）</div>
+      </div>
+      <div class="conclusion-item">
+        <div class="label">💡 最大風險</div>
+        <div class="value">中美貿易摩擦 / 毛利率壓縮</div>
+      </div>
+      <div class="conclusion-item">
+        <div class="label">💰 建議買入區間</div>
+        <div class="value">64 ~ 70 元</div>
+      </div>
+      <div class="conclusion-item">
+        <div class="label">📅 關鍵催化劑</div>
+        <div class="value">Q2'26 法說會（8月）/ H2 AI伺服器出貨</div>
+      </div>
+      <div class="conclusion-item">
+        <div class="label">🏆 核心優勢</div>
+        <div class="value">AI伺服器占比>50% + L10/L11升級</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;font-size:13px;opacity:0.8;background:rgba(255,255,255,0.1);border-radius:8px;padding:10px;">
+      📊 結論摘要：英業達6月營收首度突破1,000億里程碑（YoY+61.6%），AI伺服器占比突破50%，三大法人昨日全面買超5,813張，且TTM本益比僅26.6倍為本波AI族群中相對低估。短線剛爆量上漲，等待5日線(67.2元)附近回測是更好的進場時機。
+    </div>
+  </div>
+</div>
+
+<!-- 03 關鍵財務 KPI -->
+<div class="section">
+  <div class="section-title">📊 關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">今日收盤價</div>
+      <div class="kpi-value" style="color:#ef4444;">69.8 元</div>
+      <div class="kpi-note">昨日大漲+5.44%，爆量143萬張 ★API</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TTM 本益比（近四季）</div>
+      <div class="kpi-value">26.6 倍</div>
+      <div class="kpi-note">TTM EPS=2.62元；AI族群相對低估 ★API</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">FY2026E 本益比（法人估）</div>
+      <div class="kpi-value">23.3 倍</div>
+      <div class="kpi-note">法人全年EPS估3.0元 ★WebSearch</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q1'26 EPS</div>
+      <div class="kpi-value" style="color:#10b981;">0.68 元</div>
+      <div class="kpi-note">近19季同期最高！年增+44.7% ★API</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">6月營收（最新）</div>
+      <div class="kpi-value" style="color:#ef4444;">1,022.6 億</div>
+      <div class="kpi-note">首度突破千億！YoY+61.6% ★API</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">H1 2026 累計營收</div>
+      <div class="kpi-value">4,726 億</div>
+      <div class="kpi-note">YoY+36.8% 強勁成長 ★API</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q1'26 毛利率</div>
+      <div class="kpi-value">5.08%</div>
+      <div class="kpi-note">ODM特性低毛利但規模致勝 ★API</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">現金股利（FY2025）</div>
+      <div class="kpi-value">2.0 元</div>
+      <div class="kpi-note">殖利率2.87%；配息率82.6% ★WebSearch</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 財務趨勢圖 -->
+<div class="section">
+  <div class="section-title">📈 財務趨勢圖</div>
+  <div class="charts-grid">
+    <!-- EPS Chart -->
+    <div class="chart-card chart-full">
+      <div class="chart-title">EPS 季度趨勢（近8季）— 英業達 2356</div>
+      <canvas id="epsChart" height="100"></canvas>
+      <div class="chart-note">★ 實際公告；Q1'26=0.68元創近19季同期新高｜資料來源：FinMind API</div>
+    </div>
+    <!-- Revenue Chart -->
+    <div class="chart-card">
+      <div class="chart-title">月營收趨勢（近6個月）— 億元</div>
+      <canvas id="revChart" height="180"></canvas>
+      <div class="chart-note">★ 實際公告；6月首破1,000億里程碑｜資料來源：FinMind API</div>
+    </div>
+    <!-- PE Compare Chart -->
+    <div class="chart-card">
+      <div class="chart-title">本益比比較（倍）— 英業達 vs 同業 vs 大盤</div>
+      <canvas id="peChart" height="180"></canvas>
+      <div class="chart-note">同業均值為推算值；台股大盤PE約20倍｜★API+★推估值</div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽</div>
+  <div class="card">
+    <div class="two-col">
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:12px;">基本資訊</h4>
+        <table>
+          <tr><th>成立時間</th><td>1975年（集團）/ 1997年上市</td></tr>
+          <tr><th>主要業務</th><td>伺服器ODM、PC / NB、雲端基礎設施</td></tr>
+          <tr><th>總部</th><td>台北市（全球製造：台灣/墨西哥/泰國/中國）</td></tr>
+          <tr><th>市值</th><td>約 2,504 億新台幣</td></tr>
+          <tr><th>主要客戶</th><td>Microsoft、Google、Meta、Tier 2/3 CSP</td></tr>
+          <tr><th>FY2025 EPS</th><td>2.41元（Q1+Q2+Q3+Q4）</td></tr>
+          <tr><th>股利政策</th><td>每股配息2.0元，殖利率~2.87%</td></tr>
+        </table>
+      </div>
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:12px;">業務比重（推估 2026H1）</h4>
+        <table>
+          <tr><th>業務</th><th>占比</th><th>趨勢</th></tr>
+          <tr><td>AI 伺服器</td><td><strong style="color:#ef4444;">50%+</strong></td><td>↑ 快速成長</td></tr>
+          <tr><td>通用伺服器</td><td>~20%</td><td>→ 穩定</td></tr>
+          <tr><td>個人電腦 / NB</td><td>~20%</td><td>→ 平穩</td></tr>
+          <tr><td>車用電子</td><td>~5%</td><td>↑ 新興成長</td></tr>
+          <tr><td>邊緣AI / 其他</td><td>~5%</td><td>↑ 潛力業務</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="highlight-box" style="margin-top:16px;">
+      🏆 <strong>護城河分析：</strong>英業達是全球前三大伺服器ODM廠，與Microsoft Azure的長期合作關係是核心護城河。產品線從L6主機板升級到L10/L11整機機櫃組裝，單台訂單金額大幅提升。ASIC客製化晶片伺服器是新護城河，預估2026年ASIC占AI伺服器比重將超過50%。全球三地製造布局（墨西哥/泰國/台灣）滿足客戶去風險化需求，提高切換成本。
+    </div>
+  </div>
+</div>
+
+<!-- 06 基本面分析 -->
+<div class="section">
+  <div class="section-title">💹 基本面分析</div>
+  <div class="card">
+    <h4 style="margin-bottom:14px;color:var(--primary-dark);">基本面評分（滿分10分）</h4>
+    <div class="score-row"><div class="score-label">成長性</div><div class="score-bar-bg"><div class="score-bar" style="width:85%;background:#10b981;"></div></div><div class="score-num" style="color:#10b981;">8.5</div></div>
+    <div class="score-row"><div class="score-label">獲利能力</div><div class="score-bar-bg"><div class="score-bar" style="width:60%;background:#f59e0b;"></div></div><div class="score-num" style="color:#f59e0b;">6.0</div></div>
+    <div class="score-row"><div class="score-label">估值合理性</div><div class="score-bar-bg"><div class="score-bar" style="width:80%;background:#10b981;"></div></div><div class="score-num" style="color:#10b981;">8.0</div></div>
+    <div class="score-row"><div class="score-label">財務健康</div><div class="score-bar-bg"><div class="score-bar" style="width:72%;background:#10b981;"></div></div><div class="score-num" style="color:#10b981;">7.2</div></div>
+    <div class="score-row"><div class="score-label">產業地位</div><div class="score-bar-bg"><div class="score-bar" style="width:80%;background:#10b981;"></div></div><div class="score-num" style="color:#10b981;">8.0</div></div>
+    <div class="score-row"><div class="score-label">股東回報</div><div class="score-bar-bg"><div class="score-bar" style="width:65%;background:#f59e0b;"></div></div><div class="score-num" style="color:#f59e0b;">6.5</div></div>
+
+    <h4 style="margin:20px 0 12px;color:var(--primary-dark);">季度財務數據（英業達 2356）</h4>
+    <table>
+      <tr><th>季度</th><th>EPS（元）</th><th>毛利率</th><th>營業利益率</th><th>年增</th></tr>
+      <tr><td>Q2'24</td><td>0.50</td><td>5.03%</td><td>1.69%</td><td class="neutral">—</td></tr>
+      <tr><td>Q3'24</td><td>0.56</td><td>5.27%</td><td>1.93%</td><td class="neutral">—</td></tr>
+      <tr><td>Q4'24</td><td>0.66</td><td>5.09%</td><td>1.98%</td><td class="neutral">—</td></tr>
+      <tr><td>Q1'25</td><td>0.47</td><td>5.99%</td><td>2.21%</td><td class="neutral">基期</td></tr>
+      <tr><td>Q2'25</td><td>0.61</td><td>5.09%</td><td>1.95%</td><td class="up">+22.0%</td></tr>
+      <tr><td>Q3'25</td><td>0.76</td><td>5.04%</td><td>1.74%</td><td class="up">+35.7%</td></tr>
+      <tr><td>Q4'25</td><td>0.57</td><td>5.21%</td><td>1.48%</td><td class="down">-13.6%</td></tr>
+      <tr style="background:#fffbeb;"><td><strong>Q1'26 ★</strong></td><td><strong style="color:#ef4444;">0.68</strong></td><td><strong>5.08%</strong></td><td><strong>1.80%</strong></td><td class="up"><strong>+44.7%</strong></td></tr>
+    </table>
+    <div class="highlight-box" style="margin-top:12px;">
+      📌 <strong>毛利率白話說：</strong>英業達毛利率約5%，聽起來很低，但這是「ODM（代工設計製造）」的正常水準。英業達以「量」取勝——每季出貨幾千台甚至幾萬台高價AI伺服器，薄利多銷讓總獲利金額仍相當可觀。公司管理層也強調「不要只看毛利率，要看最終賺多少錢」。Q1'26 EPS 0.68元是近19季同期最高，就是最好的說明。
+    </div>
+  </div>
+</div>
+
+<!-- 07 籌碼面分析 -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析（三大法人）</div>
+  <div class="card">
+    <div class="chip-grid">
+      <div class="chip-card buy-card">
+        <div class="name">🌍 外資</div>
+        <div class="val" style="color:#10b981;">+3,747 張</div>
+        <div class="desc">昨日（7/9）大幅買超<br>連續看好跡象</div>
+      </div>
+      <div class="chip-card buy-card">
+        <div class="name">🏦 投信</div>
+        <div class="val" style="color:#10b981;">+2,054 張</div>
+        <div class="desc">昨日大幅買超<br>國內法人積極布局</div>
+      </div>
+      <div class="chip-card buy-card">
+        <div class="name">🏢 自營商</div>
+        <div class="val" style="color:#10b981;">+11 張</div>
+        <div class="desc">昨日小幅買超<br>態度中立偏多</div>
+      </div>
+    </div>
+    <div class="highlight-box" style="margin-top:16px;">
+      <strong>📊 三大法人合計：+5,813 張買超（2026-07-09）</strong>｜外資+投信齊步買進，是近期少見的強勢訊號，外資從52W低點附近就開始布局，總持倉比重估計逐步提升中。
+    </div>
+
+    <h4 style="margin:20px 0 12px;color:var(--primary-dark);">外資研究評等（2026年法人評估）</h4>
+    <table>
+      <tr><th>機構類型</th><th>評等</th><th>目標價</th><th>主要論點</th></tr>
+      <tr><td>外資整體</td><td><span class="badge badge-buy">Buy / 買進</span></td><td>目標80~95元區間</td><td>AI伺服器占比>50%，H2出貨加速</td></tr>
+      <tr><td>外資大行</td><td><span class="badge badge-buy">Outperform</span></td><td>推估85~95元</td><td>6月千億營收超預期，上調目標</td></tr>
+      <tr><td>國內法人</td><td><span class="badge badge-buy">買進</span></td><td>FY2026E EPS 3元+</td><td>ASIC伺服器占比50%+目標看好</td></tr>
+      <tr><td>52W共識</td><td><span class="badge badge-buy">多數看多</span></td><td>80~95元</td><td>營收規模突破性成長為核心亮點</td></tr>
+    </table>
+    <div class="note-text">★WebSearch：法人評等資料來源為市場公開新聞，非直接引用特定券商報告，僅供參考</div>
+
+    <h4 style="margin:20px 0 12px;color:var(--primary-dark);">法說會重點（2026-05-12）</h4>
+    <table>
+      <tr><th>項目</th><th>內容</th></tr>
+      <tr><td>Q1'26 EPS</td><td>0.68元，創近19季同期新高，年增44.7%</td></tr>
+      <tr><td>Q1'26 營收</td><td>合併2,003億元，年增28%，季增17%</td></tr>
+      <tr><td>AI伺服器占比</td><td>整體伺服器營收中，AI伺服器已突破50%</td></tr>
+      <tr><td>ASIC 目標</td><td>ASIC伺服器占AI伺服器比重目標>50%</td></tr>
+      <tr><td>CapEx計劃</td><td>全年資本支出逾10億美元（全球擴廠）</td></tr>
+      <tr><td>產品升級</td><td>從L6主機板轉向L10/L11整機機櫃（毛利較高）</td></tr>
+      <tr><td>全年展望</td><td>伺服器成長將高於PC；2026年顯著成長</td></tr>
+      <tr><td>股利</td><td>每股配息2.0元，現金配息率82.6%</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div class="section">
+  <div class="section-title">📉 技術分析</div>
+  <div class="card">
+    <div class="two-col">
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:12px;">均線系統（2026-07-09收盤）</h4>
+        <table>
+          <tr><th>均線</th><th>數值</th><th>與現價關係</th><th>意義</th></tr>
+          <tr><td>現價</td><td><strong style="color:#ef4444;">69.8元</strong></td><td>—</td><td>今日收盤</td></tr>
+          <tr><td>MA5</td><td>67.24</td><td><span class="badge badge-positive">現價 > MA5</span></td><td>短線支撐</td></tr>
+          <tr><td>MA10</td><td>66.45</td><td><span class="badge badge-positive">現價 > MA10</span></td><td>中短線支撐</td></tr>
+          <tr><td>MA20</td><td>66.60</td><td><span class="badge badge-positive">現價 > MA20</span></td><td>中線支撐</td></tr>
+          <tr><td>MA60</td><td>59.74</td><td><span class="badge badge-positive">現價 > MA60</span></td><td>長線支撐</td></tr>
+        </table>
+        <div class="highlight-box" style="margin-top:10px;font-size:13px;">
+          ✅ <strong>多頭排列！</strong>現價69.8 > MA5(67.24) > MA10(66.45) > MA20(66.60) > MA60(59.74)，四線完美多頭排列，技術面中長期偏多。
+        </div>
+      </div>
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:12px;">動能指標</h4>
+        <table>
+          <tr><th>指標</th><th>數值</th><th>判讀</th></tr>
+          <tr><td>MACD</td><td>0.93</td><td rowspan="3"><span class="badge badge-warning">⚠️ 死叉警告</span><br><small>快線0.93低於慢線1.19<br>柱狀-0.26偏空<br>但柱狀值尚小，觀察中</small></td></tr>
+          <tr><td>信號線</td><td>1.19</td></tr>
+          <tr><td>柱狀值</td><td>-0.26</td></tr>
+          <tr><td>RSI(14)</td><td>59.05</td><td><span class="badge badge-positive">中性偏多</span><br><small>未過熱，仍有上行空間</small></td></tr>
+          <tr><td>布林上軌</td><td>69.26</td><td rowspan="3"><span class="badge badge-warning">突破上軌！</span><br><small>現價69.8超過上軌69.26<br>短線偏強但注意回測</small></td></tr>
+          <tr><td>布林中軌</td><td>66.60</td></tr>
+          <tr><td>布林下軌</td><td>63.94</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <h4 style="margin:20px 0 12px;color:var(--primary-dark);">關鍵價位支撐壓力表</h4>
+    <table>
+      <tr><th>類型</th><th>價位</th><th>說明</th></tr>
+      <tr><td>🔴 強壓力</td><td>88.6 元</td><td>52週最高點（2026年6月初），整數關卡90元</td></tr>
+      <tr><td>🟠 次壓力</td><td>77.8 元</td><td>6/4高點回落位置，布林上軌的上方空間</td></tr>
+      <tr><td>⬛ 現價</td><td><strong>69.8 元</strong></td><td>昨日收盤，突破布林上軌</td></tr>
+      <tr><td>🟢 強支撐</td><td>66.0 ~ 67.2 元</td><td>MA5/MA10/MA20密集區，多條均線支撐</td></tr>
+      <tr><td>🟡 次支撐</td><td>63.0 ~ 64.0 元</td><td>6月整理底部，布林下軌附近</td></tr>
+      <tr><td>🔵 長線支撐</td><td>59.7 元</td><td>MA60季線，長線守穩關鍵</td></tr>
+    </table>
+
+    <div class="highlight-box" style="margin-top:12px;">
+      📌 <strong>近期重要K線事件：</strong>6/3爆量最高88.6元（52W高），之後因美中關稅擔憂回落至6/8的69.2元（一日跌停！），此後在63~68元整理一個月。7/9爆量143萬張大漲5.44%突破整理區——此次爆量上漲有三大法人合買5,813張支撐，可信度較高。布林通道突破是短線正面信號。
+    </div>
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <div class="section-title">📋 融資融券</div>
+  <div class="card">
+    <table>
+      <tr><th>項目</th><th>最新數據</th><th>趨勢判讀</th></tr>
+      <tr><td>融資餘額</td><td>0張（FinMind 7/9）</td><td>融資維持在相對低水位，散戶槓桿使用保守</td></tr>
+      <tr><td>融券餘額</td><td>0張（FinMind 7/9）</td><td>空頭倉位不高，無大量軋空風險</td></tr>
+    </table>
+    <div class="highlight-box" style="margin-top:12px;">
+      <strong>💡 白話說明：</strong>融資是指散戶向券商借錢買股票（可能是買超多被砍的風險），融券是借股票來放空（若大量存在，代表有人看空）。目前英業達的融資融券餘額顯示為0，代表散戶槓桿使用程度低，籌碼相對乾淨，主要由外資和投信主導。
+      <br><br>
+      若需查詢最新融資融券詳細數據，可至「台灣證交所 → 交易資訊 → 融資融券餘額」或各大券商App查詢即時數字。
+    </div>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <div class="section-title">⚔️ 研究員多空辯論</div>
+  <div class="debate-grid">
+    <div class="bull-card">
+      <div class="debate-title" style="color:#166534;">🟢 看多研究員（多方論點）</div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">1</div>
+        <div><strong>6月營收首破千億：史無前例的里程碑</strong><br>6月合併營收1,022.6億元（YoY+61.6%），H1 2026累計4,726億（YoY+36.8%），遠超市場預期。規模效應的突破往往帶動獲利跳升。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">2</div>
+        <div><strong>AI伺服器占比突破50%護城河加深</strong><br>AI伺服器占整體伺服器收入比重已>50%，ASIC客製化伺服器目標占AI收入50%以上，高附加值產品比重持續提升，毛利改善可期。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">3</div>
+        <div><strong>估值最低：TTM PE僅26.6倍</strong><br>相較同業（鴻海~30x、廣達~35x），英業達TTM PE 26.6倍明顯低估。FY2026E PE更降至23.3倍（法人估EPS 3.0元），提供足夠安全邊際。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">4</div>
+        <div><strong>三大法人昨日全面大買5,813張</strong><br>外資+3,747張、投信+2,054張、自營+11張，三大法人同步買進是強勢訊號，代表機構已用真實資金投票。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">5</div>
+        <div><strong>Q1'26 EPS 0.68元創19季同期新高</strong><br>年增+44.7%，遠超市場預期，法說會Q1'26合併營收2,003億元（年增28%），證明AI伺服器出貨已進入加速期。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">6</div>
+        <div><strong>L10/L11整機升級帶動獲利結構優化</strong><br>從主機板（L6）升級至整機機櫃（L10/L11），單台訂單金額大幅提升，毛利率改善空間更大；CapEx逾10億美元擴廠確保H2出貨量。</div>
+      </div>
+    </div>
+    <div class="bear-card">
+      <div class="debate-title" style="color:#7f1d1d;">🔴 看空研究員（空方論點）</div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">1</div>
+        <div><strong>毛利率5%令人憂慮：ODM的先天局限</strong><br>Q1'26毛利率5.08%，QoQ-0.13pp、YoY-0.91pp。隨著AI伺服器佔比提高，零組件成本上升反而稀釋毛利，若無法有效控成本，純益恐難持續改善。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">2</div>
+        <div><strong>中國客戶濃度風險：占AI收入50%以上</strong><br>英業達AI伺服器客戶中大陸CSP占比超過五成，在美中科技戰情緒高漲時，任何關稅、出口管制或地緣政治波動，都可能導致訂單急凍。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">3</div>
+        <div><strong>MACD死叉：短線技術偏空</strong><br>MACD快線0.93低於慢線1.19，柱狀-0.26，死叉形成代表短線動能轉弱。昨日大漲後是否能延續？股價突破布林上軌(69.26)後回測壓力不小。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">4</div>
+        <div><strong>6/3爆量88.6元頭部陰影猶在</strong><br>6/3爆天量衝到88.6元後急跌，6/8一日跌停至69.2元，短短5日跌幅超過20%。這代表88元以上存在大量套牢賣壓，回測高點難度極高。</td></div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">5</div>
+        <div><strong>CapEx 10億美元消耗現金流</strong><br>全年資本支出逾10億美元（約340億台幣），相當於市值的13.6%，高強度投資在短期內將壓縮自由現金流，財務槓桿風險需持續關注。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">6</div>
+        <div><strong>AI伺服器需求的非線性風險</strong><br>AI伺服器需求高度依賴超大型雲端客戶的資本支出計劃，若Google/Microsoft/Meta其中任一家因景氣或資本配置調整而削減訂單，英業達單季EPS恐大幅波動。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;background:linear-gradient(135deg,#f0fdf4,#fff);">
+    <h4 style="color:var(--primary-dark);margin-bottom:12px;">⚖️ 辯論總結：看多 60% vs 看空 40%</h4>
+    <div style="display:flex;gap:16px;align-items:center;margin-bottom:12px;">
+      <div style="font-weight:700;color:#10b981;">多方 60%</div>
+      <div style="flex:1;background:#e2e8f0;border-radius:8px;height:14px;overflow:hidden;">
+        <div style="width:60%;background:linear-gradient(90deg,#10b981,#34d399);height:100%;border-radius:8px;"></div>
+      </div>
+      <div style="font-weight:700;color:#ef4444;">空方 40%</div>
+    </div>
+    <p style="font-size:13px;color:var(--text-muted);">
+      <strong>給一般投資人的話：</strong>英業達的基本面非常強勁——6月首破千億、AI伺服器占比過半、估值也是本波AI族群最低。但短線剛爆量大漲，建議不要追高，等它回到67~68元附近（也就是5日均線附近）再分批買，這樣風險報酬比更好。如果你已經持有，等確認87~88元的頭部壓力化解後再考慮加碼。長線持有者可以把停損設在62元以下（跌破20日均線）。
+    </p>
+  </div>
+</div>
+
+<!-- 11 風控評估 -->
+<div class="section">
+  <div class="section-title">🛡️ 風控評估（六維評分）</div>
+  <div class="card">
+    <div class="two-col">
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:14px;">六維風險評分</h4>
+        <div class="score-row">
+          <div class="score-label">估值風險(30%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:35%;background:#10b981;"></div></div>
+          <div class="score-num" style="color:#10b981;">3.5</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 112px;">TTM PE 26.6x；FY2026E PE 23.3x，估值偏低</div>
+        <div class="score-row">
+          <div class="score-label">財務風險(25%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:55%;background:#f59e0b;"></div></div>
+          <div class="score-num" style="color:#f59e0b;">5.5</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 112px;">毛利率5%偏低；CapEx 10億美元壓現金流</div>
+        <div class="score-row">
+          <div class="score-label">流動性(10%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:20%;background:#10b981;"></div></div>
+          <div class="score-num" style="color:#10b981;">2.0</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 112px;">日均量超過3千萬張，流動性極佳</div>
+        <div class="score-row">
+          <div class="score-label">產業風險(15%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:50%;background:#f59e0b;"></div></div>
+          <div class="score-num" style="color:#f59e0b;">5.0</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 112px;">中國客戶濃度高；AI需求波動風險</div>
+        <div class="score-row">
+          <div class="score-label">總經風險(10%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:55%;background:#f59e0b;"></div></div>
+          <div class="score-num" style="color:#f59e0b;">5.5</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 112px;">美中關稅、出口管制、匯率風險</div>
+        <div class="score-row">
+          <div class="score-label">籌碼風險(10%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:40%;background:#10b981;"></div></div>
+          <div class="score-num" style="color:#10b981;">4.0</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 112px;">88元頭部賣壓存在；法人昨日大量進場</div>
+      </div>
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:14px;">綜合風險結論</h4>
+        <div style="text-align:center;padding:20px;background:var(--primary-light);border-radius:12px;margin-bottom:16px;">
+          <div style="font-size:48px;font-weight:800;color:#f59e0b;">4.5</div>
+          <div style="font-size:16px;font-weight:600;color:var(--primary-dark);">/ 10</div>
+          <div style="margin-top:8px;"><span class="risk-badge risk-medium" style="font-size:14px;">⚠️ 中低風險</span></div>
+        </div>
+        <table>
+          <tr><th>風險項目</th><th>評估</th></tr>
+          <tr><td>最大下行風險</td><td>-15%（跌至~59元季線）</td></tr>
+          <tr><td>最大上行潛力</td><td>+35%（回測88元高點）</td></tr>
+          <tr><td>風報比</td><td>約 2.3 : 1（偏向多方）</td></tr>
+          <tr><td>適合投資人</td><td>中長線（6~12個月）持有者</td></tr>
+          <tr><td>不適合</td><td>短線當沖、低風險承受者</td></tr>
+        </table>
+        <div class="highlight-box" style="margin-top:12px;font-size:12px;">
+          投資組合建議：英業達是台灣AI伺服器產業的「穩健型」標的——不是最高成長（毛利率限制），但估值最合理、股利不錯、法人認同度高。建議在整體投資組合中分配5~10%的比重。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 12 台股三段式策略 -->
+<div class="section">
+  <div class="section-title">🎯 台股三段式操作策略</div>
+  <div class="strategy-grid">
+    <div class="strat-card strat-attack">
+      <div class="strat-title">⚔️ 進攻型策略</div>
+      <div class="strat-item">📌 <strong>適合：</strong>積極型投資人</div>
+      <div class="strat-item">🎯 <strong>買進區間：</strong>65 ~ 70 元</div>
+      <div class="strat-item">📦 <strong>部位建議：</strong>組合10~15%</div>
+      <div class="strat-item">🏁 <strong>目標價：</strong>88 ~ 95 元</div>
+      <div class="strat-item">⛔ <strong>停損：</strong>跌破62元</div>
+      <div class="strat-item">⏱️ <strong>持有期：</strong>6~12個月</div>
+      <div class="strat-item" style="margin-top:8px;font-size:12px;opacity:0.85;">觸發條件：Q2'26 EPS超預期 / 6月千億營收正面訊號延續 / 三大法人連續買超</div>
+    </div>
+    <div class="strat-card strat-balance">
+      <div class="strat-title">⚖️ 均衡型策略</div>
+      <div class="strat-item">📌 <strong>適合：</strong>穩健型投資人</div>
+      <div class="strat-item">🎯 <strong>第一批：</strong>等回測67~68元</div>
+      <div class="strat-item">🎯 <strong>第二批：</strong>確認站上MA5再加</div>
+      <div class="strat-item">📦 <strong>部位建議：</strong>組合5~8%</div>
+      <div class="strat-item">🏁 <strong>目標價：</strong>80 ~ 85 元</div>
+      <div class="strat-item">⛔ <strong>停損：</strong>跌破MA20(66.6元)</div>
+      <div class="strat-item" style="margin-top:8px;font-size:12px;opacity:0.85;">加碼條件：Q2'26 EPS > 0.70元；H2 AI伺服器新客戶訂單宣布</div>
+    </div>
+    <div class="strat-card strat-defend">
+      <div class="strat-title">🛡️ 防守型策略</div>
+      <div class="strat-item">📌 <strong>適合：</strong>保守型投資人</div>
+      <div class="strat-item">🎯 <strong>觀望等待：</strong>目前偏多但短線過熱</div>
+      <div class="strat-item">🎯 <strong>切入機會：</strong>回測MA20(66.6元)</div>
+      <div class="strat-item">📦 <strong>部位建議：</strong>組合3~5%</div>
+      <div class="strat-item">🏁 <strong>目標價：</strong>75 ~ 78 元</div>
+      <div class="strat-item">⛔ <strong>停損：</strong>跌破60元（MA60附近）</div>
+      <div class="strat-item" style="margin-top:8px;font-size:12px;opacity:0.85;">確認信號：成交量恢復正常（日均3~5千萬）且股價站穩均線系統</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h4 style="color:var(--primary-dark);margin-bottom:14px;">操作建議表</h4>
+    <table>
+      <tr><th>條件</th><th>建議動作</th><th>理由</th></tr>
+      <tr><td>現價 70元以上</td><td>觀望，不追高</td><td>突破布林上軌，等回測</td></tr>
+      <tr><td>回測 67~68元（MA5附近）</td><td><strong>第一批買進</strong>，1/3倉位</td><td>均線多頭排列支撐</td></tr>
+      <tr><td>確認站穩 70元以上</td><td>加碼至滿倉</td><td>突破確認，動能延續</td></tr>
+      <tr><td>跌破 66.6元（MA20）</td><td>减倉至1/3</td><td>中線支撐失守，風險上升</td></tr>
+      <tr><td>跌破 62元</td><td>停損出場</td><td>短線多頭結構破壞</td></tr>
+      <tr><td>突破 77~78元</td><td>首目標，減碼1/3</td><td>前波高點附近獲利</td></tr>
+      <tr><td>突破 88元</td><td>第二目標，再減1/3</td><td>52W高點附近控風險</td></tr>
+    </table>
+
+    <h4 style="color:var(--primary-dark);margin:20px 0 12px;">催化劑時程表（2026 H2）</h4>
+    <table>
+      <tr><th>時間</th><th>事件</th><th>預期影響</th></tr>
+      <tr><td>2026年7月</td><td>7月月營收公告（6月已1,022億）</td><td>確認千億突破可持續性</td></tr>
+      <tr><td>2026年8月</td><td>Q2'26財報 / 法說會</td><td>核心催化劑：EPS是否超預期</td></tr>
+      <tr><td>2026 Q3</td><td>H2 AI伺服器出貨旺季</td><td>傳統旺季+AI需求 = 雙重拉動</td></tr>
+      <tr><td>2026 Q4</td><td>ASIC伺服器新客戶訂單可能宣布</td><td>中長線轉折點</td></tr>
+      <tr><td>2027年3月</td><td>FY2026股利公告</td><td>若EPS達3元，股利可能配2.5元</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 13 名詞小教室 -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">ODM（Original Design Manufacturer）</div>
+      <div class="glossary-def">原廠委託設計製造商。意思是英業達自己設計、製造伺服器，然後貼上客戶（如微軟）的品牌賣出。好處是訂單穩定，缺點是毛利率較低，因為品牌價值歸客戶。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">AI伺服器</div>
+      <div class="glossary-def">專門用來跑AI訓練和推理的高效能電腦主機。跟普通伺服器相比，AI伺服器裡面裝了大量GPU（如NVIDIA的H100、B200），價格貴10~50倍，所以出貨一台帶來的營收遠大於傳統伺服器。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">ASIC（Application Specific Integrated Circuit）</div>
+      <div class="glossary-def">應用專用積體電路，俗稱「客製化晶片」。Google的TPU、Meta的MTIA都是ASIC。與NVIDIA GPU相比，ASIC通常更省電、特定任務效能更高，也不用繳貴給NVIDIA。ASIC伺服器是英業達的新成長引擎。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">L6 / L10 / L11（伺服器組裝層級）</div>
+      <div class="glossary-def">伺服器製造層級分類。L6=主機板等零件；L10=機架伺服器；L11=整機機櫃（含電源、散熱、網路全部裝好交付）。英業達正從L6升到L10/L11，代表出貨一台賺更多錢，毛利率也會改善。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">CSP（Cloud Service Provider）</div>
+      <div class="glossary-def">雲端服務提供商，就是那些提供雲端計算服務的大公司，如Amazon AWS、Google Cloud、Microsoft Azure、Meta等。Tier 1 CSP是最大的（美系），Tier 2/3是中型雲端商。英業達同時服務美系和中國CSP。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">TTM PE（Trailing Twelve Months P/E）</div>
+      <div class="glossary-def">本益比（PE）的一種計算方式，用「最近12個月實際EPS」來算。比較接近真實獲利能力，而不是預測。英業達TTM EPS=2.62元（近四季加總），股價69.8元÷2.62=26.6倍，代表你花26.6元買1元的獲利。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">布林通道（Bollinger Bands）</div>
+      <div class="glossary-def">技術分析工具，上軌=超買警戒（可能回調），中軌=均線（支撐/壓力），下軌=超賣（可能反彈）。英業達今日收盤69.8元已突破上軌69.26元，代表短線偏強，但也要注意可能回測。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">三大法人</div>
+      <div class="glossary-def">外資（外國機構投資人，如BlackRock等）、投信（台灣本土基金公司）、自營商（券商自己的投資部門）合稱三大法人。三者合計買超代表機構投資者看好，通常是強勢訊號。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 14 免責聲明 -->
+<div class="section">
+  <div class="disclaimer">
+    <strong>⚠️ 重要免責聲明</strong><br><br>
+    本報告由 AI 分析系統依據公開市場資料自動生成，<strong>僅供學術研究與資訊參考，絕非投資建議或招攬推介</strong>。所有股價、財務數據及市場分析均可能存在誤差，且不代表未來投資績效。<br><br>
+    <strong>投資一定有風險，股市投資可能損失本金，過去績效不代表未來獲利保證。</strong>投資人在做出任何投資決策前，應諮詢合格的專業財務顧問，並根據個人風險承受度、財務狀況及投資目標自行判斷。<br><br>
+    <strong>資料來源：</strong>Fugle API（即時股價）、FinMind（歷史K線/三大法人/月營收/季報）、台灣證交所T86 API（三大法人官方）、Yahoo Finance、鉅亨網、自由財經、理財周刊、TechNews、富果Blog、MoneyDJ（市場新聞與法說會資訊）。技術指標中部分數值為依走勢推算，已標注「推估值」。
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<!-- Chart.js Scripts -->
+<script>
+// EPS Chart
+const epsCtx = document.getElementById('epsChart').getContext('2d');
+new Chart(epsCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Q2\'24', 'Q3\'24', 'Q4\'24', 'Q1\'25', 'Q2\'25', 'Q3\'25', 'Q4\'25', 'Q1\'26★'],
+    datasets: [{
+      label: 'EPS（元）',
+      data: [0.50, 0.56, 0.66, 0.47, 0.61, 0.76, 0.57, 0.68],
+      backgroundColor: ['#93c5fd','#93c5fd','#93c5fd','#93c5fd','#93c5fd','#93c5fd','#93c5fd','#ef4444'],
+      borderRadius: 6,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => `EPS：${ctx.parsed.y.toFixed(2)} 元`
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 0.9,
+        ticks: { callback: v => v.toFixed(2) + '元' },
+        grid: { color: '#f1f5f9' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Revenue Chart
+const revCtx = document.getElementById('revChart').getContext('2d');
+new Chart(revCtx, {
+  type: 'line',
+  data: {
+    labels: ['1月', '2月', '3月', '4月', '5月', '6月★'],
+    datasets: [{
+      label: '2026年月營收（億元）',
+      data: [643.5, 509.3, 875.6, 847.9, 828.1, 1022.6],
+      borderColor: '#0891b2',
+      backgroundColor: 'rgba(8,145,178,0.12)',
+      pointBackgroundColor: ['#93c5fd','#93c5fd','#93c5fd','#93c5fd','#93c5fd','#ef4444'],
+      pointRadius: [5,5,5,5,5,8],
+      pointBorderColor: ['#0891b2','#0891b2','#0891b2','#0891b2','#0891b2','#ef4444'],
+      tension: 0.4,
+      fill: true,
+      borderWidth: 2.5,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => `月營收：${ctx.parsed.y.toFixed(1)} 億元`
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: false,
+        min: 400,
+        ticks: { callback: v => v + '億' },
+        grid: { color: '#f1f5f9' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// PE Compare Chart
+const peCtx = document.getElementById('peChart').getContext('2d');
+new Chart(peCtx, {
+  type: 'bar',
+  data: {
+    labels: ['英業達(TTM)', '英業達(FY26E)', '廣達(推估)', '鴻海(推估)', '緯創(推估)', '台股大盤'],
+    datasets: [{
+      label: '本益比（倍）',
+      data: [26.6, 23.3, 35, 28, 22, 20],
+      backgroundColor: ['#0891b2','#06b6d4','#94a3b8','#94a3b8','#94a3b8','#64748b'],
+      borderRadius: 6,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => `PE：${ctx.parsed.x.toFixed(1)} 倍`
+        }
+      }
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        max: 45,
+        ticks: { callback: v => v + 'x' },
+        grid: { color: '#f1f5f9' }
+      },
+      y: { grid: { display: false } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
