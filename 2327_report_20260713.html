@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>國巨(2327) 深度分析報告 | 2026-07-13</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #c2410c;
+    --primary-dark: #9a3412;
+    --primary-light: #fff7ed;
+    --accent: #ea580c;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --bg: #F0F4F8;
+    --card: #FFFFFF;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .cover {
+    background: linear-gradient(135deg, #431407 0%, #9a3412 45%, #c2410c 75%, #ea580c 100%);
+    color: white; padding: 60px 40px; text-align: center; position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: ''; position: absolute; top: -50%; left: -30%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 40% 40%, rgba(255,255,255,0.06) 0%, transparent 60%);
+  }
+  .cover-badge { display: inline-block; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); border-radius: 20px; padding: 4px 14px; font-size: 13px; margin-bottom: 20px; }
+  .cover h1 { font-size: 44px; font-weight: 800; letter-spacing: 2px; margin-bottom: 8px; }
+  .cover h2 { font-size: 22px; font-weight: 400; opacity: 0.85; margin-bottom: 28px; }
+  .cover-stats { display: flex; justify-content: center; gap: 36px; flex-wrap: wrap; margin-top: 20px; }
+  .cover-stat .val { font-size: 26px; font-weight: 700; }
+  .cover-stat .lbl { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+  .risk-badge-cover { display: inline-block; padding: 6px 20px; border-radius: 20px; font-weight: 700; font-size: 15px; margin-top: 20px; background: #f59e0b; }
+  .caution-badge { display: inline-block; background: #ef4444; border-radius: 12px; padding: 3px 12px; font-size: 12px; font-weight: 700; margin-left: 8px; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+  .section { margin-bottom: 32px; }
+  .section-title { font-size: 20px; font-weight: 700; color: var(--primary-dark); border-left: 4px solid var(--primary); padding-left: 14px; margin-bottom: 18px; }
+  .card { background: var(--card); border-radius: 12px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .card + .card { margin-top: 16px; }
+
+  .alert-danger { background: #fff1f2; border: 1px solid #fecdd3; border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; font-size: 14px; }
+  .alert-danger .alert-title { font-weight: 700; color: #7f1d1d; font-size: 15px; margin-bottom: 8px; }
+
+  .conclusion-card { background: linear-gradient(135deg, #431407, #9a3412, #c2410c); color: white; border-radius: 16px; padding: 30px; }
+  .conclusion-main { font-size: 30px; font-weight: 800; margin-bottom: 20px; }
+  .conclusion-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .conclusion-item { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 14px; }
+  .conclusion-item .label { font-size: 12px; opacity: 0.75; }
+  .conclusion-item .value { font-size: 19px; font-weight: 700; margin-top: 4px; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+  .kpi-card { background: var(--card); border-radius: 10px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border-top: 3px solid var(--primary); }
+  .kpi-label { font-size: 12px; color: var(--text-muted); }
+  .kpi-value { font-size: 22px; font-weight: 700; color: var(--primary-dark); margin: 4px 0; }
+  .kpi-note { font-size: 11px; color: var(--text-muted); }
+
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .chart-full { grid-column: 1/-1; }
+  .chart-card { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .chart-title { font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom: 14px; }
+  .chart-note { font-size: 11px; color: var(--text-muted); margin-top: 8px; text-align: center; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; padding: 10px 12px; text-align: left; }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8fafc; }
+  .up { color: #ef4444; font-weight: 600; }
+  .dn { color: #10b981; font-weight: 600; }
+  .neutral { color: var(--text-muted); }
+
+  .score-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .score-label { width: 110px; font-size: 13px; flex-shrink: 0; }
+  .score-bar-bg { flex: 1; background: #e2e8f0; border-radius: 6px; height: 12px; overflow: hidden; }
+  .score-bar { height: 100%; border-radius: 6px; }
+  .score-num { width: 36px; text-align: right; font-weight: 700; font-size: 13px; }
+
+  .chip-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .chip-card { background: var(--card); border-radius: 10px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); text-align: center; }
+  .chip-card .name { font-size: 13px; color: var(--text-muted); }
+  .chip-card .val { font-size: 24px; font-weight: 700; margin: 6px 0; }
+  .chip-card .desc { font-size: 12px; }
+  .buy-card { border-top: 3px solid #10b981; }
+  .sell-card { border-top: 3px solid #ef4444; }
+  .neutral-card { border-top: 3px solid #f59e0b; }
+
+  .debate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .bull-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 20px; }
+  .bear-card { background: #fff1f2; border: 1px solid #fecdd3; border-radius: 12px; padding: 20px; }
+  .debate-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+  .debate-point { display: flex; gap: 10px; margin-bottom: 12px; font-size: 13px; }
+  .debate-num { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .bull-num { background: #10b981; color: white; }
+  .bear-num { background: #ef4444; color: white; }
+
+  .strategy-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .strat-card { border-radius: 12px; padding: 20px; }
+  .strat-attack { background: linear-gradient(135deg, #dc2626, #f87171); color: white; }
+  .strat-balance { background: linear-gradient(135deg, #c2410c, #fb923c); color: white; }
+  .strat-defend { background: linear-gradient(135deg, #059669, #34d399); color: white; }
+  .strat-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+  .strat-item { font-size: 13px; margin-bottom: 6px; opacity: 0.93; }
+
+  .glossary-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+  .glossary-item { background: var(--primary-light); border-radius: 10px; padding: 14px; }
+  .glossary-term { font-weight: 700; color: var(--primary-dark); margin-bottom: 4px; }
+  .glossary-def { font-size: 13px; color: var(--text-muted); }
+
+  .disclaimer { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 18px; font-size: 13px; color: #78350f; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  .badge-buy { background: #dcfce7; color: #166534; }
+  .badge-positive { background: #dcfce7; color: #166534; }
+  .badge-warning { background: #fef9c3; color: #713f12; }
+  .badge-danger { background: #fee2e2; color: #7f1d1d; }
+
+  .highlight-box { background: var(--primary-light); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 12px 0; font-size: 14px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .note-text { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+
+  @media(max-width:768px){
+    .kpi-grid { grid-template-columns: repeat(2,1fr); }
+    .charts-grid,.debate-grid,.strategy-grid,.two-col { grid-template-columns: 1fr; }
+    .chip-grid { grid-template-columns: repeat(2,1fr); }
+    .conclusion-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div class="cover-badge">🔧 全球被動元件龍頭 MLCC | 台股上市 注意股</div>
+  <h1>國巨</h1>
+  <h2>股票代碼：2327 ｜ 深度投資分析報告</h2>
+  <div style="font-size:13px;opacity:0.7;margin-bottom:16px;">報告日期：2026-07-13 ｜ 資料截至 2026-07-13 盤中</div>
+  <div class="cover-stats">
+    <div class="cover-stat"><div class="val">815 元</div><div class="lbl">今日收盤</div></div>
+    <div class="cover-stat"><div class="val" style="color:#ff9999;">-9.44%</div><div class="lbl">今日急跌</div></div>
+    <div class="cover-stat"><div class="val">1,220 元</div><div class="lbl">52W高點（7/1）</div></div>
+    <div class="cover-stat"><div class="val">1,500 元</div><div class="lbl">花旗目標價</div></div>
+    <div class="cover-stat"><div class="val">38.1%</div><div class="lbl">Q1'26毛利率（新高）</div></div>
+  </div>
+  <div>
+    <span class="risk-badge-cover">⚠️ 綜合風險等級：7.0 / 10（高風險）</span>
+    <span class="caution-badge">🚨 注意股/處置股</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 注意股警告 -->
+<div class="alert-danger">
+  <div class="alert-title">🚨 重要風險警示：注意股（處置股）限制中</div>
+  國巨因股價在短期內出現極端漲幅（52週從120.75元漲至1,220元，漲幅+911%），已被台灣證交所列為「注意股/處置股」。處置期間禁止當日沖銷（當沖），買進後需等下一交易日才能賣出，增加流動性風險。今日（7/13）再度大跌-9.44%，從7/1高點1,220元累計回落-33.2%。短線高度波動，<strong>請務必評估自身風險承受度後再決策。</strong>
+</div>
+
+<!-- 02 核心結論 -->
+<div class="section">
+  <div class="section-title">📌 核心結論</div>
+  <div class="conclusion-card">
+    <h3 style="opacity:0.8;margin-bottom:6px;">投資建議</h3>
+    <div class="conclusion-main">🟡 觀望為主 / 逢低分批試水</div>
+    <div class="conclusion-grid">
+      <div class="conclusion-item">
+        <div class="label">🎯 目標價（12~18個月）</div>
+        <div class="value">950 ~ 1,200 元</div>
+      </div>
+      <div class="conclusion-item">
+        <div class="label">⛔ 停損價</div>
+        <div class="value">跌破 750 元</div>
+      </div>
+      <div class="conclusion-item">
+        <div class="label">💡 最大風險</div>
+        <div class="value">MLCC循環反轉 / 注意股限流動性</div>
+      </div>
+      <div class="conclusion-item">
+        <div class="label">💰 理想買入區間</div>
+        <div class="value">750 ~ 850 元（超賣反彈區）</div>
+      </div>
+      <div class="conclusion-item">
+        <div class="label">📅 關鍵催化劑</div>
+        <div class="value">Q2'26法說（8月）/ MLCC漲價確認</div>
+      </div>
+      <div class="conclusion-item">
+        <div class="label">🏆 核心論點</div>
+        <div class="value">AI伺服器MLCC用量+80% 超級循環</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;font-size:13px;opacity:0.85;background:rgba(255,255,255,0.12);border-radius:8px;padding:10px;">
+      📊 結論摘要：基本面長線極強（AI MLCC超級循環、毛利率38.1%歷史新高、2027年MLCC漲價67%預期），但短線技術面嚴重偏空（跌破布林下軌、MACD死叉-38.06、注意股限制）。建議先觀望等技術面穩定，在750~850元區間嘗試少量分批布局，勿貿然重倉。等解除注意股後流動性恢復，再考慮積極加碼。
+    </div>
+  </div>
+</div>
+
+<!-- 03 關鍵財務 KPI -->
+<div class="section">
+  <div class="section-title">📊 關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">今日收盤價</div>
+      <div class="kpi-value" style="color:#ef4444;">815 元</div>
+      <div class="kpi-note">從7/1高點1,220元急跌-33.2% ★API</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">FY2026E 本益比（法人估）</div>
+      <div class="kpi-value">47.7 倍</div>
+      <div class="kpi-note">法人估FY2026E EPS 17.07元 ★WebSearch</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">FY2027E 本益比（大摩估）</div>
+      <div class="kpi-value">34.4 倍</div>
+      <div class="kpi-note">大摩FY2027E EPS 23.71元（漲價效應）★WebSearch</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q1'26 EPS</div>
+      <div class="kpi-value" style="color:#10b981;">3.90 元</div>
+      <div class="kpi-note">季增+18.5%；YoY-63.8%（分拆前後不可比）★API</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q1'26 毛利率</div>
+      <div class="kpi-value" style="color:#10b981;">38.10%</div>
+      <div class="kpi-note">歷史新高！QoQ+0.8pp 連六季升 ★API</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">6月營收（最新）</div>
+      <div class="kpi-value">153.6 億</div>
+      <div class="kpi-note">YoY+38.9%；H1 2026累計826億 ★API</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">花旗最高目標價</div>
+      <div class="kpi-value" style="color:#c2410c;">1,500 元</div>
+      <div class="kpi-note">現價815距目標+84%；外資共識強烈看多 ★WebSearch</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">MLCC 2027漲價預期</div>
+      <div class="kpi-value" style="color:#c2410c;">+67%</div>
+      <div class="kpi-note">大摩(Morgan Stanley)預測；2028再+84% ★WebSearch</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 財務趨勢圖 -->
+<div class="section">
+  <div class="section-title">📈 財務趨勢圖</div>
+  <div class="charts-grid">
+    <div class="chart-card chart-full">
+      <div class="chart-title">EPS 季度趨勢（近8季）— 國巨 2327</div>
+      <canvas id="epsChart" height="100"></canvas>
+      <div class="chart-note">★ 實際公告；Q3-Q4'25 EPS較低因分拆調整，Q1'26回升中｜⚠️ Q2'24-Q2'25 含分拆前合併數字，與Q3'25後不可直接比較</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">月營收趨勢（近6個月）— 億元</div>
+      <canvas id="revChart" height="180"></canvas>
+      <div class="chart-note">★ 實際公告；6月153.6億創新高 YoY+38.9%｜FinMind API</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">本益比比較（倍）— 國巨 vs 同業 vs 大盤</div>
+      <canvas id="peChart" height="180"></canvas>
+      <div class="chart-note">國巨用FY2026E/FY2027E PE；同業為推算值 ★WebSearch+★推估值</div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽</div>
+  <div class="card">
+    <div class="two-col">
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:12px;">基本資訊</h4>
+        <table>
+          <tr><th>成立時間</th><td>1977年（台灣電阻領域起家）</td></tr>
+          <tr><th>全球排名</th><td>MLCC全球第三、電阻全球第一</td></tr>
+          <tr><th>主要業務</th><td>MLCC、鉭電容(KEMET)、電阻、感測器(芝浦)</td></tr>
+          <tr><th>市值</th><td>約 1.79 兆新台幣</td></tr>
+          <tr><th>主要客戶</th><td>NVIDIA、Apple、Tesla、Cisco、Bosch</td></tr>
+          <tr><th>FY2025 EPS</th><td>推估15~16元（分拆後重整期）</td></tr>
+          <tr><th>FY2026E EPS</th><td>17.07元（法人估，漲價效應逐季反映）</td></tr>
+        </table>
+      </div>
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:12px;">AI伺服器 MLCC 用量革命</h4>
+        <table>
+          <tr><th>伺服器機型</th><th>每機櫃MLCC用量</th><th>相較上代</th></tr>
+          <tr><td>傳統伺服器</td><td>~5萬顆</td><td>基準</td></tr>
+          <tr><td>GB300 NVL72</td><td><strong>32萬顆</strong></td><td>+540%</td></tr>
+          <tr><td>Rubin VR200 NVL72</td><td><strong style="color:#ef4444;">57萬顆</strong></td><td class="up">+78% vs GB300</td></tr>
+        </table>
+        <div class="highlight-box" style="margin-top:10px;font-size:13px;">
+          🚀 每一代AI GPU機櫃對MLCC的需求持續爆增。AI MLCC占國巨業務比重：2026年14%→2027年24%→2028年32%，量價齊升形成超級循環。
+        </div>
+      </div>
+    </div>
+    <div class="highlight-box" style="margin-top:16px;">
+      🏆 <strong>護城河分析：</strong>國巨是全球被動元件的整合霸主，透過收購KEMET（鉭電容）、Pulse（磁性元件）、芝浦（感測器）打造垂直整合平台。面對AI伺服器需求爆炸，MLCC因技術門檻和良率要求極高，新進者難以快速擴產，形成供給缺口。漲價能力是護城河的最佳體現——外資預測2026年漲30%、2027年漲67%、2028年再漲84%，顯示定價權確立。
+    </div>
+  </div>
+</div>
+
+<!-- 06 基本面分析 -->
+<div class="section">
+  <div class="section-title">💹 基本面分析</div>
+  <div class="card">
+    <h4 style="margin-bottom:14px;color:var(--primary-dark);">基本面評分（滿分10分）</h4>
+    <div class="score-row"><div class="score-label">成長性</div><div class="score-bar-bg"><div class="score-bar" style="width:88%;background:#10b981;"></div></div><div class="score-num" style="color:#10b981;">8.8</div></div>
+    <div class="score-row"><div class="score-label">獲利能力</div><div class="score-bar-bg"><div class="score-bar" style="width:90%;background:#10b981;"></div></div><div class="score-num" style="color:#10b981;">9.0</div></div>
+    <div class="score-row"><div class="score-label">估值合理性</div><div class="score-bar-bg"><div class="score-bar" style="width:52%;background:#f59e0b;"></div></div><div class="score-num" style="color:#f59e0b;">5.2</div></div>
+    <div class="score-row"><div class="score-label">財務健康</div><div class="score-bar-bg"><div class="score-bar" style="width:75%;background:#10b981;"></div></div><div class="score-num" style="color:#10b981;">7.5</div></div>
+    <div class="score-row"><div class="score-label">產業地位</div><div class="score-bar-bg"><div class="score-bar" style="width:92%;background:#10b981;"></div></div><div class="score-num" style="color:#10b981;">9.2</div></div>
+    <div class="score-row"><div class="score-label">股東回報</div><div class="score-bar-bg"><div class="score-bar" style="width:70%;background:#10b981;"></div></div><div class="score-num" style="color:#10b981;">7.0</div></div>
+
+    <h4 style="margin:20px 0 12px;color:var(--primary-dark);">季度財務數據（國巨 2327）</h4>
+    <table>
+      <tr><th>季度</th><th>EPS（元）</th><th>毛利率</th><th>營業利益率</th><th>備注</th></tr>
+      <tr><td>Q2'24</td><td style="color:#ef4444;">13.02</td><td>35.13%</td><td>20.63%</td><td class="neutral">含分拆前合併</td></tr>
+      <tr><td>Q3'24</td><td style="color:#ef4444;">11.01</td><td>35.22%</td><td>20.91%</td><td class="neutral">含分拆前合併</td></tr>
+      <tr><td>Q4'24</td><td>7.07</td><td>33.17%</td><td>17.68%</td><td class="neutral">轉型調整期</td></tr>
+      <tr><td>Q1'25</td><td>10.77</td><td>35.64%</td><td>20.78%</td><td class="neutral">分拆前最後一季</td></tr>
+      <tr><td>Q2'25</td><td>9.74</td><td>35.56%</td><td>21.49%</td><td class="neutral">分拆效益期</td></tr>
+      <tr><td>Q3'25</td><td style="color:#ef4444;">3.10</td><td>36.19%</td><td>22.86%</td><td class="neutral">⚠️分拆後重整</td></tr>
+      <tr><td>Q4'25</td><td>3.29</td><td>37.30%</td><td>24.28%</td><td class="neutral">毛利率持續升</td></tr>
+      <tr style="background:#fff7ed;"><td><strong>Q1'26 ★</strong></td><td><strong style="color:#10b981;">3.90</strong></td><td><strong style="color:#10b981;">38.10%</strong></td><td><strong>25.19%</strong></td><td class="neutral"><strong>毛利率歷史新高！</strong></td></tr>
+    </table>
+    <div class="highlight-box" style="margin-top:12px;">
+      📌 <strong>EPS大起大落白話說：</strong>國巨在2024~2025年間進行了集團「分拆重組」（部分高獲利子業務拆出獨立或調整），導致合併EPS從10~13元驟降至3元出頭。但這是「帳面數字」的調整，不代表核心業務變差——你看毛利率從33%一路升到38.1%就知道，本業競爭力其實在持續提升。法人預估FY2026E EPS恢復至17.07元，就是因為分拆後的業務重整已完成，獲利即將大爆發。
+    </div>
+  </div>
+</div>
+
+<!-- 07 籌碼面分析 -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析（三大法人）</div>
+  <div class="card">
+    <div class="chip-grid">
+      <div class="chip-card neutral-card">
+        <div class="name">🌍 外資</div>
+        <div class="val" style="color:#f59e0b;">— 張</div>
+        <div class="desc">7/9數據待更新<br>（注意股期間數據可能延遲）</div>
+      </div>
+      <div class="chip-card neutral-card">
+        <div class="name">🏦 投信</div>
+        <div class="val" style="color:#f59e0b;">— 張</div>
+        <div class="desc">7/9數據待更新<br>注意股限制可能影響進出</div>
+      </div>
+      <div class="chip-card neutral-card">
+        <div class="name">🏢 自營商</div>
+        <div class="val" style="color:#f59e0b;">— 張</div>
+        <div class="desc">7/9數據待更新<br>處置期間流動性降低</div>
+      </div>
+    </div>
+    <div class="highlight-box" style="margin-top:16px;">
+      ⚠️ <strong>三大法人說明：</strong>由於國巨目前被列為「注意股/處置股」，FinMind系統三大法人數據顯示為0（可能延遲或受限制）。建議至台灣證交所官方網站（twse.com.tw → 市場公告 → 三大法人）查詢最新買賣超數據。
+    </div>
+
+    <h4 style="margin:20px 0 12px;color:var(--primary-dark);">外資研究評等（2026年最新）★WebSearch</h4>
+    <table>
+      <tr><th>機構</th><th>評等</th><th>目標價</th><th>主要論點</th></tr>
+      <tr><td>花旗環球 (Citi)</td><td><span class="badge badge-buy">Buy</span></td><td><strong style="color:#ef4444;">1,500 元</strong></td><td>MLCC超循環；FY2027E PE重估</td></tr>
+      <tr><td>摩根士丹利 (MS)</td><td><span class="badge badge-buy">Overweight</span></td><td>推估~1,300元</td><td>2027漲67%、2028再漲84%；毛利51%目標</td></tr>
+      <tr><td>高盛 (Goldman)</td><td><span class="badge badge-buy">Buy</span></td><td>推估~1,100元</td><td>MLCC將成為下一個記憶體超循環</td></tr>
+      <tr><td>本土法人共識</td><td><span class="badge badge-buy">買進</span></td><td>950 ~ 1,050 元</td><td>FY2026E EPS 17.07元；FY2027E 23.71元</td></tr>
+    </table>
+    <div class="note-text">★WebSearch：目標價均遠高於現價(815元)；外資高度樂觀，但需注意股價已先行反映大量未來預期</div>
+
+    <h4 style="margin:20px 0 12px;color:var(--primary-dark);">為何今日急跌？近期K線事件分析</h4>
+    <table>
+      <tr><th>日期</th><th>收盤</th><th>成交量</th><th>關鍵事件</th></tr>
+      <tr><td>7/1</td><td style="color:#ef4444;"><strong>1,140元</strong></td><td>7,154萬</td><td>開1200，高1220（52W高點!）大量出現</td></tr>
+      <tr><td>7/2</td><td>1,055元</td><td>4,630萬</td><td>高位震盪，大戶套現</td></tr>
+      <tr><td>7/3</td><td>1,045元</td><td>4,464萬</td><td>跌破千元關卡陰影初現</td></tr>
+      <tr><td>7/6</td><td>1,005元</td><td>4,291萬</td><td>勉強守千元</td></tr>
+      <tr><td>7/7</td><td style="color:#10b981;"><strong>905元</strong></td><td>6,560萬</td><td>🚨跌停！「被動元件開殺！7檔跌停」</td></tr>
+      <tr><td>7/8</td><td>891元</td><td>7,090萬</td><td>跌破900元，恐慌性賣壓</td></tr>
+      <tr><td>7/9</td><td>900元</td><td>5,141萬</td><td>短暫反彈至948元後回落</td></tr>
+      <tr style="background:#fff1f2;"><td><strong>7/13★</strong></td><td><strong style="color:#10b981;">815元</strong></td><td>3,400萬</td><td>今日開921跌至低813，-9.44%</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div class="section">
+  <div class="section-title">📉 技術分析</div>
+  <div class="card">
+    <div class="two-col">
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:12px;">均線系統（7/13）</h4>
+        <table>
+          <tr><th>均線</th><th>數值</th><th>與現價關係</th></tr>
+          <tr><td>現價</td><td><strong style="color:#10b981;">815 元</strong></td><td>—</td></tr>
+          <tr><td>MA5</td><td>949.2</td><td><span class="badge badge-danger">現價 &lt; MA5 ✗</span></td></tr>
+          <tr><td>MA10</td><td>1,013.6</td><td><span class="badge badge-danger">現價 &lt; MA10 ✗</span></td></tr>
+          <tr><td>MA20</td><td>1,002.4</td><td><span class="badge badge-danger">現價 &lt; MA20 ✗</span></td></tr>
+          <tr><td>MA60</td><td>673.1</td><td><span class="badge badge-positive">現價 &gt; MA60 ✓</span></td></tr>
+        </table>
+        <div class="highlight-box" style="margin-top:10px;font-size:13px;background:#fff1f2;border-left-color:#ef4444;">
+          ❌ <strong>空頭排列！</strong>現價815 &lt; MA5(949.2) &lt; MA10(1013.6) ≈ MA20(1002.4)。三條短中期均線全在現價之上，代表強烈空頭格局。唯MA60(673.1)仍在現價之下，提供長線支撐。
+        </div>
+      </div>
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:12px;">動能指標（7/13）</h4>
+        <table>
+          <tr><th>指標</th><th>數值</th><th>判讀</th></tr>
+          <tr><td>MACD</td><td>55.10</td><td rowspan="3"><span class="badge badge-danger">🔴 嚴重死叉</span><br><small>快線55.1遠低於慢線93.2<br>柱狀<strong>-38.06</strong>（警戒水準！）<br>死叉力道強，賣壓大</small></td></tr>
+          <tr><td>信號線</td><td>93.16</td></tr>
+          <tr><td>柱狀值</td><td>-38.06</td></tr>
+          <tr><td>RSI(14)</td><td>48.3</td><td><span class="badge badge-warning">中性偏弱</span><br><small>接近50中線，觀察是否跌破40</small></td></tr>
+          <tr><td>布林上軌</td><td>1,180.3</td><td rowspan="3"><span class="badge badge-danger">🔴 跌破下軌！</span><br><small>現價815低於下軌824.4<br>技術超賣但空頭動能強<br>短線可能出現技術反彈</small></td></tr>
+          <tr><td>布林中軌</td><td>1,002.4</td></tr>
+          <tr><td>布林下軌</td><td>824.4</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <h4 style="margin:20px 0 12px;color:var(--primary-dark);">關鍵價位支撐壓力表</h4>
+    <table>
+      <tr><th>類型</th><th>價位</th><th>說明</th></tr>
+      <tr><td>🔴 強壓力</td><td>1,000 ~ 1,020 元</td><td>MA10/MA20密集區（1,002~1,013），整數心理關卡</td></tr>
+      <tr><td>🟠 次壓力</td><td>900 ~ 949 元</td><td>MA5(949.2)、7/8~7/9收盤區間</td></tr>
+      <tr><td>⬛ 現價</td><td><strong>815 元</strong></td><td>7/13收盤，布林下軌(824.4)以下</td></tr>
+      <tr><td>🟢 短線支撐</td><td>780 ~ 824 元</td><td>布林下軌(824)、心理關卡800元</td></tr>
+      <tr><td>🟡 次支撐</td><td>700 ~ 750 元</td><td>前期整理平台（5/28附近）</td></tr>
+      <tr><td>🔵 長線支撐</td><td>673 元</td><td>MA60季線——長線投資人重要護盾</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <div class="section-title">📋 融資融券</div>
+  <div class="card">
+    <table>
+      <tr><th>項目</th><th>最新數據（7/9）</th><th>趨勢判讀</th></tr>
+      <tr><td>融資餘額</td><td>0張（FinMind數據待更新）</td><td>注意股期間禁止當沖，融資槓桿使用受限</td></tr>
+      <tr><td>融券餘額</td><td>0張（FinMind數據待更新）</td><td>空頭倉位或受限制，實際數字需查官方</td></tr>
+    </table>
+    <div class="highlight-box" style="margin-top:12px;">
+      <strong>💡 注意股的流動性影響：</strong>「處置股」期間，投資人買進後<strong>無法在同一天賣出</strong>（禁止當沖），且每次交易前須完成前一筆交割。這大幅降低短線交易的意願，可能加劇下跌時的賣壓（因為不能快速停損），但也有助於過濾投機資金。待處置期解除後，正常流動性恢復，股價可能出現較大波動。
+      <br><br>
+      若需查詢最新融資融券：台灣證交所官網 → 交易資訊 → 融資融券餘額，或各大券商App即時查詢。
+    </div>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <div class="section-title">⚔️ 研究員多空辯論</div>
+  <div class="debate-grid">
+    <div class="bull-card">
+      <div class="debate-title" style="color:#166534;">🟢 看多研究員（多方論點）</div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">1</div>
+        <div><strong>AI MLCC用量爆炸：下一代+78%，供給缺口確立</strong><br>GB300 NVL72每機櫃需32萬顆MLCC，Rubin VR200更增至57萬顆（+78%）。AI伺服器需求將驅動MLCC於2025~2030年成長超過4倍，而業界年擴產僅10~15%，結構性供給缺口難以化解。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">2</div>
+        <div><strong>毛利率38.1%創歷史新高，且漲價週期才剛啟動</strong><br>Q1'26毛利率38.10%，連六季上升，顯示漲價能力持續強化。大摩預測2026 MLCC漲30%、2027漲67%、2028漲84%，屆時毛利率有望突破50%（目前38%），EPS爆發潛力巨大。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">3</div>
+        <div><strong>外資最高目標1,500元，現價815折讓46%</strong><br>花旗1,500元、摩根士丹利~1,300元、高盛~1,100元、本土法人950~1,050元，現價815元幾乎是最悲觀外資目標的77%。若外資共識兌現，回報空間超過+84%。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">4</div>
+        <div><strong>6月營收153.6億（YoY+38.9%）：業績不打折</strong><br>H1 2026累計826億，YoY成長穩定在22~47%區間。法人估FY2026E EPS 17.07元，FY2027E 23.71元，業績成長的確定性高，本波股價下跌是情緒面而非基本面出現問題。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">5</div>
+        <div><strong>布林下軌超賣訊號：短線技術反彈機率高</strong><br>現價815低於布林下軌(824.4)，RSI 48.3尚未跌入超賣區（&lt;30），從「技術超賣＋RSI未到極值」的組合看，短線出現反彈的機率不低。歷史上跌破布林下軌後，1~2周常有10~15%反彈。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">6</div>
+        <div><strong>多元產品組合：KEMET鉭電容獨家漲價至H2</strong><br>KEMET鉭電容的獨家漲價週期持續至2026 H2，芝浦車用感測器布局完成，磁性元件(Pulse)受益AI電源需求。MLCC之外，還有多個漲價催化劑支撐業績。</div>
+      </div>
+    </div>
+    <div class="bear-card">
+      <div class="debate-title" style="color:#7f1d1d;">🔴 看空研究員（空方論點）</div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">1</div>
+        <div><strong>從120元漲到1220元（+911%），漲幅已嚴重透支預期</strong><br>一年內漲10倍，市場已大量「提前交易」2027~2028年的漲價預期。就算基本面如外資預期實現，也可能出現「基本面兌現、股價回吐」的困境。被動元件是循環股，高估值時的崩跌往往劇烈。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">2</div>
+        <div><strong>MACD死叉-38.06：技術面史上罕見的強烈賣訊</strong><br>MACD柱狀值-38.06是近年極端值，死叉幅度遠超正常修正的-5~-10。技術面顯示主力資金已大規模撤出，靠散戶買盤難以扭轉，可能還有進一步下探空間。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">3</div>
+        <div><strong>注意股/處置股限制：流動性陷阱導致超賣延伸</strong><br>被列為處置股後，當日沖銷被禁止，持有者被迫拉長持有期，逢反彈更急於出脫。這種「逢高賣」的心理會讓反彈幅度受限，下跌時跌停機率更高。解除前流動性持續受損。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">4</div>
+        <div><strong>MLCC循環本質：漲價幅度67%能否實現存在不確定性</strong><br>大摩預測2027年漲67%基於AI伺服器需求持續爆發的假設。若AI capex放緩、或NVIDIA出貨不如預期、或地緣政治限制出口，MLCC漲價邏輯將大幅打折，外資目標價將面臨大幅下修。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">5</div>
+        <div><strong>Q1'26 EPS僅3.90元：按目前季度推算FY2026E仍有疑問</strong><br>Q1'26 EPS 3.90元，若不考慮漲價效應，FY2026E=3.90×4=15.6元（低於法人17.07元預期）。漲價效應需Q2/Q3才能大量反映，若Q2'26 EPS未達4.5元以上，法人將調降預期，股價承壓。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">6</div>
+        <div><strong>被動元件是高度週期性產業：過去大循環後的崩跌幅度可達70%</strong><br>2018~2019年MLCC大循環後，國巨股價從高峰跌去75%以上（從1,310元跌至320元以下）。當市場估值中含有大量對未來漲價的預期，一旦趨勢轉折，下跌速度往往超乎想像。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;background:linear-gradient(135deg,#fff7ed,#fff);">
+    <h4 style="color:var(--primary-dark);margin-bottom:12px;">⚖️ 辯論總結：看多 48% vs 看空 52%（短線偏空，長線偏多）</h4>
+    <div style="display:flex;gap:16px;align-items:center;margin-bottom:12px;">
+      <div style="font-weight:700;color:#10b981;">多方 48%</div>
+      <div style="flex:1;background:#e2e8f0;border-radius:8px;height:14px;overflow:hidden;">
+        <div style="width:48%;background:linear-gradient(90deg,#c2410c,#ea580c);height:100%;border-radius:8px;"></div>
+      </div>
+      <div style="font-weight:700;color:#ef4444;">空方 52%</div>
+    </div>
+    <p style="font-size:13px;color:var(--text-muted);">
+      <strong>給一般投資人的話：</strong>國巨的長線故事是真的——MLCC超級循環、AI需求結構性成長——但這個股票現在非常危險，不適合倉促進場。它是「注意股」（有交易限制），剛從1,220跌到815（-33%），技術面嚴重偏空。如果你真的看好長線，可以在750~850元試單1/4倉，把停損設在730元（跌破就立刻出場），目標1,000元以上。但絕對不要拿超過總資金5%來買，因為它隨時可能再繼續跌停。等它重新站回900元且注意股解除後，才是比較安全的加碼時機。
+    </p>
+  </div>
+</div>
+
+<!-- 11 風控評估 -->
+<div class="section">
+  <div class="section-title">🛡️ 風控評估（六維評分）</div>
+  <div class="card">
+    <div class="two-col">
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:14px;">六維風險評分</h4>
+        <div class="score-row">
+          <div class="score-label">估值風險(30%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:75%;background:#ef4444;"></div></div>
+          <div class="score-num" style="color:#ef4444;">7.5</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 122px;">FY2026E PE 47.7x；大量未來預期已Price in</div>
+        <div class="score-row">
+          <div class="score-label">財務風險(25%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:40%;background:#10b981;"></div></div>
+          <div class="score-num" style="color:#10b981;">4.0</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 122px;">毛利率創新高38.1%；財務結構健康</div>
+        <div class="score-row">
+          <div class="score-label">流動性(10%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:80%;background:#ef4444;"></div></div>
+          <div class="score-num" style="color:#ef4444;">8.0</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 122px;">注意股/處置股限制！流動性大幅受損</div>
+        <div class="score-row">
+          <div class="score-label">產業風險(15%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:65%;background:#f59e0b;"></div></div>
+          <div class="score-num" style="color:#f59e0b;">6.5</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 122px;">週期性產業；循環轉折時下跌幅度大</div>
+        <div class="score-row">
+          <div class="score-label">總經風險(10%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:60%;background:#f59e0b;"></div></div>
+          <div class="score-num" style="color:#f59e0b;">6.0</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 122px;">AI capex景氣風險；美中貿易戰影響</div>
+        <div class="score-row">
+          <div class="score-label">籌碼風險(10%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:85%;background:#ef4444;"></div></div>
+          <div class="score-num" style="color:#ef4444;">8.5</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 122px;">大量套牢籌碼(1000~1220元)；注意股賣壓沉重</div>
+      </div>
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:14px;">綜合風險結論</h4>
+        <div style="text-align:center;padding:20px;background:#fff1f2;border-radius:12px;margin-bottom:16px;">
+          <div style="font-size:48px;font-weight:800;color:#ef4444;">7.0</div>
+          <div style="font-size:16px;font-weight:600;color:var(--primary-dark);">/ 10</div>
+          <div style="margin-top:8px;"><span style="background:#ef4444;color:white;padding:5px 18px;border-radius:16px;font-weight:700;">🔴 高風險</span></div>
+        </div>
+        <table>
+          <tr><th>風險項目</th><th>評估</th></tr>
+          <tr><td>最大下行風險</td><td>-20%（跌至~650元 MA60附近）</td></tr>
+          <tr><td>最大上行潛力</td><td>+84%（達花旗目標1,500元）</td></tr>
+          <tr><td>風報比</td><td>4.2 : 1（高報酬/高風險）</td></tr>
+          <tr><td>適合投資人</td><td>積極成長型、能承受-30%以上虧損</td></tr>
+          <tr><td>不適合</td><td>穩健型、短線、低風險承受者</td></tr>
+        </table>
+        <div class="highlight-box" style="margin-top:12px;font-size:12px;">
+          ⚠️ 高風險警示：注意股限制+技術嚴重偏空+循環股估值偏高，此時進場需要極強的風險承受能力。建議組合中最高配比不超過3~5%。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 12 台股三段式策略 -->
+<div class="section">
+  <div class="section-title">🎯 台股三段式操作策略</div>
+  <div class="strategy-grid">
+    <div class="strat-card strat-attack">
+      <div class="strat-title">⚔️ 進攻型策略</div>
+      <div class="strat-item">📌 <strong>適合：</strong>極積極型/能承受大波動</div>
+      <div class="strat-item">🎯 <strong>試單：</strong>750 ~ 850 元（超賣區）</div>
+      <div class="strat-item">📦 <strong>部位建議：</strong>組合最多5%</div>
+      <div class="strat-item">🏁 <strong>第一目標：</strong>950 ~ 1,000 元</div>
+      <div class="strat-item">🏁 <strong>第二目標：</strong>1,200 ~ 1,500 元（長線）</div>
+      <div class="strat-item">⛔ <strong>停損：</strong>跌破730元</div>
+      <div class="strat-item" style="margin-top:8px;font-size:12px;opacity:0.9;">觸發條件：解除注意股 + MACD死叉收斂至-10以內 + 成交量萎縮</div>
+    </div>
+    <div class="strat-card strat-balance">
+      <div class="strat-title">⚖️ 均衡型策略</div>
+      <div class="strat-item">📌 <strong>適合：</strong>穩健成長型投資人</div>
+      <div class="strat-item">🎯 <strong>等待信號：</strong>解除注意股後</div>
+      <div class="strat-item">🎯 <strong>買進條件：</strong>重站MA5(949元)且量縮</div>
+      <div class="strat-item">📦 <strong>部位建議：</strong>組合3~5%</div>
+      <div class="strat-item">🏁 <strong>目標價：</strong>1,000 ~ 1,100 元</div>
+      <div class="strat-item">⛔ <strong>停損：</strong>跌破MA20(1,002元)以下後再進</div>
+      <div class="strat-item" style="margin-top:8px;font-size:12px;opacity:0.9;">加碼條件：Q2'26 EPS &gt; 4.5元確認漲價效應啟動</div>
+    </div>
+    <div class="strat-card strat-defend">
+      <div class="strat-title">🛡️ 防守型策略</div>
+      <div class="strat-item">📌 <strong>適合：</strong>保守型投資人</div>
+      <div class="strat-item">🎯 <strong>目前：完全觀望</strong></div>
+      <div class="strat-item">🎯 <strong>切入時機：</strong>跌勢止穩+解除處置+量縮</div>
+      <div class="strat-item">📦 <strong>部位建議：</strong>組合 ≤2%</div>
+      <div class="strat-item">🏁 <strong>目標：</strong>950 元（前期支撐）</div>
+      <div class="strat-item">⛔ <strong>停損：</strong>跌破700元</td></div>
+      <div class="strat-item" style="margin-top:8px;font-size:12px;opacity:0.9;">確認信號：連續3日收盤價穩定+外資連買</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h4 style="color:var(--primary-dark);margin-bottom:14px;">催化劑時程表（2026 H2）</h4>
+    <table>
+      <tr><th>時間</th><th>事件</th><th>預期影響</th></tr>
+      <tr><td>2026年7月</td><td>處置股解除（時間不確定）</td><td>正面：流動性恢復，空頭回補</td></tr>
+      <tr><td>2026年7月</td><td>7月月營收公告（6月153.6億是否持續成長）</td><td>核心：確認AI MLCC需求持續</td></tr>
+      <tr><td>2026年8月</td><td>Q2'26財報 + 法說會</td><td>關鍵：EPS是否如法人預期4.5元以上</td></tr>
+      <tr><td>2026 Q3</td><td>MLCC漲價效應完整反映（30%年漲）</td><td>毛利率目標40%+，EPS升至5元以上</td></tr>
+      <tr><td>2026 Q4</td><td>AI伺服器H2旺季出貨（Rubin VR200）</td><td>MLCC每機櫃57萬顆需求確認</td></tr>
+      <tr><td>2027年</td><td>MLCC漲價+67%（大摩預測）</td><td>EPS爆衝，毛利率45~50%；超級循環高峰</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 13 名詞小教室 -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">MLCC（Multi-Layer Ceramic Capacitor）</div>
+      <div class="glossary-def">積層陶瓷電容，簡稱「陶瓷電容」。電子設備裡最基礎的零件之一，負責儲存和釋放電能、濾波、降噪。一台普通手機有約1,000顆，但一台AI GPU伺服器機櫃竟需要57萬顆！需求量驚人，而生產技術門檻高、良率控制難，形成供給瓶頸。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">注意股 / 處置股</div>
+      <div class="glossary-def">當一檔股票在短期內出現異常漲跌幅或成交量，台灣證交所/櫃買中心會將其列為「注意股」，並在情況嚴重時升為「處置股」。處置期間：①禁止當日沖銷②每次買進需完成上一筆交割才能再買③可能限制融資。目的是保護投資人，避免市場炒作。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">被動元件超級循環</div>
+      <div class="glossary-def">被動元件（電容、電阻、電感）產業的漲價大週期，通常每10~15年出現一次。上一次是2018年的「MLCC大缺貨」，國巨從200元漲到1,310元。這次AI伺服器帶動的需求比上次更具結構性，理論上持續時間更長，但高速上漲後也需消化估值。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">KEMET / Pulse / 芝浦</div>
+      <div class="glossary-def">國巨透過收購建立的產品矩陣：KEMET（鉭電容，需要稀有金屬鉭製造，更難替換）、Pulse（磁性元件，用於電源管理）、芝浦（車用感測器，高毛利）。這三個品牌讓國巨從「電阻/MLCC廠」升級為全球被動元件的「一站式供應商」，增加客戶黏著度。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">MACD 死叉（柱狀值 -38.06）</div>
+      <div class="glossary-def">MACD指標的快線遠低於慢線，代表賣盤動能遠大於買盤。柱狀值-38.06是極端值（正常修正通常-5到-15），代表主力資金撤退的速度非常猛烈。這種情況下，技術面顯示股票仍在「跌勢」中，即使出現反彈也可能是誘多，需等死叉縮小至-10以內才算修復。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">布林通道下軌（超賣訊號）</div>
+      <div class="glossary-def">布林通道的下方界線，代表股價已偏離正常波動範圍的低端。理論上股價跌破下軌代表「超賣」，有技術反彈的機率。但在強勢下跌的情況下，股價可以沿著下軌滑行多日（貼著下軌繼續跌）。國巨815元已低於下軌824元，短線有反彈機率，但不保證立即止跌。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">分拆（Spin-off）</div>
+      <div class="glossary-def">把集團旗下某個子業務獨立出去，拆成另一家公司上市或單獨核算。國巨在2024~2025年間進行了業務分拆，導致合併財報EPS大幅降低（因為某些高獲利業務被拆出去）。這讓帳面EPS看起來從12元降到3元，但這是「帳面調整」，不代表公司賺錢能力變差，要看「分拆後」的業務有沒有持續成長才是重點。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">鉭電容（Tantalum Capacitor）</div>
+      <div class="glossary-def">用稀有金屬「鉭」製造的高階電容，比一般MLCC體積更小、電容量更大、溫度穩定性更高，主要用在軍事、航太、醫療和AI伺服器等高規格場合。因為原料稀缺（鉭主要產自剛果）、生產難度高，鉭電容的漲價幅度往往更劇烈，是國巨旗下KEMET的核心競爭力。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 14 免責聲明 -->
+<div class="section">
+  <div class="disclaimer">
+    <strong>⚠️ 重要免責聲明</strong><br><br>
+    本報告由 AI 分析系統依據公開市場資料自動生成，<strong>僅供學術研究與資訊參考，絕非投資建議或招攬推介</strong>。所有股價、財務數據及市場分析均可能存在誤差，且不代表未來投資績效。<br><br>
+    <strong>國巨(2327)目前為台灣證交所「注意股/處置股」，交易限制較一般股票更多，流動性風險較高。被動元件為高度週期性產業，歷史上曾出現股價下跌75%以上的案例。</strong><br><br>
+    <strong>投資一定有風險，股市投資可能損失本金，過去績效不代表未來獲利保證。</strong>投資人在做出任何投資決策前，應諮詢合格的專業財務顧問，並根據個人風險承受度、財務狀況及投資目標自行判斷。<br><br>
+    <strong>資料來源：</strong>Fugle API（即時股價）、FinMind（歷史K線/月營收/季報）、台灣證交所T86 API（三大法人，本次受注意股影響數據為0）、工商時報、Yahoo股市、鉅亨網、永豐學堂、Growin Blog（市場新聞與分析師評等）。本報告生成時間：2026-07-13 09:52。
+  </div>
+</div>
+
+</div>
+
+<!-- Chart.js Scripts -->
+<script>
+// EPS Chart
+const epsCtx = document.getElementById('epsChart').getContext('2d');
+new Chart(epsCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25★','Q4\'25','Q1\'26★'],
+    datasets: [{
+      label: 'EPS（元）',
+      data: [13.02, 11.01, 7.07, 10.77, 9.74, 3.10, 3.29, 3.90],
+      backgroundColor: ['#fed7aa','#fed7aa','#fed7aa','#fed7aa','#fed7aa','#c2410c','#c2410c','#ea580c'],
+      borderRadius: 6, borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `EPS：${ctx.parsed.y.toFixed(2)} 元` } }
+    },
+    scales: {
+      y: { beginAtZero: true, max: 15, ticks: { callback: v => v.toFixed(0)+'元' }, grid: { color: '#f1f5f9' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Revenue Chart
+const revCtx = document.getElementById('revChart').getContext('2d');
+new Chart(revCtx, {
+  type: 'line',
+  data: {
+    labels: ['1月','2月','3月','4月','5月','6月★'],
+    datasets: [{
+      label: '2026年月營收（億元）',
+      data: [130.3, 115.1, 136.3, 140.4, 150.6, 153.6],
+      borderColor: '#c2410c',
+      backgroundColor: 'rgba(194,65,12,0.1)',
+      pointBackgroundColor: ['#fed7aa','#fed7aa','#fed7aa','#fed7aa','#fed7aa','#c2410c'],
+      pointRadius: [5,5,5,5,5,8],
+      tension: 0.4, fill: true, borderWidth: 2.5,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `月營收：${ctx.parsed.y.toFixed(1)} 億元` } }
+    },
+    scales: {
+      y: { beginAtZero: false, min: 100, ticks: { callback: v => v+'億' }, grid: { color: '#f1f5f9' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// PE Compare Chart
+const peCtx = document.getElementById('peChart').getContext('2d');
+new Chart(peCtx, {
+  type: 'bar',
+  data: {
+    labels: ['國巨(FY26E)','國巨(FY27E)','村田製作(推估)','TDK(推估)','台股大盤','三星電機(推估)'],
+    datasets: [{
+      label: '本益比（倍）',
+      data: [47.7, 34.4, 42, 30, 20, 28],
+      backgroundColor: ['#c2410c','#ea580c','#94a3b8','#94a3b8','#64748b','#94a3b8'],
+      borderRadius: 6, borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `PE：${ctx.parsed.x.toFixed(1)} 倍` } }
+    },
+    scales: {
+      x: { beginAtZero: true, max: 55, ticks: { callback: v => v+'x' }, grid: { color: '#f1f5f9' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
