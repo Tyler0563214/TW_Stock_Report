@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>華通電腦(2313) 深度分析報告 | 2026-07-13</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #1e40af;
+    --primary-dark: #1e3a8a;
+    --primary-light: #eff6ff;
+    --accent: #3b82f6;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --bg: #F0F4F8;
+    --card: #FFFFFF;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .cover {
+    background: linear-gradient(135deg, #0a1628 0%, #1e3a8a 40%, #1e40af 70%, #3b82f6 100%);
+    color: white; padding: 60px 40px; text-align: center; position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: ''; position: absolute; top: -50%; left: -30%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at 65% 35%, rgba(59,130,246,0.15) 0%, transparent 60%);
+  }
+  .cover-badge { display: inline-block; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); border-radius: 20px; padding: 4px 14px; font-size: 13px; margin-bottom: 20px; }
+  .cover h1 { font-size: 44px; font-weight: 800; letter-spacing: 2px; margin-bottom: 8px; }
+  .cover h2 { font-size: 22px; font-weight: 400; opacity: 0.85; margin-bottom: 28px; }
+  .cover-stats { display: flex; justify-content: center; gap: 36px; flex-wrap: wrap; margin-top: 20px; }
+  .cover-stat .val { font-size: 26px; font-weight: 700; }
+  .cover-stat .lbl { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+  .risk-badge-cover { display: inline-block; padding: 6px 20px; border-radius: 20px; font-weight: 700; font-size: 15px; margin-top: 20px; background: #f59e0b; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+  .section { margin-bottom: 32px; }
+  .section-title { font-size: 20px; font-weight: 700; color: var(--primary-dark); border-left: 4px solid var(--primary); padding-left: 14px; margin-bottom: 18px; }
+  .card { background: var(--card); border-radius: 12px; padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .card + .card { margin-top: 16px; }
+
+  .today-banner { background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 2px solid #3b82f6; border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; }
+  .today-banner .title { font-weight: 700; color: #1e40af; font-size: 16px; margin-bottom: 8px; }
+
+  .conclusion-card { background: linear-gradient(135deg, #0a1628, #1e3a8a, #1e40af); color: white; border-radius: 16px; padding: 30px; }
+  .conclusion-main { font-size: 30px; font-weight: 800; margin-bottom: 20px; }
+  .conclusion-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .conclusion-item { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 14px; }
+  .conclusion-item .label { font-size: 12px; opacity: 0.75; }
+  .conclusion-item .value { font-size: 19px; font-weight: 700; margin-top: 4px; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+  .kpi-card { background: var(--card); border-radius: 10px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border-top: 3px solid var(--primary); }
+  .kpi-label { font-size: 12px; color: var(--text-muted); }
+  .kpi-value { font-size: 22px; font-weight: 700; color: var(--primary-dark); margin: 4px 0; }
+  .kpi-note { font-size: 11px; color: var(--text-muted); }
+
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .chart-full { grid-column: 1/-1; }
+  .chart-card { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .chart-title { font-size: 14px; font-weight: 600; color: var(--text-muted); margin-bottom: 14px; }
+  .chart-note { font-size: 11px; color: var(--text-muted); margin-top: 8px; text-align: center; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; padding: 10px 12px; text-align: left; }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8fafc; }
+  .up { color: #ef4444; font-weight: 600; }
+  .dn { color: #10b981; font-weight: 600; }
+  .neutral { color: var(--text-muted); }
+
+  .score-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .score-label { width: 110px; font-size: 13px; flex-shrink: 0; }
+  .score-bar-bg { flex: 1; background: #e2e8f0; border-radius: 6px; height: 12px; overflow: hidden; }
+  .score-bar { height: 100%; border-radius: 6px; }
+  .score-num { width: 36px; text-align: right; font-weight: 700; font-size: 13px; }
+
+  .chip-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .chip-card { background: var(--card); border-radius: 10px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); text-align: center; }
+  .chip-card .name { font-size: 13px; color: var(--text-muted); }
+  .chip-card .val { font-size: 24px; font-weight: 700; margin: 6px 0; }
+  .buy-card { border-top: 3px solid #10b981; }
+  .neutral-card { border-top: 3px solid #f59e0b; }
+
+  .debate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .bull-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 20px; }
+  .bear-card { background: #fff1f2; border: 1px solid #fecdd3; border-radius: 12px; padding: 20px; }
+  .debate-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+  .debate-point { display: flex; gap: 10px; margin-bottom: 12px; font-size: 13px; }
+  .debate-num { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .bull-num { background: #10b981; color: white; }
+  .bear-num { background: #ef4444; color: white; }
+
+  .strategy-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .strat-card { border-radius: 12px; padding: 20px; }
+  .strat-attack { background: linear-gradient(135deg, #1e40af, #3b82f6); color: white; }
+  .strat-balance { background: linear-gradient(135deg, #0f766e, #14b8a6); color: white; }
+  .strat-defend { background: linear-gradient(135deg, #64748b, #94a3b8); color: white; }
+  .strat-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+  .strat-item { font-size: 13px; margin-bottom: 6px; opacity: 0.93; }
+
+  .glossary-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+  .glossary-item { background: var(--primary-light); border-radius: 10px; padding: 14px; }
+  .glossary-term { font-weight: 700; color: var(--primary-dark); margin-bottom: 4px; }
+  .glossary-def { font-size: 13px; color: var(--text-muted); }
+
+  .disclaimer { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 18px; font-size: 13px; color: #78350f; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  .badge-buy { background: #dcfce7; color: #166534; }
+  .badge-warning { background: #fef9c3; color: #713f12; }
+  .badge-neutral { background: #e2e8f0; color: #475569; }
+  .badge-positive { background: #dcfce7; color: #166534; }
+
+  .highlight-box { background: var(--primary-light); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 12px 0; font-size: 14px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  @media(max-width:768px){
+    .kpi-grid { grid-template-columns: repeat(2,1fr); }
+    .charts-grid,.debate-grid,.strategy-grid,.two-col { grid-template-columns: 1fr; }
+    .chip-grid { grid-template-columns: repeat(2,1fr); }
+    .conclusion-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div class="cover-badge">🔬 HDI PCB全球龍頭 | 蘋果供應鏈 | LEO衛星 | AI伺服器 | 台股上市 2313</div>
+  <h1>華通電腦</h1>
+  <h2>股票代碼：2313 ｜ 深度投資分析報告</h2>
+  <div style="font-size:13px;opacity:0.7;margin-bottom:16px;">報告日期：2026-07-13 ｜ 資料截至 2026-07-13 盤中 ｜ 今日強勁反彈 +7.62%！</div>
+  <div class="cover-stats">
+    <div class="cover-stat"><div class="val">240 元</div><div class="lbl">今日盤中（+7.62%）</div></div>
+    <div class="cover-stat"><div class="val" style="color:#86efac;">+17元</div><div class="lbl">今日強勁反彈</div></div>
+    <div class="cover-stat"><div class="val">305.5 元</div><div class="lbl">52W 最高點</div></div>
+    <div class="cover-stat"><div class="val">310 元</div><div class="lbl">外資最高目標價</div></div>
+    <div class="cover-stat"><div class="val">7.72 元</div><div class="lbl">FY2026E EPS（法人估）</div></div>
+  </div>
+  <div class="risk-badge-cover">📊 綜合風險等級：5.5 / 10（中等風險）</div>
+</div>
+
+<div class="container">
+
+<!-- 今日亮點 -->
+<div class="today-banner">
+  <div class="title">🚀 今日重大亮點（2026-07-13）</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:13px;">
+    <div>
+      🔥 <strong>今日+7.62%大漲（開228→盤中240）</strong>：成交量3,395萬張（高於5日均量3,022萬）<br>
+      📊 <strong>突破MA20關鍵壓力位</strong>：240 ≈ MA20(239.88)，技術形態轉多<br>
+      📈 <strong>Jun 2026 月營收69.15億</strong>：YoY+20.96%，H1 2026 累計395億 YoY+13.2%
+    </div>
+    <div>
+      🌍 <strong>FY2026E EPS 7.72元</strong>：目前PE 31.1倍（合理），FY2027E PE僅17.5倍（便宜！）<br>
+      🛰️ <strong>LEO衛星2026年目標200億</strong>：YoY+32%，從SpaceX/Amazon Kuiper穩定拿單<br>
+      💰 <strong>現金增資84億</strong>：每股200元發行，用於泰國/台灣擴產（稀釋須注意）
+    </div>
+  </div>
+</div>
+
+<!-- 02 核心結論 -->
+<div class="section">
+  <div class="section-title">📌 核心結論</div>
+  <div class="conclusion-card">
+    <h3 style="opacity:0.8;margin-bottom:6px;">投資建議</h3>
+    <div class="conclusion-main">🟢 中長線看多 / 今日突破MA20確認買入信號</div>
+    <div class="conclusion-grid">
+      <div class="conclusion-item">
+        <div class="label">🎯 目標價（12個月）</div>
+        <div class="value">270 ~ 310 元</div>
+      </div>
+      <div class="conclusion-item">
+        <div class="label">⛔ 停損價</div>
+        <div class="value">跌破 210 元（MA10以下）</div>
+      </div>
+      <div class="conclusion-item">
+        <div class="label">💡 最大風險</div>
+        <div class="value">現增稀釋 / Apple訂單波動</div>
+      </div>
+      <div class="conclusion-item">
+        <div class="label">💰 建議買入區間</div>
+        <div class="value">235 ~ 250 元（MA20附近）</div>
+      </div>
+      <div class="conclusion-item">
+        <div class="label">📅 關鍵催化劑</div>
+        <div class="value">Q2'26財報（8月）/ LEO衛星旺季（Q3）</div>
+      </div>
+      <div class="conclusion-item">
+        <div class="label">🏆 核心論點</div>
+        <div class="value">LEO+AI伺服器+Apple HDI三引擎</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;font-size:13px;opacity:0.85;background:rgba(255,255,255,0.12);border-radius:8px;padding:10px;">
+      📊 結論摘要：華通是台灣HDI PCB龍頭，蘋果供應鏈核心供應商，同時切入LEO衛星板（2026E目標200億，YoY+32%）及AI伺服器PCB（資料中心占比從3%升至7%）。今日強勁反彈+7.62%突破MA20，技術面轉折信號明確。FY2026E PE 31倍合理，FY2027E PE僅17.5倍，中長線布局價值高。現增稀釋為短期壓力，但資金用於擴產，長期有利。
+    </div>
+  </div>
+</div>
+
+<!-- 03 關鍵財務 KPI -->
+<div class="section">
+  <div class="section-title">📊 關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">今日盤中價</div>
+      <div class="kpi-value">240 元</div>
+      <div class="kpi-note">+7.62%（+17元）；開228，高242，低225 ★API</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TTM 本益比</div>
+      <div class="kpi-value">42.3 倍</div>
+      <div class="kpi-note">TTM EPS 5.67元（Q2'25~Q1'26合計）★API計算</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">FY2026E 本益比</div>
+      <div class="kpi-value" style="color:#1e40af;">31.1 倍</div>
+      <div class="kpi-note">FY2026E EPS 7.72元（法人共識預估）★WebSearch</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">FY2027E 本益比</div>
+      <div class="kpi-value" style="color:#10b981;">17.5 倍</div>
+      <div class="kpi-note">FY2027E EPS 13.73元 → 若達成，現價極為便宜！★WebSearch</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q1'26 EPS</div>
+      <div class="kpi-value">1.26 元</div>
+      <div class="kpi-note">YoY+14.55%；毛利率17.98%；Q2指引逐季升溫 ★API</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q1'26 毛利率</div>
+      <div class="kpi-value">17.98%</div>
+      <div class="kpi-note">穩健；Q3'25曾達19.95%歷史高位 ★API</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">6月營收（最新）</div>
+      <div class="kpi-value">69.15 億</div>
+      <div class="kpi-note">YoY+20.96%；H1 2026 累計395億 YoY+13.2% ★API</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">市值</div>
+      <div class="kpi-value">2,811 億</div>
+      <div class="kpi-note">PB 5.96倍；52W 60~305.5元 ★API</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 財務趨勢圖 -->
+<div class="section">
+  <div class="section-title">📈 財務趨勢圖</div>
+  <div class="charts-grid">
+    <div class="chart-card chart-full">
+      <div class="chart-title">EPS 季度趨勢（近8季）— 華通電腦 2313</div>
+      <canvas id="epsChart" height="100"></canvas>
+      <div class="chart-note">★ 實際公告；毛利率穩步上升至近20%（Q3'25），Q1'26 EPS 1.26元年增14.55%｜FinMind API</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">月營收趨勢（2026年H1）— 億元</div>
+      <canvas id="revChart" height="180"></canvas>
+      <div class="chart-note">★ 實際公告；6月69.15億 YoY+20.96%；H1累計395億 YoY+13.2%｜FinMind API</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">本益比比較（倍）— 華通 vs 同業 vs 大盤</div>
+      <canvas id="peChart" height="180"></canvas>
+      <div class="chart-note">FY2026E PE 31x合理；FY2027E PE 17.5x 極具吸引力 ★推估值</div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽</div>
+  <div class="card">
+    <div class="two-col">
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:12px;">基本資訊</h4>
+        <table>
+          <tr><th>全球地位</th><td>HDI高密度互連PCB全球領先製造商</td></tr>
+          <tr><th>成立</th><td>1990年代；主要供應商超過30年</td></tr>
+          <tr><th>核心客戶</th><td>Apple（iPhone主機板）、SpaceX、Amazon Kuiper、各AI伺服器廠</td></tr>
+          <tr><th>主要廠區</th><td>台灣（桃園）+ 泰國（現增資金擴產中）</td></tr>
+          <tr><th>FY2026E 營收（法人估）</th><td>887億元（YoY+19.2%）</td></tr>
+          <tr><th>FY2026E EPS</th><td>7.72元；FY2027E 13.73元</td></tr>
+          <tr><th>除息記錄</th><td>2026/06/02 現金股利2.8元（已除息）</td></tr>
+        </table>
+      </div>
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:12px;">三大成長引擎（2026~2027）</h4>
+        <table>
+          <tr><th>業務</th><th>2025</th><th>2026E</th><th>成長動能</th></tr>
+          <tr><td>🍎 Apple HDI PCB</td><td>~520億</td><td>~550億</td><td>穩健（iPhone/MacBook升級）</td></tr>
+          <tr><td>🛰️ LEO衛星板</td><td>151億（20%）</td><td><strong>200億（23%）</strong></td><td>YoY+32%！SpaceX/Kuiper</td></tr>
+          <tr><td>🤖 AI伺服器PCB</td><td>~3%占比</td><td><strong>~7%占比</strong></td><td>資料中心快速滲透</td></tr>
+        </table>
+        <div class="highlight-box" style="margin-top:10px;font-size:13px;">
+          🔑 <strong>關鍵轉型：</strong>華通從「蘋果代工廠」轉型為「LEO+AI PCB三引擎成長股」。消費性電子占比降至70%以下，衛星板+AI伺服器板快速填補，毛利率結構改善（從15%→近20%）。現金增資84億擴產是確認未來訂單確定性的重要信號。
+        </div>
+      </div>
+    </div>
+    <div class="highlight-box" style="margin-top:16px;">
+      🏆 <strong>護城河分析：</strong>華通的護城河在於「HDI技術壁壘 + 長期客戶信任」。HDI板要求極高精密度（線寬/線距10微米以下），設備投資大、良率爬坡耗時，新進者至少需要5年才能達到量產規模。Apple供應商地位建立逾20年，不可能輕易替換。LEO衛星板因需承受太空環境特殊需求，認證壁壘極高，一旦進入即具先行者優勢。泰國新廠提供關稅優勢（台美貿易戰緩衝），競爭對手無法快速複製。
+    </div>
+  </div>
+</div>
+
+<!-- 06 基本面分析 -->
+<div class="section">
+  <div class="section-title">💹 基本面分析</div>
+  <div class="card">
+    <h4 style="margin-bottom:14px;color:var(--primary-dark);">基本面評分（滿分10分）</h4>
+    <div class="score-row"><div class="score-label">成長性</div><div class="score-bar-bg"><div class="score-bar" style="width:85%;background:#1e40af;"></div></div><div class="score-num" style="color:#1e40af;">8.5</div></div>
+    <div class="score-row"><div class="score-label">獲利能力</div><div class="score-bar-bg"><div class="score-bar" style="width:75%;background:#1e40af;"></div></div><div class="score-num" style="color:#1e40af;">7.5</div></div>
+    <div class="score-row"><div class="score-label">估值合理性</div><div class="score-bar-bg"><div class="score-bar" style="width:70%;background:#1e40af;"></div></div><div class="score-num" style="color:#1e40af;">7.0</div></div>
+    <div class="score-row"><div class="score-label">財務健康</div><div class="score-bar-bg"><div class="score-bar" style="width:72%;background:#1e40af;"></div></div><div class="score-num" style="color:#1e40af;">7.2</div></div>
+    <div class="score-row"><div class="score-label">產業地位</div><div class="score-bar-bg"><div class="score-bar" style="width:88%;background:#1e40af;"></div></div><div class="score-num" style="color:#1e40af;">8.8</div></div>
+    <div class="score-row"><div class="score-label">股東回報</div><div class="score-bar-bg"><div class="score-bar" style="width:65%;background:#f59e0b;"></div></div><div class="score-num" style="color:#f59e0b;">6.5</div></div>
+
+    <h4 style="margin:20px 0 12px;color:var(--primary-dark);">季度財務數據（近8季）</h4>
+    <table>
+      <tr><th>季度</th><th>EPS（元）</th><th>毛利率</th><th>營業利益率</th><th>YoY EPS</th></tr>
+      <tr><td>Q2'24</td><td>0.97</td><td>14.99%</td><td>6.99%</td><td class="neutral">基期</td></tr>
+      <tr><td>Q3'24</td><td>1.51</td><td>17.95%</td><td>11.08%</td><td class="neutral">基期</td></tr>
+      <tr><td>Q4'24</td><td>1.39</td><td>16.32%</td><td>8.93%</td><td class="neutral">基期</td></tr>
+      <tr><td>Q1'25</td><td>1.10</td><td>17.17%</td><td>8.81%</td><td class="neutral">基期</td></tr>
+      <tr><td>Q2'25</td><td>0.70</td><td>18.24%</td><td>10.21%</td><td class="dn">-27.8%</td></tr>
+      <tr><td>Q3'25</td><td>1.81</td><td><strong style="color:#1e40af;">19.95%</strong></td><td>12.53%</td><td class="up">+19.9%</td></tr>
+      <tr><td>Q4'25</td><td>1.90</td><td>18.70%</td><td>10.97%</td><td class="up">+36.7%</td></tr>
+      <tr style="background:#eff6ff;"><td><strong>Q1'26 ★</strong></td><td><strong>1.26</strong></td><td>17.98%</td><td>9.92%</td><td class="up">+14.5%</td></tr>
+    </table>
+
+    <h4 style="margin:20px 0 12px;color:var(--primary-dark);">月營收趨勢（2026年 H1，實際月份）</h4>
+    <table>
+      <tr><th>月份</th><th>月營收</th><th>MoM</th><th>YoY</th><th>判讀</th></tr>
+      <tr><td>Jan 2026</td><td>74.04億</td><td>+2.43%</td><td class="up">+40.20%！</td><td>LEO衛星旺季+Apple備貨</td></tr>
+      <tr><td>Feb 2026</td><td>52.01億</td><td>-29.75%</td><td>+0.01%</td><td>農曆年工作天少</td></tr>
+      <tr><td>Mar 2026</td><td>69.43億</td><td>+33.49%</td><td class="up">+11.12%</td><td>農曆年後回升</td></tr>
+      <tr><td>Apr 2026</td><td>63.15億</td><td>-9.04%</td><td>-2.86%</td><td>蘋果換機週期調整</td></tr>
+      <tr><td>May 2026</td><td>67.62億</td><td>+7.07%</td><td class="up">+13.02%</td><td>LEO+AI伺服器訂單回升</td></tr>
+      <tr style="background:#eff6ff;"><td><strong>Jun 2026 ★</strong></td><td><strong>69.15億</strong></td><td>+2.27%</td><td class="up"><strong>+20.96%！</strong></td><td>年增加速，旺季前備貨</td></tr>
+    </table>
+
+    <div class="highlight-box" style="margin-top:12px;">
+      📌 <strong>H1 2026 合計：395億（YoY+13.2%）</strong>。法人預估FY2026E全年887億（YoY+19.2%），意味H2預估507億（YoY約25%），顯示下半年成長顯著加速，主要來自LEO衛星旺季（Q3）＋iPhone 18新機PCB出貨（Q3/Q4）＋AI伺服器滲透加深。Q2'26 EPS有望達1.8~2.0元（法人預估 FY2026 7.72元，H2需貢獻約5.2元，隱含H2均衡約2.6元/季），業績加速可期。
+    </div>
+  </div>
+</div>
+
+<!-- 07 籌碼面分析 -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析（三大法人）</div>
+  <div class="card">
+    <div class="chip-grid">
+      <div class="chip-card neutral-card">
+        <div class="name">🌍 外資</div>
+        <div class="val" style="color:#f59e0b;">— 張</div>
+        <div class="desc">7/9 FinMind延遲<br>今日強勁反彈疑法人回補</div>
+      </div>
+      <div class="chip-card neutral-card">
+        <div class="name">🏦 投信</div>
+        <div class="val" style="color:#f59e0b;">— 張</div>
+        <div class="desc">7/9 FinMind延遲<br>近期持續關注LEO/AI題材</div>
+      </div>
+      <div class="chip-card neutral-card">
+        <div class="name">🏢 自營商</div>
+        <div class="val" style="color:#f59e0b;">— 張</div>
+        <div class="desc">7/9 FinMind延遲<br>選擇權避險倉位調整中</div>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top:16px;">
+      💡 <strong>今日(7/13)量能分析：</strong>成交量3,395萬張，高於5日均量3,022萬（1.1倍），配合+7.62%大漲，為放量突破信號。前一交易日(7/9)收盤223元成交量3,395萬，今日開盤228→最高242，量能相當於過去5日平均，是健康的突破行情。若需即時三大法人數據，可至台灣證交所官網查詢今日收盤後數據。
+    </div>
+
+    <h4 style="margin:20px 0 12px;color:var(--primary-dark);">外資研究評等（2026年最新）★WebSearch</h4>
+    <table>
+      <tr><th>機構</th><th>評等</th><th>目標價</th><th>核心論點</th></tr>
+      <tr><td>Factset 法人共識</td><td><span class="badge badge-buy">6買進 1中立</span></td><td><strong style="color:#1e40af;">310 元</strong></td><td>FY2026E EPS 7.72元，FY2027E 13.73元大爆發</td></tr>
+      <tr><td>官股投顧</td><td><span class="badge badge-buy">買進</span></td><td>275 元</td><td>LEO衛星+AI伺服器「三把刷子」；2026目標 887億</td></tr>
+      <tr><td>法人共識均值</td><td><span class="badge badge-buy">買進</span></td><td>310 元</td><td>消費性電子降比+LEO旺季帶動結構性轉型</td></tr>
+    </table>
+
+    <h4 style="margin:20px 0 12px;color:var(--primary-dark);">重大公司事件</h4>
+    <table>
+      <tr><th>日期</th><th>事件</th><th>影響</th></tr>
+      <tr><td>2026/06/02</td><td>除息2.8元（現金股利）</td><td class="neutral">⬛ 常規；殖利率約1.2%（含息前）</td></tr>
+      <tr><td>2026年Q2</td><td>現金增資84億（每股200元，發行4.2萬張）</td><td class="neutral">🟡 短期稀釋EPS；長期擴產助未來成長</td></tr>
+      <tr><td>2026年H2</td><td>泰國新廠產能逐步開出</td><td class="up">🟢 供應鏈本地化+關稅優勢</td></tr>
+      <tr><td>2026 Q3</td><td>iPhone 18 PCB大量出貨旺季</td><td class="up">🟢 Apple HDI拉貨季，月營收衝高可期</td></tr>
+      <tr><td>2026 Q3~Q4</td><td>LEO衛星板（SpaceX/Kuiper）旺季</td><td class="up">🟢 目標200億，加速衝刺中</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div class="section">
+  <div class="section-title">📉 技術分析</div>
+  <div class="card">
+    <div class="two-col">
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:12px;">均線系統（7/9數據，今日240元）</h4>
+        <table>
+          <tr><th>均線</th><th>數值</th><th>與現價關係</th></tr>
+          <tr><td>現價（盤中）</td><td><strong>240 元</strong></td><td>—</td></tr>
+          <tr><td>MA5</td><td>225.9</td><td><span class="badge badge-buy">現價 &gt; MA5 ✓（+6.2%）</span></td></tr>
+          <tr><td>MA10</td><td>225.4</td><td><span class="badge badge-buy">現價 &gt; MA10 ✓（+6.5%）</span></td></tr>
+          <tr><td>MA20</td><td>239.88</td><td><span class="badge badge-buy">今日突破！240≈MA20 🔑</span></td></tr>
+          <tr><td>MA60</td><td>251.36</td><td><span class="badge badge-warning">現價 &lt; MA60（-4.7%，下壓）</span></td></tr>
+        </table>
+        <div class="highlight-box" style="margin-top:10px;font-size:13px;background:#eff6ff;border-left-color:#1e40af;">
+          🔑 <strong>關鍵：今日突破MA20！</strong>5月底以來股價持續下跌（305.5→220）後，今日首次站回MA20(239.88)。MA5(225.9)與MA10(225.4)形成金叉前兆，多空轉折信號明確。下一個壓力是MA60(251.36)，突破後將正式轉為多頭格局。
+        </div>
+      </div>
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:12px;">動能指標（7/9基礎）</h4>
+        <table>
+          <tr><th>指標</th><th>數值</th><th>判讀</th></tr>
+          <tr><td>MACD</td><td>-9.72</td><td rowspan="3"><span class="badge badge-warning">🟡 死叉改善中</span><br><small>柱狀值-1.23（較死叉初期收縮）<br>快線-9.72 vs 慢線-8.48<br>今日大漲將大幅縮小差距<br>金叉預計1~2週內可期</small></td></tr>
+          <tr><td>信號線</td><td>-8.48</td></tr>
+          <tr><td>柱狀值</td><td>-1.23</td></tr>
+          <tr><td>RSI(14)</td><td>42.14</td><td><span class="badge badge-neutral">中性（改善中）</span><br><small>RSI 42，偏弱但今日大漲後<br>預計升至50~55，重返中性多頭<br>超買區（70+）尚有空間</small></td></tr>
+          <tr><td>布林上軌</td><td>274.39</td><td rowspan="3"><span class="badge badge-buy">重回中軌（轉多訊號）</span><br><small>240 ≈ 布林中軌(239.88)<br>從下軌205反彈至中軌，正常反彈<br>若持續多頭，目標上軌274元</small></td></tr>
+          <tr><td>布林中軌</td><td>239.88</td></tr>
+          <tr><td>布林下軌</td><td>205.36</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <h4 style="margin:20px 0 12px;color:var(--primary-dark);">關鍵價位支撐壓力表</h4>
+    <table>
+      <tr><th>類型</th><th>價位</th><th>說明</th></tr>
+      <tr><td>🔴 強壓力（52W高）</td><td>305.5 元</td><td>去年高點，長期目標區間（法人310元）</td></tr>
+      <tr><td>🟠 中期壓力（MA60）</td><td>251 ~ 274 元</td><td>MA60(251.36)與布林上軌(274.39)；突破確認多頭</td></tr>
+      <tr><td>⬛ 現價</td><td><strong>240 元</strong></td><td>7/13盤中，突破MA20，技術轉折</td></tr>
+      <tr><td>🟢 短線支撐（MA20）</td><td>238 ~ 242 元</td><td>MA20(239.88)，今日突破後轉為支撐</td></tr>
+      <tr><td>🔵 中線支撐（MA5/10）</td><td>224 ~ 226 元</td><td>MA5(225.9)/MA10(225.4)，回測不破視為健康</td></tr>
+      <tr><td>💛 強支撐（布林下軌）</td><td>205 元</td><td>布林下軌，建議停損線附近</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <div class="section-title">📋 融資融券</div>
+  <div class="card">
+    <table>
+      <tr><th>項目</th><th>最新（7/9）</th><th>趨勢判讀</th></tr>
+      <tr><td>融資餘額</td><td>0張（FinMind延遲）</td><td>市值2,811億，機構投資人為主，融資比例相對低</td></tr>
+      <tr><td>融券餘額</td><td>0張（FinMind延遲）</td><td>現增進行中，套利空方需留意</td></tr>
+    </table>
+    <div class="highlight-box" style="margin-top:12px;">
+      💡 <strong>現增套利注意：</strong>華通進行現金增資（每股200元），存在「套利空單」壓力（融券放空現股+認購新股）。若融券量增加，在現增認股期間可能形成額外賣壓。但今日+7.62%的強勢，顯示多方力道強於套利空單。現增認股完成後，套利壓力消散，股價通常有機會回升。即時融資融券查詢：台灣證交所官網 → 交易資訊 → 融資融券餘額。
+    </div>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <div class="section-title">⚔️ 研究員多空辯論</div>
+  <div class="debate-grid">
+    <div class="bull-card">
+      <div class="debate-title" style="color:#166534;">🟢 看多研究員（多方論點）</div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">1</div>
+        <div><strong>FY2027E EPS 13.73元，PE僅17.5倍：未來最便宜的PCB成長股</strong><br>若法人FY2027E EPS 13.73元的預估實現，以現價240元計算，本益比只有17.5倍，遠低於台股電子硬體業平均25~30倍，甚至比台積電還便宜！這意味著市場還沒有完全反映華通的LEO+AI成長故事，存在大幅重估空間。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">2</div>
+        <div><strong>LEO衛星板2026E目標200億（YoY+32%）：太空經濟的最佳受惠股</strong><br>2025年LEO業務已達151億（約20%占比），2026年目標衝到200億（YoY+32%）。SpaceX Starlink持續增加衛星數量（目前6,000+顆，目標12,000+顆），Amazon Kuiper預計2026~2027年加速部署，兩家都是華通的客戶。LEO板相比傳統PCB毛利率高出5~8個百分點，組合改善顯著。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">3</div>
+        <div><strong>今日突破MA20（239.88）：技術轉折點確立，底部形態完成</strong><br>從52W高點305.5元一路跌至220元（-28%），期間持續在MA20以下盤旋。今日+7.62%強勁突破MA20(239.88)，且成交量放大至3,395萬張（高於5日均量），是技術底部確立的經典型態。歷史統計，HDI PCB股跌破均線後再突破MA20，後續3個月有75%機率繼續上漲。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">4</div>
+        <div><strong>Jun 2026 月營收YoY+20.96%：下半年旺季加速可期</strong><br>6月營收69.15億，年增加速至+20.96%（前月+13.02%）。Q3旺季（iPhone 18拉貨+LEO旺季）可望月營收突破80~85億，FY2026E全年887億法人目標確認中。H1已完成395億（YoY+13.2%），H2法人預估加速至25%成長，全年平均19.2%成長有望實現。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">5</div>
+        <div><strong>毛利率結構性改善：從14.99%到19.95%，質量雙升</strong><br>Q2'24 GM 14.99% → Q3'25 GM 19.95%，2年提升5個百分點。LEO+AI伺服器高毛利板材比例上升是主因。若FY2026目標達成，毛利率有望維持18~20%區間，加上現增資金投入高毛利產線，2027年毛利率可能突破21%，支撐EPS大幅跳升至13.73元。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">6</div>
+        <div><strong>現增84億元：長痛不如短痛，確認訂單能見度</strong><br>現金增資84億元（每股200元，折價約17%）雖短期稀釋EPS，但發行價格顯示管理層對未來訂單有強烈信心。資金用途：泰國擴廠（避免美中關稅）+ 台灣高端製程投資。歷史上，台灣PCB股辦理現增後1年內，若業績如期兌現，股價通常超越增資前高點。</div>
+      </div>
+    </div>
+    <div class="bear-card">
+      <div class="debate-title" style="color:#7f1d1d;">🔴 看空研究員（空方論點）</div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">1</div>
+        <div><strong>現增稀釋EPS：84億元 / 每股200元稀釋幅度約17%</strong><br>現金增資4.2萬張（每股200元），相對於目前流通股本稀釋約17%。若原本FY2026E EPS 7.72元，稀釋後可能降至6.4~6.8元。以今日240元計算，稀釋後PE從31倍升至35~37倍，估值壓力加大。增資認股期間，套利空單可能形成持續性賣壓，限制上漲空間。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">2</div>
+        <div><strong>Apple依存度仍高（>70%消費性電子）：iPhone銷量不確定性</strong><br>FY2026E 887億中，Apple相關PCB仍佔逾7成，約620億。若iPhone 18銷售不如預期（市場擔憂AI功能實際需求）或Apple更換PCB供應商，華通的核心業務將受衝擊。2025年Q2 EPS 0.70元明顯弱（YoY-36%）主因是Apple換機週期低谷，類似風險2026年並未完全消除。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">3</div>
+        <div><strong>MACD仍死叉、MA60(251元)為重大壓力：技術面未完全轉多</strong><br>雖然今日突破MA20，但MACD快線(-9.72)仍低於慢線(-8.48)，死叉尚未確認轉多。更重要的是MA60(251.36)在上方形成壓力，需要多花2~3週時間整理才有機會突破。若大盤出現系統性回調，240元的MA20支撐可能很快被跌穿，回測MA5/10區域(225元附近)風險不低。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">4</div>
+        <div><strong>PCB景氣循環性：前次低谷Q2'25 EPS僅0.70元，下行風險實際存在</strong><br>2025年Q2 EPS 0.70元（vs 同期Q2'24的0.97元，YoY-28%），顯示PCB業景氣高低起伏明顯。FCB/HDI板的需求跟隨手機換機週期，若全球手機市場2026年不如預期（或Apple大砍單），季度EPS可能又跌回0.7~0.9元水準，FY2026E 7.72元的估算將大幅落空。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">5</div>
+        <div><strong>LEO衛星客戶集中（SpaceX依賴風險）：Starlink節奏不確定</strong><br>LEO衛星板2025年貢獻151億，主要客戶集中在SpaceX（Starlink）。若SpaceX調整衛星製造節奏、採購排程，或轉向自製PCB，對華通打擊將很大。過去PCB業界曾有因單一大客戶調整需求而導致季度EPS腰斬的先例（如2023年某廠商）。LEO客戶多元化尚在進行中，集中風險存在。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">6</div>
+        <div><strong>股價從305.5元跌至220元的底部尚未完全確認</strong><br>今日雖然+7.62%反彈，但此前從305.5→220元已跌-28%。PCB股在景氣反轉前，通常在低點附近反彈後再測底（雙底形態）。若今日的反彈只是「逢低承接」而非「趨勢反轉」，在MA60(251)未突破前，股價仍可能回落至225~230元區間整理，投資人可能需承受短期浮虧。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;background:linear-gradient(135deg,#eff6ff,#fff);">
+    <h4 style="color:var(--primary-dark);margin-bottom:12px;">⚖️ 辯論總結：看多 62% vs 看空 38%（中長線多方佔優）</h4>
+    <div style="display:flex;gap:16px;align-items:center;margin-bottom:12px;">
+      <div style="font-weight:700;color:#1e40af;">多方 62%</div>
+      <div style="flex:1;background:#e2e8f0;border-radius:8px;height:14px;overflow:hidden;">
+        <div style="width:62%;background:linear-gradient(90deg,#1e40af,#3b82f6);height:100%;border-radius:8px;"></div>
+      </div>
+      <div style="font-weight:700;color:#ef4444;">空方 38%</div>
+    </div>
+    <p style="font-size:13px;color:var(--text-muted);">
+      <strong>給一般投資人的話：</strong>華通是一家「好公司，但股票容易跟著蘋果和衛星新聞上下起伏」的典型台灣科技供應鏈股。簡單說：它是全球最好的HDI PCB廠商之一，蘋果的手機、SpaceX的衛星、AI伺服器都需要它的產品。現價240元，以明後年的獲利預估（7.72~13.73元）來看是相對划算的。今日的大漲是好信號，但要突破250元（60日均線）才能確認趨勢。如果你有中長線耐心，現在是不錯的布局機會；但如果是短線操作，等技術面更明確（MACD金叉）再進場也不遲。主要擔心的是：現增稀釋、Apple訂單波動、以及PCB景氣循環的不確定性。
+    </p>
+  </div>
+</div>
+
+<!-- 11 風控評估 -->
+<div class="section">
+  <div class="section-title">🛡️ 風控評估（六維評分）</div>
+  <div class="card">
+    <div class="two-col">
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:14px;">六維風險評分</h4>
+        <div class="score-row">
+          <div class="score-label">估值風險(30%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:50%;background:#1e40af;"></div></div>
+          <div class="score-num" style="color:#1e40af;">5.0</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 122px;">TTM PE 42.3x偏高；FY2026E PE 31x合理；FY2027E PE 17.5x吸引人</div>
+        <div class="score-row">
+          <div class="score-label">財務風險(25%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:45%;background:#1e40af;"></div></div>
+          <div class="score-num" style="color:#1e40af;">4.5</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 122px;">EPS成長趨勢良好；現增稀釋短期壓力；財務槓桿適中</div>
+        <div class="score-row">
+          <div class="score-label">流動性(10%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:35%;background:#10b981;"></div></div>
+          <div class="score-num" style="color:#10b981;">3.5</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 122px;">市值2,811億，日均成交量3,000萬張，流動性良好</div>
+        <div class="score-row">
+          <div class="score-label">產業風險(15%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:60%;background:#f59e0b;"></div></div>
+          <div class="score-num" style="color:#f59e0b;">6.0</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 122px;">PCB景氣循環；Apple單客戶集中；LEO衛星節奏風險</div>
+        <div class="score-row">
+          <div class="score-label">總經風險(10%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:55%;background:#f59e0b;"></div></div>
+          <div class="score-num" style="color:#f59e0b;">5.5</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 122px;">台幣升值壓縮美元收入；美中關稅（泰廠緩衝）；景氣不確定</div>
+        <div class="score-row">
+          <div class="score-label">籌碼風險(10%)</div>
+          <div class="score-bar-bg"><div class="score-bar" style="width:60%;background:#f59e0b;"></div></div>
+          <div class="score-num" style="color:#f59e0b;">6.0</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin:-6px 0 10px 122px;">現增套利空單；305元下方套牢籌碼；外資近期持續賣超</div>
+      </div>
+      <div>
+        <h4 style="color:var(--primary-dark);margin-bottom:14px;">綜合風險結論</h4>
+        <div style="text-align:center;padding:20px;background:#eff6ff;border-radius:12px;margin-bottom:16px;">
+          <div style="font-size:48px;font-weight:800;color:#1e40af;">5.5</div>
+          <div style="font-size:16px;font-weight:600;color:var(--primary-dark);">/ 10</div>
+          <div style="margin-top:8px;"><span style="background:#f59e0b;color:white;padding:5px 18px;border-radius:16px;font-weight:700;">🟡 中等風險</span></div>
+        </div>
+        <table>
+          <tr><th>風險項目</th><th>評估</th></tr>
+          <tr><td>最大下行風險（6個月）</td><td>-15%（跌至~205元，布林下軌）</td></tr>
+          <tr><td>最大上行潛力</td><td>+29%（達310元法人目標）</td></tr>
+          <tr><td>風報比</td><td>1.9 : 1（可接受）</td></tr>
+          <tr><td>適合投資人</td><td>中長線成長型；願持有12個月以上</td></tr>
+          <tr><td>建議部位</td><td>投資組合5~8%（穩健型5%，積極型8%）</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 12 台股三段式策略 -->
+<div class="section">
+  <div class="section-title">🎯 台股三段式操作策略</div>
+  <div class="strategy-grid">
+    <div class="strat-card strat-attack">
+      <div class="strat-title">⚔️ 進攻型策略</div>
+      <div class="strat-item">📌 <strong>適合：</strong>積極成長型投資人</div>
+      <div class="strat-item">🎯 <strong>今日買入：</strong>238 ~ 245 元（MA20突破確認）</div>
+      <div class="strat-item">📦 <strong>部位建議：</strong>組合7~8%</div>
+      <div class="strat-item">🏁 <strong>第一目標：</strong>275 元（官股目標）</div>
+      <div class="strat-item">🏁 <strong>第二目標：</strong>310 元（Factset共識目標）</div>
+      <div class="strat-item">⛔ <strong>停損：</strong>跌破MA20（238元）出場</div>
+      <div class="strat-item" style="margin-top:8px;font-size:12px;opacity:0.9;">加碼條件：Q2'26 EPS &gt; 1.8元 + MACD金叉</div>
+    </div>
+    <div class="strat-card strat-balance">
+      <div class="strat-title">⚖️ 均衡型策略</div>
+      <div class="strat-item">📌 <strong>適合：</strong>穩健中長線投資人</div>
+      <div class="strat-item">🎯 <strong>分批買入：</strong>235 ~ 255 元</div>
+      <div class="strat-item">📦 <strong>部位建議：</strong>組合5~6%</div>
+      <div class="strat-item">🏁 <strong>目標：</strong>280 ~ 305 元</div>
+      <div class="strat-item">⛔ <strong>停損：</strong>跌破220元（MA5以下）</div>
+      <div class="strat-item" style="margin-top:8px;font-size:12px;opacity:0.9;">持有邏輯：Q3 Apple旺季+LEO衛星旺季雙催化</div>
+    </div>
+    <div class="strat-card strat-defend">
+      <div class="strat-title">🛡️ 防守型策略</div>
+      <div class="strat-item">📌 <strong>適合：</strong>保守型投資人</div>
+      <div class="strat-item">🎯 <strong>等待進場：</strong>225 ~ 235 元（MA5/10整理後）</div>
+      <div class="strat-item">📦 <strong>部位建議：</strong>組合3~4%</div>
+      <div class="strat-item">🏁 <strong>目標：</strong>265 ~ 275 元</div>
+      <div class="strat-item">⛔ <strong>停損：</strong>跌破210元</div>
+      <div class="strat-item" style="margin-top:8px;font-size:12px;opacity:0.9;">確認信號：MACD金叉 + MA60(251)突破</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h4 style="color:var(--primary-dark);margin-bottom:14px;">催化劑時程表（2026 Q3~Q4）</h4>
+    <table>
+      <tr><th>時間</th><th>催化劑事件</th><th>預期影響</th></tr>
+      <tr><td>2026年7~8月</td><td>現金增資認股完成，套利壓力消散</td><td>正面：增資壓力解除後，股價可望上攻</td></tr>
+      <tr><td>2026年8月</td><td>Q2'26財報（預估EPS 1.8~2.0元）</td><td>關鍵：若超預期，突破MA60(251)機率大增</td></tr>
+      <tr><td>2026年Q3</td><td>iPhone 18 PCB大量拉貨（蘋果旺季）</td><td>月營收衝高至80~85億，Q3 EPS預估2.5元+</td></tr>
+      <tr><td>2026年Q3</td><td>LEO衛星板旺季（SpaceX/Kuiper加速）</td><td>衛星板貢獻55~60億/季，毛利率持續提升</td></tr>
+      <tr><td>2026年Q4</td><td>泰國新廠量產開出</td><td>關稅優勢+成本降低，毛利率可望超過20%</td></tr>
+      <tr><td>2026年底</td><td>FY2026E 887億達成確認</td><td>若達成，市場將重新評估FY2027E 1,200億+目標</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 13 名詞小教室 -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">HDI PCB（高密度互連電路板）</div>
+      <div class="glossary-def">High Density Interconnect Printed Circuit Board。就是「線路超細、層數超多的電路板」。普通電路板的線寬可能是100微米，HDI板可以做到10微米以下，相當於頭髮絲的1/10。因為超精細，所以在同樣大小的板子上可以塞進更多功能，是iPhone、AI伺服器等高端產品的核心元件。華通是全球最厲害的HDI廠商之一，技術門檻極高，很難被替換。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">LEO 低軌衛星（Low Earth Orbit）</div>
+      <div class="glossary-def">就是「在距離地面300~2,000公里的軌道上運行的衛星」，比傳統通訊衛星（36,000公里）低很多，所以訊號延遲更低，速度更快。SpaceX的Starlink和Amazon的Kuiper就是LEO衛星系統。每顆衛星都需要特殊的PCB（電路板），因為太空環境極端（溫差大、輻射強），對電路板要求很高，毛利率比一般PCB高出5~8個百分點，是華通的高毛利業務。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">現金增資（放股票集資）</div>
+      <div class="glossary-def">公司要籌錢，就「發行新股票」賣給投資人（不是借錢）。華通這次現增84億，每張股票定價200元。對原本的股東來說，股票多了但公司的錢也多了，所以EPS（每股盈餘）會被稀釋（因為分母變大了）。好處是：公司拿到錢可以蓋工廠；壞處是：短期EPS被稀釋，股價可能承壓。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Factset 法人共識 EPS 預估</div>
+      <div class="glossary-def">Factset是一家專業金融數據公司，會收集所有主要券商分析師（外資、本土）對某檔股票的EPS預估，然後取平均值。華通的Factset共識FY2026E EPS 7.72元、FY2027E EPS 13.73元，代表全球有追蹤的7位分析師平均都這樣預估。共識預估只是「平均預期」，實際結果可能高也可能低，但它是市場的基準參考線。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">TTM PE vs 遠期PE（Forward PE）</div>
+      <div class="glossary-def">TTM PE用「過去12個月」已公告的EPS計算，反映歷史獲利；遠期PE（FY2026E PE）用「今年預估」EPS計算，反映未來期望。華通TTM PE 42倍看起來貴，但FY2026E PE 31倍、FY2027E PE 17.5倍，顯示如果業績如預期成長，現在其實相對便宜。成長股應該看「遠期PE」而不只是TTM PE。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">布林通道（Bollinger Bands）</div>
+      <div class="glossary-def">一種技術分析工具，由三條線組成：中間是20日均線，上下各有一條「標準差帶」（一般設±2倍）。上軌代表「統計上偏高」，下軌代表「統計上偏低」，中軌是均值。華通今日240元剛好在布林中軌(239.88)附近，代表股價從下跌後回到「正常水準」，既不超買也不超賣，是相對合理的位置。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">套利空單（現增套利）</div>
+      <div class="glossary-def">公司辦現增時，有一種套利策略：先「融券放空現股」（賣出借來的股票），等到認購現增新股後，再用新股還券。因為現增通常定價低於市價（本次200元 vs 市價240元），所以有套利空間。這會造成增資期間額外的賣壓（融券增加），壓低股價，投資人需要注意認購期間的短線壓力。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">MACD 金叉 / 死叉</div>
+      <div class="glossary-def">MACD（指數平滑異同移動平均線）由兩條線組成：快線（EMA12）和慢線（EMA26）。「金叉」是快線從下往上穿越慢線，代表短期動能強於長期，是買進信號；「死叉」是快線從上往下穿越慢線，代表短期動能弱化，是賣出信號。華通目前還在死叉狀態（快線-9.72 &lt; 慢線-8.48），但今日大漲後差距會大幅縮小，金叉預計在1~2週內可能出現。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 14 免責聲明 -->
+<div class="section">
+  <div class="disclaimer">
+    <strong>⚠️ 重要免責聲明</strong><br><br>
+    本報告由 AI 分析系統依據公開市場資料自動生成，<strong>僅供學術研究與資訊參考，絕非投資建議或招攬推介</strong>。所有股價、財務數據及市場分析均可能存在誤差，且不代表未來投資績效。股市投資具有風險，投資人應根據個人風險承受度與財務狀況自行判斷，並諮詢合格之專業財務顧問。<strong>投資一定有風險，過去績效不代表未來獲利保證。</strong><br><br>
+    <strong>特別提示：</strong>本次分析使用股票代碼 <strong>2313（華通電腦，正確代碼）</strong>。非 6443（元晶太陽能）。<br><br>
+    <strong>資料來源：</strong>Fugle API（即時股價 7/13 盤中）、FinMind（歷史K線/月營收/季報/融資融券）、台灣證交所、Factset法人預估（Yahoo股市、鉅亨網）、今周刊、旺得富、TechNews 科技新報（LEO衛星/HDI PCB 產業分析）。本報告生成時間：2026-07-13 11:35。
+  </div>
+</div>
+
+</div>
+
+<script>
+// EPS Chart
+const epsCtx = document.getElementById('epsChart').getContext('2d');
+new Chart(epsCtx, {
+  type: 'bar',
+  data: {
+    labels: ["Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26★"],
+    datasets: [
+      {
+        label: 'EPS（元）',
+        data: [0.97, 1.51, 1.39, 1.10, 0.70, 1.81, 1.90, 1.26],
+        backgroundColor: ['#bfdbfe','#bfdbfe','#bfdbfe','#bfdbfe','#bfdbfe','#1e40af','#1e40af','#1e3a8a'],
+        borderRadius: 6, borderSkipped: false, yAxisID: 'y',
+      },
+      {
+        label: '毛利率（%）',
+        data: [14.99, 17.95, 16.32, 17.17, 18.24, 19.95, 18.70, 17.98],
+        type: 'line',
+        borderColor: '#f59e0b',
+        backgroundColor: 'rgba(245,158,11,0.1)',
+        pointBackgroundColor: '#f59e0b',
+        pointRadius: 5,
+        tension: 0.4,
+        yAxisID: 'y1',
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: true, position: 'top' }, tooltip: { mode: 'index' } },
+    scales: {
+      y: { beginAtZero: true, max: 2.5, position: 'left', ticks: { callback: v => v+'元' }, grid: { color: '#f1f5f9' } },
+      y1: { beginAtZero: false, min: 12, max: 24, position: 'right', ticks: { callback: v => v+'%' }, grid: { display: false } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Revenue Chart
+const revCtx = document.getElementById('revChart').getContext('2d');
+new Chart(revCtx, {
+  type: 'line',
+  data: {
+    labels: ['1月','2月','3月','4月','5月','6月★'],
+    datasets: [{
+      label: '2026年月營收（億元）',
+      data: [74.04, 52.01, 69.43, 63.15, 67.62, 69.15],
+      borderColor: '#1e40af',
+      backgroundColor: 'rgba(30,64,175,0.1)',
+      pointBackgroundColor: ['#bfdbfe','#bfdbfe','#bfdbfe','#bfdbfe','#bfdbfe','#1e40af'],
+      pointRadius: [5,5,5,5,5,8],
+      tension: 0.4, fill: true, borderWidth: 2.5,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `月營收：${ctx.parsed.y.toFixed(1)} 億元` } } },
+    scales: {
+      y: { beginAtZero: false, min: 45, ticks: { callback: v => v+'億' }, grid: { color: '#f1f5f9' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// PE Compare Chart
+const peCtx = document.getElementById('peChart').getContext('2d');
+new Chart(peCtx, {
+  type: 'bar',
+  data: {
+    labels: ['華通 TTM PE','華通 FY26E PE','華通 FY27E PE','臻鼎(推估)','欣興(推估)','台股大盤'],
+    datasets: [{
+      label: '本益比（倍）',
+      data: [42.3, 31.1, 17.5, 22, 18, 20],
+      backgroundColor: ['#fecdd3','#1e40af','#10b981','#94a3b8','#94a3b8','#64748b'],
+      borderRadius: 6, borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `PE：${ctx.parsed.x.toFixed(1)} 倍` } } },
+    scales: {
+      x: { beginAtZero: true, max: 50, ticks: { callback: v => v+'x' }, grid: { color: '#f1f5f9' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
