@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>信驊科技 5274 投資研究報告 2026-07-14</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--primary:#7c3aed;--primary-dark:#6d28d9;--primary-light:#ede9fe;--accent:#f97316;--danger:#ef4444;--success:#22c55e;--warning:#eab308;--bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--text-muted:#64748b;--border:#e2e8f0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+.cover{background:linear-gradient(135deg,#3b0764 0%,#6d28d9 50%,#9333ea 100%);color:#fff;padding:60px 40px;text-align:center;position:relative;overflow:hidden;}
+.cover::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,0.06) 0%,transparent 60%);}
+.cover h1{font-size:2.8em;font-weight:800;letter-spacing:2px;margin-bottom:8px;}
+.cover h2{font-size:1.4em;font-weight:400;opacity:0.85;margin-bottom:24px;}
+.badge{display:inline-block;padding:6px 18px;border-radius:999px;font-size:0.85em;font-weight:700;margin:4px;}
+.price-block{display:flex;justify-content:center;gap:40px;margin-top:28px;flex-wrap:wrap;}
+.price-item{text-align:center;}
+.price-item .val{font-size:2.4em;font-weight:800;}
+.price-item .lbl{font-size:0.8em;opacity:0.75;margin-top:2px;}
+.neg{color:#fca5a5;}.pos{color:#6ee7b7;}
+.container{max-width:1100px;margin:0 auto;padding:24px 20px;}
+.section{margin-bottom:32px;}
+.section-title{font-size:1.3em;font-weight:700;color:var(--primary-dark);border-left:4px solid var(--primary);padding-left:12px;margin-bottom:18px;}
+.card{background:var(--card);border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:16px;}
+.core-card{background:linear-gradient(135deg,#3b0764,#6d28d9);color:#fff;border-radius:16px;padding:32px;margin-bottom:32px;}
+.core-card .rec{font-size:1.8em;font-weight:800;margin-bottom:8px;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.kpi-item{background:var(--card);border-radius:10px;padding:18px;border-left:4px solid var(--primary);box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.kpi-item .kpi-val{font-size:1.6em;font-weight:800;color:var(--primary-dark);}
+.kpi-item .kpi-label{font-size:0.82em;color:var(--text-muted);margin-top:4px;font-weight:600;}
+.kpi-item .kpi-note{font-size:0.75em;color:var(--text-muted);margin-top:6px;}
+.chart-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;}
+.chart-wrap{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.chart-wrap h3{font-size:0.95em;font-weight:700;color:var(--text-muted);margin-bottom:14px;}
+table{width:100%;border-collapse:collapse;font-size:0.9em;}
+th{background:var(--primary-light);color:var(--primary-dark);padding:10px 12px;text-align:left;font-weight:700;}
+td{padding:9px 12px;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#f8fafc;}
+.tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:0.78em;font-weight:600;}
+.tag-bull{background:#dcfce7;color:#166534;}
+.tag-bear{background:#fee2e2;color:#991b1b;}
+.tag-neutral{background:#fef9c3;color:#854d0e;}
+.score-bar{display:flex;align-items:center;gap:10px;margin:8px 0;}
+.score-bar .bar{height:10px;border-radius:5px;background:linear-gradient(90deg,var(--primary),var(--accent));min-width:4px;}
+.score-bar .label{font-size:0.82em;color:var(--text-muted);width:100px;flex-shrink:0;}
+.score-bar .val{font-size:0.82em;font-weight:700;width:40px;text-align:right;}
+.strat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.strat-card{border-radius:12px;padding:24px;}
+.strat-atk{background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;}
+.strat-bal{background:linear-gradient(135deg,#6d28d9,#7c3aed);color:#fff;}
+.strat-def{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;}
+.strat-card h3{font-size:1.1em;font-weight:800;margin-bottom:12px;}
+.strat-card p{font-size:0.87em;opacity:0.92;line-height:1.7;}
+.debate{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:600px){.debate{grid-template-columns:1fr;}.price-block{gap:20px;}}
+.bull-col{background:#f0fdf4;border-radius:10px;padding:20px;border:1px solid #bbf7d0;}
+.bear-col{background:#fff1f2;border-radius:10px;padding:20px;border:1px solid #fecdd3;}
+.bull-col h3{color:#166534;font-weight:700;margin-bottom:12px;}
+.bear-col h3{color:#991b1b;font-weight:700;margin-bottom:12px;}
+.bull-col li,.bear-col li{margin-bottom:10px;font-size:0.88em;line-height:1.6;}
+.risk-badge{display:inline-block;padding:6px 16px;border-radius:8px;font-weight:700;font-size:0.9em;}
+.risk-high{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.glossary dt{font-weight:700;color:var(--primary-dark);margin-top:12px;}
+.glossary dd{font-size:0.88em;color:var(--text-muted);margin-left:16px;margin-top:3px;}
+.disclaimer{background:#fef9c3;border:1px solid #fde047;border-radius:10px;padding:20px;font-size:0.82em;color:#713f12;margin-top:32px;}
+.info-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.info-chip{background:var(--primary-light);color:var(--primary-dark);border-radius:6px;padding:4px 10px;font-size:0.8em;font-weight:600;}
+.alert-box{background:linear-gradient(135deg,#fef2f2,#fee2e2);border:1px solid #fca5a5;border-radius:10px;padding:16px;margin-bottom:16px;}
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div style="display:inline-block;background:rgba(239,68,68,0.25);border:1px solid #fca5a5;color:#fecaca;border-radius:6px;padding:4px 14px;font-size:0.85em;margin-bottom:12px;">🔴 首次報告 | BMC晶片股王</div>
+  <h1>信驊科技</h1>
+  <h2>ASPEED Technology｜代碼：5274（上櫃）</h2>
+  <div>
+    <span class="badge" style="background:rgba(239,68,68,0.3);border:1px solid #fca5a5;color:#fecaca;">⚠️ 風險等級：高 7/10</span>
+    <span class="badge" style="background:rgba(255,255,255,0.15);color:#fff;">📅 2026-07-14</span>
+    <span class="badge" style="background:rgba(255,255,255,0.15);color:#fff;">💜 BMC晶片 #1</span>
+  </div>
+  <div class="price-block">
+    <div class="price-item"><div class="val neg">12,675<span style="font-size:0.4em">元</span></div><div class="lbl">今日收盤</div></div>
+    <div class="price-item"><div class="val neg">-845元 (-6.25%)</div><div class="lbl">今日漲跌</div></div>
+    <div class="price-item"><div class="val">117.87<span style="font-size:0.5em">元</span></div><div class="lbl">TTM EPS</div></div>
+    <div class="price-item"><div class="val" style="color:#fcd34d;">107.5<span style="font-size:0.5em">x</span></div><div class="lbl">TTM PE</div></div>
+    <div class="price-item"><div class="val">19,880<span style="font-size:0.4em">元</span></div><div class="lbl">52周最高(6/22)</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 警示框 -->
+<div class="alert-box">
+  🚨 <strong>技術面警示：</strong>今日12,675元較52W高點19,880元已回落 <strong>-36.3%</strong>！RSI 33.21超賣（接近30極端值），股價已跌破布林下軌（13,241元），連5日下跌累計-20.76%。技術面顯示強烈超賣訊號，但趨勢仍未止穩。
+</div>
+
+<!-- 02 核心結論 -->
+<div class="core-card section">
+  <div style="font-size:0.85em;opacity:0.8;margin-bottom:6px;">📊 投資建議</div>
+  <div class="rec">🔴 短線觀望 | 等待止穩訊號</div>
+  <div style="font-size:1.05em;margin-bottom:6px;">🎯 中長線目標：16,000～18,000元（12個月）｜外資目標 19,100元</div>
+  <div style="font-size:1em;margin-bottom:6px;">📍 技術面逢低參考區間：11,500～12,500元（試單）</div>
+  <div style="font-size:0.95em;">🛑 停損：跌破 11,000元（布林下軌-15%以下）</div>
+  <div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
+    <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:12px;">
+      <div style="font-size:0.8em;opacity:0.8;">📈 核心優勢</div>
+      <div style="font-size:0.9em;margin-top:4px;">BMC市佔70%+壟斷<br>毛利率69%+ 超高<br>AST2700 Q3啟動送樣</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:12px;">
+      <div style="font-size:0.8em;opacity:0.8;">⚡ 催化劑</div>
+      <div style="font-size:0.9em;margin-top:4px;">Q2財報（8月）<br>Lattice合作Q3送樣<br>RSI超賣反彈可期</div>
+    </div>
+    <div style="background:rgba(239,68,68,0.25);border-radius:8px;padding:12px;">
+      <div style="font-size:0.8em;opacity:0.8;">🚨 最大風險</div>
+      <div style="font-size:0.9em;margin-top:4px;">PE 107x極度偏高<br>已跌破布林下軌<br>CSP自研BMC威脅</div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 關鍵KPI -->
+<div class="section">
+  <div class="section-title">📊 核心財務KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-item">
+      <div class="kpi-val" style="color:var(--danger);">12,675元</div>
+      <div class="kpi-label">今日股價（7/14）</div>
+      <div class="kpi-note">距52W高19,880元 回落-36.3%</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">37.41元</div>
+      <div class="kpi-label">Q1'26 EPS</div>
+      <div class="kpi-note">QoQ+18.1%，GM 69.18%（歷史新高）</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">117.87元</div>
+      <div class="kpi-label">TTM EPS（近四季）</div>
+      <div class="kpi-note">16.65+32.12+31.69+37.41</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val" style="color:var(--danger);">107.5倍</div>
+      <div class="kpi-label">TTM 本益比</div>
+      <div class="kpi-note">FY2026E EPS~160元→PE約79x</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">13.10億</div>
+      <div class="kpi-label">Jun 2026 月營收</div>
+      <div class="kpi-note">YoY+67.47%，MoM+2.19%</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">66.54億</div>
+      <div class="kpi-label">H1 2026 累計營收</div>
+      <div class="kpi-note">連6個月YoY雙位數高成長</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">69.18%</div>
+      <div class="kpi-label">Q1'26 毛利率</div>
+      <div class="kpi-note">歷史新高，輕資產+利基市場</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">19,100元</div>
+      <div class="kpi-label">外資目標價（日系，6/30）</div>
+      <div class="kpi-note">基於2028E EPS × 50x PE</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 財務趨勢圖 -->
+<div class="section">
+  <div class="section-title">📈 財務趨勢圖表</div>
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>EPS 季度趨勢（近8季）元/股</h3>
+      <canvas id="epsChart" height="200"></canvas>
+      <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;">★ 實際公告數字</div>
+    </div>
+    <div class="chart-wrap">
+      <h3>月營收趨勢（2026年 H1，億元）</h3>
+      <canvas id="revChart" height="200"></canvas>
+      <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;">★ 實際公告；FinMind月份-1=實際月份</div>
+    </div>
+    <div class="chart-wrap">
+      <h3>本益比比較（TTM PE）</h3>
+      <canvas id="peChart" height="200"></canvas>
+      <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;">同業PE為推算值；信驊歷史PE高達50-120x</div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽</div>
+  <div class="card">
+    <p style="margin-bottom:12px;"><strong>信驊科技（ASPEED Technology）</strong>是全球最大<strong>BMC晶片（底板管理控制器）</strong>設計公司，市佔率超過70%，是AI伺服器時代的「神經中樞」。每一台企業級伺服器都需要BMC晶片來進行遠端監控與管理——從開關機、溫度控制到故障診斷，全靠它。</p>
+    <p style="margin-bottom:12px;"><strong>核心護城河：</strong>①全球BMC市佔率超70%+的壟斷地位 ②與全球伺服器OEM廠（惠普、戴爾、超微、鴻海等）深度整合 ③自有韌體生態系，客戶轉換成本極高 ④12nm AST2700旗艦新品引領換機潮。</p>
+    <div class="info-row">
+      <span class="info-chip">🌐 全球BMC市佔 #1（>70%）</span>
+      <span class="info-chip">💎 毛利率69%+</span>
+      <span class="info-chip">🖥️ AST2700（12nm）</span>
+      <span class="info-chip">🤝 Lattice合作Q3送樣</span>
+      <span class="info-chip">📈 月營收連6月YoY大漲</span>
+    </div>
+    <div style="margin-top:14px;padding:12px;background:var(--primary-light);border-radius:8px;font-size:0.88em;">
+      <strong>2026年關鍵里程碑：</strong>旗艦產品AST2700（12nm）全面放量，2026E出貨預估700萬顆；與Lattice Semiconductor合作首款整合產品預計Q3 2026送樣；AI伺服器滲透率上升帶動ASP（平均銷售單價）持續提升；H1月營收連創新高，YoY成長率維持65%以上。
+    </div>
+  </div>
+</div>
+
+<!-- 06 基本面分析 -->
+<div class="section">
+  <div class="section-title">💼 基本面分析</div>
+  <div class="card">
+    <div style="margin-bottom:16px;">
+      <div class="score-bar"><span class="label">EPS成長力</span><div class="bar" style="width:90%;background:linear-gradient(90deg,#7c3aed,#22c55e);"></div><span class="val">90/100</span></div>
+      <div class="score-bar"><span class="label">毛利率水準</span><div class="bar" style="width:95%;background:linear-gradient(90deg,#7c3aed,#22c55e);"></div><span class="val">95/100</span></div>
+      <div class="score-bar"><span class="label">營收成長性</span><div class="bar" style="width:88%;background:linear-gradient(90deg,#7c3aed,#22c55e);"></div><span class="val">88/100</span></div>
+      <div class="score-bar"><span class="label">估值合理性</span><div class="bar" style="width:22%;background:linear-gradient(90deg,#ef4444,#f97316);"></div><span class="val">22/100</span></div>
+      <div class="score-bar"><span class="label">市場地位護城河</span><div class="bar" style="width:92%;background:linear-gradient(90deg,#7c3aed,#22c55e);"></div><span class="val">92/100</span></div>
+    </div>
+    <table>
+      <tr><th>季度</th><th>EPS（元）</th><th>毛利率</th><th>營業利益率</th><th>QoQ</th></tr>
+      <tr><td>Q2'25</td><td>16.65</td><td>67.88%</td><td>52.71%</td><td>-29.1%</td></tr>
+      <tr><td>Q3'25</td><td>32.12</td><td>69.26%</td><td>52.85%</td><td>+92.9%</td></tr>
+      <tr><td>Q4'25</td><td>31.69</td><td>68.45%</td><td>49.84%</td><td>-1.3%</td></tr>
+      <tr><td style="color:var(--primary-dark);font-weight:700;">Q1'26</td><td style="color:var(--primary-dark);font-weight:700;">37.41★</td><td style="color:var(--primary-dark);font-weight:700;">69.18%★</td><td style="color:var(--primary-dark);font-weight:700;">52.72%</td><td style="color:green;">+18.1%</td></tr>
+    </table>
+    <p style="margin-top:10px;font-size:0.85em;color:var(--text-muted);">★ Q1'26 EPS 37.41元，季增+18.1%，毛利率69.18%創歷史新高。FY2026E EPS保守估~150元（折現季節性），積極估~160-170元。</p>
+  </div>
+</div>
+
+<!-- 07 籌碼面分析 -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析</div>
+  <div class="card">
+    <div style="background:#fef9c3;border-radius:8px;padding:14px;margin-bottom:14px;font-size:0.9em;">
+      <strong>⚠️ 說明：</strong>信驊為上櫃（OTC）股票，FinMind日頻三大法人資料有限制。7/13三大法人全部顯示0（非無交易，為API資料限制）。請參考券商研究報告評等。
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:16px;">
+      <div style="background:#f3e8ff;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:0.8em;color:#6d28d9;">日系外資評等</div>
+        <div style="font-size:1.3em;font-weight:800;color:#7c3aed;">買進</div>
+        <div style="font-size:0.75em;color:#6d28d9;">目標價 19,100元</div>
+      </div>
+      <div style="background:#f3e8ff;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:0.8em;color:#6d28d9;">外資評估基準</div>
+        <div style="font-size:1.3em;font-weight:800;color:#7c3aed;">50倍</div>
+        <div style="font-size:0.75em;color:#6d28d9;">2028E EPS目標PE</div>
+      </div>
+      <div style="background:#fef9c3;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:0.8em;color:#854d0e;">股價/外資目標</div>
+        <div style="font-size:1.3em;font-weight:800;color:#a16207;">66.4%</div>
+        <div style="font-size:0.75em;color:#854d0e;">距目標尚差50.7%</div>
+      </div>
+      <div style="background:#fee2e2;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:0.8em;color:#991b1b;">近5日跌幅</div>
+        <div style="font-size:1.3em;font-weight:800;color:#dc2626;">-20.76%</div>
+        <div style="font-size:0.75em;color:#991b1b;">6/22高點跌-36.3%</div>
+      </div>
+    </div>
+    <p style="font-size:0.88em;color:var(--text-muted);">外資法人（日系）6/30大幅上修目標價至19,100元，上修幅度+66%，評等維持「買進」，並大幅上修2026/2027年EPS預估（調幅22%/40%）。但機構持股調節（鎖利）可能是近期拉回主因。</p>
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div class="section">
+  <div class="section-title">📉 技術分析</div>
+  <div class="card">
+    <div style="background:#fee2e2;border:1px solid #fca5a5;border-radius:8px;padding:14px;margin-bottom:14px;font-size:0.88em;">
+      🚨 <strong>技術面嚴重警示：</strong>今日12,675元已跌破布林下軌（13,241元），RSI 33.21接近超賣極端值（30以下），均線呈嚴重空頭排列。技術面上，回落趨勢尚未結束。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div>
+        <strong style="color:var(--primary-dark);">均線系統（7/14）</strong>
+        <table style="margin-top:8px;">
+          <tr><th>均線</th><th>數值</th><th>相對位置</th></tr>
+          <tr><td>MA5</td><td>14,369</td><td><span class="tag tag-bear">跌破⬇</span></td></tr>
+          <tr><td>MA10</td><td>15,571</td><td><span class="tag tag-bear">跌破⬇</span></td></tr>
+          <tr><td>MA20</td><td>16,835</td><td><span class="tag tag-bear">跌破⬇</span></td></tr>
+          <tr><td>MA60</td><td>16,957</td><td><span class="tag tag-bear">跌破⬇</span></td></tr>
+        </table>
+      </div>
+      <div>
+        <strong style="color:var(--primary-dark);">指標訊號</strong>
+        <table style="margin-top:8px;">
+          <tr><th>指標</th><th>數值</th><th>訊號</th></tr>
+          <tr><td>MACD</td><td>-860.8/-473.5</td><td><span class="tag tag-bear">死叉擴大🔴</span></td></tr>
+          <tr><td>RSI</td><td>33.21</td><td><span class="tag tag-bear">超賣！⚠️</span></td></tr>
+          <tr><td>布林中軌</td><td>16,835</td><td><span class="tag tag-bear">跌破🔴</span></td></tr>
+          <tr><td>布林下軌</td><td>13,241</td><td><span class="tag tag-bear">已跌破！</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <div style="background:#f8fafc;border-radius:8px;padding:14px;font-size:0.88em;">
+      <strong>🔑 關鍵價位：</strong>
+      壓力：布林下軌13,241（已跌破）→ MA5 14,369 → MA10 15,571；
+      支撐：12,500（整數）→ 11,500（布林下軌-13%）→ 10,000（心理關卡）
+      <br><br>
+      <strong>📌 技術判讀：</strong>四條均線全面空頭排列，且股價已跌破布林下軌，顯示超賣但趨勢尚未止穩。RSI 33.21接近極端超賣，具技術反彈條件，但動能仍在下行。建議等待RSI站回40以上或K線出現帶量長紅再確認。
+    </div>
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <div class="section-title">💳 融資融券狀況</div>
+  <div class="card">
+    <p style="font-size:0.9em;">今日（7/14）融資融券FinMind資料顯示0（上櫃API限制，次日更新）。</p>
+    <div style="margin-top:12px;padding:12px;background:#f8fafc;border-radius:8px;font-size:0.85em;color:var(--text-muted);">
+      <strong>趨勢判讀：</strong>信驊股價高達萬元以上，一張（1000股）融資門檻極高，散戶融資規模有限。近期連續大跌主要為機構調節/外資鎖利。若融券餘額大增，反而是潛在軋空材料。若需精確融資融券數據，可查閱 <a href="https://www.tpex.org.tw/web/stock/margin_trading/margin_balance/margin_bal.php?l=zh-tw" target="_blank" style="color:var(--primary);">櫃買中心官網</a>。
+    </div>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <div class="section-title">⚔️ 多空研究員辯論</div>
+  <div class="debate">
+    <div class="bull-col">
+      <h3>🐂 看多論點（看多45%）</h3>
+      <ul>
+        <li><strong>BMC壟斷地位無可撼動：</strong>全球市佔率超過70%，全球每台AI伺服器幾乎都用信驊的晶片，轉換成本極高（需重新認證整個韌體堆疊）。</li>
+        <li><strong>毛利率破紀錄：</strong>Q1'26 GM 69.18%創歷史新高，Q1'26 OPM 52.72%，顯示定價能力極強，一般IC設計公司毛利率僅40-50%。</li>
+        <li><strong>AST2700換機潮才剛開始：</strong>12nm旗艦新品2026E出貨預估達700萬顆，ASP（平均單價）持續提升，帶動FY2026E EPS大幅成長。</li>
+        <li><strong>月營收持續創高：</strong>Jun 2026月營收13.10億（YoY+67.47%），H1累計66.54億，顯示AI伺服器需求強勁不衰。</li>
+        <li><strong>外資長線目標19,100元：</strong>日系外資6/30上修，基於2028E EPS×50x PE，目前股價12,675元距目標尚有+50.7%上行空間。</li>
+        <li><strong>Lattice合作開啟新市場：</strong>與Lattice首款整合方案Q3送樣，未來在智慧伺服器管理（邊緣AI）領域開拓新商機。</li>
+      </ul>
+    </div>
+    <div class="bear-col">
+      <h3>🐻 看空論點（看空55%）</h3>
+      <ul>
+        <li><strong>PE 107x極度高估：</strong>即使以FY2026E EPS 160元計算，PE仍達79x，超越全球多數半導體龍頭，回調風險極高。</li>
+        <li><strong>技術面全面崩壞：</strong>四條均線全空頭排列，已跌破布林下軌，從19,880高點跌-36.3%，動能完全偏空。</li>
+        <li><strong>CSP自研BMC晶片威脅：</strong>Google、Meta、微軟等超大型雲端業者積極自研BMC晶片，長期可能侵蝕信驊市佔（雖短期影響有限）。</li>
+        <li><strong>股東獲利回吐壓力：</strong>從4,355元（52W低）漲至19,880元（52W高）翻4.57倍後，高位持股者大量鎖利是近期下跌主因。</li>
+        <li><strong>Q2季節性疑慮：</strong>Q2'25 EPS僅16.65元（QoQ大降29%），若Q2'26出現季節性下滑，市場可能加速殺估值。</li>
+        <li><strong>新唐（Nuvoton）追趕：</strong>競爭對手新唐持續研發高階BMC晶片，且有鴻海/廣達等大廠庇蔭，長期競爭格局可能改變。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;background:#f8fafc;">
+    <strong>💬 給一般投資人的話：</strong>信驊就是伺服器的「大腦管理員」——AI伺服器越多，對BMC晶片的需求越大。它的壟斷地位讓它能賺到近70%的毛利率，非常罕見。但問題是「大家都知道它好」，所以股價本益比高達100倍以上。現在技術面大跌，是「高估值修正」而非基本面出問題。對一般投資人而言，等待技術面稍微止穩（RSI回到40以上、K線出現帶量反彈），再考慮中長線布局較為穩健。
+  </div>
+</div>
+
+<!-- 11 風控評估 -->
+<div class="section">
+  <div class="section-title">🛡️ 風控評估（六維度）</div>
+  <div class="card">
+    <div style="margin-bottom:16px;">
+      <div class="score-bar"><span class="label">估值風險(30%)</span><div class="bar" style="width:88%;background:linear-gradient(90deg,#ef4444,#f97316);"></div><span class="val">8.8分</span></div>
+      <div class="score-bar"><span class="label">財務風險(25%)</span><div class="bar" style="width:15%;background:linear-gradient(90deg,#22c55e,#86efac);"></div><span class="val">1.5分</span></div>
+      <div class="score-bar"><span class="label">流動性風險(10%)</span><div class="bar" style="width:45%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">4.5分</span></div>
+      <div class="score-bar"><span class="label">產業風險(15%)</span><div class="bar" style="width:40%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">4.0分</span></div>
+      <div class="score-bar"><span class="label">總經風險(10%)</span><div class="bar" style="width:35%;background:linear-gradient(90deg,#22c55e,#86efac);"></div><span class="val">3.5分</span></div>
+      <div class="score-bar"><span class="label">籌碼風險(10%)</span><div class="bar" style="width:72%;background:linear-gradient(90deg,#ef4444,#f97316);"></div><span class="val">7.2分</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="risk-badge risk-high">綜合風險：7.0 / 10（高風險）</span>
+      <span style="font-size:0.85em;color:var(--text-muted);">主要風險：PE 107x極度偏高 + 技術面趨勢向下 + 籌碼鎖利</span>
+    </div>
+  </div>
+</div>
+
+<!-- 12 台股三段式策略 -->
+<div class="section">
+  <div class="section-title">🗺️ 台股三段式操作策略</div>
+  <div class="strat-grid">
+    <div class="strat-card strat-atk">
+      <h3>🚀 進攻方案（高風險）</h3>
+      <p>條件：RSI跌破30後出現帶量反彈K線<br><br>
+      試單：11,500～12,500元（少量）<br>
+      加碼條件：站回布林下軌13,241元<br>
+      目標：15,000元→18,000元<br>
+      停損：跌破11,000元</p>
+    </div>
+    <div class="strat-card strat-bal">
+      <h3>⚖️ 均衡方案（穩健型）</h3>
+      <p>條件：等待技術面止穩訊號<br><br>
+      進場：RSI站回40以上+週線止穩<br>
+      分批：12,000/13,000/14,000元各1份<br>
+      目標：16,000～18,000元（12M）<br>
+      停損：跌破11,500元</p>
+    </div>
+    <div class="strat-card strat-def">
+      <h3>🛡️ 防守方案（保守型）</h3>
+      <p>條件：只在基本面/估值明確改善後進場<br><br>
+      等待：PE降至50x以下（≈8,000元）<br>
+      或：站穩MA20（16,835元）再買<br>
+      目標：長線持有，外資目標19,100元<br>
+      停損：跌破9,000元</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <strong>📅 催化劑時程：</strong>
+    <table style="margin-top:10px;">
+      <tr><th>時間</th><th>事件</th><th>預期影響</th></tr>
+      <tr><td>2026/Q3</td><td>Lattice合作首款產品送樣</td><td>新市場題材，可能重燃買氣</td></tr>
+      <tr><td>2026/08</td><td>Q2財報公布（觀察Q2季節性）</td><td>若優於預期→技術反彈催化劑</td></tr>
+      <tr><td>2026下半年</td><td>AST2700 12nm大量出貨</td><td>ASP提升→毛利率維持高位</td></tr>
+      <tr><td>2028E</td><td>外資評估EPS爆發年</td><td>外資目標19,100元的基準年份</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 13 名詞小教室 -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室</div>
+  <div class="card">
+    <dl class="glossary">
+      <dt>BMC晶片（Baseboard Management Controller，底板管理控制器）</dt>
+      <dd>伺服器裡的「隱形管家」——就算主機關機，它仍在運作。負責遠端開關機、溫度/電壓監控、故障診斷、韌體更新等工作。企業機房管理員最依賴它。信驊在這個市場市佔率超過70%。</dd>
+      <dt>AST2700（ASPEED 2700）</dt>
+      <dd>信驊最新一代旗艦BMC晶片，採用12nm製程（前代16nm），效能大幅提升，支援AI伺服器的高階管理功能。2026年是這款晶片大量出貨的關鍵年。</dd>
+      <dt>ASP（Average Selling Price，平均銷售單價）</dt>
+      <dd>每顆晶片賣出去的平均價格。AST2700比前代貴，加上AI伺服器對高階BMC需求增加，推動信驊ASP逐年上升，帶動毛利率提升。</dd>
+      <dt>RSI（Relative Strength Index，相對強弱指標）</dt>
+      <dd>衡量股票「超買/超賣」的技術指標，範圍0-100。通常70以上為超買（可能下跌），30以下為超賣（可能反彈）。信驊目前RSI=33.21，非常接近超賣。</dd>
+      <dt>布林通道（Bollinger Bands）</dt>
+      <dd>由中軌（20日均線）和上下各2個標準差構成的技術指標。股價跌破下軌通常代表超賣，但也可能繼續下跌。信驊目前已跌破下軌（13,241元）。</dd>
+    </dl>
+  </div>
+</div>
+
+<!-- 14 免責聲明 -->
+<div class="disclaimer">
+  ⚠️ <strong>免責聲明：</strong>本報告僅供研究參考，不構成投資建議。信驊（5274）股價波動極大，歷史上曾在短期內暴漲暴跌超過50%，屬高風險標的，不適合風險承受度低的投資人。所有投資均有風險，請依個人財務狀況謹慎決策。<br>
+  <strong>資料來源：</strong>Fugle API（即時股價）、FinMind（財報/月營收）、日系外資研究報告（間接引用）、各大財經媒體。資料日期：2026-07-14。
+</div>
+
+</div>
+
+<script>
+// EPS Chart
+const epsCtx=document.getElementById('epsChart').getContext('2d');
+new Chart(epsCtx,{type:'bar',data:{labels:['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],datasets:[{label:'EPS（元）',data:[13.44,19.30,24.95,23.46,16.65,32.12,31.69,37.41],backgroundColor:['#ddd6fe','#ddd6fe','#ddd6fe','#ddd6fe','#c4b5fd','#a78bfa','#8b5cf6','#ef4444'],borderRadius:5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#f0f4f8'}}}}});
+
+// Revenue Chart
+const revCtx=document.getElementById('revChart').getContext('2d');
+new Chart(revCtx,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'月營收（億元）',data:[8.72,9.00,10.11,12.79,12.82,13.10],borderColor:'#7c3aed',backgroundColor:'rgba(124,58,237,0.1)',tension:0.3,fill:true,pointBackgroundColor:['#7c3aed','#7c3aed','#7c3aed','#7c3aed','#7c3aed','#ef4444'],pointRadius:5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,grid:{color:'#f0f4f8'}}}}});
+
+// PE Chart
+const peCtx=document.getElementById('peChart').getContext('2d');
+new Chart(peCtx,{type:'bar',data:{labels:['信驊 TTM','信驊 2026E','信驊歷史均值','新唐','大盤'],datasets:[{label:'本益比（x）',data:[107.5,79,80,30,18],backgroundColor:['#ef4444','#f97316','#fbbf24','#ddd6fe','#d1fae5'],borderRadius:5}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}});
+</script>
+</body>
+</html>

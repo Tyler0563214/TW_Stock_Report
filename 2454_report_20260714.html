@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>聯發科技 2454 投資研究報告 2026-07-14</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--primary:#b45309;--primary-dark:#92400e;--primary-light:#fef3c7;--accent:#0891b2;--danger:#ef4444;--success:#22c55e;--warning:#eab308;--bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--text-muted:#64748b;--border:#e2e8f0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+.cover{background:linear-gradient(135deg,#451a03 0%,#92400e 45%,#b45309 80%,#d97706 100%);color:#fff;padding:60px 40px;text-align:center;position:relative;overflow:hidden;}
+.cover::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,0.05) 0%,transparent 60%);}
+.cover h1{font-size:2.8em;font-weight:800;letter-spacing:2px;margin-bottom:8px;}
+.cover h2{font-size:1.4em;font-weight:400;opacity:0.85;margin-bottom:24px;}
+.badge{display:inline-block;padding:6px 18px;border-radius:999px;font-size:0.85em;font-weight:700;margin:4px;}
+.price-block{display:flex;justify-content:center;gap:40px;margin-top:28px;flex-wrap:wrap;}
+.price-item{text-align:center;}
+.price-item .val{font-size:2.4em;font-weight:800;}
+.price-item .lbl{font-size:0.8em;opacity:0.75;margin-top:2px;}
+.neg{color:#fca5a5;}.pos{color:#6ee7b7;}
+.container{max-width:1100px;margin:0 auto;padding:24px 20px;}
+.section{margin-bottom:32px;}
+.section-title{font-size:1.3em;font-weight:700;color:var(--primary-dark);border-left:4px solid var(--primary);padding-left:12px;margin-bottom:18px;}
+.card{background:var(--card);border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:16px;}
+.core-card{background:linear-gradient(135deg,#451a03,#92400e);color:#fff;border-radius:16px;padding:32px;margin-bottom:32px;}
+.core-card .rec{font-size:1.8em;font-weight:800;margin-bottom:8px;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.kpi-item{background:var(--card);border-radius:10px;padding:18px;border-left:4px solid var(--primary);box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.kpi-item .kpi-val{font-size:1.6em;font-weight:800;color:var(--primary-dark);}
+.kpi-item .kpi-label{font-size:0.82em;color:var(--text-muted);margin-top:4px;font-weight:600;}
+.kpi-item .kpi-note{font-size:0.75em;color:var(--text-muted);margin-top:6px;}
+.chart-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;}
+.chart-wrap{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.chart-wrap h3{font-size:0.95em;font-weight:700;color:var(--text-muted);margin-bottom:14px;}
+table{width:100%;border-collapse:collapse;font-size:0.9em;}
+th{background:var(--primary-light);color:var(--primary-dark);padding:10px 12px;text-align:left;font-weight:700;}
+td{padding:9px 12px;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#fafaf8;}
+.tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:0.78em;font-weight:600;}
+.tag-bull{background:#dcfce7;color:#166534;}
+.tag-bear{background:#fee2e2;color:#991b1b;}
+.tag-neutral{background:#fef9c3;color:#854d0e;}
+.score-bar{display:flex;align-items:center;gap:10px;margin:8px 0;}
+.score-bar .bar{height:10px;border-radius:5px;background:linear-gradient(90deg,var(--primary),var(--accent));min-width:4px;}
+.score-bar .label{font-size:0.82em;color:var(--text-muted);width:100px;flex-shrink:0;}
+.score-bar .val{font-size:0.82em;font-weight:700;width:40px;text-align:right;}
+.strat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.strat-card{border-radius:12px;padding:24px;}
+.strat-atk{background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;}
+.strat-bal{background:linear-gradient(135deg,#92400e,#b45309);color:#fff;}
+.strat-def{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;}
+.strat-card h3{font-size:1.1em;font-weight:800;margin-bottom:12px;}
+.strat-card p{font-size:0.87em;opacity:0.92;line-height:1.7;}
+.debate{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:600px){.debate{grid-template-columns:1fr;}.price-block{gap:20px;}}
+.bull-col{background:#f0fdf4;border-radius:10px;padding:20px;border:1px solid #bbf7d0;}
+.bear-col{background:#fff1f2;border-radius:10px;padding:20px;border:1px solid #fecdd3;}
+.bull-col h3{color:#166534;font-weight:700;margin-bottom:12px;}
+.bear-col h3{color:#991b1b;font-weight:700;margin-bottom:12px;}
+.bull-col li,.bear-col li{margin-bottom:10px;font-size:0.88em;line-height:1.6;}
+.risk-badge{display:inline-block;padding:6px 16px;border-radius:8px;font-weight:700;font-size:0.9em;}
+.risk-med{background:#fef9c3;color:#854d0e;border:1px solid #fde047;}
+.glossary dt{font-weight:700;color:var(--primary-dark);margin-top:12px;}
+.glossary dd{font-size:0.88em;color:var(--text-muted);margin-left:16px;margin-top:3px;}
+.disclaimer{background:#fef9c3;border:1px solid #fde047;border-radius:10px;padding:20px;font-size:0.82em;color:#713f12;margin-top:32px;}
+.info-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.info-chip{background:var(--primary-light);color:var(--primary-dark);border-radius:6px;padding:4px 10px;font-size:0.8em;font-weight:600;}
+.alert-box{background:linear-gradient(135deg,#fef9c3,#fef3c7);border:1px solid #fde047;border-radius:10px;padding:16px;margin-bottom:16px;}
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div style="display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);color:#fff;border-radius:6px;padding:4px 14px;font-size:0.85em;margin-bottom:12px;">🟠 首次報告 | 台股IC設計龍頭</div>
+  <h1>聯發科技</h1>
+  <h2>MediaTek Inc.｜代碼：2454</h2>
+  <div>
+    <span class="badge" style="background:rgba(234,179,8,0.25);border:1px solid #fde047;color:#fef9c3;">⚠️ 風險等級：中等 5.5/10</span>
+    <span class="badge" style="background:rgba(255,255,255,0.15);color:#fff;">📅 2026-07-14</span>
+    <span class="badge" style="background:rgba(255,255,255,0.15);color:#fff;">🤖 AI ASIC新星</span>
+  </div>
+  <div class="price-block">
+    <div class="price-item"><div class="val neg">3,680<span style="font-size:0.4em">元</span></div><div class="lbl">今日收盤</div></div>
+    <div class="price-item"><div class="val neg">-145元 (-3.79%)</div><div class="lbl">今日漲跌</div></div>
+    <div class="price-item"><div class="val">62.91<span style="font-size:0.5em">元</span></div><div class="lbl">TTM EPS</div></div>
+    <div class="price-item"><div class="val" style="color:#fcd34d;">58.5<span style="font-size:0.5em">x</span></div><div class="lbl">TTM PE</div></div>
+    <div class="price-item"><div class="val">4,970<span style="font-size:0.4em">元</span></div><div class="lbl">52周最高(6/2)</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 警示框 -->
+<div class="alert-box">
+  ⚡ <strong>今日關鍵背景：</strong>高通（Qualcomm）宣布切入AI ASIC市場，引爆市場對聯發科競爭格局的疑慮，近期股價連跌。今日3,680元距52W高4,970元（6/2）回落 <strong>-25.9%</strong>，技術面已跌破布林下軌（3,772元），接近MA60（3,698元）關鍵支撐。布林下軌+MA60「雙支撐」帶是關鍵觀察區。
+</div>
+
+<!-- 02 核心結論 -->
+<div class="core-card section">
+  <div style="font-size:0.85em;opacity:0.8;margin-bottom:6px;">📊 投資建議</div>
+  <div class="rec">🟡 短線觀望 | 中長線強力看多</div>
+  <div style="font-size:1.05em;margin-bottom:6px;">🎯 目標價：4,500～5,000元（12個月）｜外資最高喊 10,000元</div>
+  <div style="font-size:1em;margin-bottom:6px;">📍 布林下軌+MA60雙支撐：3,700～3,772元（可試探性分批）</div>
+  <div style="font-size:0.95em;">🛑 停損：跌破 3,500元（MA60以下+5%確認破位）</div>
+  <div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
+    <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:12px;">
+      <div style="font-size:0.8em;opacity:0.8;">📈 核心強項</div>
+      <div style="font-size:0.9em;margin-top:4px;">AI ASIC 2026E 20億USD<br>Google TPU Q4量產<br>天璣高端手機晶片</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:12px;">
+      <div style="font-size:0.8em;opacity:0.8;">⚡ 催化劑</div>
+      <div style="font-size:0.9em;margin-top:4px;">Q2財報（8月）<br>Google TPU Q4量產<br>2028E EPS 400元+</div>
+    </div>
+    <div style="background:rgba(239,68,68,0.2);border-radius:8px;padding:12px;">
+      <div style="font-size:0.8em;opacity:0.8;">🚨 最大風險</div>
+      <div style="font-size:0.9em;margin-top:4px;">高通切入ASIC競爭<br>毛利率下滑趨勢<br>手機市場景氣不穩</div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 關鍵KPI -->
+<div class="section">
+  <div class="section-title">📊 核心財務KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-item">
+      <div class="kpi-val" style="color:var(--danger);">3,680元</div>
+      <div class="kpi-label">今日股價（7/14）</div>
+      <div class="kpi-note">開盤3,830→最低3,655，跌-3.79%</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">15.17元</div>
+      <div class="kpi-label">Q1'26 EPS</div>
+      <div class="kpi-note">GM 46.30%，OPM 15.35%</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">62.91元</div>
+      <div class="kpi-label">TTM EPS（近四季）</div>
+      <div class="kpi-note">17.50+15.84+14.40+15.17</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val" style="color:var(--warning);">58.5倍</div>
+      <div class="kpi-label">TTM 本益比</div>
+      <div class="kpi-note">2028E EPS 400元+→ PE約9x！</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">580.1億</div>
+      <div class="kpi-label">Jun 2026 月營收</div>
+      <div class="kpi-note">YoY+2.80%，MoM+22.3%（強勁反彈）</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">3,052億</div>
+      <div class="kpi-label">H1 2026 累計營收</div>
+      <div class="kpi-note">Apr爆量632億→呈明顯季節波動</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">20億USD</div>
+      <div class="kpi-label">AI ASIC 2026E年目標</div>
+      <div class="kpi-note">3/11法說會上調，前估10億USD</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">5.98兆</div>
+      <div class="kpi-label">市值（新台幣）</div>
+      <div class="kpi-note">台股第二大市值企業</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 財務趨勢圖 -->
+<div class="section">
+  <div class="section-title">📈 財務趨勢圖表</div>
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>EPS 季度趨勢（近8季）元/股</h3>
+      <canvas id="epsChart" height="200"></canvas>
+      <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;">★ 實際公告數字；EPS呈現高原期</div>
+    </div>
+    <div class="chart-wrap">
+      <h3>月營收趨勢（2026年 H1，億元）</h3>
+      <canvas id="revChart" height="200"></canvas>
+      <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;">★ 實際公告；FinMind月份-1=實際月份</div>
+    </div>
+    <div class="chart-wrap">
+      <h3>本益比比較（TTM PE）</h3>
+      <canvas id="peChart" height="200"></canvas>
+      <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;">★ 若2028E EPS達400元，PE僅9x（推算值）</div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽</div>
+  <div class="card">
+    <p style="margin-bottom:12px;"><strong>聯發科技（MediaTek）</strong>是全球最大智慧手機晶片設計公司，天璣（Dimensity）系列手機SoC市佔率全球第一。近年積極轉型，ASIC（特定應用IC）業務已成為新成長引擎，與Google合作設計TPU晶片，預計Q4 2026量產。</p>
+    <p style="margin-bottom:12px;"><strong>核心護城河：</strong>①全球最大手機晶片設計師，2億顆晶片/年出貨規模 ②AI ASIC全套IP組合（5G、Wi-Fi 7、低功耗處理器），快速滿足客製化需求 ③Turnkey全包式解決方案，協助客戶縮短上市時間 ④車用AI晶片（DimensityAuto）新藍海。</p>
+    <div class="info-row">
+      <span class="info-chip">📱 全球手機晶片市佔#1</span>
+      <span class="info-chip">🤖 AI ASIC 2026E 20億USD</span>
+      <span class="info-chip">☁️ Google TPU合作</span>
+      <span class="info-chip">🚗 車用DimensityAuto</span>
+      <span class="info-chip">💰 市值5.98兆（台股第二）</span>
+    </div>
+    <div style="margin-top:14px;padding:12px;background:var(--primary-light);border-radius:8px;font-size:0.88em;">
+      <strong>2026年轉型關鍵：</strong>3/11法說會上調AI ASIC全年目標至20億USD（前估10億USD），確認Google TPU合作順利推進，Q4 2026量產；車用晶片（DimensityAuto）也進入高速成長期；高盛目標價5,000元，外資最樂觀喊10,000元（基於2028E爆發）。
+    </div>
+  </div>
+</div>
+
+<!-- 06 基本面分析 -->
+<div class="section">
+  <div class="section-title">💼 基本面分析</div>
+  <div class="card">
+    <div style="margin-bottom:16px;">
+      <div class="score-bar"><span class="label">EPS穩定性</span><div class="bar" style="width:65%;background:linear-gradient(90deg,#b45309,#fbbf24);"></div><span class="val">65/100</span></div>
+      <div class="score-bar"><span class="label">毛利率趨勢</span><div class="bar" style="width:55%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">55/100</span></div>
+      <div class="score-bar"><span class="label">ASIC成長潛力</span><div class="bar" style="width:92%;background:linear-gradient(90deg,#b45309,#22c55e);"></div><span class="val">92/100</span></div>
+      <div class="score-bar"><span class="label">估值合理性</span><div class="bar" style="width:48%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">48/100</span></div>
+      <div class="score-bar"><span class="label">產業地位護城河</span><div class="bar" style="width:82%;background:linear-gradient(90deg,#b45309,#22c55e);"></div><span class="val">82/100</span></div>
+    </div>
+    <table>
+      <tr><th>季度</th><th>EPS（元）</th><th>毛利率</th><th>營業利益率</th><th>QoQ</th></tr>
+      <tr><td>Q1'25</td><td>18.43</td><td>48.14%</td><td>19.60%</td><td>+23.4%</td></tr>
+      <tr><td>Q2'25</td><td>17.50</td><td>49.13%</td><td>19.54%</td><td>-5.0%</td></tr>
+      <tr><td>Q3'25</td><td>15.84</td><td>46.53%</td><td>15.61%</td><td>-9.5%</td></tr>
+      <tr><td>Q4'25</td><td>14.40</td><td>46.13%</td><td>14.55%</td><td>-9.1%</td></tr>
+      <tr><td style="color:var(--primary-dark);font-weight:700;">Q1'26</td><td style="color:var(--primary-dark);font-weight:700;">15.17★</td><td style="color:var(--warning);font-weight:700;">46.30%⚠️</td><td style="color:var(--primary-dark);font-weight:700;">15.35%</td><td style="color:green;">+5.3%</td></tr>
+    </table>
+    <p style="margin-top:10px;font-size:0.85em;color:var(--text-muted);">⚠️ 毛利率從2025年Q2的49.13%下滑至Q1'26的46.30%，持續走低是主要隱憂。但ASIC業務毛利率更高，若占比提升，整體毛利率有望回升。</p>
+  </div>
+</div>
+
+<!-- 07 籌碼面分析 -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:16px;">
+      <div style="background:#fee2e2;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:0.8em;color:#991b1b;">外資（7/13）</div>
+        <div style="font-size:1.5em;font-weight:800;color:#dc2626;">-774張</div>
+        <div style="font-size:0.75em;color:#991b1b;">賣超</div>
+      </div>
+      <div style="background:#fee2e2;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:0.8em;color:#991b1b;">投信（7/13）</div>
+        <div style="font-size:1.5em;font-weight:800;color:#dc2626;">-132張</div>
+        <div style="font-size:0.75em;color:#991b1b;">賣超</div>
+      </div>
+      <div style="background:#dcfce7;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:0.8em;color:#166534;">自營商（7/13）</div>
+        <div style="font-size:1.5em;font-weight:800;color:#16a34a;">+11張</div>
+        <div style="font-size:0.75em;color:#166534;">買超</div>
+      </div>
+      <div style="background:#fee2e2;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:0.8em;color:#991b1b;">三大法人合計</div>
+        <div style="font-size:1.5em;font-weight:800;color:#dc2626;">-893張</div>
+        <div style="font-size:0.75em;color:#991b1b;">合計賣超</div>
+      </div>
+    </div>
+    <div style="background:var(--primary-light);border-radius:8px;padding:14px;font-size:0.88em;">
+      <strong>外資長期評等：</strong>高盛目標價5,000元（重申買進）；外資最樂觀目標10,000元（基於2028E ASIC爆發）；富邦目標3,000元（保守派）。主流外資多數維持「買進/增持」評等，近期賣超為短線調節，非長線看空訊號。
+    </div>
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div class="section">
+  <div class="section-title">📉 技術分析</div>
+  <div class="card">
+    <div style="background:#fef9c3;border:1px solid #fde047;border-radius:8px;padding:14px;margin-bottom:14px;font-size:0.88em;">
+      🔍 <strong>關鍵觀察：</strong>今日3,680元≈ MA60（3,698元），「布林下軌（3,772元）＋MA60（3,698元）」構成重要雙支撐區（3,680～3,772元）。此區間若守住，有望止跌反彈。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div>
+        <strong style="color:var(--primary-dark);">均線系統（7/14）</strong>
+        <table style="margin-top:8px;">
+          <tr><th>均線</th><th>數值</th><th>相對位置</th></tr>
+          <tr><td>MA5</td><td>3,980</td><td><span class="tag tag-bear">跌破⬇</span></td></tr>
+          <tr><td>MA10</td><td>4,093</td><td><span class="tag tag-bear">跌破⬇</span></td></tr>
+          <tr><td>MA20</td><td>4,223</td><td><span class="tag tag-bear">跌破⬇</span></td></tr>
+          <tr><td>MA60</td><td>3,698</td><td><span class="tag tag-neutral">≈持平🟡</span></td></tr>
+        </table>
+      </div>
+      <div>
+        <strong style="color:var(--primary-dark);">指標訊號</strong>
+        <table style="margin-top:8px;">
+          <tr><th>指標</th><th>數值</th><th>訊號</th></tr>
+          <tr><td>MACD</td><td>-9.96/-79.12</td><td><span class="tag tag-bear">死叉🔴</span></td></tr>
+          <tr><td>RSI</td><td>42.21</td><td><span class="tag tag-neutral">偏弱🟡</span></td></tr>
+          <tr><td>布林下軌</td><td>3,772</td><td><span class="tag tag-bear">已跌破⚠️</span></td></tr>
+          <tr><td>MA60支撐</td><td>3,698</td><td><span class="tag tag-neutral">關鍵支撐🟡</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <div style="background:#f8fafc;border-radius:8px;padding:14px;font-size:0.88em;">
+      <strong>🔑 關鍵價位：</strong>
+      壓力：布林下軌3,772（反壓）→ MA5 3,980 → MA10 4,093 → MA20 4,223 → 52W高 4,970；
+      支撐：MA60 3,698 → 3,500整數 → 3,200（前低）
+      <br><br>
+      <strong>📌 技術判讀：</strong>今日股價3,680元剛好落在MA60（3,698元）附近，這是近年來的重要支撐位。RSI 42.21尚未超賣，顯示若MA60守不住，下方空間可能繼續。但若今日收盤站穩MA60，配合成交量縮小，可能是短線止跌訊號。高通競爭消息屬情緒性因素，基本面影響需時間評估。
+    </div>
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <div class="section-title">💳 融資融券狀況</div>
+  <div class="card">
+    <p style="font-size:0.9em;">今日（7/14）融資融券資料：融資餘額 0張，融券餘額 0張（FinMind盤中資料，次日更新）。</p>
+    <div style="margin-top:12px;padding:12px;background:#f8fafc;border-radius:8px;font-size:0.85em;color:var(--text-muted);">
+      <strong>趨勢判讀：</strong>聯發科市值5.98兆，融資槓桿相對少，主要由外資（持股約54%）和投信主導。外資連日賣超（-893張）是近期壓力主因，非散戶融資問題。若外資轉為買超，股價可能快速反彈。精確融資融券資料可查詢 <a href="https://www.twse.com.tw/zh/trading/exchange/BWIBBU_d.html" target="_blank" style="color:var(--primary);">台灣證交所官網</a>。
+    </div>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <div class="section-title">⚔️ 多空研究員辯論</div>
+  <div class="debate">
+    <div class="bull-col">
+      <h3>🐂 看多論點（看多60%）</h3>
+      <ul>
+        <li><strong>AI ASIC爆發成長：</strong>2026E全年AI ASIC目標上調至20億USD（3月法說會），較原估值翻倍；2028E外資預估可達400億USD規模，對應EPS 400元以上。</li>
+        <li><strong>Google TPU獨家合作：</strong>確認與Google合作設計TPU客製AI晶片，Q4 2026量產，是進入CSP超大型客戶的戰略突破。</li>
+        <li><strong>Jun月營收大反彈：</strong>Jun 2026月營收580.1億（MoM+22.3%），扭轉May的低迷，顯示需求端仍有韌性。</li>
+        <li><strong>天璣系列制霸高端：</strong>Dimensity 9400等高端SoC在性能功耗比優於高通，Android旗艦滲透率持續上升。</li>
+        <li><strong>車用AI晶片新藍海：</strong>DimensityAuto已獲多家車廠設計認證，2026-2027年量產交車，車用EPS貢獻開始顯現。</li>
+        <li><strong>2028E估值極具吸引力：</strong>若ASIC爆發，外資估2028E EPS 400元+，以現價3,680計算本益比僅9倍，極度低估。</li>
+      </ul>
+    </div>
+    <div class="bear-col">
+      <h3>🐻 看空論點（看空40%）</h3>
+      <ul>
+        <li><strong>高通切入ASIC市場：</strong>高通宣布進入AI ASIC領域，若成功搶下部分CSP訂單，聯發科ASIC成長天花板可能下修，這是近期股價重挫主因。</li>
+        <li><strong>毛利率持續下滑：</strong>從2025 Q2的49.13%跌至Q1'26的46.30%，跌幅近3個百分點，ASIC成本高、記憶體漲價均是壓力。</li>
+        <li><strong>手機市場景氣不穩：</strong>2026年全球手機出貨量成長放緩，核心業務（手機晶片）面臨天花板，高度依賴ASIC業務的爆發兌現。</li>
+        <li><strong>TTM PE 58.5x偏高：</strong>以現有獲利能力計算，PE不便宜。ASIC爆發若延遲或幅度不如預期，估值將大幅壓縮。</li>
+        <li><strong>技術面三線跌破：</strong>MA5/MA10/MA20已跌破，若MA60（3,698）不守，下方支撐較薄，技術性賣壓持續。</li>
+        <li><strong>外資/投信同步賣超：</strong>7/13三大法人合計賣超893張，機構不願逆勢撐盤，短線動能偏弱。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;background:#f8fafc;">
+    <strong>💬 給一般投資人的話：</strong>聯發科就像「晶片界的台積電第二」——從手機晶片霸主，現在正在轉型為AI時代的客製晶片設計師。高通的競爭讓市場緊張，但聯發科已與Google綁定，護城河並不低。短期下跌是「競爭疑慮的情緒反應」，基本面尚未惡化。對中長線投資人，3,700元附近（MA60支撐）是歷史上較好的分批進場點，但需有耐心等待ASIC爆發（主要在2027-2028年）。
+  </div>
+</div>
+
+<!-- 11 風控評估 -->
+<div class="section">
+  <div class="section-title">🛡️ 風控評估（六維度）</div>
+  <div class="card">
+    <div style="margin-bottom:16px;">
+      <div class="score-bar"><span class="label">估值風險(30%)</span><div class="bar" style="width:60%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">6.0分</span></div>
+      <div class="score-bar"><span class="label">財務風險(25%)</span><div class="bar" style="width:35%;background:linear-gradient(90deg,#22c55e,#86efac);"></div><span class="val">3.5分</span></div>
+      <div class="score-bar"><span class="label">流動性風險(10%)</span><div class="bar" style="width:15%;background:linear-gradient(90deg,#22c55e,#86efac);"></div><span class="val">1.5分</span></div>
+      <div class="score-bar"><span class="label">產業風險(15%)</span><div class="bar" style="width:55%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">5.5分</span></div>
+      <div class="score-bar"><span class="label">總經風險(10%)</span><div class="bar" style="width:40%;background:linear-gradient(90deg,#22c55e,#86efac);"></div><span class="val">4.0分</span></div>
+      <div class="score-bar"><span class="label">籌碼風險(10%)</span><div class="bar" style="width:52%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">5.2分</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="risk-badge risk-med">綜合風險：5.5 / 10（中等偏高）</span>
+      <span style="font-size:0.85em;color:var(--text-muted);">主要風險：高通競爭疑慮 + 毛利率下滑 + 技術面偏弱</span>
+    </div>
+  </div>
+</div>
+
+<!-- 12 台股三段式策略 -->
+<div class="section">
+  <div class="section-title">🗺️ 台股三段式操作策略</div>
+  <div class="strat-grid">
+    <div class="strat-card strat-atk">
+      <h3>🚀 進攻方案（積極型）</h3>
+      <p>條件：MA60（3,698）守住，出現帶量止跌K線<br><br>
+      進場：3,680～3,750元（MA60附近）<br>
+      加碼：站回布林下軌3,772元後<br>
+      目標：4,500元→5,000元<br>
+      停損：跌破3,500元</p>
+    </div>
+    <div class="strat-card strat-bal">
+      <h3>⚖️ 均衡方案（穩健型）</h3>
+      <p>條件：分批在支撐區建倉<br><br>
+      第一批：3,680～3,750元（今日附近）<br>
+      第二批：3,400～3,500元（若再跌）<br>
+      目標：4,200元→4,500元（12M）<br>
+      停損：跌破3,300元</p>
+    </div>
+    <div class="strat-card strat-def">
+      <h3>🛡️ 防守方案（保守型）</h3>
+      <p>條件：等待趨勢確認翻多<br><br>
+      等待：MA20（4,223）確認站穩<br>
+      等待：外資轉買超3日以上<br>
+      目標：5,000元（外資共識）<br>
+      停損：進場後跌破MA20</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <strong>📅 催化劑時程：</strong>
+    <table style="margin-top:10px;">
+      <tr><th>時間</th><th>事件</th><th>預期影響</th></tr>
+      <tr><td>2026/08</td><td>Q2財報公布（EPS預估~16-18元）</td><td>若優於預期，可能成短線反彈催化劑</td></tr>
+      <tr><td>2026/Q4</td><td>Google TPU量產出貨</td><td>ASIC收入正式顯現，估值邏輯改寫</td></tr>
+      <tr><td>2026下半年</td><td>天璣旗艦晶片新品發表</td><td>高端手機市場份額鞏固</td></tr>
+      <tr><td>2027-2028</td><td>ASIC業務爆發（外資2028E EPS 400元+）</td><td>長線估值重評，外資目標10,000元</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 13 名詞小教室 -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室</div>
+  <div class="card">
+    <dl class="glossary">
+      <dt>ASIC（Application-Specific Integrated Circuit，特定應用積體電路）</dt>
+      <dd>專門為某一特定用途設計的晶片，例如Google的TPU（Tensor Processing Unit）就是專門為AI運算設計的ASIC。比通用晶片效能更高、功耗更低，但只能做一件事。</dd>
+      <dt>天璣（Dimensity）系列</dt>
+      <dd>聯發科的智慧手機SoC晶片品牌，從中低端到高端旗艦（天璣9400）都有，目前已超越高通成為Android旗艦手機晶片的第一選擇。</dd>
+      <dt>Turnkey解決方案</dt>
+      <dd>「交鑰匙」——客戶只需要說出想要什麼功能，聯發科幫你從晶片設計、到軟體到生產全部搞定。這是聯發科的差異化競爭優勢，讓中小客戶能快速上市。</dd>
+      <dt>CSP（Cloud Service Provider，雲端服務供應商）</dt>
+      <dd>就是Google、微軟、亞馬遜AWS、Meta這種超大型雲端公司。他們需要大量客製AI晶片（ASIC）來訓練和部署AI模型，是聯發科ASIC業務最重要的客戶群。</dd>
+      <dt>MA60（60日移動平均線）</dt>
+      <dd>把過去60個交易日的收盤價平均，也稱「季線」。通常被視為中期趨勢的分水嶺：股價在MA60以上偏多，以下偏空。聯發科今日3,680元恰好接近MA60（3,698元），這是關鍵觀察點。</dd>
+      <dt>TPU（Tensor Processing Unit）</dt>
+      <dd>Google自研的AI訓練/推理晶片，是ASIC的一種。聯發科已獲得Google委託設計新一代TPU，預計Q4 2026量產，代表聯發科正式進軍超大型CSP客戶。</dd>
+    </dl>
+  </div>
+</div>
+
+<!-- 14 免責聲明 -->
+<div class="disclaimer">
+  ⚠️ <strong>免責聲明：</strong>本報告僅供研究參考，不構成投資建議。聯發科（2454）市值龐大但仍屬高波動標的，ASIC業務爆發為長線題材，兌現時間可能超出預期。高通競爭態勢尚待觀察，切勿以短線心態操作長線題材。所有投資均有風險，請依個人財務狀況謹慎決策。<br>
+  <strong>資料來源：</strong>Fugle API（即時股價）、FinMind（財報/月營收/三大法人）、台灣證交所T86（法人數據）、高盛/外資研究報告（間接引用）、各大財經媒體。資料日期：2026-07-14。
+</div>
+
+</div>
+
+<script>
+// EPS Chart
+const epsCtx=document.getElementById('epsChart').getContext('2d');
+new Chart(epsCtx,{type:'bar',data:{labels:['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],datasets:[{label:'EPS（元）',data:[16.19,15.94,14.94,18.43,17.50,15.84,14.40,15.17],backgroundColor:['#fde68a','#fde68a','#fde68a','#fcd34d','#fcd34d','#f59e0b','#d97706','#ef4444'],borderRadius:5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,min:10,grid:{color:'#f0f4f8'}}}}});
+
+// Revenue Chart
+const revCtx=document.getElementById('revChart').getContext('2d');
+new Chart(revCtx,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'月營收（億元）',data:[512.7,469.8,389.5,632.2,467.4,580.1],borderColor:'#b45309',backgroundColor:'rgba(180,83,9,0.1)',tension:0.3,fill:true,pointBackgroundColor:['#b45309','#b45309','#b45309','#b45309','#b45309','#ef4444'],pointRadius:5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,grid:{color:'#f0f4f8'}}}}});
+
+// PE Chart
+const peCtx=document.getElementById('peChart').getContext('2d');
+new Chart(peCtx,{type:'bar',data:{labels:['聯發科 TTM','聯發科 2026E','聯發科 2028E','台積電','大盤'],datasets:[{label:'本益比（x）',data:[58.5,45,9,25,18],backgroundColor:['#ef4444','#f97316','#22c55e','#fde68a','#d1fae5'],borderRadius:5}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}});
+</script>
+</body>
+</html>
