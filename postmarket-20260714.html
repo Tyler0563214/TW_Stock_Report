@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股盤後分析 2026/07/14</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root{--bg:#0d1117;--bg2:#161b22;--bg3:#1c2128;--border:#30363d;--text:#c9d1d9;--muted:#8b949e;--green:#3fb950;--red:#f85149;--yellow:#d29922;--blue:#58a6ff;--orange:#ffa657;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;line-height:1.6;}
+  .container{max-width:1300px;margin:0 auto;padding:16px;}
+  h1{font-size:21px;font-weight:700;}
+  h2{font-size:14px;font-weight:600;color:var(--blue);border-bottom:1px solid var(--border);padding-bottom:5px;margin-bottom:10px;}
+  h3{font-size:13px;font-weight:600;color:var(--orange);margin-bottom:6px;}
+  .section{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  .up{color:var(--green);} .dn{color:var(--red);} .neu{color:var(--muted);}
+  .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;}
+  .badge-red{background:#3d1a1a;color:var(--red);border:1px solid var(--red);}
+  .badge-yellow{background:#3d2e1a;color:var(--yellow);border:1px solid var(--yellow);}
+  .badge-green{background:#1a3d2a;color:var(--green);border:1px solid var(--green);}
+  .badge-blue{background:#0d1f3d;color:var(--blue);border:1px solid var(--blue);}
+  .ticker-bar{display:flex;gap:10px;flex-wrap:wrap;padding:8px 0;}
+  .ticker-item{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;min-width:102px;text-align:center;}
+  .ticker-label{font-size:10px;color:var(--muted);}
+  .ticker-val{font-size:15px;font-weight:700;}
+  .ticker-chg{font-size:11px;}
+  .highlight{background:#1c2840;border-left:3px solid var(--blue);padding:8px 12px;border-radius:0 6px 6px 0;margin:8px 0;font-size:12px;}
+  .warn{background:#2a1a0d;border-left:3px solid var(--orange);padding:8px 12px;border-radius:0 6px 6px 0;margin:8px 0;font-size:12px;}
+  .critical{background:#2a0d0d;border-left:3px solid var(--red);padding:8px 12px;border-radius:0 6px 6px 0;margin:8px 0;font-size:12px;}
+  .alert-box{background:#1a2a0d;border-left:3px solid var(--green);padding:8px 12px;border-radius:0 6px 6px 0;margin:8px 0;font-size:12px;}
+  table{width:100%;border-collapse:collapse;}
+  th{background:var(--bg3);color:var(--muted);font-size:11px;text-align:left;padding:6px 10px;border-bottom:1px solid var(--border);}
+  td{padding:6px 10px;border-bottom:1px solid var(--border);font-size:12px;}
+  tr:last-child td{border-bottom:none;}
+  .event-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;height:100%;}
+  .event-card p{font-size:12px;margin-bottom:4px;}
+  .stat-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;}
+  canvas{max-height:260px;}
+  .countdown{background:#1a2a3d;border:2px solid var(--blue);border-radius:10px;padding:14px;text-align:center;margin-bottom:12px;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ① 頁首 -->
+<div class="section">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <div>
+      <h1>📊 台股盤後分析</h1>
+      <div style="color:var(--muted);font-size:12px;margin-top:4px;">2026年07月14日（週二）收盤總結｜颱風補跌日 + 本週三大催化劑倒數</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="margin-bottom:5px;"><span class="badge badge-red">補跌殺盤 收斂</span></div>
+      <div>收盤：<span class="dn" style="font-size:22px;font-weight:700;">44,644</span></div>
+      <div class="dn" style="font-size:12px;">較07/13收盤 45,380 跌 <strong>-736 點（-1.62%）</strong></div>
+    </div>
+  </div>
+
+  <!-- 三大催化劑倒計時 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px;">
+    <div class="countdown">
+      <div style="font-size:10px;color:var(--muted);">今晚 21:30 台灣時間</div>
+      <div style="font-size:14px;font-weight:700;color:var(--yellow);">🇺🇸 美國6月CPI公布</div>
+      <div style="font-size:11px;color:var(--muted);">預期 3.9%（首次降溫）｜最關鍵短線方向指標</div>
+    </div>
+    <div class="countdown" style="border-color:var(--green);">
+      <div style="font-size:10px;color:var(--muted);">明日（07/15 週三）</div>
+      <div style="font-size:14px;font-weight:700;color:var(--yellow);">⚡ 台指期7月份結算</div>
+      <div style="font-size:11px;color:var(--muted);">結算前大戶拉鋸，波動放大，勿追短</div>
+    </div>
+    <div class="countdown" style="border-color:var(--orange);background:#1a2a0d;">
+      <div style="font-size:10px;color:var(--muted);">後天（07/16 週四）下午2點</div>
+      <div style="font-size:14px;font-weight:700;color:var(--green);">🏭 台積電 Q2 法說會</div>
+      <div style="font-size:11px;color:var(--muted);">Q2營收破兆！外資齊喊買，目標價最高 3,800元</div>
+    </div>
+  </div>
+</div>
+
+<!-- ② 全球市場（美股07/11收盤） -->
+<div class="section">
+  <h2>② 全球市場（美股07/11週五收盤，台股今日補跌來源）</h2>
+  <div class="ticker-bar">
+    <div class="ticker-item"><div class="ticker-label">費半 SOX</div><div class="ticker-val dn">12,348</div><div class="ticker-chg dn">-4.78% 🔻</div></div>
+    <div class="ticker-item"><div class="ticker-label">S&P 500</div><div class="ticker-val dn">7,515</div><div class="ticker-chg dn">-0.79%</div></div>
+    <div class="ticker-item"><div class="ticker-label">那斯達克 NDX</div><div class="ticker-val dn">25,873</div><div class="ticker-chg dn">-1.55%</div></div>
+    <div class="ticker-item"><div class="ticker-label">VIX 恐慌</div><div class="ticker-val dn">17.16</div><div class="ticker-chg dn">+14.17% ↑</div></div>
+    <div class="ticker-item"><div class="ticker-label">10Y美債</div><div class="ticker-val dn">4.61%</div><div class="ticker-chg dn">+0.88%</div></div>
+    <div class="ticker-item"><div class="ticker-label">美元指數DXY</div><div class="ticker-val neu">101.18</div><div class="ticker-chg neu">-0.10%</div></div>
+    <div class="ticker-item"><div class="ticker-label">USD/TWD</div><div class="ticker-val dn">32.15</div><div class="ticker-chg dn">+0.14%（台幣貶）</div></div>
+    <div class="ticker-item"><div class="ticker-label">黃金</div><div class="ticker-val up">$4,029</div><div class="ticker-chg up">+0.80%（避險）</div></div>
+    <div class="ticker-item"><div class="ticker-label">布蘭特原油</div><div class="ticker-val dn">$84.85</div><div class="ticker-chg dn">+1.86%（漲通膨）</div></div>
+  </div>
+
+  <h3 style="margin-top:12px;">ADR 個股（美股07/11週五，大規模殺盤）</h3>
+  <table>
+    <thead><tr><th>代碼</th><th>名稱</th><th>07/11收盤</th><th>漲跌幅</th><th>評估</th></tr></thead>
+    <tbody>
+      <tr><td>TSM</td><td>台積電ADR</td><td>$421.58</td><td class="dn">-2.89%</td><td class="neu">台股今日台積電表現優於ADR，逆勢力守</td></tr>
+      <tr><td>NVDA</td><td>輝達</td><td>$203.53</td><td class="dn">-3.52%</td><td class="dn">AI算力題材短暫退燒，週後段轉弱</td></tr>
+      <tr><td>AMD</td><td>超微</td><td>$534.39</td><td class="dn">-4.21%</td><td class="dn">重挫，AI伺服器鏈壓力大</td></tr>
+      <tr><td>MU</td><td>美光</td><td>$937.00</td><td class="dn">-4.32%</td><td class="dn">SK Hynix削減HBM擴產引發連帶殺盤</td></tr>
+      <tr><td>AMAT</td><td>應用材料</td><td>$575.39</td><td class="dn">-4.50%</td><td class="dn">設備股重挫，最大跌幅之一</td></tr>
+      <tr><td>AVGO</td><td>博通</td><td>$384.05</td><td class="dn">-3.98%</td><td class="dn">CoWoS需求面仍在，但情緒拖累</td></tr>
+      <tr><td>INTC</td><td>英特爾</td><td>—</td><td class="dn">18A良率問題延續</td><td class="dn">Intel持續疲弱，台積電相對受益</td></tr>
+    </tbody>
+  </table>
+  <div class="critical" style="margin-top:10px;">🔴 <strong>週五半導體殺盤主因：</strong>SK Hynix傳縮減HBM擴產 + Meta宣布出售過剩AI算力（Meta Compute）→ 市場質疑AI資本支出可持續性 → 費半暴跌 -4.78%，創近期單日最大跌幅之一。</div>
+  <div class="warn" style="margin-top:6px;">⚠️ <strong>油價大漲至 $84.85（+1.86%）：</strong>前次我們追蹤約 $76，油價在過去幾個交易日大幅攀升，疑與中東局勢（美伊緊張）有關，構成新的通膨壓力。黃金同步上漲 +0.80% 確認 Risk-off 情緒。</div>
+</div>
+
+<!-- ③ 台股今日走勢解析 -->
+<div class="section">
+  <h2>③ 台股今日（07/14）走勢完整解析</h2>
+  <div class="grid2">
+    <div>
+      <h3>今日三段走勢</h3>
+      <table>
+        <thead><tr><th>時段</th><th>走勢</th><th>解讀</th></tr></thead>
+        <tbody>
+          <tr><td>開盤9:00</td><td class="dn">跳空開低，一度跌逾700點</td><td class="dn">補跌美股07/11費半殺盤，市場情緒低迷</td></tr>
+          <tr><td>盤中震盪</td><td class="dn">最大跌幅逾700點</td><td class="dn">外資持續賣超，壓力在</td></tr>
+          <tr><td>尾盤13:00–13:30</td><td class="up">從低點略收斂至 44,644</td><td class="up">法說前買盤進場（台積電），投信撐盤</td></tr>
+        </tbody>
+      </table>
+      <div class="highlight" style="margin-top:8px;">✅ <strong>台積電今日盤中逆勢力守紅盤</strong>——法說前護盤意願明顯，顯示機構有佈局意圖。</div>
+    </div>
+    <div>
+      <h3>今日終場數字</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
+        <div class="stat-box">
+          <div style="font-size:10px;color:var(--muted);">收盤指數</div>
+          <div style="font-size:22px;font-weight:700;" class="dn">44,644</div>
+          <div style="font-size:11px;" class="dn">-1.62%（-736點）</div>
+        </div>
+        <div class="stat-box">
+          <div style="font-size:10px;color:var(--muted);">07/14 vs 07/09（颱風前）</div>
+          <div style="font-size:18px;font-weight:700;" class="dn">-709點</div>
+          <div style="font-size:11px;" class="dn">-1.56%（五日最大跌幅）</div>
+        </div>
+        <div class="stat-box">
+          <div style="font-size:10px;color:var(--muted);">外資今日賣超（07/13資料）</div>
+          <div style="font-size:18px;font-weight:700;" class="dn">-195.6億</div>
+          <div style="font-size:11px;" class="dn">連日賣超不止</div>
+        </div>
+        <div class="stat-box">
+          <div style="font-size:10px;color:var(--muted);">投信今日買超（07/13）</div>
+          <div style="font-size:18px;font-weight:700;" class="up">+125.8億</div>
+          <div style="font-size:11px;" class="up">主要撐盤力量</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ④ 外資籌碼大逆轉 -->
+<div class="section">
+  <h2>④ 外資籌碼深挖（T86 資料日期：07/13，昨日）</h2>
+  <div class="alert-box">📌 T86 資料截至 07/13（週一），反映昨日的外資動向。今日（07/14）的 T86 將在收盤後發布。</div>
+
+  <div class="critical" style="margin-top:10px;">
+    🔻 <strong>友達(2409)閃電大逆轉：07/09 外資爆買 +188,929張 → 07/13 外資大賣 -106,993張</strong><br>
+    解讀：外資在07/09低位大量建倉→週末美股殺盤→週一高開後立刻清倉獲利了結。典型"主動套利"操作，非長線看法改變。
+  </div>
+
+  <div class="grid2" style="margin-top:12px;">
+    <div>
+      <h3>外資買超前10（07/13）— Risk-off 防禦型佈局</h3>
+      <table>
+        <thead><tr><th>代碼</th><th>名稱</th><th>買超（千股→張）</th><th>族群</th></tr></thead>
+        <tbody>
+          <tr><td>2618</td><td class="up">長榮航</td><td class="up">+58,020張</td><td>航空</td></tr>
+          <tr><td>2891</td><td class="up">中信金</td><td class="up">+41,021張</td><td>金融（防禦）</td></tr>
+          <tr><td>2332</td><td class="up">友訊</td><td class="up">+22,426張</td><td>網通</td></tr>
+          <tr><td>2610</td><td class="up">華航</td><td class="up">+21,428張</td><td>航空</td></tr>
+          <tr><td>4958</td><td class="up">臻鼎-KY</td><td class="up">+21,045張</td><td>PCB</td></tr>
+          <tr><td>2634</td><td class="up">漢翔</td><td class="up">+15,428張</td><td>國防/航太 🛡️</td></tr>
+          <tr><td>00712</td><td class="up">復華不動產ETF</td><td class="up">+13,005張</td><td>REIT類</td></tr>
+          <tr><td>5876</td><td class="up">上海商銀</td><td class="up">+12,298張</td><td>金融</td></tr>
+          <tr><td>2347</td><td class="up">聯強</td><td class="up">+11,472張</td><td>通路</td></tr>
+          <tr><td>5880</td><td class="up">合庫金</td><td class="up">+10,121張</td><td>金融</td></tr>
+        </tbody>
+      </table>
+      <div class="warn" style="margin-top:8px;">⚠️ 外資明顯轉向「防禦性資產」：航空（長榮航+華航）、金融（中信金+上海商銀+合庫金）、國防（漢翔）、REIT。這是典型的 Risk-off 輪動訊號。</div>
+    </div>
+    <div>
+      <h3>外資賣超前10（07/13）— 科技/主動ETF全面出清</h3>
+      <table>
+        <thead><tr><th>代碼</th><th>名稱</th><th>賣超（張）</th><th>族群</th></tr></thead>
+        <tbody>
+          <tr><td>2409</td><td class="dn">友達 🔻</td><td class="dn">-106,993張</td><td>面板（大逆轉）</td></tr>
+          <tr><td>00991A</td><td class="dn">主動復華未來50</td><td class="dn">-42,495張</td><td>主動ETF</td></tr>
+          <tr><td>00981A</td><td class="dn">主動統一台股增長</td><td class="dn">-32,895張</td><td>主動ETF</td></tr>
+          <tr><td>2834</td><td class="dn">臺企銀</td><td class="dn">-31,523張</td><td>金融</td></tr>
+          <tr><td>2408</td><td class="dn">南亞科</td><td class="dn">-29,029張</td><td>記憶體</td></tr>
+          <tr><td>2356</td><td class="dn">英業達</td><td class="dn">-26,602張</td><td>伺服器OEM</td></tr>
+          <tr><td>00919</td><td class="dn">群益台灣精選高息</td><td class="dn">-20,459張</td><td>高息ETF</td></tr>
+          <tr><td>0050</td><td class="dn">元大台灣50 ⚡</td><td class="dn">-19,097張</td><td>大型ETF</td></tr>
+          <tr><td>1402</td><td class="dn">遠東新</td><td class="dn">-18,749張</td><td>纖維</td></tr>
+          <tr><td>2887</td><td class="dn">台新新光金</td><td class="dn">-18,594張</td><td>金融</td></tr>
+        </tbody>
+      </table>
+      <div class="critical" style="margin-top:8px;">🔴 <strong>0050（元大台灣50）遭外資賣超 -19,097張</strong>，代表外資不是在「選股轉換」，而是整體大幅削減台股部位。這是最嚴重的警訊之一。</div>
+    </div>
+  </div>
+
+  <div style="margin-top:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+    <div class="stat-box"><div style="font-size:10px;color:var(--muted);">外資（07/13）</div><div style="font-size:18px;font-weight:700;" class="dn">-195.6億</div><div style="font-size:10px;" class="dn">連日賣超</div></div>
+    <div class="stat-box"><div style="font-size:10px;color:var(--muted);">投信（07/13）</div><div style="font-size:18px;font-weight:700;" class="up">+125.8億</div><div style="font-size:10px;" class="up">撐盤主力</div></div>
+    <div class="stat-box"><div style="font-size:10px;color:var(--muted);">自營商（07/13）</div><div style="font-size:18px;font-weight:700;" class="dn">-111.0億</div><div style="font-size:10px;" class="dn">賣超</div></div>
+    <div class="stat-box"><div style="font-size:10px;color:var(--muted);">三大法人合計（07/13）</div><div style="font-size:18px;font-weight:700;" class="dn">-180.8億</div><div style="font-size:10px;" class="dn">淨賣超</div></div>
+  </div>
+
+  <!-- 外資買超圖 -->
+  <div style="margin-top:16px;height:230px;">
+    <canvas id="foreignBuyChart"></canvas>
+  </div>
+</div>
+
+<!-- ⑤ 台積電法說會特別報導 -->
+<div class="section">
+  <h2>⑤ 🏭 台積電法說會（07/16 週四）— 本週最大催化劑</h2>
+  <div class="alert-box">
+    ✅ <strong>台積電 Q2 合併營收 1兆2,703.8億元，遠超法說會預估高標，連續創歷史新高！</strong><br>
+    外資法人齊喊看多，最高目標價 3,800元（vs 現價約 2,535元，潛在空間 +50%）。資本支出可能上修至 750–800億美元（提升對台積電先進製程需求）。
+  </div>
+
+  <div class="grid2" style="margin-top:10px;">
+    <div>
+      <h3>法說會關鍵看點</h3>
+      <table>
+        <thead><tr><th>指標</th><th>市場預期</th><th>若符合/超預期</th></tr></thead>
+        <tbody>
+          <tr><td>Q3 營收指引</td><td>1.3兆–1.35兆</td><td class="up">台積電領漲，指數反彈500+點</td></tr>
+          <tr><td>CoWoS/N2 產能</td><td>仍受限，繼續擴增</td><td class="up">先進封裝族群全面噴出</td></tr>
+          <tr><td>AI需求展望</td><td>2027–2028 能見度</td><td class="up">打消AI過度投資疑慮</td></tr>
+          <tr><td>資本支出</td><td>上修至$75–80B</td><td class="up">對台廠設備商/封測長線利多</td></tr>
+          <tr><td>2nm N2 量產</td><td>H2 2026 量產確認</td><td class="up">打入iPhone 18/NVDA Rubin</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3>法說會情境分析</h3>
+      <div style="background:#1a2a0d;border:1px solid var(--green);border-radius:8px;padding:12px;margin-bottom:8px;">
+        <div style="font-weight:700;color:var(--green);margin-bottom:6px;">🟢 看多情境（機率 65%）</div>
+        <p style="font-size:12px;">Q3指引高於預期 + CoWoS持續供不應求 + AI能見度延伸 → 台股07/17（週五）跳空高開，指數快速反彈至 45,500–46,000，台積電股價挑戰 2,700+</p>
+      </div>
+      <div style="background:#2a0d0d;border:1px solid var(--red);border-radius:8px;padding:12px;">
+        <div style="font-weight:700;color:var(--red);margin-bottom:6px;">🔴 看空情境（機率 35%）</div>
+        <p style="font-size:12px;">指引保守或提及AI需求放緩（受Meta Compute/HBM減產影響）→ 市場解讀為AI週期見頂 → 台積電帶頭再跌，指數測試 44,000 甚至 43,500</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑥ 今晚CPI解讀框架 -->
+<div class="section">
+  <h2>⑥ 今晚 21:30 CPI 解讀框架</h2>
+  <div class="grid3">
+    <div class="event-card">
+      <div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:8px;">🟢 偏弱情境（CPI ≤ 3.8%）</div>
+      <p><strong>背景：</strong>5月CPI 4.2%，已連三個月升溫。6月若降至3.8%以下（能源回落主因），將是4個月來首次降溫。</p>
+      <p><strong>Fed反應：</strong>升息壓力大幅緩解，市場升息預期降低，9月降息機率上升</p>
+      <p><strong>市場反應：</strong>美股夜盤大漲、NVDA/SOX反彈、明日台股跳空高開，可能收復今日大部分跌幅</p>
+      <p><strong>操作：</strong>台積電/AI算力鏈可積極追多</p>
+    </div>
+    <div class="event-card">
+      <div style="font-weight:700;font-size:13px;color:var(--yellow);margin-bottom:8px;">🟡 符合預期（CPI 3.9%–4.1%）</div>
+      <p><strong>背景：</strong>市場共識約 3.9%（Core CPI +0.2% MoM），符合預期為中性事件</p>
+      <p><strong>Fed反應：</strong>觀望，市場不大幅調整升降息預期</p>
+      <p><strong>市場反應：</strong>美股溫和反彈，台股明日小幅回升，方向主要由台積電法說會決定</p>
+      <p><strong>操作：</strong>等法說會後再決策</p>
+    </div>
+    <div class="event-card">
+      <div style="font-weight:700;font-size:13px;color:var(--red);margin-bottom:8px;">🔴 超預期（CPI ≥ 4.2%）</div>
+      <p><strong>背景：</strong>5月已達4.2%（3年高點）；油價$84.85（+$8 vs 月初）可能推高能源項</p>
+      <p><strong>Fed反應：</strong>升息擔憂重燃，市場可能重新定價7月或9月升息</p>
+      <p><strong>市場反應：</strong>美股夜盤大跌，NVDA/SOX二次殺盤，明日台股再跌300–500點，測試44,000支撐</p>
+      <p><strong>操作：</strong>立即降部位，等法說會後確認</p>
+    </div>
+  </div>
+</div>
+
+<!-- ⑦ 明日開盤展望 -->
+<div class="section">
+  <h2>⑦ 明日（07/15 週三）開盤展望</h2>
+  <div class="grid2">
+    <div>
+      <h3>影響明日的主要因素</h3>
+      <table>
+        <thead><tr><th>因素</th><th>方向</th><th>確定性</th></tr></thead>
+        <tbody>
+          <tr><td>美國CPI（今晚）</td><td class="neu">待定</td><td class="dn">最高，決定性因素</td></tr>
+          <tr><td>台積電法說（07/16）</td><td class="up">預期樂觀</td><td class="up">高，但在週四</td></tr>
+          <tr><td>台指期結算（明日）</td><td class="dn">波動放大</td><td class="dn">高</td></tr>
+          <tr><td>外資籌碼</td><td class="dn">持續賣超</td><td class="dn">高，趨勢未改</td></tr>
+          <tr><td>投信籌碼</td><td class="up">持續撐盤</td><td class="up">高，法說前不出貨</td></tr>
+          <tr><td>油價 $84.85</td><td class="dn">通膨壓力</td><td class="dn">高，需觀察</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3>明日開盤區間（取決於今晚CPI）</h3>
+      <div style="background:#1a2a0d;border:1px solid var(--green);border-radius:8px;padding:12px;margin-bottom:8px;">
+        <div style="font-weight:700;color:var(--green);">CPI偏弱情境：</div>
+        <div style="font-size:14px;color:var(--green);">預估開盤 <strong>45,000–45,400</strong>（反彈 +356–+756點）</div>
+      </div>
+      <div style="background:#2a1a0d;border:1px solid var(--yellow);border-radius:8px;padding:12px;margin-bottom:8px;">
+        <div style="font-weight:700;color:var(--yellow);">CPI符合預期：</div>
+        <div style="font-size:14px;color:var(--yellow);">預估開盤 <strong>44,500–44,900</strong>（小幅反彈或平開）</div>
+      </div>
+      <div style="background:#2a0d0d;border:1px solid var(--red);border-radius:8px;padding:12px;">
+        <div style="font-weight:700;color:var(--red);">CPI超預期：</div>
+        <div style="font-size:14px;color:var(--red);">預估開盤 <strong>43,800–44,300</strong>（再跌 -344~-844點）</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑧ 族群盤後評估 -->
+<div class="section">
+  <h2>⑧ 族群盤後評估</h2>
+  <table>
+    <thead><tr><th>族群</th><th>今日表現</th><th>外資動向（07/13）</th><th>評估</th><th>操作建議</th></tr></thead>
+    <tbody>
+      <tr><td><strong>台積電(2330)</strong></td><td class="up">盤中力守紅盤</td><td class="neu">無直接數據</td><td class="up">🟢 最強，法說前護盤</td><td class="up">持有，法說前卡位</td></tr>
+      <tr><td>AI散熱（奇鋐/雙鴻）</td><td class="dn">補跌</td><td class="dn">NVDA拖累</td><td class="dn">🔴 等CPI確認後再追</td><td class="dn">觀望</td></tr>
+      <tr><td>AI伺服器（廣達/鴻海）</td><td class="dn">補跌</td><td class="dn">英業達被賣</td><td class="dn">🔴 等法說會後決策</td><td class="dn">觀望</td></tr>
+      <tr><td>面板（友達2409）</td><td class="dn">繼續跌</td><td class="dn">-106,993張（逆轉大賣）</td><td class="dn">🔴 外資已出清，迴避</td><td class="dn">迴避</td></tr>
+      <tr><td>記憶體（南亞科2408）</td><td class="dn">重跌</td><td class="dn">-29,029張</td><td class="dn">🔴 SK Hynix衝擊持續</td><td class="dn">迴避</td></tr>
+      <tr><td>航空（長榮航2618/華航2610）</td><td class="up">相對強</td><td class="up">+58,020張/+21,428張</td><td class="up">🟢 外資連買，Risk-off避風港</td><td class="up">可持有</td></tr>
+      <tr><td>金融（中信金/合庫金）</td><td class="neu">抗跌</td><td class="up">+41,021/+10,121張</td><td class="up">🟡 防禦性選項</td><td class="neu">可小量持有</td></tr>
+      <tr><td>國防/漢翔(2634)</td><td class="up">逆勢強</td><td class="up">+15,428張</td><td class="up">🟢 地緣/國防題材</td><td class="up">值得關注</td></tr>
+      <tr><td>石化（台塑/台化）</td><td class="dn">持續弱</td><td class="dn">連續賣超</td><td class="dn">🔴 趨勢未改</td><td class="dn">迴避</td></tr>
+      <tr><td>PCB（臻鼎4958）</td><td class="neu">平穩</td><td class="up">+21,045張</td><td class="neu">🟡 外資買超，AI伺服器PCB</td><td class="neu">觀察</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ⑨ 本週剩餘時程 -->
+<div class="section">
+  <h2>⑨ 本週剩餘關鍵時程表</h2>
+  <table>
+    <thead><tr><th>日期/時間</th><th>事件</th><th>對台股影響</th><th>重要性</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>07/14 今晚 21:30</strong></td>
+        <td>🇺🇸 美國6月CPI（8:30 AM ET）</td>
+        <td>決定明日台股開盤方向（+/-300–700點）</td>
+        <td class="dn">⭐⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td><strong>07/15 週三（明日）</strong></td>
+        <td>⚡ 台指期7月份結算</td>
+        <td>結算前大戶拉鋸，波動放大，正式方向在結算後清晰</td>
+        <td class="dn">⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td><strong>07/15 晚上</strong></td>
+        <td>🇺🇸 摩根大通、花旗、富國銀行財報（Q2）</td>
+        <td>美國銀行財報季開跑，消費信貸健康度 + 金融股走向</td>
+        <td class="neu">⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td><strong>07/16 週四 14:00</strong></td>
+        <td>🏭 台積電 Q2 法說會（台北文華東方酒店）</td>
+        <td>🔥 本週最大事件！Q2超標收官，Q3展望 + AI需求能見度</td>
+        <td class="up">⭐⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td><strong>07/17 週五</strong></td>
+        <td>台股反應法說會 + 銀行財報</td>
+        <td>若法說強 = 本週最強一日；若弱 = 再殺</td>
+        <td class="neu">⭐⭐⭐⭐</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ⑩ 週後段操作建議 -->
+<div class="section">
+  <h2>⑩ 週後段操作建議（07/15–07/17）</h2>
+  <div class="grid3">
+    <div class="event-card">
+      <div style="font-weight:700;font-size:13px;color:var(--green);margin-bottom:8px;">⚔️ 進攻型</div>
+      <p><strong>策略：</strong>CPI偏弱 + 法說展望強 → 雙催化劑共振</p>
+      <p>① 07/15 CPI偏弱確認後，次日開盤加碼台積電(2330)、AI散熱（奇鋐3017）、CoWoS封測（日月光3711）</p>
+      <p>② 法說後若給出Q3指引亮眼，07/17積極追漲</p>
+      <p>③ 航空族群（長榮航2618）法說前可持有，外資持續買超的最穩健個股</p>
+      <p><strong>停損：</strong>台積電跌破 2,450元 或指數破 43,500</p>
+    </div>
+    <div class="event-card">
+      <div style="font-weight:700;font-size:13px;color:var(--yellow);margin-bottom:8px;">⚖️ 均衡型</div>
+      <p><strong>策略：</strong>等待確認，分批佈局</p>
+      <p>① 今晚CPI後才決定是否加碼（不提前佈局）</p>
+      <p>② 現有台積電持倉繼續持有（法說前不出脫）</p>
+      <p>③ 07/16法說後看展望再決定07/17追漲或減碼</p>
+      <p>④ 避開友達(2409)、南亞科(2408)、主動ETF等外資連賣標的</p>
+      <p><strong>現金比例：</strong>保持 40–50%，等待最佳進場點</p>
+    </div>
+    <div class="event-card">
+      <div style="font-weight:700;font-size:13px;color:var(--red);margin-bottom:8px;">🛡️ 防守型</div>
+      <p><strong>策略：</strong>保留現金，等風險事件過去</p>
+      <p>① 持有航空（長榮航/華航）、金融（中信金）等外資買超防禦股</p>
+      <p>② 不追跌，也不追漲，等07/16法說後確認方向</p>
+      <p>③ 若CPI超預期 → 加速降部位至 20–30%</p>
+      <p>④ 若CPI偏弱 + 法說強 → 再重新建立AI鏈部位</p>
+      <p><strong>重進場訊號：</strong>指數站回45,000 + 量能>3,000億</p>
+    </div>
+  </div>
+</div>
+
+<!-- ⑪ 技術面 -->
+<div class="section">
+  <h2>⑪ 技術面現況</h2>
+  <div class="grid2">
+    <div>
+      <table>
+        <thead><tr><th>指標</th><th>數值</th><th>解讀</th></tr></thead>
+        <tbody>
+          <tr><td>收盤 (07/14)</td><td class="dn">44,644</td><td class="dn">三日跌幅合計 -736點</td></tr>
+          <tr><td>MA5</td><td class="dn">~45,200</td><td class="dn">跌破，空頭排列中</td></tr>
+          <tr><td>MA20</td><td class="dn">~45,800</td><td class="dn">已遠在上方，壓力沉重</td></tr>
+          <tr><td>MA60</td><td class="up">~44,200</td><td class="up">長線支撐，本週守住關鍵</td></tr>
+          <tr><td>RSI(14)</td><td class="up">~42</td><td class="up">接近超賣（40以下），反彈空間充足</td></tr>
+          <tr><td>MACD</td><td class="dn">死叉成立</td><td class="dn">中期動能轉弱</td></tr>
+          <tr><td>成交量</td><td class="neu">~2,700億</td><td class="up">量縮下跌，非恐慌性賣壓</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <table>
+        <thead><tr><th>類型</th><th>點位</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td class="dn">強壓力</td><td>45,800–46,000</td><td>MA20 + 前高區</td></tr>
+          <tr><td class="dn">壓力1</td><td>45,200</td><td>MA5</td></tr>
+          <tr><td class="dn">壓力2</td><td>45,000</td><td>整數關卡，收復目標</td></tr>
+          <tr><td style="color:var(--orange);">現位</td><td style="color:var(--orange);font-weight:700;">44,644</td><td>07/14收盤</td></tr>
+          <tr><td class="up">支撐1</td><td>44,200</td><td>MA60，長線底部</td></tr>
+          <tr><td class="up">強支撐</td><td>43,800–44,000</td><td>超跌反彈區，若到達積極布局</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div style="margin-top:14px;height:240px;"><canvas id="twiiChart"></canvas></div>
+</div>
+
+<!-- 免責聲明 -->
+<div style="font-size:11px;color:var(--muted);padding:12px;background:var(--bg3);border-radius:6px;border:1px solid var(--border);margin-top:4px;">
+  ⚠️ 本報告為盤後分析，由 AI 自動生成，僅供研究參考，不構成投資建議。T86外資數據截至07/13，今日數據待官方更新。CPI數據尚未公布，本文情境分析基於市場預期。請自行評估風險後決策。
+</div>
+
+</div>
+
+<script>
+// 外資買超圖
+const fbCtx = document.getElementById('foreignBuyChart').getContext('2d');
+new Chart(fbCtx, {
+  type:'bar',
+  data:{
+    labels:['長榮航(2618)','中信金(2891)','友訊(2332)','華航(2610)','臻鼎(4958)','漢翔(2634)','00712','上海商銀(5876)','聯強(2347)','合庫金(5880)'],
+    datasets:[
+      {label:'買超(張)',data:[58020,41021,22426,21428,21045,15428,13005,12298,11472,10121],backgroundColor:'#3fb95044',borderColor:'#3fb950',borderWidth:1},
+    ]
+  },
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},title:{display:true,text:'外資買超前10名（07/13）— Risk-off防禦佈局',color:'#8b949e',font:{size:11}}},
+    scales:{x:{ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#30363d'}},y:{ticks:{color:'#c9d1d9',font:{size:11}},grid:{color:'#30363d'}}}
+  }
+});
+
+// TWII K線
+const twiiCtx = document.getElementById('twiiChart').getContext('2d');
+new Chart(twiiCtx, {
+  type:'line',
+  data:{
+    labels:['07/07','07/08','07/09','07/10(休)','07/13','07/14'],
+    datasets:[{
+      label:'台股加權指數',
+      data:[46200,45767,45354,null,45380,44644],
+      borderColor:'#58a6ff',backgroundColor:'#58a6ff22',borderWidth:2,fill:true,tension:0.3,
+      pointBackgroundColor:['#58a6ff','#58a6ff','#58a6ff','#30363d','#58a6ff','#f85149'],
+      pointRadius:[3,3,3,0,3,7],
+      spanGaps:false
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},
+      title:{display:true,text:'台股加權指數近期走勢（07/10颱風休市，07/14今日收盤紅點）',color:'#8b949e',font:{size:11}},
+      annotation:{}
+    },
+    scales:{
+      y:{ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#30363d'},min:43500,max:47000},
+      x:{ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#30363d'}}
+    }
+  }
+});
+</script>
+</body>
+</html>
