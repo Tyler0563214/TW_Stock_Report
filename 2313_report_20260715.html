@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>華通電腦 2313 投資研究報告 2026-07-15</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--primary:#1e40af;--primary-dark:#1e3a8a;--primary-light:#dbeafe;--accent:#f97316;--danger:#ef4444;--success:#22c55e;--bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--text-muted:#64748b;--border:#e2e8f0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+.cover{background:linear-gradient(135deg,#1e1b4b 0%,#1e40af 45%,#0ea5e9 100%);color:#fff;padding:60px 40px;text-align:center;}
+.cover h1{font-size:2.8em;font-weight:800;letter-spacing:2px;margin-bottom:8px;}
+.cover h2{font-size:1.4em;font-weight:400;opacity:0.85;margin-bottom:24px;}
+.badge{display:inline-block;padding:6px 18px;border-radius:999px;font-size:0.85em;font-weight:700;margin:4px;}
+.price-block{display:flex;justify-content:center;gap:40px;margin-top:28px;flex-wrap:wrap;}
+.price-item{text-align:center;}
+.price-item .val{font-size:2.4em;font-weight:800;}
+.price-item .lbl{font-size:0.8em;opacity:0.75;margin-top:2px;}
+.pos{color:#6ee7b7;}.neg{color:#fca5a5;}
+.container{max-width:1100px;margin:0 auto;padding:24px 20px;}
+.section{margin-bottom:32px;}
+.section-title{font-size:1.3em;font-weight:700;color:var(--primary-dark);border-left:4px solid var(--primary);padding-left:12px;margin-bottom:18px;}
+.card{background:var(--card);border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:16px;}
+.core-card{background:linear-gradient(135deg,#1e1b4b,#1e40af);color:#fff;border-radius:16px;padding:32px;margin-bottom:32px;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.kpi-item{background:var(--card);border-radius:10px;padding:18px;border-left:4px solid var(--primary);box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.kpi-item .kpi-val{font-size:1.6em;font-weight:800;color:var(--primary-dark);}
+.kpi-item .kpi-label{font-size:0.82em;color:var(--text-muted);margin-top:4px;font-weight:600;}
+.kpi-item .kpi-note{font-size:0.75em;color:var(--text-muted);margin-top:6px;}
+.chart-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;}
+.chart-wrap{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.chart-wrap h3{font-size:0.95em;font-weight:700;color:var(--text-muted);margin-bottom:14px;}
+table{width:100%;border-collapse:collapse;font-size:0.9em;}
+th{background:var(--primary-light);color:var(--primary-dark);padding:10px 12px;text-align:left;font-weight:700;}
+td{padding:9px 12px;border-bottom:1px solid var(--border);}
+tr:hover td{background:#f8fafc;}
+.tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:0.78em;font-weight:600;}
+.tag-bull{background:#dcfce7;color:#166534;}
+.tag-bear{background:#fee2e2;color:#991b1b;}
+.tag-neutral{background:#fef9c3;color:#854d0e;}
+.score-bar{display:flex;align-items:center;gap:10px;margin:8px 0;}
+.score-bar .bar{height:10px;border-radius:5px;background:linear-gradient(90deg,var(--primary),#22c55e);min-width:4px;}
+.score-bar .label{font-size:0.82em;color:var(--text-muted);width:100px;flex-shrink:0;}
+.score-bar .val{font-size:0.82em;font-weight:700;width:40px;text-align:right;}
+.strat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.strat-card{border-radius:12px;padding:24px;}
+.strat-atk{background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;}
+.strat-bal{background:linear-gradient(135deg,#1e3a8a,#1e40af);color:#fff;}
+.strat-def{background:linear-gradient(135deg,#0f766e,#0d9488);color:#fff;}
+.strat-card h3{font-size:1.1em;font-weight:800;margin-bottom:12px;}
+.strat-card p{font-size:0.87em;opacity:0.92;line-height:1.7;}
+.debate{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:600px){.debate{grid-template-columns:1fr;}.price-block{gap:20px;}}
+.bull-col{background:#f0fdf4;border-radius:10px;padding:20px;border:1px solid #bbf7d0;}
+.bear-col{background:#fff1f2;border-radius:10px;padding:20px;border:1px solid #fecdd3;}
+.bull-col h3{color:#166534;font-weight:700;margin-bottom:12px;}
+.bear-col h3{color:#991b1b;font-weight:700;margin-bottom:12px;}
+li{margin-bottom:10px;font-size:0.88em;line-height:1.6;}
+.risk-badge{display:inline-block;padding:6px 16px;border-radius:8px;font-weight:700;font-size:0.9em;}
+.risk-med{background:#fef9c3;color:#854d0e;border:1px solid #fde047;}
+.glossary dt{font-weight:700;color:var(--primary-dark);margin-top:12px;}
+.glossary dd{font-size:0.88em;color:var(--text-muted);margin-left:16px;margin-top:3px;}
+.disclaimer{background:#fef9c3;border:1px solid #fde047;border-radius:10px;padding:20px;font-size:0.82em;color:#713f12;margin-top:32px;}
+.info-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.info-chip{background:var(--primary-light);color:var(--primary-dark);border-radius:6px;padding:4px 10px;font-size:0.8em;font-weight:600;}
+.alert-bull{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #86efac;border-radius:10px;padding:16px;margin-bottom:16px;}
+.spx-banner{background:linear-gradient(135deg,#0f172a,#1e3a8a,#1d4ed8);color:#fff;border-radius:12px;padding:20px;margin-bottom:16px;text-align:center;}
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div style="display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);color:#fff;border-radius:6px;padding:4px 14px;font-size:0.85em;margin-bottom:12px;">🛰️ SpaceX IPO (SPCX) 掛牌效應 | 衛星PCB龍頭</div>
+  <h1>華通電腦</h1>
+  <h2>Compeq Manufacturing｜代碼：2313</h2>
+  <div>
+    <span class="badge" style="background:rgba(34,197,94,0.3);border:1px solid #6ee7b7;color:#d1fae5;">📈 風險等級：中等 5.5/10</span>
+    <span class="badge" style="background:rgba(255,255,255,0.15);color:#fff;">📅 2026-07-15</span>
+    <span class="badge" style="background:rgba(255,165,0,0.25);border:1px solid orange;color:#fed7aa;">🚀 近漲停！投信大買！</span>
+  </div>
+  <div class="price-block">
+    <div class="price-item"><div class="val pos">248<span style="font-size:0.5em">元</span></div><div class="lbl">今日收盤</div></div>
+    <div class="price-item"><div class="val pos">+22.5元 (+9.98%)</div><div class="lbl">今日漲跌</div></div>
+    <div class="price-item"><div class="val">5.67<span style="font-size:0.5em">元</span></div><div class="lbl">TTM EPS</div></div>
+    <div class="price-item"><div class="val">43.7<span style="font-size:0.5em">x</span></div><div class="lbl">TTM PE</div></div>
+    <div class="price-item"><div class="val">305.5<span style="font-size:0.5em">元</span></div><div class="lbl">52周最高</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- SpaceX Banner -->
+<div class="spx-banner">
+  🚀 <strong>SpaceX (SPCX) 已於 2026/6/12 在 Nasdaq 正式掛牌，估值 1.77兆美元！</strong><br>
+  <span style="font-size:0.9em;opacity:0.9;">華通電腦擁有約90%的Starlink LEO衛星PCB市佔率，是SpaceX題材的最直接台股受惠者。</span>
+</div>
+
+<!-- 多頭訊號框 -->
+<div class="alert-bull">
+  🚀 <strong>今日多頭訊號：</strong>今日248元 (+9.98%) 逼近漲停板！<strong>投信單日大買6,650張（史上少見）</strong>，MACD柱狀圖今日轉正（即將形成黃金交叉），股價收復MA5(225.1)/MA10(227.1)/MA20(236.0)，量能4,946萬張爆量（5日均量+26%）。SpaceX IPO已掛牌+V3衛星計畫，2026年LEO衛星板收入目標200億元(YoY+32%)。
+</div>
+
+<!-- 02 核心結論 -->
+<div class="core-card section">
+  <div style="font-size:0.85em;opacity:0.8;margin-bottom:6px;">📊 投資建議（2026-07-15）</div>
+  <div style="font-size:1.9em;font-weight:800;margin-bottom:8px;">🟢 積極看多 | SpaceX IPO×投信大買雙催化</div>
+  <div style="font-size:1.1em;margin-bottom:6px;">🎯 目標價：280～305元（前高區、52W高）</div>
+  <div style="font-size:1em;margin-bottom:6px;">📍 進場區間：240～255元（今日收盤附近，量縮回測MA20時再加碼）</div>
+  <div style="font-size:0.95em;">🛑 停損：跌破MA20（236元）視為多頭失敗，跌破225元（MA5）嚴格停損</div>
+  <div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
+    <div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:12px;">
+      <div style="font-size:0.8em;opacity:0.8;">📈 今日亮點</div>
+      <div style="font-size:0.9em;margin-top:4px;">近漲停！投信+6,650張大掃貨<br>MACD柱翻正<br>MA5/MA10/MA20全收復</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:12px;">
+      <div style="font-size:0.8em;opacity:0.8;">🛰️ SpaceX題材</div>
+      <div style="font-size:0.9em;margin-top:4px;">SPCX 已掛牌 Nasdaq<br>V3衛星Starship發射計畫<br>2026E LEO收入 200億元</div>
+    </div>
+    <div style="background:rgba(239,68,68,0.2);border-radius:8px;padding:12px;">
+      <div style="font-size:0.8em;opacity:0.8;">🚨 主要風險</div>
+      <div style="font-size:0.9em;margin-top:4px;">外資大賣超(-11,474張)<br>TTM PE 43.7x偏高<br>MACD仍在死叉（未確立）</div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 KPI -->
+<div class="section">
+  <div class="section-title">📊 核心財務KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-item" style="border-color:#22c55e;">
+      <div class="kpi-val" style="color:#16a34a;">248元 ↑+9.98%</div>
+      <div class="kpi-label">今日收盤（7/15）</div>
+      <div class="kpi-note">開236→高248→低234→收248，逼近漲停</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">1.26元</div>
+      <div class="kpi-label">Q1'26 EPS（最新）</div>
+      <div class="kpi-note">GM 17.98%，QoQ改善，衛星板拉動毛利</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">5.67元</div>
+      <div class="kpi-label">TTM EPS（近四季）</div>
+      <div class="kpi-note">0.70+1.81+1.90+1.26</div>
+    </div>
+    <div class="kpi-item" style="border-color:#f97316;">
+      <div class="kpi-val" style="color:#ea580c;">8~10元</div>
+      <div class="kpi-label">FY2026E EPS（推估）</div>
+      <div class="kpi-note">LEO旺季 H2+增資產能；PE at 248 = 25~31x</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">69.15億</div>
+      <div class="kpi-label">Jun 2026 月營收</div>
+      <div class="kpi-note">YoY+20.96%；H1累計 404.5億</div>
+    </div>
+    <div class="kpi-item" style="border-color:#7c3aed;">
+      <div class="kpi-val" style="color:#7c3aed;">+6,650張</div>
+      <div class="kpi-label">投信 7/14 買超</div>
+      <div class="kpi-note">史上罕見大掃貨，法人信心強烈</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">200億元</div>
+      <div class="kpi-label">LEO衛星板 2026E目標</div>
+      <div class="kpi-note">YoY+32%；佔整體收入~26%</div>
+    </div>
+    <div class="kpi-item" style="border-color:#22c55e;">
+      <div class="kpi-val">305.5元</div>
+      <div class="kpi-label">52週最高（目標參考）</div>
+      <div class="kpi-note">現價248距離+23%空間；法人共識目標310元</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 圖表 -->
+<div class="section">
+  <div class="section-title">📈 財務趨勢圖表</div>
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>EPS 季度趨勢（近8季）元/股 ★</h3>
+      <canvas id="epsChart" height="200"></canvas>
+      <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;">★ 實際公告；Q2'26E、Q3'26E為推算值（衛星旺季效應）</div>
+    </div>
+    <div class="chart-wrap">
+      <h3>月營收趨勢（2026年 H1，億元）★</h3>
+      <canvas id="revChart" height="200"></canvas>
+      <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;">★ 實際公告；FinMind月份-1=實際月份</div>
+    </div>
+    <div class="chart-wrap">
+      <h3>本益比比較（TTM vs 2026E）</h3>
+      <canvas id="peChart" height="200"></canvas>
+      <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;">★ 2026E PE 25~31x顯著低於TTM（推算值）</div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽</div>
+  <div class="card">
+    <p style="margin-bottom:12px;"><strong>華通電腦（Compeq Manufacturing Co., Ltd.）</strong>是台灣HDI高密度印刷電路板（PCB）領導廠商，成立超過50年。核心業務涵蓋：高階HDI板（通訊/伺服器）、LEO衛星天線板（核心成長引擎）、及一般多層板。</p>
+    <p style="margin-bottom:12px;"><strong>SpaceX護城河：</strong>目前掌握Starlink LEO衛星PCB約<strong>90%市佔率</strong>，是全球唯一能大規模量產此類高難度天線板的廠商。SpaceX V3衛星每批Starship可發射60顆，技術壁壘極高。2026/6/12 SpaceX以SPCX代碼在Nasdaq上市（估值1.77兆USD），強化市場關注度。</p>
+    <p style="margin-bottom:12px;"><strong>現金增資：</strong>以200元/股辦理現金增資84億元，募集資金用於LEO衛星板擴產，顯示公司對未來成長高度信心。</p>
+    <div class="info-row">
+      <span class="info-chip">🛰️ Starlink PCB 市佔~90%</span>
+      <span class="info-chip">🚀 SpaceX IPO(SPCX) 受惠</span>
+      <span class="info-chip">📈 H1 2026 收入 404.5億</span>
+      <span class="info-chip">💰 現金增資84億(200元)</span>
+      <span class="info-chip">🌐 HDI PCB 龍頭廠</span>
+      <span class="info-chip">⬆️ 投信7/14單日+6650張</span>
+    </div>
+  </div>
+</div>
+
+<!-- 06 基本面 -->
+<div class="section">
+  <div class="section-title">💼 基本面分析</div>
+  <div class="card">
+    <div style="margin-bottom:16px;">
+      <div class="score-bar"><span class="label">LEO成長動能</span><div class="bar" style="width:90%;"></div><span class="val">90</span></div>
+      <div class="score-bar"><span class="label">技術壁壘/護城河</span><div class="bar" style="width:88%;"></div><span class="val">88</span></div>
+      <div class="score-bar"><span class="label">營收成長</span><div class="bar" style="width:78%;"></div><span class="val">78</span></div>
+      <div class="score-bar"><span class="label">毛利率水平</span><div class="bar" style="width:55%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">55</span></div>
+      <div class="score-bar"><span class="label">估值合理性</span><div class="bar" style="width:60%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">60</span></div>
+    </div>
+    <table>
+      <tr><th>指標</th><th>Q2'25</th><th>Q3'25</th><th>Q4'25</th><th>Q1'26</th><th>趨勢</th></tr>
+      <tr><td>EPS（元）</td><td>1.81</td><td>1.90</td><td>0.70（淡季）</td><td style="color:var(--primary-dark);font-weight:700;">1.26★</td><td>↑ H2旺季加速</td></tr>
+      <tr><td>毛利率</td><td>~16.8%</td><td>~17.2%</td><td>~16.5%</td><td style="color:var(--primary-dark);font-weight:700;">17.98%★</td><td>↑ LEO拉動</td></tr>
+      <tr><td>月均營收（億）</td><td>~60</td><td>~64</td><td>~68</td><td style="color:var(--primary-dark);">67.5</td><td>↑ 持續擴大</td></tr>
+    </table>
+    <div style="margin-top:12px;padding:12px;background:#eff6ff;border-radius:8px;font-size:0.85em;">
+      <strong>FY2026E EPS 推估邏輯：</strong>H1實際 Q4'25(0.70)+Q1'26(1.26)=1.96元；H2旺季（LEO出貨旺＋伺服器升溫）歷史上約為H1的1.8倍。FY2026E EPS估計<strong>8～10元</strong>，PE at 248元 = 25～31x（顯著低於TTM 43.7x，估值降壓）。
+    </div>
+  </div>
+</div>
+
+<!-- 07 籌碼 -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:14px;">
+      <div style="background:#fee2e2;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:0.8em;color:#991b1b;">外資（7/14）</div>
+        <div style="font-size:1.5em;font-weight:800;color:#dc2626;">-11,474張</div>
+        <div style="font-size:0.75em;color:#991b1b;">大賣超（主要賣壓）</div>
+      </div>
+      <div style="background:linear-gradient(135deg,#dcfce7,#f0fdf4);border-radius:8px;padding:14px;text-align:center;border:2px solid #22c55e;">
+        <div style="font-size:0.8em;color:#166534;">投信（7/14）</div>
+        <div style="font-size:1.8em;font-weight:800;color:#15803d;">+6,650張 🔥</div>
+        <div style="font-size:0.75em;color:#166534;">史上罕見大掃貨！</div>
+      </div>
+      <div style="background:#f8fafc;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:0.8em;color:var(--text-muted);">自營商（7/14）</div>
+        <div style="font-size:1.5em;font-weight:800;color:var(--text-muted);">+4張</div>
+        <div style="font-size:0.75em;color:var(--text-muted);">持平</div>
+      </div>
+      <div style="background:#fee2e2;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:0.8em;color:#991b1b;">三大法人合計（7/14）</div>
+        <div style="font-size:1.5em;font-weight:800;color:#dc2626;">-4,820張</div>
+        <div style="font-size:0.75em;color:#991b1b;">外資賣壓 &gt; 投信買盤</div>
+      </div>
+    </div>
+    <div style="background:#f0fdf4;border-radius:8px;padding:14px;font-size:0.88em;border:1px solid #86efac;">
+      🔑 <strong>投信6,650張的意義：</strong>投信單日買超6,650張是近年少見的大手筆。投信通常有「月底結算壓力」，在7月中旬就大量買入，代表對後市看法極度樂觀，可能已掌握8月旺季出貨預期。外資賣超的動機可能是7/11波動後的技術性調節，不代表基本面看法改變。
+    </div>
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div class="section">
+  <div class="section-title">📉 技術分析</div>
+  <div class="card">
+    <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:14px;margin-bottom:14px;font-size:0.88em;">
+      🚀 <strong>今日技術突破：</strong>248元（+9.98%）近漲停，<strong>一舉站回MA5(225.1)、MA10(227.1)、MA20(236.0)三線！</strong>MACD柱狀圖（-8.43/-8.49/+0.07）今日轉正，黃金交叉即將成立！爆量4,946萬（5日均3,940萬）確認突破有效性。RSI從昨日44.11推估升至約65，多頭動能轉強。布林中軌236元已突破，目標上軌264.69元。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div>
+        <strong style="color:var(--primary-dark);">均線系統（7/15 收盤後）</strong>
+        <table style="margin-top:8px;">
+          <tr><th>均線</th><th>數值</th><th>相對位置</th></tr>
+          <tr><td>MA5</td><td>225.1</td><td><span class="tag tag-bull">站上✅ (+22.9)</span></td></tr>
+          <tr><td>MA10</td><td>227.1</td><td><span class="tag tag-bull">站上✅ (+20.9)</span></td></tr>
+          <tr><td>MA20</td><td>236.0</td><td><span class="tag tag-bull">站上✅ (+12.0)</span></td></tr>
+          <tr><td>MA60</td><td>250.32</td><td><span class="tag tag-neutral">接近(-2.3)🟡</span></td></tr>
+        </table>
+      </div>
+      <div>
+        <strong style="color:var(--primary-dark);">指標訊號（7/15）</strong>
+        <table style="margin-top:8px;">
+          <tr><th>指標</th><th>數值</th><th>訊號</th></tr>
+          <tr><td>MACD柱</td><td>+0.07（轉正）</td><td><span class="tag tag-bull">柱翻正✅ 金叉即將</span></td></tr>
+          <tr><td>RSI（推估）</td><td>~65</td><td><span class="tag tag-bull">回升多頭✅</span></td></tr>
+          <tr><td>布林中軌</td><td>236.0</td><td><span class="tag tag-bull">站上✅</span></td></tr>
+          <tr><td>布林上軌</td><td>264.69</td><td><span class="tag tag-neutral">第一目標🟡</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <div style="background:#f8fafc;border-radius:8px;padding:14px;font-size:0.88em;">
+      <strong>🔑 關鍵價位：</strong>支撐：MA20 236 → MA10 227 → MA5 225；壓力：MA60 250 → 布林上軌 264 → 52W高 305.5元。
+      <br><strong>📌 策略：</strong>今日近漲停突破，若明日量縮（低於4,000萬）回測MA20(236~242)區間是最佳加碼機會。若站穩MA60(250)即可進攻前高305元。
+    </div>
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <div class="section-title">💳 融資融券</div>
+  <div class="card">
+    <p style="font-size:0.9em;">今日（7/15）融資融券盤中資料：待次日（7/16）收盤後約18:00更新。</p>
+    <div style="margin-top:10px;padding:12px;background:#f8fafc;border-radius:8px;font-size:0.85em;color:var(--text-muted);">
+      <strong>趨勢判讀：</strong>今日近漲停，預期融資買入明顯增加。若融券放空增加（空頭押注回調），而投信繼續持有，將形成「多空對決」格局——通常有利於多頭。關注明日外資是否回補：若外資從賣超轉為小幅買超，將是最強確認訊號。
+    </div>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <div class="section-title">⚔️ 多空研究員辯論</div>
+  <div class="debate">
+    <div class="bull-col">
+      <h3>🐂 看多論點（看多70%）</h3>
+      <ul>
+        <li><strong>投信單日狂買6,650張（史上罕見）：</strong>7/14投信買超6,650張，是散戶跑的方向，卻是法人的逆向買入，代表專業機構認為此刻嚴重低估，籌碼意義遠超技術面。</li>
+        <li><strong>SpaceX正式掛牌（SPCX @ Nasdaq）：</strong>2026/6/12 SpaceX以1.77兆USD估值上市，市場關注度爆炸性提升。每次SpaceX消息（發射、訂單、Starship進展）都直接帶動華通股價。</li>
+        <li><strong>LEO衛星板2026E 200億元(+32%)：</strong>Starlink V3衛星（每顆更多天線板需求）＋Starship大型發射（單次60顆），出貨量將持續攀升，是可見的訂單保障。</li>
+        <li><strong>技術面今日全面突破：</strong>MACD柱轉正（黃金交叉前兆）＋站回三條均線＋爆量（4,946萬）＋近漲停，技術指標全面翻多，動能強勁。</li>
+        <li><strong>FY2026E PE估計僅25~31x：</strong>若FY2026E EPS達8~10元，現價248元PE降至25~31x，對比LEO衛星業務35%+成長率，PEG &lt; 1.0，具成長股吸引力。</li>
+        <li><strong>現金增資84億元擴產：</strong>公司以200元/股增資，現價248元已遠超增資價，顯示長線資金看好產能投入的回報。擴產完成後，2027年產能更上一層樓。</li>
+      </ul>
+    </div>
+    <div class="bear-col">
+      <h3>🐻 看空論點（看空30%）</h3>
+      <ul>
+        <li><strong>外資單日大賣超11,474張：</strong>外資賣超力道遠超投信買進，且連日降低部位，顯示機構投資人對短線估值有疑慮，或存在正式看空評等。</li>
+        <li><strong>TTM PE 43.7x偏貴：</strong>就現有EPS水平，PE超過40x的PCB廠並不合理。FY2026E的8~10元EPS是推估值，存在不確定性。</li>
+        <li><strong>今日漲幅過大、短線壓力重：</strong>單日+10%後必然有獲利了結賣壓，明日開高殺低的機率不低，持有者需有心理準備。</li>
+        <li><strong>MACD黃金交叉尚未確立：</strong>柱狀圖雖轉正，但DIF/DEA仍呈死叉，技術面翻多需再1~2個交易日確認，急追者有被套風險。</li>
+        <li><strong>PCB業毛利率結構性偏低：</strong>Q1'26毛利率17.98%，相較於半導體、AI股動輒40~60%，競爭力有限。若LEO需求未達預期，獲利彈性小。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;background:#f8fafc;">
+    <strong>💬 給一般投資人的話：</strong>華通今天近漲停，「投信+6,650張」才是最值得關注的訊號，而不是漲幅本身。投信買這麼多，通常是因為有「看得到的訂單或事件」支撐，他們不是在賭博。外資賣超可能是獲利了結，不一定是看壞基本面。如果你對SpaceX的長期發展有信心，目前248元仍是相對合理的進場區。但因為今天漲幅大，建議分批，或等明天回測MA20(236~240)時再加碼，避免追高被套。
+  </div>
+</div>
+
+<!-- 11 風控 -->
+<div class="section">
+  <div class="section-title">🛡️ 風控評估</div>
+  <div class="card">
+    <div style="margin-bottom:16px;">
+      <div class="score-bar"><span class="label">估值風險(30%)</span><div class="bar" style="width:60%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">6.0</span></div>
+      <div class="score-bar"><span class="label">財務風險(25%)</span><div class="bar" style="width:35%;"></div><span class="val">3.5</span></div>
+      <div class="score-bar"><span class="label">流動性風險(10%)</span><div class="bar" style="width:30%;"></div><span class="val">3.0</span></div>
+      <div class="score-bar"><span class="label">產業風險(15%)</span><div class="bar" style="width:38%;"></div><span class="val">3.8</span></div>
+      <div class="score-bar"><span class="label">總經風險(10%)</span><div class="bar" style="width:42%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">4.2</span></div>
+      <div class="score-bar"><span class="label">籌碼風險(10%)</span><div class="bar" style="width:55%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">5.5</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="risk-badge risk-med">綜合風險：5.0 / 10（中等，外資賣超為主要風險因子）</span>
+    </div>
+  </div>
+</div>
+
+<!-- 12 策略 -->
+<div class="section">
+  <div class="section-title">🗺️ 台股三段式操作策略</div>
+  <div class="strat-grid">
+    <div class="strat-card strat-atk">
+      <h3>🚀 進攻方案（積極型）</h3>
+      <p>條件：今日近漲停確認，SpaceX題材持續發酵<br><br>
+      進場：248～255元（今日附近或隔日不追高）<br>
+      加碼：突破MA60(250)站穩後<br>
+      目標1：265元（布林上軌）<br>
+      目標2：280元（整數關卡）<br>
+      終極目標：305元（52W高）<br>
+      停損：跌破233元（MA20 -3%）</p>
+    </div>
+    <div class="strat-card strat-bal">
+      <h3>⚖️ 均衡方案（穩健型）</h3>
+      <p>條件：利用回調分批建倉<br><br>
+      第一批：245～250元（今日）<br>
+      第二批：236～240元（回測MA20）<br>
+      第三批：225元（MA5支撐強支撐）<br>
+      目標：280元（6個月）<br>
+      停損：跌破225元</p>
+    </div>
+    <div class="strat-card strat-def">
+      <h3>🛡️ 防守方案（保守型）</h3>
+      <p>條件：等待外資賣超止歇<br><br>
+      觀察：外資是否連續3日轉買超<br>
+      觀察：MACD黃金交叉確立<br>
+      進場：MA60(250)站穩後<br>
+      目標：285元以上<br>
+      停損：跌破MA20(236元）</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <strong>📅 催化劑時程：</strong>
+    <table style="margin-top:10px;">
+      <tr><th>日期</th><th>事件</th><th>預期影響</th></tr>
+      <tr><td>2026/07/16</td><td>台積電Q2法說（AI伺服器展望）</td><td>AI伺服器PCB需求+；間接利好華通</td></tr>
+      <tr><td>2026/07</td><td>SpaceX Starship V3任務</td><td>每批60顆LEO衛星→華通出貨爆量</td></tr>
+      <tr><td>2026/08</td><td>Q2財報（EPS推估~2元）</td><td>若優於預期，PA估值提升</td></tr>
+      <tr><td>2026/Q4</td><td>SpaceX V3衛星量產出貨旺季</td><td>LEO板收入衝刺200億目標</td></tr>
+      <tr><td>2026/H2</td><td>現金增資產能投入</td><td>2027年產能大幅增加，長線看漲</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 13 名詞 -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室</div>
+  <div class="card">
+    <dl class="glossary">
+      <dt>LEO衛星（低軌道通訊衛星）</dt>
+      <dd>距地面500~2,000公里的人造衛星，比傳統衛星低很多，所以延遲時間短、訊號強，是Starlink的核心。每顆衛星內有大量的PCB天線板（也就是華通的產品），換代時每顆的用量還會增加。</dd>
+      <dt>MACD黃金交叉（金叉）</dt>
+      <dd>技術指標MACD的快線向上穿越慢線，是短線翻多的重要訊號。今日華通的MACD柱狀圖剛從負轉正（+0.07），下一步若快線真的穿越慢線，就確認「黃金交叉」，將吸引更多技術派投資人進場。</dd>
+      <dt>投信大買超</dt>
+      <dd>「投信」指投資信託公司（台灣的基金公司），單日買超6,650張等於買入約16.5億元的股票，是非常罕見的大手筆。投信通常有較嚴格的風控，在高點附近敢大買，通常代表有相當確定的基本面依據。</dd>
+      <dt>現金增資（私募/公開）</dt>
+      <dd>公司重新發行新股、向投資人收錢，用來擴廠或還債。華通以200元/股發行，募集84億元。因為是擴大LEO衛星板產能，屬於「為了成長而融資」，對股價長期是正面的（但短期有股本膨脹稀釋效應）。</dd>
+      <dt>HDI PCB（高密度印刷電路板）</dt>
+      <dd>比一般電路板線路更細、更複雜的高階PCB，廣泛用於智慧型手機、伺服器和衛星。製程難度高，毛利率通常優於普通PCB，是華通的技術護城河所在。</dd>
+    </dl>
+  </div>
+</div>
+
+<!-- 14 免責 -->
+<div class="disclaimer">
+  ⚠️ <strong>免責聲明：</strong>本報告僅供研究參考，不構成投資建議。所有投資均有風險，過去績效不代表未來表現。<br>
+  <strong>資料來源：</strong>Fugle API（即時股價）、FinMind（K線/三大法人/月營收/財報）、台灣證交所T86、SpaceX公開資料、財經媒體。EPS推估值為分析師個人推算，非官方公告。資料日期：2026-07-15。
+</div>
+</div>
+
+<script>
+const epsCtx=document.getElementById('epsChart').getContext('2d');
+new Chart(epsCtx,{type:'bar',data:{labels:['Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26','Q2\'26E','Q3\'26E'],datasets:[{label:'EPS（元）',data:[1.40,0.85,0.70,1.81,1.90,0.70,1.26,2.0,2.8],backgroundColor:['#bfdbfe','#93c5fd','#93c5fd','#60a5fa','#3b82f6','#2563eb','#ef4444','rgba(239,68,68,0.4)','rgba(239,68,68,0.3)'],borderRadius:5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+
+const revCtx=document.getElementById('revChart').getContext('2d');
+new Chart(revCtx,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'月營收（億元）',data:[72.28,74.04,52.01,69.43,67.62,69.15],borderColor:'#1e40af',backgroundColor:'rgba(30,64,175,0.1)',tension:0.3,fill:true,pointBackgroundColor:['#1e40af','#1e40af','#1e40af','#1e40af','#1e40af','#ef4444'],pointRadius:5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false}}}});
+
+const peCtx=document.getElementById('peChart').getContext('2d');
+new Chart(peCtx,{type:'bar',data:{labels:['華通 TTM','華通 2026E低','華通 2026E高','PCB同業','台股大盤'],datasets:[{label:'PE（x）',data:[43.7,25,31,18,18],backgroundColor:['#fca5a5','#22c55e','#86efac','#bfdbfe','#dbeafe'],borderRadius:5}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}});
+</script>
+</body>
+</html>

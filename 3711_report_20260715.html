@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日月光投控 3711 投資研究報告 2026-07-15</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--primary:#0d9488;--primary-dark:#0f766e;--primary-light:#ccfbf1;--accent:#f97316;--danger:#ef4444;--success:#22c55e;--bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--text-muted:#64748b;--border:#e2e8f0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+.cover{background:linear-gradient(135deg,#134e4a 0%,#0f766e 40%,#0891b2 100%);color:#fff;padding:60px 40px;text-align:center;}
+.cover h1{font-size:2.8em;font-weight:800;letter-spacing:2px;margin-bottom:8px;}
+.cover h2{font-size:1.4em;font-weight:400;opacity:0.85;margin-bottom:24px;}
+.badge{display:inline-block;padding:6px 18px;border-radius:999px;font-size:0.85em;font-weight:700;margin:4px;}
+.price-block{display:flex;justify-content:center;gap:40px;margin-top:28px;flex-wrap:wrap;}
+.price-item{text-align:center;}
+.price-item .val{font-size:2.4em;font-weight:800;}
+.price-item .lbl{font-size:0.8em;opacity:0.75;margin-top:2px;}
+.pos{color:#6ee7b7;}.neg{color:#fca5a5;}
+.container{max-width:1100px;margin:0 auto;padding:24px 20px;}
+.section{margin-bottom:32px;}
+.section-title{font-size:1.3em;font-weight:700;color:var(--primary-dark);border-left:4px solid var(--primary);padding-left:12px;margin-bottom:18px;}
+.card{background:var(--card);border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:16px;}
+.core-card{background:linear-gradient(135deg,#134e4a,#0f766e);color:#fff;border-radius:16px;padding:32px;margin-bottom:32px;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.kpi-item{background:var(--card);border-radius:10px;padding:18px;border-left:4px solid var(--primary);box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.kpi-item .kpi-val{font-size:1.6em;font-weight:800;color:var(--primary-dark);}
+.kpi-item .kpi-label{font-size:0.82em;color:var(--text-muted);margin-top:4px;font-weight:600;}
+.kpi-item .kpi-note{font-size:0.75em;color:var(--text-muted);margin-top:6px;}
+.chart-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;}
+.chart-wrap{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.chart-wrap h3{font-size:0.95em;font-weight:700;color:var(--text-muted);margin-bottom:14px;}
+table{width:100%;border-collapse:collapse;font-size:0.9em;}
+th{background:var(--primary-light);color:var(--primary-dark);padding:10px 12px;text-align:left;font-weight:700;}
+td{padding:9px 12px;border-bottom:1px solid var(--border);}
+tr:hover td{background:#f8fafc;}
+.tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:0.78em;font-weight:600;}
+.tag-bull{background:#dcfce7;color:#166534;}
+.tag-bear{background:#fee2e2;color:#991b1b;}
+.tag-neutral{background:#fef9c3;color:#854d0e;}
+.score-bar{display:flex;align-items:center;gap:10px;margin:8px 0;}
+.score-bar .bar{height:10px;border-radius:5px;background:linear-gradient(90deg,var(--primary),#22c55e);min-width:4px;}
+.score-bar .label{font-size:0.82em;color:var(--text-muted);width:100px;flex-shrink:0;}
+.score-bar .val{font-size:0.82em;font-weight:700;width:40px;text-align:right;}
+.strat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.strat-card{border-radius:12px;padding:24px;}
+.strat-atk{background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;}
+.strat-bal{background:linear-gradient(135deg,#0f766e,#0d9488);color:#fff;}
+.strat-def{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;}
+.strat-card h3{font-size:1.1em;font-weight:800;margin-bottom:12px;}
+.strat-card p{font-size:0.87em;opacity:0.92;line-height:1.7;}
+.debate{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:600px){.debate{grid-template-columns:1fr;}.price-block{gap:20px;}}
+.bull-col{background:#f0fdf4;border-radius:10px;padding:20px;border:1px solid #bbf7d0;}
+.bear-col{background:#fff1f2;border-radius:10px;padding:20px;border:1px solid #fecdd3;}
+.bull-col h3{color:#166534;font-weight:700;margin-bottom:12px;}
+.bear-col h3{color:#991b1b;font-weight:700;margin-bottom:12px;}
+li{margin-bottom:10px;font-size:0.88em;line-height:1.6;}
+.risk-badge{display:inline-block;padding:6px 16px;border-radius:8px;font-weight:700;font-size:0.9em;}
+.risk-med{background:#fef9c3;color:#854d0e;border:1px solid #fde047;}
+.glossary dt{font-weight:700;color:var(--primary-dark);margin-top:12px;}
+.glossary dd{font-size:0.88em;color:var(--text-muted);margin-left:16px;margin-top:3px;}
+.disclaimer{background:#fef9c3;border:1px solid #fde047;border-radius:10px;padding:20px;font-size:0.82em;color:#713f12;margin-top:32px;}
+.info-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.info-chip{background:var(--primary-light);color:var(--primary-dark);border-radius:6px;padding:4px 10px;font-size:0.8em;font-weight:600;}
+.alert-bull{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #86efac;border-radius:10px;padding:16px;margin-bottom:16px;}
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div style="display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);color:#fff;border-radius:6px;padding:4px 14px;font-size:0.85em;margin-bottom:12px;">📈 第三次更新 | 前次：2026-07-14 @ 641元（↓4.48%）</div>
+  <h1>日月光投控</h1>
+  <h2>ASE Technology Holding｜代碼：3711</h2>
+  <div>
+    <span class="badge" style="background:rgba(34,197,94,0.3);border:1px solid #6ee7b7;color:#d1fae5;">📈 風險等級：中等 5/10</span>
+    <span class="badge" style="background:rgba(255,255,255,0.15);color:#fff;">📅 2026-07-15</span>
+    <span class="badge" style="background:rgba(255,165,0,0.25);border:1px solid orange;color:#fed7aa;">🎯 V形反彈！</span>
+  </div>
+  <div class="price-block">
+    <div class="price-item"><div class="val pos">682<span style="font-size:0.5em">元</span></div><div class="lbl">今日收盤</div></div>
+    <div class="price-item"><div class="val pos">+41元 (+6.40%)</div><div class="lbl">今日漲跌</div></div>
+    <div class="price-item"><div class="val">10.86<span style="font-size:0.5em">元</span></div><div class="lbl">TTM EPS</div></div>
+    <div class="price-item"><div class="val">62.8<span style="font-size:0.5em">x</span></div><div class="lbl">TTM PE</div></div>
+    <div class="price-item"><div class="val">729<span style="font-size:0.5em">元</span></div><div class="lbl">52周最高</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 多頭訊號框 -->
+<div class="alert-bull">
+  🚀 <strong>今日多頭訊號：</strong>今日682元 (+6.40%)，強力V形反彈！<strong>一舉站回MA5(652.8)、MA10(673.5)、MA20(650.7)三線！</strong>昨日(641元)超賣後快速修正，RSI推估回升至65左右，技術面由空翻多。野村目標730元、國泰目標840元，FY2026E EPS 17.97元。
+</div>
+
+<!-- 02 核心結論 -->
+<div class="core-card section">
+  <div style="font-size:0.85em;opacity:0.8;margin-bottom:6px;">📊 投資建議（第三次更新）</div>
+  <div style="font-size:1.9em;font-weight:800;margin-bottom:8px;">🟢 積極看多 | V形反彈確立</div>
+  <div style="font-size:1.1em;margin-bottom:6px;">🎯 目標價：750～840元（外資共識）｜野村730元 / 國泰840元</div>
+  <div style="font-size:1em;margin-bottom:6px;">📍 短線進場區間：670～690元（今日收盤附近）</div>
+  <div style="font-size:0.95em;">🛑 停損：跌回MA20以下（650元）視為反彈失敗</div>
+  <div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
+    <div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:12px;">
+      <div style="font-size:0.8em;opacity:0.8;">📈 今日亮點</div>
+      <div style="font-size:0.9em;margin-top:4px;">收復MA5/MA10/MA20三線<br>RSI回升至~65<br>量縮（2376萬）確認止穩</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:12px;">
+      <div style="font-size:0.8em;opacity:0.8;">⚡ 近期催化劑</div>
+      <div style="font-size:0.9em;margin-top:4px;">7/16 台積電法說會<br>7/31 配息6.60元<br>Q2財報(8月)預估EPS~3.5元</div>
+    </div>
+    <div style="background:rgba(239,68,68,0.2);border-radius:8px;padding:12px;">
+      <div style="font-size:0.8em;opacity:0.8;">🚨 主要風險</div>
+      <div style="font-size:0.9em;margin-top:4px;">外資連日賣超（7/14: -3190張）<br>PE 62.8x偏高<br>美元匯損壓力</div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 KPI -->
+<div class="section">
+  <div class="section-title">📊 核心財務KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-item" style="border-color:#22c55e;">
+      <div class="kpi-val" style="color:#16a34a;">682元 ↑+6.4%</div>
+      <div class="kpi-label">今日收盤（7/15）</div>
+      <div class="kpi-note">開660→高684→低654→收682，V形大反彈</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">3.24元</div>
+      <div class="kpi-label">Q1'26 EPS（最新）</div>
+      <div class="kpi-note">歷史同期新高，GM首破20%（20.07%）</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">10.86元</div>
+      <div class="kpi-label">TTM EPS（近四季）</div>
+      <div class="kpi-note">1.74+2.50+3.38+3.24</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val" style="color:var(--accent);">17.97元</div>
+      <div class="kpi-label">FY2026E EPS（法人估）</div>
+      <div class="kpi-note">PE at 682 = 38.0x（合理區間）</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">657.8億</div>
+      <div class="kpi-label">Jun 2026 月營收</div>
+      <div class="kpi-note">YoY+32.86%，H1累計 3,647億</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">35億USD</div>
+      <div class="kpi-label">LEAP 2026E目標</div>
+      <div class="kpi-note">YoY+118%，2027E 67億USD</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">20.07%</div>
+      <div class="kpi-label">Q1'26 毛利率</div>
+      <div class="kpi-note">封測業歷史里程碑，首破20%</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-val">840元</div>
+      <div class="kpi-label">最高法人目標價（國泰）</div>
+      <div class="kpi-note">野村730元，潛在漲幅+23%</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 圖表 -->
+<div class="section">
+  <div class="section-title">📈 財務趨勢圖表</div>
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>EPS 季度趨勢（近8季）元/股 ★</h3>
+      <canvas id="epsChart" height="200"></canvas>
+      <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;">★ 實際公告；Q2'26E估3.5元（推算值）</div>
+    </div>
+    <div class="chart-wrap">
+      <h3>月營收趨勢（2026年 H1，億元）★</h3>
+      <canvas id="revChart" height="200"></canvas>
+      <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;">★ 實際公告；FinMind月份-1=實際月份</div>
+    </div>
+    <div class="chart-wrap">
+      <h3>本益比比較（TTM vs 2026E）</h3>
+      <canvas id="peChart" height="200"></canvas>
+      <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;">★ 2026E PE 38x已進入合理評估範圍（推算值）</div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽</div>
+  <div class="card">
+    <p style="margin-bottom:12px;"><strong>日月光投控（ASE Technology Holding）</strong>是全球最大半導體封測廠，2017年合併矽品後市佔率稱霸全球。核心業務：封裝測試（ATM）＋電子製造服務（環旭電子）。AI時代下，CoWoS/FoCoS先進封裝需求爆炸性成長，讓日月光從「傳統封測廠」蛻變為「AI基礎設施提供商」。</p>
+    <p style="margin-bottom:12px;"><strong>核心護城河：</strong>①全球唯一能大規模量產CoWoS的封測廠 ②TSMC生態系最重要協作夥伴 ③LEAP平台35億USD年目標、2027E 67億USD ④2026年第三度漲價（CoWoS/FoCoS累計+30~50%）⑤CapEx 85億USD確保產能領先</p>
+    <div class="info-row">
+      <span class="info-chip">🌐 全球封測市佔 #1</span>
+      <span class="info-chip">📦 CoWoS 量產唯一大廠</span>
+      <span class="info-chip">💰 7/31配息6.60元</span>
+      <span class="info-chip">🎯 野村目標730元</span>
+      <span class="info-chip">🎯 國泰目標840元</span>
+      <span class="info-chip">⚡ 7/1第三度漲價</span>
+    </div>
+  </div>
+</div>
+
+<!-- 06 基本面 -->
+<div class="section">
+  <div class="section-title">💼 基本面分析</div>
+  <div class="card">
+    <div style="margin-bottom:16px;">
+      <div class="score-bar"><span class="label">EPS爆發力</span><div class="bar" style="width:88%;"></div><span class="val">88</span></div>
+      <div class="score-bar"><span class="label">毛利率改善</span><div class="bar" style="width:82%;"></div><span class="val">82</span></div>
+      <div class="score-bar"><span class="label">營收成長</span><div class="bar" style="width:80%;"></div><span class="val">80</span></div>
+      <div class="score-bar"><span class="label">估值合理性</span><div class="bar" style="width:62%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">62</span></div>
+      <div class="score-bar"><span class="label">競爭護城河</span><div class="bar" style="width:90%;"></div><span class="val">90</span></div>
+    </div>
+    <table>
+      <tr><th>季度</th><th>EPS（元）</th><th>毛利率</th><th>營業利益率</th><th>QoQ</th></tr>
+      <tr><td>Q2'25</td><td>1.74</td><td>17.04%</td><td>6.76%</td><td>-0.6%</td></tr>
+      <tr><td>Q3'25</td><td>2.50</td><td>17.13%</td><td>7.83%</td><td>+43.7%</td></tr>
+      <tr><td>Q4'25</td><td>3.38</td><td>19.52%</td><td>9.94%</td><td>+35.2%</td></tr>
+      <tr><td style="color:var(--primary-dark);font-weight:700;">Q1'26</td><td style="color:var(--primary-dark);font-weight:700;">3.24★</td><td style="color:var(--primary-dark);font-weight:700;">20.07%★</td><td style="color:var(--primary-dark);font-weight:700;">10.10%</td><td>-4.1%</td></tr>
+      <tr style="opacity:0.6;"><td>Q2'26E</td><td>~3.5元（推估）</td><td>~20.5%</td><td>~10.5%</td><td>+8%</td></tr>
+    </table>
+    <p style="margin-top:10px;font-size:0.85em;color:var(--text-muted);">法人預估FY2026E EPS 17.97元（野村），FY2027E EPS 25.69元，對應682元：PE分別為38x/26.5x。</p>
+  </div>
+</div>
+
+<!-- 07 籌碼 -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:14px;">
+      <div style="background:#fee2e2;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:0.8em;color:#991b1b;">外資（7/14）</div>
+        <div style="font-size:1.5em;font-weight:800;color:#dc2626;">-3,190張</div>
+        <div style="font-size:0.75em;color:#991b1b;">賣超（連續）</div>
+      </div>
+      <div style="background:#dcfce7;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:0.8em;color:#166534;">投信（7/14）</div>
+        <div style="font-size:1.5em;font-weight:800;color:#16a34a;">+397張</div>
+        <div style="font-size:0.75em;color:#166534;">持續買超</div>
+      </div>
+      <div style="background:#dcfce7;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:0.8em;color:#166534;">自營商（7/14）</div>
+        <div style="font-size:1.5em;font-weight:800;color:#16a34a;">+204張</div>
+        <div style="font-size:0.75em;color:#166534;">轉買超</div>
+      </div>
+      <div style="background:#fee2e2;border-radius:8px;padding:14px;text-align:center;">
+        <div style="font-size:0.8em;color:#991b1b;">三大法人合計（7/14）</div>
+        <div style="font-size:1.5em;font-weight:800;color:#dc2626;">-2,588張</div>
+        <div style="font-size:0.75em;color:#991b1b;">合計賣超（外資主導）</div>
+      </div>
+    </div>
+    <div style="background:#f0fdf4;border-radius:8px;padding:14px;font-size:0.88em;">
+      <strong>外資評等（最新）：</strong>野村（6/30）目標730元「買進」；國泰（7/8）目標840元「看多」；外資機構多數維持看多，短線賣超屬技術性調節或除息前減持。FY2026E EPS共識 17.97元，FY2027E 25.69元。
+    </div>
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div class="section">
+  <div class="section-title">📉 技術分析</div>
+  <div class="card">
+    <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:14px;margin-bottom:14px;font-size:0.88em;">
+      🚀 <strong>今日技術轉折：</strong>682元一舉收復MA5(652.8)、MA10(673.5)、MA20(650.7)！昨日(641元)是近期底部，今日V形反彈確立。量能23,761千（略低於5日均27,007千），量縮止穩是健康訊號。RSI由昨日~45回升至今日~65，動能翻多。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div>
+        <strong style="color:var(--primary-dark);">均線系統（7/15 收盤後）</strong>
+        <table style="margin-top:8px;">
+          <tr><th>均線</th><th>數值</th><th>相對位置</th></tr>
+          <tr><td>MA5</td><td>652.8</td><td><span class="tag tag-bull">站上✅ (+29.2)</span></td></tr>
+          <tr><td>MA10</td><td>673.5</td><td><span class="tag tag-bull">站上✅ (+8.5)</span></td></tr>
+          <tr><td>MA20</td><td>650.7</td><td><span class="tag tag-bull">站上✅ (+31.3)</span></td></tr>
+          <tr><td>MA60</td><td>575.51</td><td><span class="tag tag-bull">站上✅ (+106.5)</span></td></tr>
+        </table>
+      </div>
+      <div>
+        <strong style="color:var(--primary-dark);">指標訊號（7/15）</strong>
+        <table style="margin-top:8px;">
+          <tr><th>指標</th><th>數值</th><th>訊號</th></tr>
+          <tr><td>MACD</td><td>21.73/-5.53</td><td><span class="tag tag-neutral">死叉收斂🟡</span></td></tr>
+          <tr><td>RSI（推估）</td><td>~65</td><td><span class="tag tag-bull">回升多頭✅</span></td></tr>
+          <tr><td>布林中軌</td><td>650.7</td><td><span class="tag tag-bull">站上✅</span></td></tr>
+          <tr><td>布林上軌</td><td>723.3</td><td><span class="tag tag-neutral">目標壓力🟡</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <div style="background:#f8fafc;border-radius:8px;padding:14px;font-size:0.88em;">
+      <strong>🔑 關鍵價位：</strong>支撐：MA10 673 → MA20 651 → 650（強支撐）；壓力：700整數 → 布林上軌 723 → 52W高 729元。
+      <br><strong>📌 策略：</strong>今日V形反彈確立後，持有者可續抱，停損設在655元（MA20以下）。新進場者可在回測MA10（673）時加碼。目標先看720～730元（布林上軌+野村目標）。
+    </div>
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <div class="section-title">💳 融資融券</div>
+  <div class="card">
+    <p style="font-size:0.9em;">今日（7/15）融資融券盤中資料：融資餘額 0張，融券餘額 0張（FinMind次日更新）。</p>
+    <div style="margin-top:10px;padding:12px;background:#f8fafc;border-radius:8px;font-size:0.85em;color:var(--text-muted);">
+      <strong>趨勢判讀：</strong>日月光主要由外資主導（持股~60%），散戶融資比重低。今日反彈量能23,761千，屬正常水平。外資若從明日轉為買超，可能推動股價進一步上攻。重要觀察：今日反彈是否吸引外資回補，明日法人數據為關鍵。
+    </div>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <div class="section-title">⚔️ 多空研究員辯論</div>
+  <div class="debate">
+    <div class="bull-col">
+      <h3>🐂 看多論點（看多65%）</h3>
+      <ul>
+        <li><strong>今日V形反彈＋三線收復：</strong>682元收復MA5/MA10/MA20，技術面由弱轉強，昨日641元是近期底部確認。</li>
+        <li><strong>法人目標價上限840元：</strong>國泰7/8最新目標840元，野村730元，現價682距兩者皆有顯著上行空間（+7%~+23%）。</li>
+        <li><strong>FY2026E EPS 17.97元 PE僅38x：</strong>若以FY2026E評估，現價PE 38x對比AI封測成長性已具合理吸引力。</li>
+        <li><strong>第三度漲價確保毛利率：</strong>7/1 CoWoS/FoCoS年累計漲30~50%，2026E毛利率目標逼近22%，EPS持續上修。</li>
+        <li><strong>7/31配息6.60元：</strong>除息前1-2週通常出現填息行情，配息殖利率3.64%具防禦性。</li>
+        <li><strong>台積電7/16法說助攻：</strong>若台積電Q2財報優於預期+上修CoWoS需求，日月光受惠最直接。</li>
+      </ul>
+    </div>
+    <div class="bear-col">
+      <h3>🐻 看空論點（看空35%）</h3>
+      <ul>
+        <li><strong>外資連日賣超：</strong>7/13: -2,651張，7/14: -2,588張，機構調節壓力持續，多頭不敢放心追。</li>
+        <li><strong>TTM PE 62.8x偏高：</strong>就算以FY2026E 38x計算，相較傳統封測業10~15x仍屬高估。</li>
+        <li><strong>反彈量能偏低：</strong>今日成交23,761千，低於5日均27,007千，量縮反彈持續性有疑問。</li>
+        <li><strong>MACD仍在死叉：</strong>雖收斂，但MACD金叉尚未確立，技術面翻多確認仍需1~2個交易日。</li>
+        <li><strong>美元匯損壓力：</strong>台幣升值持續，匯損每季影響EPS 0.3~0.5元，壓縮實際獲利。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;background:#f8fafc;">
+    <strong>💬 給一般投資人的話：</strong>日月光今天的反彈就像一個重摔後「快速站起來的拳擊手」。昨天跌破多條均線，今天一口氣全部收復——這在技術面叫做「假跌破」，往往是強股的特徵。外資雖在賣，但券商目標價最高840元，顯示長期看法沒有改變。如果你是中長線投資人，目前682元附近仍是合理的分批進場區間。
+  </div>
+</div>
+
+<!-- 11 風控 -->
+<div class="section">
+  <div class="section-title">🛡️ 風控評估</div>
+  <div class="card">
+    <div style="margin-bottom:16px;">
+      <div class="score-bar"><span class="label">估值風險(30%)</span><div class="bar" style="width:55%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">5.5</span></div>
+      <div class="score-bar"><span class="label">財務風險(25%)</span><div class="bar" style="width:28%;"></div><span class="val">2.8</span></div>
+      <div class="score-bar"><span class="label">流動性風險(10%)</span><div class="bar" style="width:18%;"></div><span class="val">1.8</span></div>
+      <div class="score-bar"><span class="label">產業風險(15%)</span><div class="bar" style="width:38%;"></div><span class="val">3.8</span></div>
+      <div class="score-bar"><span class="label">總經風險(10%)</span><div class="bar" style="width:40%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">4.0</span></div>
+      <div class="score-bar"><span class="label">籌碼風險(10%)</span><div class="bar" style="width:48%;background:linear-gradient(90deg,#f97316,#fbbf24);"></div><span class="val">4.8</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="risk-badge risk-med">綜合風險：4.8 / 10（中等，今日技術面改善後下調）</span>
+    </div>
+  </div>
+</div>
+
+<!-- 12 策略 -->
+<div class="section">
+  <div class="section-title">🗺️ 台股三段式操作策略</div>
+  <div class="strat-grid">
+    <div class="strat-card strat-atk">
+      <h3>🚀 進攻方案（積極型）</h3>
+      <p>條件：今日V形反彈確立，明日台積電法說助攻<br><br>
+      進場：680～690元（今日收盤附近）<br>
+      加碼：突破700元+成交量放大<br>
+      目標1：720元（布林上軌）<br>
+      目標2：730元（野村目標）<br>
+      停損：跌破665元（MA20+2%）</p>
+    </div>
+    <div class="strat-card strat-bal">
+      <h3>⚖️ 均衡方案（穩健型）</h3>
+      <p>條件：分批在均線支撐區建倉<br><br>
+      第一批：680～690元（現在）<br>
+      第二批：650～660元（如回測MA20）<br>
+      目標：750元（12個月）<br>
+      停損：跌破648元（MA20以下）</p>
+    </div>
+    <div class="strat-card strat-def">
+      <h3>🛡️ 防守方案（保守型）</h3>
+      <p>條件：等待多頭趨勢完全確認<br><br>
+      等待：MACD確認金叉<br>
+      等待：外資買超轉正<br>
+      進場：700元站穩後確認<br>
+      目標：780元以上<br>
+      停損：跌破MA60（575元）</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <strong>📅 催化劑時程：</strong>
+    <table style="margin-top:10px;">
+      <tr><th>日期</th><th>事件</th><th>預期影響</th></tr>
+      <tr><td>2026/07/16</td><td>台積電Q2法說會</td><td>CoWoS需求展望→日月光直接受惠</td></tr>
+      <tr><td>2026/07/31</td><td>除息日（6.60元）</td><td>填息行情，短線支撐</td></tr>
+      <tr><td>2026/08</td><td>Q2財報（EPS預估~3.5元）</td><td>若優於預期可能突破52W高729元</td></tr>
+      <tr><td>2026/Q4</td><td>CoWoS擴產達20k wpm</td><td>先進封裝占比↑→毛利率繼續改善</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 13 名詞 -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室</div>
+  <div class="card">
+    <dl class="glossary">
+      <dt>V形反彈</dt>
+      <dd>股價快速下跌後，立刻急速回升，形狀像英文字母「V」。今日日月光從昨日641元跳升至682元，即是典型V形反彈，通常代表下跌幅度已過度，市場重新評估買入。</dd>
+      <dt>MACD金叉（黃金交叉）</dt>
+      <dd>技術指標MACD的快線（DIF）向上穿越慢線（DEA），是短線做多訊號。目前仍在死叉，但柱狀圖已縮小，明日若再大漲，金叉可能確立。</dd>
+      <dt>CoWoS全製程（Full Process）</dt>
+      <dd>日月光自己完成整個CoWoS封裝流程（不依賴台積電基板），2026E目標3億USD。技術難度更高、毛利率更好，是未來獲利爆發的隱藏彩蛋。</dd>
+      <dt>LEAP（Leading Advanced Packaging）</dt>
+      <dd>日月光先進封裝平台品牌，2026E目標35億USD（年增118%），2027E 67億USD。包含CoWoS、FoCoS、SoIC等技術，是公司未來5年的成長核心。</dd>
+      <dt>填息</dt>
+      <dd>除息後股價下調（日月光7/31扣6.60元），若之後股價漲回除息前水準，稱為「填息」。以現價682元，配息後參考價約675.4元，填息壓力不大。</dd>
+    </dl>
+  </div>
+</div>
+
+<!-- 14 免責 -->
+<div class="disclaimer">
+  ⚠️ <strong>免責聲明：</strong>本報告僅供研究參考，不構成投資建議。所有投資均有風險，過去績效不代表未來表現。<br>
+  <strong>資料來源：</strong>Fugle API、FinMind、台灣證交所T86、野村/國泰證券研究報告（間接引用）、財經媒體。資料日期：2026-07-15。
+</div>
+</div>
+
+<script>
+const epsCtx=document.getElementById('epsChart').getContext('2d');
+new Chart(epsCtx,{type:'bar',data:{labels:['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26','Q2\'26E'],datasets:[{label:'EPS（元）',data:[1.80,2.24,2.17,1.75,1.74,2.50,3.38,3.24,3.5],backgroundColor:['#99f6e4','#99f6e4','#99f6e4','#5eead4','#5eead4','#2dd4bf','#0d9488','#ef4444','rgba(239,68,68,0.4)'],borderRadius:5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+
+const revCtx=document.getElementById('revChart').getContext('2d');
+new Chart(revCtx,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'月營收（億元）',data:[599.9,520.9,615.8,622.5,630.3,657.8],borderColor:'#0d9488',backgroundColor:'rgba(13,148,136,0.1)',tension:0.3,fill:true,pointBackgroundColor:['#0d9488','#0d9488','#0d9488','#0d9488','#0d9488','#ef4444'],pointRadius:5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false}}}});
+
+const peCtx=document.getElementById('peChart').getContext('2d');
+new Chart(peCtx,{type:'bar',data:{labels:['日月光 TTM','日月光 2026E','日月光 2027E','台積電','大盤'],datasets:[{label:'PE（x）',data:[62.8,38.0,26.5,25,18],backgroundColor:['#fca5a5','#f97316','#22c55e','#99f6e4','#d1fae5'],borderRadius:5}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}});
+</script>
+</body>
+</html>
