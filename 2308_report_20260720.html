@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台達電 2308 深度研究報告 2026-07-20</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #4f46e5;
+    --primary-dark: #312e81;
+    --primary-light: #ede9fe;
+    --bg: #F0F4F8;
+    --card: #FFFFFF;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --bull: #16a34a;
+    --bear: #dc2626;
+    --warning: #d97706;
+    --info: #0891b2;
+    --radius: 12px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+
+  /* COVER */
+  .cover {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4338ca 70%, #4f46e5 100%);
+    color: white; padding: 72px 40px 64px; text-align: center; position: relative; overflow: hidden;
+  }
+  .cover::before { content:''; position:absolute; top:-80px; right:-80px; width:300px; height:300px; background:radial-gradient(circle, rgba(99,102,241,0.25) 0%, transparent 70%); }
+  .cover-badge { display:inline-block; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:6px 18px; font-size:13px; letter-spacing:1px; text-transform:uppercase; margin-bottom:20px; }
+  .cover h1 { font-size:clamp(36px,6vw,64px); font-weight:800; letter-spacing:-1px; margin-bottom:8px; }
+  .cover-sub { font-size:20px; opacity:0.85; margin-bottom:28px; }
+  .cover-price { font-size:clamp(28px,5vw,52px); font-weight:700; color:#c7d2fe; margin-bottom:6px; }
+  .cover-change { font-size:20px; opacity:0.9; margin-bottom:28px; }
+  .cover-tags { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+  .cover-tag { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); border-radius:20px; padding:6px 16px; font-size:13px; }
+  .risk-badge { display:inline-block; background:#d97706; color:white; border-radius:8px; padding:6px 16px; font-size:15px; font-weight:700; margin-top:20px; }
+
+  /* SECTIONS */
+  .section { background:var(--card); border-radius:var(--radius); padding:32px; margin:24px 0; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .section-title { font-size:22px; font-weight:700; color:var(--text); margin-bottom:20px; padding-bottom:12px; border-bottom:3px solid var(--primary); display:flex; align-items:center; gap:10px; }
+
+  /* CONCLUSION */
+  .conclusion-card { background:linear-gradient(135deg, #1e1b4b, #312e81); color:white; border-radius:var(--radius); padding:36px; margin:24px 0; }
+  .conclusion-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
+  .conclusion-item { background:rgba(255,255,255,0.08); border-radius:10px; padding:20px; }
+  .conclusion-label { font-size:12px; text-transform:uppercase; letter-spacing:2px; opacity:0.7; margin-bottom:6px; }
+  .conclusion-value { font-size:26px; font-weight:800; color:#c7d2fe; margin-bottom:4px; }
+  .verdict-box { background:linear-gradient(135deg,#4f46e5,#7c3aed); color:white; border-radius:10px; padding:20px; text-align:center; margin-bottom:20px; }
+  .verdict-box h2 { font-size:24px; font-weight:800; }
+
+  /* KPI */
+  .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; }
+  .kpi-card { background:var(--bg); border-radius:10px; padding:20px; border-left:4px solid var(--primary); }
+  .kpi-label { font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:4px; }
+  .kpi-value { font-size:26px; font-weight:700; }
+  .kpi-sub { font-size:13px; color:var(--text-muted); margin-top:4px; }
+  .kpi-up { color:var(--bull); }
+  .kpi-down { color:var(--bear); }
+  .kpi-warn { color:var(--warning); }
+
+  /* CHARTS */
+  .charts-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:24px; }
+  .chart-container { background:var(--bg); border-radius:10px; padding:20px; }
+  .chart-title { font-size:15px; font-weight:600; color:var(--text-muted); margin-bottom:14px; }
+  .chart-note { font-size:11px; color:var(--text-muted); margin-top:8px; text-align:center; }
+
+  /* DATA TABLE */
+  .data-table { width:100%; border-collapse:collapse; font-size:14px; }
+  .data-table th { background:var(--bg); color:var(--text-muted); font-size:12px; text-transform:uppercase; padding:10px 14px; text-align:left; }
+  .data-table td { padding:10px 14px; border-bottom:1px solid var(--border); }
+  .data-table tr:last-child td { border-bottom:none; }
+  .data-table tr:hover td { background:var(--primary-light); }
+  .tag-green { background:#dcfce7; color:#16a34a; border-radius:4px; padding:2px 8px; font-size:12px; font-weight:600; }
+  .tag-red { background:#fee2e2; color:#dc2626; border-radius:4px; padding:2px 8px; font-size:12px; font-weight:600; }
+  .tag-amber { background:#fef3c7; color:#d97706; border-radius:4px; padding:2px 8px; font-size:12px; font-weight:600; }
+  .tag-indigo { background:#ede9fe; color:#4f46e5; border-radius:4px; padding:2px 8px; font-size:12px; font-weight:600; }
+  .tag-blue { background:#dbeafe; color:#1d4ed8; border-radius:4px; padding:2px 8px; font-size:12px; font-weight:600; }
+
+  /* ANALYST */
+  .analyst-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+  .analyst-card { background:var(--bg); border-radius:10px; padding:20px; border-top:3px solid var(--primary); }
+  .analyst-target { font-size:26px; font-weight:800; color:var(--primary); }
+  .analyst-rating { font-size:13px; color:var(--text-muted); margin-top:4px; }
+
+  /* TECHNICAL */
+  .tech-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+  .tech-card { background:var(--bg); border-radius:10px; padding:18px; }
+  .tech-label { font-size:12px; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px; }
+  .tech-value { font-size:20px; font-weight:700; }
+  .tech-signal { font-size:12px; margin-top:4px; }
+  .signal-bull { color:var(--bull); }
+  .signal-bear { color:var(--bear); }
+  .signal-neutral { color:var(--warning); }
+
+  .price-levels { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; margin-top:16px; }
+  .price-level { background:var(--bg); border-radius:8px; padding:12px; text-align:center; }
+  .price-level-label { font-size:11px; color:var(--text-muted); margin-bottom:4px; }
+  .price-level-value { font-size:17px; font-weight:700; }
+
+  /* DEBATE */
+  .debate-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  @media(max-width:640px){ .debate-grid{grid-template-columns:1fr;} }
+  .bull-panel { background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:24px; }
+  .bear-panel { background:#fff1f2; border:1px solid #fecdd3; border-radius:10px; padding:24px; }
+  .debate-title { font-size:18px; font-weight:700; margin-bottom:16px; }
+  .debate-point { display:flex; gap:10px; margin-bottom:12px; }
+  .debate-num { min-width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; }
+  .bull-num { background:var(--bull); color:white; }
+  .bear-num { background:var(--bear); color:white; }
+  .debate-text { font-size:14px; line-height:1.6; }
+  .weight-bar { display:flex; border-radius:8px; overflow:hidden; height:36px; margin:16px 0; }
+  .weight-bull { background:var(--bull); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:14px; }
+  .weight-bear { background:var(--bear); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:14px; }
+
+  /* RISK */
+  .risk-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
+  .risk-item { background:var(--bg); border-radius:8px; padding:16px; }
+  .risk-dim { font-size:13px; font-weight:600; margin-bottom:8px; }
+  .risk-bar-bg { background:#e2e8f0; border-radius:4px; height:8px; }
+  .risk-bar { height:8px; border-radius:4px; }
+  .risk-score { font-size:20px; font-weight:700; margin-top:6px; }
+  .overall-risk { text-align:center; margin-top:20px; padding:20px; background:var(--bg); border-radius:10px; }
+
+  /* STRATEGY */
+  .strategy-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
+  .strategy-card { border-radius:10px; padding:24px; }
+  .strat-attack { background:linear-gradient(135deg,#4f46e5,#7c3aed); color:white; }
+  .strat-balance { background:linear-gradient(135deg,#0891b2,#06b6d4); color:white; }
+  .strat-defense { background:linear-gradient(135deg,#64748b,#94a3b8); color:white; }
+  .strat-title { font-size:18px; font-weight:700; margin-bottom:12px; }
+  .strat-item { font-size:14px; margin-bottom:6px; opacity:0.95; }
+
+  .catalyst-list { list-style:none; }
+  .catalyst-list li { display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+  .catalyst-date { min-width:80px; font-size:13px; font-weight:600; color:var(--primary); }
+
+  .glossary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
+  .glossary-item { background:var(--bg); border-radius:10px; padding:18px; }
+  .glossary-term { font-size:15px; font-weight:700; color:var(--primary); margin-bottom:6px; }
+  .glossary-def { font-size:14px; color:var(--text-muted); }
+
+  .disclaimer { background:#fffbeb; border:1px solid #f59e0b; border-radius:10px; padding:20px; margin:24px 0; }
+  .disclaimer h3 { color:#d97706; font-size:16px; margin-bottom:10px; }
+  .disclaimer p, .disclaimer li { font-size:13px; color:#78350f; }
+  .disclaimer ul { margin-left:16px; }
+
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  @media(max-width:640px){ .two-col{grid-template-columns:1fr;} }
+
+  .highlight-box { background:var(--primary-light); border-left:4px solid var(--primary); border-radius:6px; padding:16px; margin:12px 0; }
+  .highlight-box p { font-size:14px; color:#312e81; }
+  .warn-box { background:#fef3c7; border-left:4px solid #d97706; border-radius:6px; padding:16px; margin:12px 0; }
+  .warn-box p { font-size:14px; color:#78350f; }
+
+  .score-bar-row { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+  .score-bar-label { min-width:120px; font-size:13px; color:var(--text-muted); }
+  .score-bar-track { flex:1; background:#e2e8f0; border-radius:4px; height:10px; }
+  .score-bar-fill { height:10px; border-radius:4px; background:var(--primary); }
+  .score-bar-val { min-width:30px; font-size:13px; font-weight:700; text-align:right; }
+
+  .law-badge { display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#f59e0b,#d97706); color:white; border-radius:10px; padding:10px 20px; font-size:16px; font-weight:700; margin:12px 0; }
+</style>
+</head>
+<body>
+
+<!-- SECTION 01 — COVER -->
+<div class="cover">
+  <div class="cover-badge">深度研究報告 · 台股 TWSE</div>
+  <h1>台達電子</h1>
+  <div class="cover-sub">股票代碼：2308 &nbsp;·&nbsp; AI電源供應全球龍頭 · 資料中心電力王者</div>
+  <div class="cover-price">1,705 元</div>
+  <div class="cover-change">▼ 35元（-2.01%）&nbsp;·&nbsp; 盤中整理 · 2026年07月20日</div>
+  <div class="cover-tags">
+    <span class="cover-tag">📅 分析日期：2026-07-20</span>
+    <span class="cover-tag">⚡ AI電源供應龍頭</span>
+    <span class="cover-tag">📈 Q1'26 EPS 7.91元歷史新高</span>
+    <span class="cover-tag">🚀 Q2'26 季營收1,832億創紀錄</span>
+    <span class="cover-tag">🎯 外資目標2,750元｜本土2,800元</span>
+    <span class="cover-tag">⚡ 7/30 法說會催化劑</span>
+    <span class="cover-tag">⚠️ RSI 34.2 接近超賣</span>
+  </div>
+  <div class="risk-badge">⚠️ 中等風險 4.5/10</div>
+</div>
+
+<div class="container">
+
+<!-- SECTION 02 — CORE CONCLUSION -->
+<div class="conclusion-card">
+  <div class="verdict-box">
+    <div style="font-size:14px;opacity:0.9;margin-bottom:4px;">核心投資建議</div>
+    <h2>🟡 法說前布局，1,665~1,780元分批建倉</h2>
+    <div style="font-size:16px;margin-top:8px;opacity:0.95;">RSI接近超賣 + 7/30法說會催化劑組合｜Q2 EPS估9~11元｜長線目標2,750元</div>
+  </div>
+  <div class="conclusion-grid">
+    <div class="conclusion-item">
+      <div class="conclusion-label">📌 投資建議</div>
+      <div class="conclusion-value">分批建倉</div>
+      <div style="font-size:14px;opacity:0.85;margin-top:6px;">1,665~1,780元建倉（現價~今日低點）<br>法說後業績確認再加碼</div>
+    </div>
+    <div class="conclusion-item">
+      <div class="conclusion-label">🎯 目標價</div>
+      <div class="conclusion-value">2,100 ~ 2,750元</div>
+      <div style="font-size:14px;opacity:0.85;margin-top:6px;">中期：2,100元（FY2026E PE 46x）<br>長期：2,750元（外資目標）</div>
+    </div>
+    <div class="conclusion-item">
+      <div class="conclusion-label">🔴 停損條件</div>
+      <div class="conclusion-value">1,550元收盤</div>
+      <div style="font-size:14px;opacity:0.85;margin-top:6px;">跌破1,550元代表法說業績失望<br>或AI資本支出出現大幅縮減</div>
+    </div>
+    <div class="conclusion-item">
+      <div class="conclusion-label">⚡ 最大風險</div>
+      <div class="conclusion-value">估值仍偏高</div>
+      <div style="font-size:14px;opacity:0.85;margin-top:6px;">TTM PE 63x，FY2026E PE 37~41x<br>若科技股估值整體壓縮，跌勢延伸</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 03 — KPI -->
+<div class="section">
+  <div class="section-title"><span>📊</span>關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Q1'26 EPS（季）</div>
+      <div class="kpi-value kpi-up">7.91元</div>
+      <div class="kpi-sub">歷史最高季EPS｜毛利率 37.00%（持續擴張）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TTM EPS（近4季）</div>
+      <div class="kpi-value">27.11元</div>
+      <div class="kpi-sub">TTM PE = 63x（後視鏡高）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">FY2026E EPS（法人）</div>
+      <div class="kpi-value kpi-up">41.5 ~ 46元</div>
+      <div class="kpi-sub">前向PE = <strong>37~41x</strong>｜2027E 65元</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Jun 2026 月營收</div>
+      <div class="kpi-value kpi-up">656億元</div>
+      <div class="kpi-sub">YoY <strong>+55.43%</strong>｜MoM +11.26%｜史上最高</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q2 2026 季營收</div>
+      <div class="kpi-value kpi-up">1,832億元</div>
+      <div class="kpi-sub">QoQ +15%｜YoY +47.75%｜<strong>史上最高季</strong></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q1'26 毛利率</div>
+      <div class="kpi-value kpi-up">37.00%</div>
+      <div class="kpi-sub">QoQ +2.41pp｜法人目標2026E達39%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">距52週高點</div>
+      <div class="kpi-value kpi-down">-34.0%</div>
+      <div class="kpi-sub">2,585元 → 1,705元｜基本面強而估值修正</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">7/30 法說會</div>
+      <div class="kpi-value" style="color:var(--primary);">10天後</div>
+      <div class="kpi-sub">Q2財報+Q3展望｜800V時程更新｜最重要催化劑</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 04 — CHARTS -->
+<div class="section">
+  <div class="section-title"><span>📈</span>財務趨勢互動圖表</div>
+  <div class="charts-grid">
+    <div class="chart-container">
+      <div class="chart-title">📊 季度EPS趨勢（近8季）</div>
+      <canvas id="epsChart" height="220"></canvas>
+      <div class="chart-note">★ 實際公告值｜EPS從3.83元穩步成長至7.91元，漲幅+106%</div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-title">📈 月營收趨勢（H1 2026）</div>
+      <canvas id="revenueChart" height="220"></canvas>
+      <div class="chart-note">★ 實際公告值｜Jun 2026月營收656億創史上新高</div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-title">🔖 PE比較：台達電 vs 同業（倍）</div>
+      <canvas id="peChart" height="220"></canvas>
+      <div class="chart-note">★ FY2026E PE以法人共識EPS估算；TTM PE為近4季EPS計算</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 05 — COMPANY OVERVIEW -->
+<div class="section">
+  <div class="section-title"><span>🏭</span>公司概覽</div>
+  <div class="two-col">
+    <div>
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">基本資料</h3>
+      <table class="data-table">
+        <tr><td style="color:var(--text-muted);font-size:13px;">公司全名</td><td style="font-weight:600;">台達電子工業股份有限公司</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">股票代碼</td><td style="font-weight:600;">2308.TW（上市）</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">產業類別</td><td><span class="tag-indigo">電源供應 / AI基礎建設</span></td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">主力業務</td><td>電源及零組件、基礎建設、自動化</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">AI相關</td><td>資料中心電源供應（GB200 Blackwell）</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">旗艦產品</td><td>±400V HVDC（今年量產）、800V（2027）</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">市值（2026-07-20）</td><td>4,467億元</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">PBR</td><td>14.92倍</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">資料中心營收占比</td><td>2025年46% → 2026E 62% → 2027E 73%</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">競爭護城河</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+            <span style="font-weight:600;">AI電源技術領先（±400V/800V）</span><span class="tag-green">強</span>
+          </div>
+          <div style="background:#e2e8f0;border-radius:4px;height:10px;"><div style="width:90%;height:10px;border-radius:4px;background:var(--primary);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+            <span style="font-weight:600;">客戶黏性（NVIDIA Blackwell 專案）</span><span class="tag-green">強</span>
+          </div>
+          <div style="background:#e2e8f0;border-radius:4px;height:10px;"><div style="width:85%;height:10px;border-radius:4px;background:var(--primary);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+            <span style="font-weight:600;">市占率（全球AI電源#1）</span><span class="tag-green">強</span>
+          </div>
+          <div style="background:#e2e8f0;border-radius:4px;height:10px;"><div style="width:80%;height:10px;border-radius:4px;background:var(--primary);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+            <span style="font-weight:600;">毛利率擴張能力（→39%目標）</span><span class="tag-indigo">提升中</span>
+          </div>
+          <div style="background:#e2e8f0;border-radius:4px;height:10px;"><div style="width:75%;height:10px;border-radius:4px;background:var(--primary);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+            <span style="font-weight:600;">競爭（光寶科二線玩家）</span><span class="tag-amber">中等</span>
+          </div>
+          <div style="background:#e2e8f0;border-radius:4px;height:10px;"><div style="width:60%;height:10px;border-radius:4px;background:var(--primary);"></div></div>
+        </div>
+      </div>
+      <div class="highlight-box" style="margin-top:16px;">
+        <p>🔑 <strong>核心護城河</strong>：台達電是全球AI資料中心電源供應的絕對龍頭，供貨NVIDIA GB200/Blackwell系統。±400V HVDC產品今年率先量產，較二線競爭者（光寶科）領先1~2年。資料中心業務佔比從46%快速提升至62%（2026E），是典型的「結構性成長」故事。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 06 — FUNDAMENTAL -->
+<div class="section">
+  <div class="section-title"><span>💰</span>基本面分析</div>
+
+  <h3 style="font-size:15px;font-weight:700;margin-bottom:14px;">季度財務表現（EPS / 毛利率 / 營業利益率）</h3>
+  <table class="data-table">
+    <thead><tr><th>季度</th><th>EPS（元）</th><th>毛利率</th><th>營業利益率</th><th>QoQ</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Q1'26 ★</strong></td>
+        <td><span class="tag-green">7.91元</span></td>
+        <td><span class="tag-green">37.00%</span></td>
+        <td><span class="tag-green">17.83%</span></td>
+        <td>+18.6%</td>
+        <td>🏆 歷史新高！AI電源漲價3~5%+Blackwell放量</td>
+      </tr>
+      <tr>
+        <td>Q4'25</td>
+        <td><span class="tag-green">6.67元</span></td>
+        <td>34.59%</td>
+        <td>16.35%</td>
+        <td>-6.8%</td>
+        <td>季節性回落，全年仍強</td>
+      </tr>
+      <tr>
+        <td>Q3'25</td>
+        <td><span class="tag-green">7.16元</span></td>
+        <td>34.87%</td>
+        <td>16.5%</td>
+        <td>+33.3%</td>
+        <td>AI旺季爆發，大超預期</td>
+      </tr>
+      <tr>
+        <td>Q2'25</td>
+        <td><span class="tag-green">5.37元</span></td>
+        <td>35.51%</td>
+        <td>15.05%</td>
+        <td>+36.3%</td>
+        <td>AI電源需求快速起量</td>
+      </tr>
+      <tr>
+        <td>Q1'25</td>
+        <td>3.94元</td>
+        <td>31.78%</td>
+        <td>11.8%</td>
+        <td>+42.7%</td>
+        <td>AI趨勢啟動，毛利率開始提升</td>
+      </tr>
+      <tr>
+        <td>Q4'24</td>
+        <td>2.76元</td>
+        <td>30.77%</td>
+        <td>9.37%</td>
+        <td>-41.9%</td>
+        <td>季節性低谷</td>
+      </tr>
+      <tr>
+        <td>Q3'24</td>
+        <td>4.75元</td>
+        <td>34.93%</td>
+        <td>14.64%</td>
+        <td>+23.9%</td>
+        <td>AI電源起步</td>
+      </tr>
+      <tr>
+        <td>Q2'24</td>
+        <td>3.83元</td>
+        <td>34.13%</td>
+        <td>12.7%</td>
+        <td>—</td>
+        <td>基期</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box" style="margin-top:16px;">
+    <p>🚀 <strong>EPS成長故事</strong>：從Q2'24的3.83元到Q1'26的7.91元，8個季度EPS成長 <strong>+106%</strong>！毛利率從34%提升至37%（目標39%），代表定價能力（漲價3~5%）和產品結構升級（更高利潤的AI電源產品）雙重驅動。這是結構性成長，而非週期性彈升。</p>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;margin:20px 0 14px;">月營收月月加速</h3>
+  <table class="data-table">
+    <thead><tr><th>月份（實際）</th><th>月營收（億元）</th><th>YoY</th><th>MoM</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Jun 2026 ★</strong></td><td><span class="tag-green">656億</span></td><td><span class="tag-green">+55.43%</span></td><td>+11.26%</td></tr>
+      <tr><td>May 2026</td><td>589.6億</td><td><span class="tag-green">+43.65%</span></td><td>+0.46%</td></tr>
+      <tr><td>Apr 2026</td><td>586.9億</td><td><span class="tag-green">+43.92%</span></td><td>-1.82%</td></tr>
+      <tr><td>Mar 2026</td><td>597.8億</td><td><span class="tag-green">+37.60%</span></td><td>+19.81%</td></tr>
+      <tr><td>Feb 2026</td><td>496.8億</td><td><span class="tag-green">+32.87%</span></td><td>-7.47%</td></tr>
+      <tr><td>Jan 2026</td><td>536.9億</td><td><span class="tag-green">+~30%</span></td><td>+6.22%</td></tr>
+    </tbody>
+  </table>
+  <div style="font-size:13px;color:var(--text-muted);margin-top:8px;">★ Q2 2026（Apr+May+Jun）合計 1,832億元，QoQ+15%，YoY+47.75%，創史上最高季紀錄</div>
+
+  <h3 style="font-size:15px;font-weight:700;margin:20px 0 14px;">法人FY2026~2028E EPS預估</h3>
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:6px;">🏦 外資（FY2026E）</div>
+      <div class="analyst-target">41.5元</div>
+      <div class="analyst-rating">前向PE @1,705元 = <strong>41.1x</strong></div>
+    </div>
+    <div class="analyst-card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:6px;">📊 本土法人（FY2026E）</div>
+      <div class="analyst-target">~46元</div>
+      <div class="analyst-rating">前向PE @1,705元 = <strong>37.1x</strong>｜EPS近翻倍</div>
+    </div>
+    <div class="analyst-card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:6px;">🚀 外資（FY2027E）</div>
+      <div class="analyst-target">65.1元</div>
+      <div class="analyst-rating">800V架構放量貢獻｜PE@1,705 = 26.2x！</div>
+    </div>
+    <div class="analyst-card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:6px;">🌟 外資（FY2028E）</div>
+      <div class="analyst-target">98.5元</div>
+      <div class="analyst-rating">資料中心占比達80%｜EPS長線成長故事</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 07 — CHIPS -->
+<div class="section">
+  <div class="section-title"><span>🏦</span>籌碼面分析</div>
+  <div class="highlight-box">
+    <p>⏰ <strong>注意</strong>：三大法人每日買賣超數據於收盤後約18:00公佈。今日（7/20）盤中顯示0為正常，以下依近期趨勢判讀。</p>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;margin:16px 0 12px;">法人目標價彙整（最新）</h3>
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:6px;">🏦 本土法人（最高）</div>
+      <div class="analyst-target">2,800元</div>
+      <div class="analyst-rating">買進｜上漲空間 <strong>+64.2%</strong> from 1,705</div>
+    </div>
+    <div class="analyst-card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:6px;">🌍 歐系外資</div>
+      <div class="analyst-target">2,750元</div>
+      <div class="analyst-rating">買進｜評估股價從高點跌25%具吸引力<br>上漲空間 <strong>+61.3%</strong></div>
+    </div>
+    <div class="analyst-card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:6px;">🏦 日系外資</div>
+      <div class="analyst-target">2,440元</div>
+      <div class="analyst-rating">買進（喊買）｜上漲空間 <strong>+43.1%</strong></div>
+    </div>
+    <div class="analyst-card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:6px;">📈 法人共識</div>
+      <div class="analyst-target">~2,600元</div>
+      <div class="analyst-rating">上漲空間 <strong>+52.5%</strong>｜全面看多</div>
+    </div>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;margin:20px 0 12px;">近期籌碼動向（趨勢判讀）</h3>
+  <table class="data-table">
+    <thead><tr><th>日期</th><th>法人估計</th><th>收盤價</th><th>解讀</th></tr></thead>
+    <tbody>
+      <tr><td>6/4前</td><td><span class="tag-green">法人積極買進</span></td><td style="font-weight:700;">2,585元（52W高）</td><td>外資大力追捧AI電源概念</td></tr>
+      <tr><td>6/4~7/16</td><td><span class="tag-red">法人逢高減碼</span></td><td style="color:var(--bear);">2,425→1,905元</td><td>獲利了結，估值過高</td></tr>
+      <tr><td>7/17</td><td><span class="tag-red">多方賣超（台股整體）</span></td><td style="font-weight:700;color:var(--bear);">1,740元（-8.7%）</td><td>台股整體性暴跌，外資恐慌</td></tr>
+      <tr><td>7/20（盤中）</td><td>待確認</td><td style="color:var(--bear);">1,705元（-2.0%）</td><td>縮量，賣壓趨緩中</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn-box" style="margin-top:12px;">
+    <p>📋 <strong>重要籌碼觀察</strong>：歐系外資明確指出「自5月下旬以來股價回跌約25%，評價更具吸引力」，並維持買進評等、目標2,750元。這意味著外資從高點套利後，已開始考慮重新介入。7/30法說會公布Q2業績（估EPS 9~11元）若符合或超越預期，將是法人回補的觸發點。</p>
+  </div>
+</div>
+
+<!-- SECTION 08 — TECHNICAL -->
+<div class="section">
+  <div class="section-title"><span>📉</span>技術分析</div>
+
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tech-label">當前股價</div>
+      <div class="tech-value">1,705 元</div>
+      <div class="tech-signal signal-bear">今日 -2.01%｜52W高2,585→今：-34%</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">MA5</div>
+      <div class="tech-value" style="color:var(--bear);">1,856 元</div>
+      <div class="tech-signal signal-bear">⚠️ 跌破MA5（-8.1%）</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">MA10</div>
+      <div class="tech-value" style="color:var(--bear);">1,900.5 元</div>
+      <div class="tech-signal signal-bear">⚠️ 跌破MA10（-10.3%）</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">MA20（月線）</div>
+      <div class="tech-value" style="color:var(--bear);">1,949.5 元</div>
+      <div class="tech-signal signal-bear">⚠️ 跌破月線（-12.5%）</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">MA60（季線）</div>
+      <div class="tech-value" style="color:var(--bear);">2,120.25 元</div>
+      <div class="tech-signal signal-bear">🔴 遠在MA60下方（-19.6%）</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">RSI（14日）</div>
+      <div class="tech-value" style="color:var(--warning);">34.19</div>
+      <div class="tech-signal signal-neutral">⚡ 接近超賣（30以下）｜距30只差4點</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">MACD</div>
+      <div class="tech-value">-81.93 / -70.67</div>
+      <div class="tech-signal signal-bear">柱狀 -11.26｜死叉，空頭趨勢</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">布林通道（20日）</div>
+      <div class="tech-value">上2,158 / 中1,950 / 下1,741</div>
+      <div class="tech-signal signal-bear">🔴 1,705 跌破布林下軌（1,741）</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">成交量</div>
+      <div class="tech-value">7/17 放量 1,425萬股</div>
+      <div class="tech-signal signal-neutral">5日均量 1,037萬｜7/17爆量後縮量沉澱</div>
+    </div>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;margin:20px 0 12px;">關鍵價位支撐壓力表</h3>
+  <div class="price-levels">
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bear);">壓力4（MA60）</div>
+      <div class="price-level-value" style="color:var(--bear);">2,120元</div>
+    </div>
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bear);">壓力3（MA20）</div>
+      <div class="price-level-value" style="color:var(--bear);">1,950元</div>
+    </div>
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bear);">壓力2（MA10）</div>
+      <div class="price-level-value" style="color:var(--bear);">1,900元</div>
+    </div>
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bear);">壓力1（MA5）</div>
+      <div class="price-level-value" style="color:var(--bear);">1,856元</div>
+    </div>
+    <div class="price-level" style="background:var(--primary-light);border:2px solid var(--primary);">
+      <div class="price-level-label" style="color:var(--primary);">★ 現價</div>
+      <div class="price-level-value" style="color:var(--primary);">1,705元</div>
+    </div>
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bull);">支撐1（今日低）</div>
+      <div class="price-level-value" style="color:var(--bull);">1,665元</div>
+    </div>
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bull);">支撐2（心理）</div>
+      <div class="price-level-value" style="color:var(--bull);">1,600元</div>
+    </div>
+    <div class="price-level" style="background:#fee2e2;">
+      <div class="price-level-label" style="color:var(--bear);">停損線</div>
+      <div class="price-level-value" style="color:var(--bear);">1,550元</div>
+    </div>
+  </div>
+
+  <div class="warn-box" style="margin-top:20px;">
+    <p>⚠️ <strong>技術面綜合判讀</strong>：台達電技術面處於「超賣邊緣」。四條均線（MA5/10/20/60）全部跌破，布林下軌也被突破，RSI 34.19距離超賣線（30）僅差4點——這是技術面即將彈力最強的地方。<br><br>
+    然而與0050、南亞科相比，台達電的跌勢更深（-34% from high vs 0050的-11%），代表外資估值修正的幅度更大。好消息是：7/30法說會（10天後）提供了具體的業績確認時間點，若Q2 EPS達9~11元，有機會引發技術反彈至MA5（1,856元）以上。</p>
+  </div>
+</div>
+
+<!-- SECTION 09 — MARGIN -->
+<div class="section">
+  <div class="section-title"><span>📋</span>融資融券</div>
+  <div class="two-col">
+    <div>
+      <table class="data-table">
+        <tr><td style="color:var(--text-muted);">融資餘額（近期）</td><td><span class="tag-amber">需至證交所查詢最新值</span></td></tr>
+        <tr><td style="color:var(--text-muted);">融資趨勢</td><td>⚠️ 7/17急跌-8.7%可能有融資斷頭</td></tr>
+        <tr><td style="color:var(--text-muted);">融券餘額</td><td>相對偏低（AI強勢股空方謹慎）</td></tr>
+        <tr><td style="color:var(--text-muted);">7/17成交量</td><td>1,425萬股（5日均量1.4倍）</td></tr>
+        <tr><td style="color:var(--text-muted);">量能比較</td><td>放量下跌→縮量整理（賣壓趨緩）</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="warn-box">
+        <p>⚠️ <strong>融資風險評估</strong>：從2,585元高點跌至1,705元（-34%），若散戶融資成本在2,000元以上，維持率壓力已相當大。7/17單日放量大跌（1,425萬股 vs 均量1,037萬），部分可能是融資斷頭引發。今日縮量整理是正面信號：主力下跌賣壓已大幅消化。</p>
+      </div>
+      <div class="highlight-box" style="margin-top:12px;">
+        <p>✅ <strong>融資風險建議</strong>：建議以現股（非融資）方式布局台達電，避免在-34%修正後仍用槓桿持股，以現股分批買進可撐過更深修正而不被強制斷頭。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 10 — DEBATE -->
+<div class="section">
+  <div class="section-title"><span>⚔️</span>研究員多空辯論</div>
+
+  <div style="margin-bottom:16px;">
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-muted);margin-bottom:6px;">
+      <span>多空權重</span><span>看多 60% vs 看空 40%</span>
+    </div>
+    <div class="weight-bar">
+      <div class="weight-bull" style="width:60%">看多 60%</div>
+      <div class="weight-bear" style="width:40%">看空 40%</div>
+    </div>
+    <div style="font-size:13px;color:var(--text-muted);">基本面持續突破新高支撐看多；估值壓縮風險 + 競爭加劇制衡</div>
+  </div>
+
+  <div class="debate-grid">
+    <div class="bull-panel">
+      <div class="debate-title" style="color:var(--bull);">🟢 看多研究員：6大論點</div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">1</div>
+        <div class="debate-text"><strong>Q2 2026季營收1,832億創史上最高</strong><br>QoQ+15%、YoY+47.75%，連續多季業績加速成長。Jun月營收656億（YoY+55.43%！）也是史上最高單月，顯示AI資料中心需求毫無減速跡象。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">2</div>
+        <div class="debate-text"><strong>毛利率擴張故事完整（37%→39%目標）</strong><br>Q1'26毛利率37.00%，較Q4'25的34.59%提升2.41pp。定價能力（漲價3~5%）+ 產品結構升級（±400V HVDC更高利潤）雙重驅動。法人目標2026E達39%，2027E達40.5%。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">3</div>
+        <div class="debate-text"><strong>外資全面買進，目標價2,440~2,800元</strong><br>歐系、日系外資及本土法人一致看多，目標價2,440~2,800元，距今上漲空間43~64%。歐系外資明確指出「股價從高點回跌25%，現在更具吸引力」，法說後可能重新加碼。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">4</div>
+        <div class="debate-text"><strong>800V架構2027年放量，長線EPS爆發</strong><br>±400V HVDC今年量產，800V預計2026H2小量出貨、2027年主力貢獻。外資預估FY2027E EPS 65元、FY2028E 98.5元，以1,705元計算2027年PE僅26x！這是最強的長線投資論點。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">5</div>
+        <div class="debate-text"><strong>RSI 34.19接近超賣 + 7/30法說催化劑</strong><br>RSI距離超賣線（30）只差4點，若再跌5~6%便進入技術超賣。加上10天後的法說會提供具體業績確認機會（Q2 EPS估9~11元），「超賣 + 催化劑」是台達電進場最佳的技術組合。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">6</div>
+        <div class="debate-text"><strong>資料中心營收占比快速拉升至62%（2026E）</strong><br>從2025年的46%到2026E的62%，AI資料中心成為台達電主業。AI資料中心的電力需求呈指數成長（GB200機架用電是舊機架的4~5倍），且台達電是「獨家供貨商」地位使定價具主導權。</div>
+      </div>
+    </div>
+
+    <div class="bear-panel">
+      <div class="debate-title" style="color:var(--bear);">🔴 看空研究員：5大論點</div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">1</div>
+        <div class="debate-text"><strong>TTM PE 63x — 估值仍極高</strong><br>即使以法人最樂觀FY2026E EPS 46元計算，前向PE仍達37x。歷史上台達電正常PE為15~25x，現在37x代表大量AI成長預期已在股價中。若AI資本支出增速放緩，股價可能進一步跌至1,300~1,500元。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">2</div>
+        <div class="debate-text"><strong>競爭加劇：光寶科搶市場</strong><br>台達電+光寶科合供AI電源比例高達70%。客戶（如NVIDIA/微軟）為避免供應商集中風險，正在引進第二、第三供應商。若光寶科快速提升AI電源技術，台達電市占率將面臨稀釋，毛利率擴張天花板提前到來。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">3</div>
+        <div class="debate-text"><strong>從高點-34%，技術面五線全空</strong><br>MA5/MA10/MA20/MA60全部跌破，布林下軌也跌破，MACD死叉（-81.93/-70.67）。這是技術面最強的賣出訊號組合，在底部確認前，任何反彈都可能是法人出貨的機會。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">4</div>
+        <div class="debate-text"><strong>AI資本支出節奏不確定性</strong><br>若美國科技巨頭（微軟/Google/Amazon）因AI投資回報率不確定而削減資本支出，台達電訂單能見度將大幅下降。目前AI資本支出處於「Faith-based」（信念驅動）階段，尚未有足夠商業回報驗證。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">5</div>
+        <div class="debate-text"><strong>FY2026E EPS隱含的法說壓力</strong><br>外資已預估FY2026E EPS 41.5元，代表Q2~Q4平均每季需貢獻約11元（= (41.5-7.91)/3）。若Q2 EPS僅達9元而未到11元，市場可能對全年展望下修，引發新一輪賣壓，股價可能再測1,600元。</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#f8fafc;border-radius:10px;padding:20px;margin-top:20px;">
+    <h3 style="font-size:15px;font-weight:700;margin-bottom:10px;">💬 給一般投資人的話</h3>
+    <p style="font-size:14px;line-height:1.8;">台達電是台灣AI行情中最純粹的「AI電力基礎建設」概念股。好消息是：Q2 2026季營收1,832億元是歷史新高，代表AI資料中心的建置確實在加速，台達電的電源供應需求非常旺盛。<br><br>
+    壞消息是：股價從508元漲到2,585元（+408%）後，現在已在消化估值泡沫。63倍的TTM PE、37倍的前向PE，在台灣製造業中都是極罕見的高估值。<br><br>
+    <strong>建議做法</strong>：若你相信AI資料中心電力需求會持續3~5年的爆發性成長，1,665~1,780元是合理的分批進場區（RSI接近超賣）。但要記住：法說會（7/30）是最重要的「業績驗證點」——業績超預期則反彈至2,100元以上；業績不及預期（Q2 EPS低於9元）則可能再測1,550~1,600元。建議法說後才加碼，先以小部位試水溫。</p>
+  </div>
+</div>
+
+<!-- SECTION 11 — RISK -->
+<div class="section">
+  <div class="section-title"><span>⚠️</span>風控評估（六維評分）</div>
+  <div class="risk-grid">
+    <div class="risk-item">
+      <div class="risk-dim">估值風險（權重30%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:70%;background:#dc2626;"></div></div>
+      <div class="risk-score" style="color:#dc2626;">7 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">TTM PE 64x、FY2026E PE 37~41x，遠高於歷史均值</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-dim">財務風險（權重25%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:20%;background:#16a34a;"></div></div>
+      <div class="risk-score" style="color:#16a34a;">2 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">EPS/GM/OP持續擴張，現金流健康</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-dim">流動性風險（權重10%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:25%;background:#16a34a;"></div></div>
+      <div class="risk-score" style="color:#16a34a;">2.5 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">日均成交量1,000萬股以上，流動性充足</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-dim">產業風險（權重15%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:40%;background:#d97706;"></div></div>
+      <div class="risk-score" style="color:#d97706;">4 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">AI需求強勁，但競爭加劇（光寶科）</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-dim">總經風險（權重10%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:50%;background:#d97706;"></div></div>
+      <div class="risk-score" style="color:#d97706;">5 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">AI資本支出是否持續、美中關係</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-dim">籌碼風險（權重10%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:60%;background:#d97706;"></div></div>
+      <div class="risk-score" style="color:#d97706;">6 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">-34%修正後融資仍有壓力，法人持倉待確認</div>
+    </div>
+  </div>
+  <div class="overall-risk">
+    <div style="font-size:14px;color:var(--text-muted);margin-bottom:8px;">綜合風險評分（加權）</div>
+    <div style="font-size:48px;font-weight:800;color:#d97706;">4.5 / 10</div>
+    <div style="margin-top:8px;"><span style="background:#fef3c7;color:#d97706;border-radius:8px;padding:6px 20px;font-size:16px;font-weight:700;">中等風險</span></div>
+    <div style="font-size:13px;color:var(--text-muted);margin-top:12px;">
+      計算：30%×7 + 25%×2 + 10%×2.5 + 15%×4 + 10%×5 + 10%×6<br>
+      = 2.1+0.5+0.25+0.6+0.5+0.6 = <strong>4.55 → 約4.5分</strong><br>
+      估值仍偏高是主要風險；但基本面持續突破新高降低財務風險
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 12 — STRATEGY -->
+<div class="section">
+  <div class="section-title"><span>🎯</span>台股三段式操作策略</div>
+
+  <div class="law-badge">
+    ⚡ 關鍵催化劑：7月30日法說會（10天後）— Q2財報 + Q3展望 + 800V時程
+  </div>
+
+  <div class="strategy-grid" style="margin-top:16px;">
+    <div class="strategy-card strat-attack">
+      <div class="strat-title">⚔️ 進攻型策略（積極）</div>
+      <div style="font-size:12px;opacity:0.8;margin-bottom:12px;">適合：信仰AI長線故事、能承受20%波動</div>
+      <div class="strat-item">📍 <strong>現在進場</strong>：1,665~1,780元（RSI接近超賣）</div>
+      <div class="strat-item">📦 <strong>部位</strong>：30~40%（法說前試倉）</div>
+      <div class="strat-item">📍 <strong>法說後加碼</strong>：業績確認後加至70%</div>
+      <div class="strat-item">🎯 <strong>目標一</strong>：2,100元（FY2026E PE 46x）</div>
+      <div class="strat-item">🎯 <strong>目標二</strong>：2,440元（日系外資目標）</div>
+      <div class="strat-item">🎯 <strong>夢幻目標</strong>：2,750~2,800元（歐系/本土目標）</div>
+      <div class="strat-item">🛑 <strong>停損</strong>：1,550元收盤（法說業績失望）</div>
+      <div class="strat-item">⏰ <strong>持有期</strong>：3~12個月</div>
+      <div class="strat-item">📊 <strong>報酬/風險</strong>：+45%/−9%，比率5:1</div>
+    </div>
+    <div class="strategy-card strat-balance">
+      <div class="strat-title">⚖️ 均衡型策略（穩健）</div>
+      <div style="font-size:12px;opacity:0.8;margin-bottom:12px;">適合：等待確認訊號、分批降低成本</div>
+      <div class="strat-item">⏳ <strong>先觀望</strong>：等待7/30法說會結果</div>
+      <div class="strat-item">📍 <strong>法說後第一批</strong>：Q2 EPS≥9元時買進</div>
+      <div class="strat-item">📍 <strong>買進區間</strong>：1,700~1,900元</div>
+      <div class="strat-item">📦 <strong>部位</strong>：30%（保守分批）</div>
+      <div class="strat-item">🎯 <strong>目標</strong>：2,100元（MA20附近）</div>
+      <div class="strat-item">🛑 <strong>停損</strong>：1,550元</div>
+      <div class="strat-item">⏰ <strong>持有期</strong>：3~6個月</div>
+    </div>
+    <div class="strategy-card strat-defense">
+      <div class="strat-title">🛡️ 防守型策略（保守）</div>
+      <div style="font-size:12px;opacity:0.8;margin-bottom:12px;">適合：高估值仍讓你不安的投資者</div>
+      <div class="strat-item">⏳ <strong>觀望條件</strong>：等RSI跌至30（超賣確認）</div>
+      <div class="strat-item">⏳ <strong>或等待</strong>：法說後MA5重新站穩確認</div>
+      <div class="strat-item">📍 <strong>買進區間</strong>：1,550~1,665元</div>
+      <div class="strat-item">📦 <strong>部位</strong>：20%</div>
+      <div class="strat-item">🎯 <strong>目標</strong>：1,900元（MA10）</div>
+      <div class="strat-item">🛑 <strong>停損</strong>：1,450元</div>
+      <div class="strat-item">⚠️ <strong>注意</strong>：若法說業績超預期，可能踏空反彈</div>
+    </div>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;margin:24px 0 12px;">催化劑與時間表</h3>
+  <ul class="catalyst-list">
+    <li>
+      <span class="catalyst-date">7月30日</span>
+      <span style="font-size:14px;">🏆 <strong>Q2'26法說會（最重要！）</strong>：公布Q2 EPS（估9~11元）、毛利率（估38~39%）、Q3展望。若業績符合或超越預期，股價有機會直接反彈至MA5（1,856元）以上</span>
+    </li>
+    <li>
+      <span class="catalyst-date">2026 H2</span>
+      <span style="font-size:14px;">⚡ <strong>800V電源架構小量出貨</strong>：800V是比±400V更高毛利的新產品，出貨確認後毛利率進一步提升，法人將上調2027E EPS預估</span>
+    </li>
+    <li>
+      <span class="catalyst-date">2027年</span>
+      <span style="font-size:14px;">🚀 <strong>800V放量 + NVIDIA下一代AI晶片</strong>：若800V在2027年成為主力出貨，FY2027E EPS 65元將成現實，PE@65元×40x = 2,600元目標不是夢</span>
+    </li>
+    <li>
+      <span class="catalyst-date">持續觀察</span>
+      <span style="font-size:14px;">🔍 <strong>超大規模雲端資本支出數據</strong>：每季追蹤微軟/Google/Amazon/Meta的Capex數字，若持續上調，台達電訂單能見度不斷延伸</span>
+    </li>
+  </ul>
+</div>
+
+<!-- SECTION 13 — GLOSSARY -->
+<div class="section">
+  <div class="section-title"><span>📚</span>名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">±400V HVDC（高壓直流電）</div>
+      <div class="glossary-def">AI資料中心最新電力架構。傳統伺服器用110/220V交流電，但AI超算（如NVIDIA GB200機架）耗電量驚人，±400V高壓直流電可大幅降低輸電損耗，效率提升15~20%。台達電今年率先量產，競爭者落後1~2年。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">800V架構</div>
+      <div class="glossary-def">比±400V HVDC更進一步的高壓電力系統，可支持未來更高密度的AI晶片機架。台達電預計2026H2小量出貨，2027年放量。800V毛利率更高，是台達電未來3年EPS加速的核心驅動力。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">AI資料中心電源供應（PSU）</div>
+      <div class="glossary-def">每個AI伺服器機架都需要電源供應器（Power Supply Unit）將市電轉換為伺服器可用的低壓直流電。台達電是全球最大AI電源供應商，供貨NVIDIA、微軟、Google等AI基礎建設。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">毛利率（Gross Margin）擴張</div>
+      <div class="glossary-def">台達電毛利率從2024年的34%提升至2026Q1的37%，主要原因：①漲價3~5%（把成本轉嫁給客戶），②更高利潤的AI電源產品組合增加。法人預估2026E達39%，這代表「同樣營收，利潤更高」。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">GB200 / Blackwell（NVIDIA晶片）</div>
+      <div class="glossary-def">NVIDIA最新一代AI訓練晶片平台。一個GB200機架的耗電量高達120~180kW（傳統機架10~20kW），需要特殊的高效電源管理。台達電是GB200機架電源系統的重要供應商，Blackwell超大放量是台達電訂單爆發的直接原因。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">前向PE（Forward P/E）</div>
+      <div class="glossary-def">以「未來一年預估EPS」計算的本益比。台達電TTM PE 64x看起來極高，但FY2026E PE僅37~41x，代表市場已預期EPS快速成長。判斷股票貴不貴，需用前向PE，不能只看TTM PE。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">法說會（法人說明會）</div>
+      <div class="glossary-def">公司每季對法人投資者召開的業績說明會，公布財報數字並提供下一季展望。對股價影響極大。台達電7/30法說會將公布Q2財報（市場預估EPS 9~11元）及Q3展望，是短期最重要的股價催化劑。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">超大規模業者（Hyperscaler）</div>
+      <div class="glossary-def">指微軟、Google、Amazon AWS、Meta等大型雲端業者，他們大量購買AI晶片、建設AI資料中心，是台達電、台積電等公司最重要的終端客戶。追蹤這些公司的季度「Capex（資本支出）」數字，可以預判台達電的訂單趨勢。</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 14 — DISCLAIMER -->
+<div class="disclaimer">
+  <h3>⚠️ 免責聲明</h3>
+  <p style="margin-bottom:8px;">本報告由 AI 輔助分析系統生成，<strong>僅供投資研究參考，不構成任何投資建議或勸誘</strong>。</p>
+  <ul>
+    <li>本報告分析日期：2026年07月20日（盤中）</li>
+    <li>股價/技術指標來源：Fugle Market Data API（即時）、FinMind（K線/財報/月營收）</li>
+    <li>法人目標價來源：工商時報、Yahoo奇摩股市、CMoney（2026年7月最新）</li>
+    <li>EPS預估（41.5~98.5元）來自外資/本土法人報告，為市場估計值，非公司官方指引</li>
+    <li>資料中心占比趨勢（46%→80%）為法人預估，非台達電官方公告</li>
+    <li>過去績效不代表未來表現。高PE（64x）股票在市場轉向時可能大幅下跌</li>
+    <li>投資人應自行負責所有投資決定及損益。投資前請諮詢合格的投資顧問。</li>
+  </ul>
+  <p style="margin-top:12px;font-size:12px;color:#a16207;">報告生成時間：2026-07-20 盤中分析｜分析師團隊：AI Stock Analysis Team</p>
+</div>
+
+</div><!-- end container -->
+
+<script>
+// Chart 1: EPS
+const epsCtx = document.getElementById('epsChart').getContext('2d');
+new Chart(epsCtx, {
+  type: 'bar',
+  data: {
+    labels: ["Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26★"],
+    datasets: [{
+      label: 'EPS（元）',
+      data: [3.83, 4.75, 2.76, 3.94, 5.37, 7.16, 6.67, 7.91],
+      backgroundColor: [
+        '#a5b4fc','#818cf8','#6366f1','#4f46e5','#4338ca','#3730a3','#4338ca','#312e81'
+      ],
+      borderColor: '#1e1b4b',
+      borderWidth: 1.5,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `EPS: ${ctx.raw}元` } }
+    },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { callback: v => `${v}元` } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Chart 2: Revenue
+const revCtx = document.getElementById('revenueChart').getContext('2d');
+new Chart(revCtx, {
+  type: 'line',
+  data: {
+    labels: ['Jan 2026','Feb 2026','Mar 2026','Apr 2026','May 2026','Jun 2026★'],
+    datasets: [{
+      label: '月營收（億元）',
+      data: [536.9, 496.8, 597.8, 586.9, 589.6, 656.0],
+      borderColor: '#4f46e5',
+      backgroundColor: 'rgba(79,70,229,0.1)',
+      borderWidth: 3,
+      pointRadius: [4,4,4,4,4,9],
+      pointBackgroundColor: ['#4f46e5','#4f46e5','#4f46e5','#4f46e5','#4f46e5','#dc2626'],
+      pointBorderColor: 'white',
+      pointBorderWidth: 2,
+      fill: true,
+      tension: 0.4
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `${ctx.raw}億元` } }
+    },
+    scales: {
+      y: {
+        min: 460,
+        grid: { color: 'rgba(0,0,0,0.06)' },
+        ticks: { callback: v => `${v}億` }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Chart 3: PE comparison
+const peCtx = document.getElementById('peChart').getContext('2d');
+new Chart(peCtx, {
+  type: 'bar',
+  data: {
+    labels: [
+      '台達電 TTM PE',
+      '台達電 FY2026E',
+      '台達電 FY2027E',
+      '台積電 FY2026E',
+      '光寶科 FY2026E',
+      '0050 PE'
+    ],
+    datasets: [{
+      label: '本益比（倍）',
+      data: [63.8, 39, 26.2, 25, 22, 29],
+      backgroundColor: [
+        'rgba(79,70,229,0.5)',
+        'rgba(79,70,229,1)',
+        'rgba(79,70,229,0.7)',
+        'rgba(100,116,139,0.5)',
+        'rgba(100,116,139,0.5)',
+        'rgba(100,116,139,0.5)'
+      ],
+      borderColor: '#312e81',
+      borderWidth: 1.5,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `PE: ${ctx.raw}x` } }
+    },
+    scales: {
+      x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { callback: v => `${v}x` } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
