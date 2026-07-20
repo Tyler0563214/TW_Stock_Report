@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股盤後戰情室 2026-07-20</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root{--bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--border:#30363d;--text:#e6edf3;--text2:#8b949e;--green:#3fb950;--red:#f85149;--yellow:#d29922;--blue:#58a6ff;--purple:#bc8cff;--orange:#f0883e;--teal:#39d353;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:14px;line-height:1.5;}
+  .container{max-width:1400px;margin:0 auto;padding:0 16px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;}
+  .card-title{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);margin-bottom:10px;font-weight:600;}
+  .section-head{font-size:18px;font-weight:700;margin:24px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:8px;}
+  #header{background:linear-gradient(135deg,#0d1117 0%,#161b22 100%);border-bottom:1px solid var(--border);padding:16px 0;}
+  .header-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  .header-title{font-size:22px;font-weight:800;}
+  .badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;}
+  .badge-bear{background:rgba(248,81,73,.15);color:#f85149;border:1px solid rgba(248,81,73,.3);}
+  .badge-caution{background:rgba(210,153,34,.15);color:#d29922;border:1px solid rgba(210,153,34,.3);}
+  .badge-bull{background:rgba(63,185,80,.15);color:#3fb950;border:1px solid rgba(63,185,80,.3);}
+  #ticker{background:var(--bg2);border-bottom:1px solid var(--border);padding:8px 0;}
+  .ticker-inner{display:flex;gap:24px;flex-wrap:wrap;padding:0 16px;}
+  .tick-item{display:flex;flex-direction:column;align-items:center;min-width:90px;}
+  .tick-label{font-size:10px;color:var(--text2);}
+  .tick-val{font-size:15px;font-weight:700;}
+  .tick-chg{font-size:11px;}
+  .up{color:var(--green);}.dn{color:var(--red);}.neu{color:var(--text2);}
+  table{width:100%;border-collapse:collapse;font-size:12px;}
+  th{background:var(--bg3);color:var(--text2);text-align:left;padding:8px;border-bottom:1px solid var(--border);font-weight:600;font-size:11px;text-transform:uppercase;}
+  td{padding:7px 8px;border-bottom:1px solid var(--border);}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:rgba(255,255,255,.02);}
+  .chart-wrap{position:relative;height:240px;}
+  .chart-wrap-sm{position:relative;height:200px;}
+  .mt8{margin-top:8px;}.mt12{margin-top:12px;}
+  .text-sm{font-size:12px;color:var(--text2);}
+  .num-up{color:var(--green);font-weight:600;}
+  .num-dn{color:var(--red);font-weight:600;}
+  .highlight{color:var(--yellow);font-weight:600;}
+  .event-box{background:var(--bg3);border-left:3px solid var(--blue);border-radius:0 6px 6px 0;padding:10px 14px;margin-bottom:8px;}
+  .event-box.red{border-left-color:var(--red);}
+  .event-box.green{border-left-color:var(--green);}
+  .event-box.yellow{border-left-color:var(--yellow);}
+  .event-title{font-size:13px;font-weight:700;margin-bottom:4px;}
+  .event-body{font-size:12px;color:#c9d1d9;line-height:1.6;}
+  .stock-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);}
+  .stock-row:last-child{border-bottom:none;}
+  .stock-name{font-size:13px;font-weight:600;}
+  .stock-code{font-size:10px;color:var(--text2);margin-left:4px;}
+  .stock-chg{font-size:14px;font-weight:700;min-width:70px;text-align:right;}
+  .stock-price{font-size:12px;color:var(--text2);min-width:50px;text-align:right;}
+  .bar-bg{background:var(--bg3);border-radius:3px;height:6px;margin-top:3px;overflow:hidden;}
+  .bar-fill-up{background:var(--green);height:100%;border-radius:3px;}
+  .bar-fill-dn{background:var(--red);height:100%;border-radius:3px;}
+  .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;margin:2px;}
+  .tag-collapse{background:rgba(248,81,73,.2);color:var(--red);}
+  .tag-defend{background:rgba(63,185,80,.15);color:var(--green);}
+  .tag-watch{background:rgba(210,153,34,.15);color:var(--yellow);}
+  .tomorrow-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;}
+  .tomorrow-title{font-size:14px;font-weight:700;margin-bottom:8px;}
+  .tomorrow-body{font-size:12px;color:#c9d1d9;line-height:1.7;}
+  .disclaimer{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:24px;font-size:11px;color:var(--text2);line-height:1.6;}
+  .verdict-bar{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:12px;}
+  .hit-miss{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
+  .hit-item{background:rgba(63,185,80,.06);border:1px solid rgba(63,185,80,.2);border-radius:6px;padding:8px;font-size:12px;}
+  .miss-item{background:rgba(248,81,73,.06);border:1px solid rgba(248,81,73,.2);border-radius:6px;padding:8px;font-size:12px;}
+  @media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<div id="header">
+  <div class="container">
+    <div class="header-row">
+      <div>
+        <div class="header-title">📊 台股盤後戰情室</div>
+        <div style="font-size:13px;color:var(--text2);margin-top:4px;">2026年07月20日（一）收盤分析｜被動元件雪崩 × 台積電逆勢撐盤 × 大盤開高低走</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span class="badge badge-caution">⚡ 個股分化劇烈</span>
+        <span class="badge badge-bear">📉 被動元件10檔跌停</span>
+        <span class="badge badge-bull">🛡️ 台積電+1.31%逆撐</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:10px;font-size:13px;">
+      <div>收盤 <strong class="dn">42,485.84（-185pts, -0.43%）</strong></div>
+      <div>今日區間 <strong>41,967（低）→ 43,084（高）</strong></div>
+      <div>成交值 <strong>估~7,500億</strong></div>
+      <div>明日關鍵 <strong class="highlight">Alphabet 法說（週二）</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TICKER ══ -->
+<div id="ticker">
+  <div class="ticker-inner">
+    <div class="tick-item"><span class="tick-label">TWII 收盤</span><span class="tick-val dn">42,486</span><span class="tick-chg dn">▼ -185 (-0.43%)</span></div>
+    <div class="tick-item"><span class="tick-label">台積電 2330</span><span class="tick-val up">2,320</span><span class="tick-chg up">▲ +30 (+1.31%)</span></div>
+    <div class="tick-item"><span class="tick-label">國巨 2327</span><span class="tick-val dn">630</span><span class="tick-chg dn">▼ -9.87% 近跌停</span></div>
+    <div class="tick-item"><span class="tick-label">聯電 2303</span><span class="tick-val dn">130</span><span class="tick-chg dn">▼ -9.72% 近跌停</span></div>
+    <div class="tick-item"><span class="tick-label">力積電 6770</span><span class="tick-val dn">63.1</span><span class="tick-chg dn">▼ -8.42%</span></div>
+    <div class="tick-item"><span class="tick-label">旺宏 2337</span><span class="tick-val dn">117.5</span><span class="tick-chg dn">▼ -6.00%</span></div>
+    <div class="tick-item"><span class="tick-label">中華電 2412</span><span class="tick-val up">139.0</span><span class="tick-chg up">▲ +0.72% 連二逆漲</span></div>
+    <div class="tick-item"><span class="tick-label">鴻海 2317</span><span class="tick-val up">234.5</span><span class="tick-chg up">▲ +0.21%</span></div>
+    <div class="tick-item"><span class="tick-label">SOX 費半</span><span class="tick-val dn">11,674</span><span class="tick-chg dn">▼ -1.63% 熊市中</span></div>
+    <div class="tick-item"><span class="tick-label">布蘭特原油</span><span class="tick-val up">$90.44</span><span class="tick-chg up">▲ 美伊衝突持續</span></div>
+  </div>
+</div>
+
+<div class="container" style="padding-top:20px;padding-bottom:40px;">
+
+<!-- ══ 今日大事記 ══ -->
+<div class="section-head">📋 今日大事記（三大主線）</div>
+<div class="grid-3">
+  <div>
+    <div class="event-box red">
+      <div class="event-title">💣 主線一：被動元件雪崩</div>
+      <div class="event-body">
+        <strong>國巨(2327) -9.87%，收630元</strong>（近跌停）<br>
+        從歷史天價 <span class="num-dn">1,220元 → 630元，下跌48.4%</span>（從4月底317元起漲，5個月漲285%後崩跌）<br><br>
+        觸發原因：<br>
+        ① 日本村田製作所(Murata) <span class="num-dn">-9%</span>，太陽誘電 <span class="num-dn">-17%</span> 同步暴跌<br>
+        ② 「獲利了結」情緒爆發，法人大量倒貨<br>
+        ③ 26萬股東套牢，籌碼潰散<br><br>
+        <strong>同步跌停：</strong>禾伸堂、華新科（從645→277元，-57%）、凱美、鈺邦等 <span class="num-dn">共10檔跌停</span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="event-box red">
+      <div class="event-title">📉 主線二：成熟製程持續補跌</div>
+      <div class="event-body">
+        <strong>聯電(2303) -9.72%，收130元</strong>（連二近跌停）<br>
+        從台積電法說前 <span class="num-dn">144 → 130，-9.7%</span>，台積電「非AI成熟製程不吃緊」一句話，已連兩日摧毀成熟製程定價。<br><br>
+        <strong>力積電(6770) -8.42%，收63.1元</strong>（連三跌，從76→63.1）<br>
+        <strong>旺宏(2337) -6.0%，收117.5元</strong><br><br>
+        影響範圍：所有以「成熟製程代工」為主業的台廠，全面重新定價。<span class="num-dn">估值重設未完成，明日仍有風險。</span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="event-box green">
+      <div class="event-title">🛡️ 主線三：台積電逆勢撐盤</div>
+      <div class="event-body">
+        <strong>台積電(2330) +1.31%，收2,320元</strong> ✅<br>
+        早盤一度衝至2,340（法說後首度強勢拉回），外資可能少量回補。<br><br>
+        <strong>中華電(2412) +0.72%，收139元</strong>（連二逆漲）✅<br>
+        <strong>鴻海(2317) +0.21%，收234.5元</strong> ✅<br><br>
+        意義：費半熊市中台積電率先止穩，是大盤反彈的最重要前提條件。若台積電能守2,300並持續吸引外資回流，大盤跌深反彈機率提升。<br><br>
+        ⚠️ 但台積電 ADR 今日仍 <span class="num-dn">$398（-2.77%）</span>，明日開盤仍有下行壓力。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 大盤走勢分析 ══ -->
+<div class="section-head">📊 大盤走勢分析</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">今日 TWII 分時走勢重建（關鍵節點）</div>
+    <div class="chart-wrap">
+      <canvas id="chartIntraday"></canvas>
+    </div>
+    <div class="text-sm mt8">
+      開盤+121 → 盤初高+413（42,922）→ 午前急殺至低-703（41,967）→ 午後震盪回升 → 收盤-185（42,485）
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">今日技術面總結</div>
+    <table>
+      <thead><tr><th>指標</th><th>數值</th><th>解讀</th></tr></thead>
+      <tbody>
+        <tr><td>收盤</td><td class="dn">42,486</td><td>連第2日跌（07/17收42,671）</td></tr>
+        <tr><td>振幅</td><td class="highlight">1,117點</td><td>（高43,084 - 低41,967），相當劇烈</td></tr>
+        <tr><td>今日型態</td><td>開高低走</td><td class="dn">空方仍有主導權</td></tr>
+        <tr><td>布林下軌</td><td>43,079</td><td class="dn">收盤再次在下軌以下（42,486）</td></tr>
+        <tr><td>RSI（估）</td><td>~33</td><td class="dn">接近超賣，尚未脫離弱勢</td></tr>
+        <tr><td>今日低點</td><td class="dn">41,967</td><td>07/20低點 = 近期底部參考</td></tr>
+        <tr><td>MA5</td><td>44,251</td><td class="dn">收盤低於MA5 -4.1%</td></tr>
+        <tr><td>成交量</td><td>~7,500億（估）</td><td class="neu">縮量（07/17：12,130億）</td></tr>
+      </tbody>
+    </table>
+    <div style="background:var(--bg3);border-radius:6px;padding:10px;margin-top:10px;font-size:12px;">
+      📌 <strong>今日關鍵訊息：</strong>大盤雖僅跌0.43%，但個股殺盤集中（被動元件10檔跌停、成熟製程兩位數跌幅），顯示市場「選擇性拋售」—外資減碼題材泡沫股、同時小量回補台積電。
+    </div>
+  </div>
+</div>
+
+<!-- ══ 個股表現 ══ -->
+<div class="section-head">📈 今日個股表現</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">今日表現排行（強→弱）</div>
+    <div class="chart-wrap">
+      <canvas id="chartStocks"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">個股詳細數據</div>
+    <div class="stock-row">
+      <div><span class="stock-name">台積電</span><span class="stock-code">2330</span><span class="tag tag-defend">AI核心</span></div>
+      <div style="text-align:right"><div class="stock-chg up">+1.31%</div><div class="stock-price">2,320元</div></div>
+    </div>
+    <div class="stock-row">
+      <div><span class="stock-name">中華電信</span><span class="stock-code">2412</span><span class="tag tag-defend">防禦連二漲</span></div>
+      <div style="text-align:right"><div class="stock-chg up">+0.72%</div><div class="stock-price">139.0元</div></div>
+    </div>
+    <div class="stock-row">
+      <div><span class="stock-name">鴻海</span><span class="stock-code">2317</span><span class="tag tag-defend">AI伺服器</span></div>
+      <div style="text-align:right"><div class="stock-chg up">+0.21%</div><div class="stock-price">234.5元</div></div>
+    </div>
+    <div class="stock-row">
+      <div><span class="stock-name">聯發科</span><span class="stock-code">2454</span></div>
+      <div style="text-align:right"><div class="stock-chg dn">-0.30%</div><div class="stock-price">3,360元</div></div>
+    </div>
+    <div class="stock-row">
+      <div><span class="stock-name">台達電</span><span class="stock-code">2308</span></div>
+      <div style="text-align:right"><div class="stock-chg dn">-0.86%</div><div class="stock-price">1,725元</div></div>
+    </div>
+    <div class="stock-row">
+      <div><span class="stock-name">富邦金</span><span class="stock-code">2881</span></div>
+      <div style="text-align:right"><div class="stock-chg dn">-1.20%</div><div class="stock-price">123.0元</div></div>
+    </div>
+    <div class="stock-row">
+      <div><span class="stock-name">日月光</span><span class="stock-code">3711</span></div>
+      <div style="text-align:right"><div class="stock-chg dn">-2.77%</div><div class="stock-price">597.0元</div></div>
+    </div>
+    <div class="stock-row">
+      <div><span class="stock-name">南亞科</span><span class="stock-code">2408</span><span class="tag tag-watch">記憶體</span></div>
+      <div style="text-align:right"><div class="stock-chg dn">-3.03%</div><div class="stock-price">383.5元</div></div>
+    </div>
+    <div class="stock-row">
+      <div><span class="stock-name">旺宏</span><span class="stock-code">2337</span></div>
+      <div style="text-align:right"><div class="stock-chg dn">-6.00%</div><div class="stock-price">117.5元</div></div>
+    </div>
+    <div class="stock-row">
+      <div><span class="stock-name">力積電</span><span class="stock-code">6770</span><span class="tag tag-collapse">成熟製程</span></div>
+      <div style="text-align:right"><div class="stock-chg dn">-8.42%</div><div class="stock-price">63.1元</div></div>
+    </div>
+    <div class="stock-row">
+      <div><span class="stock-name">聯電</span><span class="stock-code">2303</span><span class="tag tag-collapse">近跌停</span></div>
+      <div style="text-align:right"><div class="stock-chg dn">-9.72%</div><div class="stock-price">130.0元</div></div>
+    </div>
+    <div class="stock-row">
+      <div><span class="stock-name">國巨</span><span class="stock-code">2327</span><span class="tag tag-collapse">泡沫破滅</span></div>
+      <div style="text-align:right"><div class="stock-chg dn">-9.87%</div><div class="stock-price">630元（從1,220高跌48%）</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 被動元件崩跌深挖 ══ -->
+<div class="section-head">💣 今日意外主題：被動元件泡沫破滅</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">被動元件崩跌三因素</div>
+    <div class="event-box red">
+      <div class="event-title">① 日韓指標股領跌（外部觸媒）</div>
+      <div class="event-body">日本村田製作所(Murata) <span class="num-dn">-9%</span>，太陽誘電(Taiyo Yuden) <span class="num-dn">-17%</span>，全球被動元件族群同步下殺。日本廠商預警需求放緩，打破台廠「AI拉動被動元件超級週期」的敘事。</div>
+    </div>
+    <div class="event-box yellow">
+      <div class="event-title">② 估值泡沫已超高（技術因素）</div>
+      <div class="event-body">國巨從317→1,220（+285%），禾伸堂從540→1,045（+93%），本益比已遠超歷史均值。Seeking Alpha 數據顯示機構共識EPS 18.89元 vs 股價630→本益比=33x，過去均值約15-18x。「進場訊號」只有在跌至三位數區間（即&lt;700）才出現，目前正在尋底過程中。</div>
+    </div>
+    <div class="event-box red">
+      <div class="event-title">③ 籌碼結構失衡（內部因素）</div>
+      <div class="event-body">26萬小散戶股東在高點介入（網路哀號「慘劇重演」），法人在1,000元以上已高度布局獲利了結。今日無量跌停（跌停鎖死）代表跌停掛單堆積，明日仍有壓力。</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">被動元件族群傷亡一覽</div>
+    <table>
+      <thead><tr><th>個股</th><th>今日</th><th>52週高</th><th>距高點</th><th>狀態</th></tr></thead>
+      <tbody>
+        <tr><td><strong>國巨 2327</strong></td><td class="dn">630（-9.87%）</td><td>1,220</td><td class="dn">-48.4%</td><td class="dn">泡沫破滅</td></tr>
+        <tr><td><strong>禾伸堂</strong></td><td class="dn">≈621（跌停）</td><td>1,045</td><td class="dn">-40.6%</td><td class="dn">跌停鎖死</td></tr>
+        <tr><td><strong>華新科</strong></td><td class="dn">≈277（跌停）</td><td>645</td><td class="dn">-57.1%</td><td class="dn">跌停鎖死</td></tr>
+        <tr><td>Murata（日）</td><td class="dn">-9%</td><td>—</td><td>—</td><td class="dn">外部觸媒</td></tr>
+        <tr><td>Taiyo Yuden（日）</td><td class="dn">-17%</td><td>—</td><td>—</td><td class="dn">外部觸媒</td></tr>
+      </tbody>
+    </table>
+    <div style="background:rgba(248,81,73,.06);border:1px solid rgba(248,81,73,.2);border-radius:6px;padding:10px;margin-top:10px;font-size:12px;">
+      📌 <strong>早盤分析未命中：</strong>今日早盤報告的5大焦點題材未涵蓋被動元件（早盤熱度評分低），但今日成為最大殺盤主線。<strong>教訓：費半熊市期間，先前炒高的題材泡沫股是最大下行風險</strong>，需要加入「高漲幅回調風險」掃描。
+    </div>
+  </div>
+</div>
+
+<!-- ══ 外資法人籌碼推估 ══ -->
+<div class="section-head">💰 外資法人籌碼（推估，T86盤後更新中）</div>
+<div class="card">
+  <div class="grid-2" style="gap:16px;">
+    <div>
+      <div class="card-title">今日法人方向推估</div>
+      <table>
+        <thead><tr><th>法人</th><th>方向推估</th><th>依據</th></tr></thead>
+        <tbody>
+          <tr><td>外資</td><td class="dn">賣超（估-200~-400億）</td><td>台積電少量回補，但被動元件/聯電持續提款</td></tr>
+          <tr><td>投信</td><td class="up">小量買超（估+50~100億）</td><td>連三買，台積電/防禦股吸籌</td></tr>
+          <tr><td>自營商</td><td class="neu">中性偏賣（估-50~-100億）</td><td>被動元件大跌，自營被動避險</td></tr>
+          <tr><td>散戶</td><td class="dn">恐慌離場</td><td>被動元件26萬股東受傷，網路哀號聲浪</td></tr>
+        </tbody>
+      </table>
+      <div class="text-sm mt8">⚠️ TWSE T86 今日實際數據約18:00後更新，以上為根據個股走勢推估，僅供參考。</div>
+    </div>
+    <div>
+      <div class="card-title">外資未平倉（07/17確認數據）</div>
+      <table>
+        <thead><tr><th>指標</th><th>數值</th><th>意義</th></tr></thead>
+        <tbody>
+          <tr><td>外資期貨未平倉</td><td class="dn">-86,189口（淨空）</td><td>07/17確認，空方仍主導</td></tr>
+          <tr><td>小台散戶多空比</td><td class="dn">28.2%（偏空）</td><td>散戶恐慌，偏空佈局</td></tr>
+          <tr><td>維台散戶多空比</td><td class="up">74.38%（偏多）</td><td>散戶逆勢接，注意套牢風險</td></tr>
+          <tr><td>連結</td><td colspan="2">台指期夜盤（今晚開盤後）是更及時的信號</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 早盤預測驗證 ══ -->
+<div class="section-head">🎯 早盤預測命中率驗證</div>
+<div class="card">
+  <div class="card-title">今日早盤報告 vs 實際結果</div>
+  <div class="hit-miss">
+    <div>
+      <div style="color:var(--green);font-size:12px;font-weight:700;margin-bottom:6px;">✅ 命中</div>
+      <div class="hit-item">台積電「逆勢撐盤」：預測今日可能反彈，實際 <strong>+1.31%（2,320）</strong>，是今日最強指標股。</div>
+      <div class="hit-item mt8">中華電防禦輪動：連二逆漲（+0.72%），早盤特別點名「防禦輪動確認」，完全命中。</div>
+      <div class="hit-item mt8">成熟製程持續補跌：聯電 -9.72%（近跌停），與早盤分析的「非AI成熟製程重新定價」一致。</div>
+      <div class="hit-item mt8">大盤偏空震盪（-0.43%）：早盤預測「偏空震盪整理」，大盤確實收跌且個股分化嚴重。</div>
+    </div>
+    <div>
+      <div style="color:var(--red);font-size:12px;font-weight:700;margin-bottom:6px;">❌ 未預測到</div>
+      <div class="miss-item">被動元件雪崩（國巨-9.87%、10檔跌停）：早盤5大焦點未包含被動元件，這是今日最大殺盤來源，屬意外主題。<br><span style="color:var(--yellow);font-size:11px;">改進：需建立「高漲幅回調風險」掃描機制，國巨漲285%後的高位風險早有訊號。</span></div>
+      <div class="miss-item mt8">大盤低點41,967（比07/17收盤更低）：早盤預測支撐在41,967（已標示今日低點），事後看確實是精準支撐，但未預判此低點在早盤就先測試。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 明日展望 ══ -->
+<div class="section-head">🔮 明日展望（07/21）</div>
+<div class="grid-3">
+  <div class="tomorrow-card">
+    <div class="tomorrow-title" style="color:var(--red);">🔴 下行風險（主要）</div>
+    <div class="tomorrow-body">
+      <strong>① 被動元件跌停板賣壓</strong>：國巨、禾伸堂、華新科跌停鎖死，明日出現大量賣單（估各5,000+張），開盤仍有下行壓力。<br><br>
+      <strong>② TSM ADR -2.77%</strong>：若台積電開盤跟跌，今日「唯一亮點」消失，大盤可能再測41,967低點。<br><br>
+      <strong>③ 聯電可能觸碰跌停</strong>：130元→跌停板 117元，若成熟製程繼續補跌，再下一層。<br><br>
+      <strong>④ 美伊衝突未降溫</strong>：布蘭特$90.44持續壓制風險情緒，外資減碼動機未消。
+    </div>
+  </div>
+  <div class="tomorrow-card">
+    <div class="tomorrow-title" style="color:var(--green);">🟢 上行機會（次要）</div>
+    <div class="tomorrow-body">
+      <strong>① Alphabet 法說（週二晚）預期</strong>：若市場提前押注AI雲端超預期，週二盤前可能有反彈；但結果要等週三台股。<br><br>
+      <strong>② 台積電技術支撐</strong>：2,300是重要心理關卡，若明日守住並獲外資連買，為大盤提供錨點。<br><br>
+      <strong>③ 超賣反彈機率</strong>：RSI~33，連日大幅跌後，短線技術反彈空間約300-500點（至42,800-43,000）。<br><br>
+      <strong>④ 縮量</strong>：今日成交量估約7,500億，相比07/17的12,130億大幅萎縮，恐慌拋售強度下降。
+    </div>
+  </div>
+  <div class="tomorrow-card">
+    <div class="tomorrow-title" style="color:var(--yellow);">⚡ 關鍵觀察指標</div>
+    <div class="tomorrow-body">
+      <strong>① 台指期夜盤（今晚）</strong>：+300以上=偏多開盤；-300以下=再次下探。<br><br>
+      <strong>② TSM ADR（今晚）</strong>：站回$405以上=台積電明日可能續漲撐盤；跌破$390=大盤測試41,967。<br><br>
+      <strong>③ 明日台積電開盤</strong>：若開2,330以上且量>3萬張，確認法說後底部成形。<br><br>
+      <strong>④ Alphabet法說（週二美股盤後）</strong>：AI雲端成長率是否超預期——台股週三開盤的最大定向因素。
+    </div>
+  </div>
+</div>
+
+<!-- ══ 本週催化劑時程 ══ -->
+<div class="section-head">📅 本週催化劑時程（剩餘）</div>
+<div class="card">
+  <table>
+    <thead><tr><th>日期（台灣時間）</th><th>事件</th><th>重要度</th><th>潛在影響</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>07/21（今晚）</strong></td>
+        <td>TSM ADR走勢；台指期夜盤</td>
+        <td class="dn">🔴 極高</td>
+        <td>決定明日台股開盤方向</td>
+      </tr>
+      <tr>
+        <td><strong>07/22（週二）台股</strong></td>
+        <td>被動元件板打開或繼續鎖停；Alphabet法說前哨戰</td>
+        <td class="dn">🔴 高</td>
+        <td>被動元件開板賣壓 vs 大盤情緒</td>
+      </tr>
+      <tr>
+        <td><strong>07/22（週二晚）</strong></td>
+        <td><strong>Alphabet (GOOGL) Q2法說</strong>——AI雲端成長率驗證</td>
+        <td class="dn">🔴 極高</td>
+        <td>超預期：大盤周三+300~500；低於預期：再測41,000關</td>
+      </tr>
+      <tr>
+        <td><strong>07/23（週三晚）</strong></td>
+        <td>Tesla Q2法說（Cybercab進度）、IBM法說</td>
+        <td class="highlight">🟡 高</td>
+        <td>AI應用層財報驗證</td>
+      </tr>
+      <tr>
+        <td><strong>07/24（週四晚）</strong></td>
+        <td>Intel Q2法說（AI PC晶片、18A製程進度）</td>
+        <td class="highlight">🟡 高</td>
+        <td>晶片競爭格局更新</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══ 今日操作建議回顧 ══ -->
+<div class="section-head">💡 今日操作建議回顧 × 明日調整</div>
+<div class="grid-3">
+  <div class="card" style="border-top:3px solid var(--green);">
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">⚔️ 進攻型回顧</div>
+    <div style="font-size:12px;color:#c9d1d9;line-height:1.7;">
+      <strong>今日執行結果：</strong><br>
+      0050在42,000以下進場者：今日低點41,967已觸及，若執行則獲得良好進場機會，下午回到42,485已獲利+518點（+1.2%）。<br><br>
+      <strong>明日調整：</strong><br>
+      建議在台積電2,300守穩、Alphabet法說前，維持30-40%部位，不加碼；等Alphabet結果再決定。
+    </div>
+  </div>
+  <div class="card" style="border-top:3px solid var(--yellow);">
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">⚖️ 均衡型回顧</div>
+    <div style="font-size:12px;color:#c9d1d9;line-height:1.7;">
+      <strong>今日執行結果：</strong><br>
+      中華電持倉（+0.72%），鴻海持倉（+0.21%），防禦型部位正確。<br><br>
+      <strong>明日調整：</strong><br>
+      維持現有防禦持倉。被動元件跌停鎖死者明日若開板，<strong>不要在情緒底部追殺</strong>，等觀察是否有跌停板打開後量出。<br>
+      等Alphabet法說後再重新評估加減倉。
+    </div>
+  </div>
+  <div class="card" style="border-top:3px solid var(--blue);">
+    <div style="font-size:13px;font-weight:700;margin-bottom:8px;">🛡️ 防守型回顧</div>
+    <div style="font-size:12px;color:#c9d1d9;line-height:1.7;">
+      <strong>今日執行結果：</strong><br>
+      現金80%+，規避了被動元件（-48%）、聯電（-10%）等重傷部位，策略正確。<br><br>
+      <strong>明日不進場信號（仍繼續防守）：</strong><br>
+      ① 外資連賣8日（仍未轉向）<br>
+      ② SOX仍在熊市（11,673，未見止跌訊號）<br>
+      ③ 被動元件跌停板賣壓未消化<br><br>
+      <strong>進場信號（等待中）：</strong>Alphabet超預期 + 台積電連二逆漲 + 外資轉買。
+    </div>
+  </div>
+</div>
+
+<!-- ══ CHARTS JS ══ -->
+<script>
+const C = Chart, bg2='#161b22', border='#30363d', text2='#8b949e';
+C.defaults.color='#8b949e';C.defaults.borderColor=border;
+C.defaults.font.family='Segoe UI,system-ui,sans-serif';C.defaults.font.size=11;
+
+// Intraday
+new C(document.getElementById('chartIntraday'),{
+  type:'line',
+  data:{
+    labels:['開盤','09:10','09:30','10:00','10:30','11:00','11:30','12:00','12:30','收盤'],
+    datasets:[{
+      label:'TWII',
+      data:[42793,43000,43084,42800,42400,42200,41967,42100,42300,42486],
+      borderColor:'#58a6ff',backgroundColor:'rgba(88,166,255,.08)',tension:.4,pointRadius:3,fill:true
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{
+      y:{grid:{color:border},ticks:{callback:v=>v.toLocaleString()},min:41700,max:43300},
+      x:{grid:{color:border}}
+    },
+    plugins:{
+      legend:{display:false},
+      annotation:{annotations:{
+        high:{type:'line',yMin:43084,yMax:43084,borderColor:'rgba(63,185,80,.5)',borderDash:[4,4],label:{content:'高43,084',enabled:true,position:'end',color:'#3fb950',font:{size:9}}},
+        low:{type:'line',yMin:41967,yMax:41967,borderColor:'rgba(248,81,73,.5)',borderDash:[4,4],label:{content:'低41,967',enabled:true,position:'end',color:'#f85149',font:{size:9}}}
+      }}
+    }
+  }
+});
+
+// Stocks bar
+const stockNames = ['台積電\n+1.31%','中華電\n+0.72%','鴻海\n+0.21%','聯發科\n-0.30%','台達電\n-0.86%','富邦金\n-1.20%','日月光\n-2.77%','南亞科\n-3.03%','旺宏\n-6.00%','力積電\n-8.42%','聯電\n-9.72%','國巨\n-9.87%'];
+const stockVals = [1.31,0.72,0.21,-0.30,-0.86,-1.20,-2.77,-3.03,-6.00,-8.42,-9.72,-9.87];
+const stockColors = stockVals.map(v=>v>0?'rgba(63,185,80,.75)':'rgba(248,81,73,.75)');
+new C(document.getElementById('chartStocks'),{
+  type:'bar',
+  data:{labels:stockNames,datasets:[{label:'漲跌幅%',data:stockVals,backgroundColor:stockColors,borderRadius:3}]},
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+    scales:{
+      x:{grid:{color:border},ticks:{callback:v=>v+'%'}},
+      y:{grid:{color:border},ticks:{font:{size:9}}}
+    },
+    plugins:{legend:{display:false}}
+  }
+});
+</script>
+
+<!-- ══ DISCLAIMER ══ -->
+<div class="disclaimer">
+  <strong>⚠️ 免責聲明</strong><br>
+  本報告由 AI 自動生成，僅供投資研究參考，不構成任何買賣建議或投資顧問意見。個股漲跌數據來源 yfinance，部分數據可能存在延遲。被動元件股東人數、被動元件高點數據來自新聞報導。三大法人數據為推估，實際數據以 TWSE 官方 T86 公告為準（約18:00更新）。所有投資決策請自行評估風險，本報告製作者不對任何投資損益負責。資料時間：2026/07/20 盤後。
+</div>
+
+</div>
+</body>
+</html>
