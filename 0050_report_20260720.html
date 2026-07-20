@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>元大台灣50 0050 深度研究報告 2026-07-20</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #059669;
+    --primary-dark: #065f46;
+    --primary-light: #d1fae5;
+    --bg: #F0F4F8;
+    --card: #FFFFFF;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --bull: #16a34a;
+    --bear: #dc2626;
+    --warning: #d97706;
+    --info: #0891b2;
+    --radius: 12px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+
+  /* COVER */
+  .cover {
+    background: linear-gradient(135deg, #022c22 0%, #065f46 40%, #047857 70%, #059669 100%);
+    color: white; padding: 72px 40px 64px; text-align: center; position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content:''; position:absolute; top:-60px; right:-60px; width:300px; height:300px;
+    background: radial-gradient(circle, rgba(16,185,129,0.2) 0%, transparent 70%);
+  }
+  .cover-badge { display:inline-block; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:6px 18px; font-size:13px; letter-spacing:1px; text-transform:uppercase; margin-bottom:20px; }
+  .cover h1 { font-size:clamp(36px,6vw,64px); font-weight:800; letter-spacing:-1px; margin-bottom:8px; }
+  .cover-sub { font-size:20px; opacity:0.85; margin-bottom:28px; }
+  .cover-price { font-size:clamp(28px,5vw,52px); font-weight:700; color:#a7f3d0; margin-bottom:6px; }
+  .cover-change { font-size:20px; opacity:0.9; margin-bottom:28px; }
+  .cover-tags { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+  .cover-tag { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); border-radius:20px; padding:6px 16px; font-size:13px; }
+  .risk-badge { display:inline-block; background:#d97706; color:white; border-radius:8px; padding:6px 16px; font-size:15px; font-weight:700; margin-top:20px; }
+
+  /* SECTIONS */
+  .section { background:var(--card); border-radius:var(--radius); padding:32px; margin:24px 0; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+  .section-title { font-size:22px; font-weight:700; color:var(--text); margin-bottom:20px; padding-bottom:12px; border-bottom:3px solid var(--primary); display:flex; align-items:center; gap:10px; }
+
+  /* CONCLUSION */
+  .conclusion-card { background:linear-gradient(135deg, #022c22, #065f46); color:white; border-radius:var(--radius); padding:36px; margin:24px 0; }
+  .conclusion-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
+  .conclusion-item { background:rgba(255,255,255,0.08); border-radius:10px; padding:20px; }
+  .conclusion-label { font-size:12px; text-transform:uppercase; letter-spacing:2px; opacity:0.7; margin-bottom:6px; }
+  .conclusion-value { font-size:26px; font-weight:800; color:#a7f3d0; margin-bottom:4px; }
+  .verdict-box { background:linear-gradient(135deg,#059669,#10b981); color:white; border-radius:10px; padding:20px; text-align:center; margin-bottom:20px; }
+  .verdict-box h2 { font-size:24px; font-weight:800; }
+
+  /* KPI */
+  .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; }
+  .kpi-card { background:var(--bg); border-radius:10px; padding:20px; border-left:4px solid var(--primary); }
+  .kpi-label { font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:4px; }
+  .kpi-value { font-size:26px; font-weight:700; }
+  .kpi-sub { font-size:13px; color:var(--text-muted); margin-top:4px; }
+  .kpi-up { color:var(--bull); }
+  .kpi-down { color:var(--bear); }
+  .kpi-warn { color:var(--warning); }
+
+  /* CHARTS */
+  .charts-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:24px; }
+  .chart-container { background:var(--bg); border-radius:10px; padding:20px; }
+  .chart-title { font-size:15px; font-weight:600; color:var(--text-muted); margin-bottom:14px; }
+  .chart-note { font-size:11px; color:var(--text-muted); margin-top:8px; text-align:center; }
+
+  /* DATA TABLE */
+  .data-table { width:100%; border-collapse:collapse; font-size:14px; }
+  .data-table th { background:var(--bg); color:var(--text-muted); font-size:12px; text-transform:uppercase; padding:10px 14px; text-align:left; }
+  .data-table td { padding:10px 14px; border-bottom:1px solid var(--border); }
+  .data-table tr:last-child td { border-bottom:none; }
+  .data-table tr:hover td { background:var(--primary-light); }
+  .tag-green { background:#dcfce7; color:#16a34a; border-radius:4px; padding:2px 8px; font-size:12px; font-weight:600; }
+  .tag-red { background:#fee2e2; color:#dc2626; border-radius:4px; padding:2px 8px; font-size:12px; font-weight:600; }
+  .tag-amber { background:#fef3c7; color:#d97706; border-radius:4px; padding:2px 8px; font-size:12px; font-weight:600; }
+  .tag-blue { background:#dbeafe; color:#1d4ed8; border-radius:4px; padding:2px 8px; font-size:12px; font-weight:600; }
+
+  /* TECHNICAL */
+  .tech-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+  .tech-card { background:var(--bg); border-radius:10px; padding:18px; }
+  .tech-label { font-size:12px; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px; }
+  .tech-value { font-size:20px; font-weight:700; }
+  .tech-signal { font-size:12px; margin-top:4px; }
+  .signal-bull { color:var(--bull); }
+  .signal-bear { color:var(--bear); }
+  .signal-neutral { color:var(--warning); }
+
+  .price-levels { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; margin-top:16px; }
+  .price-level { background:var(--bg); border-radius:8px; padding:12px; text-align:center; }
+  .price-level-label { font-size:11px; color:var(--text-muted); margin-bottom:4px; }
+  .price-level-value { font-size:18px; font-weight:700; }
+
+  /* DEBATE */
+  .debate-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  @media(max-width:640px){ .debate-grid { grid-template-columns:1fr; } }
+  .bull-panel { background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:24px; }
+  .bear-panel { background:#fff1f2; border:1px solid #fecdd3; border-radius:10px; padding:24px; }
+  .debate-title { font-size:18px; font-weight:700; margin-bottom:16px; }
+  .debate-point { display:flex; gap:10px; margin-bottom:12px; }
+  .debate-num { min-width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; }
+  .bull-num { background:var(--bull); color:white; }
+  .bear-num { background:var(--bear); color:white; }
+  .debate-text { font-size:14px; line-height:1.6; }
+  .weight-bar { display:flex; border-radius:8px; overflow:hidden; height:36px; margin:16px 0; }
+  .weight-bull { background:var(--bull); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:14px; }
+  .weight-bear { background:var(--bear); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:14px; }
+
+  /* RISK */
+  .risk-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
+  .risk-item { background:var(--bg); border-radius:8px; padding:16px; }
+  .risk-dim { font-size:13px; font-weight:600; margin-bottom:8px; }
+  .risk-bar-bg { background:#e2e8f0; border-radius:4px; height:8px; }
+  .risk-bar { height:8px; border-radius:4px; }
+  .risk-score { font-size:20px; font-weight:700; margin-top:6px; }
+  .overall-risk { text-align:center; margin-top:20px; padding:20px; background:var(--bg); border-radius:10px; }
+
+  /* STRATEGY */
+  .strategy-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
+  .strategy-card { border-radius:10px; padding:24px; }
+  .strat-attack { background:linear-gradient(135deg,#059669,#10b981); color:white; }
+  .strat-balance { background:linear-gradient(135deg,#0891b2,#06b6d4); color:white; }
+  .strat-defense { background:linear-gradient(135deg,#64748b,#94a3b8); color:white; }
+  .strat-title { font-size:18px; font-weight:700; margin-bottom:12px; }
+  .strat-item { font-size:14px; margin-bottom:6px; opacity:0.95; }
+  .strat-label { font-size:12px; opacity:0.8; }
+
+  .catalyst-list { list-style:none; }
+  .catalyst-list li { display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+  .catalyst-date { min-width:80px; font-size:13px; font-weight:600; color:var(--primary); }
+
+  /* GLOSSARY */
+  .glossary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
+  .glossary-item { background:var(--bg); border-radius:10px; padding:18px; }
+  .glossary-term { font-size:15px; font-weight:700; color:var(--primary); margin-bottom:6px; }
+  .glossary-def { font-size:14px; color:var(--text-muted); }
+
+  /* DISCLAIMER */
+  .disclaimer { background:#fffbeb; border:1px solid #f59e0b; border-radius:10px; padding:20px; margin:24px 0; }
+  .disclaimer h3 { color:#d97706; font-size:16px; margin-bottom:10px; }
+  .disclaimer p, .disclaimer li { font-size:13px; color:#78350f; }
+  .disclaimer ul { margin-left:16px; }
+
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  @media(max-width:640px){ .two-col { grid-template-columns:1fr; } }
+
+  .highlight-box { background:var(--primary-light); border-left:4px solid var(--primary); border-radius:6px; padding:16px; margin:12px 0; }
+  .highlight-box p { font-size:14px; color:#065f46; }
+  .warn-box { background:#fef3c7; border-left:4px solid #d97706; border-radius:6px; padding:16px; margin:12px 0; }
+  .warn-box p { font-size:14px; color:#78350f; }
+
+  .holdings-bar { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+  .holdings-name { min-width:110px; font-size:13px; font-weight:600; }
+  .holdings-track { flex:1; background:#e2e8f0; border-radius:4px; height:20px; position:relative; }
+  .holdings-fill { height:20px; border-radius:4px; background:var(--primary); }
+  .holdings-pct { min-width:55px; font-size:13px; font-weight:700; color:var(--primary); text-align:right; }
+</style>
+</head>
+<body>
+
+<!-- SECTION 01 — COVER -->
+<div class="cover">
+  <div class="cover-badge">深度研究報告 · 台股 ETF</div>
+  <h1>元大台灣50</h1>
+  <div class="cover-sub">股票代碼：0050 &nbsp;·&nbsp; 台灣最大市值加權型ETF · 台積電代理人</div>
+  <div class="cover-price">99.55 元</div>
+  <div class="cover-change">▼ 0.6元（-0.60%）&nbsp;·&nbsp; 盤中整理 · 2026年07月20日</div>
+  <div class="cover-tags">
+    <span class="cover-tag">📅 分析日期：2026-07-20</span>
+    <span class="cover-tag">🏦 基金規模：2.1兆元</span>
+    <span class="cover-tag">🎯 台積電佔比 58.87%</span>
+    <span class="cover-tag">💰 H2配息0.60元（8/10分配）</span>
+    <span class="cover-tag">⚠️ 跌破MA60：技術面關鍵考驗</span>
+    <span class="cover-tag">🏛️ 政府護盤485億創紀錄</span>
+  </div>
+  <div class="risk-badge">⚠️ 中低風險 3/10</div>
+</div>
+
+<div class="container">
+
+<!-- SECTION 02 — CORE CONCLUSION -->
+<div class="conclusion-card">
+  <div class="verdict-box">
+    <div style="font-size:14px;opacity:0.9;margin-bottom:4px;">核心投資建議</div>
+    <h2>🟡 分批布局，定期定額最佳選擇</h2>
+    <div style="font-size:16px;margin-top:8px;opacity:0.95;">技術面修復中｜RSI接近超賣｜政府基金創紀錄護盤｜長線不改看多</div>
+  </div>
+  <div class="conclusion-grid">
+    <div class="conclusion-item">
+      <div class="conclusion-label">📌 投資建議</div>
+      <div class="conclusion-value">分批建倉</div>
+      <div style="font-size:14px;opacity:0.85;margin-top:6px;">第一批：98~101元（布林下軌~現價）<br>第二批：93~97元（若進一步下跌）</div>
+    </div>
+    <div class="conclusion-item">
+      <div class="conclusion-label">🎯 技術目標</div>
+      <div class="conclusion-value">107 ~ 112元</div>
+      <div style="font-size:14px;opacity:0.85;margin-top:6px;">收復MA20（106.71）→ 挑戰前高<br>若台積電業績佳，可期112~120元</div>
+    </div>
+    <div class="conclusion-item">
+      <div class="conclusion-label">🔴 停損條件</div>
+      <div class="conclusion-value">90元跌破</div>
+      <div style="font-size:14px;opacity:0.85;margin-top:6px;">跌破90元代表台積電持續重挫<br>或全球系統性風險出現</div>
+    </div>
+    <div class="conclusion-item">
+      <div class="conclusion-label">⚡ 最大風險</div>
+      <div class="conclusion-value">台積電持續下跌</div>
+      <div style="font-size:14px;opacity:0.85;margin-top:6px;">0050 = 台積電58.87%<br>台積電若跌10%，0050跌約5.9%</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 03 — KPI -->
+<div class="section">
+  <div class="section-title"><span>📊</span>關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">今日收盤（盤中）</div>
+      <div class="kpi-value kpi-down">99.55元</div>
+      <div class="kpi-sub">-0.60元（-0.60%）｜52W高 112.3元，低 50.25元</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">淨值（NAV）</div>
+      <div class="kpi-value">98.95元</div>
+      <div class="kpi-sub">7/17日終值｜股價溢價 +0.6元（+0.61%）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">加權PE（持倉）</div>
+      <div class="kpi-value">29.07倍</div>
+      <div class="kpi-sub">台積電高估值帶動，台股整體偏高</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">基金規模</div>
+      <div class="kpi-value kpi-up">2.1兆元</div>
+      <div class="kpi-sub">台灣最大ETF｜費率0.07%（歷史最低）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">2026H2 預計配息</div>
+      <div class="kpi-value kpi-up">0.60元</div>
+      <div class="kpi-sub">分配日 2026-08-10｜現價殖利率約0.60%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">RSI（14日）</div>
+      <div class="kpi-value kpi-warn">39.16</div>
+      <div class="kpi-sub">接近超賣（30以下為超賣）｜支撐信號增強</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">距52週高點</div>
+      <div class="kpi-value kpi-down">-11.4%</div>
+      <div class="kpi-sub">112.3 → 99.55｜高點6/23，距今約4週</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">定期定額人數</div>
+      <div class="kpi-value kpi-up">120萬+</div>
+      <div class="kpi-sub">突破120萬人｜長期穩定DCA買盤支撐</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 04 — CHARTS -->
+<div class="section">
+  <div class="section-title"><span>📈</span>財務趨勢互動圖表</div>
+  <div class="charts-grid">
+    <div class="chart-container">
+      <div class="chart-title">📉 近30日股價走勢（日K線）</div>
+      <canvas id="priceChart" height="220"></canvas>
+      <div class="chart-note">★ 實際收盤價；7/17 -5.88%急殺後，7/20小幅整理</div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-title">🏗️ 前10大持股比重（%）</div>
+      <canvas id="holdingsChart" height="220"></canvas>
+      <div class="chart-note">★ 元大投信2026年最新資料；台積電(2330)佔比58.87%</div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-title">💰 歷年配息紀錄（元/股）</div>
+      <canvas id="dividendChart" height="220"></canvas>
+      <div class="chart-note">★ H1配息通常1月除息；H2配息通常7月除息｜2026H2估0.60元</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 05 — ETF OVERVIEW -->
+<div class="section">
+  <div class="section-title"><span>🏭</span>ETF 概覽</div>
+  <div class="two-col">
+    <div>
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">基本資料</h3>
+      <table class="data-table">
+        <tr><td style="color:var(--text-muted);font-size:13px;">全名</td><td style="font-weight:600;">元大台灣卓越50證券投資信託基金</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">代碼</td><td style="font-weight:600;">0050.TW（台股上市）</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">追蹤指數</td><td>台灣50指數（台灣市值前50大）</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">投信</td><td>元大投信（YuantaETFs）</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">複製方式</td><td>完全複製法（Full Replication）</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">管理費</td><td><span class="tag-green">0.07%</span>（已降至歷史最低）</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">配息頻率</td><td>半年配（1月＆8月）</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">基金規模</td><td>2兆1,063億元（全台最大ETF）</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">成立日期</td><td>2003年6月（台灣第一支ETF）</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">成分股數</td><td>50檔（台灣前50大市值）</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">前10大成分股持股比例</h3>
+      <div class="holdings-bar">
+        <div class="holdings-name">台積電 (2330)</div>
+        <div class="holdings-track"><div class="holdings-fill" style="width:58.87%;background:#059669;"></div></div>
+        <div class="holdings-pct">58.87%</div>
+      </div>
+      <div class="holdings-bar">
+        <div class="holdings-name">聯發科 (2454)</div>
+        <div class="holdings-track"><div class="holdings-fill" style="width:5.23%;background:#10b981;"></div></div>
+        <div class="holdings-pct">5.23%</div>
+      </div>
+      <div class="holdings-bar">
+        <div class="holdings-name">台達電 (2308)</div>
+        <div class="holdings-track"><div class="holdings-fill" style="width:3.53%;background:#34d399;"></div></div>
+        <div class="holdings-pct">3.53%</div>
+      </div>
+      <div class="holdings-bar">
+        <div class="holdings-name">鴻海 (2317)</div>
+        <div class="holdings-track"><div class="holdings-fill" style="width:3.0%;background:#6ee7b7;"></div></div>
+        <div class="holdings-pct">3.00%</div>
+      </div>
+      <div class="holdings-bar">
+        <div class="holdings-name">中信金 (2891)</div>
+        <div class="holdings-track"><div class="holdings-fill" style="width:2.1%;background:#a7f3d0;"></div></div>
+        <div class="holdings-pct">~2.1%</div>
+      </div>
+      <div class="holdings-bar">
+        <div class="holdings-name">其他45檔</div>
+        <div class="holdings-track"><div class="holdings-fill" style="width:27.27%;background:#d1fae5;"></div></div>
+        <div class="holdings-pct">~27.3%</div>
+      </div>
+      <div class="highlight-box" style="margin-top:12px;">
+        <p>🔑 <strong>關鍵洞察</strong>：0050 = <strong>台積電代理人</strong>。台積電佔比高達58.87%，意味著台積電每跌1%，0050 約跌0.59%。投資0050，本質上是看好台灣半導體產業的長期佈局工具。</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-size:16px;font-weight:700;margin:20px 0 12px;">歷年配息紀錄</h3>
+  <table class="data-table">
+    <thead><tr><th>年度</th><th>H1配息（元）</th><th>H2配息（元）</th><th>全年合計（元）</th><th>除息時點說明</th></tr></thead>
+    <tbody>
+      <tr><td><strong>2026</strong></td><td>1.00元（1/22除息）</td><td><span class="tag-amber">0.60元（估，8/10分配）</span></td><td><strong>1.60元（估）</strong></td><td>現價殖利率 1.61%</td></tr>
+      <tr><td>2025</td><td>~2.20元</td><td>~1.50元</td><td>~3.70元</td><td>2025年市場大幅波動</td></tr>
+      <tr><td>2024</td><td>~2.00元</td><td>~1.40元</td><td>~3.40元</td><td>AI行情帶動</td></tr>
+      <tr><td>2023</td><td>~1.85元</td><td>~1.65元</td><td>~3.50元</td><td>台股回暖</td></tr>
+    </tbody>
+  </table>
+  <div style="font-size:13px;color:var(--text-muted);margin-top:8px;">★ 2026H1確認；H2為市場估計值；歷史數字為參考值。配息金額每半年依評估日NAV調整。</div>
+</div>
+
+<!-- SECTION 06 — FUNDAMENTAL ANALYSIS -->
+<div class="section">
+  <div class="section-title"><span>💰</span>基本面分析</div>
+
+  <div class="highlight-box">
+    <p>📌 <strong>ETF基本面 = 持倉公司基本面的加權平均</strong>：0050追蹤台灣50指數，不像個股有直接EPS，而是持有50家公司的股票。其PE(29.07x)反映整體持倉公司的市場估值。主要分析台積電(58.87%)的基本面走勢，即代表0050的核心基本面。</p>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;margin:16px 0 12px;">核心驅動力：台積電基本面</h3>
+  <table class="data-table">
+    <thead><tr><th>指標</th><th>數值</th><th>評價</th></tr></thead>
+    <tbody>
+      <tr><td>台積電佔0050比重</td><td><span class="tag-green">58.87%</span></td><td>0050幾乎是台積電ETF</td></tr>
+      <tr><td>台積電FY2026E EPS</td><td>~45~50元</td><td>AI晶片代工需求強勁</td></tr>
+      <tr><td>台積電法人評等</td><td><span class="tag-green">多數買進</span></td><td>目標價普遍1,100~1,300元</td></tr>
+      <tr><td>台積電CoWoS產能</td><td>快速擴張中</td><td>AI先進封裝需求超強</td></tr>
+      <tr><td>台積電N2製程</td><td>2025年量產，2026年放量</td><td>長線技術領先優勢</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:15px;font-weight:700;margin:20px 0 12px;">0050 長期投資報酬率</h3>
+  <table class="data-table">
+    <thead><tr><th>投資期間</th><th>年化報酬率（含配息）</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td>近1年（含今日跌幅）</td><td><span class="tag-green">+98%↑（從50.25→99.55）</span></td><td>2025年4月低點起算，即使修正仍驚人</td></tr>
+      <tr><td>3年</td><td>~+20~25%/年（估）</td><td>2023~2026 AI大行情</td></tr>
+      <tr><td>5年</td><td>~+15~20%/年（估）</td><td>包含2022年熊市回落</td></tr>
+      <tr><td>10年+（2003至今）</td><td>~+12~15%/年（含配息）</td><td>歷史長期年化報酬率</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn-box" style="margin-top:16px;">
+    <p>⚠️ <strong>當前下跌原因</strong>：7/17 0050 急跌 -5.88%（6.25元），與同日多檔科技股（日月光、南亞科等）齊跌，顯示這是<strong>台股整體性修正</strong>事件，並非單一個股問題。可能原因：美股前夕科技股獲利了結 + 外資對台積電H2展望謹慎 + 整體台股PE偏高後的估值修正。</p>
+  </div>
+</div>
+
+<!-- SECTION 07 — CHIPS / INSTITUTIONAL -->
+<div class="section">
+  <div class="section-title"><span>🏦</span>籌碼面分析</div>
+
+  <div class="highlight-box">
+    <p>⏰ <strong>注意</strong>：三大法人每日買賣超數據於收盤後約18:00公佈。以下為趨勢判讀及特殊事件分析。</p>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;">關鍵籌碼事件</h3>
+      <table class="data-table">
+        <tr>
+          <td style="font-weight:700;color:var(--bull);">🏛️ 政府基金護盤</td>
+          <td>成交金額 <strong>485億元創紀錄！</strong><br>在台積電等個股強力買進，穩定市場信心</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:var(--info);">👥 定期定額人數</td>
+          <td><strong>突破120萬人</strong><br>每月固定買進，形成強力的下方承接力道</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:var(--warning);">📤 外資估計動向</td>
+          <td>7/17急跌當日外資可能大量賣超<br>（整體台股外資回流美股獲利了結）</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:var(--primary);">🏢 投信動向</td>
+          <td>長期而言ETF型投信買盤穩定<br>短線7/17波動下可能有配對沖銷</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;">折溢價分析（ETF特有）</h3>
+      <table class="data-table">
+        <tr><td style="color:var(--text-muted);font-size:13px;">最新 NAV（7/17）</td><td style="font-weight:700;">98.95元</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">今日股價（盤中）</td><td style="font-weight:700;">99.55元</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">折溢價</td><td><span class="tag-green">溢價 +0.61%</span>（+0.60元）</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">判讀</td><td>輕微溢價，套利機制有效運作中</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">正常溢折價區間</td><td>±0.5% 以內為正常</td></tr>
+      </table>
+      <div class="highlight-box" style="margin-top:12px;">
+        <p>✅ <strong>折溢價接近零</strong>說明ETF套利機制正常運作，市場流動性良好。0050的完全複製法讓NAV與指數高度貼近，是追蹤誤差最小的ETF之一。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 08 — TECHNICAL ANALYSIS -->
+<div class="section">
+  <div class="section-title"><span>📉</span>技術分析</div>
+
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tech-label">當前股價</div>
+      <div class="tech-value">99.55 元</div>
+      <div class="tech-signal signal-bear">今日 -0.60%｜7/23(高)→今：-11.4%</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">MA5（5日均線）</div>
+      <div class="tech-value" style="color:var(--bear);">104.65 元</div>
+      <div class="tech-signal signal-bear">⚠️ 股價跌破 MA5（-4.9%）</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">MA10（10日均線）</div>
+      <div class="tech-value" style="color:var(--bear);">105.79 元</div>
+      <div class="tech-signal signal-bear">⚠️ 股價跌破 MA10（-5.9%）</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">MA20（月線）</div>
+      <div class="tech-value" style="color:var(--bear);">106.71 元</div>
+      <div class="tech-signal signal-bear">⚠️ 股價跌破月線（-6.7%）</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">MA60（季線）</div>
+      <div class="tech-value" style="color:var(--bear);">100.99 元</div>
+      <div class="tech-signal signal-bear">🔴 剛剛跌破季線！（-1.4%）</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">RSI（14日）</div>
+      <div class="tech-value" style="color:var(--warning);">39.16</div>
+      <div class="tech-signal signal-neutral">⚡ 中性偏弱，接近超賣（30以下）</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">MACD</div>
+      <div class="tech-value">0.41 / 1.30</div>
+      <div class="tech-signal signal-bear">柱狀 -0.90｜死叉形成，幅度溫和</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">布林通道（20日）</div>
+      <div class="tech-value">上111.6 / 中106.7 / 下101.9</div>
+      <div class="tech-signal signal-bear">🔴 99.55 跌破布林下軌！</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">今日成交量（Fugle）</div>
+      <div class="tech-value">盤中縮量</div>
+      <div class="tech-signal signal-neutral">7/17爆量（5.2億股）後今日量縮，賣壓減輕</div>
+    </div>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;margin:20px 0 12px;">關鍵價位支撐壓力表</h3>
+  <div class="price-levels">
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bear);">壓力3（MA20）</div>
+      <div class="price-level-value" style="color:var(--bear);">106.7元</div>
+    </div>
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bear);">壓力2（MA10）</div>
+      <div class="price-level-value" style="color:var(--bear);">105.8元</div>
+    </div>
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bear);">壓力1（MA60）</div>
+      <div class="price-level-value" style="color:var(--bear);">101.0元</div>
+    </div>
+    <div class="price-level" style="background:var(--primary-light);border:2px solid var(--primary);">
+      <div class="price-level-label" style="color:var(--primary);">★ 現價</div>
+      <div class="price-level-value" style="color:var(--primary);">99.55元</div>
+    </div>
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bull);">支撐1（布林下）</div>
+      <div class="price-level-value" style="color:var(--bull);">101.9元</div>
+    </div>
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bull);">支撐2（心理整數）</div>
+      <div class="price-level-value" style="color:var(--bull);">97~98元</div>
+    </div>
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bull);">支撐3（深度）</div>
+      <div class="price-level-value" style="color:var(--bull);">93~95元</div>
+    </div>
+    <div class="price-level" style="background:#fee2e2;">
+      <div class="price-level-label" style="color:var(--bear);">停損線</div>
+      <div class="price-level-value" style="color:var(--bear);">90元</div>
+    </div>
+  </div>
+
+  <div class="warn-box" style="margin-top:16px;">
+    <p>⚠️ <strong>技術面警示</strong>：0050目前同時跌破 MA5 / MA10 / MA20 / MA60 以及布林下軌，五線全空——這是技術面極度弱勢的訊號。不過，歷史上0050多次出現類似「五線全空」後反彈的案例（如2025年4月關稅暴跌後）。
+    <br><br>關鍵觀察：<br>
+    ① RSI 39接近超賣（30以下），彈力增加<br>
+    ② MA60（100.99）是否能在幾日內重新站上，是確認底部的重要觀察點<br>
+    ③ 7/17放量大跌 + 今日縮量 = 教科書式「放量止跌、縮量沉澱」前期<br>
+    ④ 布林通道正在向下收縮，支撐將逐漸提升</p>
+  </div>
+</div>
+
+<!-- SECTION 09 — NAV / PREMIUM DISCOUNT (replaces margin section) -->
+<div class="section">
+  <div class="section-title"><span>🔖</span>ETF折溢價 &amp; 追蹤誤差</div>
+
+  <div class="two-col">
+    <div>
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;">折溢價追蹤</h3>
+      <table class="data-table">
+        <tr><td style="color:var(--text-muted);">合理區間</td><td><span class="tag-green">± 0.5% 以內</span></td></tr>
+        <tr><td style="color:var(--text-muted);">今日溢價</td><td><span class="tag-green">+0.61%</span>（輕微溢價，正常）</td></tr>
+        <tr><td style="color:var(--text-muted);">異常溢價(>3%)</td><td>建議賣出等NAV調整</td></tr>
+        <tr><td style="color:var(--text-muted);">異常折價(>3%)</td><td>買入機會（套利空間大）</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:12px;">追蹤誤差</h3>
+      <table class="data-table">
+        <tr><td style="color:var(--text-muted);">複製方式</td><td>完全複製（Full Replication）</td></tr>
+        <tr><td style="color:var(--text-muted);">年管理費</td><td><span class="tag-green">0.07%（最低）</span></td></tr>
+        <tr><td style="color:var(--text-muted);">年追蹤誤差</td><td>&lt;0.3%（極小）</td></tr>
+        <tr><td style="color:var(--text-muted);">再平衡頻率</td><td>每季一次（3/6/9/12月）</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top:16px;">
+    <p>📋 <strong>投資人注意事項（ETF vs 個股）</strong>：0050是ETF，沒有融資融券的問題，而是「折溢價」的問題。今日股價99.55元 vs NAV 98.95元，溢價0.61%屬正常範圍。由於完全複製法，0050的NAV幾乎精確反映持有50檔股票的實際價值。費率0.07%極低，長期持有的磨損幾乎可忽略不計。</p>
+  </div>
+</div>
+
+<!-- SECTION 10 — DEBATE -->
+<div class="section">
+  <div class="section-title"><span>⚔️</span>研究員多空辯論</div>
+
+  <div style="margin-bottom:16px;">
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-muted);margin-bottom:6px;">
+      <span>多空權重</span><span>看多 62% vs 看空 38%</span>
+    </div>
+    <div class="weight-bar">
+      <div class="weight-bull" style="width:62%">看多 62%</div>
+      <div class="weight-bear" style="width:38%">看空 38%</div>
+    </div>
+    <div style="font-size:13px;color:var(--text-muted);">長線ETF基本面不變，技術面修復中；政府/DCA強力接盤對抗外資賣壓</div>
+  </div>
+
+  <div class="debate-grid">
+    <div class="bull-panel">
+      <div class="debate-title" style="color:var(--bull);">🟢 看多研究員：6大論點</div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">1</div>
+        <div class="debate-text"><strong>政府基金護盤485億元創單日紀錄</strong><br>政府基金（勞退、勞保、國安基金等）在台積電等重要個股大力買進，成交金額創歷史新高。這代表政府認為現在是逢低介入的好時機，市場底部支撐強烈。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">2</div>
+        <div class="debate-text"><strong>定期定額120萬人，每月固定買盤穩定</strong><br>120萬定期定額投資人不受短線波動影響，每月固定買進0050。股價下跌對他們而言是「便宜買進」的機會，形成強力的下方承接。這是散戶版的「護城河」。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">3</div>
+        <div class="debate-text"><strong>RSI 39接近超賣，技術彈力增強</strong><br>RSI=39.16，歷史上0050的RSI跌至30~35後往往出現強力反彈。目前位置距離超賣只有一小步，若外資賣壓稍減，將出現顯著技術反彈（預期至MA20附近的106~107元）。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">4</div>
+        <div class="debate-text"><strong>台積電長線基本面不變</strong><br>台積電FY2026E EPS~45~50元，CoWoS產能持續擴張，N2製程量產，AI晶片需求未見轉折。0050的核心資產（58.87%=台積電）長線故事完整，短線下跌是噪音。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">5</div>
+        <div class="debate-text"><strong>8月10日0.60元配息，股息殖利率支撐</strong><br>即將到來的0.60元配息提供價值支撐。持有者可領取配息，且配息後NAV調整，使實質殖利率有吸引力。長期投資人以100元買進，全年殖利率約1.6%（加上潛在資本增值）。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">6</div>
+        <div class="debate-text"><strong>歷史上五線全空後0050均反彈</strong><br>回顧2025年4月（關稅暴跌期）、2024年8月（日圓套利平倉崩盤）等事件，0050五線全空後都出現強力V型反彈。台灣半導體產業的結構性優勢使ETF具備強韌性。</div>
+      </div>
+    </div>
+
+    <div class="bear-panel">
+      <div class="debate-title" style="color:var(--bear);">🔴 看空研究員：5大論點</div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">1</div>
+        <div class="debate-text"><strong>五線全空，技術面最強賣出訊號</strong><br>MA5/MA10/MA20/MA60/布林下軌全部跌破，台股史上此種「五空」格局出現後，通常需要2~4週的底部整理。在底部確認前進場，可能面臨短線繼續下跌至95~97元的風險。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">2</div>
+        <div class="debate-text"><strong>外資系統性減碼台灣市場</strong><br>若此次下跌是外資系統性轉移資金（如美股AI泡沫破裂→資金回流、或地緣政治升溫），則政府護盤只是短線救急，中期賣壓難以消化。7/17單日外資賣超可能超過200億元。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">3</div>
+        <div class="debate-text"><strong>台積電估值回壓風險（PE 29x）</strong><br>0050 加權PE達29.07x，台積電個股PE更高達30~35x。若全球科技股估值開始壓縮（如美國科技股PE從35x降至20x），台積電市值縮水→0050跟著下跌，可能再跌15~20%。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">4</div>
+        <div class="debate-text"><strong>從52W低點漲幅高達+98%，修正深度未知</strong><br>0050從50.25元漲至112.3元，漲幅高達+123%，已回落至99.55元（-11.4%）。若市場開始認為整體漲幅過大，技術修正可能延伸至-20~25%（即89~90元區間），距今還有10%下方空間。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">5</div>
+        <div class="debate-text"><strong>8/10配息效應：除息前賣壓</strong><br>部分投資人在配息評估日後（6/30以後）開始逢高賣出，除息前確認獲利了結。0.60元的配息雖小，但對短線交易者而言，除息後股價調降是套利機會，可能在7月底~8月初出現賣壓。</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#f8fafc;border-radius:10px;padding:20px;margin-top:20px;">
+    <h3 style="font-size:15px;font-weight:700;margin-bottom:10px;">💬 給一般投資人的話</h3>
+    <p style="font-size:14px;line-height:1.8;">0050是台灣長期投資的最佳工具之一，但短線的-11%修正確實讓人心驚。重點是：<strong>你的持有期間是多久？</strong><br><br>
+    如果你是<strong>3年以上的長期投資者</strong>，現在的99元是非常好的分批介入時機。台積電的長線故事（AI、N2製程、HBM）沒有改變，0050十年年化報酬超過12%的紀錄也沒有改變。繼續定期定額，甚至可以趁跌多存幾張。<br><br>
+    如果你是<strong>1年以內的短線投資者</strong>，技術面五線全空是警訊。建議等待RSI跌至30~35或成功重新站上MA60（101元）後再介入，避免「接刀」的風險。設好90元停損，嚴守紀律。</p>
+  </div>
+</div>
+
+<!-- SECTION 11 — RISK ASSESSMENT -->
+<div class="section">
+  <div class="section-title"><span>⚠️</span>風控評估（六維評分）</div>
+
+  <div class="risk-grid">
+    <div class="risk-item">
+      <div class="risk-dim">估值風險（權重30%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:40%;background:#d97706;"></div></div>
+      <div class="risk-score" style="color:#d97706;">4 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">整體PE 29x偏高，但ETF持倉分散，不算極端</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-dim">財務風險（權重25%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:15%;background:#16a34a;"></div></div>
+      <div class="risk-score" style="color:#16a34a;">1.5 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">ETF無財務槓桿風險；台積電財務健康</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-dim">流動性風險（權重10%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:10%;background:#16a34a;"></div></div>
+      <div class="risk-score" style="color:#16a34a;">1 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">2.1兆規模，流動性無風險</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-dim">產業風險（權重15%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:40%;background:#d97706;"></div></div>
+      <div class="risk-score" style="color:#d97706;">4 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">集中於半導體（台積電58.87%），循環風險存在</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-dim">總經風險（權重10%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:50%;background:#d97706;"></div></div>
+      <div class="risk-score" style="color:#d97706;">5 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">美中關係、台海風險、美元匯率</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-dim">籌碼風險（權重10%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:35%;background:#16a34a;"></div></div>
+      <div class="risk-score" style="color:#16a34a;">3.5 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">外資短線賣壓，但政府護盤+120萬人DCA對抗</div>
+    </div>
+  </div>
+
+  <div class="overall-risk">
+    <div style="font-size:14px;color:var(--text-muted);margin-bottom:8px;">綜合風險評分（加權）</div>
+    <div style="font-size:48px;font-weight:800;color:#059669;">3.0 / 10</div>
+    <div style="margin-top:8px;"><span style="background:#dcfce7;color:#16a34a;border-radius:8px;padding:6px 20px;font-size:16px;font-weight:700;">中低風險</span></div>
+    <div style="font-size:13px;color:var(--text-muted);margin-top:12px;">
+      計算：30%×4 + 25%×1.5 + 10%×1 + 15%×4 + 10%×5 + 10%×3.5<br>
+      = 1.2+0.375+0.1+0.6+0.5+0.35 = <strong>3.125 → 約3.0分</strong><br>
+      ETF分散效果 + 政府護盤 + 長線台灣半導體優勢顯著降低風險
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 12 — STRATEGY -->
+<div class="section">
+  <div class="section-title"><span>🎯</span>台股三段式操作策略</div>
+
+  <div class="strategy-grid">
+    <div class="strategy-card strat-attack">
+      <div class="strat-title">⚔️ 進攻型策略（積極）</div>
+      <div class="strat-label">適合：長線看多台灣半導體、相信台積電的投資者</div>
+      <div style="margin-top:12px;">
+        <div class="strat-item">📍 <strong>現在（98~101元）</strong>：分批買進，RSI 39接近超賣</div>
+        <div class="strat-item">📦 <strong>部位</strong>：40~50%資金</div>
+        <div class="strat-item">📍 <strong>加碼條件</strong>：若MA60（101元）重新站上，追加20%</div>
+        <div class="strat-item">🎯 <strong>目標一</strong>：106~107元（MA20收復）</div>
+        <div class="strat-item">🎯 <strong>目標二</strong>：112~115元（挑戰前高+突破）</div>
+        <div class="strat-item">🛑 <strong>停損</strong>：90元收盤（系統性風險確認）</div>
+        <div class="strat-item">⏰ <strong>持有期</strong>：3~12個月</div>
+        <div class="strat-item">📊 <strong>報酬/風險</strong>：+12%/−10%，比率1.2:1</div>
+      </div>
+    </div>
+    <div class="strategy-card strat-balance">
+      <div class="strat-title">⚖️ 均衡型策略（穩健分批）</div>
+      <div class="strat-label">適合：定期定額投資人、價值取向的中長線投資者</div>
+      <div style="margin-top:12px;">
+        <div class="strat-item">📍 <strong>第一批（97~101元）</strong>：25%部位</div>
+        <div class="strat-item">📍 <strong>第二批（93~97元）</strong>：25%部位</div>
+        <div class="strat-item">📍 <strong>確認底部後（MA5站穩）</strong>：20%部位</div>
+        <div class="strat-item">🎯 <strong>目標</strong>：106元（MA20）</div>
+        <div class="strat-item">🛑 <strong>停損</strong>：90元（-10%）</div>
+        <div class="strat-item">⏰ <strong>持有期</strong>：6~24個月</div>
+        <div class="strat-item">💡 <strong>DCA建議</strong>：持續定期定額，不中斷</div>
+      </div>
+    </div>
+    <div class="strategy-card strat-defense">
+      <div class="strat-title">🛡️ 防守型策略（等待確認）</div>
+      <div class="strat-label">適合：技術面導向、不喜歡「接刀」的投資者</div>
+      <div style="margin-top:12px;">
+        <div class="strat-item">⏳ <strong>等待條件</strong>：RSI跌破30（超賣確認）</div>
+        <div class="strat-item">⏳ <strong>或等待</strong>：MA60（101元）成功重新站上</div>
+        <div class="strat-item">📍 <strong>買進區間</strong>：93~97元（RSI&lt;30時）</div>
+        <div class="strat-item">📦 <strong>部位</strong>：20~30%</div>
+        <div class="strat-item">🎯 <strong>目標</strong>：106元</div>
+        <div class="strat-item">🛑 <strong>停損</strong>：90元</div>
+        <div class="strat-item">⚠️ <strong>風險</strong>：若直接V型反彈，可能踏空</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;margin:24px 0 12px;">催化劑與時間表</h3>
+  <ul class="catalyst-list">
+    <li>
+      <span class="catalyst-date">7月下旬</span>
+      <span style="font-size:14px;">📢 <strong>外資持倉數據公布</strong>：若外資轉為淨買超，技術面修復加速，預期股價反彈至MA60（101元）以上</span>
+    </li>
+    <li>
+      <span class="catalyst-date">8月10日</span>
+      <span style="font-size:14px;">💰 <strong>0050 H2配息 0.60元分配</strong>：除息後NAV調整，觀察能否快速填息（歷史上0050填息速度很快）</span>
+    </li>
+    <li>
+      <span class="catalyst-date">8月中旬</span>
+      <span style="font-size:14px;">🏆 <strong>台積電Q2'26法說會</strong>：若EPS超預期 + 法說樂觀展望，台積電上漲帶動0050直接回到107~110元</span>
+    </li>
+    <li>
+      <span class="catalyst-date">2026 H2</span>
+      <span style="font-size:14px;">🚀 <strong>AI下半年旺季</strong>：NVIDIA/AMD AI晶片大量出貨，台積電CoWoS訂單強勁，0050有望挑戰120元以上</span>
+    </li>
+    <li>
+      <span class="catalyst-date">持續</span>
+      <span style="font-size:14px;">🏛️ <strong>定期定額120萬人持續買進</strong>：每月底DCA買入，是最穩定的下方支撐力量</span>
+    </li>
+  </ul>
+</div>
+
+<!-- SECTION 13 — GLOSSARY -->
+<div class="section">
+  <div class="section-title"><span>📚</span>名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">ETF（指數股票型基金）</div>
+      <div class="glossary-def">一種可以在股市直接買賣的基金，追蹤特定指數。0050追蹤「台灣50指數」，買1張0050等於同時持有台灣前50大市值公司的股票。比買個別股票省事、風險更分散。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">NAV（淨資產價值）</div>
+      <div class="glossary-def">ETF所有持倉股票的市值總和，除以基金單位數，得到每單位的「真實價值」。正常情況下，0050股價應非常接近NAV。若股價遠高於NAV，稱為「溢價」；遠低於稱「折價」。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">定期定額（DCA）</div>
+      <div class="glossary-def">每個月固定投入一筆錢買0050，無論股價高低都買。股價下跌時買到更多股數，長期下來降低平均成本。適合沒有時間看盤、想長期累積財富的上班族。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">五線全空</div>
+      <div class="glossary-def">股價同時跌破MA5、MA10、MA20、MA60以及布林下軌這五條技術指標線，代表短中長期趨勢全部轉空，是技術面最弱的信號之一。但也常常是「物極必反」的超賣指標。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">政府基金護盤</div>
+      <div class="glossary-def">台灣政府掌控的「四大基金」（勞退基金、勞保基金、郵儲基金、公務人員退撫基金）在股市大跌時進場買股，穩定市場。他們的進場視為「政府為市場背書」，是強力的信心支撐。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">配息殖利率</div>
+      <div class="glossary-def">每股配息金額 ÷ 股價 × 100%。0050今年估計配息1.60元，若以99.55元計算，殖利率為1.61%。雖然不高，但0050的主要報酬來自「股價資本增值」，配息是額外獎勵。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">CoWoS（高效能封裝技術）</div>
+      <div class="glossary-def">台積電獨家的先進封裝技術，讓AI晶片（如NVIDIA H100/H200）可以搭配HBM記憶體緊密結合，大幅提升運算效率。AI晶片對CoWoS需求爆發是台積電和0050長線動能的重要來源。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">全複製法（Full Replication）</div>
+      <div class="glossary-def">ETF照比例持有所有成分股，追蹤誤差最小。0050就是用完全複製法，持有台灣前50大公司的股票，確保ETF的表現幾乎等於指數表現，費率僅0.07%。</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 14 — DISCLAIMER -->
+<div class="disclaimer">
+  <h3>⚠️ 免責聲明</h3>
+  <p style="margin-bottom:8px;">本報告由 AI 輔助分析系統生成，<strong>僅供投資研究參考，不構成任何投資建議或勸誘</strong>。</p>
+  <ul>
+    <li>本報告分析日期：2026年07月20日</li>
+    <li>股價數據來源：Fugle Market Data API（即時）、FinMind（歷史K線）</li>
+    <li>NAV及持股比例來源：元大投信官網、MoneyDJ理財網（2026年最新揭露）</li>
+    <li>配息資料來源：玩股網、MoneyDJ（2026H2估計值，以2026-06-30評估日為基準）</li>
+    <li>市場動態（政府護盤485億）來源：Yahoo奇摩股市新聞（2026年7月）</li>
+    <li>過去績效不代表未來表現。ETF價格會隨市場波動，本金有損失風險</li>
+    <li>台積電佔比58.87%，若台積電出現系統性風險，0050將受到顯著影響</li>
+    <li>本報告所有投資建議均基於當前公開資訊推算，投資前請諮詢合格的投資顧問</li>
+  </ul>
+  <p style="margin-top:12px;font-size:12px;color:#a16207;">報告生成時間：2026-07-20 盤中分析｜分析師團隊：AI Stock Analysis Team</p>
+</div>
+
+</div><!-- end container -->
+
+<!-- CHART.JS SCRIPTS -->
+<script>
+// Chart 1: Price 30-day trend
+const priceCtx = document.getElementById('priceChart').getContext('2d');
+new Chart(priceCtx, {
+  type: 'line',
+  data: {
+    labels: [
+      '6/4','6/5','6/8','6/9','6/10','6/11','6/12',
+      '6/15','6/16','6/17','6/18','6/22','6/23★',
+      '6/24','6/25','6/26','6/29','6/30',
+      '7/1','7/2','7/3','7/6','7/7','7/8','7/9',
+      '7/13','7/14','7/15','7/16','7/17','7/20▲'
+    ],
+    datasets: [{
+      label: '收盤價（元）',
+      data: [
+        106.1,104.15,100.95,103.5,100.25,99.85,101.95,
+        105.25,105.9,106.0,107.3,111.15,110.1,
+        107.15,107.2,103.1,104.45,107.8,
+        109.35,108.8,108.35,108.25,106.2,106.05,105.8,
+        106.0,104.4,106.3,106.4,100.15,99.55
+      ],
+      borderColor: '#059669',
+      backgroundColor: 'rgba(5,150,105,0.08)',
+      borderWidth: 2.5,
+      pointRadius: (ctx) => {
+        const special = [12, 29, 30]; // 6/23 high, 7/17 drop, 7/20
+        return special.includes(ctx.dataIndex) ? 7 : 3;
+      },
+      pointBackgroundColor: (ctx) => {
+        if(ctx.dataIndex === 12) return '#f59e0b'; // 6/23 high
+        if(ctx.dataIndex === 29) return '#dc2626'; // 7/17 drop
+        if(ctx.dataIndex === 30) return '#059669'; // today
+        return '#059669';
+      },
+      pointBorderColor: 'white',
+      pointBorderWidth: 2,
+      fill: true,
+      tension: 0.3
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: { label: ctx => `${ctx.raw}元` }
+      }
+    },
+    scales: {
+      y: {
+        min: 95,
+        max: 115,
+        grid: { color: 'rgba(0,0,0,0.06)' },
+        ticks: { callback: v => `${v}元` }
+      },
+      x: {
+        grid: { display: false },
+        ticks: { maxTicksLimit: 10, font: { size: 10 } }
+      }
+    }
+  }
+});
+
+// Chart 2: Holdings bar
+const holdCtx = document.getElementById('holdingsChart').getContext('2d');
+new Chart(holdCtx, {
+  type: 'bar',
+  data: {
+    labels: ['台積電(2330)','聯發科(2454)','台達電(2308)','鴻海(2317)','中信金(2891)','其他45檔'],
+    datasets: [{
+      label: '持股比重(%)',
+      data: [58.87, 5.23, 3.53, 3.0, 2.1, 27.27],
+      backgroundColor: [
+        '#059669','#10b981','#34d399','#6ee7b7','#a7f3d0','#d1fae5'
+      ],
+      borderColor: '#065f46',
+      borderWidth: 1,
+      borderRadius: 5
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `${ctx.raw}%` } }
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(0,0,0,0.06)' },
+        ticks: { callback: v => `${v}%` }
+      },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// Chart 3: Historical dividends
+const divCtx = document.getElementById('dividendChart').getContext('2d');
+new Chart(divCtx, {
+  type: 'bar',
+  data: {
+    labels: ['2022H1','2022H2','2023H1','2023H2','2024H1','2024H2','2025H1','2025H2','2026H1★','2026H2(估)'],
+    datasets: [{
+      label: '配息金額（元）',
+      data: [3.0, 1.0, 1.85, 1.65, 2.0, 1.4, 2.2, 1.5, 1.0, 0.6],
+      backgroundColor: [
+        '#a7f3d0','#a7f3d0','#6ee7b7','#6ee7b7','#34d399','#34d399','#10b981','#10b981','#059669','#d97706'
+      ],
+      borderColor: '#065f46',
+      borderWidth: 1,
+      borderRadius: 5
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `${ctx.raw}元/股` } }
+    },
+    scales: {
+      y: {
+        grid: { color: 'rgba(0,0,0,0.06)' },
+        ticks: { callback: v => `${v}元` }
+      },
+      x: {
+        grid: { display: false },
+        ticks: { font: { size: 10 } }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
