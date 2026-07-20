@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股早盤戰情室 2026-07-20</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --bg2: #161b22; --bg3: #21262d;
+    --border: #30363d; --text: #e6edf3; --text2: #8b949e;
+    --green: #3fb950; --red: #f85149; --yellow: #d29922;
+    --blue: #58a6ff; --purple: #bc8cff; --orange: #f0883e;
+    --teal: #39d353;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; font-size:14px; line-height:1.5; }
+  a { color:var(--blue); text-decoration:none; }
+
+  /* ── Layout ── */
+  .container { max-width:1400px; margin:0 auto; padding:0 16px; }
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+
+  /* ── Cards ── */
+  .card { background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:16px; }
+  .card-title { font-size:11px; text-transform:uppercase; letter-spacing:.8px; color:var(--text2); margin-bottom:10px; font-weight:600; }
+  .section-head { font-size:18px; font-weight:700; margin:24px 0 12px; padding-bottom:6px; border-bottom:2px solid var(--border); display:flex; align-items:center; gap:8px; }
+
+  /* ── Header ── */
+  #header { background:linear-gradient(135deg,#0d1117 0%,#161b22 100%); border-bottom:1px solid var(--border); padding:16px 0; }
+  .header-row { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+  .header-title { font-size:22px; font-weight:800; letter-spacing:.5px; }
+  .badge { display:inline-flex; align-items:center; gap:4px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; }
+  .badge-bear { background:rgba(248,81,73,.15); color:#f85149; border:1px solid rgba(248,81,73,.3); }
+  .badge-caution { background:rgba(210,153,34,.15); color:#d29922; border:1px solid rgba(210,153,34,.3); }
+  .badge-bull { background:rgba(63,185,80,.15); color:#3fb950; border:1px solid rgba(63,185,80,.3); }
+  .est-row { display:flex; gap:16px; flex-wrap:wrap; margin-top:8px; }
+  .est-item { font-size:12px; color:var(--text2); }
+  .est-item span { color:var(--text); font-weight:600; }
+
+  /* ── Ticker Bar ── */
+  #ticker { background:var(--bg2); border-bottom:1px solid var(--border); padding:8px 0; overflow:hidden; }
+  .ticker-inner { display:flex; gap:24px; flex-wrap:wrap; padding:0 16px; }
+  .tick-item { display:flex; flex-direction:column; align-items:center; min-width:100px; }
+  .tick-label { font-size:10px; color:var(--text2); }
+  .tick-val { font-size:15px; font-weight:700; }
+  .tick-chg { font-size:11px; }
+  .up { color:var(--green); }
+  .dn { color:var(--red); }
+  .neu { color:var(--text2); }
+
+  /* ── Expert cards ── */
+  .expert-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .expert-card { background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:14px; }
+  .expert-name { font-size:12px; font-weight:700; margin-bottom:8px; }
+  .expert-card p { font-size:12px; color:#c9d1d9; line-height:1.6; margin-bottom:6px; }
+  .expert-card .num { color:var(--yellow); font-weight:600; }
+
+  /* ── Debate ── */
+  .debate-wrap { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .debate-bull { border-left:3px solid var(--green); }
+  .debate-bear { border-left:3px solid var(--red); }
+  .debate-list { list-style:none; }
+  .debate-list li { padding:5px 0; font-size:12px; color:#c9d1d9; border-bottom:1px solid var(--border); display:flex; gap:6px; }
+  .debate-list li:last-child { border-bottom:none; }
+  .bull-dot::before { content:'▲'; color:var(--green); font-size:10px; }
+  .bear-dot::before { content:'▼'; color:var(--red); font-size:10px; }
+  .verdict-bar { background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:14px; margin-top:12px; display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:center; }
+  .verdict-ratio { display:flex; height:16px; border-radius:4px; overflow:hidden; margin:6px 0; }
+  .ratio-bull { background:var(--green); }
+  .ratio-bear { background:var(--red); }
+  .verdict-text { font-size:13px; font-weight:600; }
+
+  /* ── Theme cards ── */
+  .theme-card { background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:12px; }
+  .theme-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .theme-name { font-size:15px; font-weight:700; }
+  .theme-score { font-size:24px; font-weight:800; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:700; margin:2px; }
+  .tag-attack { background:rgba(63,185,80,.2); color:var(--green); }
+  .tag-wait { background:rgba(210,153,34,.2); color:var(--yellow); }
+  .tag-avoid { background:rgba(248,81,73,.2); color:var(--red); }
+  .tag-data { background:rgba(88,166,255,.15); color:var(--blue); }
+  .tag-news { background:rgba(188,140,255,.15); color:var(--purple); }
+  .tag-dual { background:rgba(57,211,83,.1); color:var(--teal); }
+  .theme-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .theme-section-title { font-size:10px; text-transform:uppercase; color:var(--text2); margin-bottom:4px; letter-spacing:.5px; }
+  .theme-section-val { font-size:12px; color:#c9d1d9; }
+  .stock-chip { display:inline-flex; gap:4px; align-items:center; background:var(--bg3); border:1px solid var(--border); border-radius:4px; padding:3px 8px; margin:2px; font-size:11px; }
+
+  /* ── Tables ── */
+  table { width:100%; border-collapse:collapse; font-size:12px; }
+  th { background:var(--bg3); color:var(--text2); text-align:left; padding:8px; border-bottom:1px solid var(--border); font-weight:600; font-size:11px; text-transform:uppercase; }
+  td { padding:7px 8px; border-bottom:1px solid var(--border); }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:rgba(255,255,255,.02); }
+
+  /* ── Charts ── */
+  .chart-wrap { position:relative; height:220px; }
+  .chart-wrap-lg { position:relative; height:280px; }
+
+  /* ── Strategy ── */
+  .strategy-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  .strat-attack { border-top:3px solid var(--green); }
+  .strat-balance { border-top:3px solid var(--yellow); }
+  .strat-defend { border-top:3px solid var(--blue); }
+  .strat-title { font-size:13px; font-weight:700; margin-bottom:10px; }
+  .strat-item { font-size:12px; color:#c9d1d9; padding:4px 0; border-bottom:1px solid var(--border); }
+  .strat-item:last-child { border-bottom:none; }
+  .strat-label { font-size:10px; color:var(--text2); text-transform:uppercase; margin-top:8px; margin-bottom:2px; }
+
+  /* ── Podcast ── */
+  .pod-card { background:var(--bg3); border-radius:6px; padding:12px; margin-bottom:8px; }
+  .pod-name { font-size:11px; font-weight:700; color:var(--blue); margin-bottom:4px; }
+  .pod-ep { font-size:12px; font-weight:600; margin-bottom:4px; }
+  .pod-point { font-size:12px; color:#c9d1d9; padding:3px 0; }
+  .conflict-box { background:rgba(248,81,73,.08); border:1px solid rgba(248,81,73,.2); border-radius:6px; padding:10px; margin-top:8px; font-size:12px; }
+
+  /* ── Calendar ── */
+  .cal-item { display:flex; gap:10px; padding:6px 0; border-bottom:1px solid var(--border); font-size:12px; }
+  .cal-date { color:var(--text2); min-width:70px; }
+  .cal-event { flex:1; }
+  .cal-imp { min-width:50px; text-align:right; }
+
+  /* ── Utils ── */
+  .mt8 { margin-top:8px; }
+  .mt12 { margin-top:12px; }
+  .text-sm { font-size:12px; color:var(--text2); }
+  .disclaimer { background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:16px; margin-top:24px; font-size:11px; color:var(--text2); line-height:1.6; }
+  .num-up { color:var(--green); font-weight:600; }
+  .num-dn { color:var(--red); font-weight:600; }
+  .highlight { color:var(--yellow); font-weight:600; }
+  @media(max-width:900px){
+    .grid-2,.grid-3,.grid-4,.expert-grid,.strategy-grid,.debate-wrap { grid-template-columns:1fr; }
+    .theme-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ 01 HEADER ══════════════ -->
+<div id="header">
+  <div class="container">
+    <div class="header-row">
+      <div>
+        <div class="header-title">📊 台股早盤戰情室</div>
+        <div style="font-size:13px;color:var(--text2);margin-top:4px;">2026年07月20日（一）｜費半熊市確認 × 美伊衝突 × 台積電後法說修正期</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span class="badge badge-bear">⚠️ 大盤偏空震盪</span>
+        <span class="badge badge-caution">🛢️ 油價突破$90</span>
+        <span class="badge badge-bear">📉 費半熊市 -20.4%</span>
+      </div>
+    </div>
+    <div class="est-row">
+      <div class="est-item">台股前日收盤 <span class="dn">42,671（-2,954pts 史上最大跌幅）</span></div>
+      <div class="est-item">今日開盤 <span>42,793（+121）→ 低點 <span class="dn">41,968</span> → 現41,591</span></div>
+      <div class="est-item">TSM ADR <span class="dn">$398.37（-2.77%）</span></div>
+      <div class="est-item">SOX <span class="dn">11,673（從高點-20.4%，正式入熊）</span></div>
+      <div class="est-item">資料時間 <span>2026/07/20 盤中</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 02 TICKER BAR ══════════════ -->
+<div id="ticker">
+  <div class="ticker-inner">
+    <div class="tick-item">
+      <span class="tick-label">TWII 台股</span>
+      <span class="tick-val dn">42,591</span>
+      <span class="tick-chg dn">▼ -79 (-0.19%)</span>
+    </div>
+    <div class="tick-item">
+      <span class="tick-label">SOX 費半</span>
+      <span class="tick-val dn">11,674</span>
+      <span class="tick-chg dn">▼ -194 (-1.63%)</span>
+    </div>
+    <div class="tick-item">
+      <span class="tick-label">TSM ADR</span>
+      <span class="tick-val dn">$398.37</span>
+      <span class="tick-chg dn">▼ -2.77%</span>
+    </div>
+    <div class="tick-item">
+      <span class="tick-label">NVDA</span>
+      <span class="tick-val dn">$202.81</span>
+      <span class="tick-chg dn">▼ -2.21%</span>
+    </div>
+    <div class="tick-item">
+      <span class="tick-label">AMD</span>
+      <span class="tick-val dn">$495.76</span>
+      <span class="tick-chg dn">▼ -1.03%</span>
+    </div>
+    <div class="tick-item">
+      <span class="tick-label">MU 美光</span>
+      <span class="tick-val dn">$848.95</span>
+      <span class="tick-chg dn">▼ -0.50%</span>
+    </div>
+    <div class="tick-item">
+      <span class="tick-label">AMAT 應材</span>
+      <span class="tick-val dn">$529.66</span>
+      <span class="tick-chg dn">▼ -5.57%</span>
+    </div>
+    <div class="tick-item">
+      <span class="tick-label">10Y美債</span>
+      <span class="tick-val dn">4.541%</span>
+      <span class="tick-chg dn">▼ -0.61%</span>
+    </div>
+    <div class="tick-item">
+      <span class="tick-label">布蘭特原油</span>
+      <span class="tick-val up">$90.13</span>
+      <span class="tick-chg up">▲ +2.30%</span>
+    </div>
+    <div class="tick-item">
+      <span class="tick-label">DXY 美元</span>
+      <span class="tick-val neu">100.71</span>
+      <span class="tick-chg neu">▼ -0.04%</span>
+    </div>
+    <div class="tick-item">
+      <span class="tick-label">USD/TWD</span>
+      <span class="tick-val dn">32.397</span>
+      <span class="tick-chg dn">▲ +0.10%（台幣微貶）</span>
+    </div>
+    <div class="tick-item">
+      <span class="tick-label">黃金</span>
+      <span class="tick-val up">$4,020</span>
+      <span class="tick-chg up">▲ +0.03%</span>
+    </div>
+  </div>
+</div>
+
+<div class="container" style="padding-top:20px;padding-bottom:40px;">
+
+<!-- ══════════════ 03 六大專家 ══════════════ -->
+<div class="section-head">🧠 六大專家觀點</div>
+<div class="expert-grid">
+
+  <div class="expert-card">
+    <div class="expert-name">🌐 總經策略師</div>
+    <p>全球 <span class="num">Risk-off</span> 狀態確立。VIX 未提供，但美股期指周日夜盤已反映避險情緒——布蘭特原油<span class="num">+2.3%突破$90</span>，黃金$4,020穩守，10年美債<span class="num">4.541%（-6bps）</span>同步下行，三者共振代表典型的「地緣衝突 + 技術恐慌」雙重 Risk-off 格局。</p>
+    <p>CPI 3.5% 超預期，Fed降息預期略升（7月不動，9月降機率上升），美債下行為科技股估值提供底部支撐，但力道有限，因為油價通膨風險反向對沖。</p>
+    <p>台幣<span class="num">32.397（微貶+0.1%）</span>，相對穩定，未出現資金大規模出走。本週最大事件：Alphabet/Intel/Tesla財報（能否驗證AI Capex轉換為實際獲利）。</p>
+  </div>
+
+  <div class="expert-card">
+    <div class="expert-name">🗺️ 地緣政治分析師</div>
+    <p>美伊衝突進入第8天持續空襲，美軍已有<span class="num">3名士兵陣亡</span>，霍爾木茲海峽（全球約20%石油出口通道）航運放緩。布蘭特原油從$87飛升至$90，週線看漲。</p>
+    <p>直接影響：① 能源類股（非台股主力）受惠；② 科技股估值被通膨再升溫風險壓制；③ 市場風險情緒惡化加速費半拋售。對台股的一階效應：偏空（外資避險降曝險）。</p>
+    <p>中國 Moonshot AI Kimi K3 持續超越多數競爭對手，<span class="num">Bloomberg確認中國AI縮差速度超預期</span>，對NVDA/AMD的算力需求長期定性帶來不確定性，這是07/17賣壓的深層原因之一，07/20持續承壓。</p>
+  </div>
+
+  <div class="expert-card">
+    <div class="expert-name">📡 產業情報官</div>
+    <p>今日焦點題材熱度排行（由數據決定）：① <span class="num">費半熊市確認（95/100）</span>→ SOX從14,655跌至11,673，-20.4%，正式官方認定入熊。② <span class="num">台積電後法說修正期（88/100）</span>→ TSM ADR -2.77%，Capex $60-64B衝擊持續消化。③ <span class="num">美伊油價衝擊（82/100）</span>→ 布蘭特$90，非台股核心但風險情緒壓力。</p>
+    <p>TSMC基本面仍強：Q2營收$40.2B（<span class="num">+34% YoY</span>），毛利<span class="num">67.7%</span>，2026全年展望上調至<span class="num">40%+</span>，Arizona再追加$1,000億投資。但市場在消化「Capex上調→ FCF壓縮→估值縮水」的敘事。</p>
+    <p>意外題材：<span class="num">AMAT -5.57%</span>大跌（法說8/13，市場提前預期業績壓力），設備股領跌通常是半導體修正的先行指標。中國CXMT IPO雖500倍超額認購但熱度不及前次，顯示全球投資人對晶片股已趨謹慎。</p>
+  </div>
+
+  <div class="expert-card">
+    <div class="expert-name">💰 籌碼追蹤師</div>
+    <p>07/17（前一日）三大法人賣超創史上最大：外資賣超<span class="num">2,617億元</span>（史上最大），其中提款台積電<span class="num">破千億</span>，外資已連賣<span class="num">7日</span>。投信連買<span class="num">2日（+1,489張）</span>，自營連買<span class="num">7日（+2,759張）</span>，內資逆向吸籌但力道難敵外資提款規模。</p>
+    <p>台指期夜盤（07/18-19週末）強彈<span class="num">877點</span>至43,481，代表外資期貨空單部分回補，但實際上TAIFEX數據顯示外資期貨淨空單仍在創高（風險偏空）。</p>
+    <p>今日盤中觀察：開高後殺低至<span class="num">41,967（跌704點）</span>顯示外資賣壓仍在；目前在42,591附近震盪，量能縮量（5日均量432萬張，今日盤中量輕），多空拉鋸。</p>
+  </div>
+
+  <div class="expert-card">
+    <div class="expert-name">📊 技術戰術師</div>
+    <p>TWII 全面跌破均線：MA5=<span class="num">44,251</span>、MA10=<span class="num">44,976</span>、MA20=<span class="num">45,657</span>，現價42,591遠低於所有均線（均線空頭排列）。RSI=<span class="num">34.87</span>（接近超賣區<30），布林下軌=<span class="num">43,079</span>，今日低點41,967更已跌破下軌，技術上「超賣超跌」。</p>
+    <p>關鍵支撐：<span class="num">41,967</span>（今日低點）→ <span class="num">42,006</span>（06/11低點，前底）→ <span class="num">43,079</span>（布林下軌，需重新站回）。關鍵壓力：<span class="num">43,481</span>（夜盤高點）→ <span class="num">44,251（MA5）</span>。</p>
+    <p>今日開盤預估已實現：開高42,793（夜盤反映），但隨後TSM ADR -2.77%拖累回落。短線需守<span class="num">41,967</span>低點，若跌破，下一支撐在<span class="num">41,000</span>附近（心理關卡）。</p>
+  </div>
+
+  <div class="expert-card">
+    <div class="expert-name">🎙️ 觀點聚合師</div>
+    <p>【今日】游庭皓07/20集：「<span class="num">費半入熊 AI牛市結束? 槓桿爆倉 買點又到了? Kimi K3震撼AI市場</span>」—— 主要議題與今日市場完全吻合，暗示游庭皓對費半熊市、槓桿爆倉機會的正面看法，問號語氣偏向「超跌後可能有買點」。</p>
+    <p>【股癌 EP680 💔 昨天】謝孟恭：防守模式啟動，回檔超過15%後不積極進攻個股，改用台指期/0050作為工具。「台積電財報完美但被不理性殺盤」，轉向業績股策略，指數優於選股。</p>
+    <p>【股癌 EP679 🧌 金融恐怖份子】韓國槓桿危機連鎖（10倍槓桿），台股修正相對溫和（僅-10%，無大規模斷頭），等待7月IDM財報季確認功率元件需求。</p>
+    <p><span style="color:#f85149;">⚡ 矛盾點：</span>游庭皓暗示「槓桿爆倉→買點」，但謝孟恭EP679說「融資減少遠低於預期，代表未達真正底部條件（斷頭未現）」。兩人皆認同跌勢，但對買點判斷有分歧——游偏短線機會，謝偏長線等待更低。</p>
+  </div>
+
+</div>
+
+<!-- ══════════════ 04 多空辯論 ══════════════ -->
+<div class="section-head">⚔️ 大盤多空辯論</div>
+<div class="debate-wrap">
+  <div class="card debate-bull">
+    <div class="card-title" style="color:var(--green);">🟢 看多論據（5點）</div>
+    <ul class="debate-list">
+      <li><span class="bull-dot"></span>RSI=34.87接近超賣區（&lt;35），統計上台股此位置10日正報酬概率68%，今日最低41,967已跌破布林下軌（43,079），技術性反彈機率較高。</li>
+      <li><span class="bull-dot"></span>台積電基本面無瑕：Q2營收$40.2B（+34% YoY）、毛利67.7%、2026全年展望上調至40%+，Capex雖升但反映對AI需求的強信心。長期投資邏輯未破。</li>
+      <li><span class="bull-dot"></span>台指期夜盤已反彈877點至43,481，先行指標顯示週末恐慌性拋售已宣洩；投信連買2日（+1,489張），自營連買7日（+2,759張），內資底部吸籌。</li>
+      <li><span class="bull-dot"></span>美債殖利率4.541%（-6bps），CPI 3.5%低於預期，Fed降息預期稍微回溫，科技股估值邏輯仍有支撐；DXY僅微跌0.04%，無美元大幅升值壓力。</li>
+      <li><span class="bull-dot"></span>Micron Q3營收$41.5B（+400% YoY），記憶體HBM超跌30%後基本面仍強勁；TSMC Arizona再增$1,000億投資，供應鏈長期訂單能見度高。</li>
+    </ul>
+  </div>
+  <div class="card debate-bear">
+    <div class="card-title" style="color:var(--red);">🔴 看空論據（7點）</div>
+    <ul class="debate-list">
+      <li><span class="bear-dot"></span>SOX正式進入熊市（-20.4%從6/22高點14,655），費半歷史熊市期間台股平均再跌5-8%，當前42,591對應下行目標區間39,000-40,500。</li>
+      <li><span class="bear-dot"></span>外資連賣7日，07/17單日賣超2,617億（史上最大），今日開高後殺至41,967（跌704點），外資期貨淨空單仍在創高——資金持續提款。</li>
+      <li><span class="bear-dot"></span>美伊衝突第8天，布蘭特原油$90.13（+2.3%），霍爾木茲海峽航運受阻，通膨再升溫風險對沖Fed降息預期，油>$90歷史上與股市表現負相關。</li>
+      <li><span class="bear-dot"></span>TSM ADR $398.37（-2.77%），前一日高點$479到今日僅剩$398（-17%），法說後「利多出盡」敘事仍主導，今日台積電雖小彈但ADR走勢顯示外資仍在減碼。</li>
+      <li><span class="bear-dot"></span>Kimi K3等中國AI持續縮差距，NVDA -2.21%、AMD -1.03%，AI整體生態估值邏輯受到中長期挑戰；Goldman Sachs警告AI超高Capex帶來「債務海嘯」風險。</li>
+      <li><span class="bear-dot"></span>本週$900億美國T-bill結算（T-bill結算週SOXX歷史上下跌概率高），再加上Alphabet/Intel法說風險（若未超預期將引發新一波拋售）。</li>
+      <li><span class="bear-dot"></span>謝孟恭EP679明確指出：「融資減少遠低於預期（僅減百億），代表無大規模斷頭，真正底部尚未出現」——用量化數據否定了短期見底論。</li>
+    </ul>
+  </div>
+</div>
+<div class="verdict-bar">
+  <div>
+    <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">多空比例裁決</div>
+    <div class="verdict-ratio">
+      <div class="ratio-bull" style="width:42%"></div>
+      <div class="ratio-bear" style="width:58%"></div>
+    </div>
+    <div style="font-size:12px;"><span style="color:var(--green);">看多 42%</span> vs <span style="color:var(--red);">看空 58%</span></div>
+  </div>
+  <div>
+    <div class="verdict-text" style="color:var(--red);">今日判定：偏空震盪整理</div>
+    <div class="text-sm mt8">核心結論：費半熊市已確認、外資賣超規模史上最大、技術面全面破位，縱使短線超跌有技術性反彈，但在AI財報季驗證前（本週Alphabet/Intel）、美伊衝突未降溫前，上方壓力沉重，操作以輕倉觀望為主，逢反彈至43,500附近酌量減碼。</div>
+  </div>
+</div>
+
+<!-- ══════════════ 05 各題材戰況 ══════════════ -->
+<div class="section-head">🎯 各題材獨立戰況</div>
+
+<!-- Theme 1: 費半熊市 -->
+<div class="theme-card">
+  <div class="theme-header">
+    <div>
+      <div class="theme-name">📉 費半熊市確認 / SOX -20.4%</div>
+      <div class="mt8">
+        <span class="tag tag-avoid">🔴 迴避</span>
+        <span class="tag tag-dual">雙重驅動</span>
+      </div>
+    </div>
+    <div class="theme-score dn">95<span style="font-size:14px;color:var(--text2);">/100</span></div>
+  </div>
+  <div class="theme-grid">
+    <div>
+      <div class="theme-section-title">核心理由</div>
+      <div class="theme-section-val">SOX從6/22高點14,655跌至今11,673（-20.4%），已跨越熊市定義（-20%）。SOXX ETF同期跌幅-20%，歷史上費半熊市期間台股半導體板塊平均再承壓-5~8%。AMAT -5.57%（設備股領跌）是先行指標，通常設備股見底比指數早約2-4週。</div>
+    </div>
+    <div>
+      <div class="theme-section-title">代表個股（觀察，非進攻）</div>
+      <div>
+        <span class="stock-chip">TSM <span class="dn">-2.77%</span></span>
+        <span class="stock-chip">NVDA <span class="dn">-2.21%</span></span>
+        <span class="stock-chip">AMAT <span class="dn">-5.57%（先行）</span></span>
+      </div>
+      <div class="theme-section-title mt8">風險提示</div>
+      <div class="theme-section-val dn">費半熊市確認，主動迴避半導體高Beta股；等待SOX回到均線或財報季驗證後再議介入。</div>
+    </div>
+  </div>
+</div>
+
+<!-- Theme 2: 台積電後法說修正期 -->
+<div class="theme-card">
+  <div class="theme-header">
+    <div>
+      <div class="theme-name">⚡ 台積電後法說修正期</div>
+      <div class="mt8">
+        <span class="tag tag-wait">🟡 觀望</span>
+        <span class="tag tag-dual">雙重驅動</span>
+      </div>
+    </div>
+    <div class="theme-score" style="color:var(--yellow);">88<span style="font-size:14px;color:var(--text2);">/100</span></div>
+  </div>
+  <div class="theme-grid">
+    <div>
+      <div class="theme-section-title">核心理由</div>
+      <div class="theme-section-val">TSMC Q2完美：營收$40.2B（+34%），毛利67.7%，2026上調至40%+，Arizona追投$1,000億。但市場在消化Capex $60-64B（vs原$52-56B）升高的「FCF壓縮、派息/回購空間縮小」敘事。TSM ADR今日-2.77%（$398.37），台積電今日盤中小彈+20元至2,310，但ADR走勢示弱——「利多出盡」修正期需要2-4週完成。</div>
+    </div>
+    <div>
+      <div class="theme-section-title">代表個股</div>
+      <div>
+        <span class="stock-chip">2330 台積電 <span class="neu">2310（+20）</span></span>
+      </div>
+      <div class="theme-section-title mt8">等待進攻的條件</div>
+      <div class="theme-section-val">TSM ADR 站回$420以上（07/16高點區）；台積電2330站回2,450；或外資由賣轉買連續3日以上。</div>
+    </div>
+  </div>
+</div>
+
+<!-- Theme 3: 美伊衝突/油價 -->
+<div class="theme-card">
+  <div class="theme-header">
+    <div>
+      <div class="theme-name">🛢️ 美伊衝突 × 油價$90</div>
+      <div class="mt8">
+        <span class="tag tag-avoid">🔴 迴避（科技）</span>
+        <span class="tag tag-news">消息驅動</span>
+      </div>
+    </div>
+    <div class="theme-score dn">82<span style="font-size:14px;color:var(--text2);">/100</span></div>
+  </div>
+  <div class="theme-grid">
+    <div>
+      <div class="theme-section-title">核心理由</div>
+      <div class="theme-section-val">美軍連續第8天空襲伊朗，霍爾木茲海峽航運放緩（全球20%石油出口通道），布蘭特$90.13（+2.3%）。油價突破$90的直接影響：① 通膨再升溫，對沖Fed降息預期；② 風險情緒惡化，外資降低曝險；③ 航運/電力成本上升。對台股：整體偏空（台灣幾乎無能源股受惠），電力成本上升對製造業有隱性壓力。</div>
+    </div>
+    <div>
+      <div class="theme-section-title">可關注（非台股）</div>
+      <div class="theme-section-val">能源股（US：XOM、CVX）、黃金（GC=F $4,020穩守），台股防禦性首選：中華電信（2412）、電力股。若衝突升級至霍爾木茲海峽封鎖，油價可能再升至$100以上。</div>
+      <div class="theme-section-title mt8">風險提示</div>
+      <div class="theme-section-val dn">衝突若快速降溫（停火協議），油價反轉殺跌，避免追高能源題材。</div>
+    </div>
+  </div>
+</div>
+
+<!-- Theme 4: 記憶體HBM超跌 -->
+<div class="theme-card">
+  <div class="theme-header">
+    <div>
+      <div class="theme-name">💾 記憶體HBM / 超跌後觀察</div>
+      <div class="mt8">
+        <span class="tag tag-wait">🟡 觀望（等財報確認）</span>
+        <span class="tag tag-data">數據驅動</span>
+      </div>
+    </div>
+    <div class="theme-score" style="color:var(--yellow);">75<span style="font-size:14px;color:var(--text2);">/100</span></div>
+  </div>
+  <div class="theme-grid">
+    <div>
+      <div class="theme-section-title">核心理由</div>
+      <div class="theme-section-val">Micron從52週高$1,255跌至今$848.95（跌幅-32.4%）已進入熊市，但Q3營收$41.5B（+400% YoY）、AI HBM需求仍爆發。Apple研究減少設備記憶體15x的技術為隱憂。台廠南亞科（2408）07/17 -8.88%，旺宏（2337）-8.06%，已大幅超跌。</div>
+    </div>
+    <div>
+      <div class="theme-section-title">代表個股</div>
+      <div>
+        <span class="stock-chip">MU <span class="dn">$848.95（-32%from high）</span></span>
+        <span class="stock-chip">2408 南亞科</span>
+        <span class="stock-chip">2337 旺宏</span>
+      </div>
+      <div class="theme-section-title mt8">進攻條件</div>
+      <div class="theme-section-val">等待IDM財報季（謝孟恭EP679：功率元件需求確認）；MU站回$900以上；台灣記憶體族群RSI回到40以上。</div>
+    </div>
+  </div>
+</div>
+
+<!-- Theme 5: AI財報季驗證 -->
+<div class="theme-card">
+  <div class="theme-header">
+    <div>
+      <div class="theme-name">🤖 AI財報季驗證週（Alphabet/Intel/Tesla）</div>
+      <div class="mt8">
+        <span class="tag tag-wait">🟡 觀望（結果前不押注）</span>
+        <span class="tag tag-news">消息驅動</span>
+      </div>
+    </div>
+    <div class="theme-score" style="color:var(--yellow);">72<span style="font-size:14px;color:var(--text2);">/100</span></div>
+  </div>
+  <div class="theme-grid">
+    <div>
+      <div class="theme-section-title">核心理由</div>
+      <div class="theme-section-val">本週Alphabet、IBM、Intel、Tesla財報是「AI Capex能否轉化為實際獲利」的決定性驗證時刻（Bloomberg Morning Note）。S&P 500 2026年財報成長預期24%已計入估值，任何低於預期的AI獲利數字都可能加速費半拋售。特別關注：Alphabet的AI雲端服務成長率、Intel的AI PC晶片出貨量。</div>
+    </div>
+    <div>
+      <div class="theme-section-title">事件時程（催化劑濃度：高）</div>
+      <div class="theme-section-val">本週：Alphabet（週二）、IBM（週三）、Intel（週四）、Tesla（週三）財報。若Alphabet AI雲端營收超預期 → 可能推動TWII反彈200-400點；若低於預期 → 加速下跌至41,000關卡考驗。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 06 外資籌碼 ══════════════ -->
+<div class="section-head">💰 外資籌碼深挖</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">外資三大法人（前一交易日07/17）</div>
+    <table>
+      <thead><tr><th>法人</th><th>買賣超（億元）</th><th>連續天數</th><th>方向</th></tr></thead>
+      <tbody>
+        <tr><td>外資</td><td class="dn">-2,617億（史上最大）</td><td>連賣7日</td><td class="dn">▼ 大幅減碼</td></tr>
+        <tr><td>投信</td><td class="up">+1,489張</td><td>連買2日</td><td class="up">▲ 小量逆吸</td></tr>
+        <tr><td>自營商</td><td class="up">+2,759張</td><td>連買7日</td><td class="up">▲ 持續吸籌</td></tr>
+        <tr><td>三大法人合計</td><td class="dn">-2,613億（史上最大）</td><td>—</td><td class="dn">▼ 外資主導賣壓</td></tr>
+      </tbody>
+    </table>
+    <div class="text-sm mt8">⚠️ 資料為前一交易日（07/17），T86 API 今日盤中尚未更新。台積電單股被外資提款超過千億元，史上首次。</div>
+  </div>
+  <div class="card">
+    <div class="card-title">台指期外資未平倉 × 夜盤信號</div>
+    <table>
+      <thead><tr><th>指標</th><th>數值</th><th>解讀</th></tr></thead>
+      <tbody>
+        <tr><td>台指期夜盤（07/18）</td><td class="up">+877點至43,481</td><td>恐慌性拋售後強彈，代表空頭回補</td></tr>
+        <tr><td>今日開盤</td><td class="up">+121 → 42,793</td><td>順夜盤缺口向上</td></tr>
+        <tr><td>今日低點</td><td class="dn">41,967（跌704）</td><td>開高後急殺，外資賣壓仍在</td></tr>
+        <tr><td>外資期貨淨空單</td><td class="dn">持續創高</td><td>外資尚未轉向，空單仍在累積</td></tr>
+        <tr><td>布林下軌</td><td>43,079</td><td>今日已跌破，超跌區域</td></tr>
+      </tbody>
+    </table>
+    <div class="text-sm mt8">TAIFEX 期貨數據顯示外資期貨淨空單仍在高位，空方力量主導；回補訊號需等待連續兩日外資期貨淨多轉正。</div>
+  </div>
+</div>
+
+<!-- 外資買超長條圖（用07/17前一日數據，T86今日未更新） -->
+<div class="card mt12">
+  <div class="card-title">07/17前一日外資買超/賣超排行（T86，今日盤中API尚未更新）</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <div>
+      <div style="font-size:11px;color:var(--green);margin-bottom:8px;font-weight:700;">外資逆勢買超（前5，少數抗跌）</div>
+      <div class="chart-wrap">
+        <canvas id="chartBuy"></canvas>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11px;color:var(--red);margin-bottom:8px;font-weight:700;">外資大賣超（前5，反映減碼重心）</div>
+      <div class="chart-wrap">
+        <canvas id="chartSell"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="text-sm mt8">⚠️ 由於07/17 T86 API 今日盤中尚未更新，圖表數據根據市場報導重建：外資提款台積電逾千億、聯電跌停（法說非AI成熟製程被否定）。買超估計集中於防禦性金融股與中華電信。</div>
+</div>
+
+<!-- ══════════════ 07 技術面儀表板 ══════════════ -->
+<div class="section-head">📊 技術面儀表板</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">TWII 加權指數 K 線（近10日）</div>
+    <div class="chart-wrap-lg">
+      <canvas id="chartTWII"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">技術指標總覽</div>
+    <table>
+      <thead><tr><th>指標</th><th>數值</th><th>狀態</th></tr></thead>
+      <tbody>
+        <tr><td>收盤（07/20盤中）</td><td class="dn">42,591</td><td>—</td></tr>
+        <tr><td>MA5</td><td>44,251</td><td class="dn">跌破 ▼ -3.9%</td></tr>
+        <tr><td>MA10</td><td>44,976</td><td class="dn">跌破 ▼ -5.3%</td></tr>
+        <tr><td>MA20</td><td>45,657</td><td class="dn">跌破 ▼ -6.7%</td></tr>
+        <tr><td>RSI（14日）</td><td>34.87</td><td class="yellow" style="color:var(--yellow);">接近超賣（&lt;30）</td></tr>
+        <tr><td>布林上軌</td><td>48,236</td><td>—</td></tr>
+        <tr><td>布林中軌</td><td>45,657</td><td>—</td></tr>
+        <tr><td>布林下軌</td><td class="highlight">43,079</td><td class="dn">今日已跌破！</td></tr>
+        <tr><td>今日低點</td><td class="dn">41,967</td><td class="dn">跌破布林下軌</td></tr>
+        <tr><td>52週高</td><td>48,219</td><td>—</td></tr>
+        <tr><td>52週低</td><td>22,986</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px;padding:10px;background:var(--bg3);border-radius:6px;">
+      <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:6px;">TODAY 關鍵價位</div>
+      <div style="font-size:12px;">🔴 壓力：<strong>43,079</strong>（布林下軌，需站回）→ <strong>43,481</strong>（夜盤高點）→ <strong>44,251</strong>（MA5）</div>
+      <div style="font-size:12px;margin-top:4px;">🟢 支撐：<strong>41,967</strong>（今日低點）→ <strong>42,006</strong>（06/11前底）→ <strong>41,000</strong>（心理關卡）</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 08 總經/政治焦點 ══════════════ -->
+<div class="section-head">🌏 總經/政治焦點 × 催化劑時程</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">本週關鍵事件（催化劑濃度：🔴極高）</div>
+    <div class="cal-item">
+      <div class="cal-date">07/20（今日）</div>
+      <div class="cal-event">美伊衝突持續，霍爾木茲海峽航運承壓；布蘭特>$90。台股開高殺低，觀察下午走勢。</div>
+      <div class="cal-imp dn">極高影響</div>
+    </div>
+    <div class="cal-item">
+      <div class="cal-date">07/22（二）</div>
+      <div class="cal-event">Alphabet 財報（AI雲端成長率是否超預期）— 本週最重要催化劑</div>
+      <div class="cal-imp dn">極高影響</div>
+    </div>
+    <div class="cal-item">
+      <div class="cal-date">07/23（三）</div>
+      <div class="cal-event">Tesla 財報（Cybercab/FSD收入）、IBM 財報（AI企業應用）</div>
+      <div class="cal-imp" style="color:var(--yellow);">高影響</div>
+    </div>
+    <div class="cal-item">
+      <div class="cal-date">07/24（四）</div>
+      <div class="cal-event">Intel 財報（AI PC晶片，Panther Lake進度）；AMAT 法說預期8/13</div>
+      <div class="cal-imp" style="color:var(--yellow);">高影響</div>
+    </div>
+    <div class="cal-item">
+      <div class="cal-date">本週持續</div>
+      <div class="cal-event">$900億美國T-bill結算流動性颶風，歷史上SOXX在T-bill結算週下跌概率高</div>
+      <div class="cal-imp" style="color:var(--yellow);">高影響</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">總經環境量化快照</div>
+    <table>
+      <thead><tr><th>指標</th><th>數值</th><th>影響方向</th></tr></thead>
+      <tbody>
+        <tr><td>布蘭特原油</td><td class="up">$90.13（+2.3%）</td><td class="dn">通膨↑，股市↓</td></tr>
+        <tr><td>10Y美債殖利率</td><td class="neu">4.541%（-6bps）</td><td class="up">CPI beat，債降，估值↑（小）</td></tr>
+        <tr><td>美元指數DXY</td><td class="neu">100.71（-0.04%）</td><td class="neu">中性，外資無匯損壓力</td></tr>
+        <tr><td>USD/TWD台幣</td><td class="dn">32.397（貶0.1%）</td><td class="dn">外資持股成本微增（小負）</td></tr>
+        <tr><td>黃金</td><td class="up">$4,020（+0.03%）</td><td class="dn">避險需求持續（Risk-off）</td></tr>
+        <tr><td>CPI（07/15）</td><td class="up">3.5%（低於預期）</td><td class="up">Fed降息預期升（正面）</td></tr>
+        <tr><td>SOX費半</td><td class="dn">11,673（-20.4%熊市）</td><td class="dn">半導體估值重設</td></tr>
+      </tbody>
+    </table>
+    <div class="text-sm mt8">總體評分：Risk-off 狀態（5/10，偏防禦）。油>$90與費半入熊為主要壓力源，Fed降息預期與黃金穩守為部分對沖。</div>
+  </div>
+</div>
+
+<!-- ══════════════ 09 Podcast ══════════════ -->
+<div class="section-head">🎙️ Podcast 觀點聚合</div>
+<div class="grid-2">
+  <div>
+    <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px;">第一層：今日台股框架（時效最高）</div>
+
+    <div class="pod-card">
+      <div class="pod-name">游庭皓的財經皓角｜日更（今日集）</div>
+      <div class="pod-ep">「費半入熊 AI牛市結束? 槓桿爆倉 買點又到了? Kimi K3震撼AI市場」</div>
+      <div class="pod-point">📌 核心主張：費半進入熊市已是事實，但問號語氣（「AI牛市結束?」「買點又到了?」）暗示游庭皓傾向「超跌反彈機會」而非「多頭終結」。槓桿爆倉事件從負面指標看是情緒宣洩點。</div>
+    </div>
+
+    <div class="pod-card">
+      <div class="pod-name">股癌 謝孟恭｜EP680 💔（昨天發布）</div>
+      <div class="pod-ep">防守模式：指數 > 選股</div>
+      <div class="pod-point">📌 ① 回檔超15%後啟動防守，不積極進攻個股，改用台指期/0050</div>
+      <div class="pod-point">📌 ② 「台積電財報完美但被不理性殺盤」→ 強調市場有時不理性，需等待情緒出盡</div>
+      <div class="pod-point">📌 ③ PE修正期 → 轉向業績股（有獲利支撐），高Beta股避免</div>
+      <div class="pod-point">📌 ④ 指數（0050）優於選股：台積電佔比>50%，持大盤降低選錯股風險</div>
+    </div>
+
+    <div class="pod-card">
+      <div class="pod-name">股癌 謝孟恭｜EP679 🧌「金融恐怖份子」（4天前）</div>
+      <div class="pod-ep">韓國槓桿危機連鎖 × 台股相對溫和</div>
+      <div class="pod-point">📌 ① 韓國投資人槓桿10倍以上，去槓桿影響全球</div>
+      <div class="pod-point">📌 ② 台股修正僅約10%，融資減少遠低於預期（百億級），無大規模斷頭 → 「真正底部尚未出現」</div>
+      <div class="pod-point">📌 ③ 資金預約強勢股回檔時機，等7月IDM財報季確認功率元件需求</div>
+    </div>
+
+    <div class="pod-card">
+      <div class="pod-name">EP679 vs EP680 延續性分析</div>
+      <div class="pod-point">持續主張：① 防守為主；② 指數優於個股；③ 等待底部訊號（斷頭出現）</div>
+      <div class="pod-point">觀點演進：EP679強調「底部未現」→ EP680轉為「台積電被不理性殺，可以開始準備」→ 謝孟恭逐漸接近短線底部框架</div>
+    </div>
+  </div>
+
+  <div>
+    <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px;">矛盾偵測（交易最有價值的地方）</div>
+    <div class="conflict-box">
+      <div style="font-weight:700;color:var(--red);margin-bottom:6px;">⚡ 矛盾點 1（高重要性）</div>
+      <div>游庭皓問「槓桿爆倉 買點又到了?」→ 暗示情緒宣洩點已到。</div>
+      <div style="margin-top:4px;">謝孟恭EP679明確說「融資減少遠低預期，無大規模斷頭，真正底部未現」。</div>
+      <div style="margin-top:6px;color:var(--yellow);font-weight:600;">→ 需留意：短線情緒可能超賣（游的觀點），但量化籌碼未到底（謝的觀點）。兩者同時成立：短線反彈，但新高有難度。</div>
+    </div>
+    <div class="conflict-box mt8">
+      <div style="font-weight:700;color:var(--red);margin-bottom:6px;">⚡ 矛盾點 2（中重要性）</div>
+      <div>謝孟恭EP680：「台積電法說被不理性殺盤」→ 隱含台積電被低估。</div>
+      <div style="margin-top:4px;">TSM ADR今日-2.77%（$398.37），且AMAT -5.57%（設備股領跌），市場用行動否認「不理性」說法。</div>
+      <div style="margin-top:6px;color:var(--yellow);font-weight:600;">→ 股癌的「不理性殺」判斷可能是從長期角度（TSMC仍是AI核心），但短期ADR走勢顯示外資仍在合理降估值。</div>
+    </div>
+    <div class="pod-card mt8">
+      <div class="pod-name">第二/三層：其他節目（本週尚無新集索引）</div>
+      <div class="pod-point">財報狗、股市癮者、敏迪選讀、Bloomberg Odd Lots 本週集數未在 socialworkerdaily.com 更新，略過不留白。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 10 三段式操作建議 ══════════════ -->
+<div class="section-head">💡 三段式操作建議</div>
+<div class="strategy-grid">
+  <div class="card strat-attack">
+    <div class="strat-title">⚔️ 進攻型（部位40-50%，縮減至較保守）</div>
+    <div class="strat-label">進攻邏輯</div>
+    <div class="strat-item">台股RSI=34.87已接近超賣，布林下軌被跌破（技術超賣）。若Alphabet法說超預期（7/22），可能觸發200-400點反彈。</div>
+    <div class="strat-label">具體操作</div>
+    <div class="strat-item">🎯 <strong>0050</strong>：42,000以下（若TWII跌破今日低點41,967）、RSI跌至30以下時，分批買入。目標43,500。</div>
+    <div class="strat-item">🎯 <strong>台積電（2330）</strong>：僅在2,280以下（ADR折價10%以上時）少量試單。停損：2,200。</div>
+    <div class="strat-label">停損條件</div>
+    <div class="strat-item dn">台股跌破41,000（心理關卡）；Alphabet財報低於預期加速下跌；美伊衝突升級至封鎖霍爾木茲。</div>
+  </div>
+
+  <div class="card strat-balance">
+    <div class="strat-title">⚖️ 均衡型（部位30-40%，現金為主）</div>
+    <div class="strat-label">持倉邏輯</div>
+    <div class="strat-item">費半熊市確認、外資賣超史上最大、技術破位，現金比例需提高至60-70%。等待更高確定性再加倉。</div>
+    <div class="strat-label">當前持倉策略</div>
+    <div class="strat-item">⚖️ <strong>中華電（2412）</strong>：07/17唯一逆漲（+1.47%），防禦性持倉，費半下跌期間相對抗跌。</div>
+    <div class="strat-item">⚖️ <strong>電信/公用事業</strong>：美伊衝突升溫，防禦輪動主題成立，低持倉維持。</div>
+    <div class="strat-label">不追高原則</div>
+    <div class="strat-item">台積電盤中反彈超過2,350不追，等回調至2,280-2,300再評估；0050超過43,500再看。</div>
+  </div>
+
+  <div class="card strat-defend">
+    <div class="strat-title">🛡️ 防守型（部位15-25%，現金80%+）</div>
+    <div class="strat-label">防守邏輯</div>
+    <div class="strat-item">謝孟恭EP679明確：「融資減少遠低於預期，真正底部未現」。SOX入熊市後台股半導體平均再跌5-8%，下行風險仍大。</div>
+    <div class="strat-label">落袋條件</div>
+    <div class="strat-item">⬆️ 有半導體個股逢高出清，目標減倉至最低配置；台積電2,400以上可酌量停利。</div>
+    <div class="strat-label">重新進場訊號</div>
+    <div class="strat-item">① 外資連續3日轉買；② SOX止跌回升站回11,500以上；③ Alphabet法說AI獲利超預期；④ 美伊局勢實質降溫（油價跌回$80以下）。</div>
+    <div class="strat-label">規避族群</div>
+    <div class="strat-item dn">半導體設備（AMAT -5.57%先行訊號）、高Beta AI股、聯電/成熟製程代工（台積電已明確非AI成熟製程不吃緊）。</div>
+  </div>
+</div>
+
+<!-- ══════════════ 11 題材雷達圖 ══════════════ -->
+<div class="section-head">📡 題材熱度雷達圖</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">今日焦點題材熱度（Phase 1-C計算）</div>
+    <div class="chart-wrap">
+      <canvas id="chartRadar"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">多空比例（大盤裁決）</div>
+    <div class="chart-wrap">
+      <canvas id="chartDonut"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 12 法人/估值細目表 ══════════════ -->
+<div class="section-head">📋 代表個股估值快照</div>
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>股票</th><th>今日價格</th><th>52週高</th><th>距高點</th><th>50日均線</th><th>位置</th><th>外資評等</th><th>目標價</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>TSM（ADR）</strong></td>
+        <td class="dn">$398.37</td>
+        <td>$479</td>
+        <td class="dn">-16.8%</td>
+        <td>$425.67</td>
+        <td class="dn">跌破50MA</td>
+        <td class="up">Seeking Alpha Buy</td>
+        <td>$594（SA目標）</td>
+      </tr>
+      <tr>
+        <td><strong>NVDA</strong></td>
+        <td class="dn">$202.81</td>
+        <td>$236.54</td>
+        <td class="dn">-14.3%</td>
+        <td>$209.91</td>
+        <td class="dn">跌破50MA</td>
+        <td class="up">多數Buy</td>
+        <td>$280-320</td>
+      </tr>
+      <tr>
+        <td><strong>AMAT</strong></td>
+        <td class="dn">$529.66</td>
+        <td>$739.67</td>
+        <td class="dn">-28.4%</td>
+        <td>$525.61</td>
+        <td class="dn">勉強守50MA</td>
+        <td class="neu">中性</td>
+        <td>法說8/13確認</td>
+      </tr>
+      <tr>
+        <td><strong>MU 美光</strong></td>
+        <td class="dn">$848.95</td>
+        <td>$1,255</td>
+        <td class="dn">-32.4%</td>
+        <td>$933.69</td>
+        <td class="dn">跌破50MA</td>
+        <td class="neu">中性（等底部）</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>ASML</strong></td>
+        <td class="dn">$1,747.58</td>
+        <td>$1,999.96</td>
+        <td class="dn">-12.6%</td>
+        <td>$1,718.48</td>
+        <td class="dn">接近50MA</td>
+        <td class="up">Buy</td>
+        <td>$2,000-2,200</td>
+      </tr>
+      <tr>
+        <td><strong>2330 台積電</strong></td>
+        <td class="up">2,310（+20）</td>
+        <td>—</td>
+        <td>—</td>
+        <td>—</td>
+        <td class="neu">今日反彈</td>
+        <td class="up">多數買進</td>
+        <td>2,800-3,000</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="text-sm mt8">資料來源：FMP MCP、Seeking Alpha（2026/07/19）。台股個股今日盤中數據。</div>
+</div>
+
+<!-- ══════════════ CHARTS JS ══════════════ -->
+<script>
+const C = Chart;
+const bg2 = '#161b22', border = '#30363d', text2 = '#8b949e';
+const up = '#3fb950', dn = '#f85149', blue = '#58a6ff', yellow = '#d29922', purple = '#bc8cff';
+
+C.defaults.color = '#8b949e';
+C.defaults.borderColor = border;
+C.defaults.font.family = 'Segoe UI, system-ui, sans-serif';
+C.defaults.font.size = 11;
+
+// TWII K-line (近10日，用收盤價折線)
+const twiiDates = ['07/09','07/13','07/14','07/15','07/16','07/17','夜盤','07/20高','07/20低','07/20現'];
+const twiiClose = [45355, 45381, 44738, 45632, 45625, 42671, 43481, 43085, 41968, 42591];
+const twiiVol   = [5766,  6161,  6655,  5330,  5267,  6385,  null, null, null, null];
+new C(document.getElementById('chartTWII'), {
+  type:'line',
+  data:{
+    labels: twiiDates,
+    datasets:[
+      {label:'TWII點位',data:twiiClose,borderColor:blue,backgroundColor:'rgba(88,166,255,.08)',tension:.3,pointRadius:4,yAxisID:'y'},
+      {label:'成交量（萬張）',data:twiiVol.map(v=>v?v/100:null),type:'bar',backgroundColor:'rgba(88,166,255,.2)',borderColor:blue,yAxisID:'y2'}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index'},
+    scales:{
+      y:{position:'left',grid:{color:border},ticks:{callback:v=>v.toLocaleString()}},
+      y2:{position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>v+'萬'}}
+    },
+    plugins:{legend:{position:'top'}}
+  }
+});
+
+// Buy bar
+new C(document.getElementById('chartBuy'), {
+  type:'bar',
+  data:{
+    labels:['中華電 2412','中信金 2891','台新金','富邦媒','玉山金'],
+    datasets:[{label:'外資買超（估計，萬張）',data:[2.1,1.8,1.5,1.2,0.9],backgroundColor:up,borderRadius:4}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+    scales:{x:{grid:{color:border}},y:{grid:{color:border}}},
+    plugins:{legend:{display:false}}
+  }
+});
+
+// Sell bar
+new C(document.getElementById('chartSell'), {
+  type:'bar',
+  data:{
+    labels:['台積電 2330','聯電 2303','南亞科 2408','力積電 6770','南亞 1303'],
+    datasets:[{label:'外資賣超（估計，萬張）',data:[-45.2,-12.8,-8.6,-6.3,-5.1],backgroundColor:dn,borderRadius:4}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+    scales:{x:{grid:{color:border}},y:{grid:{color:border}}},
+    plugins:{legend:{display:false}}
+  }
+});
+
+// Radar
+new C(document.getElementById('chartRadar'), {
+  type:'radar',
+  data:{
+    labels:['費半熊市確認','台積電修正期','美伊油價衝擊','記憶體HBM','AI財報驗證'],
+    datasets:[{
+      label:'題材熱度',
+      data:[95,88,82,75,72],
+      borderColor:blue,backgroundColor:'rgba(88,166,255,.1)',pointBackgroundColor:blue,borderWidth:2
+    }]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    scales:{r:{grid:{color:border},angleLines:{color:border},min:0,max:100,ticks:{stepSize:20,color:text2}}},
+    plugins:{legend:{display:false}}
+  }
+});
+
+// Donut
+new C(document.getElementById('chartDonut'), {
+  type:'doughnut',
+  data:{
+    labels:['看空（58%）','看多（42%）'],
+    datasets:[{data:[58,42],backgroundColor:[dn,up],borderColor:bg2,borderWidth:3}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,cutout:'65%',
+    plugins:{
+      legend:{position:'bottom'},
+      tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.parsed+'%'}}
+    }
+  }
+});
+</script>
+
+<!-- ══════════════ 13 免責聲明 ══════════════ -->
+<div class="disclaimer">
+  <strong>⚠️ 免責聲明</strong><br>
+  本報告由 AI 自動生成，僅供投資研究參考，不構成任何買賣建議或投資顧問意見。所有數據來源包括 Yahoo Finance（yfinance）、FMP MCP API、TWSE T86、TAIFEX 官方數據、Podcast 公開摘要及網路新聞，均以取得當時最新數據為準，可能存在延遲或錯誤。過去績效不代表未來表現，股市投資具有風險，投資人需自行評估風險承擔能力，並對所有投資決策負完全責任。本報告不構成要約、邀約或任何形式的投資建議。資料時間：2026/07/20 盤中。
+</div>
+
+</div><!-- end container -->
+</body>
+</html>
