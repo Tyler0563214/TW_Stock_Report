@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南亞科 2408 深度研究報告 2026-07-20</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #d97706;
+    --primary-dark: #92400e;
+    --primary-light: #fef3c7;
+    --secondary: #0891b2;
+    --bg: #F0F4F8;
+    --card: #FFFFFF;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --bull: #16a34a;
+    --bear: #dc2626;
+    --warning: #f59e0b;
+    --info: #0891b2;
+    --radius: 12px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+
+  /* ── COVER ── */
+  .cover {
+    background: linear-gradient(135deg, #1c1917 0%, #451a03 40%, #78350f 70%, #d97706 100%);
+    color: white; padding: 72px 40px 64px; text-align: center; position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(217,119,6,0.15) 0%, transparent 60%);
+  }
+  .cover-badge { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 6px 18px; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+  .cover h1 { font-size: clamp(36px,6vw,64px); font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
+  .cover-sub { font-size: 20px; opacity: 0.85; margin-bottom: 28px; }
+  .cover-price { font-size: clamp(28px,5vw,52px); font-weight: 700; color: #fde68a; margin-bottom: 6px; }
+  .cover-change { font-size: 20px; opacity: 0.9; margin-bottom: 28px; }
+  .cover-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .cover-tag { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); border-radius: 20px; padding: 6px 16px; font-size: 13px; }
+  .risk-badge { display: inline-block; background: #f59e0b; color: #1c1917; border-radius: 8px; padding: 6px 16px; font-size: 15px; font-weight: 700; margin-top: 20px; }
+
+  /* ── SECTIONS ── */
+  .section { background: var(--card); border-radius: var(--radius); padding: 32px; margin: 24px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .section-title { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 3px solid var(--primary); display: flex; align-items: center; gap: 10px; }
+  .section-icon { font-size: 24px; }
+
+  /* ── CORE CONCLUSION ── */
+  .conclusion-card {
+    background: linear-gradient(135deg, #1c1917, #451a03);
+    color: white; border-radius: var(--radius); padding: 36px;
+    margin: 24px 0; position: relative; overflow: hidden;
+  }
+  .conclusion-card::before {
+    content: ''; position: absolute; top: -60px; right: -60px;
+    width: 200px; height: 200px; background: rgba(217,119,6,0.2); border-radius: 50%;
+  }
+  .conclusion-label { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.7; margin-bottom: 6px; }
+  .conclusion-value { font-size: 28px; font-weight: 800; color: #fde68a; margin-bottom: 4px; }
+  .conclusion-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 20px; }
+  .conclusion-item { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 20px; }
+  .verdict-box { background: linear-gradient(135deg, #d97706, #f59e0b); color: white; border-radius: 10px; padding: 20px; text-align: center; margin-bottom: 20px; }
+  .verdict-box h2 { font-size: 26px; font-weight: 800; }
+
+  /* ── KPI GRID ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 16px; }
+  .kpi-card { background: var(--bg); border-radius: 10px; padding: 20px; border-left: 4px solid var(--primary); }
+  .kpi-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; }
+  .kpi-value { font-size: 26px; font-weight: 700; color: var(--text); }
+  .kpi-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+  .kpi-up { color: var(--bull); }
+  .kpi-down { color: var(--bear); }
+
+  /* ── CHARTS ── */
+  .charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); gap: 24px; }
+  .chart-container { background: var(--bg); border-radius: 10px; padding: 20px; }
+  .chart-title { font-size: 15px; font-weight: 600; color: var(--text-muted); margin-bottom: 14px; }
+  .chart-note { font-size: 11px; color: var(--text-muted); margin-top: 8px; text-align: center; }
+
+  /* ── DATA TABLE ── */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .data-table th { background: var(--bg); color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 14px; text-align: left; }
+  .data-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--primary-light); }
+  .tag-green { background: #dcfce7; color: #16a34a; border-radius: 4px; padding: 2px 8px; font-size: 12px; font-weight: 600; }
+  .tag-red { background: #fee2e2; color: #dc2626; border-radius: 4px; padding: 2px 8px; font-size: 12px; font-weight: 600; }
+  .tag-amber { background: #fef3c7; color: #d97706; border-radius: 4px; padding: 2px 8px; font-size: 12px; font-weight: 600; }
+  .tag-blue { background: #dbeafe; color: #1d4ed8; border-radius: 4px; padding: 2px 8px; font-size: 12px; font-weight: 600; }
+
+  /* ── ANALYST TARGETS ── */
+  .analyst-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 16px; }
+  .analyst-card { background: var(--bg); border-radius: 10px; padding: 20px; border-top: 3px solid var(--primary); }
+  .analyst-name { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .analyst-target { font-size: 24px; font-weight: 800; color: var(--primary); }
+  .analyst-rating { font-size: 13px; color: var(--text-muted); }
+
+  /* ── TECHNICAL ── */
+  .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 16px; }
+  .tech-card { background: var(--bg); border-radius: 10px; padding: 18px; }
+  .tech-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; }
+  .tech-value { font-size: 20px; font-weight: 700; }
+  .tech-signal { font-size: 12px; margin-top: 4px; }
+  .signal-bull { color: var(--bull); }
+  .signal-bear { color: var(--bear); }
+  .signal-neutral { color: var(--warning); }
+
+  .price-levels { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 12px; margin-top: 16px; }
+  .price-level { background: var(--bg); border-radius: 8px; padding: 12px; text-align: center; }
+  .price-level-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+  .price-level-value { font-size: 18px; font-weight: 700; }
+
+  /* ── DEBATE ── */
+  .debate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media(max-width:640px) { .debate-grid { grid-template-columns: 1fr; } }
+  .bull-panel { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 24px; }
+  .bear-panel { background: #fff1f2; border: 1px solid #fecdd3; border-radius: 10px; padding: 24px; }
+  .debate-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+  .debate-point { display: flex; gap: 10px; margin-bottom: 12px; }
+  .debate-num { min-width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+  .bull-num { background: var(--bull); color: white; }
+  .bear-num { background: var(--bear); color: white; }
+  .debate-text { font-size: 14px; line-height: 1.6; }
+  .weight-bar { display: flex; border-radius: 8px; overflow: hidden; height: 36px; margin: 16px 0; }
+  .weight-bull { background: var(--bull); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; }
+  .weight-bear { background: var(--bear); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; }
+
+  /* ── RISK ── */
+  .risk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 12px; }
+  .risk-item { background: var(--bg); border-radius: 8px; padding: 16px; }
+  .risk-dim { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+  .risk-bar-bg { background: #e2e8f0; border-radius: 4px; height: 8px; }
+  .risk-bar { height: 8px; border-radius: 4px; }
+  .risk-score { font-size: 20px; font-weight: 700; margin-top: 6px; }
+  .risk-badge-low { background: #dcfce7; color: #16a34a; }
+  .risk-badge-med { background: #fef3c7; color: #d97706; }
+  .risk-badge-high { background: #fee2e2; color: #dc2626; }
+  .overall-risk { text-align: center; margin-top: 20px; padding: 20px; background: var(--bg); border-radius: 10px; }
+
+  /* ── STRATEGY ── */
+  .strategy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 16px; }
+  .strategy-card { border-radius: 10px; padding: 24px; }
+  .strat-attack { background: linear-gradient(135deg, #d97706, #f59e0b); color: white; }
+  .strat-balance { background: linear-gradient(135deg, #0891b2, #06b6d4); color: white; }
+  .strat-defense { background: linear-gradient(135deg, #64748b, #94a3b8); color: white; }
+  .strat-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+  .strat-item { font-size: 14px; margin-bottom: 6px; opacity: 0.95; }
+  .strat-label { font-size: 12px; opacity: 0.8; }
+
+  .catalyst-list { list-style: none; }
+  .catalyst-list li { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .catalyst-date { min-width: 80px; font-size: 13px; font-weight: 600; color: var(--primary); }
+  .catalyst-desc { font-size: 14px; }
+
+  /* ── GLOSSARY ── */
+  .glossary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 16px; }
+  .glossary-item { background: var(--bg); border-radius: 10px; padding: 18px; }
+  .glossary-term { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+  .glossary-def { font-size: 14px; color: var(--text-muted); }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer { background: #fffbeb; border: 1px solid #f59e0b; border-radius: 10px; padding: 20px; margin: 24px 0; }
+  .disclaimer h3 { color: #d97706; font-size: 16px; margin-bottom: 10px; }
+  .disclaimer p, .disclaimer li { font-size: 13px; color: #78350f; }
+  .disclaimer ul { margin-left: 16px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media(max-width:640px) { .two-col { grid-template-columns: 1fr; } }
+
+  .score-bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .score-bar-label { min-width: 120px; font-size: 13px; color: var(--text-muted); }
+  .score-bar-track { flex: 1; background: #e2e8f0; border-radius: 4px; height: 10px; }
+  .score-bar-fill { height: 10px; border-radius: 4px; background: var(--primary); }
+  .score-bar-val { min-width: 30px; font-size: 13px; font-weight: 700; text-align: right; }
+
+  .highlight-box { background: var(--primary-light); border-left: 4px solid var(--primary); border-radius: 6px; padding: 16px; margin: 12px 0; }
+  .highlight-box p { font-size: 14px; color: #78350f; }
+
+  .margin-table { background: var(--bg); border-radius: 10px; padding: 20px; }
+  .margin-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .margin-row:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 01 — COVER
+════════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-badge">深度研究報告 · 台股 TWSE</div>
+  <h1>南亞科技</h1>
+  <div class="cover-sub">股票代碼：2408 &nbsp;·&nbsp; DRAM純粹股 · 超級循環領航者</div>
+  <div class="cover-price">393 元</div>
+  <div class="cover-change">▼ 2.5元（-0.63%）&nbsp;·&nbsp; 盤中縮量整理 · 2026年07月20日</div>
+  <div class="cover-tags">
+    <span class="cover-tag">📅 分析日期：2026-07-20</span>
+    <span class="cover-tag">💾 DRAM純粹股</span>
+    <span class="cover-tag">📈 Q1'26 EPS 8.41元 歷史新高</span>
+    <span class="cover-tag">🚀 Jun 月營收 YoY+621%</span>
+    <span class="cover-tag">🎯 前向PE僅8.8x（FY2026E）</span>
+  </div>
+  <div class="risk-badge">⚠️ 中等風險 4/10</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 02 — CORE CONCLUSION
+════════════════════════════════════════════════════ -->
+<div class="container">
+<div class="conclusion-card">
+  <div class="verdict-box">
+    <div style="font-size:14px;opacity:0.9;margin-bottom:4px;">核心投資建議</div>
+    <h2>🟡 觀察等待，分批建倉布局</h2>
+    <div style="font-size:16px;margin-top:8px;opacity:0.95;">基本面極佳，技術面修復中｜等待MA5/MA10收復確認止跌</div>
+  </div>
+  <div class="conclusion-grid">
+    <div class="conclusion-item">
+      <div class="conclusion-label">📌 投資建議</div>
+      <div class="conclusion-value">分批建倉</div>
+      <div style="font-size:14px;opacity:0.85;margin-top:6px;">第一批370~395元（布林下~今日）<br>第二批355~370元（接近MA60區）</div>
+    </div>
+    <div class="conclusion-item">
+      <div class="conclusion-label">🎯 合理目標價</div>
+      <div class="conclusion-value">460 ~ 545元</div>
+      <div style="font-size:14px;opacity:0.85;margin-top:6px;">法人中位數545元<br>FY2026E PE 10~12x → 448~538元</div>
+    </div>
+    <div class="conclusion-item">
+      <div class="conclusion-label">🔴 停損條件</div>
+      <div class="conclusion-value">345元收盤</div>
+      <div style="font-size:14px;opacity:0.85;margin-top:6px;">跌破MA60（354元）且<br>連續兩日收盤在345元以下</div>
+    </div>
+    <div class="conclusion-item">
+      <div class="conclusion-label">⚡ 最大風險</div>
+      <div class="conclusion-value">DRAM循環反轉</div>
+      <div style="font-size:14px;opacity:0.85;margin-top:6px;">2027年產能擴張超過需求成長<br>→ 價格下行，EPS大幅低於預期</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 03 — KPI (8 Tiles)
+════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-icon">📊</span>關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Q1'26 EPS（季）</div>
+      <div class="kpi-value kpi-up">+8.41元</div>
+      <div class="kpi-sub">歷史最高季EPS｜毛利率67.89%創新高</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TTM EPS（近四季）</div>
+      <div class="kpi-value">11.17元</div>
+      <div class="kpi-sub">TTM PE = 35.2x（後視鏡偏貴）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">FY2026E EPS（法人估）</div>
+      <div class="kpi-value kpi-up">44.79元</div>
+      <div class="kpi-sub">前向PE僅 <strong>8.8x</strong>！極度低估</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Jun 2026 月營收</div>
+      <div class="kpi-value kpi-up">293.88億</div>
+      <div class="kpi-sub">YoY <strong>+621.34%</strong>｜月月刷新史高</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">H1 2026 累積營收</div>
+      <div class="kpi-value kpi-up">~1,159.83億</div>
+      <div class="kpi-sub">H1'25 約174億 → 成長約5.7倍</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q1'26 毛利率</div>
+      <div class="kpi-value kpi-up">67.89%</div>
+      <div class="kpi-sub">QoQ +18.84pp｜DRAM價格高漲驅動</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">52週區間</div>
+      <div class="kpi-value">40.2 ~ 505元</div>
+      <div class="kpi-sub">從低點起漲 <strong>+1156%</strong>｜現回調-22.2%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">股價淨值比</div>
+      <div class="kpi-value">6.26倍</div>
+      <div class="kpi-sub">隨EPS爆發，淨值快速累積中</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 04 — CHARTS (3 Chart.js)
+════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-icon">📈</span>財務趨勢互動圖表</div>
+  <div class="charts-grid">
+    <!-- Chart 1: EPS Quarterly -->
+    <div class="chart-container">
+      <div class="chart-title">📊 季度 EPS 趨勢（近8季）</div>
+      <canvas id="epsChart" height="220"></canvas>
+      <div class="chart-note">★ Q1'26 EPS 8.41元為實際公告值；DRAM超級循環翻轉一覽無遺</div>
+    </div>
+    <!-- Chart 2: Monthly Revenue -->
+    <div class="chart-container">
+      <div class="chart-title">📈 月營收趨勢（H1 2026）</div>
+      <canvas id="revenueChart" height="220"></canvas>
+      <div class="chart-note">★ 實際公告值；YoY成長率標示</div>
+    </div>
+    <!-- Chart 3: PE Comparison -->
+    <div class="chart-container">
+      <div class="chart-title">🔖 本益比比較（南亞科 vs 同業）</div>
+      <canvas id="peChart" height="220"></canvas>
+      <div class="chart-note">★ TTM PE = 35.2x（後視鏡）；FY2026E PE = 8.8x（前向）｜前向PE遠比同業便宜</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 05 — COMPANY OVERVIEW
+════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-icon">🏭</span>公司概覽</div>
+  <div class="two-col">
+    <div>
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">基本資料</h3>
+      <table class="data-table">
+        <tr><td style="color:var(--text-muted);font-size:13px;">公司全名</td><td style="font-weight:600;">南亞科技股份有限公司</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">股票代碼</td><td style="font-weight:600;">2408.TW（上市）</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">產業類別</td><td><span class="tag-amber">DRAM 記憶體</span></td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">主要股東</td><td>南亞塑膠（台塑集團旗下）</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">主力產品</td><td>DDR4 / DDR5 / LPDDR5 DRAM晶片</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">製程技術</td><td>10nm 世代（1-alpha），往1-beta推進</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">HBM布局</td><td>TSV + DDP技術開發中，2026H2貢獻</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:13px;">2026E資本支出</td><td>上限 <strong>520億元</strong></td></tr>
+      </table>
+    </div>
+    <div>
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">競爭護城河分析</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+            <span style="font-weight:600;">台塑集團資金支援</span><span class="tag-green">強</span>
+          </div>
+          <div class="score-bar-track"><div class="score-bar-fill" style="width:85%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+            <span style="font-weight:600;">DRAM製程技術</span><span class="tag-amber">中等</span>
+          </div>
+          <div class="score-bar-track"><div class="score-bar-fill" style="width:60%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+            <span style="font-weight:600;">市場份額（全球~3%）</span><span class="tag-red">偏低</span>
+          </div>
+          <div class="score-bar-track"><div class="score-bar-fill" style="width:30%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+            <span style="font-weight:600;">HBM/客製化記憶體潛力</span><span class="tag-blue">新興</span>
+          </div>
+          <div class="score-bar-track"><div class="score-bar-fill" style="width:50%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+            <span style="font-weight:600;">AI伺服器DDR5需求曝光</span><span class="tag-green">強</span>
+          </div>
+          <div class="score-bar-track"><div class="score-bar-fill" style="width:80%"></div></div>
+        </div>
+      </div>
+      <div class="highlight-box" style="margin-top:16px;">
+        <p>🔑 <strong>核心護城河</strong>：台塑集團資金後盾 + DRAM純粹股的循環彈性 + DDR5/HBM需求高速成長。全球DRAM三大玩家（三星/海力士/美光）寡占格局，南亞科雖份額偏低，但在供需緊張週期受益極大。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 06 — FUNDAMENTAL ANALYSIS
+════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-icon">💰</span>基本面分析</div>
+
+  <h3 style="font-size:15px;font-weight:700;margin-bottom:14px;">季度 EPS 與毛利率翻轉歷程</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>季度</th><th>EPS（元）</th><th>毛利率</th><th>營業利益率</th><th>說明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Q1'26</strong></td>
+        <td><span class="tag-green">+8.41元 ★</span></td>
+        <td><span class="tag-green">67.89%</span></td>
+        <td>~58%</td>
+        <td>🏆 歷史新高！DRAM ASP大漲</td>
+      </tr>
+      <tr>
+        <td>Q4'25</td>
+        <td><span class="tag-green">+3.58元</span></td>
+        <td><span class="tag-green">49.05%</span></td>
+        <td>~38%</td>
+        <td>爆炸性復甦，超市場預期</td>
+      </tr>
+      <tr>
+        <td>Q3'25</td>
+        <td><span class="tag-green">+0.50元</span></td>
+        <td>18.45%</td>
+        <td>~5%</td>
+        <td>轉虧為盈！DRAM價格谷底反彈</td>
+      </tr>
+      <tr>
+        <td>Q2'25</td>
+        <td><span class="tag-red">-1.32元</span></td>
+        <td style="color:var(--bear);">-20.56%</td>
+        <td style="color:var(--bear);">-38%</td>
+        <td>⚠️ 虧損最深點，DRAM谷底</td>
+      </tr>
+      <tr>
+        <td>Q1'25</td>
+        <td><span class="tag-red">-0.63元</span></td>
+        <td style="color:var(--bear);">-14.95%</td>
+        <td style="color:var(--bear);">-44%</td>
+        <td>DRAM蕭條期</td>
+      </tr>
+      <tr>
+        <td>Q4'24</td>
+        <td><span class="tag-red">-0.51元</span></td>
+        <td style="color:var(--bear);">-10.56%</td>
+        <td style="color:var(--bear);">-43%</td>
+        <td>業績低谷</td>
+      </tr>
+      <tr>
+        <td>Q3'24</td>
+        <td><span class="tag-red">-0.48元</span></td>
+        <td>3.24%</td>
+        <td style="color:var(--bear);">-31%</td>
+        <td>DRAM跌價嚴重</td>
+      </tr>
+      <tr>
+        <td>Q2'24</td>
+        <td><span class="tag-red">-0.26元</span></td>
+        <td>2.89%</td>
+        <td style="color:var(--bear);">-23%</td>
+        <td>開始虧損</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box" style="margin-top:16px;">
+    <p>🚀 <strong>DRAM超級循環解讀</strong>：從2024Q2虧損開始，到2025Q2毛利率谷底-20.56%（即負毛利！），再到2026Q1毛利率飆升至67.89%——這是教科書級別的DRAM週期翻轉。EPS從 -1.32元跳升至 +8.41元，幅度高達 <strong>9.73元，共三季</strong>。關鍵驅動力：AI伺服器HBM/DDR5需求爆發 + DRAM ASP（平均售價）大幅回升。</p>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;margin:20px 0 14px;">月營收月月創新高</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th>月份（實際）</th><th>月營收（億元）</th><th>YoY成長</th><th>MoM成長</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Jun 2026 ★</strong></td><td><span class="tag-green">293.88億</span></td><td><span class="tag-green">+621.34%</span></td><td>+6.21%</td></tr>
+      <tr><td>May 2026</td><td>276.70億</td><td><span class="tag-green">+717.33%</span></td><td>+8.55%</td></tr>
+      <tr><td>Apr 2026</td><td>254.91億</td><td><span class="tag-green">+560.04%</span></td><td>+40.28%</td></tr>
+      <tr><td>Mar 2026</td><td>181.70億</td><td><span class="tag-green">+586.71%</span></td><td>+16.52%</td></tr>
+      <tr><td>Feb 2026</td><td>156.07億</td><td><span class="tag-green">+608.02%</span></td><td>+1.94%</td></tr>
+      <tr><td>Jan 2026</td><td>153.10億</td><td><span class="tag-green">+580%↑</span></td><td>—</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:10px;font-size:13px;color:var(--text-muted);">★ H1 2026 累積營收約 1,159.83億元（對比H1 2025約174億，成長約5.7倍！）</div>
+
+  <h3 style="font-size:15px;font-weight:700;margin:20px 0 14px;">法人FY2026E EPS預估</h3>
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <div class="analyst-name">🏦 華南投顧（法人預估）</div>
+      <div class="analyst-target">44.79元</div>
+      <div class="analyst-rating">FY2026E EPS｜前向PE @393 = <strong>8.77x</strong></div>
+    </div>
+    <div class="analyst-card">
+      <div class="analyst-name">📊 市場共識區間</div>
+      <div class="analyst-target">35 ~ 45元</div>
+      <div class="analyst-rating">FY2026E EPS｜前向PE @393 = 8.7~11.2x</div>
+    </div>
+    <div class="analyst-card">
+      <div class="analyst-name">🎯 Q2'26E 推估</div>
+      <div class="analyst-target">10 ~ 12元</div>
+      <div class="analyst-rating">依Jun月營收293.88億推算，毛利率可望維持65%+</div>
+    </div>
+    <div class="analyst-card">
+      <div class="analyst-name">📈 FY2027E</div>
+      <div class="analyst-target">44.8元（法人估）</div>
+      <div class="analyst-rating">DRAM缺口預估延至2027年底｜供需持續偏緊</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 07 — CHIPS (INSTITUTIONAL)
+════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-icon">🏦</span>籌碼面分析</div>
+
+  <div class="highlight-box">
+    <p>⏰ <strong>注意</strong>：三大法人每日買賣超數據於收盤後約18:00公佈。今日（7/20）盤中顯示0為正常，以下依近期趨勢判讀。</p>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;margin:16px 0 12px;">券商法人評等彙整（7/13）</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th>券商數量</th><th>評等</th><th>目標價區間</th><th>說明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td style="font-size:20px;font-weight:800;color:var(--bull);">8家</td><td><span class="tag-green">買進</span></td><td>460 ~ 750元</td><td>壓倒性多頭；高目標價反映DRAM超級循環估值</td></tr>
+      <tr><td style="font-size:20px;font-weight:800;color:var(--warning);">1家</td><td><span class="tag-amber">中立</span></td><td>約 400~460元</td><td>擔憂2027供應增加與估值偏高</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:15px;font-weight:700;margin:20px 0 12px;">外資目標價追蹤</h3>
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <div class="analyst-name">📢 本土法人A</div>
+      <div class="analyst-target">545元</div>
+      <div class="analyst-rating">維持買進｜調升目標價（DRAM ASP持續上揚）<br>上漲空間 +38.7% from 393</div>
+    </div>
+    <div class="analyst-card">
+      <div class="analyst-name">📢 本土法人B</div>
+      <div class="analyst-target">650元</div>
+      <div class="analyst-rating">目標從400元大幅上調至650元<br>預估市值挑戰 <strong>2兆元</strong> 大關</div>
+    </div>
+    <div class="analyst-card">
+      <div class="analyst-name">📢 樂觀情境</div>
+      <div class="analyst-target">720 ~ 750元</div>
+      <div class="analyst-rating">本土法人喊出最高目標<br>FY2026E PE 16~17x（HBM全面貢獻）</div>
+    </div>
+    <div class="analyst-card">
+      <div class="analyst-name">法人中位數共識</div>
+      <div class="analyst-target">約 545元</div>
+      <div class="analyst-rating">上漲空間約 <strong>+38.7%</strong><br>以現價 393元計算</div>
+    </div>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;margin:20px 0 12px;">近期三大法人趨勢（7/14~7/17）</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th>日期</th><th>外資估計</th><th>投信估計</th><th>自營商估計</th><th>收盤價</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>7/15</td><td><span class="tag-green">買超</span>（推升至481）</td><td><span class="tag-green">買超</span></td><td>中性</td><td style="font-weight:700;">481元</td></tr>
+      <tr><td>7/16</td><td><span class="tag-red">賣超</span></td><td>中性</td><td><span class="tag-red">賣超</span></td><td style="font-weight:700;color:var(--bear);">439元 (-8.7%)</td></tr>
+      <tr><td>7/17</td><td><span class="tag-red">賣超</span>（大量）</td><td><span class="tag-red">賣超</span></td><td><span class="tag-red">賣超</span></td><td style="font-weight:700;color:var(--bear);">395.5元 (-9.97%)</td></tr>
+      <tr><td>7/20（盤中）</td><td>待確認</td><td>待確認</td><td>待確認</td><td style="font-weight:700;color:var(--bear);">393元 (-0.63%)</td></tr>
+    </tbody>
+  </table>
+  <div style="font-size:13px;color:var(--text-muted);margin-top:8px;">⚠️ 三大法人數據為趨勢估算，精確值請查看台灣證交所或券商HTS系統</div>
+
+  <div class="highlight-box" style="margin-top:12px;">
+    <p>📋 <strong>籌碼解讀</strong>：7/16~7/17 兩天法人恐慌性賣超，可能原因包含：獲利了結（40.2→505+1156%利潤豐厚）+ 短線預期DRAM ASP漲勢趨緩。7/20今日縮量(-0.63%)顯示賣壓已大幅緩解，籌碼沉澱中。待法人轉為淨買進，技術面才會確認底部。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 08 — TECHNICAL ANALYSIS
+════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-icon">📉</span>技術分析</div>
+
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tech-label">當前股價</div>
+      <div class="tech-value">393 元</div>
+      <div class="tech-signal signal-bear">今日 -0.63%｜-2.5元</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">MA5（5日均線）</div>
+      <div class="tech-value">437.3 元</div>
+      <div class="tech-signal signal-bear">⚠️ 股價跌破 MA5 (-10.4%)</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">MA10（10日均線）</div>
+      <div class="tech-value">425.1 元</div>
+      <div class="tech-signal signal-bear">⚠️ 股價跌破 MA10 (-7.6%)</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">MA20（月線）</div>
+      <div class="tech-value">438.65 元</div>
+      <div class="tech-signal signal-bear">⚠️ 股價跌破月線 (-10.4%)</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">MA60（季線）</div>
+      <div class="tech-value" style="color:var(--bull);">354.29 元</div>
+      <div class="tech-signal signal-bull">✅ 股價仍在季線上方 (+38.71元)</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">RSI（14日）</div>
+      <div class="tech-value">46.99</div>
+      <div class="tech-signal signal-neutral">⚡ 中性偏弱（非超賣）｜尚有下行空間至30</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">MACD</div>
+      <div class="tech-value">+13.52 / +18.76</div>
+      <div class="tech-signal signal-bear">柱狀 -5.25｜死叉形成，但幅度溫和</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">布林通道（20日）</div>
+      <div class="tech-value">上 496 / 中 439 / 下 381</div>
+      <div class="tech-signal signal-neutral">⚡ 今日低點380.5精確踩布林下軌！</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-label">今日成交量</div>
+      <div class="tech-value" style="color:var(--bull);">8,263萬張</div>
+      <div class="tech-signal signal-bull">✅ 縮量！僅5日均量11,608萬的 <strong>0.71倍</strong></div>
+    </div>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;margin:20px 0 12px;">關鍵價位支撐壓力表</h3>
+  <div class="price-levels">
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bear);">壓力 3（MA5）</div>
+      <div class="price-level-value" style="color:var(--bear);">437元</div>
+    </div>
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bear);">壓力 2（MA10）</div>
+      <div class="price-level-value" style="color:var(--bear);">425元</div>
+    </div>
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bear);">壓力 1（MA20）</div>
+      <div class="price-level-value" style="color:var(--bear);">439元</div>
+    </div>
+    <div class="price-level" style="background:var(--primary-light);border:2px solid var(--primary);">
+      <div class="price-level-label" style="color:var(--primary);">★ 現價</div>
+      <div class="price-level-value" style="color:var(--primary);">393元</div>
+    </div>
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bull);">支撐 1（布林下）</div>
+      <div class="price-level-value" style="color:var(--bull);">381元</div>
+    </div>
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bull);">支撐 2（心理）</div>
+      <div class="price-level-value" style="color:var(--bull);">370元</div>
+    </div>
+    <div class="price-level">
+      <div class="price-level-label" style="color:var(--bull);">支撐 3（MA60）</div>
+      <div class="price-level-value" style="color:var(--bull);">354元</div>
+    </div>
+    <div class="price-level" style="background:#fee2e2;">
+      <div class="price-level-label" style="color:var(--bear);">停損線</div>
+      <div class="price-level-value" style="color:var(--bear);">345元</div>
+    </div>
+  </div>
+
+  <div class="highlight-box" style="margin-top:20px;">
+    <p>🔍 <strong>技術面綜合判讀</strong>：南亞科在7/15達481元後兩天急殺-18.3%。今日393元「縮量整理」是關鍵信號——
+    量能僅5日均量的71%，顯示賣壓已大幅減少，盤勢在消化前兩天的恐慌。
+    今日低點380.5精確觸及布林下軌（380.91），形成「探底」形態。
+    與台光電（2383）相比，南亞科的技術面受損程度較輕：MA60（354元）仍完好，RSI僅47（未超賣），MACD死叉幅度-5.25也遠小於台光電的-121。
+    若明後日縮量止跌、量能持續萎縮，則底部確認機率大增。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 09 — MARGIN TRADING
+════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-icon">📋</span>融資融券</div>
+  <div class="margin-table">
+    <div class="margin-row">
+      <span style="font-weight:600;">融資餘額（近期）</span>
+      <span>約 2.67萬張｜餘額約 10.5億元</span>
+    </div>
+    <div class="margin-row">
+      <span style="font-weight:600;">融資使用率</span>
+      <span>中等偏高（需留意，槓桿風險存在）</span>
+    </div>
+    <div class="margin-row">
+      <span style="font-weight:600;">融券餘額</span>
+      <span>約 440張（相對融資偏低）</span>
+    </div>
+    <div class="margin-row">
+      <span style="font-weight:600;">券資比</span>
+      <span>約 1.6%（空方力量薄弱）</span>
+    </div>
+    <div class="margin-row">
+      <span style="font-weight:600;">融資趨勢</span>
+      <span><span class="tag-amber">⚠️ 有所增加</span>｜急殺時若融資戶斷頭，可能加劇下跌</span>
+    </div>
+  </div>
+  <div style="margin-top:16px;font-size:13px;color:var(--text-muted);">
+    ※ 精確融資融券數據請至 <strong>台灣證交所「融資融券查詢」</strong> 或 <strong>券商下單系統</strong> 查詢最新值。FinMind API 提供日終數據，盤中可能有所不同。
+  </div>
+  <div class="highlight-box">
+    <p>⚠️ <strong>融資風險提示</strong>：7/16~7/17急殺近-18%，融資戶面臨斷頭壓力可能已釋放大部分。今日縮量（0.71x）顯示急殺賣壓已消化。若後續出現溫和量縮下跌或縮量橫盤，則是多空切換前的沉澱期，不宜過度恐慌。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 10 — DEBATE (Bull vs Bear)
+════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-icon">⚔️</span>研究員多空辯論</div>
+
+  <!-- Weight bar -->
+  <div style="margin-bottom:16px;">
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-muted);margin-bottom:6px;">
+      <span>多空權重</span><span>看多 58% vs 看空 42%</span>
+    </div>
+    <div class="weight-bar">
+      <div class="weight-bull" style="width:58%">看多 58%</div>
+      <div class="weight-bear" style="width:42%">看空 42%</div>
+    </div>
+    <div style="font-size:13px;color:var(--text-muted);">基本面爆發支撐看多，技術面修復中+DRAM供應風險制衡</div>
+  </div>
+
+  <div class="debate-grid">
+    <!-- BULL -->
+    <div class="bull-panel">
+      <div class="debate-title" style="color:var(--bull);">🟢 看多研究員：5大論點</div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">1</div>
+        <div class="debate-text"><strong>前向PE僅8.8x，超低估</strong><br>FY2026E EPS 44.79元（華南投顧），393元/44.79元 = 8.77x，是台積電(~25x)、三星(~18x)的一半，歷史循環高點PE為20~25x，若回歸15x則目標價672元。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">2</div>
+        <div class="debate-text"><strong>EPS翻轉速度驚人</strong><br>三季從 -1.32元 → +8.41元，幅度+9.73元。Q1'26毛利率67.89%（史上最高），若Q2'26 EPS達10~12元，TTM EPS衝破20元，PE更只剩~20x。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">3</div>
+        <div class="debate-text"><strong>月營收YoY+621%、月月創歷史新高</strong><br>Jun 2026達293.88億元，H1合計1,160億。YoY高成長說明DRAM ASP至少持續到Q2'26，趨勢未見轉折。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">4</div>
+        <div class="debate-text"><strong>技術面受損程度遠小於同期下跌股</strong><br>MA60（354元）完好、RSI 47（未超賣）、MACD死叉幅度溫和（-5.25 vs 台光電-121）、今日縮量止跌、低點精確踩布林下軌 = 底部形態形成中。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">5</div>
+        <div class="debate-text"><strong>9家券商全面看多，目標460~750元</strong><br>7/13共9家券商評等，8家買進，目標最高720~750元。DRAM缺口法人預估延至2027年，HBM客製化記憶體2026H2開始貢獻為新成長驅動。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bull-num">6</div>
+        <div class="debate-text"><strong>台塑集團520億資本支出，長線佈局信心</strong><br>2026年資本支出上限520億（其中70%用於新廠基礎建設），顯示管理層對DRAM長期前景極有信心。HBM布局若成功，將進入更高利潤產品線。</div>
+      </div>
+    </div>
+
+    <!-- BEAR -->
+    <div class="bear-panel">
+      <div class="debate-title" style="color:var(--bear);">🔴 看空研究員：5大論點</div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">1</div>
+        <div class="debate-text"><strong>DRAM 2027供應過剩風險</strong><br>三星/SK海力士/美光大舉擴產，南亞科自身也在擴產（520億）。若2027年供給增速超過AI需求，DRAM ASP可能大幅回落，EPS從45元崩到負值的歷史教訓近在眼前。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">2</div>
+        <div class="debate-text"><strong>兩天暴跌-18.3%，技術面嚴重受損</strong><br>7/16~7/17從481跌至395.5，MA5/MA10/MA20全線跌破，MACD死叉，短線動能轉空。393元仍在重要均線（MA5-MA20）下方，每次反彈都可能成為法人賣壓出貨機會。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">3</div>
+        <div class="debate-text"><strong>從低點+1156%、估值偏高風險</strong><br>從2024年40.2元漲至505元（+1156%），即使修正至393元（-22.2%），累計漲幅仍高達+878%。TTM PE 35.2x仍偏貴，市場需要更多季度EPS兌現才能支撐。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">4</div>
+        <div class="debate-text"><strong>RSI尚未達超賣，底部未必到位</strong><br>RSI 46.99，通常DRAM跌勢中RSI需跌至30以下才形成強力支撐。若RSI繼續下行至30~35，對應股價可能在360~375元。現在買入可能仍然過早。</div>
+      </div>
+      <div class="debate-point">
+        <div class="debate-num bear-num">5</div>
+        <div class="debate-text"><strong>資本支出520億自用現金流壓力</strong><br>上限520億元的資本支出，雖對長線有利，但短線對現金流帶來龐大壓力。若DRAM價格在擴產期間下行，高資本支出+低ASP將導致EPS大幅低於預期。</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#f8fafc;border-radius:10px;padding:20px;margin-top:20px;">
+    <h3 style="font-size:15px;font-weight:700;margin-bottom:10px;">💬 給一般投資人的話</h3>
+    <p style="font-size:14px;line-height:1.8;">南亞科是教科書級別的「DRAM週期股」。好消息是，這家公司的基本面正在上演驚天大逆轉：從虧損到季賺8.41元，前向PE只剩8.8倍，是目前台股中最便宜的優質成長股之一。壞消息是，週期股的風險在於：今天的好，可能只是明天的痛苦起點。DRAM產業每隔3~5年一個週期，高點時法人喊750元，低點時股票可能再跌回50元。<br><br>
+    <strong>建議做法</strong>：不要ALL-IN，用「分批建倉」的方式，在370~395元先建第一批（佔總部位的30~40%），若跌至355~370元再加碼第二批（30~40%），剩餘子彈留著若真的出現第三次急殺（RSI<30）時加倉。停損設在345元收盤。如果不能承受-12~15%的短線波動，這檔股票可能不適合您的風格。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 11 — RISK ASSESSMENT (六維)
+════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-icon">⚠️</span>風控評估（六維評分）</div>
+
+  <div class="risk-grid">
+    <div class="risk-item">
+      <div class="risk-dim">估值風險（權重30%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:40%;background:#f59e0b;"></div></div>
+      <div class="risk-score" style="color:#d97706;">4 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">TTM PE 35x偏貴，但前向PE僅8.8x，具安全邊際</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-dim">財務風險（權重25%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:20%;background:#16a34a;"></div></div>
+      <div class="risk-score" style="color:#16a34a;">2 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">Q1毛利67.89%史高，台塑集團撐腰，財務無虞</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-dim">流動性風險（權重10%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:20%;background:#16a34a;"></div></div>
+      <div class="risk-score" style="color:#16a34a;">2 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">日均量充足，流動性無問題</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-dim">產業風險（權重15%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:70%;background:#dc2626;"></div></div>
+      <div class="risk-score" style="color:#dc2626;">7 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">DRAM週期風險高！2027供應過剩擔憂存在</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-dim">總經風險（權重10%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:50%;background:#f59e0b;"></div></div>
+      <div class="risk-score" style="color:#d97706;">5 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">美中貿易摩擦、美國利率走向影響需求</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-dim">籌碼風險（權重10%）</div>
+      <div class="risk-bar-bg"><div class="risk-bar" style="width:50%;background:#f59e0b;"></div></div>
+      <div class="risk-score" style="color:#d97706;">5 / 10</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">融資偏高+法人7/17大賣，籌碼待整理</div>
+    </div>
+  </div>
+
+  <div class="overall-risk">
+    <div style="font-size:14px;color:var(--text-muted);margin-bottom:8px;">綜合風險評分（加權）</div>
+    <div style="font-size:48px;font-weight:800;color:#d97706;">4.0 / 10</div>
+    <div style="margin-top:8px;"><span style="background:#fef3c7;color:#d97706;border-radius:8px;padding:6px 20px;font-size:16px;font-weight:700;">中等風險</span></div>
+    <div style="font-size:13px;color:var(--text-muted);margin-top:12px;">
+      計算：30%×4 + 25%×2 + 10%×2 + 15%×7 + 10%×5 + 10%×5 = 1.2+0.5+0.2+1.05+0.5+0.5 = <strong>4.0分</strong><br>
+      基本面極強，但DRAM週期性是主要風險來源
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 12 — THREE-TIER STRATEGY
+════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-icon">🎯</span>台股三段式操作策略</div>
+
+  <div class="strategy-grid">
+    <div class="strategy-card strat-attack">
+      <div class="strat-title">⚔️ 進攻型策略（積極）</div>
+      <div class="strat-label">適合：熟悉DRAM週期、能承受20%波動</div>
+      <div style="margin-top:12px;">
+        <div class="strat-item">📍 <strong>買進區間</strong>：395~400元（今日收盤附近）</div>
+        <div class="strat-item">📦 <strong>建議部位</strong>：總資金40~50%</div>
+        <div class="strat-item">🎯 <strong>目標一</strong>：460元（布林中~MA20附近）</div>
+        <div class="strat-item">🎯 <strong>目標二</strong>：545元（法人目標價中位數）</div>
+        <div class="strat-item">🎯 <strong>夢幻目標</strong>：650~720元（HBM全面兌現）</div>
+        <div class="strat-item">🛑 <strong>停損</strong>：370元（布林下軌突破確認）</div>
+        <div class="strat-item">⏰ <strong>持有期</strong>：2~6個月</div>
+        <div class="strat-item">📊 <strong>預期報酬/風險</strong>：+38%/−6%，比率6.3:1</div>
+      </div>
+    </div>
+    <div class="strategy-card strat-balance">
+      <div class="strat-title">⚖️ 均衡型策略（穩健）</div>
+      <div class="strat-label">適合：長線投資者，分批降低成本</div>
+      <div style="margin-top:12px;">
+        <div class="strat-item">📍 <strong>第一批</strong>：375~395元 / 部位25%</div>
+        <div class="strat-item">📍 <strong>第二批</strong>：355~375元 / 部位25%</div>
+        <div class="strat-item">📍 <strong>預留</strong>：RSI&lt;30超賣時 / 部位20%</div>
+        <div class="strat-item">🎯 <strong>目標一</strong>：460元（+16.8%）</div>
+        <div class="strat-item">🎯 <strong>目標二</strong>：545元（+38.7%）</div>
+        <div class="strat-item">🛑 <strong>停損</strong>：345元收盤（MA60跌破確認）</div>
+        <div class="strat-item">⏰ <strong>持有期</strong>：3~12個月</div>
+        <div class="strat-item">📊 <strong>預期報酬/風險</strong>：+38%/−12%，比率3.2:1</div>
+      </div>
+    </div>
+    <div class="strategy-card strat-defense">
+      <div class="strat-title">🛡️ 防守型策略（保守）</div>
+      <div class="strat-label">適合：風險趨避者，等待底部確認</div>
+      <div style="margin-top:12px;">
+        <div class="strat-item">⏳ <strong>觀望條件</strong>：等RSI跌破30（超賣確認）</div>
+        <div class="strat-item">📍 <strong>買進區間</strong>：360~375元（季線附近）</div>
+        <div class="strat-item">📦 <strong>建議部位</strong>：總資金20~30%</div>
+        <div class="strat-item">🎯 <strong>目標</strong>：430~460元</div>
+        <div class="strat-item">🛑 <strong>停損</strong>：345元（零容忍）</div>
+        <div class="strat-item">⏰ <strong>持有期</strong>：1~3個月</div>
+        <div class="strat-item">⚠️ <strong>不建議</strong>：若擔心2027供應過剩，可考慮只觀望、等下一個循環起點</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:700;margin:24px 0 12px;">催化劑與時間表</h3>
+  <ul class="catalyst-list">
+    <li>
+      <span class="catalyst-date">7月下旬</span>
+      <span class="catalyst-desc">📢 <strong>正式公告Jun 2026月營收</strong>（約293.88億）→ 若超市場預期，可能帶動股價反彈至420元以上</span>
+    </li>
+    <li>
+      <span class="catalyst-date">8月中旬</span>
+      <span class="catalyst-desc">🏆 <strong>Q2'26法說會</strong> — 預估EPS達10~12元，毛利率維持65%+。若EPS超過10元且法說樂觀，目標價修正至500元以上</span>
+    </li>
+    <li>
+      <span class="catalyst-date">2026 H2</span>
+      <span class="catalyst-desc">🚀 <strong>HBM/客製化超高頻寬記憶體開始貢獻營收</strong> — 此為最重要長線催化劑，將提升南亞科估值從純週期股→成長型。目標價天花板可望挑戰650~750元</span>
+    </li>
+    <li>
+      <span class="catalyst-date">2027 Q1</span>
+      <span class="catalyst-desc">⚠️ <strong>DRAM供需轉折確認點</strong> — 密切追蹤三星/SK海力士/美光資本支出是否超過需求增速，若確認供過於求則考慮分批減碼</span>
+    </li>
+  </ul>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 13 — GLOSSARY
+════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title"><span class="section-icon">📚</span>名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">DRAM（動態隨機存取記憶體）</div>
+      <div class="glossary-def">電腦、手機、伺服器中的「工作記憶」，需要持續供電才能保持資料。南亞科就是生產這種晶片的公司。DRAM價格隨全球供需大幅波動，是典型的「週期性產業」。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">HBM（高頻寬記憶體）</div>
+      <div class="glossary-def">AI晶片（如NVIDIA H100）旁邊的特殊DRAM，頻寬比普通DRAM高100倍，是AI時代最熱門的記憶體。南亞科正積極布局HBM，若成功切入，獲利將大幅提升。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">前向PE（Forward P/E）</div>
+      <div class="glossary-def">用「未來一年預估EPS」來計算本益比，比用歷史EPS（TTM PE）更能反映公司的真實估值。南亞科FY2026E EPS 44.79元，前向PE僅8.8x，顯示股價相對便宜。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">毛利率（Gross Margin）</div>
+      <div class="glossary-def">每賣100元的DRAM，扣掉生產成本後還剩多少錢。Q1'26毛利率67.89%意味著賣100元，生產只花了約32元，利潤極為豐厚。這反映DRAM售價大幅超過成本。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">布林通道（Bollinger Bands）</div>
+      <div class="glossary-def">股價的「常態範圍」。上軌（496元）是超買警戒，下軌（381元）是超賣支撐。今日低點380.5元精確觸及下軌，技術上是可能的短期底部信號。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">DRAM超級循環</div>
+      <div class="glossary-def">DRAM產業約每3~5年出現一次大幅度的供需失衡。2024~2025年是谷底（嚴重虧損），2025~2026年進入超級上升週期（EPS爆發性增長），預計2027年後可能再次面臨供應過剩風險。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">MA60（季線）</div>
+      <div class="glossary-def">過去60個交易日（約3個月）的平均收盤價。是許多法人和中長線投資者的重要參考線。南亞科MA60在354元，只要股價不跌破，中線趨勢仍算健康。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">縮量（Volume Contraction）</div>
+      <div class="glossary-def">成交量比前幾日明顯減少。當股價在下跌中出現縮量，通常代表賣壓已逐漸耗盡，空方力道衰竭，可能即將止跌反彈。今日南亞科量能僅5日均量的71%，是正面信號。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION 14 — DISCLAIMER
+════════════════════════════════════════════════════ -->
+<div class="disclaimer container">
+  <h3>⚠️ 免責聲明</h3>
+  <p style="margin-bottom:8px;">本報告由 AI 輔助分析系統生成，<strong>僅供投資研究參考，不構成任何投資建議或勸誘</strong>。</p>
+  <ul>
+    <li>本報告分析日期：2026年07月20日</li>
+    <li>股價數據來源：Fugle Market Data API（即時）、FinMind（歷史K線/財報/月營收）</li>
+    <li>法人目標價來源：工商時報、CMoney、Yahoo奇摩股市新聞（2026年7月）</li>
+    <li>財務數據引用自公開資訊觀測站及財報正式公告，依FinMind月份慣例（報告月份-1=實際月份）處理</li>
+    <li>過去績效不代表未來表現。DRAM產業具有高度週期性，實際獲利可能大幅偏離預估</li>
+    <li>本報告所有投資建議均基於當前公開資訊推算，不構成個人化投資建議。投資前請諮詢合格的投資顧問，並自行評估風險承受能力</li>
+    <li>投資人應自行負責所有投資決定及損益</li>
+  </ul>
+  <p style="margin-top:12px;font-size:12px;color:#a16207;">報告生成時間：2026-07-20 盤中分析｜分析師團隊：AI Stock Analysis Team</p>
+</div>
+
+</div><!-- end .container -->
+
+<!-- ═══════════════════════════════════════════════════
+     CHART.JS SCRIPTS
+════════════════════════════════════════════════════ -->
+<script>
+// ── Chart 1: EPS Quarterly ──
+const epsCtx = document.getElementById('epsChart').getContext('2d');
+new Chart(epsCtx, {
+  type: 'bar',
+  data: {
+    labels: ["Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26"],
+    datasets: [{
+      label: 'EPS（元）',
+      data: [-0.26, -0.48, -0.51, -0.63, -1.32, 0.50, 3.58, 8.41],
+      backgroundColor: [
+        '#fca5a5','#fca5a5','#fca5a5','#fca5a5','#ef4444',
+        '#86efac','#4ade80','#d97706'
+      ],
+      borderColor: [
+        '#ef4444','#ef4444','#ef4444','#ef4444','#dc2626',
+        '#16a34a','#16a34a','#92400e'
+      ],
+      borderWidth: 2,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => `EPS: ${ctx.raw > 0 ? '+' : ''}${ctx.raw}元`
+        }
+      }
+    },
+    scales: {
+      y: {
+        grid: { color: 'rgba(0,0,0,0.06)' },
+        ticks: {
+          callback: v => `${v > 0 ? '+' : ''}${v}元`
+        }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ── Chart 2: Monthly Revenue ──
+const revCtx = document.getElementById('revenueChart').getContext('2d');
+new Chart(revCtx, {
+  type: 'line',
+  data: {
+    labels: ['Jan 2026','Feb 2026','Mar 2026','Apr 2026','May 2026','Jun 2026'],
+    datasets: [{
+      label: '月營收（億元）',
+      data: [153.10, 156.07, 181.70, 254.91, 276.70, 293.88],
+      borderColor: '#d97706',
+      backgroundColor: 'rgba(217,119,6,0.12)',
+      borderWidth: 3,
+      pointRadius: [4,4,4,4,4,8],
+      pointBackgroundColor: ['#d97706','#d97706','#d97706','#d97706','#d97706','#dc2626'],
+      pointBorderColor: 'white',
+      pointBorderWidth: 2,
+      fill: true,
+      tension: 0.4
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => `${ctx.raw}億元`
+        }
+      }
+    },
+    scales: {
+      y: {
+        grid: { color: 'rgba(0,0,0,0.06)' },
+        ticks: { callback: v => `${v}億` }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ── Chart 3: PE Comparison ──
+const peCtx = document.getElementById('peChart').getContext('2d');
+new Chart(peCtx, {
+  type: 'bar',
+  data: {
+    labels: [
+      '南亞科 TTM PE',
+      '南亞科 FY2026E PE',
+      'DRAM產業均值',
+      '台積電 (FY2026E)',
+      '美光 Micron (FY2026E)',
+      '韓廠 SK海力士 (FY2026E)'
+    ],
+    datasets: [{
+      label: '本益比（倍）',
+      data: [35.2, 8.8, 18, 25, 15, 12],
+      backgroundColor: [
+        'rgba(217,119,6,0.6)',
+        'rgba(217,119,6,1)',
+        'rgba(100,116,139,0.5)',
+        'rgba(8,145,178,0.6)',
+        'rgba(100,116,139,0.5)',
+        'rgba(100,116,139,0.5)'
+      ],
+      borderColor: [
+        '#d97706','#92400e',
+        '#64748b','#0891b2','#64748b','#64748b'
+      ],
+      borderWidth: 2,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => `PE: ${ctx.raw}x`
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(0,0,0,0.06)' },
+        ticks: { callback: v => `${v}x` }
+      },
+      y: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
