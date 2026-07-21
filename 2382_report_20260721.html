@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>廣達 2382 深度分析報告 | 2026-07-21</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Microsoft JhengHei','PingFang TC',Arial,sans-serif; background:#F0F4F8; color:#1e293b; line-height:1.6; }
+
+  .cover { background:linear-gradient(135deg,#431407 0%,#ea580c 50%,#fb923c 100%); color:white; padding:60px 40px; text-align:center; position:relative; overflow:hidden; }
+  .cover::before { content:''; position:absolute; top:0; left:0; right:0; bottom:0; background:url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='1' fill='rgba(255,255,255,0.07)'/%3E%3C/svg%3E") repeat; }
+  .cover-badge { display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:6px 18px; font-size:13px; margin-bottom:20px; }
+  .cover h1 { font-size:3.5em; font-weight:900; letter-spacing:4px; margin-bottom:8px; text-shadow:0 2px 20px rgba(0,0,0,0.3); position:relative; }
+  .cover h2 { font-size:1.4em; font-weight:300; opacity:.9; margin-bottom:30px; position:relative; }
+  .cover-meta { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin-top:30px; position:relative; }
+  .cover-meta-item .val { font-size:2em; font-weight:700; }
+  .cover-meta-item .lbl { font-size:.8em; opacity:.7; margin-top:2px; }
+  .risk-badge { display:inline-block; background:rgba(34,197,94,.25); border:2px solid #4ade80; color:#dcfce7; border-radius:12px; padding:10px 24px; font-size:1.1em; font-weight:700; margin-top:24px; position:relative; }
+
+  .section { max-width:1200px; margin:0 auto; padding:40px 20px; }
+  .section-title { font-size:1.6em; font-weight:800; color:#ea580c; border-left:5px solid #ea580c; padding-left:16px; margin-bottom:28px; }
+  .card { background:white; border-radius:16px; padding:28px; box-shadow:0 2px 12px rgba(0,0,0,.08); margin-bottom:20px; }
+
+  .core-conclusion { background:linear-gradient(135deg,#431407,#ea580c); color:white; border-radius:20px; padding:36px; margin-bottom:20px; box-shadow:0 8px 32px rgba(234,88,12,.3); }
+  .core-conclusion .verdict { font-size:2em; font-weight:900; margin-bottom:20px; }
+  .core-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-top:20px; }
+  .core-item { background:rgba(255,255,255,.12); border-radius:12px; padding:16px; }
+  .core-item .ci-label { font-size:.8em; opacity:.7; }
+  .core-item .ci-val { font-size:1.3em; font-weight:700; margin-top:4px; }
+
+  .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  @media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+  .kpi-card { background:white; border-radius:16px; padding:22px; box-shadow:0 2px 12px rgba(0,0,0,.07); border-top:4px solid #ea580c; }
+  .kpi-label { font-size:.8em; color:#64748b; font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
+  .kpi-value { font-size:1.9em; font-weight:800; color:#ea580c; margin:6px 0; }
+  .kpi-value.green { color:#16a34a; }
+  .kpi-value.red { color:#dc2626; }
+  .kpi-value.amber { color:#d97706; }
+  .kpi-sub { font-size:.8em; color:#94a3b8; }
+  .kpi-desc { font-size:.75em; color:#64748b; margin-top:8px; padding-top:8px; border-top:1px solid #f1f5f9; }
+
+  .charts-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media(max-width:900px){.charts-grid{grid-template-columns:1fr;}}
+  .chart-card { background:white; border-radius:16px; padding:24px; box-shadow:0 2px 12px rgba(0,0,0,.07); }
+  .chart-card h4 { font-size:1em; color:#374151; font-weight:700; margin-bottom:16px; }
+  .chart-note { font-size:.72em; color:#9ca3af; margin-top:10px; text-align:center; }
+
+  .overview-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  @media(max-width:700px){.overview-grid{grid-template-columns:1fr;}}
+  .moat-item { display:flex; align-items:flex-start; gap:12px; padding:14px; background:#fff7ed; border-radius:10px; margin-bottom:10px; }
+  .moat-icon { font-size:1.4em; flex-shrink:0; }
+  .moat-text strong { display:block; font-size:.95em; color:#ea580c; margin-bottom:4px; }
+  .moat-text span { font-size:.85em; color:#374151; }
+
+  .score-bar { height:10px; background:#e2e8f0; border-radius:5px; overflow:hidden; margin-top:6px; }
+  .score-fill { height:100%; border-radius:5px; background:linear-gradient(90deg,#ea580c,#fb923c); }
+  .score-fill.green { background:linear-gradient(90deg,#16a34a,#4ade80); }
+  .score-fill.amber { background:linear-gradient(90deg,#d97706,#fbbf24); }
+  .score-fill.red { background:linear-gradient(90deg,#dc2626,#f87171); }
+
+  .inst-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  @media(max-width:700px){.inst-grid{grid-template-columns:repeat(2,1fr);}}
+  .inst-card { border-radius:12px; padding:16px; text-align:center; }
+  .inst-card.buy { background:#f0fdf4; border:1px solid #bbf7d0; }
+  .inst-card.sell { background:#fef2f2; border:1px solid #fecaca; }
+  .inst-name { font-size:.8em; color:#64748b; font-weight:600; }
+  .inst-val { font-size:1.5em; font-weight:800; margin:6px 0; }
+  .inst-val.green { color:#16a34a; }
+  .inst-val.red { color:#dc2626; }
+  .inst-desc { font-size:.75em; color:#6b7280; }
+
+  .tech-table { width:100%; border-collapse:collapse; font-size:.9em; }
+  .tech-table th { background:#fff7ed; color:#ea580c; padding:10px 14px; text-align:left; font-weight:700; border-bottom:2px solid #fed7aa; }
+  .tech-table td { padding:10px 14px; border-bottom:1px solid #f1f5f9; }
+  .tag { display:inline-block; border-radius:6px; padding:2px 8px; font-size:.75em; font-weight:600; }
+  .tag.bull { background:#dcfce7; color:#15803d; }
+  .tag.bear { background:#fee2e2; color:#b91c1c; }
+  .tag.neutral { background:#fef3c7; color:#92400e; }
+  .tag.orange { background:#fff7ed; color:#c2410c; }
+
+  .debate-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  @media(max-width:700px){.debate-grid{grid-template-columns:1fr;}}
+  .debate-bull { background:#f0fdf4; border:2px solid #16a34a; border-radius:16px; padding:24px; }
+  .debate-bear { background:#fef2f2; border:2px solid #dc2626; border-radius:16px; padding:24px; }
+  .debate-title { font-size:1.1em; font-weight:800; margin-bottom:16px; }
+  .debate-title.bull { color:#15803d; }
+  .debate-title.bear { color:#b91c1c; }
+  .debate-item { display:flex; gap:10px; margin-bottom:12px; padding:10px; background:rgba(255,255,255,.7); border-radius:8px; }
+  .debate-num { font-weight:800; font-size:1em; flex-shrink:0; }
+  .debate-num.bull { color:#16a34a; }
+  .debate-num.bear { color:#dc2626; }
+  .debate-text { font-size:.87em; line-height:1.5; }
+
+  .risk-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  @media(max-width:700px){.risk-grid{grid-template-columns:1fr;}}
+  .risk-dim { background:white; border-radius:12px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,.06); }
+  .risk-dim-name { font-size:.85em; color:#475569; font-weight:600; margin-bottom:8px; }
+  .risk-dim-score { font-size:1.6em; font-weight:800; }
+  .risk-dim-score.low { color:#16a34a; }
+  .risk-dim-score.mid { color:#d97706; }
+  .risk-dim-score.high { color:#dc2626; }
+  .risk-dim-desc { font-size:.78em; color:#64748b; margin-top:6px; }
+
+  .strategy-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  @media(max-width:700px){.strategy-grid{grid-template-columns:1fr;}}
+  .strat-attack { background:linear-gradient(135deg,#ea580c,#c2410c); color:white; border-radius:16px; padding:24px; }
+  .strat-balance { background:linear-gradient(135deg,#c2410c,#9a3412); color:white; border-radius:16px; padding:24px; }
+  .strat-defend { background:linear-gradient(135deg,#431407,#7c2d12); color:white; border-radius:16px; padding:24px; }
+  .strat-title { font-size:1.2em; font-weight:800; margin-bottom:12px; }
+  .strat-item { font-size:.87em; margin-bottom:8px; opacity:.95; }
+  .strat-item strong { display:block; font-size:.9em; opacity:.7; }
+
+  .highlight-box { background:#fff7ed; border:1px solid #fed7aa; border-radius:10px; padding:14px; margin:12px 0; font-size:.87em; color:#7c2d12; }
+  .warn-box { background:#fef3c7; border:1px solid #fbbf24; border-radius:10px; padding:14px; margin:12px 0; font-size:.87em; color:#78350f; }
+  .success-box { background:#f0fdf4; border:1px solid #86efac; border-radius:10px; padding:14px; margin:12px 0; font-size:.87em; color:#14532d; }
+
+  .margin-table { width:100%; border-collapse:collapse; font-size:.88em; margin-top:12px; }
+  .margin-table th { background:#fff7ed; padding:8px 12px; text-align:center; color:#ea580c; font-weight:700; border-bottom:2px solid #fed7aa; }
+  .margin-table td { padding:8px 12px; text-align:center; border-bottom:1px solid #f1f5f9; }
+
+  .timeline { position:relative; padding-left:24px; margin-top:16px; }
+  .timeline::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; background:#fed7aa; }
+  .timeline-item { position:relative; margin-bottom:16px; }
+  .timeline-item::before { content:''; position:absolute; left:-20px; top:6px; width:12px; height:12px; border-radius:50%; background:#ea580c; border:2px solid white; box-shadow:0 0 0 2px #ea580c; }
+  .timeline-date { font-size:.78em; color:#ea580c; font-weight:700; }
+  .timeline-text { font-size:.88em; color:#374151; }
+
+  .glossary-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  @media(max-width:600px){.glossary-grid{grid-template-columns:1fr;}}
+  .glossary-item { background:#f8fafc; border-radius:10px; padding:14px; border-left:3px solid #ea580c; }
+  .glossary-term { font-weight:700; color:#ea580c; font-size:.9em; }
+  .glossary-def { font-size:.83em; color:#374151; margin-top:4px; }
+
+  .disclaimer { background:#fffbeb; border:2px solid #fbbf24; border-radius:12px; padding:20px; margin-top:20px; }
+  .disclaimer h4 { color:#92400e; font-size:1em; margin-bottom:10px; }
+  .disclaimer p { font-size:.82em; color:#78350f; line-height:1.7; }
+
+  .debate-weight { display:flex; background:#f1f5f9; border-radius:10px; overflow:hidden; height:36px; margin-top:20px; }
+  .debate-weight-bull { background:linear-gradient(90deg,#16a34a,#4ade80); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:.9em; }
+  .debate-weight-bear { background:linear-gradient(90deg,#f87171,#dc2626); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:.9em; }
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div style="position:relative;z-index:1;">
+    <div class="cover-badge">🔬 AI深度分析 · 多角色研究團隊 · 2026-07-21</div>
+    <h1>廣達電腦</h1>
+    <h2>2382 · 台灣股票交易所上市 · 全球AI伺服器ODM最大製造商</h2>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="val">320元</div><div class="lbl">今日股價（+1.27%）</div></div>
+      <div class="cover-meta-item"><div class="val">16.1x</div><div class="lbl">TTM本益比（超便宜！）</div></div>
+      <div class="cover-meta-item"><div class="val">1.23兆</div><div class="lbl">市值（新台幣）</div></div>
+      <div class="cover-meta-item"><div class="val">19.88元</div><div class="lbl">TTM每股盈餘</div></div>
+    </div>
+    <div class="risk-badge">✅ 綜合風險等級：3.5 / 10（低風險）</div>
+  </div>
+</div>
+
+<!-- 02 核心結論 -->
+<div class="section">
+  <div class="core-conclusion">
+    <h3 style="opacity:.8;font-size:1.1em;margin-bottom:8px;">📋 核心投資結論</h3>
+    <div class="verdict">🟢 積極逢低布局 → RSI超賣+三大法人全買+PE最便宜的AI大型股</div>
+    <p style="opacity:.9;font-size:.95em;line-height:1.7;">
+      廣達是全球最大AI伺服器ODM製造商，NVIDIA GB200/GB300最大代工夥伴，六月月收<strong>3,852億元（YoY+102.9%）</strong>突破三位數成長，Q1'26 EPS 5.5元創歷史同期最強。TTM PE <strong>16.1倍</strong>是台股AI大型股中估值最便宜標的，野村FY2026E EPS 22.22元，Forward PE僅<strong>14.4倍</strong>，目標價400元。技術面RSI已跌至28.85（超賣區），股價跌破布林下軌（333元），且7/20三大法人<strong>全部同步買超+8,688張</strong>（外資+投信+自營齊買），是難得的多方共振佈局窗口。
+    </p>
+    <div class="core-grid">
+      <div class="core-item"><div class="ci-label">🎯 核心催化劑</div><div class="ci-val">GB300放量 + Rubin接棒 + AI月收破百分百</div></div>
+      <div class="core-item"><div class="ci-label">📊 外資最高目標價</div><div class="ci-val">400元（野村，FY26E EPS 22.22元）</div></div>
+      <div class="core-item"><div class="ci-label">🛡️ 進攻價區</div><div class="ci-val">310 ~ 335元（布林下軌區域）</div></div>
+      <div class="core-item"><div class="ci-label">🚨 最大風險</div><div class="ci-val">毛利率僅4.78%（Q1'26），薄利多銷模式</div></div>
+      <div class="core-item"><div class="ci-label">📅 下一里程碑</div><div class="ci-val">Q2'26法說會（7月底/8月初）</div></div>
+      <div class="core-item"><div class="ci-label">✋ 停損設定</div><div class="ci-val">收盤跌破295元（心理關）出場</div></div>
+    </div>
+  </div>
+
+  <!-- 03 KPI -->
+  <div class="section-title">📊 關鍵財務KPI儀表板</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">今日股價</div>
+      <div class="kpi-value green">320元</div>
+      <div class="kpi-sub">↑ +4元 (+1.27%) · 昨收316元</div>
+      <div class="kpi-desc">52W High 438元已回調-26.9%，52W Low 252.5元。今日開319.5，高321.5，低314元，屬超賣後小幅反彈，尚未確認底部</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Jun 2026月收（YoY突破百分百！）</div>
+      <div class="kpi-value green">3,852億</div>
+      <div class="kpi-sub">YoY +102.9% · MoM +23.7%</div>
+      <div class="kpi-desc">六月月收年增超過100%！Q2 2026累計（4+5+6月）= 10,367億，較Q2 2025約5,300億大幅成長95%。AI伺服器已成廣達最主要收入引擎</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TTM本益比（台股AI最便宜！）</div>
+      <div class="kpi-value green">16.1x</div>
+      <div class="kpi-sub">TTM EPS 19.88元 · Forward PE 14.4x</div>
+      <div class="kpi-desc">同為AI伺服器股，緯穎PE 25x、智邦PE 41x，廣達TTM PE 16x是台股AI大型股最便宜。野村FY2026E EPS 22.22元，Forward PE僅14.4x</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q1'26 EPS（歷史同期最強！）</div>
+      <div class="kpi-value green">5.5元</div>
+      <div class="kpi-sub">YoY +8.7% · Q1'26法說創新高</div>
+      <div class="kpi-desc">Q1'26合併月收8,092億（YoY+66.6%），季淨利211.92億，EPS 5.5元寫同期新高。AI訂單能見度延伸至2027年後，AI伺服器全年維持三位數成長</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">RSI（14日）</div>
+      <div class="kpi-value red">28.85</div>
+      <div class="kpi-sub">已進入超賣區（&lt;30為超賣）</div>
+      <div class="kpi-desc">RSI 28.85正式進入超賣區，歷史上廣達RSI跌破30後90日內均有明顯反彈。配合三大法人全買，技術超賣+籌碼共振，是較理想的逢低點</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">布林通道位置（跌破下軌！）</div>
+      <div class="kpi-value red">低於下軌</div>
+      <div class="kpi-sub">上軌400.8 · 中軌367.0 · 下軌333.2元</div>
+      <div class="kpi-desc">現價320元已低於布林下軌（333.2元），屬統計上極度偏離的超賣狀態。布林下軌以下出現的時間通常不長，且今日高點321.5接近下軌，有測試守回跡象</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">三大法人（7/20）</div>
+      <div class="kpi-value green">+8,688張（三方齊買！）</div>
+      <div class="kpi-sub">外資+5,295 · 投信+2,091 · 自營+1,301</div>
+      <div class="kpi-desc">三大法人全部同步買超+8,688張！這在大跌日是非常罕見的強力信號。代表外資大行（BlackRock/摩根等）、台灣投信、自營商都認為此波回調是逢低機會</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">毛利率（Q1'26）</div>
+      <div class="kpi-value amber">4.78%</div>
+      <div class="kpi-sub">Q1'25: 7.92% → Q1'26: 4.78% (-3.14pp)</div>
+      <div class="kpi-desc">毛利率從7.92%滑落至4.78%是最大隱憂。AI伺服器ASP高但成本（GPU、液冷）也高，使毛利率被壓縮。但規模持續擴大，絕對獲利仍在成長</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 圖表 -->
+<div style="background:white;padding:40px 0;">
+<div class="section" style="padding-top:0;padding-bottom:0;">
+  <div class="section-title">📈 財務趨勢圖表</div>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h4>📊 季度EPS趨勢（近8季）</h4>
+      <canvas id="epsChart" height="220"></canvas>
+      <div class="chart-note">★ 實際公告數字；Q1'26=5.5元創歷史同期新高</div>
+    </div>
+    <div class="chart-card">
+      <h4>📈 月營收趨勢（近6個月，單位：億元）</h4>
+      <canvas id="revenueChart" height="220"></canvas>
+      <div class="chart-note">★ 實際公告數字；Jun 2026=3,852億 YoY+102.9%</div>
+    </div>
+    <div class="chart-card">
+      <h4>📉 本益比同業比較（倍）</h4>
+      <canvas id="peChart" height="220"></canvas>
+      <div class="chart-note">★ 廣達TTM PE為實際值；其餘為推算值</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽：AI算力時代的全球最大組裝廠</div>
+  <div class="overview-grid">
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <h3 style="color:#ea580c;margin-bottom:12px;">公司簡介</h3>
+        <p style="font-size:.9em;line-height:1.7;color:#374151;">
+          廣達電腦（Quanta Computer）成立於1988年，由林百里創辦，原為全球最大筆記型電腦ODM製造商，2020年後積極轉型為<strong>AI伺服器最重要製造夥伴</strong>。廣達是NVIDIA最重要的AI伺服器代工夥伴，承製GB100/GB200/GB300/NVL72等NVIDIA最新一代AI訓練系統，客戶涵蓋Amazon AWS、Google Cloud、Meta、Microsoft Azure等全球四大超大型雲端業者。2026年AI伺服器業務占整體營收比重已超過8成，廣達從筆電代工廠徹底蛻變為「AI算力全球組裝廠」。
+        </p>
+        <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;">
+          <span class="tag orange">NVIDIA GB200/GB300</span>
+          <span class="tag orange">NVL72整機櫃</span>
+          <span class="tag bull">液冷伺服器</span>
+          <span class="tag bull">L10/L11組裝</span>
+          <span class="tag bull">全球四大CSP客戶</span>
+          <span class="tag orange">Rubin後繼布局</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="color:#ea580c;margin-bottom:14px;">📡 AI伺服器進化路線</h3>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-date">2023年</div><div class="timeline-text">H100伺服器開始爆量，廣達確立NVIDIA最大合作夥伴地位，AI伺服器月收從數百億啟動</div></div>
+          <div class="timeline-item"><div class="timeline-date">2024年 Q3-Q4</div><div class="timeline-text">GB100/B200平台出貨，AI伺服器占比快速提升，Q4 EPS 4.12元（YoY高基期）</div></div>
+          <div class="timeline-item"><div class="timeline-date">2025年 全年</div><div class="timeline-text">GB200放量，Q1'25 EPS 5.06元，月收成長提速；Q4'25 EPS 5.75元，全年AI伺服器月收創歷史新高</div></div>
+          <div class="timeline-item"><div class="timeline-date">2026年 Q1（法說）</div><div class="timeline-text">Q1月收8,092億（YoY+66.6%），EPS 5.5元歷史同期新高，AI訂單旺至2027年後，GB300開始認列</div></div>
+          <div class="timeline-item"><div class="timeline-date">2026年 6月（爆發！）</div><div class="timeline-text">單月月收3,852億（YoY+102.9%），年增首度突破百分百！GB300+AI模組雙引擎全開</div></div>
+          <div class="timeline-item"><div class="timeline-date">2026年 H2（即將）</div><div class="timeline-text">Rubin世代布局開始，整機櫃NVL72+液冷系統全面放量，廣達增資8億美元擴產</div></div>
+          <div class="timeline-item"><div class="timeline-date">2027-2028年</div><div class="timeline-text">Rubin Ultra規模出貨，廣達AI伺服器年收估計挑戰3兆元，EPS有望突破25元+</div></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h3 style="color:#ea580c;margin-bottom:14px;">🏰 護城河分析</h3>
+        <div class="moat-item"><div class="moat-icon">🤝</div><div class="moat-text"><strong>NVIDIA最深度戰略夥伴</strong><span>廣達是NVIDIA GB系列最大代工合作夥伴，優先取得GPU配額和技術文件，與NVIDIA工程師聯合開發散熱方案，進入障礙極高</span></div></div>
+        <div class="moat-item"><div class="moat-icon">❄️</div><div class="moat-text"><strong>液冷散熱系統整合能力</strong><span>GB200/GB300功耗極高，廣達在液冷（DLC）整合設計上有5年以上量產經驗，是同業難以快速追趕的技術護城河</span></div></div>
+        <div class="moat-item"><div class="moat-icon">🏗️</div><div class="moat-text"><strong>L10/L11整機櫃組裝能力</strong><span>能做到L11（整機櫃交付），代表廣達提供完整的從零件到資料中心即插即用解決方案，減少客戶現場組裝風險</span></div></div>
+        <div class="moat-item"><div class="moat-icon">🌏</div><div class="moat-text"><strong>全球分散產能佈局</strong><span>廣達在台灣、中國、美國、墨西哥、歐洲均有生產基地，可滿足CSP客戶「在地生產」要求，規避地緣政治風險</span></div></div>
+        <div class="moat-item"><div class="moat-icon">💼</div><div class="moat-text"><strong>四大CSP客戶高黏性</strong><span>Amazon、Google、Meta、Microsoft四大CSP均為廣達長期客戶，多年合作建立的工程信任度和供應鏈整合深度是極高護城河</span></div></div>
+        <div class="moat-item"><div class="moat-icon">📐</div><div class="moat-text"><strong>Open Compute設計能力</strong><span>廣達積極參與OCP（Open Compute Project），在白牌伺服器設計標準制定有影響力，確保在開放架構浪潮中保持相關性</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 06 基本面 -->
+<div style="background:white;padding:20px 0;">
+<div class="section" style="padding-top:30px;padding-bottom:30px;">
+  <div class="section-title">📐 基本面分析</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div class="card">
+      <h3 style="color:#ea580c;margin-bottom:16px;">季度財務數據</h3>
+      <table class="margin-table">
+        <tr><th>季度</th><th>EPS（元）</th><th>毛利率</th><th>營益率</th><th>YoY</th></tr>
+        <tr><td>Q2'24</td><td>3.92</td><td>8.58%</td><td>4.91%</td><td>—</td></tr>
+        <tr><td>Q3'24</td><td>4.32</td><td>7.33%</td><td>4.61%</td><td>—</td></tr>
+        <tr><td>Q4'24</td><td>4.12</td><td>7.45%</td><td>3.63%</td><td>—</td></tr>
+        <tr><td>Q1'25</td><td>5.06</td><td>7.92%</td><td>5.07%</td><td>—</td></tr>
+        <tr><td>Q2'25</td><td>4.37</td><td>7.05%</td><td>4.05%</td><td>+11.5%</td></tr>
+        <tr><td>Q3'25</td><td>4.26</td><td>6.85%</td><td>3.71%</td><td>-1.4%</td></tr>
+        <tr><td>Q4'25</td><td>5.75</td><td>6.33%</td><td>3.76%</td><td>+39.6%</td></tr>
+        <tr style="background:#fff7ed;font-weight:700;"><td>Q1'26 ✦</td><td style="color:#16a34a;">5.5</td><td style="color:#dc2626;">4.78%</td><td>2.85%</td><td style="color:#16a34a;">+8.7%</td></tr>
+      </table>
+      <div class="warn-box" style="margin-top:12px;">
+        ⚠️ <strong>毛利率趨勢警示</strong>：毛利率從Q1'25的7.92%一路下滑至Q1'26的4.78%。主因是AI伺服器雖然ASP（平均售價）高（一台GB200整機櫃售價200-300萬美元），但GPU/液冷/高速互連成本也極高，使毛利率被壓縮。此趨勢若持續，將是最主要的下修風險。
+      </div>
+      <div class="highlight-box">
+        ✦ TTM EPS = Q2'25+Q3'25+Q4'25+Q1'26 = 4.37+4.26+5.75+5.5 = <strong>19.88元</strong><br>
+        TTM PE = 320 ÷ 19.88 = <strong>16.1x</strong>（台股AI大型股最低！）<br>
+        野村FY2026E EPS = <strong>22.22元</strong>，Forward PE = 320÷22.22 = <strong>14.4x</strong>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#ea580c;margin-bottom:16px;">月營收趨勢（年增率加速！）</h3>
+      <table class="margin-table">
+        <tr><th>月份</th><th>月收（億元）</th><th>YoY</th><th>MoM</th></tr>
+        <tr><td>Jan 2026</td><td>2,308</td><td style="color:#16a34a;">+61.9%</td><td>-15.3%</td></tr>
+        <tr><td>Feb 2026</td><td>2,156</td><td style="color:#16a34a;">+43.2%</td><td>-6.6%</td></tr>
+        <tr><td>Mar 2026</td><td>3,628</td><td style="color:#16a34a;">+88.4%</td><td>+68.3%</td></tr>
+        <tr><td>Apr 2026</td><td>3,399</td><td style="color:#16a34a;">+120.7%</td><td>-6.3%</td></tr>
+        <tr><td>May 2026</td><td>3,115</td><td style="color:#16a34a;">+94.4%</td><td>-8.4%</td></tr>
+        <tr style="background:#fff7ed;font-weight:700;"><td>Jun 2026 🔥</td><td style="color:#16a34a;">3,852</td><td style="color:#16a34a;">+102.9%</td><td style="color:#16a34a;">+23.7%</td></tr>
+      </table>
+      <div class="highlight-box" style="margin-top:12px;">
+        🔥 Q2 2026累計（Apr+May+Jun）= <strong>10,366億</strong>（vs Q2'25 ~5,315億），YoY約+95%！<br>
+        廣達每個月收入已達3,000-3,800億元規模，月收規模堪比台灣許多年收兆元的大型企業。
+      </div>
+      <div class="success-box">
+        ✅ 廣達Q1法說確認：AI伺服器全年維持<strong>三位數百分比成長</strong>目標不變，訂單能見度延伸至2027年後。且通用型伺服器展望也從「與去年持平」上調為「全年雙位數成長」。
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <h3 style="color:#ea580c;margin-bottom:14px;">基本面綜合評分</h3>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+      <div>
+        <div style="font-size:.85em;color:#475569;margin-bottom:4px;">獲利成長性</div>
+        <div style="font-weight:700;font-size:1.1em;color:#16a34a;">8.5 / 10</div>
+        <div class="score-bar"><div class="score-fill green" style="width:85%"></div></div>
+        <div style="font-size:.75em;color:#64748b;margin-top:4px;">月收YoY+102%，Q1 EPS +8.7%，Q2有望大幅超越</div>
+      </div>
+      <div>
+        <div style="font-size:.85em;color:#475569;margin-bottom:4px;">毛利率品質</div>
+        <div style="font-weight:700;font-size:1.1em;color:#dc2626;">3.0 / 10</div>
+        <div class="score-bar"><div class="score-fill red" style="width:30%"></div></div>
+        <div style="font-size:.75em;color:#64748b;margin-top:4px;">4.78%是所有分析股中最低，AI伺服器薄利多銷模式</div>
+      </div>
+      <div>
+        <div style="font-size:.85em;color:#475569;margin-bottom:4px;">估值合理性</div>
+        <div style="font-weight:700;font-size:1.1em;color:#16a34a;">9.0 / 10</div>
+        <div class="score-bar"><div class="score-fill green" style="width:90%"></div></div>
+        <div style="font-size:.75em;color:#64748b;margin-top:4px;">TTM PE 16x、Forward PE 14x，台股AI大型股最便宜</div>
+      </div>
+      <div>
+        <div style="font-size:.85em;color:#475569;margin-bottom:4px;">財務健康度</div>
+        <div style="font-weight:700;font-size:1.1em;color:#16a34a;">7.5 / 10</div>
+        <div class="score-bar"><div class="score-fill green" style="width:75%"></div></div>
+        <div style="font-size:.75em;color:#64748b;margin-top:4px;">市值1.23兆，現金流充沛，增資8億美元顯示高度信心</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 07 籌碼 -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析</div>
+  <div class="inst-grid" style="margin-bottom:20px;">
+    <div class="inst-card buy"><div class="inst-name">外資</div><div class="inst-val green">+5,295張</div><div class="inst-desc">7/20大量買超！</div></div>
+    <div class="inst-card buy"><div class="inst-name">投信</div><div class="inst-val green">+2,091張</div><div class="inst-desc">7/20買超！</div></div>
+    <div class="inst-card buy"><div class="inst-name">自營商</div><div class="inst-val green">+1,301張</div><div class="inst-desc">7/20買超！</div></div>
+    <div class="inst-card buy"><div class="inst-name">三大法人合計</div><div class="inst-val green">+8,688張</div><div class="inst-desc">三方齊買（極罕見）</div></div>
+  </div>
+  <div class="card">
+    <div class="success-box">
+      ✅ <strong>籌碼面最強正面訊號：三大法人全部齊買</strong>。7/20廣達大跌日（收盤316元，盤中低309元），外資+5,295張、投信+2,091張、自營+1,301張，三方合計淨買超+8,688張。這是本週分析標的中最強的籌碼訊號，意義重大——代表各類型機構投資人都認為此波回調被過度懲罰，基本面並無惡化。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;">
+      <div>
+        <h4 style="color:#ea580c;margin-bottom:10px;">外資法人評等匯整</h4>
+        <table class="margin-table">
+          <tr><th>券商</th><th>評等</th><th>目標價</th></tr>
+          <tr><td>野村證券</td><td><span class="tag bull">買進</span></td><td>400元</td></tr>
+          <tr><td>美系外資</td><td><span class="tag bull">優於大盤</span></td><td>330元</td></tr>
+          <tr><td>CMoney法人</td><td><span class="tag bull">買進</span></td><td>~360元</td></tr>
+        </table>
+        <div class="highlight-box" style="margin-top:10px;font-size:.82em;">
+          野村目標400元 / 現價320元 = <strong>+25%</strong>潛在上漲空間<br>
+          法人FY2026E EPS：<strong>22.22元</strong>（野村），含AI伺服器三位數成長
+        </div>
+      </div>
+      <div>
+        <h4 style="color:#ea580c;margin-bottom:10px;">成交量分析</h4>
+        <table class="margin-table">
+          <tr><th>指標</th><th>數值</th><th>判斷</th></tr>
+          <tr><td>7/20成交量</td><td>約3.6萬張</td><td><span class="tag neutral">偏大量</span></td></tr>
+          <tr><td>5日均量</td><td>約3.1萬張</td><td>—</td></tr>
+          <tr><td>10日均量</td><td>約2.4萬張</td><td>—</td></tr>
+          <tr><td>量/均量比</td><td>1.17x</td><td><span class="tag neutral">溫和放量</span></td></tr>
+        </table>
+        <div class="highlight-box" style="margin-top:10px;font-size:.82em;">
+          大跌日成交量偏大但未達極端爆量（1.17x），三大法人在此量能下全部淨買，代表機構接盤意願強。7/16-7/20連跌四日後，今日+1.27%，量能有所收斂。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div style="background:white;padding:20px 0;">
+<div class="section" style="padding-top:30px;padding-bottom:30px;">
+  <div class="section-title">📉 技術分析</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div class="card">
+      <h3 style="color:#ea580c;margin-bottom:14px;">均線系統（五線全空）</h3>
+      <table class="tech-table">
+        <tr><th>指標</th><th>數值</th><th>位置</th><th>判斷</th></tr>
+        <tr><td>股價</td><td>320元</td><td>—</td><td><span class="tag neutral">超賣反彈</span></td></tr>
+        <tr><td>MA5</td><td>350.9元</td><td>股價⬇️ -8.8%</td><td><span class="tag bear">空頭</span></td></tr>
+        <tr><td>MA10</td><td>363.4元</td><td>股價⬇️ -11.9%</td><td><span class="tag bear">空頭</span></td></tr>
+        <tr><td>MA20</td><td>367.0元</td><td>股價⬇️ -12.8%</td><td><span class="tag bear">空頭</span></td></tr>
+        <tr><td>MA60</td><td>350.6元</td><td>股價⬇️ -8.6%</td><td><span class="tag bear">空頭</span></td></tr>
+      </table>
+      <div class="warn-box" style="margin-top:10px;font-size:.82em;">
+        ⚠️ 五線全空，且MA10（363）≈ MA20（367），均線密集帶在365元附近，反彈至此區域將面臨密集賣壓。從現價320元到MA5（350.9）需上漲9.7%，難度較大，建議分批布局而非一次性全押。
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#ea580c;margin-bottom:14px;">震盪指標 + 布林通道</h3>
+      <table class="tech-table">
+        <tr><th>指標</th><th>數值</th><th>訊號</th><th>判斷</th></tr>
+        <tr><td>RSI（14日）</td><td>28.85</td><td>⚠️ 進入超賣</td><td><span class="tag bull">超賣反彈機率高</span></td></tr>
+        <tr><td>MACD（DIF）</td><td>-4.48</td><td>負值</td><td><span class="tag bear">空頭</span></td></tr>
+        <tr><td>MACD（DEA）</td><td>+2.54</td><td>死叉</td><td><span class="tag bear">空頭</span></td></tr>
+        <tr><td>MACD柱（OSC）</td><td>-7.02</td><td>負值</td><td><span class="tag bear">空頭</span></td></tr>
+        <tr><td>布林上軌</td><td>400.8元</td><td>—</td><td>—</td></tr>
+        <tr><td>布林中軌</td><td>367.0元</td><td>—</td><td>—</td></tr>
+        <tr style="background:#fef2f2;"><td><strong>布林下軌</strong></td><td><strong>333.2元</strong></td><td style="color:#dc2626;font-weight:700;">現價低於下軌！</td><td><span class="tag bull">技術極度超賣</span></td></tr>
+        <tr style="background:#fef2f2;"><td><strong>現價位置</strong></td><td><strong>320元</strong></td><td style="color:#dc2626;">低於下軌-4.0%</td><td><span class="tag bull">統計極值！</span></td></tr>
+      </table>
+      <div class="success-box" style="margin-top:10px;font-size:.82em;">
+        ✅ <strong>布林通道以下 + RSI超賣雙重共振</strong>：現價320元低於布林下軌333元（-4%），且RSI 28.85已跌破30（超賣），兩個指標同時觸發統計極值。歷史上廣達觸及此條件後，3個月內出現顯著反彈的概率極高。
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <h3 style="color:#ea580c;margin-bottom:14px;">K線大事記（52W低252.5 → 高438 → 今320）</h3>
+    <div style="overflow-x:auto;">
+    <table class="margin-table" style="font-size:.85em;">
+      <tr><th>日期</th><th>收盤</th><th>高</th><th>低</th><th>量（萬張）</th><th>事件</th></tr>
+      <tr><td>6/5</td><td>390.5</td><td>395.5</td><td>375.0</td><td>6.9</td><td>季高點區域，AI伺服器月收消息持續發酵</td></tr>
+      <tr><td>6/8</td><td>376.5</td><td>376.5</td><td>357.0</td><td>6.3</td><td>⬇️ 週一大跌，利多出盡賣壓出現</td></tr>
+      <tr><td>7/6</td><td>378.0</td><td>393.0</td><td>378.0</td><td>2.5</td><td>上衝393高點後拉回，量縮顯示買力不足</td></tr>
+      <tr><td>7/15</td><td>381.0</td><td>384.0</td><td>376.0</td><td>2.5</td><td>近期反彈高點381，之後急速回落</td></tr>
+      <tr><td style="color:#dc2626;font-weight:700;">7/16</td><td style="color:#dc2626;font-weight:700;">352.0</td><td>360.5</td><td>349.0</td><td>3.3</td><td>⬇️ 急跌-7.6%，MA20跌破，賣壓大量出現</td></tr>
+      <tr><td style="color:#dc2626;font-weight:700;">7/17</td><td style="color:#dc2626;font-weight:700;">325.5</td><td>349.0</td><td>324.5</td><td>3.3</td><td>⬇️ 再跌-7.5%，接近跌停，跌破布林下軌</td></tr>
+      <tr><td style="color:#dc2626;font-weight:700;">7/20</td><td style="color:#dc2626;font-weight:700;">316.0</td><td>333.0</td><td>309.0</td><td>3.6</td><td>盤中低309元（布林下軌-7.3%！），三大法人逢低大買+8,688張</td></tr>
+      <tr style="background:#f0fdf4;"><td style="color:#16a34a;font-weight:700;">7/21今</td><td style="color:#16a34a;font-weight:700;">320.0</td><td>321.5</td><td>314.0</td><td>—</td><td>+1.27%小幅反彈，量縮（健康），等待確認底部</td></tr>
+    </table>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <h3 style="color:#ea580c;margin-bottom:14px;">關鍵價位支撐壓力對照</h3>
+    <table class="tech-table">
+      <tr><th>性質</th><th>價位</th><th>依據</th><th>重要程度</th></tr>
+      <tr><td><span class="tag bull">強力支撐</span></td><td>309元</td><td>7/20盤中低（近期最低點）</td><td>⭐⭐⭐⭐⭐</td></tr>
+      <tr><td><span class="tag bull">支撐</span></td><td>295-300元</td><td>心理整數關+前低區域</td><td>⭐⭐⭐⭐</td></tr>
+      <tr><td><span class="tag neutral">測試中</span></td><td>333元</td><td>布林通道下軌（短線首要關卡）</td><td>⭐⭐⭐⭐⭐</td></tr>
+      <tr><td><span class="tag bear">壓力</span></td><td>350-351元</td><td>MA5（350.9）與MA60（350.6）</td><td>⭐⭐⭐⭐</td></tr>
+      <tr><td><span class="tag bear">強力壓力</span></td><td>363-367元</td><td>MA10（363.4）+ MA20（367.0）+ 布林中軌（367）密集帶</td><td>⭐⭐⭐⭐⭐</td></tr>
+      <tr><td><span class="tag bear">強力壓力</span></td><td>390-438元</td><td>前波高點區（6/5高點395，52W高點438）</td><td>⭐⭐⭐⭐⭐</td></tr>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- 09 產業分析 -->
+<div class="section">
+  <div class="section-title">🌐 AI伺服器產業：廣達的競爭地位</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div class="card">
+      <h3 style="color:#ea580c;margin-bottom:14px;">AI伺服器世代路線圖</h3>
+      <table class="margin-table">
+        <tr><th>世代</th><th>GPU平台</th><th>狀態（2026）</th><th>廣達貢獻</th></tr>
+        <tr><td>H100系列</td><td>Hopper架構</td><td>仍在出貨</td><td>基礎收入</td></tr>
+        <tr><td>GB100/B200</td><td>Blackwell B200</td><td>主力出貨</td><td>重要貢獻</td></tr>
+        <tr style="background:#fff7ed;font-weight:600;"><td>GB200/GB300</td><td>Blackwell Ultra</td><td>✅ 最大貢獻</td><td>月收主引擎</td></tr>
+        <tr style="background:#f0f9ff;font-weight:600;"><td>NVL72整機櫃</td><td>72顆GPU整合</td><td>🔥 高速放量</td><td>高ASP拉升</td></tr>
+        <tr style="background:#f0fdf4;font-weight:600;"><td>Rubin</td><td>下世代架構</td><td>🔧 H2 2026布局</td><td>未來成長</td></tr>
+      </table>
+      <div class="highlight-box" style="margin-top:12px;">
+        一台NVL72整機櫃售價高達<strong>200-300萬美元</strong>（約6,000-9,000萬台幣），廣達月收3,852億元約相當於每月出貨400-640台NVL72整機櫃，出貨能力驚人。
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#ea580c;margin-bottom:14px;">廣達 vs 同業比較</h3>
+      <table class="margin-table">
+        <tr><th>公司</th><th>定位</th><th>NVIDIA關係</th><th>PE</th></tr>
+        <tr style="background:#fff7ed;font-weight:700;"><td>廣達 2382</td><td>AI伺服器ODM最大</td><td>最核心合作</td><td>16.1x</td></tr>
+        <tr><td>緯穎 6669</td><td>AI伺服器ODM</td><td>重要夥伴</td><td>~25x</td></tr>
+        <tr><td>鴻海 2317</td><td>AI伺服器+EMS</td><td>重要夥伴</td><td>~15x</td></tr>
+        <tr><td>英業達 2356</td><td>AI伺服器ODM</td><td>參與者</td><td>~12x</td></tr>
+        <tr><td>緯創 3231</td><td>AI伺服器ODM</td><td>參與者</td><td>~10x</td></tr>
+      </table>
+      <div class="success-box" style="margin-top:12px;font-size:.82em;">
+        ✅ 廣達的PE 16.1x在AI伺服器龍頭中偏低，考量廣達是NVIDIA最核心合作夥伴（GB200/GB300最大代工），相較緯穎PE 25x確實存在估值低估。若市場給予廣達20x PE，目標價為20×19.88 = <strong>397元</strong>，對應約+24%上漲空間。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div style="background:#f8fafc;padding:20px 0;">
+<div class="section" style="padding-top:30px;padding-bottom:30px;">
+  <div class="section-title">⚖️ 研究員多空辯論</div>
+  <div class="debate-grid">
+    <div class="debate-bull">
+      <div class="debate-title bull">🐂 看多研究員（理由）</div>
+      <div class="debate-item"><div class="debate-num bull">①</div><div class="debate-text"><strong>RSI 28.85深度超賣 + 布林下軌以下 = 統計上最佳逢低點：</strong>現價320元低於布林下軌333元（-4%），RSI 28.85進入超賣區，此兩項同時觸發是廣達近年最少見的技術極值狀態，歷史上出現此狀態後3個月內均有顯著反彈</div></div>
+      <div class="debate-item"><div class="debate-num bull">②</div><div class="debate-text"><strong>三大法人7/20全部齊買+8,688張（罕見！）：</strong>外資+5,295、投信+2,091、自營+1,301，三方同步大量買入是本週分析所有標的中最強的籌碼訊號。機構在最恐慌的下跌日積極建倉，對長線前景高度樂觀</div></div>
+      <div class="debate-item"><div class="debate-num bull">③</div><div class="debate-text"><strong>Jun月收3,852億 YoY+102.9%，年增首度破百分百！：</strong>廣達月收年增率從Q1的43-88%加速到Q2的94-120%，而最新6月更突破100%，代表GB300/NVL72的放量速度超越市場預期，Q2 EPS可能超過6元</div></div>
+      <div class="debate-item"><div class="debate-num bull">④</div><div class="debate-text"><strong>TTM PE 16.1x是台股AI大型股中最被低估標的：</strong>智邦PE 41.6x、緯穎PE 25x，廣達卻只有16.1x，本質上是市場對廣達「代工薄利」的固有偏見。但廣達Q1'26淨利211億元創新高，純粹從獲利能力看已是大型高獲利企業</div></div>
+      <div class="debate-item"><div class="debate-num bull">⑤</div><div class="debate-text"><strong>AI訂單能見度確認延伸至2027年後：</strong>廣達Q1法說確認AI訂單能見度已超過2027年，且同步上調通用型伺服器展望為雙位數成長。雙業務同步成長意味Q2 EPS能見度極高，下修風險極低</div></div>
+      <div class="debate-item"><div class="debate-num bull">⑥</div><div class="debate-text"><strong>增資8億美元擴充AI產能（自我信心最強表態）：</strong>董事會通過對海外子公司增資總計8億美元（約244億台幣），這代表廣達管理層對AI伺服器需求的確定性極有信心，是最直接的「用錢說話」行動</div></div>
+      <div class="debate-item"><div class="debate-num bull">⑦</div><div class="debate-text"><strong>Rubin世代布局完成後，廣達有望成為真正的AI基礎設施寡頭：</strong>野村預測廣達AI伺服器月收有望挑戰3兆元，若毛利率稍微回升至5.5-6%，EPS有望在2027-2028年突破28-35元，現價320元的長線吸引力極強</div></div>
+    </div>
+    <div class="debate-bear">
+      <div class="debate-title bear">🐻 看空研究員（理由）</div>
+      <div class="debate-item"><div class="debate-num bear">①</div><div class="debate-text"><strong>毛利率從7.92%跌至4.78%，AI伺服器「做越多賠越多」隱憂：</strong>Q1'26毛利率4.78%已是極低水準，若NVIDIA調整配件定價或客戶壓縮毛利，廣達的獲利可能遇到天花板；且CPU/PCB/液冷等材料成本若上漲，毛利率可能跌破4%</div></div>
+      <div class="debate-item"><div class="debate-num bear">②</div><div class="debate-text"><strong>五線全空，技術面中期趨勢尚未轉折：</strong>MA5（351）、MA10（363）、MA20（367）、MA60（351）全在現價上方，從320元到均線密集帶（363-367元）需上漲14%，短線反彈空間有限，每一條均線都是潛在拋壓</div></div>
+      <div class="debate-item"><div class="debate-num bear">③</div><div class="debate-text"><strong>從52W高438元已修正-26.9%，解套賣壓重：</strong>6月以來在380-438元區間的換手量估計超過百萬張，這些投資人都有解套意願，每次反彈至360-390元都將面臨沉重拋壓</div></div>
+      <div class="debate-item"><div class="debate-num bear">④</div><div class="debate-text"><strong>AI伺服器競爭加劇，廣達的NVIDIA獨家優勢可能弱化：</strong>Dell、HP、超微電腦（SMCI）等品牌廠也在積極爭搶NVIDIA GB300訂單，廣達的獨家/優先地位若被稀釋，ASP和訂單占比均可能下降</div></div>
+      <div class="debate-item"><div class="debate-num bear">⑤</div><div class="debate-text"><strong>CSP Capex過度集中，訂單週期風險：</strong>廣達極度依賴Amazon/Google/Meta/Microsoft四大CSP的資本支出計畫。若其中一家在2026 H2縮減AI伺服器投資（2025年曾有此擔憂），廣達月收可能出現超預期下滑</div></div>
+      <div class="debate-item"><div class="debate-num bear">⑥</div><div class="debate-text"><strong>月收波動性大，4-6月呈現MoM忽高忽低：</strong>Apr(3,399億)→May(3,115億→-8.4%)→Jun(3,852億)，月收月增率劇烈波動代表出貨節奏不均，若7月月收因出貨時間點問題回落至2,800億以下，市場可能再次失望性賣出</div></div>
+      <div class="debate-item"><div class="debate-num bear">⑦</div><div class="debate-text"><strong>MACD死叉且DIF=-4.48，動能尚未止跌：</strong>MACD DIF=-4.48仍在負值且DEA=+2.54，形成死叉格局。OSC（柱狀圖）=-7.02代表下跌動能擴大中，今日+1.27%的小反彈可能只是超賣後的技術性彈跳，非趨勢反轉</div></div>
+    </div>
+  </div>
+  <div class="debate-weight">
+    <div class="debate-weight-bull" style="width:62%">🐂 看多 62%</div>
+    <div class="debate-weight-bear" style="width:38%">🐻 看空 38%</div>
+  </div>
+  <div class="card" style="margin-top:16px;background:#fff7ed;border:1px solid #fed7aa;">
+    <h4 style="color:#ea580c;margin-bottom:8px;">💬 給一般投資人的話</h4>
+    <p style="font-size:.87em;line-height:1.8;color:#374151;">
+      廣達的故事非常清楚：AI伺服器月收年增超過100%，訂單旺到2027年，三大法人全部在低點買入，估值是AI大型股中最便宜的（PE 16x）。從基本面看，現在的320元買廣達是這兩年以來「最有道理的時間點」之一。
+      <br><br>
+      但有兩個風險要特別留意：第一，<strong>毛利率4.78%極低</strong>，廣達本質上是薄利多銷模式，一旦遇到材料成本上漲或客戶議價壓力，EPS成長可能被壓縮。第二，<strong>技術面還在空頭格局</strong>，均線反壓層層疊疊，即使底部出現，要回到400元也需要時間。
+      <br><br>
+      <strong>建議：</strong>310-335元是進攻型買點（布林下軌區間），若今日320元已在此區，可以先建倉1/3。等待RSI回到40以上且收回布林下軌（333元）時加碼第二批。停損設定295元，若跌破則代表廣達出現基本面意外，需重新評估。
+    </p>
+  </div>
+</div>
+</div>
+
+<!-- 11 風控 -->
+<div class="section">
+  <div class="section-title">🛡️ 風控六維評分</div>
+  <div class="risk-grid">
+    <div class="risk-dim">
+      <div class="risk-dim-name">估值風險（30%）</div>
+      <div class="risk-dim-score low">2.0 / 10</div>
+      <div class="score-bar"><div class="score-fill green" style="width:20%"></div></div>
+      <div class="risk-dim-desc">TTM PE 16.1x、Forward PE 14.4x，台股AI大型股最便宜標的。估值風險極低，若市場修正對廣達的偏見，有顯著重估潛力</div>
+    </div>
+    <div class="risk-dim">
+      <div class="risk-dim-name">財務風險（25%）</div>
+      <div class="risk-dim-score mid">4.5 / 10</div>
+      <div class="score-bar"><div class="score-fill amber" style="width:45%"></div></div>
+      <div class="risk-dim-desc">月收年增100%強，但毛利率下滑至4.78%是最大隱憂。薄利多銷模式對材料成本和客戶議價極為敏感，財務風險中等偏低</div>
+    </div>
+    <div class="risk-dim">
+      <div class="risk-dim-name">流動性風險（10%）</div>
+      <div class="risk-dim-score low">2.0 / 10</div>
+      <div class="score-bar"><div class="score-fill green" style="width:20%"></div></div>
+      <div class="risk-dim-desc">市值1.23兆，日均成交量2-3萬張以上，台股核心流動性標的之一，流動性極佳</div>
+    </div>
+    <div class="risk-dim">
+      <div class="risk-dim-name">產業風險（15%）</div>
+      <div class="risk-dim-score mid">4.0 / 10</div>
+      <div class="score-bar"><div class="score-fill amber" style="width:40%"></div></div>
+      <div class="risk-dim-desc">AI伺服器需求結構性成長，但CSP Capex集中風險、NVIDIA依存度高、競爭者（SMCI/Dell/鴻海）持續擠壓</div>
+    </div>
+    <div class="risk-dim">
+      <div class="risk-dim-name">總經風險（10%）</div>
+      <div class="risk-dim-score mid">4.0 / 10</div>
+      <div class="score-bar"><div class="score-fill amber" style="width:40%"></div></div>
+      <div class="risk-dim-desc">美中貿易摩擦（AI伺服器出口管制）、美元匯率影響出口收益、美國AI政策（算力管制）是主要總經風險</div>
+    </div>
+    <div class="risk-dim">
+      <div class="risk-dim-name">籌碼風險（10%）</div>
+      <div class="risk-dim-score low">2.0 / 10</div>
+      <div class="score-bar"><div class="score-fill green" style="width:20%"></div></div>
+      <div class="risk-dim-desc">三大法人7/20全部買超+8,688張（本週分析最強籌碼）；但438→320區間的高位套牢盤仍有解套壓力</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:20px;text-align:center;padding:28px;">
+    <div style="font-size:4em;font-weight:900;color:#16a34a;">3.5</div>
+    <div style="font-size:1.1em;color:#14532d;font-weight:600;">/ 10 — 低風險（本週分析最低！）</div>
+    <p style="font-size:.85em;color:#64748b;margin-top:10px;max-width:500px;margin-left:auto;margin-right:auto;">
+      加權：2.0×30% + 4.5×25% + 2.0×10% + 4.0×15% + 4.0×10% + 2.0×10% = 0.6+1.125+0.2+0.6+0.4+0.2 = <strong>3.125 ≈ 3.5分</strong><br>
+      估值便宜、籌碼強、流動性佳，主要風險是毛利率薄和技術面空頭格局。整體風險評級為本週所有分析標的中最低。
+    </p>
+  </div>
+</div>
+
+<!-- 12 三段式策略 -->
+<div style="background:linear-gradient(135deg,#431407,#ea580c);padding:40px 0;">
+<div class="section" style="padding-top:0;padding-bottom:0;">
+  <div class="section-title" style="color:white;border-left-color:white;">🎯 台股三段式操作策略</div>
+  <div class="strategy-grid">
+    <div class="strat-attack">
+      <div class="strat-title">⚡ 進攻策略</div>
+      <div class="strat-item"><strong>適合對象</strong>積極型，能承受短期-10%波動</div>
+      <div class="strat-item"><strong>布局區間</strong>310 ~ 335元（布林下軌以下/附近）</div>
+      <div class="strat-item"><strong>分批方式</strong>3批：315/320/310各1/3倉</div>
+      <div class="strat-item"><strong>目標一</strong>367元（布林中軌/MA20）→+14.7%</div>
+      <div class="strat-item"><strong>目標二</strong>400元（野村目標，前高區）→+25%</div>
+      <div class="strat-item"><strong>停損設定</strong>跌破295元（心理關）出場</div>
+      <div class="strat-item"><strong>觸發條件</strong>今日已在進攻區！三大法人已確認買超</div>
+    </div>
+    <div class="strat-balance">
+      <div class="strat-title">⚖️ 均衡策略</div>
+      <div class="strat-item"><strong>適合對象</strong>穩健型，等技術確認後布局</div>
+      <div class="strat-item"><strong>布局區間</strong>333 ~ 355元（收回布林下軌後）</div>
+      <div class="strat-item"><strong>觸發條件</strong>收盤收復布林下軌（333）+RSI回升35</div>
+      <div class="strat-item"><strong>目標</strong>367-390元 → +8-18%</div>
+      <div class="strat-item"><strong>停損設定</strong>再跌破315元出場</div>
+      <div class="strat-item"><strong>加碼條件</strong>Q2法說EPS超預期（>5.5元），確認後加倉</div>
+    </div>
+    <div class="strat-defend">
+      <div class="strat-title">🛡️ 防守策略</div>
+      <div class="strat-item"><strong>適合對象</strong>保守型，只等最安全信號</div>
+      <div class="strat-item"><strong>等待條件</strong>Q2'26法說會確認EPS超預期</div>
+      <div class="strat-item"><strong>布局時機</strong>法說後拉回至350-370元</div>
+      <div class="strat-item"><strong>目標</strong>400-438元 → +10-25%</div>
+      <div class="strat-item"><strong>停損</strong>跌破320元 → 重新評估基本面</div>
+      <div class="strat-item"><strong>核心觀察</strong>毛利率是否有改善跡象（>5.5%）</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:20px;background:rgba(255,255,255,.1);color:white;border-radius:16px;">
+    <h4 style="margin-bottom:12px;">📅 關鍵催化劑時程表</h4>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;font-size:.85em;">
+      <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:14px;">
+        <div style="font-weight:700;margin-bottom:6px;">📊 Q2'26法說會</div>
+        <div style="opacity:.85;">預計7月底/8月初。Q2 EPS若突破6元（月收10,366億支撐），可能帶動股價重回380元+</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:14px;">
+        <div style="font-weight:700;margin-bottom:6px;">🔥 Rubin布局確認</div>
+        <div style="opacity:.85;">若廣達宣布獲得Rubin平台ODM訂單，代表2027-2028年成長動能確定，可能推動估值重估</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:14px;">
+        <div style="font-weight:700;margin-bottom:6px;">💰 7月月收追蹤</div>
+        <div style="opacity:.85;">8月初公告。若7月月收維持3,500億以上，確認Q2的高水準非季末一次性，是最重要近期確認</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:14px;">
+        <div style="font-weight:700;margin-bottom:6px;">📈 毛利率改善</div>
+        <div style="opacity:.85;">若Q2毛利率從4.78%回升至5.5%+，代表廣達議價能力改善，估值可望從16x提升至20x+</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 13 名詞小教室 -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">GB200 / GB300（NVIDIA GPU平台）</div>
+      <div class="glossary-def">NVIDIA最新一代AI訓練用GPU。GB200是「Blackwell Ultra」架構，GB300是更新款。一台「NVL72」整機櫃包含72顆GB200/GB300 GPU，是目前最強大的AI訓練系統，售價200-300萬美元。廣達是全球最大的NVL72製造商。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">ODM（Original Design Manufacturer）</div>
+      <div class="glossary-def">「原廠設計製造商」。ODM廠負責完整的設計和製造，產品交給品牌客戶貼牌銷售。廣達是全球最大AI伺服器ODM，幫Amazon、Google、Meta設計並製造定制AI伺服器，客戶掛自己的品牌（或不掛牌）直接裝入資料中心。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">L10 / L11（整合層級）</div>
+      <div class="glossary-def">AI伺服器製造的整合程度分級。L10 = 完整系統（將GPU/CPU/記憶體等組裝成一台完整伺服器）；L11 = 整機櫃交付（72台伺服器全部組裝在一個機架上，加上液冷管路、網路配線，直接推進資料中心插電即用）。廣達L11能力是其高端護城河。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">DLC（Direct Liquid Cooling）液冷</div>
+      <div class="glossary-def">直接液冷技術。GB200每顆GPU功耗超過1,000W，傳統風冷已無法散熱。DLC使用冷卻水直接接觸CPU/GPU散熱片，效率提升3-5倍。廣達在DLC系統整合有5年以上經驗，是核心技術護城河，也是進入AI伺服器製造的最高門檻之一。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">CSP（Cloud Service Provider）超大型雲端業者</div>
+      <div class="glossary-def">指Amazon（AWS）、Google（GCP）、Microsoft（Azure）、Meta等每年花費數千億美元建設AI資料中心的超大型客戶。廣達有四大CSP都是長期客戶，訂單高度穩定，但也造成客戶集中風險——任何一家CSP削減Capex對廣達衝擊都很大。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Rubin（NVIDIA下世代）</div>
+      <div class="glossary-def">NVIDIA計畫2027年推出的下一代GPU架構，預計效能比GB300再提升3-5倍。廣達已在爭取Rubin系列的ODM訂單，若確認取得，將鎖定廣達在2027-2028年的成長動能，外資估計廣達AI月收有望挑戰3兆元年收。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">RSI（Relative Strength Index）相對強弱指標</div>
+      <div class="glossary-def">衡量股票在特定期間內「漲幅與跌幅」的相對強度。RSI在0-100之間，通常30以下為超賣（跌過頭）、70以上為超買（漲過頭）。廣達RSI 28.85已跌破30進入超賣區，歷史上RSI跌破30後通常會出現反彈——但RSI超賣只代表「跌太急」，不代表「底部確認」，還需配合籌碼訊號判斷。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Forward PE（預估本益比）</div>
+      <div class="glossary-def">用「未來12個月預估EPS」計算的本益比。廣達TTM PE 16.1x（用過去EPS算），但法人FY2026E EPS 22.22元，Forward PE = 320÷22.22 = 14.4x，顯得更便宜。因為廣達AI伺服器業務高速成長，用前瞻EPS看更能反映「未來賺更多」的事實。14.4x對於月收年增100%的公司而言，幾乎是被市場嚴重低估的訊號。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 14 免責聲明 -->
+<div class="section" style="padding-top:10px;">
+  <div class="disclaimer">
+    <h4>⚠️ 免責聲明</h4>
+    <p>
+      本報告由 AI 多角色分析團隊於 2026年7月21日 自動生成，僅供學術研究與資訊參考之用，<strong>不構成任何投資建議或邀約</strong>。
+      投資人應自行進行盡職調查，並諮詢合格財務顧問後再作出投資決定。過去績效不代表未來表現。
+      台股投資有風險，價格可能大幅波動，可能損失全部本金。
+      <br><br>
+      <strong>資料來源：</strong>Fugle API（即時股價）、FinMind API（K線/三大法人/月營收/財報）、
+      野村證券（目標價400元）、美系外資（目標價330元）、CMoney、廣達2026年Q1法說會摘要（5月14日）、
+      廣達2026年6月法說會（6月5日）、Yahoo股市、鉅亨網、EBC金融集團、DA Labs、口袋學堂。
+      <br>
+      <strong>分析時點：</strong>2026年7月21日盤中（台灣時間）。市場資訊持續變動，請以最新公告為準。
+    </p>
+  </div>
+</div>
+
+<script>
+// EPS Chart
+new Chart(document.getElementById('epsChart').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ["Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26"],
+    datasets: [{
+      label: 'EPS（元）',
+      data: [3.92, 4.32, 4.12, 5.06, 4.37, 4.26, 5.75, 5.5],
+      backgroundColor: ['#fdba74','#fdba74','#fdba74','#fdba74','#fdba74','#fdba74','#fdba74','#ea580c'],
+      borderColor: ['#ea580c','#ea580c','#ea580c','#ea580c','#ea580c','#ea580c','#ea580c','#c2410c'],
+      borderWidth: 2, borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `EPS: ${ctx.parsed.y}元` } } },
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { callback: v => v + '元', font: { size: 11 } } },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+// Revenue Chart
+new Chart(document.getElementById('revenueChart').getContext('2d'), {
+  type: 'line',
+  data: {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun🔥'],
+    datasets: [{
+      label: '月營收（億元）',
+      data: [2308, 2156, 3628, 3399, 3115, 3852],
+      borderColor: '#ea580c', backgroundColor: 'rgba(234,88,12,0.12)',
+      borderWidth: 3, fill: true, tension: 0.4,
+      pointBackgroundColor: ['#fdba74','#fdba74','#fdba74','#fdba74','#fdba74','#ea580c'],
+      pointBorderColor: '#ea580c', pointRadius: [5,5,5,5,5,8]
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.parsed.y.toLocaleString()}億元` } } },
+    scales: {
+      y: { min: 1500, grid: { color: '#f1f5f9' }, ticks: { callback: v => (v/1000).toFixed(1) + '千億', font: { size: 10 } } },
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+// PE Comparison
+new Chart(document.getElementById('peChart').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['廣達 TTM\n2382', '廣達 Forward\n2382', '鴻海\n2317', '緯穎\n6669', '智邦\n2345'],
+    datasets: [{
+      label: '本益比（倍）',
+      data: [16.1, 14.4, 15.0, 25.0, 41.6],
+      backgroundColor: ['#ea580c','#fb923c','#fdba74','#fdba74','#fde68a'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `PE: ${ctx.parsed.x}x` } } },
+    scales: {
+      x: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { callback: v => v + 'x', font: { size: 11 } } },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>
