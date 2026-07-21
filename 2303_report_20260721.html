@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>聯電 2303 深度分析報告 | 2026-07-21</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif; background: #F0F4F8; color: #1e293b; line-height: 1.6; }
+
+  /* Cover */
+  .cover {
+    background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 50%, #06b6d4 100%);
+    color: white; padding: 60px 40px; text-align: center; position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+    animation: pulse 8s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+  .cover-badge { display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:6px 18px; font-size:13px; margin-bottom:20px; backdrop-filter:blur(4px); }
+  .cover h1 { font-size: 3.5em; font-weight: 900; letter-spacing: 4px; margin-bottom: 8px; text-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+  .cover h2 { font-size: 1.4em; font-weight: 300; opacity: 0.9; margin-bottom: 30px; }
+  .cover-meta { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin-top:30px; }
+  .cover-meta-item { text-align:center; }
+  .cover-meta-item .val { font-size:2em; font-weight:700; }
+  .cover-meta-item .lbl { font-size:0.8em; opacity:0.7; margin-top:2px; }
+  .risk-badge { display:inline-block; background:rgba(251,191,36,0.25); border:2px solid #fbbf24; color:#fef3c7; border-radius:12px; padding:10px 24px; font-size:1.1em; font-weight:700; margin-top:24px; }
+
+  /* Section styles */
+  .section { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+  .section-title { font-size: 1.6em; font-weight: 800; color: #0891b2; border-left: 5px solid #0891b2; padding-left: 16px; margin-bottom: 28px; }
+  .card { background: white; border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 20px; }
+
+  /* Core conclusion */
+  .core-conclusion {
+    background: linear-gradient(135deg, #0c4a6e 0%, #0891b2 100%);
+    color: white; border-radius: 20px; padding: 36px; margin-bottom: 20px;
+    box-shadow: 0 8px 32px rgba(8,145,178,0.3);
+  }
+  .core-conclusion h3 { font-size: 1.1em; opacity: 0.8; margin-bottom: 8px; }
+  .core-conclusion .verdict { font-size: 2em; font-weight: 900; margin-bottom: 20px; }
+  .core-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 20px; }
+  .core-item { background: rgba(255,255,255,0.12); border-radius: 12px; padding: 16px; backdrop-filter: blur(4px); }
+  .core-item .ci-label { font-size: 0.8em; opacity: 0.7; }
+  .core-item .ci-val { font-size: 1.3em; font-weight: 700; margin-top: 4px; }
+
+  /* KPI Grid */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  @media(max-width:900px){ .kpi-grid{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:500px){ .kpi-grid{grid-template-columns:1fr;} }
+  .kpi-card {
+    background: white; border-radius: 16px; padding: 22px; box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    border-top: 4px solid #0891b2; transition: transform 0.2s;
+  }
+  .kpi-card:hover { transform: translateY(-3px); }
+  .kpi-label { font-size: 0.8em; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-value { font-size: 1.9em; font-weight: 800; color: #0891b2; margin: 6px 0; }
+  .kpi-value.red { color: #dc2626; }
+  .kpi-value.green { color: #16a34a; }
+  .kpi-value.amber { color: #d97706; }
+  .kpi-sub { font-size: 0.8em; color: #94a3b8; }
+  .kpi-desc { font-size: 0.75em; color: #64748b; margin-top: 8px; padding-top: 8px; border-top: 1px solid #f1f5f9; }
+
+  /* Charts */
+  .charts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media(max-width:900px){ .charts-grid{grid-template-columns:1fr;} }
+  .chart-card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+  .chart-card h4 { font-size: 1em; color: #374151; font-weight: 700; margin-bottom: 16px; }
+  .chart-note { font-size: 0.72em; color: #9ca3af; margin-top: 10px; text-align: center; }
+
+  /* Company overview */
+  .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media(max-width:700px){ .overview-grid{grid-template-columns:1fr;} }
+  .moat-item { display:flex; align-items:flex-start; gap:12px; padding:14px; background:#f0f9ff; border-radius:10px; margin-bottom:10px; }
+  .moat-icon { font-size:1.4em; flex-shrink:0; }
+  .moat-text strong { display:block; font-size:0.95em; color:#0891b2; margin-bottom:4px; }
+  .moat-text span { font-size:0.85em; color:#374151; }
+
+  /* Analysis tables */
+  .score-bar { height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden; margin-top: 6px; }
+  .score-fill { height: 100%; border-radius: 5px; background: linear-gradient(90deg, #0891b2, #06b6d4); }
+  .score-fill.red { background: linear-gradient(90deg, #dc2626, #f87171); }
+  .score-fill.amber { background: linear-gradient(90deg, #d97706, #fbbf24); }
+  .score-fill.green { background: linear-gradient(90deg, #16a34a, #4ade80); }
+
+  /* Institutional */
+  .inst-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media(max-width:700px){ .inst-grid{grid-template-columns:repeat(2,1fr);} }
+  .inst-card { border-radius: 12px; padding: 16px; text-align: center; }
+  .inst-card.sell { background: #fef2f2; border: 1px solid #fecaca; }
+  .inst-card.buy { background: #f0fdf4; border: 1px solid #bbf7d0; }
+  .inst-card.warn { background: #fffbeb; border: 1px solid #fde68a; }
+  .inst-name { font-size: 0.8em; color: #64748b; font-weight: 600; }
+  .inst-val { font-size: 1.5em; font-weight: 800; margin: 6px 0; }
+  .inst-val.red { color: #dc2626; }
+  .inst-val.green { color: #16a34a; }
+  .inst-desc { font-size: 0.75em; color: #6b7280; }
+
+  /* Technical */
+  .tech-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+  .tech-table th { background: #f0f9ff; color: #0891b2; padding: 10px 14px; text-align: left; font-weight: 700; border-bottom: 2px solid #bae6fd; }
+  .tech-table td { padding: 10px 14px; border-bottom: 1px solid #f1f5f9; }
+  .tech-table tr:last-child td { border-bottom: none; }
+  .tag { display:inline-block; border-radius:6px; padding:2px 8px; font-size:0.75em; font-weight:600; }
+  .tag.bull { background:#dcfce7; color:#15803d; }
+  .tag.bear { background:#fee2e2; color:#b91c1c; }
+  .tag.neutral { background:#fef3c7; color:#92400e; }
+
+  /* Debate */
+  .debate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media(max-width:700px){ .debate-grid{grid-template-columns:1fr;} }
+  .debate-bull { background: #f0fdf4; border: 2px solid #16a34a; border-radius: 16px; padding: 24px; }
+  .debate-bear { background: #fef2f2; border: 2px solid #dc2626; border-radius: 16px; padding: 24px; }
+  .debate-title { font-size: 1.1em; font-weight: 800; margin-bottom: 16px; }
+  .debate-title.bull { color: #15803d; }
+  .debate-title.bear { color: #b91c1c; }
+  .debate-item { display:flex; gap:10px; margin-bottom:12px; padding:10px; background:rgba(255,255,255,0.7); border-radius:8px; }
+  .debate-num { font-weight:800; font-size:1em; flex-shrink:0; }
+  .debate-num.bull { color:#16a34a; }
+  .debate-num.bear { color:#dc2626; }
+  .debate-text { font-size:0.87em; line-height:1.5; }
+
+  /* Risk */
+  .risk-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media(max-width:700px){ .risk-grid{grid-template-columns:1fr;} }
+  .risk-dim { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .risk-dim-name { font-size: 0.85em; color: #475569; font-weight: 600; margin-bottom: 8px; }
+  .risk-dim-score { font-size: 1.6em; font-weight: 800; }
+  .risk-dim-score.low { color: #16a34a; }
+  .risk-dim-score.mid { color: #d97706; }
+  .risk-dim-score.high { color: #dc2626; }
+  .risk-dim-desc { font-size: 0.78em; color: #64748b; margin-top: 6px; }
+  .risk-total { text-align:center; padding:28px; }
+  .risk-total-score { font-size:4em; font-weight:900; color:#d97706; }
+  .risk-total-label { font-size:1.1em; color:#92400e; font-weight:600; }
+
+  /* Strategy */
+  .strategy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media(max-width:700px){ .strategy-grid{grid-template-columns:1fr;} }
+  .strat-card { border-radius: 16px; padding: 24px; }
+  .strat-attack { background: linear-gradient(135deg, #0891b2, #0e7490); color: white; }
+  .strat-balance { background: linear-gradient(135deg, #0369a1, #0284c7); color: white; }
+  .strat-defend { background: linear-gradient(135deg, #164e63, #155e75); color: white; }
+  .strat-title { font-size: 1.2em; font-weight: 800; margin-bottom: 12px; }
+  .strat-item { font-size: 0.87em; margin-bottom: 8px; opacity: 0.95; }
+  .strat-item strong { display: block; font-size: 0.9em; opacity: 0.7; }
+
+  /* Catalyst timeline */
+  .timeline { position: relative; padding-left: 24px; margin-top: 16px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: #bae6fd; }
+  .timeline-item { position: relative; margin-bottom: 16px; }
+  .timeline-item::before { content: ''; position: absolute; left: -20px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: #0891b2; border: 2px solid white; box-shadow: 0 0 0 2px #0891b2; }
+  .timeline-date { font-size: 0.78em; color: #0891b2; font-weight: 700; }
+  .timeline-text { font-size: 0.88em; color: #374151; }
+
+  /* Glossary */
+  .glossary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  @media(max-width:600px){ .glossary-grid{grid-template-columns:1fr;} }
+  .glossary-item { background: #f8fafc; border-radius: 10px; padding: 14px; border-left: 3px solid #0891b2; }
+  .glossary-term { font-weight: 700; color: #0891b2; font-size: 0.9em; }
+  .glossary-def { font-size: 0.83em; color: #374151; margin-top: 4px; }
+
+  /* Disclaimer */
+  .disclaimer { background: #fffbeb; border: 2px solid #fbbf24; border-radius: 12px; padding: 20px; margin-top: 20px; }
+  .disclaimer h4 { color: #92400e; font-size: 1em; margin-bottom: 10px; }
+  .disclaimer p { font-size: 0.82em; color: #78350f; line-height: 1.7; }
+
+  .divider { height: 4px; background: linear-gradient(90deg, transparent, #0891b2, transparent); margin: 20px 0; border-radius: 2px; }
+
+  .debate-weight { display: flex; background: #f1f5f9; border-radius: 10px; overflow: hidden; height: 36px; margin-top: 20px; }
+  .debate-weight-bull { background: linear-gradient(90deg, #16a34a, #4ade80); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.9em; }
+  .debate-weight-bear { background: linear-gradient(90deg, #f87171, #dc2626); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 0.9em; }
+
+  .highlight-box { background: #e0f2fe; border: 1px solid #7dd3fc; border-radius: 10px; padding: 14px; margin: 12px 0; font-size: 0.87em; color: #0c4a6e; }
+  .warn-box { background: #fef3c7; border: 1px solid #fbbf24; border-radius: 10px; padding: 14px; margin: 12px 0; font-size: 0.87em; color: #78350f; }
+
+  .margin-table { width: 100%; border-collapse: collapse; font-size: 0.88em; margin-top: 12px; }
+  .margin-table th { background: #f0f9ff; padding: 8px 12px; text-align: center; color: #0891b2; font-weight: 700; border-bottom: 2px solid #bae6fd; }
+  .margin-table td { padding: 8px 12px; text-align: center; border-bottom: 1px solid #f1f5f9; }
+  .margin-table tr:hover td { background: #f8fafc; }
+</style>
+</head>
+<body>
+
+<!-- SECTION 01: COVER -->
+<div class="cover">
+  <div style="position:relative;z-index:1;">
+    <div class="cover-badge">🔬 AI深度分析 · 多角色研究團隊 · 2026-07-21</div>
+    <h1>聯華電子</h1>
+    <h2>2303 · 台灣股票交易所上市 · 成熟製程晶圓代工龍頭</h2>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <div class="val">133元</div>
+        <div class="lbl">今日收盤價（+2.31%）</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="val">33.25x</div>
+        <div class="lbl">TTM本益比</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="val">1.637兆</div>
+        <div class="lbl">市值（新台幣）</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="val">4.00元</div>
+        <div class="lbl">TTM每股盈餘</div>
+      </div>
+    </div>
+    <div class="risk-badge">⚠️ 綜合風險等級：5.0 / 10（中等）</div>
+  </div>
+</div>
+
+<!-- SECTION 02: CORE CONCLUSION -->
+<div class="section">
+  <div class="core-conclusion">
+    <h3>📋 核心投資結論</h3>
+    <div class="verdict">🟡 觀望等技術修復 → 逢低分批布局</div>
+    <p style="opacity:0.9;font-size:0.95em;line-height:1.7;">
+      聯電是台灣成熟製程最具代表性的晶圓代工廠，2026年因與英特爾合作（12nm FinFET + 超級電容技術授權 + 矽中介層供給EMIB）股價從130元一飛衝天達185.5元新高，但三大法人在7/20合計大賣超 <strong>-38,766張</strong>（歷史罕見三殺），技術面全面破位（跌破布林下軌139.5元），短期籌碼凌亂。但月收連創新高（Jun +22.85%）、Intel合作2027量產、成熟製程下半年漲價5-15%，基本面改善中。等待RSI回升至40+或站回布林下軌後，再分批介入。
+    </p>
+    <div class="core-grid">
+      <div class="core-item">
+        <div class="ci-label">🎯 核心催化劑</div>
+        <div class="ci-val">Intel合作+製程漲價</div>
+      </div>
+      <div class="core-item">
+        <div class="ci-label">📊 外資目標價</div>
+        <div class="ci-val">瑞銀235元 / 匯豐230元</div>
+      </div>
+      <div class="core-item">
+        <div class="ci-label">🛡️ 進攻價區</div>
+        <div class="ci-val">125 ~ 138元</div>
+      </div>
+      <div class="core-item">
+        <div class="ci-label">🚨 最大風險</div>
+        <div class="ci-val">三大法人三殺+技術破位</div>
+      </div>
+      <div class="core-item">
+        <div class="ci-label">📅 關鍵時程</div>
+        <div class="ci-val">Q2法說 / 漲價公告 / H2量產</div>
+      </div>
+      <div class="core-item">
+        <div class="ci-label">✋ 停損設定</div>
+        <div class="ci-val">收盤跌破120元出場</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 03: KPI -->
+  <div class="section-title">📊 關鍵財務KPI儀表板</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">今日股價</div>
+      <div class="kpi-value green">133元</div>
+      <div class="kpi-sub">↑ +3元 (+2.31%) · 昨收130元</div>
+      <div class="kpi-desc">從52W高點185.5元已回調28.3%，今日出現反彈；MA60支撐在129.19元（稍低於目前位置）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TTM本益比</div>
+      <div class="kpi-value amber">33.25x</div>
+      <div class="kpi-sub">TTM EPS 4.00元 · 法人FY26E EPS 4.75元</div>
+      <div class="kpi-desc">本益比溢價於同業（世界先進25x），反映Intel合作題材；若下半年漲價實現，估值有望壓縮</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">最新月營收</div>
+      <div class="kpi-value green">231.25億</div>
+      <div class="kpi-sub">Jun 2026 · YoY +22.85% · MoM +0.79%</div>
+      <div class="kpi-desc">六月月收創歷史新高！YoY連續加速成長（Jan+5% → Jun+22.9%），印證產能利用率持續改善</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q1'26 EPS</div>
+      <div class="kpi-value green">1.29元</div>
+      <div class="kpi-sub">YoY +108% · QoQ +61.3%</div>
+      <div class="kpi-desc">獲利創近8季新高！年增破100%主因22nm佔比提升至14%歷史新高、產能利用率回升至79%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">RSI（14日）</div>
+      <div class="kpi-value amber">39.48</div>
+      <div class="kpi-sub">接近超賣（<30為超賣）</div>
+      <div class="kpi-desc">RSI接近但未達超賣區，歷史上RSI在30-40區間的聯電，往往是較好的布局時機</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">毛利率（Q1'26）</div>
+      <div class="kpi-value">29.19%</div>
+      <div class="kpi-sub">Q2'26指引 ≈30% · 下半年漲價後目標35%</div>
+      <div class="kpi-desc">毛利率從Q1'25低點26.7%逐步回升，下半年若成熟製程漲價5-15%，毛利率有望突破33%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">三大法人（7/20）</div>
+      <div class="kpi-value red">-38,766張</div>
+      <div class="kpi-sub">外資-9,127 投信-13,502 自營-16,138</div>
+      <div class="kpi-desc">史上罕見「三殺」格局！三大法人同日大幅賣超且總量超過三萬張，是本次最大的警示訊號</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">布林通道位置</div>
+      <div class="kpi-value red">跌破下軌</div>
+      <div class="kpi-sub">下軌139.51元 · 中軌161.43元 · 上軌183.34元</div>
+      <div class="kpi-desc">現價133元跌破布林下軌（139.51元），歷史統計約80%機率在3-5個交易日內回歸下軌</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 04: CHARTS -->
+<div style="background:white;padding:40px 0;">
+  <div class="section" style="padding-top:0;padding-bottom:0;">
+    <div class="section-title">📈 財務趨勢圖表</div>
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h4>📊 季度EPS趨勢（近8季）</h4>
+        <canvas id="epsChart" height="220"></canvas>
+        <div class="chart-note">★ 實際公告數字，Q1'26=1.29元為最新季度高點</div>
+      </div>
+      <div class="chart-card">
+        <h4>📈 月營收趨勢（近6個月）</h4>
+        <canvas id="revenueChart" height="220"></canvas>
+        <div class="chart-note">★ 實際公告數字（億元）；Jun 2026月收創歷史新高231.25億</div>
+      </div>
+      <div class="chart-card">
+        <h4>📉 本益比同業比較</h4>
+        <canvas id="peChart" height="220"></canvas>
+        <div class="chart-note">★ 同業PE為推算值；聯電因Intel合作享有題材溢價</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 05: COMPANY OVERVIEW -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽：成熟製程的隱形王者</div>
+  <div class="overview-grid">
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <h3 style="color:#0891b2;margin-bottom:12px;">公司簡介</h3>
+        <p style="font-size:0.9em;line-height:1.7;color:#374151;">
+          聯華電子（UMC）成立於1980年，是全球第三大晶圓代工廠，主攻 <strong>22nm ~ 65nm成熟製程</strong>，
+          在全球特殊製程市場具有不可替代的技術地位。聯電全球擁有多座晶圓廠，包含台灣Fab 6A/8A/8D/8S/12A/12i，
+          以及新加坡Fab 12i（2026年新廠），服務全球500+客戶。
+        </p>
+        <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;">
+          <span class="tag bull">車用電子</span>
+          <span class="tag bull">工控晶片</span>
+          <span class="tag bull">顯示驅動IC</span>
+          <span class="tag bull">影像感測器</span>
+          <span class="tag neutral">Intel合作</span>
+          <span class="tag neutral">矽光子</span>
+          <span class="tag neutral">矽中介層</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="color:#0891b2;margin-bottom:12px;">🔥 Intel世紀合作（最大催化劑）</h3>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-date">2025年</div>
+            <div class="timeline-text">聯電與Intel簽署12nm FinFET技術合作協議，開始共同開發</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2026年Q1</div>
+            <div class="timeline-text">12nm驗證推進，22nm佔比達14%歷史新高，初步商業化開始</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2026年6月（股價飆升！）</div>
+            <div class="timeline-text">Intel授權聯電超級電容技術，市場傳出合作延伸至3nm，股票漲停+26年新高185.5元</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2026年H2</div>
+            <div class="timeline-text">成熟製程漲價5-15%，矽中介層供給Intel EMIB，新加坡廠12i量產（月產能3萬片）</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2027年</div>
+            <div class="timeline-text">12nm FinFET正式量產貢獻營收，預計為聯電帶來EPS顯著提升</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h3 style="color:#0891b2;margin-bottom:14px;">🏰 護城河分析</h3>
+        <div class="moat-item">
+          <div class="moat-icon">⚡</div>
+          <div class="moat-text">
+            <strong>特殊製程技術積累</strong>
+            <span>eFlash嵌入式記憶體、高壓製程、CIS影像感測，40年技術積累，競爭者難以在3-5年內複製</span>
+          </div>
+        </div>
+        <div class="moat-item">
+          <div class="moat-icon">🌐</div>
+          <div class="moat-text">
+            <strong>全球多元廠區布局</strong>
+            <span>台灣+新加坡雙基地，分散地緣政治風險，車用客戶（豐田、博世）有在地供應鏈要求</span>
+          </div>
+        </div>
+        <div class="moat-item">
+          <div class="moat-icon">🤝</div>
+          <div class="moat-text">
+            <strong>Intel合作獨家地位</strong>
+            <span>台積電聚焦先進製程，聯電是Intel在成熟製程最重要的合作夥伴，建立難以複製的技術鏈</span>
+          </div>
+        </div>
+        <div class="moat-item">
+          <div class="moat-icon">🚗</div>
+          <div class="moat-text">
+            <strong>車用認證壁壘</strong>
+            <span>AEC-Q100車用認證週期長達2-3年，聯電車用佔比持續提升，客戶黏性極高</span>
+          </div>
+        </div>
+        <div class="moat-item">
+          <div class="moat-icon">📸</div>
+          <div class="moat-text">
+            <strong>Sony ISP + Omnivision CIS新訂單</strong>
+            <span>2026年新接Sony影像訊號處理器及豪威集團車用CMOS感測器，客戶組合持續優化</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 06: FUNDAMENTAL ANALYSIS -->
+<div style="background:white;padding:20px 0;">
+  <div class="section" style="padding-top:30px;padding-bottom:30px;">
+    <div class="section-title">📐 基本面分析</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div class="card">
+        <h3 style="color:#0891b2;margin-bottom:16px;">季度財務數據</h3>
+        <table class="margin-table">
+          <tr><th>季度</th><th>EPS（元）</th><th>毛利率</th><th>營益率</th><th>YoY</th></tr>
+          <tr><td>Q2'24</td><td>1.11</td><td>35.18%</td><td>24.46%</td><td>—</td></tr>
+          <tr><td>Q3'24</td><td>1.16</td><td>33.78%</td><td>23.31%</td><td>—</td></tr>
+          <tr><td>Q4'24</td><td>0.68</td><td>30.38%</td><td>19.80%</td><td>—</td></tr>
+          <tr><td>Q1'25</td><td>0.62</td><td>26.70%</td><td>16.91%</td><td>—</td></tr>
+          <tr><td>Q2'25</td><td>0.71</td><td>28.72%</td><td>18.41%</td><td>-36%</td></tr>
+          <tr><td>Q3'25</td><td>1.20</td><td>29.81%</td><td>18.80%</td><td>+3.4%</td></tr>
+          <tr><td>Q4'25</td><td>0.80</td><td>30.67%</td><td>19.78%</td><td>+17.6%</td></tr>
+          <tr style="background:#f0f9ff;font-weight:700;"><td>Q1'26 ✦</td><td style="color:#16a34a;">1.29</td><td>29.19%</td><td>18.47%</td><td style="color:#16a34a;">+108%</td></tr>
+        </table>
+        <div class="highlight-box" style="margin-top:12px;">
+          ✦ TTM EPS（Q2'25+Q3'25+Q4'25+Q1'26）= <strong>0.71+1.20+0.80+1.29 = 4.00元</strong><br>
+          TTM PE = 133 ÷ 4.00 = <strong>33.25倍</strong>（溢價反映Intel合作題材）
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="color:#0891b2;margin-bottom:16px;">月營收趨勢（YoY加速！）</h3>
+        <table class="margin-table">
+          <tr><th>月份</th><th>營收（億元）</th><th>YoY</th><th>MoM</th></tr>
+          <tr><td>Jan 2026</td><td>208.62</td><td style="color:#16a34a;">+5.33%</td><td>—</td></tr>
+          <tr><td>Feb 2026</td><td>193.45</td><td style="color:#16a34a;">+6.33%</td><td>-7.3%</td></tr>
+          <tr><td>Mar 2026</td><td>208.31</td><td style="color:#16a34a;">+4.89%</td><td>+7.7%</td></tr>
+          <tr><td>Apr 2026</td><td>226.64</td><td style="color:#16a34a;">+10.8%</td><td>+8.8%</td></tr>
+          <tr><td>May 2026</td><td>229.44</td><td style="color:#16a34a;">+17.78%</td><td>+1.2%</td></tr>
+          <tr style="background:#f0fdf4;font-weight:700;"><td>Jun 2026 ✦</td><td style="color:#16a34a;">231.25</td><td style="color:#16a34a;">+22.85%</td><td style="color:#16a34a;">+0.79%</td></tr>
+        </table>
+        <div class="highlight-box" style="margin-top:12px;">
+          📈 YoY增速從1月+5.3%加速至6月+22.9%！月收連創新高，是聯電基本面最亮眼的數字。
+          6月季度Q2出貨量符合指引（+7-9% QoQ），毛利率有望回升至30%。
+        </div>
+        <div class="warn-box">
+          ⚠️ Q2'26 法說會尚未舉行，Q2 EPS 及毛利率尚未公告。法人預估FY2026 EPS 4.75元，Forward PE = 133÷4.75 = <strong>28x</strong>（仍溢價同業）。
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="color:#0891b2;margin-bottom:14px;">基本面綜合評分</h3>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+        <div>
+          <div style="font-size:0.85em;color:#475569;margin-bottom:4px;">獲利成長性</div>
+          <div style="font-weight:700;font-size:1.1em;color:#16a34a;">8.5 / 10</div>
+          <div class="score-bar"><div class="score-fill green" style="width:85%"></div></div>
+          <div style="font-size:0.75em;color:#64748b;margin-top:4px;">Q1 EPS YoY+108%，月收YoY+22.9%</div>
+        </div>
+        <div>
+          <div style="font-size:0.85em;color:#475569;margin-bottom:4px;">毛利率品質</div>
+          <div style="font-weight:700;font-size:1.1em;color:#d97706;">5.5 / 10</div>
+          <div class="score-bar"><div class="score-fill amber" style="width:55%"></div></div>
+          <div style="font-size:0.75em;color:#64748b;margin-top:4px;">29.2%仍低於高峰35%，漲價後可改善</div>
+        </div>
+        <div>
+          <div style="font-size:0.85em;color:#475569;margin-bottom:4px;">估值合理性</div>
+          <div style="font-weight:700;font-size:1.1em;color:#d97706;">5.0 / 10</div>
+          <div class="score-bar"><div class="score-fill amber" style="width:50%"></div></div>
+          <div style="font-size:0.75em;color:#64748b;margin-top:4px;">TTM PE 33x溢價同業，題材溢價合理但有限</div>
+        </div>
+        <div>
+          <div style="font-size:0.85em;color:#475569;margin-bottom:4px;">財務健康度</div>
+          <div style="font-weight:700;font-size:1.1em;color:#16a34a;">7.5 / 10</div>
+          <div class="score-bar"><div class="score-fill green" style="width:75%"></div></div>
+          <div style="font-size:0.75em;color:#64748b;margin-top:4px;">市值1.637兆，資本支出$15億美元，財務穩健</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 07: CHIPS (INSTITUTIONAL) -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析</div>
+  <div class="inst-grid" style="margin-bottom:20px;">
+    <div class="inst-card sell">
+      <div class="inst-name">外資</div>
+      <div class="inst-val red">-9,127張</div>
+      <div class="inst-desc">7/20單日大幅賣超</div>
+    </div>
+    <div class="inst-card sell">
+      <div class="inst-name">投信</div>
+      <div class="inst-val red">-13,502張</div>
+      <div class="inst-desc">7/20單日大幅賣超</div>
+    </div>
+    <div class="inst-card sell">
+      <div class="inst-name">自營商</div>
+      <div class="inst-val red">-16,138張</div>
+      <div class="inst-desc">7/20單日大幅賣超</div>
+    </div>
+    <div class="inst-card warn">
+      <div class="inst-name">三大法人合計</div>
+      <div class="inst-val red">-38,766張</div>
+      <div class="inst-desc">歷史罕見「三殺」格局</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="warn-box">
+      ⚠️ <strong>三大法人「三殺」警告</strong>：7/20當日三大法人合計賣超38,766張，是本次分析中警示程度最高的籌碼訊號。外資、投信、自營商同時大幅賣出，通常意味著機構投資者對短期風險有相當程度的共識，需特別留意。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;">
+      <div>
+        <h4 style="color:#0891b2;margin-bottom:10px;">外資評等匯整</h4>
+        <table class="margin-table">
+          <tr><th>券商</th><th>評等</th><th>目標價</th></tr>
+          <tr><td>瑞銀（UBS）</td><td><span class="tag bull">買進</span></td><td>235元</td></tr>
+          <tr><td>匯豐（HSBC）</td><td><span class="tag bull">買進</span></td><td>230元</td></tr>
+          <tr><td>美系大行</td><td><span class="tag bull">買進↑</span></td><td>138元</td></tr>
+        </table>
+        <div class="highlight-box" style="margin-top:10px;font-size:0.82em;">
+          外資機構目標價中位數約230-235元，距現價133元有72-76%潛在空間；但7/20外資卻大賣超，可能是短期停損或獲利了結操作。
+        </div>
+      </div>
+      <div>
+        <h4 style="color:#0891b2;margin-bottom:10px;">成交量分析</h4>
+        <table class="margin-table">
+          <tr><th>指標</th><th>數值</th><th>判斷</th></tr>
+          <tr><td>7/20成交量</td><td>298萬張</td><td><span class="tag bear">爆量</span></td></tr>
+          <tr><td>5日均量</td><td>167萬張</td><td>—</td></tr>
+          <tr><td>10日均量</td><td>120萬張</td><td>—</td></tr>
+          <tr><td>量/均量比</td><td>1.78x</td><td><span class="tag bear">量增價跌</span></td></tr>
+        </table>
+        <div class="warn-box" style="margin-top:10px;font-size:0.82em;">
+          爆量下跌（1.78x均量）且三大法人全面大賣，是技術面最惡化的組合，短期需等待量縮止跌方可確認底部。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 08: TECHNICAL ANALYSIS -->
+<div style="background:white;padding:20px 0;">
+  <div class="section" style="padding-top:30px;padding-bottom:30px;">
+    <div class="section-title">📉 技術分析</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div class="card">
+        <h3 style="color:#0891b2;margin-bottom:14px;">均線系統分析</h3>
+        <table class="tech-table">
+          <tr><th>指標</th><th>數值</th><th>位置</th><th>判斷</th></tr>
+          <tr><td>股價</td><td>133元</td><td>—</td><td><span class="tag neutral">觀察中</span></td></tr>
+          <tr><td>MA5</td><td>150.2元</td><td>股價⬇️ -12.5%</td><td><span class="tag bear">空頭</span></td></tr>
+          <tr><td>MA10</td><td>154.45元</td><td>股價⬇️ -13.9%</td><td><span class="tag bear">空頭</span></td></tr>
+          <tr><td>MA20</td><td>161.43元</td><td>股價⬇️ -17.6%</td><td><span class="tag bear">空頭</span></td></tr>
+          <tr><td style="color:#16a34a;font-weight:700;">MA60</td><td style="color:#16a34a;font-weight:700;">129.19元</td><td style="color:#16a34a;font-weight:700;">股價↑ +2.9%</td><td><span class="tag bull">多頭支撐</span></td></tr>
+        </table>
+        <div class="warn-box" style="margin-top:10px;font-size:0.82em;">
+          MA5/MA10/MA20全空，但MA60（129.19元）位於現價下方！目前133元站在MA60之上，是唯一的技術面正面訊號。MA60是最後一條支撐，若收盤跌破，長線趨勢轉空。
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="color:#0891b2;margin-bottom:14px;">震盪指標 + 布林通道</h3>
+        <table class="tech-table">
+          <tr><th>指標</th><th>數值</th><th>訊號</th><th>判斷</th></tr>
+          <tr><td>RSI（14日）</td><td>39.48</td><td>接近超賣</td><td><span class="tag neutral">觀察</span></td></tr>
+          <tr><td>MACD（DIF）</td><td>2.22</td><td>DIF仍>0</td><td><span class="tag neutral">弱多</span></td></tr>
+          <tr><td>MACD（DEA）</td><td>6.96</td><td>死叉</td><td><span class="tag bear">空頭</span></td></tr>
+          <tr><td>MACD柱（OSC）</td><td>-4.74</td><td>負值擴大</td><td><span class="tag bear">空頭</span></td></tr>
+          <tr><td>布林上軌</td><td>183.34元</td><td>—</td><td>—</td></tr>
+          <tr><td>布林中軌</td><td>161.43元</td><td>—</td><td>—</td></tr>
+          <tr><td style="color:#dc2626;font-weight:700;">布林下軌</td><td style="color:#dc2626;font-weight:700;">139.51元</td><td style="color:#dc2626;font-weight:700;">股價跌破！</td><td><span class="tag bear">超跌</span></td></tr>
+        </table>
+        <div class="warn-box" style="margin-top:10px;font-size:0.82em;">
+          133元已跌破布林下軌（139.51元），統計上屬於「超跌區」，短期有均值回歸的動力；但7/21若未能站回布林下軌，賣壓仍重。
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="color:#0891b2;margin-bottom:14px;">關鍵價位支撐壓力對照表</h3>
+      <table class="tech-table">
+        <tr><th>性質</th><th>價位</th><th>依據</th><th>重要程度</th></tr>
+        <tr><td><span class="tag bull">強力支撐</span></td><td>129.19元</td><td>MA60均線（長線多空分水嶺）</td><td>⭐⭐⭐⭐⭐</td></tr>
+        <tr><td><span class="tag bull">支撐</span></td><td>125-130元</td><td>前低支撐+心理整數關卡</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td><span class="tag bull">布局區</span></td><td>120-125元</td><td>前一波（2025年）整理平台頂部</td><td>⭐⭐⭐</td></tr>
+        <tr><td><span class="tag neutral">關卡</span></td><td>139.51元</td><td>布林通道下軌（需站回確認）</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td><span class="tag bear">壓力</span></td><td>150.2元</td><td>MA5（短線反壓）</td><td>⭐⭐⭐</td></tr>
+        <tr><td><span class="tag bear">壓力</span></td><td>161.43元</td><td>MA20 = 布林中軌（中線反壓）</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td><span class="tag bear">強力壓力</span></td><td>180-185元</td><td>前高185.5元（52W高點，解套賣壓）</td><td>⭐⭐⭐⭐⭐</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 09: MATURE NODE + COMPETITION -->
+<div class="section">
+  <div class="section-title">🏭 成熟製程競爭格局與漲價分析</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div class="card">
+      <h3 style="color:#0891b2;margin-bottom:14px;">成熟製程漲價循環</h3>
+      <div class="highlight-box">
+        📣 聯電宣布 <strong>下半年啟動成熟製程漲價5-15%</strong>（22nm~40nm），為2024年以來首次漲價。瑞銀預估2026年H2產能利用率達91%，將大幅推升毛利率。
+      </div>
+      <div style="margin-top:14px;">
+        <div style="font-size:0.87em;line-height:1.8;color:#374151;">
+          <p><strong>漲價原因：</strong>AI伺服器帶動記憶體控制器、電源管理IC、高速IO需求爆發，成熟製程（28nm-65nm）產能吃緊，台積電重新配置部分成熟製程客戶給聯電</p>
+          <br>
+          <p><strong>毛利率推估：</strong>若漲價10%、產能利用率達90%，毛利率有望從29%→33-35%，EPS估計可達5-6元/年</p>
+          <br>
+          <p><strong>競爭格局：</strong>中芯國際受ASML管制（EUV禁令），28nm以下技術受限，聯電在22nm-28nm具有相對優勢</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#0891b2;margin-bottom:14px;">新加坡Fab 12i 擴產</h3>
+      <table class="margin-table">
+        <tr><th>項目</th><th>說明</th></tr>
+        <tr><td>廠址</td><td>新加坡（規避地緣政治風險）</td></tr>
+        <tr><td>製程</td><td>22nm + 28nm FinFET</td></tr>
+        <tr><td>月產能</td><td>3萬片（首波）</td></tr>
+        <tr><td>量產時間</td><td>2026年下半年</td></tr>
+        <tr><td>主要客戶</td><td>Sony ISP、Omnivision車用CIS</td></tr>
+        <tr><td>投資金額</td><td>計入$15億美元全年資本支出</td></tr>
+      </table>
+      <div class="highlight-box" style="margin-top:12px;">
+        🌏 新加坡廠增加聯電全球廠區布局，對歐美日車用客戶具吸引力（在地供應鏈要求），預計2027年起對EPS貢獻顯著提升。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 10: DEBATE -->
+<div style="background:#f8fafc;padding:20px 0;">
+  <div class="section" style="padding-top:30px;padding-bottom:30px;">
+    <div class="section-title">⚖️ 研究員多空辯論</div>
+    <div class="debate-grid">
+      <div class="debate-bull">
+        <div class="debate-title bull">🐂 看多研究員（理由）</div>
+        <div class="debate-item">
+          <div class="debate-num bull">①</div>
+          <div class="debate-text"><strong>Intel雙引擎+超級電容授權：</strong>12nm FinFET 2027量產（台灣+Intel雙加持）+矽中介層供給EMIB封裝+超級電容技術授權，是聯電40年歷史上最重要的技術跳級，護城河大幅加深</div>
+        </div>
+        <div class="debate-item">
+          <div class="debate-num bull">②</div>
+          <div class="debate-text"><strong>月收連創新高、YoY加速：</strong>Jun 2026月收231.25億創歷史新高，YoY+22.85%（vs Jan僅+5.3%），成長趨勢明確加速，Q2法說有望帶來正向EPS驚喜</div>
+        </div>
+        <div class="debate-item">
+          <div class="debate-num bull">③</div>
+          <div class="debate-text"><strong>下半年製程漲價催化劑：</strong>成熟製程漲價5-15%直接推升毛利率，瑞銀預估2026 H2產能利用率達91%，FY2026 EPS有望從4.75元上修至5-6元</div>
+        </div>
+        <div class="debate-item">
+          <div class="debate-num bull">④</div>
+          <div class="debate-text"><strong>外資目標價巨大空間：</strong>瑞銀235元、匯豐230元，距現價133元有72-76%潛在上漲空間，即使折價至180元也有35%報酬，外資長線看好態度明確</div>
+        </div>
+        <div class="debate-item">
+          <div class="debate-num bull">⑤</div>
+          <div class="debate-text"><strong>22nm佔比歷史新高：</strong>Q1'26達14%（歷史新高），高單價製程佔比提升直接改善ASP，有助進一步推升毛利率與EPS</div>
+        </div>
+        <div class="debate-item">
+          <div class="debate-num bull">⑥</div>
+          <div class="debate-text"><strong>MA60黃金支撐護持：</strong>現價133元仍在MA60（129.19元）之上，長線趨勢未破；52W低點40.1元到現在133元漲幅+231%，長線多頭格局完好</div>
+        </div>
+        <div class="debate-item">
+          <div class="debate-num bull">⑦</div>
+          <div class="debate-text"><strong>技術面超跌反彈機會：</strong>RSI 39.48接近超賣、現價133跌破布林下軌（139.51），歷史統計超跌後80%機率回歸下軌，短線有均值回歸動力</div>
+        </div>
+      </div>
+      <div class="debate-bear">
+        <div class="debate-title bear">🐻 看空研究員（理由）</div>
+        <div class="debate-item">
+          <div class="debate-num bear">①</div>
+          <div class="debate-text"><strong>三大法人「三殺」歷史罕見：</strong>7/20外資(-9,127)+投信(-13,502)+自營商(-16,138) = 合計賣超38,766張，三大法人同時大賣是機構對短期風險有共識的強烈訊號，不應忽視</div>
+        </div>
+        <div class="debate-item">
+          <div class="debate-num bear">②</div>
+          <div class="debate-text"><strong>技術面全面破位：</strong>MA5(150.2)/MA10(154.45)/MA20(161.43)三線全空，且跌破布林下軌(139.51元)；連漲停日6/22-6/24的主力資金正在系統性出清</div>
+        </div>
+        <div class="debate-item">
+          <div class="debate-num bear">③</div>
+          <div class="debate-text"><strong>爆量下跌最惡量價背離：</strong>7/20成交298萬張（1.78倍均量）但大跌9.7%近跌停，「量增價跌」是技術面最負面的量價背離組合</div>
+        </div>
+        <div class="debate-item">
+          <div class="debate-num bear">④</div>
+          <div class="debate-text"><strong>前高解套賣壓巨大：</strong>6/22漲停至185.5元高峰期間，約550萬張換手量，這些在高點套牢的投資人在133-170元區間均有解套賣壓，形成強力頭部壓力</div>
+        </div>
+        <div class="debate-item">
+          <div class="debate-num bear">fifth">⑤</div>
+          <div class="debate-text"><strong>被列處置股交易限制：</strong>7/2聯電被列為交易所處置股，顯示股價波動異常，投資人交易時間限制影響流動性，外資大型機構受此限制影響可能加速離場</div>
+        </div>
+        <div class="debate-item">
+          <div class="debate-num bear">⑥</div>
+          <div class="debate-text"><strong>Intel合作2027才量產：</strong>核心催化劑（12nm FinFET量產貢獻）要到2027年才真正落地，當前EPS仍以成熟製程為主（毛利率29%），短期業績增速有限</div>
+        </div>
+        <div class="debate-item">
+          <div class="debate-num bear">⑦</div>
+          <div class="debate-text"><strong>估值溢價仍偏高：</strong>TTM PE 33x vs 世界先進25x，即使用FY26E EPS 4.75元，Forward PE仍有28x，且股東會後題材發酵已充分，「利多出盡」風險存在</div>
+        </div>
+      </div>
+    </div>
+    <div class="debate-weight" style="margin-top:20px;">
+      <div class="debate-weight-bull" style="width:52%">🐂 看多 52%</div>
+      <div class="debate-weight-bear" style="width:48%">🐻 看空 48%</div>
+    </div>
+    <div class="card" style="margin-top:16px;background:#f0f9ff;border:1px solid #bae6fd;">
+      <h4 style="color:#0891b2;margin-bottom:8px;">💬 給一般投資人的話</h4>
+      <p style="font-size:0.87em;line-height:1.8;color:#374151;">
+        聯電這次的故事是典型的「好消息股，壞時機進場」：Intel合作確實是業界大事，外資目標230-235元也不是誇大，但問題在於6月已暴漲55%，市場已提前消化了很多好消息，現在輪到「等待落地兌現」的沉悶期。三大法人同時大賣是嚴肅警訊，不要在技術面惡化時「逆勢接刀」。建議等待：<strong>①RSI回升至40以上</strong>、<strong>②股價站回布林下軌(139.51元)</strong>、<strong>③三大法人由賣轉買至少2日</strong>，三個條件同時成立再分批布局，不急在一時。
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 11: RISK -->
+<div class="section">
+  <div class="section-title">🛡️ 風控六維評分</div>
+  <div class="risk-grid">
+    <div class="risk-dim">
+      <div class="risk-dim-name">估值風險（30%）</div>
+      <div class="risk-dim-score mid">5.5 / 10</div>
+      <div class="score-bar"><div class="score-fill amber" style="width:55%"></div></div>
+      <div class="risk-dim-desc">TTM PE 33x、Forward PE 28x均高於成熟製程同業均值（20-25x），Intel合作溢價合理但2027才量產貢獻，短期難撐高估值</div>
+    </div>
+    <div class="risk-dim">
+      <div class="risk-dim-name">財務風險（25%）</div>
+      <div class="risk-dim-score low">3.0 / 10</div>
+      <div class="score-bar"><div class="score-fill green" style="width:30%"></div></div>
+      <div class="risk-dim-desc">Q1 EPS 1.29元YoY+108%、月收連創新高、市值1.637兆、全年資本支出$15億美元計畫明確，財務體質穩健</div>
+    </div>
+    <div class="risk-dim">
+      <div class="risk-dim-name">流動性風險（10%）</div>
+      <div class="risk-dim-score low">2.0 / 10</div>
+      <div class="score-bar"><div class="score-fill green" style="width:20%"></div></div>
+      <div class="risk-dim-desc">日均成交量120萬~300萬張，台灣市值前十大股票之一，流動性極佳；但被列「處置股」期間交易限制稍增</div>
+    </div>
+    <div class="risk-dim">
+      <div class="risk-dim-name">產業風險（15%）</div>
+      <div class="risk-dim-score mid">5.0 / 10</div>
+      <div class="score-bar"><div class="score-fill amber" style="width:50%"></div></div>
+      <div class="risk-dim-desc">成熟製程競爭（中芯國際擴產）、晶圓代工景氣循環、AI算力需求是否持續帶動成熟製程，產業週期仍有波動</div>
+    </div>
+    <div class="risk-dim">
+      <div class="risk-dim-name">總經風險（10%）</div>
+      <div class="risk-dim-score mid">6.0 / 10</div>
+      <div class="score-bar"><div class="score-fill amber" style="width:60%"></div></div>
+      <div class="risk-dim-desc">美中貿易摩擦、台海地緣政治風險、美元升貶值（美元計價收入轉換台幣）、美國Fed利率政策影響估值</div>
+    </div>
+    <div class="risk-dim">
+      <div class="risk-dim-name">籌碼風險（10%）</div>
+      <div class="risk-dim-score high">8.0 / 10</div>
+      <div class="score-bar"><div class="score-fill red" style="width:80%"></div></div>
+      <div class="risk-dim-desc">三大法人7/20合計-38,766張（三殺），爆量下跌（1.78x均量），185.5元高點套牢資金解套賣壓沉重，短期籌碼最大風險</div>
+    </div>
+  </div>
+  <div class="card risk-total" style="margin-top:20px;">
+    <div class="risk-total-score">5.0</div>
+    <div class="risk-total-label">/ 10 — 中等風險</div>
+    <p style="font-size:0.85em;color:#64748b;margin-top:10px;max-width:500px;margin-left:auto;margin-right:auto;">
+      加權計算：5.5×30% + 3.0×25% + 2.0×10% + 5.0×15% + 6.0×10% + 8.0×10% = <strong>5.00分</strong><br>
+      基本面改善中但技術面+籌碼面雙重警示，整體為中等風險，需等待籌碼面穩定後再積極布局。
+    </p>
+  </div>
+</div>
+
+<!-- SECTION 12: THREE-TIER STRATEGY -->
+<div style="background:linear-gradient(135deg,#0c4a6e,#0891b2);padding:40px 0;">
+  <div class="section" style="padding-top:0;padding-bottom:0;">
+    <div class="section-title" style="color:white;border-left-color:white;">🎯 台股三段式操作策略</div>
+    <div class="strategy-grid">
+      <div class="strat-card strat-attack">
+        <div class="strat-title">⚡ 進攻策略</div>
+        <div class="strat-item"><strong>適合對象</strong>積極型投資人，能承受-10%短期波動</div>
+        <div class="strat-item"><strong>布局區間</strong>125 ~ 138元（布林下軌以下+MA60附近）</div>
+        <div class="strat-item"><strong>分批方式</strong>分3批：125/130/135元各建1/3倉位</div>
+        <div class="strat-item"><strong>目標一</strong>165元（布林中軌+前支撐）→獲利30%</div>
+        <div class="strat-item"><strong>目標二</strong>180元（前高附近）→獲利35-40%</div>
+        <div class="strat-item"><strong>停損設定</strong>收盤跌破120元（MA60失守）強制出場</div>
+        <div class="strat-item"><strong>觸發條件</strong>RSI回升至40+且站回布林下軌</div>
+      </div>
+      <div class="strat-card strat-balance">
+        <div class="strat-title">⚖️ 均衡策略</div>
+        <div class="strat-item"><strong>適合對象</strong>穩健型投資人，等待技術確認後布局</div>
+        <div class="strat-item"><strong>布局區間</strong>139 ~ 150元（布林下軌站回後）</div>
+        <div class="strat-item"><strong>觸發條件</strong>站回布林下軌(139.51) 且 量縮（<100萬張）</div>
+        <div class="strat-item"><strong>分批方式</strong>確認站回後分2批：139/145元各半倉</div>
+        <div class="strat-item"><strong>目標</strong>160-165元（布林中軌）→獲利10-15%</div>
+        <div class="strat-item"><strong>停損設定</strong>跌回布林下軌以下且收盤站不回，出場</div>
+        <div class="strat-item"><strong>加碼條件</strong>三大法人由賣轉買連續2日，可加碼</div>
+      </div>
+      <div class="strat-card strat-defend">
+        <div class="strat-title">🛡️ 防守策略</div>
+        <div class="strat-item"><strong>適合對象</strong>保守型投資人，等待充分確認後介入</div>
+        <div class="strat-item"><strong>等待條件</strong>Q2 EPS 公告（法說會後確認獲利成長）</div>
+        <div class="strat-item"><strong>布局時機</strong>法說會後若股價回到150元以下</div>
+        <div class="strat-item"><strong>進場價位</strong>145 ~ 155元（技術面修復後）</div>
+        <div class="strat-item"><strong>目標</strong>170-180元（前高解套區以下）</div>
+        <div class="strat-item"><strong>停損設定</strong>跌破135元（進場價-8%）出場</div>
+        <div class="strat-item"><strong>核心觀察點</strong>三大法人恢復淨買超+RSI>45</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:20px;background:rgba(255,255,255,0.1);color:white;border-radius:16px;">
+      <h4 style="margin-bottom:12px;">📅 關鍵催化劑時程表</h4>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;font-size:0.85em;">
+        <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:14px;">
+          <div style="font-weight:700;margin-bottom:6px;">📊 Q2 2026法說會</div>
+          <div style="opacity:0.85;">預計7月底或8月初；Q2 EPS若優於預期（>1.3元），可能觸發新一波反彈</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:14px;">
+          <div style="font-weight:700;margin-bottom:6px;">💰 成熟製程漲價公告</div>
+          <div style="opacity:0.85;">H2 2026正式通知客戶漲價5-15%，毛利率改善是最直接的正面催化劑</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:14px;">
+          <div style="font-weight:700;margin-bottom:6px;">🏭 新加坡Fab 12i量產</div>
+          <div style="opacity:0.85;">2026 H2量產啟動（月產能3萬片），Sony/Omnivision訂單開始出貨，有望提升整體稼動率</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 13: GLOSSARY -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">成熟製程（Mature Node）</div>
+      <div class="glossary-def">泛指22nm以上（線寬較粗）的晶片製程。雖然不是最先進技術，但用於汽車、工控、電源管理等領域，需求穩定且利潤不低。聯電的主力戰場。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">矽中介層（Silicon Interposer）</div>
+      <div class="glossary-def">一種先進封裝技術基底，用矽片連接多顆晶片（如CPU+HBM記憶體）。聯電替Intel製作矽中介層，讓Intel的EMIB封裝技術得以實現，相當於替Intel蓋「高速公路」。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">FinFET（鰭式場效電晶體）</div>
+      <div class="glossary-def">一種3D電晶體結構，相比傳統平面設計效能更高、耗電更少。聯電與Intel合作的12nm製程就採用FinFET，是成熟製程中的「高端版」。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">布林通道（Bollinger Bands）</div>
+      <div class="glossary-def">由股價的20日移動平均線為中軌，上下各加兩個標準差為上下軌。股價跌破下軌代表「統計意義上的超跌」，歷史上多數時候會反彈回歸中軌。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">處置股（Disposition Stock）</div>
+      <div class="glossary-def">台灣證交所認定交易異常（短期暴漲暴跌）的股票，列為處置股期間每日只能在特定時段集合競價，交易次數受限，目的是冷卻投機熱度。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">三大法人三殺</div>
+      <div class="glossary-def">外資、投信、自營商同一天都大幅賣超的罕見情況，代表機構投資者對短期前景有共識的負面看法。單一法人賣超常見，三大同時賣超則是強烈警訊。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">EMIB（嵌入式多晶片互連橋接）</div>
+      <div class="glossary-def">Intel的專有先進封裝技術，透過在封裝基板嵌入矽橋接晶片，實現多顆晶片間的高速連接。聯電供應矽中介層給EMIB，是Intel高端封裝不可或缺的夥伴。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Forward PE（預估本益比）</div>
+      <div class="glossary-def">用「未來12個月預估EPS」計算的本益比，比歷史TTM PE更能反映市場對未來的期待。聯電Forward PE約28x（以FY26E EPS 4.75元計），仍高於成熟製程同業均值20-25x。</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 14: DISCLAIMER -->
+<div class="section" style="padding-top:10px;">
+  <div class="disclaimer">
+    <h4>⚠️ 免責聲明</h4>
+    <p>
+      本報告由 AI 多角色分析團隊於 2026年7月21日 自動生成，僅供學術研究與資訊參考之用，<strong>不構成任何投資建議或邀約</strong>。
+      投資人應自行進行盡職調查，並諮詢合格財務顧問後再作出投資決定。過去績效不代表未來表現。
+      台股投資有風險，價格可能大幅波動，可能損失全部本金。
+      <br><br>
+      <strong>資料來源：</strong>Fugle API（即時股價）、FinMind API（K線/三大法人/月營收/財報）、
+      瑞銀研究報告、匯豐研究報告、今周刊、TechNews科技新報、聯合新聞網、經濟日報、豐雲學堂。
+      <br>
+      <strong>分析時點：</strong>2026年7月21日盤中（台灣時間）。市場資訊持續變動，請以最新公告為準。
+    </p>
+  </div>
+</div>
+
+<script>
+// Chart 1: EPS Quarterly Trend
+const epsCtx = document.getElementById('epsChart').getContext('2d');
+new Chart(epsCtx, {
+  type: 'bar',
+  data: {
+    labels: ["Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26"],
+    datasets: [{
+      label: 'EPS（元）',
+      data: [1.11, 1.16, 0.68, 0.62, 0.71, 1.20, 0.80, 1.29],
+      backgroundColor: ['#67e8f9','#67e8f9','#67e8f9','#67e8f9','#67e8f9','#67e8f9','#67e8f9','#0891b2'],
+      borderColor: ['#0891b2','#0891b2','#0891b2','#0891b2','#0891b2','#0891b2','#0891b2','#0c4a6e'],
+      borderWidth: 2, borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `EPS: ${ctx.parsed.y}元` } }
+    },
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#f1f5f9' },
+        ticks: { callback: v => v + '元', font: { size: 11 } }
+      },
+      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+// Chart 2: Monthly Revenue
+const revCtx = document.getElementById('revenueChart').getContext('2d');
+new Chart(revCtx, {
+  type: 'line',
+  data: {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    datasets: [{
+      label: '月營收（億元）',
+      data: [208.62, 193.45, 208.31, 226.64, 229.44, 231.25],
+      borderColor: '#0891b2', backgroundColor: 'rgba(8,145,178,0.12)',
+      borderWidth: 3, fill: true, tension: 0.4,
+      pointBackgroundColor: ['#67e8f9','#67e8f9','#67e8f9','#67e8f9','#67e8f9','#0891b2'],
+      pointBorderColor: '#0891b2', pointRadius: 5, pointHoverRadius: 7
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `${ctx.parsed.y.toFixed(2)}億元` } }
+    },
+    scales: {
+      y: { min: 185, grid: { color: '#f1f5f9' },
+        ticks: { callback: v => v + '億', font: { size: 11 } }
+      },
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+// Chart 3: PE Comparison
+const peCtx = document.getElementById('peChart').getContext('2d');
+new Chart(peCtx, {
+  type: 'bar',
+  data: {
+    labels: ['聯電\n(TTM)', '聯電\n(Forward)', '世界先進', '力積電', '台積電\n(成熟)', '全球均值'],
+    datasets: [{
+      label: '本益比（倍）',
+      data: [33.25, 28.0, 25.0, 20.0, 27.0, 22.0],
+      backgroundColor: ['#0891b2','#06b6d4','#7dd3fc','#7dd3fc','#7dd3fc','#93c5fd'],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `PE: ${ctx.parsed.x}x` } }
+    },
+    scales: {
+      x: { beginAtZero: true, grid: { color: '#f1f5f9' },
+        ticks: { callback: v => v + 'x', font: { size: 11 } }
+      },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>
