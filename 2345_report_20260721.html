@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>智邦 2345 深度分析報告 | 2026-07-21</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Microsoft JhengHei', 'PingFang TC', Arial, sans-serif; background: #F0F4F8; color: #1e293b; line-height: 1.6; }
@@ -290,17 +289,17 @@
     <div class="charts-grid">
       <div class="chart-card">
         <h4>📊 季度EPS趨勢（近8季）</h4>
-        <canvas id="epsChart" height="220"></canvas>
+        <canvas width="420" height="260" id="epsChart" height="220" style="width:100%;height:auto;"></canvas>
         <div class="chart-note">★ 實際公告數字，Q1'26=14.92元創歷史新高</div>
       </div>
       <div class="chart-card">
         <h4>📈 月營收趨勢（近6個月）</h4>
-        <canvas id="revenueChart" height="220"></canvas>
+        <canvas width="420" height="260" id="revenueChart" height="220" style="width:100%;height:auto;"></canvas>
         <div class="chart-note">★ 實際公告數字（億元）；Jun 2026爆增至395.55億創歷史新高</div>
       </div>
       <div class="chart-card">
         <h4>📉 本益比同業比較</h4>
-        <canvas id="peChart" height="220"></canvas>
+        <canvas width="420" height="220" id="peChart" height="220" style="width:100%;height:auto;"></canvas>
         <div class="chart-note">★ 同業PE為推算值；智邦因AI網通稀缺性享有題材溢價</div>
       </div>
     </div>
@@ -901,75 +900,147 @@
   </div>
 </div>
 
+
 <script>
-// EPS Chart
-new Chart(document.getElementById('epsChart').getContext('2d'), {
-  type: 'bar',
-  data: {
-    labels: ["Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26"],
-    datasets: [{
-      label: 'EPS（元）',
-      data: [4.62, 4.75, 8.10, 9.17, 9.01, 14.00, 14.95, 14.92],
-      backgroundColor: ['#7dd3fc','#7dd3fc','#7dd3fc','#7dd3fc','#7dd3fc','#7dd3fc','#7dd3fc','#0284c7'],
-      borderColor: ['#0284c7','#0284c7','#0284c7','#0284c7','#0284c7','#0284c7','#0284c7','#012f6b'],
-      borderWidth: 2, borderRadius: 6
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `EPS: ${ctx.parsed.y}元` } } },
-    scales: {
-      y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { callback: v => v + '元', font: { size: 11 } } },
-      x: { grid: { display: false }, ticks: { font: { size: 10 } } }
-    }
+/* ── Pure Canvas Chart Library (no CDN, no external deps) ── */
+function drawBarChart(canvasId, labels, data, barColor, accentColor, unit) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const pad = {top:36, right:16, bottom:48, left:60};
+  const cW = W - pad.left - pad.right, cH = H - pad.top - pad.bottom;
+  ctx.clearRect(0, 0, W, H);
+  const minVal = Math.min(0, Math.min(...data) * 0.9);
+  const maxVal = Math.max(...data) * 1.2;
+  const range  = maxVal - minVal;
+  const steps  = 4;
+  ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 1;
+  for (let i = 0; i <= steps; i++) {
+    const y = pad.top + cH - (i / steps) * cH;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + cW, y); ctx.stroke();
+    ctx.fillStyle = '#94a3b8'; ctx.font = '11px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText((minVal + range * i / steps).toFixed(2), pad.left - 5, y + 4);
   }
-});
+  const slot = cW / labels.length, bW = slot * 0.55;
+  data.forEach((v, i) => {
+    const isLast = i === data.length - 1;
+    const x  = pad.left + slot * i + (slot - bW) / 2;
+    const bH = Math.abs(v - minVal) / range * cH;
+    const y  = pad.top + cH - (v - minVal) / range * cH;
+    const r  = Math.min(4, bW / 4);
+    ctx.shadowColor = 'rgba(0,0,0,0.1)'; ctx.shadowBlur = 4;
+    ctx.fillStyle = isLast ? accentColor : barColor;
+    ctx.beginPath();
+    ctx.moveTo(x + r, y); ctx.lineTo(x + bW - r, y);
+    ctx.quadraticCurveTo(x + bW, y, x + bW, y + r);
+    ctx.lineTo(x + bW, y + Math.max(bH, r));
+    ctx.lineTo(x, y + Math.max(bH, r));
+    ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0;
+    ctx.fillStyle = isLast ? accentColor : '#334155';
+    ctx.font = isLast ? 'bold 11px sans-serif' : '10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(v.toFixed(2) + (unit || ''), x + bW / 2, y - 5);
+    ctx.fillStyle = '#64748b'; ctx.font = '10px sans-serif';
+    ctx.fillText(labels[i], x + bW / 2, H - 8);
+  });
+  ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(pad.left, pad.top); ctx.lineTo(pad.left, pad.top + cH); ctx.stroke();
+}
 
-// Revenue Chart
-new Chart(document.getElementById('revenueChart').getContext('2d'), {
-  type: 'line',
-  data: {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun🔥'],
-    datasets: [{
-      label: '月營收（億元）',
-      data: [215.27, 235.83, 250.11, 273.60, 286.23, 395.55],
-      borderColor: '#0284c7', backgroundColor: 'rgba(2,132,199,0.12)',
-      borderWidth: 3, fill: true, tension: 0.4,
-      pointBackgroundColor: ['#7dd3fc','#7dd3fc','#7dd3fc','#7dd3fc','#7dd3fc','#0284c7'],
-      pointBorderColor: '#0284c7', pointRadius: [5,5,5,5,5,8], pointHoverRadius: 8
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.parsed.y.toFixed(2)}億元` } } },
-    scales: {
-      y: { min: 180, grid: { color: '#f1f5f9' }, ticks: { callback: v => v + '億', font: { size: 11 } } },
-      x: { grid: { display: false }, ticks: { font: { size: 11 } } }
-    }
+function drawLineChart(canvasId, labels, data, lineColor, yFormatter) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const pad = {top:36, right:24, bottom:48, left:72};
+  const cW = W - pad.left - pad.right, cH = H - pad.top - pad.bottom;
+  ctx.clearRect(0, 0, W, H);
+  const minVal = Math.min(...data) * 0.88, maxVal = Math.max(...data) * 1.12;
+  const range  = maxVal - minVal;
+  const toX = i => pad.left + (i / (labels.length - 1)) * cW;
+  const toY = v => pad.top + (1 - (v - minVal) / range) * cH;
+  const steps = 4;
+  ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 1;
+  for (let i = 0; i <= steps; i++) {
+    const y = pad.top + cH - (i / steps) * cH;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + cW, y); ctx.stroke();
+    const v = minVal + range * i / steps;
+    ctx.fillStyle = '#94a3b8'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(yFormatter ? yFormatter(v) : v.toFixed(0), pad.left - 5, y + 4);
   }
-});
+  ctx.beginPath();
+  ctx.moveTo(toX(0), toY(data[0]));
+  data.forEach((v, i) => { if (i > 0) ctx.lineTo(toX(i), toY(v)); });
+  ctx.lineTo(toX(data.length - 1), pad.top + cH);
+  ctx.lineTo(toX(0), pad.top + cH); ctx.closePath();
+  ctx.fillStyle = lineColor + '1a'; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(toX(0), toY(data[0]));
+  data.forEach((v, i) => { if (i > 0) ctx.lineTo(toX(i), toY(v)); });
+  ctx.strokeStyle = lineColor; ctx.lineWidth = 2.5; ctx.lineJoin = 'round'; ctx.stroke();
+  data.forEach((v, i) => {
+    const isLast = i === data.length - 1;
+    const x = toX(i), y = toY(v);
+    ctx.beginPath(); ctx.arc(x, y, isLast ? 6 : 4, 0, Math.PI * 2);
+    ctx.fillStyle = isLast ? lineColor : '#ffffff';
+    ctx.strokeStyle = lineColor; ctx.lineWidth = 2; ctx.fill(); ctx.stroke();
+    if (isLast) {
+      ctx.fillStyle = lineColor; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(yFormatter ? yFormatter(v) : v.toFixed(0), x, y - 12);
+    }
+    ctx.fillStyle = '#64748b'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(labels[i], x, H - 8);
+  });
+  ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(pad.left, pad.top); ctx.lineTo(pad.left, pad.top + cH); ctx.stroke();
+}
 
-// PE Comparison
-new Chart(document.getElementById('peChart').getContext('2d'), {
-  type: 'bar',
-  data: {
-    labels: ['智邦\n(TTM)', '智邦\n(Forward)', 'Arista\nNetworks', '中磊\n5388', 'AI網通\n均值'],
-    datasets: [{
-      label: '本益比（倍）',
-      data: [41.6, 31.7, 38.0, 25.0, 30.0],
-      backgroundColor: ['#0284c7','#38bdf8','#7dd3fc','#7dd3fc','#93c5fd'],
-      borderRadius: 6
-    }]
-  },
-  options: {
-    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `PE: ${ctx.parsed.x}x` } } },
-    scales: {
-      x: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { callback: v => v + 'x', font: { size: 11 } } },
-      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
-    }
+function drawHBarChart(canvasId, labels, data, colors) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const pad = {top:16, right:60, bottom:28, left:110};
+  const cW = W - pad.left - pad.right, cH = H - pad.top - pad.bottom;
+  ctx.clearRect(0, 0, W, H);
+  const maxVal = Math.max(...data) * 1.15;
+  const slot = cH / labels.length, bH = slot * 0.55;
+  for (let i = 1; i <= 4; i++) {
+    const x = pad.left + (i / 4) * cW;
+    ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + cH); ctx.stroke();
+    ctx.fillStyle = '#94a3b8'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText((maxVal * i / 4).toFixed(0) + 'x', x, H - 6);
   }
+  labels.forEach((label, i) => {
+    const y  = pad.top + slot * i + (slot - bH) / 2;
+    const bW = data[i] / maxVal * cW;
+    const r  = Math.min(4, bH / 4);
+    ctx.shadowColor = 'rgba(0,0,0,0.08)'; ctx.shadowBlur = 3;
+    ctx.fillStyle = (colors && colors[i]) ? colors[i] : '#94a3b8';
+    ctx.beginPath();
+    ctx.moveTo(pad.left, y + r); ctx.quadraticCurveTo(pad.left, y, pad.left + r, y);
+    ctx.lineTo(pad.left + bW - r, y); ctx.quadraticCurveTo(pad.left + bW, y, pad.left + bW, y + r);
+    ctx.lineTo(pad.left + bW, y + bH - r); ctx.quadraticCurveTo(pad.left + bW, y + bH, pad.left + bW - r, y + bH);
+    ctx.lineTo(pad.left + r, y + bH); ctx.quadraticCurveTo(pad.left, y + bH, pad.left, y + bH - r);
+    ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0;
+    ctx.fillStyle = '#374151'; ctx.font = '11px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(label, pad.left - 6, y + bH / 2 + 4);
+    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText(data[i].toFixed(1) + 'x', pad.left + bW + 6, y + bH / 2 + 4);
+  });
+  ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(pad.left, pad.top + cH); ctx.lineTo(pad.left + cW, pad.top + cH); ctx.stroke();
+}
+/* ── end canvas lib ── */
+
+window.addEventListener("DOMContentLoaded",function(){
+drawBarChart("epsChart", ["Q2", ",", "24", "Q4", ",", "25", "Q2", ",", "25", "Q4", ",", "26"], [4.62, 4.75, 8.1, 9.17, 9.01, 14.0, 14.95, 14.92], "#7dd3fc", "#0284c7", "元");
+drawLineChart("revenueChart", ["Jan", "Feb", "Mar", "Apr", "May", "Jun🔥"], [215.27, 235.83, 250.11, 273.6, 286.23, 395.55], "#0284c7", v => v.toFixed(0)+"億");
+drawHBarChart("peChart", ["智邦\\n(TTM)", "智邦\\n(Forward)", "Arista\\nNetworks", "中磊\\n5388", "AI網通\\n均值"], [41.6, 31.7, 38.0, 25.0, 30.0], ["#0284c7", "#38bdf8", "#7dd3fc", "#7dd3fc", "#93c5fd"]);
 });
 </script>
+
 </body>
 </html>

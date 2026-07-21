@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>元大台灣50 0050 深度研究報告 2026-07-20</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
     --primary: #059669;
@@ -269,17 +268,17 @@
   <div class="charts-grid">
     <div class="chart-container">
       <div class="chart-title">📉 近30日股價走勢（日K線）</div>
-      <canvas id="priceChart" height="220"></canvas>
+      <canvas width="420" height="220" id="priceChart" height="220" style="width:100%;height:auto;"></canvas>
       <div class="chart-note">★ 實際收盤價；7/17 -5.88%急殺後，7/20小幅整理</div>
     </div>
     <div class="chart-container">
       <div class="chart-title">🏗️ 前10大持股比重（%）</div>
-      <canvas id="holdingsChart" height="220"></canvas>
+      <canvas width="420" height="220" id="holdingsChart" height="220" style="width:100%;height:auto;"></canvas>
       <div class="chart-note">★ 元大投信2026年最新資料；台積電(2330)佔比58.87%</div>
     </div>
     <div class="chart-container">
       <div class="chart-title">💰 歷年配息紀錄（元/股）</div>
-      <canvas id="dividendChart" height="220"></canvas>
+      <canvas width="420" height="220" id="dividendChart" height="220" style="width:100%;height:auto;"></canvas>
       <div class="chart-note">★ H1配息通常1月除息；H2配息通常7月除息｜2026H2估0.60元</div>
     </div>
   </div>
@@ -829,137 +828,137 @@
 
 <!-- CHART.JS SCRIPTS -->
 <script>
-// Chart 1: Price 30-day trend
-const priceCtx = document.getElementById('priceChart').getContext('2d');
-new Chart(priceCtx, {
-  type: 'line',
-  data: {
-    labels: [
-      '6/4','6/5','6/8','6/9','6/10','6/11','6/12',
-      '6/15','6/16','6/17','6/18','6/22','6/23★',
-      '6/24','6/25','6/26','6/29','6/30',
-      '7/1','7/2','7/3','7/6','7/7','7/8','7/9',
-      '7/13','7/14','7/15','7/16','7/17','7/20▲'
-    ],
-    datasets: [{
-      label: '收盤價（元）',
-      data: [
-        106.1,104.15,100.95,103.5,100.25,99.85,101.95,
-        105.25,105.9,106.0,107.3,111.15,110.1,
-        107.15,107.2,103.1,104.45,107.8,
-        109.35,108.8,108.35,108.25,106.2,106.05,105.8,
-        106.0,104.4,106.3,106.4,100.15,99.55
-      ],
-      borderColor: '#059669',
-      backgroundColor: 'rgba(5,150,105,0.08)',
-      borderWidth: 2.5,
-      pointRadius: (ctx) => {
-        const special = [12, 29, 30]; // 6/23 high, 7/17 drop, 7/20
-        return special.includes(ctx.dataIndex) ? 7 : 3;
-      },
-      pointBackgroundColor: (ctx) => {
-        if(ctx.dataIndex === 12) return '#f59e0b'; // 6/23 high
-        if(ctx.dataIndex === 29) return '#dc2626'; // 7/17 drop
-        if(ctx.dataIndex === 30) return '#059669'; // today
-        return '#059669';
-      },
-      pointBorderColor: 'white',
-      pointBorderWidth: 2,
-      fill: true,
-      tension: 0.3
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: { label: ctx => `${ctx.raw}元` }
-      }
-    },
-    scales: {
-      y: {
-        min: 95,
-        max: 115,
-        grid: { color: 'rgba(0,0,0,0.06)' },
-        ticks: { callback: v => `${v}元` }
-      },
-      x: {
-        grid: { display: false },
-        ticks: { maxTicksLimit: 10, font: { size: 10 } }
-      }
-    }
+/* ── Pure Canvas Chart Library – no CDN, no external deps ── */
+function drawBarChart(canvasId, labels, data, barColor, accentColor, unit) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:36, right:16, bottom:48, left:62};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var minVal = Math.min(0, Math.min.apply(null,data)*0.9);
+  var maxVal = Math.max.apply(null,data)*1.2;
+  var range  = maxVal-minVal;
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  for(var i=0;i<=4;i++){
+    var y=pad.top+cH-(i/4)*cH;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
+    ctx.fillStyle='#94a3b8'; ctx.font='11px sans-serif'; ctx.textAlign='right';
+    ctx.fillText((minVal+range*i/4).toFixed(2), pad.left-5, y+4);
   }
-});
+  var slot=cW/labels.length, bW=slot*0.55;
+  for(var i=0;i<data.length;i++){
+    var isLast=(i===data.length-1);
+    var x=pad.left+slot*i+(slot-bW)/2;
+    var bH=Math.abs(data[i]-minVal)/range*cH;
+    var y2=pad.top+cH-(data[i]-minVal)/range*cH;
+    var r=Math.min(4,bW/4);
+    ctx.shadowColor='rgba(0,0,0,0.1)'; ctx.shadowBlur=4;
+    ctx.fillStyle=isLast?accentColor:barColor;
+    ctx.beginPath();
+    ctx.moveTo(x+r,y2); ctx.lineTo(x+bW-r,y2);
+    ctx.quadraticCurveTo(x+bW,y2,x+bW,y2+r);
+    ctx.lineTo(x+bW,y2+Math.max(bH,r)); ctx.lineTo(x,y2+Math.max(bH,r));
+    ctx.lineTo(x,y2+r); ctx.quadraticCurveTo(x,y2,x+r,y2);
+    ctx.closePath(); ctx.fill(); ctx.shadowBlur=0;
+    ctx.fillStyle=isLast?accentColor:'#334155';
+    ctx.font=isLast?'bold 11px sans-serif':'10px sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(typeof data[i]==='number'?data[i].toFixed(2)+(unit||''):data[i], x+bW/2, y2-5);
+    ctx.fillStyle='#64748b'; ctx.font='10px sans-serif';
+    ctx.fillText(labels[i], x+bW/2, H-8);
+  }
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top); ctx.lineTo(pad.left,pad.top+cH); ctx.stroke();
+}
+function drawLineChart(canvasId, labels, data, lineColor, yFormatter) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:36, right:24, bottom:48, left:72};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var minVal = Math.min.apply(null,data)*0.88;
+  var maxVal = Math.max.apply(null,data)*1.12;
+  var range  = maxVal-minVal;
+  function toX(i){ return pad.left+(i/(labels.length-1))*cW; }
+  function toY(v){ return pad.top+(1-(v-minVal)/range)*cH; }
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  for(var i=0;i<=4;i++){
+    var y=pad.top+cH-(i/4)*cH;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
+    var v=minVal+range*i/4;
+    ctx.fillStyle='#94a3b8'; ctx.font='10px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(yFormatter?yFormatter(v):v.toFixed(0), pad.left-5, y+4);
+  }
+  ctx.beginPath(); ctx.moveTo(toX(0),toY(data[0]));
+  for(var i=1;i<data.length;i++) ctx.lineTo(toX(i),toY(data[i]));
+  ctx.lineTo(toX(data.length-1),pad.top+cH); ctx.lineTo(toX(0),pad.top+cH);
+  ctx.closePath(); ctx.fillStyle=lineColor+'1a'; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(toX(0),toY(data[0]));
+  for(var i=1;i<data.length;i++) ctx.lineTo(toX(i),toY(data[i]));
+  ctx.strokeStyle=lineColor; ctx.lineWidth=2.5; ctx.lineJoin='round'; ctx.stroke();
+  for(var i=0;i<data.length;i++){
+    var isLast=(i===data.length-1);
+    var x=toX(i), y=toY(data[i]);
+    ctx.beginPath(); ctx.arc(x,y,isLast?6:4,0,Math.PI*2);
+    ctx.fillStyle=isLast?lineColor:'#ffffff';
+    ctx.strokeStyle=lineColor; ctx.lineWidth=2; ctx.fill(); ctx.stroke();
+    if(isLast){
+      ctx.fillStyle=lineColor; ctx.font='bold 10px sans-serif'; ctx.textAlign='center';
+      ctx.fillText(yFormatter?yFormatter(data[i]):data[i].toFixed(0), x, y-12);
+    }
+    ctx.fillStyle='#64748b'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(labels[i], x, H-8);
+  }
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top); ctx.lineTo(pad.left,pad.top+cH); ctx.stroke();
+}
+function drawHBarChart(canvasId, labels, data, colors) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:16, right:60, bottom:28, left:115};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var maxVal = Math.max.apply(null,data)*1.15;
+  var slot=cH/labels.length, bH=slot*0.55;
+  for(var i=1;i<=4;i++){
+    var x=pad.left+(i/4)*cW;
+    ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(x,pad.top); ctx.lineTo(x,pad.top+cH); ctx.stroke();
+    ctx.fillStyle='#94a3b8'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+    ctx.fillText((maxVal*i/4).toFixed(0)+'x', x, H-6);
+  }
+  for(var i=0;i<labels.length;i++){
+    var y=pad.top+slot*i+(slot-bH)/2;
+    var bW=data[i]/maxVal*cW;
+    var r=Math.min(4,bH/4);
+    ctx.shadowColor='rgba(0,0,0,0.08)'; ctx.shadowBlur=3;
+    ctx.fillStyle=(colors&&colors[i])?colors[i]:'#94a3b8';
+    ctx.beginPath();
+    ctx.moveTo(pad.left,y+r); ctx.quadraticCurveTo(pad.left,y,pad.left+r,y);
+    ctx.lineTo(pad.left+bW-r,y); ctx.quadraticCurveTo(pad.left+bW,y,pad.left+bW,y+r);
+    ctx.lineTo(pad.left+bW,y+bH-r); ctx.quadraticCurveTo(pad.left+bW,y+bH,pad.left+bW-r,y+bH);
+    ctx.lineTo(pad.left+r,y+bH); ctx.quadraticCurveTo(pad.left,y+bH,pad.left,y+bH-r);
+    ctx.closePath(); ctx.fill(); ctx.shadowBlur=0;
+    ctx.fillStyle='#374151'; ctx.font='11px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(labels[i], pad.left-6, y+bH/2+4);
+    ctx.fillStyle='#1e293b'; ctx.font='bold 11px sans-serif'; ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(1)+'x', pad.left+bW+6, y+bH/2+4);
+  }
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top+cH); ctx.lineTo(pad.left+cW,pad.top+cH); ctx.stroke();
+}
+/* ── end canvas lib ── */
 
-// Chart 2: Holdings bar
-const holdCtx = document.getElementById('holdingsChart').getContext('2d');
-new Chart(holdCtx, {
-  type: 'bar',
-  data: {
-    labels: ['台積電(2330)','聯發科(2454)','台達電(2308)','鴻海(2317)','中信金(2891)','其他45檔'],
-    datasets: [{
-      label: '持股比重(%)',
-      data: [58.87, 5.23, 3.53, 3.0, 2.1, 27.27],
-      backgroundColor: [
-        '#059669','#10b981','#34d399','#6ee7b7','#a7f3d0','#d1fae5'
-      ],
-      borderColor: '#065f46',
-      borderWidth: 1,
-      borderRadius: 5
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: ctx => `${ctx.raw}%` } }
-    },
-    scales: {
-      x: {
-        grid: { color: 'rgba(0,0,0,0.06)' },
-        ticks: { callback: v => `${v}%` }
-      },
-      y: { grid: { display: false } }
-    }
-  }
-});
-
-// Chart 3: Historical dividends
-const divCtx = document.getElementById('dividendChart').getContext('2d');
-new Chart(divCtx, {
-  type: 'bar',
-  data: {
-    labels: ['2022H1','2022H2','2023H1','2023H2','2024H1','2024H2','2025H1','2025H2','2026H1★','2026H2(估)'],
-    datasets: [{
-      label: '配息金額（元）',
-      data: [3.0, 1.0, 1.85, 1.65, 2.0, 1.4, 2.2, 1.5, 1.0, 0.6],
-      backgroundColor: [
-        '#a7f3d0','#a7f3d0','#6ee7b7','#6ee7b7','#34d399','#34d399','#10b981','#10b981','#059669','#d97706'
-      ],
-      borderColor: '#065f46',
-      borderWidth: 1,
-      borderRadius: 5
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: ctx => `${ctx.raw}元/股` } }
-    },
-    scales: {
-      y: {
-        grid: { color: 'rgba(0,0,0,0.06)' },
-        ticks: { callback: v => `${v}元` }
-      },
-      x: {
-        grid: { display: false },
-        ticks: { font: { size: 10 } }
-      }
-    }
-  }
+window.addEventListener("DOMContentLoaded", function() {
+  drawLineChart("priceChart", ["6/4", "6/5", "6/8", "6/9", "6/10", "6/11", "6/12", "6/15", "6/16", "6/17", "6/18", "6/22", "6/23★", "6/24", "6/25", "6/26", "6/29", "6/30", "7/1", "7/2", "7/3", "7/6", "7/7", "7/8", "7/9", "7/13", "7/14", "7/15", "7/16", "7/17", "7/20▲"], [106.1, 104.15, 100.95, 103.5, 100.25, 99.85, 101.95, 105.25, 105.9, 106.0, 107.3, 111.15, 110.1, 107.15, 107.2, 103.1, 104.45, 107.8, 109.35, 108.8, 108.35, 108.25, 106.2, 106.05, 105.8, 106.0, 104.4, 106.3, 106.4, 100.15, 99.55], "#059669", function(v){return v.toFixed(0)+'億';});
+  drawHBarChart("holdingsChart", ["台積電(2330)", "聯發科(2454)", "台達電(2308)", "鴻海(2317)", "中信金(2891)", "其他45檔"], [58.87, 5.23, 3.53, 3.0, 2.1, 27.27], ["#059669", "#10b981", "#34d399", "#6ee7b7", "#a7f3d0", "#d1fae5"]);
+  drawBarChart("dividendChart", ["2022H1", "2022H2", "2023H1", "2023H2", "2024H1", "2024H2", "2025H1", "2025H2", "2026H1★", "2026H2(估)"], [3.0, 1.0, 1.85, 1.65, 2.0, 1.4, 2.2, 1.5, 1.0, 0.6], "#a7f3d0", "#d97706", "元");
 });
 </script>
 </body>

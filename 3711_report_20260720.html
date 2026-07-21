@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>日月光投控 3711 持倉決策報告 2026-07-20</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root{--primary:#0d9488;--primary-dark:#0f766e;--primary-light:#ccfbf1;--accent:#f97316;--danger:#ef4444;--success:#22c55e;--bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--text-muted:#64748b;--border:#e2e8f0;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -213,17 +212,17 @@ li{margin-bottom:9px;font-size:0.86em;line-height:1.6;}
   <div class="chart-grid">
     <div class="chart-wrap">
       <h3>EPS 季度趨勢（近8季）★=實際</h3>
-      <canvas id="epsChart" height="200"></canvas>
+      <canvas width="420" height="200" id="epsChart" height="200" style="width:100%;height:auto;"></canvas>
       <div style="font-size:0.72em;color:var(--text-muted);margin-top:6px;">★ Q1'26=3.24元(GM 20.07%史高)；Q2'26E後為推算值</div>
     </div>
     <div class="chart-wrap">
       <h3>月營收 2026 H1（億元）★</h3>
-      <canvas id="revChart" height="200"></canvas>
+      <canvas width="420" height="200" id="revChart" height="200" style="width:100%;height:auto;"></canvas>
       <div style="font-size:0.72em;color:var(--text-muted);margin-top:6px;">★ 全年YoY+14%~+33%持續加速成長</div>
     </div>
     <div class="chart-wrap">
       <h3>股價走勢（近30日含持倉成本線）</h3>
-      <canvas id="priceChart" height="200"></canvas>
+      <canvas width="420" height="200" id="priceChart" height="200" style="width:100%;height:auto;"></canvas>
       <div style="font-size:0.72em;color:var(--text-muted);margin-top:6px;">黃線=持倉成本672元；橘線=MA60支撐；今日585元觸MA60</div>
     </div>
   </div>
@@ -468,21 +467,138 @@ li{margin-bottom:9px;font-size:0.86em;line-height:1.6;}
 </div>
 
 <script>
-// EPS Chart
-const epsCtx=document.getElementById('epsChart').getContext('2d');
-new Chart(epsCtx,{type:'bar',data:{labels:['Q2\'25★','Q3\'25★','Q4\'25★','Q1\'26★','Q2\'26E','Q3\'26E','Q4\'26E'],datasets:[{label:'EPS（元）',data:[1.74,2.50,3.38,3.24,5.0,6.5,5.0],backgroundColor:['#5eead4','#2dd4bf','#14b8a6','#ef4444','rgba(239,68,68,0.45)','rgba(239,68,68,0.35)','rgba(239,68,68,0.25)'],borderRadius:5}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+'元'+(c.dataIndex>=4?' (推估)':'★')}}},scales:{y:{beginAtZero:true}}}});
+/* ── Pure Canvas Chart Library – no CDN, no external deps ── */
+function drawBarChart(canvasId, labels, data, barColor, accentColor, unit) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:36, right:16, bottom:48, left:62};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var minVal = Math.min(0, Math.min.apply(null,data)*0.9);
+  var maxVal = Math.max.apply(null,data)*1.2;
+  var range  = maxVal-minVal;
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  for(var i=0;i<=4;i++){
+    var y=pad.top+cH-(i/4)*cH;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
+    ctx.fillStyle='#94a3b8'; ctx.font='11px sans-serif'; ctx.textAlign='right';
+    ctx.fillText((minVal+range*i/4).toFixed(2), pad.left-5, y+4);
+  }
+  var slot=cW/labels.length, bW=slot*0.55;
+  for(var i=0;i<data.length;i++){
+    var isLast=(i===data.length-1);
+    var x=pad.left+slot*i+(slot-bW)/2;
+    var bH=Math.abs(data[i]-minVal)/range*cH;
+    var y2=pad.top+cH-(data[i]-minVal)/range*cH;
+    var r=Math.min(4,bW/4);
+    ctx.shadowColor='rgba(0,0,0,0.1)'; ctx.shadowBlur=4;
+    ctx.fillStyle=isLast?accentColor:barColor;
+    ctx.beginPath();
+    ctx.moveTo(x+r,y2); ctx.lineTo(x+bW-r,y2);
+    ctx.quadraticCurveTo(x+bW,y2,x+bW,y2+r);
+    ctx.lineTo(x+bW,y2+Math.max(bH,r)); ctx.lineTo(x,y2+Math.max(bH,r));
+    ctx.lineTo(x,y2+r); ctx.quadraticCurveTo(x,y2,x+r,y2);
+    ctx.closePath(); ctx.fill(); ctx.shadowBlur=0;
+    ctx.fillStyle=isLast?accentColor:'#334155';
+    ctx.font=isLast?'bold 11px sans-serif':'10px sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(typeof data[i]==='number'?data[i].toFixed(2)+(unit||''):data[i], x+bW/2, y2-5);
+    ctx.fillStyle='#64748b'; ctx.font='10px sans-serif';
+    ctx.fillText(labels[i], x+bW/2, H-8);
+  }
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top); ctx.lineTo(pad.left,pad.top+cH); ctx.stroke();
+}
+function drawLineChart(canvasId, labels, data, lineColor, yFormatter) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:36, right:24, bottom:48, left:72};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var minVal = Math.min.apply(null,data)*0.88;
+  var maxVal = Math.max.apply(null,data)*1.12;
+  var range  = maxVal-minVal;
+  function toX(i){ return pad.left+(i/(labels.length-1))*cW; }
+  function toY(v){ return pad.top+(1-(v-minVal)/range)*cH; }
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  for(var i=0;i<=4;i++){
+    var y=pad.top+cH-(i/4)*cH;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
+    var v=minVal+range*i/4;
+    ctx.fillStyle='#94a3b8'; ctx.font='10px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(yFormatter?yFormatter(v):v.toFixed(0), pad.left-5, y+4);
+  }
+  ctx.beginPath(); ctx.moveTo(toX(0),toY(data[0]));
+  for(var i=1;i<data.length;i++) ctx.lineTo(toX(i),toY(data[i]));
+  ctx.lineTo(toX(data.length-1),pad.top+cH); ctx.lineTo(toX(0),pad.top+cH);
+  ctx.closePath(); ctx.fillStyle=lineColor+'1a'; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(toX(0),toY(data[0]));
+  for(var i=1;i<data.length;i++) ctx.lineTo(toX(i),toY(data[i]));
+  ctx.strokeStyle=lineColor; ctx.lineWidth=2.5; ctx.lineJoin='round'; ctx.stroke();
+  for(var i=0;i<data.length;i++){
+    var isLast=(i===data.length-1);
+    var x=toX(i), y=toY(data[i]);
+    ctx.beginPath(); ctx.arc(x,y,isLast?6:4,0,Math.PI*2);
+    ctx.fillStyle=isLast?lineColor:'#ffffff';
+    ctx.strokeStyle=lineColor; ctx.lineWidth=2; ctx.fill(); ctx.stroke();
+    if(isLast){
+      ctx.fillStyle=lineColor; ctx.font='bold 10px sans-serif'; ctx.textAlign='center';
+      ctx.fillText(yFormatter?yFormatter(data[i]):data[i].toFixed(0), x, y-12);
+    }
+    ctx.fillStyle='#64748b'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(labels[i], x, H-8);
+  }
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top); ctx.lineTo(pad.left,pad.top+cH); ctx.stroke();
+}
+function drawHBarChart(canvasId, labels, data, colors) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:16, right:60, bottom:28, left:115};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var maxVal = Math.max.apply(null,data)*1.15;
+  var slot=cH/labels.length, bH=slot*0.55;
+  for(var i=1;i<=4;i++){
+    var x=pad.left+(i/4)*cW;
+    ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(x,pad.top); ctx.lineTo(x,pad.top+cH); ctx.stroke();
+    ctx.fillStyle='#94a3b8'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+    ctx.fillText((maxVal*i/4).toFixed(0)+'x', x, H-6);
+  }
+  for(var i=0;i<labels.length;i++){
+    var y=pad.top+slot*i+(slot-bH)/2;
+    var bW=data[i]/maxVal*cW;
+    var r=Math.min(4,bH/4);
+    ctx.shadowColor='rgba(0,0,0,0.08)'; ctx.shadowBlur=3;
+    ctx.fillStyle=(colors&&colors[i])?colors[i]:'#94a3b8';
+    ctx.beginPath();
+    ctx.moveTo(pad.left,y+r); ctx.quadraticCurveTo(pad.left,y,pad.left+r,y);
+    ctx.lineTo(pad.left+bW-r,y); ctx.quadraticCurveTo(pad.left+bW,y,pad.left+bW,y+r);
+    ctx.lineTo(pad.left+bW,y+bH-r); ctx.quadraticCurveTo(pad.left+bW,y+bH,pad.left+bW-r,y+bH);
+    ctx.lineTo(pad.left+r,y+bH); ctx.quadraticCurveTo(pad.left,y+bH,pad.left,y+bH-r);
+    ctx.closePath(); ctx.fill(); ctx.shadowBlur=0;
+    ctx.fillStyle='#374151'; ctx.font='11px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(labels[i], pad.left-6, y+bH/2+4);
+    ctx.fillStyle='#1e293b'; ctx.font='bold 11px sans-serif'; ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(1)+'x', pad.left+bW+6, y+bH/2+4);
+  }
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top+cH); ctx.lineTo(pad.left+cW,pad.top+cH); ctx.stroke();
+}
+/* ── end canvas lib ── */
 
-// Revenue Chart
-const revCtx=document.getElementById('revChart').getContext('2d');
-new Chart(revCtx,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun★'],datasets:[{label:'月營收（億元）',data:[588.6,599.9,521.0,615.8,622.5,657.8],borderColor:'#0d9488',backgroundColor:'rgba(13,148,136,0.12)',tension:0.35,fill:true,pointBackgroundColor:['#0d9488','#0d9488','#0d9488','#0d9488','#0d9488','#ef4444'],pointRadius:6,pointHoverRadius:8}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,min:480}}}});
-
-// Price Chart
-const pCtx=document.getElementById('priceChart').getContext('2d');
-new Chart(pCtx,{type:'line',data:{labels:['6/22','6/23','6/24','6/25','6/26','6/29','6/30','7/1','7/2','7/3','7/6','7/7','7/8','7/9','7/13','7/14','7/15','7/16','7/17','7/20'],datasets:[
-{label:'收盤價',data:[674,662,653,641,632,627,680,703,727,null,679,651,625,677,670,641,683,682,614,585],borderColor:'#0d9488',backgroundColor:'rgba(13,148,136,0.06)',tension:0.2,fill:true,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:(ctx)=>{const v=ctx.raw;return v&&v<600?'#ef4444':'#0d9488';}},
-{label:'持倉成本 672',data:Array(20).fill(672),borderColor:'#eab308',borderDash:[6,3],pointRadius:0,borderWidth:2},
-{label:'MA60支撐 585.57',data:Array(20).fill(585.57),borderColor:'#f97316',borderDash:[4,4],pointRadius:0,borderWidth:1.5}
-]},options:{responsive:true,plugins:{legend:{display:true,labels:{boxWidth:12,font:{size:11}}}},scales:{y:{beginAtZero:false,min:540}}}});
+window.addEventListener("DOMContentLoaded", function() {
+  drawBarChart("epsChart", ["Q2\\", ",", "25★", "Q4\\", ",", "26★", "Q2\\", ",", "26E", "Q4\\"], [1.74, 2.5, 3.38, 3.24, 5.0, 6.5, 5.0], "#5eead4", "rgba(239,68,68,0.25)", "元");
+  drawLineChart("revChart", ["Jan", "Feb", "Mar", "Apr", "May", "Jun★"], [588.6, 599.9, 521.0, 615.8, 622.5, 657.8], "#0d9488", function(v){return (v/1000).toFixed(1)+'千億';});
+  drawLineChart("priceChart", ["6/22", "6/23", "6/24", "6/25", "6/26", "6/29", "6/30", "7/1", "7/2", "7/3", "7/6", "7/7", "7/8", "7/9", "7/13", "7/14", "7/15", "7/16", "7/17", "7/20"], [674.0, 662.0, 653.0, 641.0, 632.0, 627.0, 680.0, 703.0, 727.0, 679.0, 651.0, 625.0, 677.0, 670.0, 641.0, 683.0, 682.0, 614.0, 585.0], "#0d9488", function(v){return (v/1000).toFixed(1)+'千億';});
+});
 </script>
 </body>
 </html>

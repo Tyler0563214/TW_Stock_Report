@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>台達電 2308 深度研究報告 2026-07-20</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
     --primary: #4f46e5;
@@ -273,17 +272,17 @@
   <div class="charts-grid">
     <div class="chart-container">
       <div class="chart-title">📊 季度EPS趨勢（近8季）</div>
-      <canvas id="epsChart" height="220"></canvas>
+      <canvas width="420" height="220" id="epsChart" height="220" style="width:100%;height:auto;"></canvas>
       <div class="chart-note">★ 實際公告值｜EPS從3.83元穩步成長至7.91元，漲幅+106%</div>
     </div>
     <div class="chart-container">
       <div class="chart-title">📈 月營收趨勢（H1 2026）</div>
-      <canvas id="revenueChart" height="220"></canvas>
+      <canvas width="420" height="220" id="revenueChart" height="220" style="width:100%;height:auto;"></canvas>
       <div class="chart-note">★ 實際公告值｜Jun 2026月營收656億創史上新高</div>
     </div>
     <div class="chart-container">
       <div class="chart-title">🔖 PE比較：台達電 vs 同業（倍）</div>
-      <canvas id="peChart" height="220"></canvas>
+      <canvas width="420" height="220" id="peChart" height="220" style="width:100%;height:auto;"></canvas>
       <div class="chart-note">★ FY2026E PE以法人共識EPS估算；TTM PE為近4季EPS計算</div>
     </div>
   </div>
@@ -886,114 +885,137 @@
 </div><!-- end container -->
 
 <script>
-// Chart 1: EPS
-const epsCtx = document.getElementById('epsChart').getContext('2d');
-new Chart(epsCtx, {
-  type: 'bar',
-  data: {
-    labels: ["Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26★"],
-    datasets: [{
-      label: 'EPS（元）',
-      data: [3.83, 4.75, 2.76, 3.94, 5.37, 7.16, 6.67, 7.91],
-      backgroundColor: [
-        '#a5b4fc','#818cf8','#6366f1','#4f46e5','#4338ca','#3730a3','#4338ca','#312e81'
-      ],
-      borderColor: '#1e1b4b',
-      borderWidth: 1.5,
-      borderRadius: 6
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: ctx => `EPS: ${ctx.raw}元` } }
-    },
-    scales: {
-      y: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { callback: v => `${v}元` } },
-      x: { grid: { display: false } }
-    }
+/* ── Pure Canvas Chart Library – no CDN, no external deps ── */
+function drawBarChart(canvasId, labels, data, barColor, accentColor, unit) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:36, right:16, bottom:48, left:62};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var minVal = Math.min(0, Math.min.apply(null,data)*0.9);
+  var maxVal = Math.max.apply(null,data)*1.2;
+  var range  = maxVal-minVal;
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  for(var i=0;i<=4;i++){
+    var y=pad.top+cH-(i/4)*cH;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
+    ctx.fillStyle='#94a3b8'; ctx.font='11px sans-serif'; ctx.textAlign='right';
+    ctx.fillText((minVal+range*i/4).toFixed(2), pad.left-5, y+4);
   }
-});
+  var slot=cW/labels.length, bW=slot*0.55;
+  for(var i=0;i<data.length;i++){
+    var isLast=(i===data.length-1);
+    var x=pad.left+slot*i+(slot-bW)/2;
+    var bH=Math.abs(data[i]-minVal)/range*cH;
+    var y2=pad.top+cH-(data[i]-minVal)/range*cH;
+    var r=Math.min(4,bW/4);
+    ctx.shadowColor='rgba(0,0,0,0.1)'; ctx.shadowBlur=4;
+    ctx.fillStyle=isLast?accentColor:barColor;
+    ctx.beginPath();
+    ctx.moveTo(x+r,y2); ctx.lineTo(x+bW-r,y2);
+    ctx.quadraticCurveTo(x+bW,y2,x+bW,y2+r);
+    ctx.lineTo(x+bW,y2+Math.max(bH,r)); ctx.lineTo(x,y2+Math.max(bH,r));
+    ctx.lineTo(x,y2+r); ctx.quadraticCurveTo(x,y2,x+r,y2);
+    ctx.closePath(); ctx.fill(); ctx.shadowBlur=0;
+    ctx.fillStyle=isLast?accentColor:'#334155';
+    ctx.font=isLast?'bold 11px sans-serif':'10px sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(typeof data[i]==='number'?data[i].toFixed(2)+(unit||''):data[i], x+bW/2, y2-5);
+    ctx.fillStyle='#64748b'; ctx.font='10px sans-serif';
+    ctx.fillText(labels[i], x+bW/2, H-8);
+  }
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top); ctx.lineTo(pad.left,pad.top+cH); ctx.stroke();
+}
+function drawLineChart(canvasId, labels, data, lineColor, yFormatter) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:36, right:24, bottom:48, left:72};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var minVal = Math.min.apply(null,data)*0.88;
+  var maxVal = Math.max.apply(null,data)*1.12;
+  var range  = maxVal-minVal;
+  function toX(i){ return pad.left+(i/(labels.length-1))*cW; }
+  function toY(v){ return pad.top+(1-(v-minVal)/range)*cH; }
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  for(var i=0;i<=4;i++){
+    var y=pad.top+cH-(i/4)*cH;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
+    var v=minVal+range*i/4;
+    ctx.fillStyle='#94a3b8'; ctx.font='10px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(yFormatter?yFormatter(v):v.toFixed(0), pad.left-5, y+4);
+  }
+  ctx.beginPath(); ctx.moveTo(toX(0),toY(data[0]));
+  for(var i=1;i<data.length;i++) ctx.lineTo(toX(i),toY(data[i]));
+  ctx.lineTo(toX(data.length-1),pad.top+cH); ctx.lineTo(toX(0),pad.top+cH);
+  ctx.closePath(); ctx.fillStyle=lineColor+'1a'; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(toX(0),toY(data[0]));
+  for(var i=1;i<data.length;i++) ctx.lineTo(toX(i),toY(data[i]));
+  ctx.strokeStyle=lineColor; ctx.lineWidth=2.5; ctx.lineJoin='round'; ctx.stroke();
+  for(var i=0;i<data.length;i++){
+    var isLast=(i===data.length-1);
+    var x=toX(i), y=toY(data[i]);
+    ctx.beginPath(); ctx.arc(x,y,isLast?6:4,0,Math.PI*2);
+    ctx.fillStyle=isLast?lineColor:'#ffffff';
+    ctx.strokeStyle=lineColor; ctx.lineWidth=2; ctx.fill(); ctx.stroke();
+    if(isLast){
+      ctx.fillStyle=lineColor; ctx.font='bold 10px sans-serif'; ctx.textAlign='center';
+      ctx.fillText(yFormatter?yFormatter(data[i]):data[i].toFixed(0), x, y-12);
+    }
+    ctx.fillStyle='#64748b'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(labels[i], x, H-8);
+  }
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top); ctx.lineTo(pad.left,pad.top+cH); ctx.stroke();
+}
+function drawHBarChart(canvasId, labels, data, colors) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:16, right:60, bottom:28, left:115};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var maxVal = Math.max.apply(null,data)*1.15;
+  var slot=cH/labels.length, bH=slot*0.55;
+  for(var i=1;i<=4;i++){
+    var x=pad.left+(i/4)*cW;
+    ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(x,pad.top); ctx.lineTo(x,pad.top+cH); ctx.stroke();
+    ctx.fillStyle='#94a3b8'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+    ctx.fillText((maxVal*i/4).toFixed(0)+'x', x, H-6);
+  }
+  for(var i=0;i<labels.length;i++){
+    var y=pad.top+slot*i+(slot-bH)/2;
+    var bW=data[i]/maxVal*cW;
+    var r=Math.min(4,bH/4);
+    ctx.shadowColor='rgba(0,0,0,0.08)'; ctx.shadowBlur=3;
+    ctx.fillStyle=(colors&&colors[i])?colors[i]:'#94a3b8';
+    ctx.beginPath();
+    ctx.moveTo(pad.left,y+r); ctx.quadraticCurveTo(pad.left,y,pad.left+r,y);
+    ctx.lineTo(pad.left+bW-r,y); ctx.quadraticCurveTo(pad.left+bW,y,pad.left+bW,y+r);
+    ctx.lineTo(pad.left+bW,y+bH-r); ctx.quadraticCurveTo(pad.left+bW,y+bH,pad.left+bW-r,y+bH);
+    ctx.lineTo(pad.left+r,y+bH); ctx.quadraticCurveTo(pad.left,y+bH,pad.left,y+bH-r);
+    ctx.closePath(); ctx.fill(); ctx.shadowBlur=0;
+    ctx.fillStyle='#374151'; ctx.font='11px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(labels[i], pad.left-6, y+bH/2+4);
+    ctx.fillStyle='#1e293b'; ctx.font='bold 11px sans-serif'; ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(1)+'x', pad.left+bW+6, y+bH/2+4);
+  }
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top+cH); ctx.lineTo(pad.left+cW,pad.top+cH); ctx.stroke();
+}
+/* ── end canvas lib ── */
 
-// Chart 2: Revenue
-const revCtx = document.getElementById('revenueChart').getContext('2d');
-new Chart(revCtx, {
-  type: 'line',
-  data: {
-    labels: ['Jan 2026','Feb 2026','Mar 2026','Apr 2026','May 2026','Jun 2026★'],
-    datasets: [{
-      label: '月營收（億元）',
-      data: [536.9, 496.8, 597.8, 586.9, 589.6, 656.0],
-      borderColor: '#4f46e5',
-      backgroundColor: 'rgba(79,70,229,0.1)',
-      borderWidth: 3,
-      pointRadius: [4,4,4,4,4,9],
-      pointBackgroundColor: ['#4f46e5','#4f46e5','#4f46e5','#4f46e5','#4f46e5','#dc2626'],
-      pointBorderColor: 'white',
-      pointBorderWidth: 2,
-      fill: true,
-      tension: 0.4
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: ctx => `${ctx.raw}億元` } }
-    },
-    scales: {
-      y: {
-        min: 460,
-        grid: { color: 'rgba(0,0,0,0.06)' },
-        ticks: { callback: v => `${v}億` }
-      },
-      x: { grid: { display: false } }
-    }
-  }
-});
-
-// Chart 3: PE comparison
-const peCtx = document.getElementById('peChart').getContext('2d');
-new Chart(peCtx, {
-  type: 'bar',
-  data: {
-    labels: [
-      '台達電 TTM PE',
-      '台達電 FY2026E',
-      '台達電 FY2027E',
-      '台積電 FY2026E',
-      '光寶科 FY2026E',
-      '0050 PE'
-    ],
-    datasets: [{
-      label: '本益比（倍）',
-      data: [63.8, 39, 26.2, 25, 22, 29],
-      backgroundColor: [
-        'rgba(79,70,229,0.5)',
-        'rgba(79,70,229,1)',
-        'rgba(79,70,229,0.7)',
-        'rgba(100,116,139,0.5)',
-        'rgba(100,116,139,0.5)',
-        'rgba(100,116,139,0.5)'
-      ],
-      borderColor: '#312e81',
-      borderWidth: 1.5,
-      borderRadius: 6
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: ctx => `PE: ${ctx.raw}x` } }
-    },
-    scales: {
-      x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { callback: v => `${v}x` } },
-      y: { grid: { display: false } }
-    }
-  }
+window.addEventListener("DOMContentLoaded", function() {
+  drawBarChart("epsChart", ["Q2", ",", "24", "Q4", ",", "25", "Q2", ",", "25", "Q4", ",", "26★"], [3.83, 4.75, 2.76, 3.94, 5.37, 7.16, 6.67, 7.91], "#a5b4fc", "#312e81", "元");
+  drawLineChart("revenueChart", ["Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026", "Jun 2026★"], [536.9, 496.8, 597.8, 586.9, 589.6, 656.0], "#4f46e5", function(v){return (v/1000).toFixed(1)+'千億';});
+  drawHBarChart("peChart", ["台達電 TTM PE", "台達電 FY2026E", "台達電 FY2027E", "台積電 FY2026E", "光寶科 FY2026E", "0050 PE"], [63.8, 39.0, 26.2, 25.0, 22.0, 29.0], ["rgba(79,70,229,0.5)", "rgba(79,70,229,1)", "rgba(79,70,229,0.7)", "rgba(100,116,139,0.5)", "rgba(100,116,139,0.5)", "rgba(100,116,139,0.5)"]);
 });
 </script>
 </body>

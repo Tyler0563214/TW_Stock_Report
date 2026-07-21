@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>華通電腦 2313 投資研究報告 2026-07-15</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root{--primary:#1e40af;--primary-dark:#1e3a8a;--primary-light:#dbeafe;--accent:#f97316;--danger:#ef4444;--success:#22c55e;--bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--text-muted:#64748b;--border:#e2e8f0;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -178,17 +177,17 @@ li{margin-bottom:10px;font-size:0.88em;line-height:1.6;}
   <div class="chart-grid">
     <div class="chart-wrap">
       <h3>EPS 季度趨勢（近8季）元/股 ★</h3>
-      <canvas id="epsChart" height="200"></canvas>
+      <canvas width="420" height="200" id="epsChart" height="200" style="width:100%;height:auto;"></canvas>
       <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;">★ 實際公告；Q2'26E、Q3'26E為推算值（衛星旺季效應）</div>
     </div>
     <div class="chart-wrap">
       <h3>月營收趨勢（2026年 H1，億元）★</h3>
-      <canvas id="revChart" height="200"></canvas>
+      <canvas width="420" height="200" id="revChart" height="200" style="width:100%;height:auto;"></canvas>
       <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;">★ 實際公告；FinMind月份-1=實際月份</div>
     </div>
     <div class="chart-wrap">
       <h3>本益比比較（TTM vs 2026E）</h3>
-      <canvas id="peChart" height="200"></canvas>
+      <canvas width="420" height="200" id="peChart" height="200" style="width:100%;height:auto;"></canvas>
       <div style="font-size:0.72em;color:var(--text-muted);margin-top:8px;">★ 2026E PE 25~31x顯著低於TTM（推算值）</div>
     </div>
   </div>
@@ -436,14 +435,138 @@ li{margin-bottom:10px;font-size:0.88em;line-height:1.6;}
 </div>
 
 <script>
-const epsCtx=document.getElementById('epsChart').getContext('2d');
-new Chart(epsCtx,{type:'bar',data:{labels:['Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26','Q2\'26E','Q3\'26E'],datasets:[{label:'EPS（元）',data:[1.40,0.85,0.70,1.81,1.90,0.70,1.26,2.0,2.8],backgroundColor:['#bfdbfe','#93c5fd','#93c5fd','#60a5fa','#3b82f6','#2563eb','#ef4444','rgba(239,68,68,0.4)','rgba(239,68,68,0.3)'],borderRadius:5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+/* ── Pure Canvas Chart Library – no CDN, no external deps ── */
+function drawBarChart(canvasId, labels, data, barColor, accentColor, unit) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:36, right:16, bottom:48, left:62};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var minVal = Math.min(0, Math.min.apply(null,data)*0.9);
+  var maxVal = Math.max.apply(null,data)*1.2;
+  var range  = maxVal-minVal;
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  for(var i=0;i<=4;i++){
+    var y=pad.top+cH-(i/4)*cH;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
+    ctx.fillStyle='#94a3b8'; ctx.font='11px sans-serif'; ctx.textAlign='right';
+    ctx.fillText((minVal+range*i/4).toFixed(2), pad.left-5, y+4);
+  }
+  var slot=cW/labels.length, bW=slot*0.55;
+  for(var i=0;i<data.length;i++){
+    var isLast=(i===data.length-1);
+    var x=pad.left+slot*i+(slot-bW)/2;
+    var bH=Math.abs(data[i]-minVal)/range*cH;
+    var y2=pad.top+cH-(data[i]-minVal)/range*cH;
+    var r=Math.min(4,bW/4);
+    ctx.shadowColor='rgba(0,0,0,0.1)'; ctx.shadowBlur=4;
+    ctx.fillStyle=isLast?accentColor:barColor;
+    ctx.beginPath();
+    ctx.moveTo(x+r,y2); ctx.lineTo(x+bW-r,y2);
+    ctx.quadraticCurveTo(x+bW,y2,x+bW,y2+r);
+    ctx.lineTo(x+bW,y2+Math.max(bH,r)); ctx.lineTo(x,y2+Math.max(bH,r));
+    ctx.lineTo(x,y2+r); ctx.quadraticCurveTo(x,y2,x+r,y2);
+    ctx.closePath(); ctx.fill(); ctx.shadowBlur=0;
+    ctx.fillStyle=isLast?accentColor:'#334155';
+    ctx.font=isLast?'bold 11px sans-serif':'10px sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(typeof data[i]==='number'?data[i].toFixed(2)+(unit||''):data[i], x+bW/2, y2-5);
+    ctx.fillStyle='#64748b'; ctx.font='10px sans-serif';
+    ctx.fillText(labels[i], x+bW/2, H-8);
+  }
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top); ctx.lineTo(pad.left,pad.top+cH); ctx.stroke();
+}
+function drawLineChart(canvasId, labels, data, lineColor, yFormatter) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:36, right:24, bottom:48, left:72};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var minVal = Math.min.apply(null,data)*0.88;
+  var maxVal = Math.max.apply(null,data)*1.12;
+  var range  = maxVal-minVal;
+  function toX(i){ return pad.left+(i/(labels.length-1))*cW; }
+  function toY(v){ return pad.top+(1-(v-minVal)/range)*cH; }
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  for(var i=0;i<=4;i++){
+    var y=pad.top+cH-(i/4)*cH;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
+    var v=minVal+range*i/4;
+    ctx.fillStyle='#94a3b8'; ctx.font='10px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(yFormatter?yFormatter(v):v.toFixed(0), pad.left-5, y+4);
+  }
+  ctx.beginPath(); ctx.moveTo(toX(0),toY(data[0]));
+  for(var i=1;i<data.length;i++) ctx.lineTo(toX(i),toY(data[i]));
+  ctx.lineTo(toX(data.length-1),pad.top+cH); ctx.lineTo(toX(0),pad.top+cH);
+  ctx.closePath(); ctx.fillStyle=lineColor+'1a'; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(toX(0),toY(data[0]));
+  for(var i=1;i<data.length;i++) ctx.lineTo(toX(i),toY(data[i]));
+  ctx.strokeStyle=lineColor; ctx.lineWidth=2.5; ctx.lineJoin='round'; ctx.stroke();
+  for(var i=0;i<data.length;i++){
+    var isLast=(i===data.length-1);
+    var x=toX(i), y=toY(data[i]);
+    ctx.beginPath(); ctx.arc(x,y,isLast?6:4,0,Math.PI*2);
+    ctx.fillStyle=isLast?lineColor:'#ffffff';
+    ctx.strokeStyle=lineColor; ctx.lineWidth=2; ctx.fill(); ctx.stroke();
+    if(isLast){
+      ctx.fillStyle=lineColor; ctx.font='bold 10px sans-serif'; ctx.textAlign='center';
+      ctx.fillText(yFormatter?yFormatter(data[i]):data[i].toFixed(0), x, y-12);
+    }
+    ctx.fillStyle='#64748b'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(labels[i], x, H-8);
+  }
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top); ctx.lineTo(pad.left,pad.top+cH); ctx.stroke();
+}
+function drawHBarChart(canvasId, labels, data, colors) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:16, right:60, bottom:28, left:115};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var maxVal = Math.max.apply(null,data)*1.15;
+  var slot=cH/labels.length, bH=slot*0.55;
+  for(var i=1;i<=4;i++){
+    var x=pad.left+(i/4)*cW;
+    ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(x,pad.top); ctx.lineTo(x,pad.top+cH); ctx.stroke();
+    ctx.fillStyle='#94a3b8'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+    ctx.fillText((maxVal*i/4).toFixed(0)+'x', x, H-6);
+  }
+  for(var i=0;i<labels.length;i++){
+    var y=pad.top+slot*i+(slot-bH)/2;
+    var bW=data[i]/maxVal*cW;
+    var r=Math.min(4,bH/4);
+    ctx.shadowColor='rgba(0,0,0,0.08)'; ctx.shadowBlur=3;
+    ctx.fillStyle=(colors&&colors[i])?colors[i]:'#94a3b8';
+    ctx.beginPath();
+    ctx.moveTo(pad.left,y+r); ctx.quadraticCurveTo(pad.left,y,pad.left+r,y);
+    ctx.lineTo(pad.left+bW-r,y); ctx.quadraticCurveTo(pad.left+bW,y,pad.left+bW,y+r);
+    ctx.lineTo(pad.left+bW,y+bH-r); ctx.quadraticCurveTo(pad.left+bW,y+bH,pad.left+bW-r,y+bH);
+    ctx.lineTo(pad.left+r,y+bH); ctx.quadraticCurveTo(pad.left,y+bH,pad.left,y+bH-r);
+    ctx.closePath(); ctx.fill(); ctx.shadowBlur=0;
+    ctx.fillStyle='#374151'; ctx.font='11px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(labels[i], pad.left-6, y+bH/2+4);
+    ctx.fillStyle='#1e293b'; ctx.font='bold 11px sans-serif'; ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(1)+'x', pad.left+bW+6, y+bH/2+4);
+  }
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top+cH); ctx.lineTo(pad.left+cW,pad.top+cH); ctx.stroke();
+}
+/* ── end canvas lib ── */
 
-const revCtx=document.getElementById('revChart').getContext('2d');
-new Chart(revCtx,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'月營收（億元）',data:[72.28,74.04,52.01,69.43,67.62,69.15],borderColor:'#1e40af',backgroundColor:'rgba(30,64,175,0.1)',tension:0.3,fill:true,pointBackgroundColor:['#1e40af','#1e40af','#1e40af','#1e40af','#1e40af','#ef4444'],pointRadius:5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false}}}});
-
-const peCtx=document.getElementById('peChart').getContext('2d');
-new Chart(peCtx,{type:'bar',data:{labels:['華通 TTM','華通 2026E低','華通 2026E高','PCB同業','台股大盤'],datasets:[{label:'PE（x）',data:[43.7,25,31,18,18],backgroundColor:['#fca5a5','#22c55e','#86efac','#bfdbfe','#dbeafe'],borderRadius:5}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}});
+window.addEventListener("DOMContentLoaded", function() {
+  drawBarChart("epsChart", ["Q3\\", ",", "24", "Q1\\", ",", "25", "Q3\\", ",", "25", "Q1\\", ",", "26E", "Q3\\"], [1.4, 0.85, 0.7, 1.81, 1.9, 0.7, 1.26, 2.0, 2.8], "#bfdbfe", "rgba(239,68,68,0.3)", "元");
+  drawLineChart("revChart", ["Jan", "Feb", "Mar", "Apr", "May", "Jun"], [72.28, 74.04, 52.01, 69.43, 67.62, 69.15], "#1e40af", function(v){return v.toFixed(1)+'億';});
+  drawHBarChart("peChart", ["華通 TTM", "華通 2026E低", "華通 2026E高", "PCB同業", "台股大盤"], [43.7, 25.0, 31.0, 18.0, 18.0], ["#fca5a5", "#22c55e", "#86efac", "#bfdbfe", "#dbeafe"]);
+});
 </script>
 </body>
 </html>
