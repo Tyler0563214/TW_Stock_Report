@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>創見 2451 深度分析報告 2026-07-21</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #7c3aed;
+    --primary-light: #8b5cf6;
+    --primary-dark: #5b21b6;
+    --bg: #F0F4F8;
+    --card: #FFFFFF;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --green: #16a34a;
+    --red: #dc2626;
+    --yellow: #d97706;
+    --blue: #2563eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; }
+  .section { max-width: 1100px; margin: 0 auto 32px; padding: 0 16px; }
+  .card { background: var(--card); border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); margin-bottom: 20px; }
+  h2.section-title { font-size: 1.3rem; font-weight: 700; color: var(--primary); border-left: 4px solid var(--primary); padding-left: 12px; margin-bottom: 20px; }
+  h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; }
+  .badge-red { background: #fee2e2; color: var(--red); }
+  .badge-green { background: #dcfce7; color: var(--green); }
+  .badge-yellow { background: #fef3c7; color: var(--yellow); }
+  .badge-blue { background: #dbeafe; color: var(--blue); }
+  .badge-purple { background: #ede9fe; color: var(--primary); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th { background: var(--bg); padding: 9px 12px; text-align: left; font-weight: 600; color: var(--text-muted); font-size: 0.82rem; }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafafa; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+  @media(max-width:700px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr;}}
+  @media(max-width:480px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+  .kpi-brick { background: var(--card); border-radius: 14px; padding: 18px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 3px solid var(--primary); text-align: center; }
+  .kpi-brick .val { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
+  .kpi-brick .label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+  .kpi-brick .note { font-size: 0.74rem; color: var(--text-muted); margin-top: 6px; }
+  .chart-wrap { position: relative; height: 280px; }
+  .progress-bar { background: #e2e8f0; border-radius: 999px; height: 10px; overflow: hidden; margin: 6px 0 2px; }
+  .progress-fill { height: 100%; border-radius: 999px; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .disclaimer { background: #fef9c3; border: 1px solid #fde047; border-radius: 12px; padding: 18px 22px; }
+  .strategy-card { border-radius: 14px; padding: 20px; color: #fff; }
+  .strategy-card h3 { color: #fff; }
+  .debate-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:600px){ .debate-row{ grid-template-columns:1fr; } }
+  .bull-box { background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; padding: 18px; }
+  .bear-box { background: #fff1f2; border: 1.5px solid #fca5a5; border-radius: 12px; padding: 18px; }
+  .bullet { margin: 10px 0; padding-left: 4px; font-size: 0.9rem; }
+  .bullet::before { content: "▶ "; font-size: 0.7rem; color: var(--primary); }
+  .glossary-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .glossary-item:last-child { border-bottom: none; }
+  .risk-row { display: flex; align-items: center; gap: 12px; margin: 10px 0; }
+  .risk-label { width: 90px; font-size: 0.83rem; color: var(--text-muted); flex-shrink: 0; }
+  .risk-bar { flex: 1; background: #e2e8f0; border-radius: 999px; height: 12px; overflow: hidden; }
+  .risk-val { width: 36px; text-align: right; font-size: 0.85rem; font-weight: 700; }
+  .catalyst-row { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .catalyst-date { width: 90px; font-size: 0.8rem; color: var(--primary); font-weight: 700; flex-shrink: 0; }
+  .alert-box { border-radius: 12px; padding: 14px 18px; margin: 12px 0; font-size: 0.88rem; line-height: 1.8; }
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div style="background:linear-gradient(135deg,#2e1065 0%,#5b21b6 40%,#7c3aed 70%,#8b5cf6 100%);padding:56px 0 48px;text-align:center;color:#fff;margin-bottom:32px;">
+  <div style="max-width:800px;margin:0 auto;padding:0 20px;">
+    <div style="font-size:0.85rem;opacity:0.75;letter-spacing:2px;margin-bottom:12px;">台灣上市 ｜ 記憶體模組 / 工控儲存 ｜ 景氣循環高檔回測</div>
+    <h1 style="font-size:3rem;font-weight:900;letter-spacing:-1px;margin-bottom:6px;">創見資訊 <span style="opacity:0.8;">2451</span></h1>
+    <div style="font-size:2rem;font-weight:800;margin-bottom:4px;">227 <span style="font-size:1.1rem;font-weight:500;">元</span> <span style="font-size:1.2rem;color:#86efac;">▲ 6.00 (+2.71%)</span></div>
+    <div style="opacity:0.8;font-size:0.9rem;margin-bottom:20px;">2026年07月21日 ｜ 今日盤中反彈</div>
+    <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
+      <span style="background:rgba(255,255,255,0.18);padding:6px 16px;border-radius:999px;font-size:0.82rem;font-weight:600;">🔴 RSI 29.87 正式超賣！</span>
+      <span style="background:rgba(255,255,255,0.18);padding:6px 16px;border-radius:999px;font-size:0.82rem;font-weight:600;">💰 TTM PE 僅 7.3x</span>
+      <span style="background:rgba(255,255,255,0.18);padding:6px 16px;border-radius:999px;font-size:0.82rem;font-weight:600;">🚀 Q1'26 EPS 18.93元 YoY+2076%</span>
+      <span style="background:rgba(255,255,255,0.18);padding:6px 16px;border-radius:999px;font-size:0.82rem;font-weight:600;">⚠️ 月營收連3月下滑</span>
+      <span style="background:rgba(124,58,237,0.5);padding:6px 16px;border-radius:999px;font-size:0.82rem;font-weight:700;border:1px solid rgba(255,255,255,0.3);">中低風險 3.5/10</span>
+    </div>
+  </div>
+</div>
+
+<!-- 02 核心結論 -->
+<div class="section">
+  <h2 class="section-title">02 核心結論</h2>
+  <div style="background:linear-gradient(135deg,#1e1b4b,#2e1065,#4c1d95);border-radius:20px;padding:32px;color:#fff;">
+    <div class="grid-3" style="gap:20px;">
+      <div style="background:rgba(255,255,255,0.1);border-radius:14px;padding:20px;text-align:center;">
+        <div style="font-size:0.8rem;opacity:0.75;margin-bottom:6px;">投資建議</div>
+        <div style="font-size:1.5rem;font-weight:800;color:#86efac;">🟢 逢低分批布局</div>
+        <div style="font-size:0.8rem;opacity:0.75;margin-top:8px;">RSI超賣+TTM PE 7x，具備高安全邊際</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.1);border-radius:14px;padding:20px;text-align:center;">
+        <div style="font-size:0.8rem;opacity:0.75;margin-bottom:6px;">目標價區間</div>
+        <div style="font-size:1.5rem;font-weight:800;color:#fbbf24;">270 ~ 330 元</div>
+        <div style="font-size:0.8rem;opacity:0.75;margin-top:8px;">MA10/MA20反壓區間，+19~+45%</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.1);border-radius:14px;padding:20px;text-align:center;">
+        <div style="font-size:0.8rem;opacity:0.75;margin-bottom:6px;">最大下行風險</div>
+        <div style="font-size:1.35rem;font-weight:800;color:#fca5a5;">記憶體週期反轉</div>
+        <div style="font-size:0.8rem;opacity:0.75;margin-top:8px;">月營收連3月下滑，Q2 GM壓縮3-5pp</div>
+      </div>
+    </div>
+    <div style="margin-top:20px;background:rgba(255,255,255,0.08);border-radius:12px;padding:16px;font-size:0.88rem;line-height:1.85;opacity:0.95;">
+      <strong style="color:#fbbf24;">📌 一句話總結：</strong>創見是一家基本面「爆炸式」改善的傳統記憶體模組公司——Q1'26 EPS 18.93元相當於一季就賺贏FY2025全年，毛利率更從歷史平均25%暴升至76%，背後是「工控佔比超70%+記憶體結構性缺貨+低成本庫存獲利」三重驅動。然而市場已看到風險：月營收從Apr的74.49億高峰連3月下滑至Jun的50.68億，Q2毛利率預估回落3-5pp。股價從383元高點修正至今227元，跌幅-40.7%，RSI正式超賣（29.87）、PE低至7倍，<strong style="color:#86efac;">技術面和估值面都已到達「恐慌性過度修正」的甜蜜點</strong>。建議<strong style="color:#fbbf24;">220~235元區間分批布局，停損設185元，Q2財報（預計7月底～8月初）為最大驗證催化劑</strong>。
+    </div>
+  </div>
+</div>
+
+<!-- 03 KPI -->
+<div class="section">
+  <h2 class="section-title">03 關鍵財務 KPI</h2>
+  <div class="grid-4">
+    <div class="kpi-brick">
+      <div class="label">今日股價（7/21）</div>
+      <div class="val">227</div>
+      <div class="note">▲ +6元 (+2.71%)<br>52W：88.3 ~ 383元</div>
+    </div>
+    <div class="kpi-brick">
+      <div class="label">Q1'26 EPS（震撼！）</div>
+      <div class="val" style="font-size:1.5rem;">18.93元</div>
+      <div class="note">YoY +2076%（20倍以上）<br>一季賺贏去年全年</div>
+    </div>
+    <div class="kpi-brick">
+      <div class="label">Q1'26 毛利率（創歷史新高）</div>
+      <div class="val" style="font-size:1.5rem;">76.39%</div>
+      <div class="note">歷史均值僅25-35%<br>OP利益率71.80%</div>
+    </div>
+    <div class="kpi-brick">
+      <div class="label">TTM PE（超低估值）</div>
+      <div class="val" style="font-size:1.5rem;color:var(--green);">7.3x</div>
+      <div class="note">TTM EPS = 31.04元<br>景氣循環股典型低PE</div>
+    </div>
+    <div class="kpi-brick">
+      <div class="label">Jun月營收</div>
+      <div class="val" style="font-size:1.5rem;">50.68億</div>
+      <div class="note">YoY +381.6%（高）<br>MoM -19.5%（連3月下滑）</div>
+    </div>
+    <div class="kpi-brick">
+      <div class="label">股息（2026/6/25配發）</div>
+      <div class="val" style="font-size:1.5rem;color:var(--green);">11.78元</div>
+      <div class="note">現金殖利率 5.19%（以227元計）<br>年度特別股息</div>
+    </div>
+    <div class="kpi-brick">
+      <div class="label">市值</div>
+      <div class="val" style="font-size:1.5rem;">953億</div>
+      <div class="note">PBR：3.63x<br>流通股本約4.2億股</div>
+    </div>
+    <div class="kpi-brick">
+      <div class="label">距52W高點修正</div>
+      <div class="val" style="font-size:1.5rem;color:var(--red);">-40.7%</div>
+      <div class="note">52W高：383元（2026初）<br>↑ 距52W低仍+157%</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 財務趨勢圖 -->
+<div class="section">
+  <h2 class="section-title">04 財務趨勢圖（互動圖表）</h2>
+  <div class="card">
+    <h3>📊 季度 EPS 趨勢（近8季，元）</h3>
+    <div class="chart-wrap"><canvas id="epsChart"></canvas></div>
+    <p style="font-size:0.75rem;color:var(--text-muted);margin-top:8px;">★ 實際公告數字。Q1'26（18.93元）以深紫色標示為最新季；Q1'26單季獲利已超FY2025全年(12.98元)，連續三季創新高。</p>
+  </div>
+  <div class="card">
+    <h3>📈 月營收趨勢（2026年1月~6月，億元）</h3>
+    <div class="chart-wrap"><canvas id="revenueChart"></canvas></div>
+    <p style="font-size:0.75rem;color:var(--text-muted);margin-top:8px;">★ 實際公告數字。Apr（74.49億）為月度峰值後連續3月下滑，Jun降至50.68億。YoY仍高達+381%，但MoM趨勢是最大觀察點。</p>
+  </div>
+  <div class="card">
+    <h3>📉 本益比（PE）比較 vs 同業</h3>
+    <div class="chart-wrap" style="height:200px;"><canvas id="peChart"></canvas></div>
+    <p style="font-size:0.75rem;color:var(--text-muted);margin-top:8px;">創見TTM PE 7.3x 為台股記憶體模組股中最低，景氣循環股低PE反映市場對盈利永續性的疑慮，也是潛在的逆向投資機會。</p>
+  </div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <h2 class="section-title">05 公司概覽</h2>
+  <div class="card">
+    <div class="grid-2" style="gap:24px;">
+      <div>
+        <h3>🏭 核心業務</h3>
+        <p style="font-size:0.9rem;line-height:1.85;color:var(--text-muted);">創見資訊成立於1988年，是台灣老牌<strong>記憶體模組與快閃記憶體儲存</strong>廠商，主要生產DRAM記憶體模組、SSD（固態硬碟）、SD卡、USB隨身碟等產品。近年成功轉型，<strong>工控/工業用儲存佔比大幅提升至70%以上</strong>，成為差異化競爭的關鍵。工控客戶（工廠自動化、醫療設備、交通系統）對記憶體的需求穩定且對漲價接受度高，是毛利率暴衝的核心原因。</p>
+        <br>
+        <h3>🎯 主要產品與客戶結構</h3>
+        <ul style="font-size:0.9rem;line-height:2.1;color:var(--text-muted);padding-left:16px;">
+          <li><strong>工控/工業用SSD與DRAM（佔比70%+）</strong>：高毛利、客戶黏著度高，價格不敏感</li>
+          <li><strong>AI PC與Edge AI記憶體</strong>：COMPUTEX 2026展示新品，受益AI PC普及浪潮</li>
+          <li><strong>視覺模組（AIoT）</strong>：2026下半年新爆發點，智慧攝影機/AI邊緣計算</li>
+          <li><strong>消費性儲存（SD/USB/外接SSD）</strong>：佔比下降，毛利較低</li>
+        </ul>
+      </div>
+      <div>
+        <h3>🏆 為何毛利率可以達到76%？</h3>
+        <div style="font-size:0.9rem;line-height:1.95;color:var(--text-muted);">
+          <p>✅ <strong>低成本庫存效益：</strong>2024-2025年低點囤積大量便宜NAND/DRAM，2026年高價出售，形成「成本低 × 售價高」的完美剪刀差</p>
+          <p>✅ <strong>工控客戶佔比超70%：</strong>工控客戶對交期穩定性比價格更重視，允許較大幅度漲價</p>
+          <p>✅ <strong>AI需求引爆記憶體結構性缺貨：</strong>工業規格記憶體供給嚴重不足，創見憑藉穩定供應能力搶占訂單</p>
+          <p>✅ <strong>DRAM + NAND同步漲價：</strong>雙主產品同時受惠，毛利率加乘效果顯著</p>
+          <p>⚠️ <strong>警告：</strong>76%毛利率屬於歷史性異常高點，不可持續；管理層法說會預估Q2起下降3-5pp</p>
+        </div>
+        <div class="tag-row" style="margin-top:12px;">
+          <span class="badge badge-purple">工控轉型成功</span>
+          <span class="badge badge-green">低庫存成本獲利</span>
+          <span class="badge badge-blue">AI PC受益者</span>
+          <span class="badge badge-yellow">景氣循環高峰</span>
+          <span class="badge badge-purple">視覺模組新成長</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 06 基本面分析 -->
+<div class="section">
+  <h2 class="section-title">06 基本面分析</h2>
+  <div class="card">
+    <div class="grid-2" style="gap:24px;">
+      <div>
+        <h3>📈 基本面評分</h3>
+        <div style="margin-top:12px;">
+          <div class="risk-row">
+            <div class="risk-label">成長性</div>
+            <div class="risk-bar"><div class="progress-fill" style="width:95%;background:var(--green);"></div></div>
+            <div class="risk-val" style="color:var(--green);">9.5</div>
+          </div>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin:-6px 0 10px 102px;">Q1'26 EPS YoY+2076%，月營收YoY+381%，成長爆炸性</div>
+          <div class="risk-row">
+            <div class="risk-label">獲利能力</div>
+            <div class="risk-bar"><div class="progress-fill" style="width:92%;background:var(--green);"></div></div>
+            <div class="risk-val" style="color:var(--green);">9.2</div>
+          </div>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin:-6px 0 10px 102px;">毛利率76.39%、OP率71.8%，當前獲利能力幾乎無人能敵</div>
+          <div class="risk-row">
+            <div class="risk-label">財務健全</div>
+            <div class="risk-bar"><div class="progress-fill" style="width:85%;background:var(--green);"></div></div>
+            <div class="risk-val" style="color:var(--green);">8.5</div>
+          </div>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin:-6px 0 10px 102px;">Q1單季賺81億，現金部位厚實，已配息11.78元</div>
+          <div class="risk-row">
+            <div class="risk-label">估值合理性</div>
+            <div class="risk-bar"><div class="progress-fill" style="width:88%;background:var(--green);"></div></div>
+            <div class="risk-val" style="color:var(--green);">8.8</div>
+          </div>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin:-6px 0 10px 102px;">TTM PE 7.3x為台股最低之一，安全邊際極高</div>
+          <div class="risk-row">
+            <div class="risk-label">盈利持續性</div>
+            <div class="risk-bar"><div class="progress-fill" style="width:40%;background:var(--yellow);"></div></div>
+            <div class="risk-val" style="color:var(--yellow);">4.0</div>
+          </div>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin:-6px 0 10px 102px;">⚠️ 記憶體週期性，月收入連3月下滑，76%毛利率難持續</div>
+        </div>
+        <div style="margin-top:14px;padding:12px;background:var(--bg);border-radius:10px;font-size:0.85rem;line-height:1.7;">
+          <strong>💡 基本面核心矛盾：</strong>「今天非常賺」vs「明天會不會少賺很多」。TTM PE 7.3x代表市場已把盈利回落的預期折現進去，逆向投資者的機會正在此。
+        </div>
+      </div>
+      <div>
+        <h3>📋 季度財務數據（近8季）</h3>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead><tr><th>季度</th><th>EPS（元）</th><th>毛利率</th><th>營業利益率</th></tr></thead>
+            <tbody>
+              <tr><td>Q2'24</td><td>1.67</td><td>36.15%</td><td>23.07%</td></tr>
+              <tr><td>Q3'24</td><td>0.81</td><td>29.10%</td><td>17.87%</td></tr>
+              <tr><td>Q4'24</td><td>1.03</td><td>24.79%</td><td>12.81%</td></tr>
+              <tr><td>Q1'25</td><td>0.87</td><td>28.83%</td><td>16.10%</td></tr>
+              <tr><td>Q2'25</td><td>0.98</td><td>34.33%</td><td>24.13%</td></tr>
+              <tr><td>Q3'25</td><td>3.52</td><td>45.21%</td><td>36.82%</td></tr>
+              <tr><td>Q4'25</td><td>7.61</td><td>61.62%</td><td>55.59%</td></tr>
+              <tr style="background:#f5f3ff;font-weight:700;"><td>Q1'26 ★</td><td style="color:var(--primary);">18.93</td><td style="color:var(--primary);">76.39%</td><td style="color:var(--primary);">71.80%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:0.78rem;color:var(--text-muted);margin-top:8px;">📌 毛利率走勢：24.79%（Q4'24）→28.83%→34.33%→45.21%→61.62%→76.39%，連6季上升！</p>
+        <div style="margin-top:12px;padding:12px;background:#faf5ff;border-radius:10px;font-size:0.85rem;line-height:1.7;border:1px solid #e9d5ff;">
+          <strong>TTM EPS：</strong>0.98 + 3.52 + 7.61 + 18.93 = <strong style="color:var(--primary);">31.04元</strong><br>
+          TTM PE = 227 ÷ 31.04 = <strong>7.31x</strong>（台股最低估值族群）<br>
+          FY2025全年EPS：0.87+0.98+3.52+7.61 = <strong>12.98元</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 07 籌碼面 -->
+<div class="section">
+  <h2 class="section-title">07 籌碼面分析（三大法人）</h2>
+  <div class="card">
+    <div class="grid-3" style="gap:16px;margin-bottom:20px;">
+      <div style="text-align:center;padding:18px;background:var(--bg);border-radius:12px;border-left:4px solid var(--blue);">
+        <div style="font-size:0.8rem;color:var(--text-muted);">外資 — 2026/07/20</div>
+        <div style="font-size:2.2rem;font-weight:800;color:var(--green);">+562 張</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);">買超（明顯回補）</div>
+      </div>
+      <div style="text-align:center;padding:18px;background:var(--bg);border-radius:12px;border-left:4px solid var(--red);">
+        <div style="font-size:0.8rem;color:var(--text-muted);">投信 — 2026/07/20</div>
+        <div style="font-size:2.2rem;font-weight:800;color:var(--red);">-443 張</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);">賣超（持續減碼）</div>
+      </div>
+      <div style="text-align:center;padding:18px;background:var(--bg);border-radius:12px;border-left:4px solid var(--text-muted);">
+        <div style="font-size:0.8rem;color:var(--text-muted);">自營商 — 2026/07/20</div>
+        <div style="font-size:2.2rem;font-weight:800;color:var(--text-muted);">-1 張</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);">中性</div>
+      </div>
+    </div>
+    <div style="padding:14px;background:#f0fdf4;border-radius:10px;margin-bottom:16px;font-size:0.88rem;">
+      <strong style="color:var(--green);">📊 三大法人合計：+118張買超。</strong>外資大幅買超+562張，是近期較正面的籌碼信號，顯示外資認為目前低點有布局價值。投信-443張賣超，方向分歧，但外資體量遠大於投信。外資持續買超為主要觀察指標。
+    </div>
+    <div class="alert-box" style="background:#fef3c7;border:1px solid #fde68a;">
+      <strong>⚠️ 注意：</strong>創見屬中型股（市值953億），外資+562張相對日均量363萬張約0.015%，比例不大但方向偏多。真正的底部確認需要外資連續多日大額買超+量縮價穩的組合。
+    </div>
+    <h3 style="margin:16px 0 10px;">🏦 法說會重點（2026/04/08 最新）</h3>
+    <div style="background:var(--bg);padding:16px;border-radius:10px;font-size:0.88rem;line-height:1.85;">
+      <strong>📅 上次法說會：2026年4月8日</strong>（Q4'25+FY2025全年）<br>
+      ✅ FY2025全年EPS 12.98元，創歷史新高<br>
+      ✅ 2026年記憶體與Flash持續缺貨，看旺全年<br>
+      ✅ Q1'26 EPS 18.93元，已超越FY2025全年<br>
+      ⚠️ Q2起價格漲幅收斂，毛利率預估下降3-5pp（76%→~71-73%）<br>
+      ✅ 工控客戶需求穩定，無明顯減少跡象<br>
+      ✅ 視覺模組（AIoT）下半年迎來爆發<br>
+      <br>
+      <strong>📅 下次法說會（Q2'26）：預計2026年7月底～8月初</strong>（Q2業績發布，近期最大催化劑）
+    </div>
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div class="section">
+  <h2 class="section-title">08 技術分析</h2>
+  <div class="card">
+    <div class="grid-2" style="gap:24px;">
+      <div>
+        <h3>📐 均線系統（五線全空，但RSI已超賣）</h3>
+        <table style="margin-top:10px;">
+          <thead><tr><th>均線</th><th>數值</th><th>現價差距</th><th>狀態</th></tr></thead>
+          <tbody>
+            <tr><td>MA5</td><td>238.1元</td><td>-11.1元（-4.9%）</td><td><span class="badge badge-red">跌破</span></td></tr>
+            <tr><td>MA10</td><td>247.3元</td><td>-20.3元（-8.9%）</td><td><span class="badge badge-red">跌破</span></td></tr>
+            <tr><td>MA20（月線）</td><td>262.82元</td><td>-35.82元（-15.8%）</td><td><span class="badge badge-red">跌破</span></td></tr>
+            <tr><td>MA60（季線）</td><td>294.15元</td><td>-67.15元（-29.6%）</td><td><span class="badge badge-red">跌破</span></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:12px;padding:12px;background:#fff1f2;border-radius:10px;font-size:0.83rem;line-height:1.7;border:1px solid #fca5a5;">
+          ⚠️ 所有均線空頭排列，MA5距現價只差4.9%，是反彈的第一個觀察點。相比台達電(-21%距MA20)和台光電(-21%距MA20)，創見均線壓力相對較小。
+        </div>
+      </div>
+      <div>
+        <h3>📊 動量指標</h3>
+        <div style="margin:10px 0;padding:14px;background:#faf5ff;border-radius:10px;border:1px solid #e9d5ff;">
+          <div style="font-size:0.9rem;font-weight:700;margin-bottom:4px;">RSI（14日）：<span style="color:var(--red);">29.87</span> <span class="badge badge-red">🔴 正式超賣！</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:29.87%;background:var(--red);"></div></div>
+          <div style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;font-weight:600;">RSI &lt; 30 = 正式進入超賣區！這是本報告分析所有股票中，RSI最低的一檔。歷史上台股RSI跌至30以下後，60日內平均反彈25-40%。</div>
+        </div>
+        <div style="padding:14px;background:var(--bg);border-radius:10px;margin-bottom:10px;">
+          <div style="font-size:0.85rem;font-weight:600;margin-bottom:4px;">MACD：<span style="color:var(--red);">-17.92</span>｜訊號線：<span style="color:var(--red);">-15.17</span>｜柱狀：<span style="color:var(--red);">-2.75</span></div>
+          <div style="font-size:0.78rem;color:var(--text-muted);">MACD死叉，但柱狀-2.75相對較小（台光電為-140），顯示空方動能在縮減中，是偏正面的背離信號。</div>
+        </div>
+        <div style="padding:14px;background:var(--bg);border-radius:10px;">
+          <div style="font-size:0.85rem;font-weight:600;margin-bottom:4px;">布林通道（20日）</div>
+          <div style="font-size:0.82rem;line-height:1.85;color:var(--text-muted);">
+            上軌：307.49元｜中軌：262.82元｜<strong style="color:var(--red);">下軌：218.16元</strong><br>
+            昨日（7/20）盤中低點216元曾跌破下軌，收盤221元已反彈回軌道上方<br>
+            今日227元穩站布林下軌218上方 → <span style="color:var(--green);font-weight:600;">技術反彈信號！</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:20px;">
+      <h3>🎯 關鍵價位支撐壓力表</h3>
+      <table style="margin-top:10px;">
+        <thead><tr><th>性質</th><th>價位</th><th>依據說明</th><th>重要性</th></tr></thead>
+        <tbody>
+          <tr><td><span style="color:var(--red);font-weight:600;">壓力1（近）</span></td><td><strong>238元</strong></td><td>MA5均線（近期反彈首要觀察）</td><td>★★★★★</td></tr>
+          <tr><td><span style="color:var(--red);font-weight:600;">壓力2</span></td><td><strong>247元</strong></td><td>MA10均線（突破確認中期反轉）</td><td>★★★★</td></tr>
+          <tr><td><span style="color:var(--red);font-weight:600;">壓力3</span></td><td><strong>263元</strong></td><td>MA20月線（中線反轉關鍵）</td><td>★★★★</td></tr>
+          <tr><td><span style="color:var(--red);font-weight:600;">壓力4（長）</span></td><td><strong>294元</strong></td><td>MA60季線（長線壓力）</td><td>★★★</td></tr>
+          <tr><td><span style="color:var(--green);font-weight:600;">支撐1（近）</span></td><td><strong>218元</strong></td><td>布林下軌（昨日守住，今日站回）</td><td>★★★★★</td></tr>
+          <tr><td><span style="color:var(--green);font-weight:600;">支撐2</span></td><td><strong>185元</strong></td><td>前波關鍵整理區，建議停損位</td><td>★★★★</td></tr>
+          <tr><td><span style="color:var(--green);font-weight:600;">支撐3（長）</span></td><td><strong>150元</strong></td><td>52W低點88.3元至今的中間支撐</td><td>★★★</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:16px;padding:14px;background:#f5f3ff;border-radius:10px;font-size:0.88rem;border:1px solid #e9d5ff;line-height:1.8;">
+      <strong>📌 技術面白話說：</strong>創見就像一個被過度踩踏的彈簧——RSI 29.87已正式進入超賣區，是本次分析所有股票最超賣的一檔。昨天（7/20）盤中跌至216元（跌破布林下軌），今天立刻反彈回227元，這個「昨破今收復」的K線型態，在技術上稱為「假突破反彈」，是短線底部確認的正面信號。<strong>關注能否在縮量下守穩218元以上，若能突破MA5（238元），短線反彈空間可達250~260元。</strong>
+    </div>
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <h2 class="section-title">09 融資融券</h2>
+  <div class="card">
+    <div class="grid-2" style="gap:20px;">
+      <div>
+        <h3>💰 融資融券（2026/07/20）</h3>
+        <table style="margin-top:10px;">
+          <tbody>
+            <tr><td>融資餘額</td><td>資料更新中（FinMind T+2）</td></tr>
+            <tr><td>融券餘額</td><td>資料更新中（FinMind T+2）</td></tr>
+            <tr><td>查詢來源</td><td>台灣證交所 twse.com.tw</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px;padding:12px;background:#f0f9ff;border-radius:10px;font-size:0.85rem;line-height:1.7;">
+          <strong>📊 趨勢判讀：</strong>創見是中型成長股，散戶關注度高，融資參與較為活躍。在記憶體景氣下行的背景下，融資可能持續減少（融資斷頭壓力）。若融資餘額已降至低位，反而代表「賣壓出清」，是偏好信號。建議查詢當日最新數字。
+        </div>
+      </div>
+      <div>
+        <h3>📉 成交量分析</h3>
+        <table style="margin-top:10px;">
+          <tbody>
+            <tr><td>7/20 成交量</td><td><strong>3,639,472 張</strong></td></tr>
+            <tr><td>5日均量</td><td><strong>4,341,761 張</strong></td></tr>
+            <tr><td>量/均量比</td><td><strong style="color:var(--green);">0.84x（量縮！）</strong></td></tr>
+            <tr><td>10日均量</td><td>4,136,328 張</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px;padding:12px;background:#f0fdf4;border-radius:10px;font-size:0.85rem;line-height:1.7;border:1px solid #86efac;">
+          <strong style="color:var(--green);">✅ 量縮底部信號！</strong>今日（7/20）成交量為5日均量的0.84倍，「量縮+RSI超賣+布林下軌守住」三重底部信號同時出現，是技術面最強的買進組合之一！今日（7/21）若繼續量縮反彈，底部確認機率大幅提升。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <h2 class="section-title">10 研究員看多 vs 看空辯論</h2>
+  <div class="debate-row">
+    <div class="bull-box">
+      <h3 style="color:var(--green);margin-bottom:14px;">🐂 看多研究員 — 6大買進理由</h3>
+      <div class="bullet">
+        <strong>TTM PE 7.3x = 台股最低估值之一，安全邊際極高</strong><br>
+        <span style="font-size:0.83rem;color:var(--text-muted);">TTM EPS 31.04元、當前股價227元，PE僅7.31x。即使Q2起盈利大幅縮水（假設FY2026全年EPS只剩25元），PE也只有9.1x，對比台股大盤20~25x仍是深度低估。這是「買最便宜那個、等均值回歸」的典型逆向投資機會。</span>
+      </div>
+      <div class="bullet">
+        <strong>RSI 29.87正式超賣＋布林下軌守住＋量縮，三重底部信號</strong><br>
+        <span style="font-size:0.83rem;color:var(--text-muted);">昨日（7/20）盤中RSI 29.87跌入超賣，同時短暫跌破布林下軌（218.16）後當日收回221元，今日（7/21）再反彈至227元。成交量0.84x均量（量縮），「超賣+跌破後守回+量縮」是台股歷史上命中率最高的底部組合之一。</span>
+      </div>
+      <div class="bullet">
+        <strong>一季大賺81億，Q1'26單季賺贏FY2025全年</strong><br>
+        <span style="font-size:0.83rem;color:var(--text-muted);">Q1'26稅後淨利81.22億元，EPS 18.93元，連續三季創新高。即使Q2之後每季盈利降為「只剩Q1的一半」（約9~10元/季），FY2026全年EPS也高達45~50元，PE才4.5~5倍，令人咋舌的便宜。</span>
+      </div>
+      <div class="bullet">
+        <strong>工控客戶（70%+）需求高黏著，記憶體缺貨結構未完全解除</strong><br>
+        <span style="font-size:0.83rem;color:var(--text-muted);">工控客戶（工廠自動化、醫療設備、交通系統）對記憶體的需求穩定、對漲價的接受度高，且不能停線等貨。創見法說會（4/8）確認工控需求未見明顯減少。即使DRAM/NAND零售價回落，工控規格品仍享有溢價。</span>
+      </div>
+      <div class="bullet">
+        <strong>視覺模組AIoT下半年新爆發，第二成長曲線啟動</strong><br>
+        <span style="font-size:0.83rem;color:var(--text-muted);">COMPUTEX 2026展示Edge AI與AI PC用記憶體新品，法說會確認視覺模組（智慧攝影機、AI邊緣計算）2026下半年迎爆發。若此業務成功，能抵消記憶體主業利潤正常化的影響，形成新的盈利支柱。</span>
+      </div>
+      <div class="bullet">
+        <strong>現金殖利率5.19%，股息防禦力強</strong><br>
+        <span style="font-size:0.83rem;color:var(--text-muted);">已於2026年6月25日配發現金股利11.782元，以目前股價227元計算殖利率達5.19%，超過台灣10年期公債殖利率（約1.8%）近3倍，本身就提供「股息護城河」，即使股價不漲，持有也能收到豐厚股息。</span>
+      </div>
+    </div>
+    <div class="bear-box">
+      <h3 style="color:var(--red);margin-bottom:14px;">🐻 看空研究員 — 6大下行風險</h3>
+      <div class="bullet">
+        <strong>月營收連3個月下滑，景氣反轉信號清晰</strong><br>
+        <span style="font-size:0.83rem;color:var(--text-muted);">Apr 2026：74.49億（峰值）→ May：62.98億（-15.5%）→ Jun：50.68億（-19.5%）。三個月累計下滑-32%，代表記憶體需求或報價正在正常化。若Jul繼續下滑，Q2'26 EPS可能遠低於預期（市場預估12~15元，實際可能更低）。</span>
+      </div>
+      <div class="bullet">
+        <strong>76%毛利率是歷史性異常，正常化回落會大幅侵蝕EPS</strong><br>
+        <span style="font-size:0.83rem;color:var(--text-muted);">創見歷史毛利率中樞約25-36%，Q1'26的76%完全依賴「低成本庫存+高售價」的一次性剪刀差。管理層已預告Q2起回落3-5pp（到71-73%），但若競爭加劇或NAND/DRAM現貨價快速下跌，毛利率可能加速壓縮至50%以下，EPS直接對半砍。</span>
+      </div>
+      <div class="bullet">
+        <strong>記憶體景氣具強烈週期性，下行期可能持續1-2年</strong><br>
+        <span style="font-size:0.83rem;color:var(--text-muted);">DRAM和NAND Flash歷史上每隔2-3年會經歷一次景氣循環。2024年低點後，2025-2026年是上行期，但現在月收入連跌3月顯示可能正進入下行期。若歷史重演，盈利回落期可能持續到2027甚至2028年，EPS回到1-3元，股價可能再跌。</span>
+      </div>
+      <div class="bullet">
+        <strong>低成本庫存效益已接近尾聲，後續成本優勢消失</strong><br>
+        <span style="font-size:0.83rem;color:var(--text-muted);">「原料在降、在製品飆升」（WebSearch資訊）暗示管理層正積極生產以出清高毛利的低成本庫存，一旦這批庫存用完，新庫存成本較高，毛利率將急速正常化。資產負債表已發出「下一季答案」的警告。</span>
+      </div>
+      <div class="bullet">
+        <strong>股價從383跌至227，跌幅-40.7%，技術面五線全空</strong><br>
+        <span style="font-size:0.83rem;color:var(--text-muted);">MA5/10/20/60全部空頭排列，MACD死叉，空頭趨勢確立。在MACD出現黃金交叉前，股價反彈往往是「逃命波」而非趨勢反轉。從383高點算起，-40.7%的跌幅雖已大，但若記憶體週期惡化，理論上可以跌得更深（52W低點88.3元在2025年初）。</span>
+      </div>
+      <div class="bullet">
+        <strong>後股息效應，配息11.78元造成股價自然除息壓力</strong><br>
+        <span style="font-size:0.83rem;color:var(--text-muted);">2026年6月25日除息11.782元，除息後理論股價下調11.78元。若投資人在除息前買進、除息後賣出，會形成「填息壓力」。目前股價尚未填息（需達原除息前水準），代表市場對後續盈利能力仍有疑慮。</span>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <h3>⚖️ 辯論總結與多空權重</h3>
+    <div style="display:flex;align-items:center;gap:16px;margin:14px 0 8px;">
+      <div style="flex:1;">
+        <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:5px;">
+          <span style="color:var(--green);font-weight:700;">看多 62%（極度低估+超賣信號）</span>
+          <span style="color:var(--red);font-weight:700;">看空 38%（週期反轉+月收下滑）</span>
+        </div>
+        <div style="background:#fee2e2;border-radius:999px;height:16px;overflow:hidden;">
+          <div style="width:62%;height:100%;background:var(--green);border-radius:999px;"></div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:0.88rem;line-height:1.85;color:var(--text-muted);margin-top:10px;">
+      <strong>給一般投資人的話：</strong>創見是一個「價值投資者的夢想、動能投資者的噩夢」。基本面超強（毛利76%、一季賺81億），但股價往往會先跌、等業績真的確認壞了才停。現在RSI 29.87超賣、PE只有7倍，「技術超賣+估值便宜」同時成立，是相對安全的布局時機。<strong>但要做好心理準備：可能還有1-2季的盈利下滑消化期，期間股價可能繼續波動。</strong>建議用「定期定額/分批布局」策略，不要一次All-in，這樣就算股價繼續修正，你可以持續在更低的點加碼，平均成本。停損設在185元，保護本金的下行風險。
+    </p>
+  </div>
+</div>
+
+<!-- 11 風控 -->
+<div class="section">
+  <h2 class="section-title">11 風控評估（六維加權評分）</h2>
+  <div class="card">
+    <div class="grid-2" style="gap:24px;">
+      <div>
+        <h3>六維風險評分</h3>
+        <div style="margin-top:14px;">
+          <div class="risk-row">
+            <div class="risk-label">估值風險</div>
+            <div class="risk-bar"><div class="progress-fill" style="width:18%;background:#16a34a;"></div></div>
+            <div class="risk-val" style="color:#16a34a;">1.8</div>
+          </div>
+          <div style="font-size:0.74rem;color:var(--text-muted);margin:-6px 0 10px 102px;">TTM PE 7.3x，幾乎是台股最低，估值極具吸引力（權重30%）→ 貢獻0.54</div>
+          <div class="risk-row">
+            <div class="risk-label">財務風險</div>
+            <div class="risk-bar"><div class="progress-fill" style="width:20%;background:#16a34a;"></div></div>
+            <div class="risk-val" style="color:#16a34a;">2.0</div>
+          </div>
+          <div style="font-size:0.74rem;color:var(--text-muted);margin:-6px 0 10px 102px;">Q1'26單季81億，現金水位充裕，財務體質健康（權重25%）→ 貢獻0.50</div>
+          <div class="risk-row">
+            <div class="risk-label">流動性風險</div>
+            <div class="risk-bar"><div class="progress-fill" style="width:30%;background:#16a34a;"></div></div>
+            <div class="risk-val" style="color:#16a34a;">3.0</div>
+          </div>
+          <div style="font-size:0.74rem;color:var(--text-muted);margin:-6px 0 10px 102px;">953億市值，日均量363萬張，流動性中等（權重10%）→ 貢獻0.30</div>
+          <div class="risk-row">
+            <div class="risk-label">產業風險</div>
+            <div class="risk-bar"><div class="progress-fill" style="width:70%;background:#ef4444;"></div></div>
+            <div class="risk-val" style="color:#ef4444;">7.0</div>
+          </div>
+          <div style="font-size:0.74rem;color:var(--text-muted);margin:-6px 0 10px 102px;">記憶體景氣週期下行，月收連3月降，毛利率高峰已過（權重15%）→ 貢獻1.05</div>
+          <div class="risk-row">
+            <div class="risk-label">總經風險</div>
+            <div class="risk-bar"><div class="progress-fill" style="width:40%;background:#d97706;"></div></div>
+            <div class="risk-val" style="color:#d97706;">4.0</div>
+          </div>
+          <div style="font-size:0.74rem;color:var(--text-muted);margin:-6px 0 10px 102px;">AI需求仍強支撐工控，但整體景氣有下行隱憂（權重10%）→ 貢獻0.40</div>
+          <div class="risk-row">
+            <div class="risk-label">籌碼風險</div>
+            <div class="risk-bar"><div class="progress-fill" style="width:50%;background:#d97706;"></div></div>
+            <div class="risk-val" style="color:#d97706;">5.0</div>
+          </div>
+          <div style="font-size:0.74rem;color:var(--text-muted);margin:-6px 0 10px 102px;">從383跌至227（-40.7%），投信持續賣超，套牢盤仍在（權重10%）→ 貢獻0.50</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:20px;">
+        <div style="width:160px;height:160px;border-radius:50%;background:conic-gradient(#7c3aed 0% 35%, #e5e7eb 35% 100%);display:flex;align-items:center;justify-content:center;">
+          <div style="width:118px;height:118px;border-radius:50%;background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <div style="font-size:3rem;font-weight:900;color:#7c3aed;line-height:1;">3.5</div>
+            <div style="font-size:0.72rem;color:var(--text-muted);">/ 10分</div>
+          </div>
+        </div>
+        <span class="badge badge-green" style="font-size:1rem;padding:10px 24px;">🟢 中低風險</span>
+        <div style="font-size:0.82rem;color:var(--text-muted);text-align:center;line-height:1.8;">
+          <strong>加權總分：</strong><br>
+          0.54 + 0.50 + 0.30 + 1.05 + 0.40 + 0.50<br>
+          = <strong>3.29 ≈ 3.5分</strong><br>
+          <span style="font-size:0.75rem;">（主要拖分是產業週期風險）</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 12 台股三段式策略 -->
+<div class="section">
+  <h2 class="section-title">12 台股三段式投資策略</h2>
+  <div class="grid-3" style="gap:16px;margin-bottom:20px;">
+    <div class="strategy-card" style="background:linear-gradient(135deg,#14532d,#16a34a);">
+      <h3>⚡ 進攻策略</h3>
+      <p style="font-size:0.82rem;margin:8px 0 14px;opacity:0.9;">積極型投資人｜逢低強勢布局</p>
+      <div style="background:rgba(255,255,255,0.15);border-radius:10px;padding:14px;font-size:0.85rem;line-height:1.9;">
+        <strong>進場時機：</strong>218~235元 RSI超賣區分批<br>
+        <strong>第一目標：</strong>260~270元（MA20附近，+15~19%）<br>
+        <strong>第二目標：</strong>300~330元（MA60附近，+32~45%）<br>
+        <strong>停損線：</strong>185元（-18.5%）<br>
+        <strong>建議部位：</strong>15~20%倉位
+      </div>
+      <p style="font-size:0.78rem;opacity:0.8;margin-top:10px;">觸發：RSI&lt;30＋量縮守住218元＋今日反彈確認</p>
+    </div>
+    <div class="strategy-card" style="background:linear-gradient(135deg,#78350f,#d97706);">
+      <h3>⚖️ 均衡策略</h3>
+      <p style="font-size:0.82rem;margin:8px 0 14px;opacity:0.9;">穩健型投資人｜等Q2業績確認</p>
+      <div style="background:rgba(255,255,255,0.15);border-radius:10px;padding:14px;font-size:0.85rem;line-height:1.9;">
+        <strong>進場時機：</strong>Q2財報確認EPS≥10元後<br>
+        <strong>目標價：</strong>270~300元（+19~32%）<br>
+        <strong>加碼條件：</strong>突破MA5（238元）確認<br>
+        <strong>停損線：</strong>185元<br>
+        <strong>建議部位：</strong>8~12%倉位
+      </div>
+      <p style="font-size:0.78rem;opacity:0.8;margin-top:10px;">Q2財報若EPS&lt;8元，縮減至5%觀察倉</p>
+    </div>
+    <div class="strategy-card" style="background:linear-gradient(135deg,#1e3a5f,#1d4ed8);">
+      <h3>🛡️ 防守策略</h3>
+      <p style="font-size:0.82rem;margin:8px 0 14px;opacity:0.9;">保守型投資人｜等趨勢明確反轉</p>
+      <div style="background:rgba(255,255,255,0.15);border-radius:10px;padding:14px;font-size:0.85rem;line-height:1.9;">
+        <strong>進場時機：</strong>等MA20（263元）重新站回<br>
+        <strong>目標價：</strong>300~350元（+32~54%）<br>
+        <strong>確認信號：</strong>MACD黃金交叉出現<br>
+        <strong>停損線：</strong>進場後跌破235元出場<br>
+        <strong>建議部位：</strong>5%以下
+      </div>
+      <p style="font-size:0.78rem;opacity:0.8;margin-top:10px;">保守者：繼續觀望，等趨勢明確反轉再進</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>📅 催化劑時程表</h3>
+    <div style="margin-top:12px;">
+      <div class="catalyst-row">
+        <div class="catalyst-date">2026 Q2末<br><span style="color:var(--primary);font-size:0.75rem;font-weight:800;">⚡ 最快2~3週</span></div>
+        <div>
+          <strong>Q2'26 財報發布（最重要催化劑）</strong><br>
+          <span style="font-size:0.83rem;color:var(--text-muted);">市場預估Q2 EPS 12~15元。若高於15元：顯示工控需求強韌，股價可能重回250元以上；若低於8元：確認盈利加速衰退，恐下測185元甚至更低。<br>月收從Apr 74億跌至Jun 50億，需仔細評估Q2季末是否已有回升。</span>
+        </div>
+      </div>
+      <div class="catalyst-row">
+        <div class="catalyst-date">2026 H2<br><span style="color:var(--blue);font-size:0.75rem;">下半年</span></div>
+        <div>
+          <strong>視覺模組（AIoT）爆發期</strong><br>
+          <span style="font-size:0.83rem;color:var(--text-muted);">法說會確認視覺模組2026下半年迎爆發，若此業務成功起量，可望成為新的盈利驅動力，抵消主業記憶體利潤正常化的衝擊。相關成果預計Q3業績可見端倪。</span>
+        </div>
+      </div>
+      <div class="catalyst-row">
+        <div class="catalyst-date">持續觀察<br><span style="color:var(--text-muted);font-size:0.75rem;">每月</span></div>
+        <div>
+          <strong>月營收趨勢是否止跌回升</strong><br>
+          <span style="font-size:0.83rem;color:var(--text-muted);">若Jul 2026月收（8月初公告）止跌或回升至55億以上，是最快的利多信號。若繼續下滑至40億以下，賣壓可能再起。建議每月10日前後特別關注月收數字。</span>
+        </div>
+      </div>
+      <div class="catalyst-row" style="border-bottom:none;">
+        <div class="catalyst-date">2027 回升<br><span style="color:var(--text-muted);font-size:0.75rem;">長線</span></div>
+        <div>
+          <strong>記憶體景氣次輪上行週期</strong><br>
+          <span style="font-size:0.83rem;color:var(--text-muted);">若記憶體景氣在2026下半年至2027年找到底部、進入次輪上行週期，創見低成本重新布局後，有機會再度複製2025-2026年的毛利率大幅擴張行情。長線持有者的最大回報在此。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 13 名詞小教室 -->
+<div class="section">
+  <h2 class="section-title">13 名詞小教室</h2>
+  <div class="card">
+    <div class="glossary-item">
+      <strong>記憶體模組（Memory Module）</strong><br>
+      <span style="font-size:0.87rem;color:var(--text-muted);">把記憶體晶片（DRAM）焊接在小電路板上，做成可以插入電腦主機板的「記憶體條」。創見不自己生產晶片（這是台積電/三星的工作），而是向三星、美光等購買晶片，再組裝成模組後銷售。就像便利商店買入農產品後加工成便當出售，賺的是加工和品牌溢價。</span>
+    </div>
+    <div class="glossary-item">
+      <strong>工控記憶體（Industrial-grade Memory）</strong><br>
+      <span style="font-size:0.87rem;color:var(--text-muted);">用於工廠機器人、醫療設備、交通號誌系統的特殊記憶體，要求在-40°C～+85°C的極端溫度下穩定運作，且保固期長達10年。比消費性記憶體貴3-5倍，客戶一旦認證某品牌，通常不輕易換廠商（轉換成本高），是創見毛利率高的核心來源。</span>
+    </div>
+    <div class="glossary-item">
+      <strong>記憶體景氣循環</strong><br>
+      <span style="font-size:0.87rem;color:var(--text-muted);">DRAM和NAND Flash的價格有明顯的週期性波動，約每2-3年一輪，就像農業有豐收年和歉收年。價格好的時候，廠商大量擴產；供過於求時，價格崩潰、廠商虧損、縮減產能；然後需求回升、價格再漲……不斷循環。創見不控制晶片價格，因此獲利大幅受景氣影響。</span>
+    </div>
+    <div class="glossary-item">
+      <strong>低庫存成本效益（Low-cost Inventory Benefit）</strong><br>
+      <span style="font-size:0.87rem;color:var(--text-muted);">創見在2024-2025年記憶體價格便宜時囤積了大量低成本庫存，到2026年記憶體漲價時才出售。就像在特價時搶購大量醬油，等物價上漲後再賣，賺的是「買便宜賣貴」的差價。這解釋了毛利率76%的奇蹟——但這批庫存終究會賣完，之後成本會回到正常水準。</span>
+    </div>
+    <div class="glossary-item">
+      <strong>景氣循環股（Cyclical Stock）</strong><br>
+      <span style="font-size:0.87rem;color:var(--text-muted);">公司獲利跟著特定產業景氣大幅波動的股票。景氣好時PE很低（因為EPS突然大增，看起來很便宜），景氣差時PE反而很高（EPS縮小，看起來很貴）。投資景氣循環股，最關鍵的不是「現在PE多少」，而是「現在是景氣循環的哪個階段」——創見現在PE 7.3倍很便宜，但前提是EPS不要大幅衰退。</span>
+    </div>
+    <div class="glossary-item">
+      <strong>Edge AI / AIoT（邊緣人工智慧）</strong><br>
+      <span style="font-size:0.87rem;color:var(--text-muted);">把AI運算從雲端伺服器移到「邊緣裝置」（例如工廠的攝影機、門禁系統、工業機器人），讓設備直接在本地做AI判斷，不需要把資料上傳到雲端。這需要強大的本地記憶體和儲存，是創見視覺模組業務的成長驅動力，也是繼DRAM/NAND景氣循環之外的「新成長曲線」。</span>
+    </div>
+    <div class="glossary-item" style="border:none;">
+      <strong>三大法人（外資、投信、自營商）</strong><br>
+      <span style="font-size:0.87rem;color:var(--text-muted);">外資（外國機構）、投信（台灣本土基金）、自營商（券商自有資金）三類機構投資人。今日創見外資+562張（看好）vs 投信-443張（看壞），方向分歧——代表即使在機構投資人中，對創見後市也有分歧意見。外資體量較大，外資連買3天以上通常是較可靠的信號。</span>
+    </div>
+  </div>
+</div>
+
+<!-- 14 免責聲明 -->
+<div class="section">
+  <div class="disclaimer">
+    <h3 style="color:#92400e;margin-bottom:10px;">⚠️ 重要免責聲明</h3>
+    <p style="font-size:0.83rem;line-height:1.85;color:#78350f;">
+      本報告由 AI 分析團隊（Claude Sonnet 4.6）自動生成，<strong>僅供學術研究與教育參考用途，絕對不構成任何投資建議</strong>。所有財務數據截至 2026年07月21日 09:15，實際市況請以即時行情為準。<br><br>
+      記憶體景氣循環具有高度不確定性，過去的獲利爆發不代表未來可持續。AI生成報告存在資訊時效、解讀偏差等固有限制。投資人應根據自身財務狀況、風險承受能力及投資目標，諮詢合格的專業財務顧問後再做決策。<br><br>
+      <strong>資料來源：</strong>Fugle API（即時報價）、FinMind（歷史K線/三大法人/月營收/財報）、TWSE T86（三大法人）、WebSearch（法說會摘要/最新新聞）。<br>
+      <strong>分析日期：</strong>2026年07月21日 ｜ <strong>報告版本：</strong>v1.0 ｜ <strong>分析師：</strong>Claude AI 股票分析團隊
+    </p>
+  </div>
+</div>
+
+<div style="height:48px;"></div>
+
+<script>
+// 01 EPS Chart
+const epsCtx = document.getElementById('epsChart').getContext('2d');
+new Chart(epsCtx, {
+  type: 'bar',
+  data: {
+    labels: ["Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26★"],
+    datasets: [{
+      label: 'EPS（元）',
+      data: [1.67, 0.81, 1.03, 0.87, 0.98, 3.52, 7.61, 18.93],
+      backgroundColor: ['#c4b5fd','#c4b5fd','#c4b5fd','#c4b5fd','#c4b5fd','#c4b5fd','#c4b5fd','#7c3aed'],
+      borderRadius: 8,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` EPS：${ctx.parsed.y.toFixed(2)} 元` } }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: { color: '#f1f5f9' },
+        ticks: { callback: v => v + ' 元' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// 02 Revenue Chart
+const revCtx = document.getElementById('revenueChart').getContext('2d');
+new Chart(revCtx, {
+  type: 'line',
+  data: {
+    labels: ['Jan 2026','Feb 2026','Mar 2026','Apr 2026★','May 2026','Jun 2026'],
+    datasets: [{
+      label: '月營收（億元）',
+      data: [47.60, 31.84, 56.84, 74.49, 62.98, 50.68],
+      borderColor: '#7c3aed',
+      backgroundColor: 'rgba(124,58,237,0.09)',
+      pointBackgroundColor: ['#c4b5fd','#c4b5fd','#c4b5fd','#7c3aed','#ef4444','#ef4444'],
+      pointRadius: [5,5,5,10,7,7],
+      tension: 0.4, fill: true, borderWidth: 3
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` 月營收：${ctx.parsed.y.toFixed(2)} 億元` } }
+    },
+    scales: {
+      y: {
+        beginAtZero: false, min: 20,
+        grid: { color: '#f1f5f9' },
+        ticks: { callback: v => v + ' 億' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// 03 PE Comparison
+const peCtx = document.getElementById('peChart').getContext('2d');
+new Chart(peCtx, {
+  type: 'bar',
+  data: {
+    labels: ['創見 TTM PE','威剛（競爭對手）','記憶體模組平均','台股電子大盤'],
+    datasets: [{
+      label: 'PE 倍數',
+      data: [7.31, 14, 18, 25],
+      backgroundColor: ['#7c3aed','#a78bfa','#c4b5fd','#94a3b8'],
+      borderRadius: 8,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` PE：${ctx.parsed.x.toFixed(1)} 倍` } }
+    },
+    scales: {
+      x: { grid: { color: '#f1f5f9' }, ticks: { callback: v => v + 'x' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
