@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>台積電 2330 深度分析報告 | 2026-07-22</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Microsoft JhengHei','PingFang TC',Arial,sans-serif;background:#F0F4F8;color:#1e293b;line-height:1.6;}
+
+.cover{background:linear-gradient(135deg,#1e0547 0%,#4c1d95 45%,#7c3aed 80%,#a78bfa 100%);color:white;padding:60px 40px;text-align:center;position:relative;overflow:hidden;}
+.cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(167,139,250,.18) 0%,transparent 60%),radial-gradient(ellipse at 70% 20%,rgba(124,58,237,.15) 0%,transparent 50%);}
+.cover-badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:6px 18px;font-size:13px;margin-bottom:20px;}
+.cover h1{font-size:3.8em;font-weight:900;letter-spacing:6px;margin-bottom:8px;position:relative;text-shadow:0 2px 24px rgba(0,0,0,.4);}
+.cover h2{font-size:1.35em;font-weight:300;opacity:.9;margin-bottom:28px;position:relative;}
+.cover-meta{display:flex;justify-content:center;gap:44px;flex-wrap:wrap;margin-top:28px;position:relative;}
+.cover-meta-item .val{font-size:2em;font-weight:800;}
+.cover-meta-item .lbl{font-size:.8em;opacity:.7;margin-top:2px;}
+.risk-badge{display:inline-block;background:rgba(34,197,94,.25);border:2px solid #4ade80;color:#dcfce7;border-radius:12px;padding:10px 28px;font-size:1.1em;font-weight:700;margin-top:22px;position:relative;}
+.new-high-tag{display:inline-block;background:linear-gradient(90deg,#fbbf24,#f59e0b);color:#1c1917;border-radius:8px;padding:3px 10px;font-size:.78em;font-weight:800;margin-left:8px;vertical-align:middle;}
+
+.section{max-width:1200px;margin:0 auto;padding:40px 20px;}
+.section-title{font-size:1.6em;font-weight:800;color:#7c3aed;border-left:5px solid #7c3aed;padding-left:16px;margin-bottom:28px;}
+.card{background:white;border-radius:16px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,.08);margin-bottom:20px;}
+
+.core-conclusion{background:linear-gradient(135deg,#1e0547,#4c1d95,#7c3aed);color:white;border-radius:20px;padding:36px;margin-bottom:20px;box-shadow:0 8px 32px rgba(124,58,237,.35);}
+.core-verdict{font-size:1.9em;font-weight:900;margin-bottom:18px;line-height:1.4;}
+.core-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:18px;}
+.core-item{background:rgba(255,255,255,.12);border-radius:12px;padding:16px;}
+.core-item .ci-label{font-size:.78em;opacity:.7;}
+.core-item .ci-val{font-size:1.2em;font-weight:700;margin-top:4px;}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+.kpi-card{background:white;border-radius:16px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.07);border-top:4px solid #7c3aed;}
+.kpi-label{font-size:.78em;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+.kpi-value{font-size:1.9em;font-weight:800;color:#7c3aed;margin:6px 0;}
+.kpi-value.green{color:#16a34a;}
+.kpi-value.amber{color:#d97706;}
+.kpi-value.red{color:#dc2626;}
+.kpi-sub{font-size:.8em;color:#94a3b8;}
+.kpi-desc{font-size:.75em;color:#64748b;margin-top:8px;padding-top:8px;border-top:1px solid #f1f5f9;}
+
+.charts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:900px){.charts-grid{grid-template-columns:1fr;}}
+.chart-card{background:white;border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.07);}
+.chart-card h4{font-size:1em;color:#374151;font-weight:700;margin-bottom:16px;}
+.chart-note{font-size:.72em;color:#9ca3af;margin-top:10px;text-align:center;}
+
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media(max-width:700px){.overview-grid{grid-template-columns:1fr;}}
+.moat-item{display:flex;align-items:flex-start;gap:12px;padding:14px;background:#f5f3ff;border-radius:10px;margin-bottom:10px;}
+.moat-icon{font-size:1.4em;flex-shrink:0;}
+.moat-text strong{display:block;font-size:.95em;color:#7c3aed;margin-bottom:4px;}
+.moat-text span{font-size:.85em;color:#374151;}
+
+.score-bar{height:10px;background:#e2e8f0;border-radius:5px;overflow:hidden;margin-top:6px;}
+.score-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,#7c3aed,#a78bfa);}
+.score-fill.green{background:linear-gradient(90deg,#16a34a,#4ade80);}
+.score-fill.amber{background:linear-gradient(90deg,#d97706,#fbbf24);}
+.score-fill.red{background:linear-gradient(90deg,#dc2626,#f87171);}
+
+.inst-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+@media(max-width:700px){.inst-grid{grid-template-columns:repeat(2,1fr);}}
+.inst-card{border-radius:12px;padding:16px;text-align:center;}
+.inst-card.buy{background:#f5f3ff;border:1px solid #ddd6fe;}
+.inst-name{font-size:.8em;color:#64748b;font-weight:600;}
+.inst-val{font-size:1.5em;font-weight:800;margin:6px 0;color:#7c3aed;}
+.inst-desc{font-size:.75em;color:#6b7280;}
+
+.tech-table{width:100%;border-collapse:collapse;font-size:.9em;}
+.tech-table th{background:#f5f3ff;color:#7c3aed;padding:10px 14px;text-align:left;font-weight:700;border-bottom:2px solid #ddd6fe;}
+.tech-table td{padding:10px 14px;border-bottom:1px solid #f1f5f9;}
+.tag{display:inline-block;border-radius:6px;padding:2px 8px;font-size:.75em;font-weight:600;}
+.tag.bull{background:#dcfce7;color:#15803d;}
+.tag.bear{background:#fee2e2;color:#b91c1c;}
+.tag.neutral{background:#fef3c7;color:#92400e;}
+.tag.purple{background:#f5f3ff;color:#6d28d9;}
+
+.debate-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media(max-width:700px){.debate-grid{grid-template-columns:1fr;}}
+.debate-bull{background:#f0fdf4;border:2px solid #16a34a;border-radius:16px;padding:24px;}
+.debate-bear{background:#fef2f2;border:2px solid #dc2626;border-radius:16px;padding:24px;}
+.debate-title{font-size:1.1em;font-weight:800;margin-bottom:16px;}
+.debate-title.bull{color:#15803d;}
+.debate-title.bear{color:#b91c1c;}
+.debate-item{display:flex;gap:10px;margin-bottom:12px;padding:10px;background:rgba(255,255,255,.7);border-radius:8px;}
+.debate-num{font-weight:800;font-size:1em;flex-shrink:0;}
+.debate-num.bull{color:#16a34a;}
+.debate-num.bear{color:#dc2626;}
+.debate-text{font-size:.87em;line-height:1.5;}
+
+.risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+@media(max-width:700px){.risk-grid{grid-template-columns:1fr;}}
+.risk-dim{background:white;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.risk-dim-name{font-size:.85em;color:#475569;font-weight:600;margin-bottom:8px;}
+.risk-dim-score{font-size:1.6em;font-weight:800;}
+.risk-dim-score.low{color:#16a34a;}
+.risk-dim-score.mid{color:#d97706;}
+.risk-dim-score.high{color:#dc2626;}
+.risk-dim-desc{font-size:.78em;color:#64748b;margin-top:6px;}
+
+.strategy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+@media(max-width:700px){.strategy-grid{grid-template-columns:1fr;}}
+.strat-attack{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:white;border-radius:16px;padding:24px;}
+.strat-balance{background:linear-gradient(135deg,#5b21b6,#4c1d95);color:white;border-radius:16px;padding:24px;}
+.strat-defend{background:linear-gradient(135deg,#3b0764,#1e0547);color:white;border-radius:16px;padding:24px;}
+.strat-title{font-size:1.2em;font-weight:800;margin-bottom:12px;}
+.strat-item{font-size:.87em;margin-bottom:8px;opacity:.95;}
+.strat-item strong{display:block;font-size:.9em;opacity:.7;}
+
+.highlight-box{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:10px;padding:14px;margin:12px 0;font-size:.87em;color:#4c1d95;}
+.warn-box{background:#fef3c7;border:1px solid #fbbf24;border-radius:10px;padding:14px;margin:12px 0;font-size:.87em;color:#78350f;}
+.success-box{background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:14px;margin:12px 0;font-size:.87em;color:#14532d;}
+
+.margin-table{width:100%;border-collapse:collapse;font-size:.88em;margin-top:12px;}
+.margin-table th{background:#f5f3ff;padding:8px 12px;text-align:center;color:#7c3aed;font-weight:700;border-bottom:2px solid #ddd6fe;}
+.margin-table td{padding:8px 12px;text-align:center;border-bottom:1px solid #f1f5f9;}
+
+.timeline{position:relative;padding-left:24px;margin-top:16px;}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:#ddd6fe;}
+.timeline-item{position:relative;margin-bottom:16px;}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:6px;width:12px;height:12px;border-radius:50%;background:#7c3aed;border:2px solid white;box-shadow:0 0 0 2px #7c3aed;}
+.timeline-date{font-size:.78em;color:#7c3aed;font-weight:700;}
+.timeline-text{font-size:.88em;color:#374151;}
+
+.glossary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+@media(max-width:600px){.glossary-grid{grid-template-columns:1fr;}}
+.glossary-item{background:#f8fafc;border-radius:10px;padding:14px;border-left:3px solid #7c3aed;}
+.glossary-term{font-weight:700;color:#7c3aed;font-size:.9em;}
+.glossary-def{font-size:.83em;color:#374151;margin-top:4px;}
+
+.disclaimer{background:#fffbeb;border:2px solid #fbbf24;border-radius:12px;padding:20px;margin-top:20px;}
+.disclaimer h4{color:#92400e;font-size:1em;margin-bottom:10px;}
+.disclaimer p{font-size:.82em;color:#78350f;line-height:1.7;}
+
+.debate-weight{display:flex;background:#f1f5f9;border-radius:10px;overflow:hidden;height:36px;margin-top:20px;}
+.debate-weight-bull{background:linear-gradient(90deg,#16a34a,#4ade80);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:.9em;}
+.debate-weight-bear{background:linear-gradient(90deg,#f87171,#dc2626);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:.9em;}
+
+.fab-tag{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(90deg,#7c3aed,#a78bfa);color:white;border-radius:20px;padding:4px 14px;font-size:.82em;font-weight:700;}
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div style="position:relative;z-index:1;">
+    <div class="cover-badge">🔬 AI深度分析 · 多角色研究團隊 · 2026-07-22</div>
+    <h1>台積電</h1>
+    <h2>2330 · 台灣股票交易所上市 · 全球晶片製造業唯一不可替代的存在</h2>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="val">2,420元</div><div class="lbl">今日股價（+0.41%）</div></div>
+      <div class="cover-meta-item"><div class="val">28.1x</div><div class="lbl">TTM本益比</div></div>
+      <div class="cover-meta-item"><div class="val">62.5兆</div><div class="lbl">市值（台股第一）</div></div>
+      <div class="cover-meta-item"><div class="val">86.28元</div><div class="lbl">TTM EPS（近4季）</div></div>
+    </div>
+    <div style="margin-top:16px;position:relative;">
+      <span class="fab-tag">🏆 Q2'26 EPS 27.25元 YoY+77.4% — 歷史新高！</span>
+    </div>
+    <div class="risk-badge" style="margin-top:16px;">✅ 綜合風險等級：3.0 / 10（低風險）</div>
+  </div>
+</div>
+
+<!-- 02 核心結論 -->
+<div class="section">
+  <div class="core-conclusion">
+    <h3 style="opacity:.8;font-size:1.1em;margin-bottom:8px;">📋 核心投資結論</h3>
+    <div class="core-verdict">🟢 長期核心持倉 → Q2 EPS+77%創歷史新高、毛利率67.7%破頂、2nm放量在即</div>
+    <p style="opacity:.9;font-size:.95em;line-height:1.7;">
+      台積電剛公告 Q2'26 EPS <strong>27.25元（YoY+77.4%）</strong>與毛利率 <strong>67.7%</strong>，雙雙創歷史新高。TTM EPS 86.28元，Forward PE（FY2026E EPS 106元）僅 <strong>22.8x</strong>，對於全球唯一能量產 2nm 晶片、CoWoS先進封裝產能全年售罄的企業而言，估值並未高估。技術面現價 2,420元高於全部四條均線（MA5/MA10/MA20/MA60全多排列），RSI 51.54中性健康，布林中軌上方，三大法人7/21全部買超+6,163張。外資最高目標 3,100元（美銀），本土法人目標 2,600-2,615元，現價具備 7-28% 上漲空間。
+    </p>
+    <div class="core-grid">
+      <div class="core-item"><div class="ci-label">🎯 三大催化劑</div><div class="ci-val">2nm H2放量 + CoWoS全售罄 + AI Capex上調600億美元</div></div>
+      <div class="core-item"><div class="ci-label">📊 外資最高目標</div><div class="ci-val">3,100元（美銀，+28%）/ 本土 2,615元（永豐金）</div></div>
+      <div class="core-item"><div class="ci-label">🛡️ 進攻價區</div><div class="ci-val">2,310 ~ 2,420元（MA20附近佈局）</div></div>
+      <div class="core-item"><div class="ci-label">🚨 最大風險</div><div class="ci-val">美中晶片出口管制升級 / 地緣政治黑天鵝</div></div>
+      <div class="core-item"><div class="ci-label">📅 下一催化劑</div><div class="ci-val">7月月收公告（8月初）/ Q3'26法說（10月）</div></div>
+      <div class="core-item"><div class="ci-label">✋ 停損設定</div><div class="ci-val">跌破 2,200元（MA60下方）出場觀察</div></div>
+    </div>
+  </div>
+
+  <!-- 03 KPI -->
+  <div class="section-title">📊 關鍵財務 KPI 儀表板</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">今日股價</div>
+      <div class="kpi-value green">2,420元</div>
+      <div class="kpi-sub">↑ +10元（+0.41%）· 昨收2,410元</div>
+      <div class="kpi-desc">52W High 2,535元（6/23），52W Low 1,125元，從52W低點漲幅高達115%！今日開2,440，高2,445，低2,420，屬高位小幅震盪整理</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q2'26 EPS <span class="new-high-tag">歷史新高！</span></div>
+      <div class="kpi-value green">27.25元</div>
+      <div class="kpi-sub">YoY +77.4% · QoQ +23.3%</div>
+      <div class="kpi-desc">剛公告的Q2'26 EPS 27.25元遠超市場預期，年增77.4%創史上最大季度增幅。Q2毛利率67.7%同步創歷史新高，代表台積電的定價能力和規模效益達到前所未有的高度</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">毛利率 <span class="new-high-tag">歷史新高！</span></div>
+      <div class="kpi-value green">67.7%</div>
+      <div class="kpi-sub">Q2'26 · Q1'26: 66.25% · Q4'25: 62.33%</div>
+      <div class="kpi-desc">毛利率連續6季創新高（Q1'25:58.79% → Q4'25:62.33% → Q1'26:66.25% → Q2'26:67.7%）。2nm製程的定價溢價和CoWoS先進封裝的附加價值是主要驅動力</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Jun 2026月收</div>
+      <div class="kpi-value green">4,427億</div>
+      <div class="kpi-sub">YoY +67.87% · MoM +6.2%</div>
+      <div class="kpi-desc">六月月收4,427億元YoY+67.9%，Q2全季月收12,703億（YoY+36%），創季度月收新高。顯示AI晶片（HPC）、2nm iPhone晶片（蘋果A20）等高ASP訂單持續放量</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TTM PE（近4季）</div>
+      <div class="kpi-value">28.1x</div>
+      <div class="kpi-sub">TTM EPS 86.28元 · Forward PE 22.8x</div>
+      <div class="kpi-desc">以Q3'25+Q4'25+Q1'26+Q2'26(剛公告) = 86.28元計算TTM PE 28.1x。用法人FY2026E EPS 106元算，Forward PE 22.8x。考量67.7%毛利率和+77%獲利成長，22.8x不算貴</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">技術面位置</div>
+      <div class="kpi-value green">四線全多</div>
+      <div class="kpi-sub">MA5(2,386)&lt;MA10(2,411)&lt;MA20(2,419)&lt;現價(2,420)</div>
+      <div class="kpi-desc">現價2,420元高於全部均線！MA5=2,386 / MA10=2,411 / MA20=2,418.75 / MA60=2,333.75。雖然MA5偏低（因7/17大跌拉低短期均），但今日站回全部均線之上是轉強信號</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">三大法人（7/21）</div>
+      <div class="kpi-value green">+6,163張</div>
+      <div class="kpi-sub">外資+4,975 · 投信+973 · 自營+213</div>
+      <div class="kpi-desc">三大法人7/21全部同步買超（外資+4,975、投信+973、自營+213），合計+6,163張。在7/17大跌（97萬張爆量）後的底部確認中，機構持續買入代表對Q2財報的高度信心</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">資本支出（2026年）</div>
+      <div class="kpi-value">600~640億美元</div>
+      <div class="kpi-sub">原520~560億上調 → +15%</div>
+      <div class="kpi-desc">台積電將2026年資本支出由520-560億美元上調至600-640億美元，代表對AI晶片需求的強烈信心。也是對供應商（CoWoS設備廠、光刻機）的長期承諾，護城河持續加深</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 圖表 -->
+<div style="background:white;padding:40px 0;">
+<div class="section" style="padding-top:0;padding-bottom:0;">
+  <div class="section-title">📈 財務趨勢圖表（純Canvas，無外部依賴）</div>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h4>📊 季度EPS趨勢（近8季，元）</h4>
+      <canvas id="epsChart" width="420" height="260" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 實際公告；Q2'26=27.25元 YoY+77.4% 歷史新高</div>
+    </div>
+    <div class="chart-card">
+      <h4>📈 月營收趨勢（近6個月，億元）</h4>
+      <canvas id="revenueChart" width="420" height="260" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 實際公告；Jun 2026=4,427億 YoY+67.9%</div>
+    </div>
+    <div class="chart-card">
+      <h4>📉 本益比同業比較（倍）</h4>
+      <canvas id="peChart" width="420" height="220" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ TTM PE 為實際值；其餘為推算值</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽：人類有史以來最重要的製造企業</div>
+  <div class="overview-grid">
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <h3 style="color:#7c3aed;margin-bottom:12px;">公司簡介</h3>
+        <p style="font-size:.9em;line-height:1.7;color:#374151;">
+          台灣積體電路製造公司（TSMC）由張忠謀於1987年創立，是全球第一家、也是至今最大的純晶圓代工廠（Foundry）。台積電不設計晶片，只負責「幫客戶把晶片設計圖製造出來」——這個模式讓半導體產業徹底革命，催生了今天的蘋果、NVIDIA、高通、超微等無廠設計公司（Fabless）生態系。2026年，台積電是全球唯一能量產 <strong>2奈米（N2）</strong> 晶片的企業，也是 <strong>AI算力晶片</strong>（NVIDIA GB200/B300、Google TPU、AWS Trainium）的唯一代工夥伴，更是 <strong>CoWoS先進封裝</strong> 技術的全球壟斷者。市值 62.5兆台幣（~2兆美元），是台灣歷史上最有價值的公司。
+        </p>
+        <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;">
+          <span class="tag purple">2nm GAA製程</span>
+          <span class="tag purple">CoWoS先進封裝</span>
+          <span class="tag bull">AI晶片唯一代工</span>
+          <span class="tag bull">蘋果A系列獨供</span>
+          <span class="tag bull">NVIDIA GB全系列</span>
+          <span class="tag purple">N3佔營收30%</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="color:#7c3aed;margin-bottom:14px;">🚀 技術路線里程碑</h3>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-date">2022-2023年</div><div class="timeline-text">N3（3nm）量產，台積電成為全球唯一3nm製造商；CoWoS月產能從1萬片爬坡，AI伺服器元年</div></div>
+          <div class="timeline-item"><div class="timeline-date">2024年</div><div class="timeline-text">N3E/N3P放量，NVIDIA H100/H200、Apple A18全面採用；CoWoS月產能突破3萬片，毛利率逐季回升</div></div>
+          <div class="timeline-item"><div class="timeline-date">2025年</div><div class="timeline-text">N3佔營收超過40%；NVIDIA B200/GB200系列開始爆量，CoWoS月產能達7萬片；毛利率回升至62%+</div></div>
+          <div class="timeline-item"><div class="timeline-date">2026年 H1（已完成）</div><div class="timeline-text">Q2 EPS 27.25元歷史新高！毛利率67.7%破頂！N2（2nm）開始量產，首年產出比N3高45%；CoWoS月產能衝向13-14萬片，全年售罄！</div></div>
+          <div class="timeline-item"><div class="timeline-date">2026年 H2（即將）</div><div class="timeline-text">N2進入快速爬坡，蘋果A20、NVIDIA Rubin、高通下世代全採N2；Q3毛利率指引65-67%，Q3 Revenue指引446-458億美元</div></div>
+          <div class="timeline-item"><div class="timeline-date">2027-2028年</div><div class="timeline-text">N2P/A16（埃米製程）推出，FY2027E EPS 148元、FY2028E EPS 198元；法人預估市值將挑戰3兆美元</div></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <h3 style="color:#7c3aed;margin-bottom:14px;">🏰 護城河分析（史上最深的製造業護城河）</h3>
+        <div class="moat-item"><div class="moat-icon">⚛️</div><div class="moat-text"><strong>2nm GAA製程絕對壟斷</strong><span>全球唯一能量產2奈米晶片的企業。三星已放棄3nm市場競爭，Intel Foundry進度落後3-4年。蘋果、NVIDIA、高通、AMD全部排隊等台積電2nm產能，無替代選項</span></div></div>
+        <div class="moat-item"><div class="moat-icon">📦</div><div class="moat-text"><strong>CoWoS先進封裝 — 全球AI算力的唯一瓶頸</strong><span>CoWoS（Chip on Wafer on Substrate）是AI GPU的HBM記憶體與運算晶片整合技術，台積電2026年月產能已達13-14萬片，競爭對手無法在5年內追上。2026年產能全面售罄</span></div></div>
+        <div class="moat-item"><div class="moat-icon">🔬</div><div class="moat-text"><strong>製程技術領先至少2-3個世代</strong><span>EUV光刻技術、新型介電材料、奈米片GAA架構的製造能力需要數十年和數千億美元積累。台積電的良率（Yield Rate）是競爭對手的2倍以上，這是真正的技術護城河</span></div></div>
+        <div class="moat-item"><div class="moat-icon">🤝</div><div class="moat-text"><strong>頂級客戶深度綁定（無離網成本）</strong><span>蘋果、NVIDIA、高通、AMD、Google、AWS、Microsoft都在台積電投入巨額IP和設計驗證，即使有替代選項，切換成本高達數十億美元和3-5年時間</span></div></div>
+        <div class="moat-item"><div class="moat-icon">📈</div><div class="moat-text"><strong>定價能力空前強大</strong><span>2nm每片晶圓造價估計超過25,000美元（3nm約15,000美元），台積電是全球罕見能持續提升定價並讓客戶接受的製造商。毛利率67.7%在製造業中幾乎不可思議</span></div></div>
+        <div class="moat-item"><div class="moat-icon">🌏</div><div class="moat-text"><strong>地緣政治不可替代性</strong><span>美國、日本、歐洲、中東都在爭取台積電在本地設廠。台積電的戰略重要性使其得到各國政府補貼（美國CHIPS Act補貼66億美元），地位近乎「國家基礎設施」</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 06 基本面 -->
+<div style="background:white;padding:20px 0;">
+<div class="section" style="padding-top:30px;padding-bottom:30px;">
+  <div class="section-title">📐 基本面分析</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div class="card">
+      <h3 style="color:#7c3aed;margin-bottom:16px;">季度財務數據（毛利率持續破頂！）</h3>
+      <table class="margin-table">
+        <tr><th>季度</th><th>EPS（元）</th><th>毛利率</th><th>營益率</th><th>YoY</th></tr>
+        <tr><td>Q2'24</td><td>9.56</td><td>53.17%</td><td>42.55%</td><td>—</td></tr>
+        <tr><td>Q3'24</td><td>12.55</td><td>57.83%</td><td>47.49%</td><td>—</td></tr>
+        <tr><td>Q4'24</td><td>14.45</td><td>59.0%</td><td>49.02%</td><td>—</td></tr>
+        <tr><td>Q1'25</td><td>13.95</td><td>58.79%</td><td>48.51%</td><td>—</td></tr>
+        <tr><td>Q2'25</td><td>15.36</td><td>58.62%</td><td>49.63%</td><td>+60.7%</td></tr>
+        <tr><td>Q3'25</td><td>17.44</td><td>59.45%</td><td>50.58%</td><td>+39.0%</td></tr>
+        <tr><td>Q4'25</td><td>19.51</td><td>62.33%</td><td>54.0%</td><td>+35.0%</td></tr>
+        <tr><td>Q1'26</td><td>22.08</td><td>66.25%</td><td>58.1%</td><td>+58.3%</td></tr>
+        <tr style="background:#f5f3ff;font-weight:700;"><td>Q2'26 🏆</td><td style="color:#7c3aed;">27.25</td><td style="color:#16a34a;">67.7%</td><td>~58%</td><td style="color:#16a34a;">+77.4%</td></tr>
+      </table>
+      <div class="success-box" style="margin-top:12px;">
+        ✅ TTM EPS（Q3'25+Q4'25+Q1'26+Q2'26）= 17.44+19.51+22.08+27.25 = <strong>86.28元</strong><br>
+        TTM PE = 2,420 ÷ 86.28 = <strong>28.1x</strong><br>
+        FY2026E EPS = <strong>106.15元</strong>，Forward PE = 2,420 ÷ 106.15 = <strong>22.8x</strong>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#7c3aed;margin-bottom:16px;">月營收趨勢（億元）</h3>
+      <table class="margin-table">
+        <tr><th>月份</th><th>月收（億元）</th><th>YoY</th><th>MoM</th></tr>
+        <tr><td>Jan 2026</td><td>4,013</td><td style="color:#16a34a;">+36.8%</td><td>-2.5%</td></tr>
+        <tr><td>Feb 2026</td><td>3,177</td><td style="color:#16a34a;">+22.2%</td><td>-20.8%</td></tr>
+        <tr><td>Mar 2026</td><td>4,152</td><td style="color:#16a34a;">+45.2%</td><td>+30.7%</td></tr>
+        <tr><td>Apr 2026</td><td>4,107</td><td style="color:#16a34a;">+17.5%</td><td>-1.1%</td></tr>
+        <tr><td>May 2026</td><td>4,170</td><td style="color:#16a34a;">+30.1%</td><td>+1.5%</td></tr>
+        <tr style="background:#f5f3ff;font-weight:700;"><td>Jun 2026 🔥</td><td style="color:#7c3aed;">4,427</td><td style="color:#16a34a;">+67.9%</td><td style="color:#16a34a;">+6.2%</td></tr>
+      </table>
+      <div class="highlight-box" style="margin-top:12px;">
+        🔥 Q2 2026（Apr+May+Jun）= <strong>12,704億</strong>（YoY+36%），創史上最高季度月收！<br>
+        Q3 guidance：$44.6-45.8億美元（約13,300-13,700億台幣），持續創新高！<br>
+        N2 + HPC（AI晶片）合計佔季收<strong>77%以上</strong>，高ASP製程主導
+      </div>
+      <div class="success-box">
+        ✅ 製程組合（Q2'26）：2nm 3%、3nm 30%、5nm 33%、7nm 11%<br>
+        7nm以下先進製程合計佔晶圓營收 <strong>77%</strong>，是創歷史新高毛利率的最主要原因
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <h3 style="color:#7c3aed;margin-bottom:14px;">基本面綜合評分</h3>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+      <div><div style="font-size:.85em;color:#475569;margin-bottom:4px;">獲利成長性</div><div style="font-weight:700;font-size:1.1em;color:#16a34a;">9.5 / 10</div><div class="score-bar"><div class="score-fill green" style="width:95%"></div></div><div style="font-size:.75em;color:#64748b;margin-top:4px;">Q2 EPS YoY+77.4%，為近年最高成長率</div></div>
+      <div><div style="font-size:.85em;color:#475569;margin-bottom:4px;">毛利率品質</div><div style="font-weight:700;font-size:1.1em;color:#16a34a;">9.5 / 10</div><div class="score-bar"><div class="score-fill green" style="width:95%"></div></div><div style="font-size:.75em;color:#64748b;margin-top:4px;">67.7%為製造業史上最高毛利率之一</div></div>
+      <div><div style="font-size:.85em;color:#475569;margin-bottom:4px;">估值合理性</div><div style="font-weight:700;font-size:1.1em;color:#d97706;">6.5 / 10</div><div class="score-bar"><div class="score-fill amber" style="width:65%"></div></div><div style="font-size:.75em;color:#64748b;margin-top:4px;">Forward PE 22.8x，不貴但也不便宜，成長支撐</div></div>
+      <div><div style="font-size:.85em;color:#475569;margin-bottom:4px;">財務健康度</div><div style="font-weight:700;font-size:1.1em;color:#16a34a;">9.0 / 10</div><div class="score-bar"><div class="score-fill green" style="width:90%"></div></div><div style="font-size:.75em;color:#64748b;margin-top:4px;">市值62.5兆，無負債壓力，現金流極度充裕</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 07 籌碼 -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析</div>
+  <div class="inst-grid" style="margin-bottom:20px;">
+    <div class="inst-card buy"><div class="inst-name">外資</div><div class="inst-val">+4,975張</div><div class="inst-desc">7/21 持續買超</div></div>
+    <div class="inst-card buy"><div class="inst-name">投信</div><div class="inst-val">+973張</div><div class="inst-desc">7/21 買超</div></div>
+    <div class="inst-card buy"><div class="inst-name">自營商</div><div class="inst-val">+213張</div><div class="inst-desc">7/21 買超</div></div>
+    <div class="inst-card buy"><div class="inst-name">三大法人合計</div><div class="inst-val">+6,163張</div><div class="inst-desc">三方同步齊買</div></div>
+  </div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div>
+        <h4 style="color:#7c3aed;margin-bottom:10px;">外資法人目標價匯整</h4>
+        <table class="margin-table">
+          <tr><th>機構</th><th>評等</th><th>目標價</th><th>上漲潛力</th></tr>
+          <tr><td>美銀證券</td><td><span class="tag bull">買進</span></td><td>3,100元</td><td style="color:#16a34a;">+28.1%</td></tr>
+          <tr><td>元大證券</td><td><span class="tag bull">買進</span></td><td>2,600元</td><td style="color:#16a34a;">+7.4%</td></tr>
+          <tr><td>凱基證券</td><td><span class="tag bull">買進</span></td><td>2,600元</td><td style="color:#16a34a;">+7.4%</td></tr>
+          <tr><td>永豐金</td><td><span class="tag bull">買進</span></td><td>2,615元</td><td style="color:#16a34a;">+8.1%</td></tr>
+        </table>
+        <div class="highlight-box" style="margin-top:10px;font-size:.82em;">
+          法人共識FY2026E EPS：<strong>106.15元</strong>（YoY+23%，較去年全年EPS大幅成長）<br>
+          FY2027E EPS：<strong>148.69元</strong>；FY2028E EPS：<strong>198.42元</strong><br>
+          若市場給予25x PE，3年後目標股價可達 <strong>4,961元</strong>（+105%！）
+        </div>
+      </div>
+      <div>
+        <h4 style="color:#7c3aed;margin-bottom:10px;">量能分析</h4>
+        <table class="margin-table">
+          <tr><th>指標</th><th>數值</th><th>判斷</th></tr>
+          <tr><td>7/21成交量</td><td>3.16萬張</td><td><span class="tag neutral">縮量</span></td></tr>
+          <tr><td>5日均量</td><td>4.98萬張</td><td>—</td></tr>
+          <tr><td>10日均量</td><td>4.19萬張</td><td>—</td></tr>
+          <tr><td>量比（7/21）</td><td>0.63x</td><td><span class="tag bull">縮量整理</span></td></tr>
+          <tr><td>7/17爆量</td><td>9.74萬張</td><td><span class="tag neutral">法說前洗盤</span></td></tr>
+        </table>
+        <div class="success-box" style="margin-top:10px;font-size:.82em;">
+          ✅ 7/17爆量9.74萬張（法說日前夕波動），之後量能快速縮減（7/20: 5.58萬，7/21: 3.16萬），顯示恐慌性賣壓已消化。今日盤中呈現縮量震盪，是Q2 EPS亮眼後的「消化性整理」，底部訊號良好。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div style="background:white;padding:20px 0;">
+<div class="section" style="padding-top:30px;padding-bottom:30px;">
+  <div class="section-title">📉 技術分析</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div class="card">
+      <h3 style="color:#7c3aed;margin-bottom:14px;">均線系統（恢復多頭排列！）</h3>
+      <table class="tech-table">
+        <tr><th>指標</th><th>數值</th><th>位置</th><th>判斷</th></tr>
+        <tr><td>現價</td><td>2,420元</td><td>—</td><td><span class="tag bull">四線全多</span></td></tr>
+        <tr><td>MA5</td><td>2,386元</td><td>現價↑ +1.4%</td><td><span class="tag bull">偏多</span></td></tr>
+        <tr><td>MA10</td><td>2,411元</td><td>現價↑ +0.4%</td><td><span class="tag bull">偏多</span></td></tr>
+        <tr><td>MA20</td><td>2,418.75元</td><td>現價↑ +0.05%</td><td><span class="tag bull">剛突破</span></td></tr>
+        <tr><td>MA60</td><td>2,333.75元</td><td>現價↑ +3.7%</td><td><span class="tag bull">中期多頭</span></td></tr>
+      </table>
+      <div class="success-box" style="margin-top:10px;font-size:.82em;">
+        ✅ 現價2,420元高於<strong>全部四條均線</strong>（MA5/MA10/MA20/MA60），恢復健康的多頭排列。7/17大跌後，7/20-7/22連三日反彈收復均線，技術面底部確認訊號明確。MA20（2,418.75）是最重要的支撐，守住即維持多頭格局。
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#7c3aed;margin-bottom:14px;">震盪指標 + 布林通道</h3>
+      <table class="tech-table">
+        <tr><th>指標</th><th>數值</th><th>訊號</th><th>判斷</th></tr>
+        <tr><td>RSI（14日）</td><td>51.54</td><td>中性偏多</td><td><span class="tag bull">健康</span></td></tr>
+        <tr><td>MACD（DIF）</td><td>+8.68</td><td>正值</td><td><span class="tag neutral">偏多</span></td></tr>
+        <tr><td>MACD（DEA）</td><td>+23.92</td><td>DIF&lt;DEA</td><td><span class="tag neutral">死叉</span></td></tr>
+        <tr><td>MACD柱（OSC）</td><td>-15.25</td><td>負值</td><td><span class="tag bear">動能弱</span></td></tr>
+        <tr><td>布林上軌</td><td>2,528元</td><td>—</td><td>—</td></tr>
+        <tr style="background:#f5f3ff;font-weight:600;"><td>布林中軌</td><td>2,418.75元</td><td>現價↑ 僅+0.05%</td><td><span class="tag bull">剛站上中軌</span></td></tr>
+        <tr><td>布林下軌</td><td>2,309元</td><td>—</td><td>—</td></tr>
+      </table>
+      <div class="warn-box" style="margin-top:10px;font-size:.82em;">
+        ⚠️ MACD目前呈死叉格局（DIF 8.68 &lt; DEA 23.92），OSC -15.25顯示下跌動能尚未完全消散。雖然現價已站回布林中軌，但MACD金叉尚未形成，建議等待MACD柱轉正（OSC>0）再積極加碼，或以分批方式佈局。
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <h3 style="color:#7c3aed;margin-bottom:14px;">K線大事記（52W低1,125 → 高2,535 → 今2,420）</h3>
+    <div style="overflow-x:auto;">
+    <table class="margin-table" style="font-size:.85em;">
+      <tr><th>日期</th><th>收盤</th><th>高</th><th>低</th><th>量（萬張）</th><th>事件</th></tr>
+      <tr><td>6/15</td><td>2,375</td><td>2,375</td><td>2,345</td><td>3.02</td><td>AI需求消息持續，站上2,350確認多頭</td></tr>
+      <tr><td>6/22</td><td>2,510</td><td>2,510</td><td>2,455</td><td>4.52</td><td>⬆️ 52W高點附近，CoWoS售罄消息刺激</td></tr>
+      <tr><td>6/23</td><td>2,490</td><td><strong>2,535</strong></td><td>2,490</td><td>3.95</td><td>🏆 52W最高點2,535，後轉震盪</td></tr>
+      <tr><td>7/1</td><td>2,505</td><td>2,505</td><td>2,475</td><td>3.75</td><td>月初再度衝高2,505</td></tr>
+      <tr><td>7/9</td><td>2,415</td><td>2,460</td><td>2,415</td><td>3.47</td><td>高位震盪，量縮，等待法說催化劑</td></tr>
+      <tr><td style="color:#dc2626;font-weight:700;">7/17</td><td style="color:#dc2626;font-weight:700;">2,290</td><td>2,395</td><td>2,290</td><td style="color:#dc2626;font-weight:700;">9.74</td><td>⬇️ 法說日！Q2法說同日公布，爆量9.74萬張（史上罕見），先跌後震盪，市場消化EPS 27.25元</td></tr>
+      <tr><td style="color:#dc2626;">7/20</td><td style="color:#dc2626;">2,320</td><td>2,345</td><td>2,300</td><td>5.58</td><td>⬇️ 繼續跌破MA20，但2,300有支撐；三大法人開始逢低買入</td></tr>
+      <tr style="background:#f0fdf4;"><td style="color:#16a34a;font-weight:700;">7/21</td><td style="color:#16a34a;font-weight:700;">2,410</td><td>2,410</td><td>2,345</td><td>3.16</td><td>⬆️ 強力反彈+3.9%！收復MA10/MA20，三大法人+6,163張，Q2 EPS亮眼支撐</td></tr>
+      <tr style="background:#f5f3ff;"><td style="color:#7c3aed;font-weight:700;">7/22今</td><td style="color:#7c3aed;font-weight:700;">2,420</td><td>2,445</td><td>2,420</td><td>—</td><td>+0.41%縮量整理，站穩四條均線上方，等待MACD金叉確認</td></tr>
+    </table>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <h3 style="color:#7c3aed;margin-bottom:14px;">關鍵價位支撐壓力</h3>
+    <table class="tech-table">
+      <tr><th>性質</th><th>價位</th><th>依據</th><th>重要程度</th></tr>
+      <tr><td><span class="tag bull">強力支撐</span></td><td>2,300-2,310元</td><td>7/20低點+布林下軌2,309元</td><td>⭐⭐⭐⭐⭐</td></tr>
+      <tr><td><span class="tag bull">支撐</span></td><td>2,334元</td><td>MA60（中期多頭防線）</td><td>⭐⭐⭐⭐</td></tr>
+      <tr><td><span class="tag neutral">測試中</span></td><td>2,419元</td><td>MA20 + 布林中軌（已站上）</td><td>⭐⭐⭐⭐⭐</td></tr>
+      <tr><td><span class="tag bear">壓力</span></td><td>2,460-2,480元</td><td>近期整理高點區（7/1-7/9）</td><td>⭐⭐⭐⭐</td></tr>
+      <tr><td><span class="tag bear">強力壓力</span></td><td>2,505-2,535元</td><td>52W高點區（歷史最高）</td><td>⭐⭐⭐⭐⭐</td></tr>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- 09 產業分析 -->
+<div class="section">
+  <div class="section-title">🌐 AI晶片產業：台積電的絕對制霸地位</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div class="card">
+      <h3 style="color:#7c3aed;margin-bottom:14px;">製程市場份額（2026年）</h3>
+      <table class="margin-table">
+        <tr><th>製程</th><th>台積電</th><th>三星</th><th>英特爾</th></tr>
+        <tr style="background:#f5f3ff;font-weight:700;"><td>2nm</td><td style="color:#7c3aed;">100%</td><td>0%</td><td>0%</td></tr>
+        <tr style="background:#f5f3ff;"><td>3nm</td><td style="color:#7c3aed;">~92%</td><td>~8%</td><td>0%</td></tr>
+        <tr><td>5nm</td><td style="color:#7c3aed;">~80%</td><td>~18%</td><td>~2%</td></tr>
+        <tr><td>CoWoS封裝</td><td style="color:#7c3aed;">~95%</td><td>&lt;3%</td><td>&lt;2%</td></tr>
+      </table>
+      <div class="highlight-box" style="margin-top:12px;">
+        台積電在最重要的 2nm 和 CoWoS 兩項技術上接近<strong>全球壟斷</strong>。這兩者都是 AI 算力的核心瓶頸，也是為什麼 NVIDIA、Apple、Google 無法「換供應商」的根本原因。
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="color:#7c3aed;margin-bottom:14px;">CoWoS 先進封裝產能擴張</h3>
+      <table class="margin-table">
+        <tr><th>年份</th><th>月產能（片）</th><th>YoY</th></tr>
+        <tr><td>2022年</td><td>~1萬</td><td>—</td></tr>
+        <tr><td>2023年</td><td>~2萬</td><td>+100%</td></tr>
+        <tr><td>2024年</td><td>~4萬</td><td>+100%</td></tr>
+        <tr><td>2025年</td><td>~7萬</td><td>+75%</td></tr>
+        <tr style="background:#f5f3ff;font-weight:700;"><td>2026年（目標）</td><td style="color:#7c3aed;">~13-14萬</td><td style="color:#16a34a;">+85-100%</td></tr>
+      </table>
+      <div class="success-box" style="margin-top:12px;font-size:.82em;">
+        ✅ 台積電CoWoS產能複合成長率超過85%（CAGR），<strong>2026年全年產能已完全售罄</strong>。NVIDIA GB300、Google TPU v6、AWS Trainium 3都在搶這個產能。供不應求的結構性局面將支撐台積電持續提升定價。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div style="background:#f8fafc;padding:20px 0;">
+<div class="section" style="padding-top:30px;padding-bottom:30px;">
+  <div class="section-title">⚖️ 研究員多空辯論</div>
+  <div class="debate-grid">
+    <div class="debate-bull">
+      <div class="debate-title bull">🐂 看多研究員（7大理由）</div>
+      <div class="debate-item"><div class="debate-num bull">①</div><div class="debate-text"><strong>Q2'26 EPS 27.25元 YoY+77.4% — 遠超市場預期：</strong>法說會公告的Q2 EPS 27.25元比最樂觀分析師預估（約24元）高出13%，YoY+77.4%是台積電史上最高季度成長率之一。毛利率67.7%也創歷史新高，代表台積電的定價能力和獲利品質都在提升，不是「增收不增利」</div></div>
+      <div class="debate-item"><div class="debate-num bull">②</div><div class="debate-text"><strong>Forward PE 22.8x對應+77%成長，PEG比僅0.29x（極度低估！）：</strong>PEG = PE ÷ 成長率 = 22.8 ÷ 77.4 = 0.29。一般認為PEG &lt; 1代表低估，&lt; 0.5代表嚴重低估。台積電0.29x的PEG是台股龍頭股中最低的，代表以目前股價買入極具性價比</div></div>
+      <div class="debate-item"><div class="debate-num bull">③</div><div class="debate-text"><strong>2nm獨霸地位 + H2 2026放量在即（蘋果A20 + NVIDIA Rubin）：</strong>2奈米製程首年產出比N3高45%，良率同樣優於預期。蘋果A20（iPhone 18系列）和NVIDIA下世代Rubin GPU預計都將採用N2，H2 2026起N2佔比將從3%快速提升至10%以上，帶動ASP和毛利率進一步提升</div></div>
+      <div class="debate-item"><div class="debate-num bull">④</div><div class="debate-text"><strong>Q3 Revenue指引446-458億美元（YoY約+30-35%），持續創新高：</strong>台積電Q3指引顯示強勁的成長能見度，以中值452億美元換算約13,500億台幣，比Q2再成長6%。全年月收有望突破50,000億台幣，FY2026E EPS 106元看來保守</div></div>
+      <div class="debate-item"><div class="debate-num bull">⑤</div><div class="debate-text"><strong>資本支出上調至600-640億美元 — 用鈔票表達信心：</strong>台積電將2026年資本支出上調15%至600-640億美元。這個數字相當於廣達全年月收的4倍，是對AI晶片需求長期確定性的最有力表態。同時也代表2027-2028年的產能爬坡已鎖定，EPS成長能見度極高</div></div>
+      <div class="debate-item"><div class="debate-num bull">⑥</div><div class="debate-text"><strong>三大法人7/21全部齊買+6,163張，Q2法說後底部確認：</strong>7/17法說日爆量9.74萬張大跌，7/20-7/21量縮價穩（5.58萬→3.16萬張），三大法人同步買入+6,163張。機構在法說後底部積極佈局，代表對未來業績的高度信心，技術面底部形成訊號明確</div></div>
+      <div class="debate-item"><div class="debate-num bull">⑦</div><div class="debate-text"><strong>法人FY2027E EPS 148元、FY2028E 198元，現價2,420元是未來3年的黃金佈局點：</strong>若台積電在2028年達到198元EPS，以20x PE估算目標股價為3,960元（較現價+64%）。加上年均約4-5元股息，3年累計報酬預期超過70%，長線投資吸引力極強</div></div>
+    </div>
+    <div class="debate-bear">
+      <div class="debate-title bear">🐻 看空研究員（風險因素）</div>
+      <div class="debate-item"><div class="debate-num bear">①</div><div class="debate-text"><strong>美中晶片出口管制升級 — 最大尾部風險：</strong>美國2025年已實施對中國先進AI晶片的出口管制，2026年若進一步擴大至成熟製程或台積電本身，將直接衝擊中國客戶業務（約10-15%的月收）。此風險難以預測，一旦發生可能短期造成20-30%的股價衝擊</div></div>
+      <div class="debate-item"><div class="debate-num bear">②</div><div class="debate-text"><strong>Q2'26後高基期效應：EPS成長率預計大幅放緩：</strong>Q2'26 EPS 27.25元（YoY+77.4%）是在Q2'25 EPS 15.36元的低基期上達成的。以FY2026E EPS 106元推算，Q3'26 EPS約28-32元，YoY成長率將回落至60-70%，市場可能對「增速放緩」提前反映</div></div>
+      <div class="debate-item"><div class="debate-num bear">③</div><div class="debate-text"><strong>MACD死叉 + OSC -15.25，短線動能尚未完全恢復：</strong>雖然現價已站上四條均線，但MACD仍處死叉格局（DIF 8.68 &lt; DEA 23.92），OSC柱狀圖 -15.25代表下跌動能尚存。在MACD金叉確認前，每次反彈都可能遭遇獲利了結壓力，高點難突破2,480元</div></div>
+      <div class="debate-item"><div class="debate-num bear">④</div><div class="debate-text"><strong>52W高2,535元的解套壓力龐大：</strong>6/22-6/24在2,490-2,535元高位換手量估計超過150萬張，這些投資人存在明顯的解套意願。每次股價反彈至2,490元+都將面臨沉重賣壓，短線突破52W高需要極強的利多催化劑（如Q3月收爆量）</div></div>
+      <div class="debate-item"><div class="debate-num bear">⑤</div><div class="debate-text"><strong>資本支出大幅擴張，未來折舊壓力可能影響毛利率：</strong>600-640億美元的年度資本支出（vs 2023年的360億美元），未來折舊費用將大幅增加。若AI晶片需求因大型科技公司Capex縮減而下滑，台積電龐大的固定成本可能使毛利率從67%快速回落至60%以下</div></div>
+      <div class="debate-item"><div class="debate-num bear">⑥</div><div class="debate-text"><strong>英特爾Foundry + 三星追趕，長期競爭加劇：</strong>英特爾Foundry在美國政府補貼下快速推進18A（1.8nm）製程，雖然目前良率仍落後，但若在2027-2028年取得突破，部分CSP客戶（蘋果除外）可能轉向分散供應商，削弱台積電的壟斷定價能力</div></div>
+      <div class="debate-item"><div class="debate-num bear">⑦</div><div class="debate-text"><strong>台灣地緣政治風險（黑天鵝）：</strong>台積電作為「矽盾」雖有一定保護作用，但台海局勢仍是全球最大地緣政治風險之一。任何軍事緊張升級都將造成外資大規模撤退，股價可能在短期內修正30-50%。這個風險低概率但極高影響</div></div>
+    </div>
+  </div>
+  <div class="debate-weight">
+    <div class="debate-weight-bull" style="width:68%">🐂 看多 68%</div>
+    <div class="debate-weight-bear" style="width:32%">🐻 看空 32%</div>
+  </div>
+  <div class="card" style="margin-top:16px;background:#f5f3ff;border:1px solid #ddd6fe;">
+    <h4 style="color:#7c3aed;margin-bottom:8px;">💬 給一般投資人的話</h4>
+    <p style="font-size:.87em;line-height:1.8;color:#374151;">
+      台積電是一個「無論如何都應該持有」的標的。Q2 EPS 27.25元、毛利率67.7%雙雙創歷史新高，證明台積電不只是AI浪潮的受益者，而是整個AI時代的<strong>基礎設施壟斷者</strong>。沒有台積電，NVIDIA的晶片做不出來，蘋果的iPhone裝不上A系列晶片，Google/Meta的AI伺服器也無法運作。
+      <br><br>
+      現在的2,420元是「法說後消化期的佈局點」，不是高點。7/17法說日爆量大跌（Q2業績已知，獲利了結正常），7/21強力反彈+3.9%說明機構認同這個價格。技術面已站上四條均線，只差MACD金叉確認。
+      <br><br>
+      <strong>建議：</strong>2,380-2,420元為第一批佈局點（現在），等MACD金叉出現（約2,420-2,450元區間）再加碼第二批。目標一：2,535元（重返52W高）= +4.7%；目標二：2,600元（本土法人目標）= +7.4%；目標三：3,000元以上（長線，配合2027年EPS 148元）。停損設定2,200元（跌破MA60下方），台積電不應設太緊的停損。
+    </p>
+  </div>
+</div>
+</div>
+
+<!-- 11 風控 -->
+<div class="section">
+  <div class="section-title">🛡️ 風控六維評分</div>
+  <div class="risk-grid">
+    <div class="risk-dim">
+      <div class="risk-dim-name">估值風險（30%）</div>
+      <div class="risk-dim-score mid">5.0 / 10</div>
+      <div class="score-bar"><div class="score-fill amber" style="width:50%"></div></div>
+      <div class="risk-dim-desc">Forward PE 22.8x，不貴但也不便宜。PEG 0.29x代表成長支撐估值，但高位整理中短線難大幅上漲，估值風險適中</div>
+    </div>
+    <div class="risk-dim">
+      <div class="risk-dim-name">財務風險（25%）</div>
+      <div class="risk-dim-score low">1.0 / 10</div>
+      <div class="score-bar"><div class="score-fill green" style="width:10%"></div></div>
+      <div class="risk-dim-desc">Q2 EPS YoY+77.4%，毛利率67.7%，全年月收高速成長，財務風險幾乎為零。唯一疑慮是大量資本支出帶來的未來折舊</div>
+    </div>
+    <div class="risk-dim">
+      <div class="risk-dim-name">流動性風險（10%）</div>
+      <div class="risk-dim-score low">1.0 / 10</div>
+      <div class="score-bar"><div class="score-fill green" style="width:10%"></div></div>
+      <div class="risk-dim-desc">市值62.5兆台幣（全球前10大），日均成交量3-10萬張，流動性無任何風險，極易進出</div>
+    </div>
+    <div class="risk-dim">
+      <div class="risk-dim-name">產業風險（15%）</div>
+      <div class="risk-dim-score low">2.0 / 10</div>
+      <div class="score-bar"><div class="score-fill green" style="width:20%"></div></div>
+      <div class="risk-dim-desc">AI晶片需求結構性成長，2nm壟斷，CoWoS售罄，競爭對手落後3年以上。產業風險極低，唯英特爾長期追趕值得觀察</div>
+    </div>
+    <div class="risk-dim">
+      <div class="risk-dim-name">總經風險（10%）</div>
+      <div class="risk-dim-score mid">6.0 / 10</div>
+      <div class="score-bar"><div class="score-fill red" style="width:60%"></div></div>
+      <div class="risk-dim-desc">美中晶片出口管制是最大不確定性。美元/台幣匯率波動影響美元計價月收折算，聯準會政策也間接影響外資持股意願</div>
+    </div>
+    <div class="risk-dim">
+      <div class="risk-dim-name">籌碼風險（10%）</div>
+      <div class="risk-dim-score low">3.0 / 10</div>
+      <div class="score-bar"><div class="score-fill green" style="width:30%"></div></div>
+      <div class="risk-dim-desc">三大法人+6,163張齊買，但MACD死叉和52W高點2,535元的解套壓力仍存。整體籌碼風險偏低</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:20px;text-align:center;padding:28px;">
+    <div style="font-size:4em;font-weight:900;color:#7c3aed;">3.0</div>
+    <div style="font-size:1.1em;color:#4c1d95;font-weight:600;">/ 10 — 低風險</div>
+    <p style="font-size:.85em;color:#64748b;margin-top:10px;max-width:500px;margin-left:auto;margin-right:auto;">
+      加權：5.0×30% + 1.0×25% + 1.0×10% + 2.0×15% + 6.0×10% + 3.0×10% = 1.5+0.25+0.1+0.3+0.6+0.3 = <strong>3.05 ≈ 3.0分</strong><br>
+      主要風險集中在美中地緣政治（難預測但影響大），基本面和籌碼面風險均極低。
+    </p>
+  </div>
+</div>
+
+<!-- 12 策略 -->
+<div style="background:linear-gradient(135deg,#1e0547,#4c1d95,#7c3aed);padding:40px 0;">
+<div class="section" style="padding-top:0;padding-bottom:0;">
+  <div class="section-title" style="color:white;border-left-color:#a78bfa;">🎯 台股三段式操作策略</div>
+  <div class="strategy-grid">
+    <div class="strat-attack">
+      <div class="strat-title">⚡ 進攻策略</div>
+      <div class="strat-item"><strong>適合對象</strong>積極型，已充分了解地緣政治風險</div>
+      <div class="strat-item"><strong>布局價區</strong>2,350 ~ 2,420元（現在即可布局）</div>
+      <div class="strat-item"><strong>分批方式</strong>3批：2,400/2,380/2,350各1/3倉</div>
+      <div class="strat-item"><strong>目標一</strong>2,535元（重返52W高）→ +4.8%</div>
+      <div class="strat-item"><strong>目標二</strong>2,615元（法人目標）→ +8.1%</div>
+      <div class="strat-item"><strong>目標三</strong>3,000-3,100元（長線6-12月）→ +24-28%</div>
+      <div class="strat-item"><strong>停損</strong>跌破2,280元（7/20低點下方）</div>
+    </div>
+    <div class="strat-balance">
+      <div class="strat-title">⚖️ 均衡策略</div>
+      <div class="strat-item"><strong>適合對象</strong>穩健型，等技術確認後布局</div>
+      <div class="strat-item"><strong>觸發條件</strong>MACD金叉出現（DIF站上DEA）</div>
+      <div class="strat-item"><strong>布局價區</strong>2,420 ~ 2,480元</div>
+      <div class="strat-item"><strong>目標</strong>2,600 ~ 2,700元 → +7-12%</div>
+      <div class="strat-item"><strong>停損</strong>跌破2,340元（MA20下方20元）</div>
+      <div class="strat-item"><strong>加碼條件</strong>月收連續3個月YoY+60%以上</div>
+    </div>
+    <div class="strat-defend">
+      <div class="strat-title">🛡️ 防守策略</div>
+      <div class="strat-item"><strong>適合對象</strong>保守型長期投資人</div>
+      <div class="strat-item"><strong>等待條件</strong>回測MA20附近（2,350-2,420元）</div>
+      <div class="strat-item"><strong>目標</strong>2,600元（法人共識），配合股息</div>
+      <div class="strat-item"><strong>持有年限</strong>建議3年以上（等FY2028 EPS 198元兌現）</div>
+      <div class="strat-item"><strong>停損</strong>跌破2,200元（MA60下方）離場</div>
+      <div class="strat-item"><strong>核心邏輯</strong>CoWoS壟斷 + 2nm唯一 = 長期穩定超額報酬</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:20px;background:rgba(255,255,255,.1);color:white;border-radius:16px;">
+    <h4 style="margin-bottom:12px;">📅 關鍵催化劑時程表</h4>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;font-size:.85em;">
+      <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:14px;"><div style="font-weight:700;margin-bottom:6px;">📊 7月月收（8月初）</div><div style="opacity:.85;">若7月月收超過4,500億（MoM+1.7%），確認Q3強勁開局，可能帶動股價突破2,480元壓力</div></div>
+      <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:14px;"><div style="font-weight:700;margin-bottom:6px;">📱 蘋果iPhone 18發表</div><div style="opacity:.85;">預計2026年9月，若A20（2nm）相關報導超預期，N2佔比拉升將再推升台積電毛利率</div></div>
+      <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:14px;"><div style="font-weight:700;margin-bottom:6px;">🤖 Q3法說（10月中）</div><div style="opacity:.85;">若Q3 EPS超過32元（超越Q2指引中值），且毛利率維持67%+，將是全年最大的股價催化劑</div></div>
+      <div style="background:rgba(255,255,255,.1);border-radius:10px;padding:14px;"><div style="font-weight:700;margin-bottom:6px;">💾 Rubin GPU出貨</div><div style="opacity:.85;">NVIDIA下世代Rubin GPU（採N2製程）預計2026 H2-2027 H1開始出貨，確認將是台積電2027年業績的重大推升力</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 13 名詞小教室 -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">2nm / N2（台積電第二代奈米製程）</div>
+      <div class="glossary-def">「奈米」指晶片內電晶體之間的距離，越小代表可以在同樣面積塞入更多電晶體，效能更強、耗電更少。2nm使用全新的「奈米片GAA」架構，是目前人類能製造的最小量產晶片。台積電2026年是全球唯一能量產2nm的企業，每片晶圓造價約25,000-30,000美元。蘋果A20、NVIDIA Rubin均預計採用N2。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">CoWoS（先進封裝技術）</div>
+      <div class="glossary-def">「Chip on Wafer on Substrate」的縮寫，是台積電獨有的先進封裝技術。簡單說，就是把GPU晶片和高頻寬記憶體（HBM）緊密地封裝在一起，讓兩者的溝通速度提升100倍以上。訓練ChatGPT、Gemini等大型AI模型的GPU伺服器都需要CoWoS封裝。台積電2026年月產能已達13-14萬片，全年產能完全售罄。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">毛利率（Gross Margin）</div>
+      <div class="glossary-def">每賣出100元的東西，扣掉直接生產成本後剩下的比例。台積電Q2'26毛利率67.7%意味著：客戶付100元給台積電，台積電只花約32.3元的直接成本（晶圓材料、設備折舊、廠房水電等），賺走67.7元的毛利。這在製造業中極為罕見，反映台積電「技術壟斷 = 定價能力無敵」。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Forward PE（預估本益比）</div>
+      <div class="glossary-def">用「未來12個月預估EPS」計算的本益比。台積電TTM PE 28.1x（用過去EPS），但Forward PE 22.8x（用FY2026E EPS 106元）。因為台積電EPS仍在高速成長，Forward PE更能反映「未來賺更多」的事實。22.8x對年成長+77%的公司而言，PEG僅0.29x，是台灣市場中成長/估值CP值最高的標的之一。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">HPC（高效能運算）</div>
+      <div class="glossary-def">High Performance Computing，包含AI訓練/推理晶片（NVIDIA GPU、Google TPU、Amazon Trainium）、資料中心處理器（AMD EPYC、Intel Xeon）等。2026年HPC是台積電最大收入來源，佔晶圓月收超過50%，也是N2製程和CoWoS封裝需求的最主要驅動力。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Capex（資本支出）</div>
+      <div class="glossary-def">Capital Expenditure，企業購買設備、廠房、生產線的費用。台積電2026年Capex 600-640億美元（~1.9兆台幣），是台灣全年GDP的約8%！主要用於購買ASML的EUV光刻機（每台1億美元以上）、CoWoS封裝設備、建設美國/日本/歐洲新廠。大量Capex是台積電維持技術領先的「保護費」。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">MACD（指數平滑移動平均線）</div>
+      <div class="glossary-def">技術分析指標，用來判斷股票短中期的上漲/下跌動能。MACD由DIF（快線）和DEA（慢線）組成：DIF &gt; DEA = 金叉（看多訊號），DIF &lt; DEA = 死叉（看空訊號）。台積電目前DIF=8.68 &lt; DEA=23.92，呈死叉。但DIF從負值回升到正值代表下跌動能已大幅減弱，等待金叉確認即是佈局訊號。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">PEG（本益成長比）</div>
+      <div class="glossary-def">Price/Earnings to Growth Ratio，把本益比除以獲利成長率。PEG &lt; 1通常代表低估，PEG &lt; 0.5代表嚴重低估。台積電Forward PE 22.8x ÷ EPS成長率77.4% = PEG 0.29x。這代表以台積電目前的成長速度，現在的估值極具吸引力，是台股中成長/估值比例最佳的大型股之一。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 14 免責聲明 -->
+<div class="section" style="padding-top:10px;">
+  <div class="disclaimer">
+    <h4>⚠️ 免責聲明</h4>
+    <p>
+      本報告由 AI 多角色分析團隊於 2026年7月22日 自動生成，僅供學術研究與資訊參考之用，<strong>不構成任何投資建議或邀約</strong>。投資人應自行進行盡職調查，並諮詢合格財務顧問後再作出投資決定。過去績效不代表未來表現，台股投資有風險，可能損失全部本金。
+      <br><br>
+      <strong>資料來源：</strong>Fugle API（即時股價）、FinMind API（K線/三大法人/月營收/季度財報）、台積電2026年Q2法說會公告（2026-07-17）、美銀證券報告（目標價3,100元）、元大/凱基/永豐金研究報告（目標價2,600-2,615元）、CMoney、鉅亨網、遠見雜誌、財報狗、富果部落格。
+      <br><strong>分析時點：</strong>2026年7月22日盤中。台積電Q2'26法說會結果（EPS 27.25元、毛利率67.7%）為2026-07-17公告之正式數字。
+    </p>
+  </div>
+</div>
+
+<script>
+/* ── Pure Canvas Chart Library – no CDN, no external deps ── */
+function drawBarChart(canvasId, labels, data, barColor, accentColor, unit) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:36, right:16, bottom:48, left:62};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var minVal = Math.min(0, Math.min.apply(null,data)*0.9);
+  var maxVal = Math.max.apply(null,data)*1.2;
+  var range  = maxVal-minVal;
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  for(var i=0;i<=4;i++){
+    var y=pad.top+cH-(i/4)*cH;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
+    ctx.fillStyle='#94a3b8'; ctx.font='11px sans-serif'; ctx.textAlign='right';
+    ctx.fillText((minVal+range*i/4).toFixed(2), pad.left-5, y+4);
+  }
+  var slot=cW/labels.length, bW=slot*0.55;
+  for(var i=0;i<data.length;i++){
+    var isLast=(i===data.length-1);
+    var x=pad.left+slot*i+(slot-bW)/2;
+    var bH2=Math.abs(data[i]-minVal)/range*cH;
+    var y2=pad.top+cH-(data[i]-minVal)/range*cH;
+    var r=Math.min(4,bW/4);
+    ctx.shadowColor='rgba(0,0,0,0.1)'; ctx.shadowBlur=4;
+    ctx.fillStyle=isLast?accentColor:barColor;
+    ctx.beginPath();
+    ctx.moveTo(x+r,y2); ctx.lineTo(x+bW-r,y2);
+    ctx.quadraticCurveTo(x+bW,y2,x+bW,y2+r);
+    ctx.lineTo(x+bW,y2+Math.max(bH2,r)); ctx.lineTo(x,y2+Math.max(bH2,r));
+    ctx.lineTo(x,y2+r); ctx.quadraticCurveTo(x,y2,x+r,y2);
+    ctx.closePath(); ctx.fill(); ctx.shadowBlur=0;
+    ctx.fillStyle=isLast?accentColor:'#334155';
+    ctx.font=isLast?'bold 11px sans-serif':'10px sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(2)+(unit||''), x+bW/2, y2-5);
+    ctx.fillStyle='#64748b'; ctx.font='10px sans-serif';
+    ctx.fillText(labels[i], x+bW/2, H-8);
+  }
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top); ctx.lineTo(pad.left,pad.top+cH); ctx.stroke();
+}
+function drawLineChart(canvasId, labels, data, lineColor, yFormatter) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:36, right:24, bottom:48, left:72};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var minVal = Math.min.apply(null,data)*0.88;
+  var maxVal = Math.max.apply(null,data)*1.12;
+  var range  = maxVal-minVal;
+  function toX(i){ return pad.left+(i/(labels.length-1))*cW; }
+  function toY(v){ return pad.top+(1-(v-minVal)/range)*cH; }
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  for(var i=0;i<=4;i++){
+    var y=pad.top+cH-(i/4)*cH;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
+    var v=minVal+range*i/4;
+    ctx.fillStyle='#94a3b8'; ctx.font='10px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(yFormatter?yFormatter(v):v.toFixed(0), pad.left-5, y+4);
+  }
+  ctx.beginPath(); ctx.moveTo(toX(0),toY(data[0]));
+  for(var i=1;i<data.length;i++) ctx.lineTo(toX(i),toY(data[i]));
+  ctx.lineTo(toX(data.length-1),pad.top+cH); ctx.lineTo(toX(0),pad.top+cH);
+  ctx.closePath(); ctx.fillStyle=lineColor+'1a'; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(toX(0),toY(data[0]));
+  for(var i=1;i<data.length;i++) ctx.lineTo(toX(i),toY(data[i]));
+  ctx.strokeStyle=lineColor; ctx.lineWidth=2.5; ctx.lineJoin='round'; ctx.stroke();
+  for(var i=0;i<data.length;i++){
+    var isLast=(i===data.length-1);
+    var x=toX(i), y=toY(data[i]);
+    ctx.beginPath(); ctx.arc(x,y,isLast?6:4,0,Math.PI*2);
+    ctx.fillStyle=isLast?lineColor:'#ffffff';
+    ctx.strokeStyle=lineColor; ctx.lineWidth=2; ctx.fill(); ctx.stroke();
+    if(isLast){
+      ctx.fillStyle=lineColor; ctx.font='bold 10px sans-serif'; ctx.textAlign='center';
+      ctx.fillText(yFormatter?yFormatter(data[i]):data[i].toFixed(0), x, y-12);
+    }
+    ctx.fillStyle='#64748b'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(labels[i], x, H-8);
+  }
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top); ctx.lineTo(pad.left,pad.top+cH); ctx.stroke();
+}
+function drawHBarChart(canvasId, labels, data, colors) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:16, right:60, bottom:28, left:115};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var maxVal = Math.max.apply(null,data)*1.15;
+  var slot=cH/labels.length, bH=slot*0.55;
+  for(var i=1;i<=4;i++){
+    var x=pad.left+(i/4)*cW;
+    ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(x,pad.top); ctx.lineTo(x,pad.top+cH); ctx.stroke();
+    ctx.fillStyle='#94a3b8'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+    ctx.fillText((maxVal*i/4).toFixed(0)+'x', x, H-6);
+  }
+  for(var i=0;i<labels.length;i++){
+    var y=pad.top+slot*i+(slot-bH)/2;
+    var bW=data[i]/maxVal*cW;
+    var r=Math.min(4,bH/4);
+    ctx.shadowColor='rgba(0,0,0,0.08)'; ctx.shadowBlur=3;
+    ctx.fillStyle=(colors&&colors[i])?colors[i]:'#94a3b8';
+    ctx.beginPath();
+    ctx.moveTo(pad.left,y+r); ctx.quadraticCurveTo(pad.left,y,pad.left+r,y);
+    ctx.lineTo(pad.left+bW-r,y); ctx.quadraticCurveTo(pad.left+bW,y,pad.left+bW,y+r);
+    ctx.lineTo(pad.left+bW,y+bH-r); ctx.quadraticCurveTo(pad.left+bW,y+bH,pad.left+bW-r,y+bH);
+    ctx.lineTo(pad.left+r,y+bH); ctx.quadraticCurveTo(pad.left,y+bH,pad.left,y+bH-r);
+    ctx.closePath(); ctx.fill(); ctx.shadowBlur=0;
+    ctx.fillStyle='#374151'; ctx.font='11px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(labels[i], pad.left-6, y+bH/2+4);
+    ctx.fillStyle='#1e293b'; ctx.font='bold 11px sans-serif'; ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(1)+'x', pad.left+bW+6, y+bH/2+4);
+  }
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top+cH); ctx.lineTo(pad.left+cW,pad.top+cH); ctx.stroke();
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  // EPS 長條圖（含Q2'26剛公告 27.25元）
+  drawBarChart(
+    'epsChart',
+    ["Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26🏆"],
+    [9.56, 12.55, 14.45, 13.95, 15.36, 17.44, 19.51, 22.08, 27.25],
+    '#c4b5fd', '#7c3aed', '元'
+  );
+
+  // 月收折線圖
+  drawLineChart(
+    'revenueChart',
+    ['Jan','Feb','Mar','Apr','May','Jun🔥'],
+    [4013, 3177, 4152, 4107, 4170, 4427],
+    '#7c3aed',
+    function(v){ return (v/1000).toFixed(1)+'千億'; }
+  );
+
+  // PE 水平比較
+  drawHBarChart(
+    'peChart',
+    ['台積電 TTM', '台積電 Forward', '三星 TTM', '英特爾 TTM', '廣達 TTM'],
+    [28.1, 22.8, 18.0, 45.0, 16.1],
+    ['#7c3aed','#a78bfa','#c4b5fd','#ddd6fe','#ede9fe']
+  );
+});
+</script>
+</body>
+</html>
