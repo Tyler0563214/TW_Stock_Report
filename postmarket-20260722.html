@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股盤後戰情室 2026/07/22 — 外資連13賣終結+65萬張，Alphabet法說capex爆表</title>
+<style>
+  :root {
+    --bg: #0d1117; --bg2: #161b22; --bg3: #1c2128; --bg4: #21262d;
+    --border: #30363d; --text: #e6edf3; --text2: #8b949e; --text3: #6e7681;
+    --green: #3fb950; --green-dim: #1a3a1f; --green-text: #7ee787;
+    --red: #f85149; --red-dim: #3a1a1f; --red-text: #ff7b72;
+    --yellow: #d29922; --yellow-dim: #2d2006; --yellow-text: #e3b341;
+    --blue: #388bfd; --blue-dim: #0d2045; --blue-text: #79c0ff;
+    --purple: #8957e5; --purple-dim: #1d1145; --purple-text: #d2a8ff;
+    --orange: #db6d28; --orange-dim: #2d1500; --orange-text: #ffa657;
+    --accent: #1f6feb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; line-height: 1.5; }
+  a { color: var(--blue-text); text-decoration: none; }
+
+  /* ── Layout ── */
+  .container { max-width: 1400px; margin: 0 auto; padding: 16px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .grid4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+  @media(max-width:900px){ .grid2,.grid3,.grid4{ grid-template-columns:1fr; } }
+  .span2 { grid-column: span 2; }
+  .span3 { grid-column: span 3; }
+
+  /* ── Cards ── */
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .card-title { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text2); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+  .card-title .dot { width:8px;height:8px;border-radius:50%; }
+
+  /* ── Header ── */
+  .hero { background: linear-gradient(135deg,#0d1117 0%,#1a2332 50%,#0d1117 100%); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+  .hero-top { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; }
+  .hero-date { color:var(--text2); font-size:12px; margin-bottom:4px; }
+  .hero-title { font-size: 20px; font-weight: 700; line-height:1.3; }
+  .hero-subtitle { color: var(--text2); font-size:13px; margin-top:6px; }
+  .badge { display:inline-block; padding: 3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+  .badge-green { background:var(--green-dim); color:var(--green-text); border:1px solid var(--green); }
+  .badge-red { background:var(--red-dim); color:var(--red-text); border:1px solid var(--red); }
+  .badge-yellow { background:var(--yellow-dim); color:var(--yellow-text); border:1px solid var(--yellow); }
+  .badge-blue { background:var(--blue-dim); color:var(--blue-text); border:1px solid var(--blue); }
+  .badge-purple { background:var(--purple-dim); color:var(--purple-text); border:1px solid var(--purple); }
+
+  /* ── Ticker Bar ── */
+  .ticker-bar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+  .ticker { background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:8px 12px; min-width:130px; flex:1; }
+  .ticker-name { font-size:10px; color:var(--text2); margin-bottom:2px; }
+  .ticker-val { font-size:17px; font-weight:700; }
+  .ticker-chg { font-size:11px; margin-top:2px; }
+  .up { color:var(--green-text); } .dn { color:var(--red-text); } .flat { color:var(--text2); }
+
+  /* ── Section Headers ── */
+  .section-hdr { font-size:15px; font-weight:700; color:var(--text); margin: 20px 0 10px; padding-left:10px; border-left:3px solid var(--accent); display:flex; align-items:center; gap:8px; }
+
+  /* ── Tables ── */
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { background:var(--bg3); color:var(--text2); font-weight:600; padding:7px 10px; text-align:left; border-bottom:1px solid var(--border); font-size:11px; text-transform:uppercase; letter-spacing:.05em; }
+  td { padding:7px 10px; border-bottom:1px solid var(--border); }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:var(--bg3); }
+  .num { text-align:right; font-variant-numeric:tabular-nums; }
+  .bold { font-weight:700; }
+
+  /* ── Stat tiles ── */
+  .stat { background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:12px; }
+  .stat-label { font-size:11px; color:var(--text2); margin-bottom:4px; }
+  .stat-val { font-size:20px; font-weight:700; }
+  .stat-sub { font-size:11px; color:var(--text2); margin-top:3px; }
+
+  /* ── Expert cards ── */
+  .expert { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:14px; }
+  .expert-name { font-weight:700; font-size:13px; margin-bottom:8px; }
+  .expert-body { font-size:13px; color:var(--text2); line-height:1.7; }
+  .expert-body strong { color:var(--text); }
+  .highlight { background:var(--bg4); border-left:3px solid var(--accent); padding:8px 12px; border-radius:0 6px 6px 0; margin:8px 0; font-size:13px; }
+
+  /* ── Debate ── */
+  .debate-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media(max-width:700px){ .debate-row{ grid-template-columns:1fr; } }
+  .debate-bull { background:var(--green-dim); border:1px solid var(--green); border-radius:10px; padding:14px; }
+  .debate-bear { background:var(--red-dim); border:1px solid var(--red); border-radius:10px; padding:14px; }
+  .debate-title { font-weight:700; font-size:13px; margin-bottom:10px; }
+  .debate-item { font-size:13px; line-height:1.7; color:var(--text2); padding:4px 0; }
+  .debate-item::before { content:"▸ "; color:inherit; }
+  .debate-item strong { color:var(--text); }
+  .verdict-bar { background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:14px; margin-top:12px; text-align:center; }
+  .verdict-bar .big { font-size:18px; font-weight:700; }
+  .verdict-bar .sub { font-size:12px; color:var(--text2); margin-top:4px; }
+  .progress-wrap { height:10px; background:var(--bg4); border-radius:5px; overflow:hidden; margin:10px 0; }
+  .progress-bull { height:100%; background:linear-gradient(90deg,var(--green),var(--green-text)); border-radius:5px; transition:width 0.5s; }
+
+  /* ── Event chips ── */
+  .event-chip { background:var(--bg3); border:1px solid var(--border); border-radius:6px; padding:8px 12px; font-size:12px; }
+  .event-date { color:var(--blue-text); font-weight:700; margin-right:8px; }
+
+  /* ── Charts ── */
+  .chart-wrap { position:relative; height:260px; }
+
+  /* ── Google Earnings Deep Dive ── */
+  .google-box { background: linear-gradient(135deg,#0d2045,#1a3a1f); border:1px solid var(--blue); border-radius:10px; padding:16px; }
+  .google-metric { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border); }
+  .google-metric:last-child { border-bottom:none; }
+  .google-metric-name { color:var(--text2); font-size:13px; }
+  .google-metric-val { font-size:13px; font-weight:700; }
+
+  /* ── Stock cards ── */
+  .stock-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border); }
+  .stock-row:last-child { border-bottom:none; }
+  .stock-code { font-weight:700; font-size:13px; min-width:50px; }
+  .stock-name { color:var(--text2); font-size:12px; flex:1; padding: 0 8px; }
+  .stock-price { font-weight:700; font-size:14px; min-width:60px; text-align:right; }
+  .stock-chg { font-size:12px; min-width:65px; text-align:right; }
+
+  /* ── Warning box ── */
+  .warning { background:var(--yellow-dim); border:1px solid var(--yellow); border-radius:8px; padding:12px 14px; font-size:13px; color:var(--yellow-text); margin-top:12px; }
+  .warning strong { color:var(--text); }
+
+  /* ── Disclaimer ── */
+  .disclaimer { color:var(--text3); font-size:11px; text-align:center; margin-top:24px; padding:16px; border-top:1px solid var(--border); }
+
+  /* ── K-line summary ── */
+  .kline-summary { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:12px; }
+  @media(max-width:700px){ .kline-summary{ grid-template-columns:repeat(2,1fr); } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ══════════════════════════════════════ HERO ══════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-date">🇹🇼 台股盤後戰情室 ── 2026年07月22日（週三）</div>
+      <div class="hero-title">外資連13賣終結，單日買超<span class="up">65萬張</span>史詩級回補<br>Alphabet Cloud爆棚+82%，但Capex $205B壓垮GOOGL -5%</div>
+      <div class="hero-subtitle" style="margin-top:8px;">
+        <span class="badge badge-green">🟢 大盤偏多</span>&nbsp;
+        <span class="badge badge-yellow">⚠️ Alphabet Capex負面衝擊</span>&nbsp;
+        <span class="badge badge-blue">📈 外資轉向強訊號</span>
+      </div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:38px; font-weight:800;" class="up">44,825</div>
+      <div class="up" style="font-size:16px; font-weight:700;">+592.91 (+1.34%)</div>
+      <div style="color:var(--text2); font-size:12px;">收盤點位 ／ 成交值 9,852.71億</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ TICKER BAR ══════════════════════════════════════ -->
+<div class="ticker-bar">
+  <div class="ticker">
+    <div class="ticker-name">加權指數</div>
+    <div class="ticker-val up">44,825</div>
+    <div class="ticker-chg up">▲ +592.91 +1.34%</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">費半(SOX)</div>
+    <div class="ticker-val up">12,411</div>
+    <div class="ticker-chg up">▲ +0.44%</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">台積電ADR(TSM)</div>
+    <div class="ticker-val up">$424.22</div>
+    <div class="ticker-chg up">▲ +5.45%（07/21）</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">GOOGL（盤後）</div>
+    <div class="ticker-val dn">~$343</div>
+    <div class="ticker-chg dn">▼ -4.9%（capex衝擊）</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">10年美債殖利率</div>
+    <div class="ticker-val">4.657%</div>
+    <div class="ticker-chg dn">▲ +0.029%</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">布蘭特原油</div>
+    <div class="ticker-val">$96.61</div>
+    <div class="ticker-chg up">▲ +0.33%</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">台幣匯率</div>
+    <div class="ticker-val">32.272</div>
+    <div class="ticker-chg up">▲ 升值 -0.107</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">黃金</div>
+    <div class="ticker-val">$4,124</div>
+    <div class="ticker-chg flat">▼ -0.09%</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ 今日大盤解剖 ══════════════════════════════════════ -->
+<div class="section-hdr">🔬 今日大盤解剖</div>
+<div class="grid3">
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--green)"></span>開盤至收盤走勢</div>
+    <div class="kline-summary">
+      <div class="stat"><div class="stat-label">開盤</div><div class="stat-val">44,514</div></div>
+      <div class="stat"><div class="stat-label">最高</div><div class="stat-val up">45,324</div></div>
+      <div class="stat"><div class="stat-label">最低</div><div class="stat-val">44,514</div></div>
+      <div class="stat"><div class="stat-label">收盤</div><div class="stat-val up">44,826</div></div>
+      <div class="stat"><div class="stat-label">振幅</div><div class="stat-val yellow-text" style="color:var(--yellow-text)">810pts</div></div>
+    </div>
+    <div class="highlight">
+      盤中一度飆升 <strong>+1,091點</strong>（最高45,324），但台積電在45,300附近出現強力賣壓，尾盤多空激戰，最終收<strong>+593點</strong>，上影線明顯，量能略縮至9,852億。
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--blue)"></span>關鍵個股表現</div>
+    <div class="stock-row">
+      <span class="stock-code">2330</span>
+      <span class="stock-name">台積電</span>
+      <span class="stock-price">2,400</span>
+      <span class="stock-chg dn">-10 (-0.41%)</span>
+    </div>
+    <div class="stock-row">
+      <span class="stock-code">2317</span>
+      <span class="stock-name">鴻海</span>
+      <span class="stock-price up">251.5</span>
+      <span class="stock-chg up">+5.5 (+2.24%)</span>
+    </div>
+    <div class="stock-row">
+      <span class="stock-code">3231</span>
+      <span class="stock-name">緯創</span>
+      <span class="stock-price">—</span>
+      <span class="stock-chg up">外資+24,210張</span>
+    </div>
+    <div class="stock-row">
+      <span class="stock-code">2618</span>
+      <span class="stock-name">長榮航</span>
+      <span class="stock-price up">206</span>
+      <span class="stock-chg up">+3 (+1.48%)</span>
+    </div>
+    <div class="stock-row">
+      <span class="stock-code">2027</span>
+      <span class="stock-name">大成鋼</span>
+      <span class="stock-price">—</span>
+      <span class="stock-chg up">外資+23,949張</span>
+    </div>
+    <div class="warning" style="margin-top:8px;">
+      ⚡ <strong>台積電在45,300反壓！</strong>連兩日大漲後出現獲利了結，收盤-10元，為今日大盤「不過45,300」的最大元兇。
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--purple)"></span>技術面快讀</div>
+    <table>
+      <tr><th>指標</th><th>數值</th><th>訊號</th></tr>
+      <tr><td>MA5</td><td class="num">43,806</td><td class="up">✅ 站上</td></tr>
+      <tr><td>MA10</td><td class="num">44,576</td><td class="up">✅ 站上</td></tr>
+      <tr><td>MA20</td><td class="num">45,301</td><td class="dn">⚠️ 未過</td></tr>
+      <tr><td>布林中軌</td><td class="num">45,301</td><td class="dn">中軌以下</td></tr>
+      <tr><td>布林下軌</td><td class="num">42,919</td><td class="up">支撐</td></tr>
+      <tr><td>RSI(14)</td><td class="num">49.75</td><td class="flat">中性偏弱</td></tr>
+      <tr><td>壓力位</td><td class="num">45,300</td><td class="dn">今日反壓</td></tr>
+      <tr><td>支撐位</td><td class="num">44,000</td><td class="up">短期支撐</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ 外資史詩級回補 ══════════════════════════════════════ -->
+<div class="section-hdr">💰 外資史詩級回補 — 連13賣終結</div>
+<div class="grid2">
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--green)"></span>07/22 外資整體買賣超</div>
+    <div class="grid4" style="margin-bottom:12px;">
+      <div class="stat"><div class="stat-label">外資合計</div><div class="stat-val up">+65萬張</div><div class="stat-sub">+173億元</div></div>
+      <div class="stat"><div class="stat-label">投信合計</div><div class="stat-val up">+170億</div><div class="stat-sub">同步轉多</div></div>
+      <div class="stat"><div class="stat-label">三大法人</div><div class="stat-val up">+319億</div><div class="stat-sub">+741,116張</div></div>
+      <div class="stat"><div class="stat-label">自營合計</div><div class="stat-val up">+48,536張</div><div class="stat-sub">跟隨多方</div></div>
+    </div>
+    <div class="highlight">
+      🚨 外資 <strong>+650,055張</strong>（史詩級，兩日合計 07/21+07/22 超過 <strong>100萬張</strong>），正式終結連續13個交易日賣超。外資不只回補，更大幅加碼主動型ETF，這是對台股後市正式押注的訊號。
+    </div>
+    <table style="margin-top:12px;">
+      <tr><th>方向</th><th>30日累計</th><th>意涵</th></tr>
+      <tr><td>07/17前（13連賣）</td><td class="num dn">-X,XXX億</td><td class="dn">去槓桿/避險</td></tr>
+      <tr><td>07/21 轉多</td><td class="num up">+381,320張</td><td class="up">底部訊號</td></tr>
+      <tr><td>07/22 再加碼</td><td class="num up">+650,055張</td><td class="up">確認轉多</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--blue)"></span>外資買超前10名（07/22）</div>
+    <table>
+      <tr><th>代碼</th><th>名稱</th><th class="num">外資淨買超(張)</th><th>解讀</th></tr>
+      <tr><td class="bold">00403A</td><td>主動統一升級50</td><td class="num up bold">+121,004</td><td><span class="badge badge-blue">ETF大買</span></td></tr>
+      <tr><td class="bold">00981A</td><td>主動統一台股增長</td><td class="num up bold">+52,626</td><td><span class="badge badge-blue">ETF</span></td></tr>
+      <tr><td class="bold">00631L</td><td>元大台50正2（槓桿）</td><td class="num up bold">+46,261</td><td><span class="badge badge-purple">槓桿做多</span></td></tr>
+      <tr><td class="bold">009816</td><td>凱基台灣TOP50</td><td class="num up bold">+44,111</td><td><span class="badge badge-blue">ETF</span></td></tr>
+      <tr><td class="bold">2883</td><td>凱基金</td><td class="num up bold">+37,650</td><td><span class="badge badge-yellow">金融</span></td></tr>
+      <tr><td class="bold">00405A</td><td>主動富邦台灣龍耀</td><td class="num up bold">+27,064</td><td><span class="badge badge-blue">ETF</span></td></tr>
+      <tr><td class="bold">0056</td><td>元大高股息</td><td class="num up bold">+25,061</td><td><span class="badge badge-blue">ETF</span></td></tr>
+      <tr><td class="bold">2885</td><td>元大金</td><td class="num up bold">+25,000</td><td><span class="badge badge-yellow">金融</span></td></tr>
+      <tr><td class="bold">3231</td><td>緯創</td><td class="num up bold">+24,210</td><td><span class="badge badge-green">AI伺服器</span></td></tr>
+      <tr><td class="bold">2027</td><td>大成鋼</td><td class="num up bold">+23,949</td><td><span class="badge badge-orange" style="background:var(--orange-dim);color:var(--orange-text);border:1px solid var(--orange)">意外！鋼鐵</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="card" style="margin-top:12px;">
+  <div class="card-title"><span class="dot" style="background:var(--red)"></span>外資賣超前10名（07/22）</div>
+  <table>
+    <tr><th>代碼</th><th>名稱</th><th class="num">外資淨賣超(張)</th><th>連續賣超解讀</th></tr>
+    <tr><td>2634</td><td>漢翔</td><td class="num dn bold">-27,579</td><td>油價$96，航空/國防外資撤出，三大法人合計-30,627張</td></tr>
+    <tr><td>1718</td><td>中纖</td><td class="num dn">-22,088</td><td>傳產纖維，無特殊題材，外資持續離場</td></tr>
+    <tr><td>8150</td><td>南茂</td><td class="num dn">-15,133</td><td>封測，連續賣超，三大法人-16,954張</td></tr>
+    <tr><td>1216</td><td>統一</td><td class="num dn">-13,800</td><td>食品股，外資賣但投信買+4,687，分歧</td></tr>
+    <tr><td>2880</td><td>華南金</td><td class="num dn">-10,806</td><td>投信反買+10,202，法人明顯分歧</td></tr>
+    <tr><td>6770</td><td>力積電</td><td class="num dn">-8,590</td><td>DRAM景氣疑慮，外資繼續減碼</td></tr>
+    <tr><td>2409</td><td>友達</td><td class="num dn">-8,153</td><td>07/21套利完後快速反手，面板外資短線進出</td></tr>
+    <tr><td>2344</td><td>華邦電</td><td class="num dn">-7,759</td><td>記憶體，與力積電同步遭減碼</td></tr>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════ ALPHABET LAW说 ══════════════════════════════════════ -->
+<div class="section-hdr">🔴 今夜最大事件 — Alphabet Q2法說深度解析</div>
+<div class="google-box" style="margin-bottom:12px;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+    <div style="font-size:16px; font-weight:700;">GOOGL Q2 2026 法說會 — 數字亮眼，但Capex轟炸</div>
+    <div class="badge badge-red">盤後 -4.9%</div>
+  </div>
+  <div class="grid2">
+    <div>
+      <div class="google-metric"><span class="google-metric-name">📊 Q2總營收</span><span class="google-metric-val up">$119.8B（超預期 $116.93B，+24% YoY）</span></div>
+      <div class="google-metric"><span class="google-metric-name">☁️ Google Cloud</span><span class="google-metric-val up">$24.8B（+82% YoY，大超預期 $22.46B）⭐</span></div>
+      <div class="google-metric"><span class="google-metric-name">🔎 Google Search</span><span class="google-metric-val up">$63.3B（+17% YoY）</span></div>
+      <div class="google-metric"><span class="google-metric-name">📺 YouTube廣告</span><span class="google-metric-val up">$11.1B（+13% YoY）</span></div>
+      <div class="google-metric"><span class="google-metric-name">💼 營業利益</span><span class="google-metric-val up">$40.77B（強勁）</span></div>
+    </div>
+    <div>
+      <div class="google-metric"><span class="google-metric-name">🚨 2026全年Capex（新指引）</span><span class="google-metric-val dn">$195-205B（前：$180-190B，再增$15B）</span></div>
+      <div class="google-metric"><span class="google-metric-name">🚨 Q2 Capex（單季）</span><span class="google-metric-val dn">$44.9B（史上最高）</span></div>
+      <div class="google-metric"><span class="google-metric-name">🚨 自由現金流</span><span class="google-metric-val dn">-$5.9B（轉負！）</span></div>
+      <div class="google-metric"><span class="google-metric-name">📅 2027展望</span><span class="google-metric-val dn">Capex 將持續大幅增加</span></div>
+      <div class="google-metric"><span class="google-metric-name">📉 GOOGL盤後反應</span><span class="google-metric-val dn">-4.9%（市場驚嚇於capex）</span></div>
+    </div>
+  </div>
+  <div class="highlight" style="margin-top:12px; border-left-color:var(--red);">
+    🔑 <strong>核心矛盾：</strong>Cloud +82%說明AI需求真實，但$205B Capex意味著自由現金流長期承壓。市場疑問：「AI投資軍備競賽何時見頂？」Meta/微軟/Amazon都在做同樣的事。<br>
+    🇹🇼 <strong>台積電受惠方向：</strong>Google Capex $205B大量投向AI晶片（TPU+H100/H200），台積電先進製程（2nm/3nm）及CoWoS封裝是最直接受惠鏈。長線利多，短期估值需消化。
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="card">
+    <div class="card-title">Alphabet法說 → 台股影響矩陣</div>
+    <table>
+      <tr><th>族群</th><th>影響方向</th><th>理由</th></tr>
+      <tr><td>台積電（2330）</td><td class="up">長多</td><td>Google AI晶片Capex$205B直接貢獻台積電先進製程訂單</td></tr>
+      <tr><td>CoWoS封裝</td><td class="up">長多</td><td>AI晶片需求增→CoWoS需求同步放大</td></tr>
+      <tr><td>AI伺服器（緯創/廣達）</td><td class="up">偏多</td><td>Google資料中心持續擴建，伺服器代工受益</td></tr>
+      <tr><td>光通訊（CPO）</td><td class="up">偏多</td><td>大規模資料中心需要光互連</td></tr>
+      <tr><td>雲端SaaS族群</td><td class="dn">短空</td><td>GOOGL -5%估值壓縮，雲端股情緒受拖累</td></tr>
+      <tr><td>散熱（健策/雙鴻）</td><td class="up">偏多</td><td>更多GPU→更多散熱需求</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">AI Capex軍備競賽全景（2026全年指引）</div>
+    <table>
+      <tr><th>科技巨頭</th><th>2026 Capex指引</th><th>YoY</th></tr>
+      <tr><td>Google (Alphabet)</td><td class="num dn bold">$195-205B 🔺</td><td class="dn">大增</td></tr>
+      <tr><td>Microsoft</td><td class="num">~$80B+</td><td class="up">增</td></tr>
+      <tr><td>Meta</td><td class="num">$64-72B</td><td class="up">增</td></tr>
+      <tr><td>Amazon (AWS)</td><td class="num">~$80-90B+</td><td class="up">增</td></tr>
+      <tr><td colspan="3" style="color:var(--green-text); font-size:12px;">➜ 四大合計 AI Capex 超過 <strong>$400B</strong>，台積電是最大受益者</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ 多空辯論 ══════════════════════════════════════ -->
+<div class="section-hdr">⚔️ 多空辯論 — 台股後市判斷</div>
+<div class="debate-row">
+  <div class="debate-bull">
+    <div class="debate-title">🟢 看多論據（55%）</div>
+    <div class="debate-item"><strong>外資兩日合計買超100萬張</strong>：07/21+07/22=+1,031,375張，連13賣終結，趨勢明確轉向。</div>
+    <div class="debate-item"><strong>槓桿ETF(00631L)外資+46,261張</strong>：外資購入正2槓桿ETF，代表看多力道已超越「防禦性買進」，是積極做多訊號。</div>
+    <div class="debate-item"><strong>Alphabet Cloud +82% YoY</strong>：AI投資需求有基本面支撐，不是泡沫，台積電/鴻海/緯創供應鏈長線受惠。</div>
+    <div class="debate-item"><strong>融資去槓桿已完成7成</strong>：融資從8,134億→5,879億，弱手已被07/17崩跌清洗，市場籌碼相對乾淨。</div>
+    <div class="debate-item"><strong>台幣持續升值</strong>：32.272（升值），外資匯兌成本降低，持續回流意願高。</div>
+    <div class="debate-item"><strong>SOX費半 +0.44%</strong>：AMD撐盤，半導體族群技術面穩健，不受GOOGL -5%拖累。</div>
+    <div class="debate-item"><strong>三大法人合計+319億</strong>：外資+投信+自營全面轉多，籌碼面最理想狀態。</div>
+  </div>
+  <div class="debate-bear">
+    <div class="debate-title">🔴 看空論據（45%）</div>
+    <div class="debate-item"><strong>GOOGL盤後-4.9%</strong>：Capex $205B市場驚嚇，今日（07/23）科技股情緒壓制，估值重審。</div>
+    <div class="debate-item"><strong>台積電在45,300反壓</strong>：連兩日大漲後出現強力賣壓，上影線長，短期過45,300需要更多時間。</div>
+    <div class="debate-item"><strong>月線(MA20=45,301)仍在上方</strong>：技術面尚未收復月線，布林中軌以下，RSI僅49.75，動能不足。</div>
+    <div class="debate-item"><strong>油價$96.61持續高位</strong>：航空/化工受壓，漢翔外資-27,579張棄守，若破$100形成通膨再起疑慮。</div>
+    <div class="debate-item"><strong>封測（南茂、力積電）繼續賣</strong>：南茂連續被賣，HBM需求傳至上游有疑慮，記憶體供應鏈信心不足。</div>
+    <div class="debate-item"><strong>美債4.657%（近52週高）</strong>：利率高位壓制科技股估值，距52週高4.69%僅0.033%，若升破4.7%構成壓力。</div>
+    <div class="debate-item"><strong>成交值9,852億縮量</strong>：相較07/21量能，今日成交略縮，高位量縮是短線警訊。</div>
+  </div>
+</div>
+<div class="verdict-bar">
+  <div class="big">多空裁決：<span class="up">偏多震盪</span>（55% vs 45%）</div>
+  <div class="progress-wrap" style="max-width:500px; margin:10px auto;">
+    <div class="progress-bull" style="width:55%"></div>
+  </div>
+  <div class="sub">外資轉多方向明確，但Alphabet Capex引發短期估值壓力，台積電45,300關口形成短線壓制。<br>中線（1個月）偏多，短線需消化GOOGL負面情緒後站穩45,000再做多。</div>
+</div>
+
+<!-- ══════════════════════════════════════ 07/23 台股今日反應 ══════════════════════════════════════ -->
+<div class="section-hdr">📡 07/23（今日）— 台股消化Alphabet的成績單</div>
+<div class="card">
+  <div class="card-title">今日盤勢解讀（截至收盤）</div>
+  <div class="grid3" style="margin-bottom:12px;">
+    <div class="stat"><div class="stat-label">TWII 收盤</div><div class="stat-val up">44,851</div><div class="stat-sub">+25.03 (+0.06%)</div></div>
+    <div class="stat"><div class="stat-label">盤中高點</div><div class="stat-val">45,090</div><div class="stat-sub">再次挑戰45,000+</div></div>
+    <div class="stat"><div class="stat-label">盤中低點</div><div class="stat-val">44,341</div><div class="stat-sub">GOOGL消化低點</div></div>
+  </div>
+  <div class="highlight">
+    ✅ <strong>韌性超預期！</strong> GOOGL -5%的衝擊，台股僅微幅波動+0.06%（收44,851），遠比預期的跌幅小。原因：外資前兩日已大量買入ETF與個股，籌碼穩定形成支撐。這是<strong>強勢訊號</strong>——利空出現卻不跌。
+  </div>
+  <div class="grid2" style="margin-top:12px;">
+    <div>
+      <p style="font-size:13px; color:var(--text2); margin-bottom:8px;"><strong style="color:var(--text);">今日美股盤面（台灣時間07/23）：</strong></p>
+      <div class="stock-row"><span class="stock-code">META</span><span class="stock-name">Meta</span><span class="stock-chg dn">-2.58% ($627)</span></div>
+      <div class="stock-row"><span class="stock-code">MSFT</span><span class="stock-name">微軟</span><span class="stock-chg dn">-1.86% ($390)</span></div>
+      <div class="stock-row"><span class="stock-code">GOOGL</span><span class="stock-name">Alphabet</span><span class="stock-chg dn">-1.24% ($342)</span></div>
+      <div class="stock-row"><span class="stock-code">AMZN</span><span class="stock-name">Amazon</span><span class="stock-chg dn">-1.09% ($245)</span></div>
+      <div class="stock-row"><span class="stock-code">AAPL</span><span class="stock-name">蘋果</span><span class="stock-chg dn">-0.56% ($326)</span></div>
+    </div>
+    <div>
+      <p style="font-size:13px; color:var(--text2); margin-bottom:8px;"><strong style="color:var(--text);">市場解讀：</strong></p>
+      <div style="font-size:13px; color:var(--text2); line-height:1.8;">
+        • 五大科技全跌，但費半SOX逆勢+0.44%（AMD撐盤）<br>
+        • 台幣升值32.272（外資持續回流）<br>
+        • 美債4.657%小升，估值壓力持續<br>
+        • 油價$96.61，能源成本高位不退<br>
+        • 黃金$4,124（避險情緒溫和）<br>
+        • <strong class="up">整體：短線消化期，中線格局向好</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ 後市展望 ══════════════════════════════════════ -->
+<div class="section-hdr">🎯 後市展望與操作建議</div>
+<div class="grid3">
+  <div class="card" style="border-color:var(--green);">
+    <div class="card-title" style="color:var(--green-text);">⚔️ 進攻型（部位50-70%）</div>
+    <div style="font-size:13px; color:var(--text2); line-height:1.8;">
+      <strong class="up" style="color:var(--text);">核心配置：AI伺服器供應鏈</strong><br>
+      • <strong>緯創(3231)</strong>：外資07/22大買+24,210張，AI伺服器GB300受益，AMD Advancing AI直接受惠<br>
+      • <strong>鴻海(2317)</strong>：+2.24%收盤，外資連兩日買超，AI伺服器組裝龍頭<br>
+      • <strong>台積電(2330)</strong>：Alphabet Capex $205B長線受益，短線等45,000-2400再進，停損2,340<br><br>
+      <strong class="up" style="color:var(--text);">槓桿ETF觀察：</strong><br>
+      • 00631L（台50正2）外資+46,261張，若台股守住44,500，等回測44,800再進
+    </div>
+  </div>
+  <div class="card" style="border-color:var(--yellow);">
+    <div class="card-title" style="color:var(--yellow-text);">⚖️ 均衡型（部位40-55%）</div>
+    <div style="font-size:13px; color:var(--text2); line-height:1.8;">
+      <strong style="color:var(--text);">等待月線（45,300）突破確認再加碼</strong><br>
+      • 分批布局：ETF類（0056高股息、00631L正2）<br>
+      • 不追高：台積電等拉回2,350-2,380再分批<br>
+      • 金融股：凱基金(2883)、元大金(2885) 外資兩日連買，高股息+低Beta適合震盪期<br><br>
+      <strong style="color:var(--text);">關鍵觀察：</strong><br>
+      • 07/23外資籌碼（T86今晚更新）是否繼續買？<br>
+      • Meta法說（約07/25-07/30）若Capex也大增→AI供應鏈再噴
+    </div>
+  </div>
+  <div class="card" style="border-color:var(--red);">
+    <div class="card-title" style="color:var(--red-text);">🛡️ 防守型（部位20-35%）</div>
+    <div style="font-size:13px; color:var(--text2); line-height:1.8;">
+      <strong style="color:var(--text);">規避族群：</strong><br>
+      • 航空（漢翔2634、長榮航2618）：油價$96持高，漢翔外資-27,579張棄守<br>
+      • 封測（南茂8150、力積電6770）：外資持續賣，HBM需求確認前謹慎<br>
+      • 高beta小型股：OTC指數仍在弱勢整理<br><br>
+      <strong style="color:var(--text);">重新進場訊號：</strong><br>
+      • TWII站穩<strong>45,300</strong>（月線）且外資連5日淨買<br>
+      • 美債殖利率<strong>降至4.5%以下</strong><br>
+      • Meta法說Capex正面（7月底）
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ 催化劑時程 ══════════════════════════════════════ -->
+<div class="section-hdr">📅 未來催化劑時程</div>
+<div class="card">
+  <div class="grid2">
+    <div>
+      <div class="event-chip" style="margin-bottom:8px;"><span class="event-date">07/22（已發布）</span>Alphabet Q2法說：Cloud +82%超預期，Capex $205B → GOOGL -5%，AI需求長多但短期消化</div>
+      <div class="event-chip" style="margin-bottom:8px;"><span class="event-date">07/23（今日）</span>台股韌性守住44,851（+0.06%），消化GOOGL衝擊</div>
+      <div class="event-chip" style="margin-bottom:8px;"><span class="event-date">07/24</span>關注07/22、07/23外資T86數據確認（今晚18:00更新）</div>
+      <div class="event-chip" style="margin-bottom:8px;"><span class="event-date">07/25前後</span>Meta Q2法說：若Capex也大增→AI基礎設施需求再確認→台積電CoWoS受惠</div>
+    </div>
+    <div>
+      <div class="event-chip" style="margin-bottom:8px;"><span class="event-date">七月底</span>Amazon AWS法說：雲端成長確認→AI伺服器/光通訊供應鏈再噴</div>
+      <div class="event-chip" style="margin-bottom:8px;"><span class="event-date">八月初</span>台積電7月營收公告：CoWoS月增確認→台積電買點</div>
+      <div class="event-chip" style="margin-bottom:8px;"><span class="event-date">09月Fed</span>降息預期（若美債降至4.3-4.5%）→估值擴張→外資加速回台</div>
+      <div class="event-chip" style="margin-bottom:8px;"><span class="event-date">持續觀察</span>美伊衝突＋油價：若升破$100，通膨復燃風險，影響Fed路徑</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ DISCLAIMER ══════════════════════════════════════ -->
+<div class="disclaimer">
+  ⚠️ 本報告為技術分析與籌碼數據彙整，僅供研究參考，<strong>不構成任何投資建議</strong>。股票投資有損失本金之風險，請依個人風險承受能力自行判斷。<br>
+  數據來源：TWSE T86官方API、yfinance、Yahoo Finance、CMoney、聯合新聞、ETtoday、Seeking Alpha<br>
+  報告生成時間：2026-07-23 15:00 ／ 由 Claude AI 自動生成
+</div>
+
+</div><!-- /container -->
+</body>
+</html>
