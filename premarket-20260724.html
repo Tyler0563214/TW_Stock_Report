@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股早盤戰情室 2026/07/24 — 油破$100×美債破4.7% 大盤承壓，石化爆噴+緯創GB300連4漲</title>
+<style>
+  :root {
+    --bg:#0d1117;--bg2:#161b22;--bg3:#1c2128;--bg4:#21262d;
+    --border:#30363d;--text:#e6edf3;--text2:#8b949e;--text3:#6e7681;
+    --green:#3fb950;--green-dim:#1a3a1f;--green-text:#7ee787;
+    --red:#f85149;--red-dim:#3a1a1f;--red-text:#ff7b72;
+    --yellow:#d29922;--yellow-dim:#2d2006;--yellow-text:#e3b341;
+    --blue:#388bfd;--blue-dim:#0d2045;--blue-text:#79c0ff;
+    --purple:#8957e5;--purple-dim:#1d1145;--purple-text:#d2a8ff;
+    --orange:#db6d28;--orange-dim:#2d1500;--orange-text:#ffa657;
+    --accent:#1f6feb;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:14px;line-height:1.5;}
+
+  .container{max-width:1400px;margin:0 auto;padding:16px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  @media(max-width:900px){.grid2,.grid3,.grid4{grid-template-columns:1fr;}}
+
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;}
+  .card-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+  .card-title .dot{width:8px;height:8px;border-radius:50%;}
+
+  .hero{background:linear-gradient(135deg,#1a0d0d 0%,#0d1117 40%,#0d1a0d 100%);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px;}
+  .hero-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;}
+  .hero-date{color:var(--text2);font-size:12px;margin-bottom:4px;}
+  .hero-title{font-size:20px;font-weight:700;line-height:1.3;}
+  .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+  .badge-green{background:var(--green-dim);color:var(--green-text);border:1px solid var(--green);}
+  .badge-red{background:var(--red-dim);color:var(--red-text);border:1px solid var(--red);}
+  .badge-yellow{background:var(--yellow-dim);color:var(--yellow-text);border:1px solid var(--yellow);}
+  .badge-blue{background:var(--blue-dim);color:var(--blue-text);border:1px solid var(--blue);}
+  .badge-orange{background:var(--orange-dim);color:var(--orange-text);border:1px solid var(--orange);}
+  .badge-purple{background:var(--purple-dim);color:var(--purple-text);border:1px solid var(--purple);}
+
+  .ticker-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+  .ticker{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;min-width:130px;flex:1;}
+  .ticker-name{font-size:10px;color:var(--text2);margin-bottom:2px;}
+  .ticker-val{font-size:17px;font-weight:700;}
+  .ticker-chg{font-size:11px;margin-top:2px;}
+  .up{color:var(--green-text);}.dn{color:var(--red-text);}.flat{color:var(--text2);}
+  .warn{color:var(--yellow-text);}
+
+  .section-hdr{font-size:15px;font-weight:700;color:var(--text);margin:20px 0 10px;padding-left:10px;border-left:3px solid var(--accent);display:flex;align-items:center;gap:8px;}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{background:var(--bg3);color:var(--text2);font-weight:600;padding:7px 10px;text-align:left;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.05em;}
+  td{padding:7px 10px;border-bottom:1px solid var(--border);}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:var(--bg3);}
+  .num{text-align:right;font-variant-numeric:tabular-nums;}
+  .bold{font-weight:700;}
+
+  .stat{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;}
+  .stat-label{font-size:11px;color:var(--text2);margin-bottom:4px;}
+  .stat-val{font-size:20px;font-weight:700;}
+  .stat-sub{font-size:11px;color:var(--text2);margin-top:3px;}
+
+  .highlight{background:var(--bg4);border-left:3px solid var(--accent);padding:8px 12px;border-radius:0 6px 6px 0;margin:8px 0;font-size:13px;}
+  .highlight-red{background:var(--red-dim);border-left:3px solid var(--red);}
+  .highlight-green{background:var(--green-dim);border-left:3px solid var(--green);}
+  .highlight-orange{background:var(--orange-dim);border-left:3px solid var(--orange);}
+  .highlight-yellow{background:var(--yellow-dim);border-left:3px solid var(--yellow);}
+
+  .expert{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;}
+  .expert-name{font-weight:700;font-size:13px;margin-bottom:8px;}
+  .expert-body{font-size:13px;color:var(--text2);line-height:1.7;}
+  .expert-body strong{color:var(--text);}
+
+  .debate-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:700px){.debate-row{grid-template-columns:1fr;}}
+  .debate-bull{background:var(--green-dim);border:1px solid var(--green);border-radius:10px;padding:14px;}
+  .debate-bear{background:var(--red-dim);border:1px solid var(--red);border-radius:10px;padding:14px;}
+  .debate-title{font-weight:700;font-size:13px;margin-bottom:10px;}
+  .debate-item{font-size:13px;line-height:1.7;color:var(--text2);padding:4px 0;}
+  .debate-item::before{content:"▸ ";}
+  .debate-item strong{color:var(--text);}
+  .verdict-bar{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:12px;text-align:center;}
+  .verdict-bar .big{font-size:18px;font-weight:700;}
+  .verdict-bar .sub{font-size:12px;color:var(--text2);margin-top:4px;}
+  .progress-wrap{height:10px;background:var(--bg4);border-radius:5px;overflow:hidden;margin:10px auto;max-width:500px;}
+  .progress-bull{height:100%;background:linear-gradient(90deg,var(--green),var(--green-text));border-radius:5px;}
+
+  .theme-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;}
+  .theme-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .theme-name{font-size:15px;font-weight:700;}
+  .score-bar-wrap{height:8px;background:var(--bg4);border-radius:4px;overflow:hidden;margin:4px 0 8px;}
+  .score-bar{height:100%;border-radius:4px;}
+
+  .stock-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);}
+  .stock-row:last-child{border-bottom:none;}
+  .stock-code{font-weight:700;font-size:13px;min-width:50px;}
+  .stock-name{color:var(--text2);font-size:12px;flex:1;padding:0 8px;}
+  .stock-price{font-weight:700;font-size:14px;min-width:60px;text-align:right;}
+  .stock-chg{font-size:12px;min-width:70px;text-align:right;}
+
+  .op-card{border-radius:10px;padding:16px;}
+  .op-card.bull{background:rgba(31,111,235,.12);border:1px solid var(--blue);}
+  .op-card.neutral{background:var(--yellow-dim);border:1px solid var(--yellow);}
+  .op-card.bear{background:var(--red-dim);border:1px solid var(--red);}
+  .op-title{font-weight:700;font-size:14px;margin-bottom:10px;}
+  .op-body{font-size:13px;color:var(--text2);line-height:1.8;}
+  .op-body strong{color:var(--text);}
+
+  .event-chip{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:12px;margin-bottom:8px;}
+  .event-date{color:var(--blue-text);font-weight:700;margin-right:8px;}
+
+  .alert-box{border-radius:10px;padding:14px;margin-bottom:12px;}
+  .alert-red{background:var(--red-dim);border:1px solid var(--red);}
+  .alert-orange{background:var(--orange-dim);border:1px solid var(--orange);}
+  .alert-green{background:var(--green-dim);border:1px solid var(--green);}
+  .alert-title{font-weight:700;margin-bottom:6px;font-size:14px;}
+  .alert-body{font-size:13px;color:var(--text2);line-height:1.7;}
+  .alert-body strong{color:var(--text);}
+
+  .disclaimer{color:var(--text3);font-size:11px;text-align:center;margin-top:24px;padding:16px;border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ══════════════ HERO ══════════════ -->
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-date">🇹🇼 台股早盤戰情室 — 2026年07月24日（週四）開盤前</div>
+      <div class="hero-title">
+        油破<span style="color:var(--orange-text);">$100</span> × 美債破<span class="dn">4.7%（52週新高）</span><br>
+        大盤承壓開低，但石化爆噴🔥 緯創GB300連4漲，兩極分化行情
+      </div>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="badge badge-red">🔴 大盤承壓</span>
+        <span class="badge badge-orange">🛢️ 油破$100</span>
+        <span class="badge badge-yellow">⚠️ 美債4.703%新高</span>
+        <span class="badge badge-green">🤖 緯創GB300連4漲</span>
+        <span class="badge badge-green">🏭 台塑三寶爆買</span>
+      </div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:13px;color:var(--text2);">今日開盤預估</div>
+      <div style="font-size:36px;font-weight:800;" class="dn">44,139</div>
+      <div class="dn" style="font-size:15px;font-weight:700;">-535 (-1.2%)</div>
+      <div style="color:var(--text2);font-size:11px;">09:24截圖，盤中持續變動</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 兩大警報 ══════════════ -->
+<div class="alert-box alert-red">
+  <div class="alert-title">🚨 警報一：美債殖利率 4.703% — 突破52週高（前高4.69%）</div>
+  <div class="alert-body">
+    美債10年殖利率衝破 <strong>4.703%</strong>，單日升幅 <strong>+0.046%（+0.99%）</strong>，創年內新高。<br>
+    影響：① Fed 降息預期再度延後 ② 科技股本益比估值重新壓縮 ③ 外資持有台股的機會成本上升<br>
+    ⚡ 歷史經驗：美債每突破一個0.5%整數關口，台股科技股往往出現5-10%的修正壓力。
+  </div>
+</div>
+<div class="alert-box alert-orange">
+  <div class="alert-title">🛢️ 警報二：布蘭特原油 $100.04 (+3.89%) — 重破百元大關</div>
+  <div class="alert-body">
+    胡塞武裝攻擊沙烏地阿拉伯Red Sea油輪，沙烏地出口被迫改道Yanbu，但Yanbu港也遭到攻擊。<br>
+    Trump發出「大規模打擊」伊朗的威脅，地緣風險急升。<br>
+    <strong>雙面效果：</strong> ✅ 石化/原物料大漲（台塑三寶、中鋼） ❌ 航空重跌（油成本衝擊）、通膨再起疑慮 ❌ 美債繼續升
+  </div>
+</div>
+<div class="alert-box alert-green">
+  <div class="alert-title">🤖 驚喜：緯創(3231) GB300美國D1工廠量產 — 連4漲，外資兩日+10萬張</div>
+  <div class="alert-body">
+    緯創美國德州達拉斯D1 AI智慧工廠 <strong>正式完成GB300運算板+Grace Blackwell Superchip系統量產</strong>。<br>
+    Q2 EPS 創歷史新高，外資 07/22 +24,210張、07/23 <strong>+79,016張</strong>，兩日合計 <strong>+103,226張</strong>。<br>
+    股價：07/20→07/23 已連漲4天，從149.5→175元（+17%）。今日高位，需注意追高風險。
+  </div>
+</div>
+
+<!-- ══════════════ TICKER BAR ══════════════ -->
+<div class="ticker-bar">
+  <div class="ticker">
+    <div class="ticker-name">加權指數（盤中）</div>
+    <div class="ticker-val dn">44,139</div>
+    <div class="ticker-chg dn">▼ -535 (-1.20%)</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">費半 SOX</div>
+    <div class="ticker-val dn">12,344</div>
+    <div class="ticker-chg dn">▼ -0.54%</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">🚨 美債10年殖利率</div>
+    <div class="ticker-val dn">4.703%</div>
+    <div class="ticker-chg dn">▲ +0.046%（52週新高！）</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">美元指數 DXY</div>
+    <div class="ticker-val">101.39</div>
+    <div class="ticker-chg dn">▲ +0.40%（走強）</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">USD/TWD 台幣</div>
+    <div class="ticker-val">32.304</div>
+    <div class="ticker-chg flat">微貶 +0.004</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">🛢️ 布蘭特原油</div>
+    <div class="ticker-val warn">$100.04</div>
+    <div class="ticker-chg warn">▲ +3.89%（破百大關！）</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">黃金</div>
+    <div class="ticker-val dn">$4,044</div>
+    <div class="ticker-chg dn">▼ -2.02%（反常下跌）</div>
+  </div>
+</div>
+
+<!-- ══════════════ 外資籌碼（07/23） ══════════════ -->
+<div class="section-hdr">💰 昨日（07/23）外資籌碼解讀 — 石化+AI伺服器雙主軸</div>
+<div class="grid2">
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--green)"></span>外資買超前10（07/23）</div>
+    <table>
+      <tr><th>代碼</th><th>名稱</th><th class="num">外資買超(張)</th><th>題材</th></tr>
+      <tr><td class="bold">3231</td><td>緯創</td><td class="num up bold">+79,016 🔥</td><td><span class="badge badge-green">AI伺服器GB300</span></td></tr>
+      <tr><td class="bold">2002</td><td>中鋼</td><td class="num up bold">+42,718</td><td><span class="badge badge-orange">原物料/基建</span></td></tr>
+      <tr><td class="bold">00981A</td><td>主動統一台股增長</td><td class="num up">+33,642</td><td><span class="badge badge-blue">ETF指數化</span></td></tr>
+      <tr><td class="bold">1301</td><td>台塑</td><td class="num up bold">+28,618</td><td><span class="badge badge-orange">石化</span></td></tr>
+      <tr><td class="bold">2317</td><td>鴻海</td><td class="num up">+23,754</td><td><span class="badge badge-green">AI伺服器</span></td></tr>
+      <tr><td class="bold">6505</td><td>台塑化</td><td class="num up bold">+22,958</td><td><span class="badge badge-orange">石化（已連13買）</span></td></tr>
+      <tr><td class="bold">1326</td><td>台化</td><td class="num up">+19,835</td><td><span class="badge badge-orange">石化</span></td></tr>
+      <tr><td class="bold">2883</td><td>凱基金</td><td class="num up">+18,491</td><td><span class="badge badge-yellow">金融</span></td></tr>
+      <tr><td class="bold">1718</td><td>中纖</td><td class="num up">+17,362</td><td><span class="badge badge-orange">原料（反轉！）</span></td></tr>
+      <tr><td class="bold">2344</td><td>華邦電</td><td class="num up">+15,553</td><td><span class="badge badge-purple">記憶體（反彈）</span></td></tr>
+    </table>
+    <div style="margin-top:10px;font-size:12px;color:var(--text2);">
+      全市場外資合計：<strong class="up">+171,551張</strong>（從07/22的65萬縮量，但仍持續淨買）
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--red)"></span>外資賣超前10（07/23）</div>
+    <table>
+      <tr><th>代碼</th><th>名稱</th><th class="num">外資賣超(張)</th><th>解讀</th></tr>
+      <tr><td>2801</td><td>彰銀</td><td class="num dn">-24,452</td><td>美債4.7%壓銀行估值</td></tr>
+      <tr><td>2834</td><td>臺企銀</td><td class="num dn">-23,146</td><td>銀行股承壓</td></tr>
+      <tr><td class="bold">2610</td><td>華航</td><td class="num dn bold">-20,605 ✈️</td><td>油破百=航空噩夢</td></tr>
+      <tr><td>1303</td><td>南亞</td><td class="num dn">-19,337</td><td>石化下游，外資切換上游</td></tr>
+      <tr><td>2892</td><td>第一金</td><td class="num dn">-19,302</td><td>銀行股，美債壓力</td></tr>
+      <tr><td>2887</td><td>台新新光金</td><td class="num dn">-16,598</td><td>金融，投信反向買+14,471</td></tr>
+      <tr><td>2880</td><td>華南金</td><td class="num dn">-14,628</td><td>金融分歧</td></tr>
+      <tr><td class="bold">0050</td><td>元大台灣50</td><td class="num dn bold">-13,976</td><td>⚠️ 外資賣大型ETF，資金輪動</td></tr>
+      <tr><td>2886</td><td>兆豐金</td><td class="num dn">-12,532</td><td>銀行</td></tr>
+      <tr><td>4958</td><td>臻鼎-KY</td><td class="num dn">-12,397</td><td>PCB，三大法人合計-15,781</td></tr>
+    </table>
+    <div class="highlight highlight-yellow" style="margin-top:10px;">
+      ⚠️ <strong>外資賣0050（-13,976張）</strong>：從大盤ETF撤出、集中到石化+AI伺服器個股，是資金輪動訊號，不是看空台股，而是主動選股。
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 題材熱度排行 ══════════════ -->
+<div class="section-hdr">🌡️ 今日五大題材熱度排行</div>
+
+<!-- 題材1：石化 -->
+<div class="theme-card" style="border-color:var(--orange);">
+  <div class="theme-header">
+    <div>
+      <span class="badge badge-orange">🔥 題材1</span>
+      <span class="theme-name" style="margin-left:8px;">石化/能源 — 台塑三寶 × 油價破百</span>
+    </div>
+    <div>
+      <span style="font-size:20px;font-weight:800;color:var(--orange-text);">95/100</span>
+      <span class="badge badge-green" style="margin-left:6px;">🟢 積極進攻</span>
+    </div>
+  </div>
+  <div class="score-bar-wrap"><div class="score-bar" style="width:95%;background:linear-gradient(90deg,var(--orange),var(--orange-text));"></div></div>
+  <div class="grid3">
+    <div>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:6px;"><strong style="color:var(--text);">股價現況</strong></p>
+      <div class="stock-row"><span class="stock-code">6505</span><span class="stock-name">台塑化</span><span class="stock-chg up">07/23漲停93.6（連13買）</span></div>
+      <div class="stock-row"><span class="stock-code">1301</span><span class="stock-name">台塑</span><span class="stock-chg up">07/23漲停，近3年高</span></div>
+      <div class="stock-row"><span class="stock-code">1326</span><span class="stock-name">台化</span><span class="stock-chg up">07/23漲停，第二根漲停</span></div>
+      <div class="stock-row"><span class="stock-code">2002</span><span class="stock-name">中鋼</span><span class="stock-chg up">外資+42,718張</span></div>
+    </div>
+    <div>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:6px;"><strong style="color:var(--text);">驅動力分析</strong></p>
+      <div style="font-size:13px;color:var(--text2);line-height:1.8;">
+        • 布蘭特油 <strong class="warn">$100.04 (+3.89%)</strong><br>
+        • 胡塞攻擊沙烏地Red Sea油輪<br>
+        • 煉油利差擴大（供應縮減）<br>
+        • Q3石化旺季（87%產能利用率）<br>
+        • 外資台塑化連13買，共+93,486張
+      </div>
+    </div>
+    <div>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:6px;"><strong style="color:var(--text);">今日操作</strong></p>
+      <div style="font-size:13px;color:var(--text2);line-height:1.8;">
+        台塑化07/23已漲停93.6，今日開盤可能繼續強勢<br>
+        <strong class="up">進場點：</strong>等開盤10分鐘後確認漲停板或回測支撐<br>
+        <strong class="dn">停損：</strong>若開盤跌破 85元則退出<br>
+        <strong class="warn">風險：</strong>若中東和談消息出現，油價急回
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 題材2：AI伺服器 -->
+<div class="theme-card" style="border-color:var(--green);">
+  <div class="theme-header">
+    <div>
+      <span class="badge badge-green">🤖 題材2</span>
+      <span class="theme-name" style="margin-left:8px;">AI伺服器 — 緯創GB300 × 鴻海 × Alphabet Capex $205B</span>
+    </div>
+    <div>
+      <span style="font-size:20px;font-weight:800;color:var(--green-text);">90/100</span>
+      <span class="badge badge-yellow" style="margin-left:6px;">🟡 高位謹慎</span>
+    </div>
+  </div>
+  <div class="score-bar-wrap"><div class="score-bar" style="width:90%;background:linear-gradient(90deg,var(--green),var(--green-text));"></div></div>
+  <div class="grid3">
+    <div>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:6px;"><strong style="color:var(--text);">個股表現</strong></p>
+      <div class="stock-row"><span class="stock-code">3231</span><span class="stock-name">緯創</span><span class="stock-chg up">175元，連4漲+17%</span></div>
+      <div class="stock-row"><span class="stock-code">2317</span><span class="stock-name">鴻海</span><span class="stock-chg up">外資+23,754張</span></div>
+      <div class="stock-row"><span class="stock-code">2382</span><span class="stock-name">廣達</span><span class="stock-chg flat">觀察</span></div>
+    </div>
+    <div>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:6px;"><strong style="color:var(--text);">催化劑</strong></p>
+      <div style="font-size:13px;color:var(--text2);line-height:1.8;">
+        • 緯創D1達拉斯工廠：<strong class="up">GB300量產！</strong><br>
+        • 外資兩日合計買緯創 <strong class="up">+103,226張</strong><br>
+        • Alphabet Capex $205B → GB300需求<br>
+        • AMD Zen6/MI450 客戶生態擴大<br>
+        • 緯創Q2 EPS 歷史新高
+      </div>
+    </div>
+    <div>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:6px;"><strong style="color:var(--text);">今日操作</strong></p>
+      <div style="font-size:13px;color:var(--text2);line-height:1.8;">
+        <strong class="warn">⚠️ 緯創已連4漲+17%，高位追高風險大</strong><br>
+        <strong class="up">策略：</strong>等拉回 160-165 區間再考慮<br>
+        <strong class="flat">鴻海：</strong>尚未大漲，是較佳的替代佈局點<br>
+        <strong class="dn">停損：</strong>緯創跌破155元、鴻海跌破242元
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 題材3：原物料 -->
+<div class="theme-card" style="border-color:var(--yellow);">
+  <div class="theme-header">
+    <div>
+      <span class="badge badge-yellow">🏗️ 題材3</span>
+      <span class="theme-name" style="margin-left:8px;">原物料/基建 — 中鋼 × 大成鋼 × 油價帶動</span>
+    </div>
+    <div>
+      <span style="font-size:20px;font-weight:800;color:var(--yellow-text);">72/100</span>
+      <span class="badge badge-green" style="margin-left:6px;">🟢 觀察追進</span>
+    </div>
+  </div>
+  <div class="score-bar-wrap"><div class="score-bar" style="width:72%;background:linear-gradient(90deg,var(--yellow),var(--yellow-text));"></div></div>
+  <div style="font-size:13px;color:var(--text2);line-height:1.8;">
+    中鋼(2002)外資07/23買超 +42,718張（第二大買超），大成鋼(2027)07/22已買+23,949張。油價破百帶動原物料需求預期，但需注意油高通膨壓需求的二階效應。中鋼今日可能補漲。
+    <strong class="up">進攻策略：</strong>中鋼等開盤若在35-36元區間確認支撐可小倉佈局。
+  </div>
+</div>
+
+<!-- 題材4：航空（迴避） -->
+<div class="theme-card" style="border-color:var(--red);">
+  <div class="theme-header">
+    <div>
+      <span class="badge badge-red">✈️ 題材4</span>
+      <span class="theme-name" style="margin-left:8px;">航空 — 華航/長榮航 × 油破百重壓</span>
+    </div>
+    <div>
+      <span style="font-size:20px;font-weight:800;color:var(--red-text);">15/100</span>
+      <span class="badge badge-red" style="margin-left:6px;">🔴 強力迴避</span>
+    </div>
+  </div>
+  <div class="score-bar-wrap"><div class="score-bar" style="width:15%;background:linear-gradient(90deg,var(--red),var(--red-text));"></div></div>
+  <div style="font-size:13px;color:var(--text2);line-height:1.8;">
+    華航(2610) 外資07/23賣超 <strong class="dn">-20,605張</strong>，三大法人合計-19,022張。油價每漲$10，航空業燃油成本增加約8-12%。長榮航07/23投信也在賣。<strong class="dn">今日強烈建議迴避</strong>。
+  </div>
+</div>
+
+<!-- 題材5：金融（觀望） -->
+<div class="theme-card" style="border-color:var(--text3);">
+  <div class="theme-header">
+    <div>
+      <span class="badge" style="background:var(--bg4);color:var(--text2);border:1px solid var(--border);">🏦 題材5</span>
+      <span class="theme-name" style="margin-left:8px;">金融股 — 美債4.7%分歧（外資vs投信對立）</span>
+    </div>
+    <div>
+      <span style="font-size:20px;font-weight:800;color:var(--text2);">38/100</span>
+      <span class="badge badge-yellow" style="margin-left:6px;">🟡 觀望</span>
+    </div>
+  </div>
+  <div class="score-bar-wrap"><div class="score-bar" style="width:38%;background:var(--text3);"></div></div>
+  <div style="font-size:13px;color:var(--text2);line-height:1.8;">
+    外資07/23大賣銀行股（彰銀-24,452、臺企銀-23,146、第一金-19,302），但投信反向大買（彰銀投信+9,595、第一金+8,666、台新新光金+14,471）。外資與投信嚴重分歧。美債4.703%是壓制金融估值的核心因素，目前不宜追高。
+  </div>
+</div>
+
+<!-- ══════════════ 六大專家 ══════════════ -->
+<div class="section-hdr">🧠 六大專家快速判讀</div>
+<div class="grid3">
+  <div class="expert">
+    <div class="expert-name">🌐 總經策略師</div>
+    <div class="expert-body">
+      今日最大風險：<strong>美債4.703%（52週新高）</strong>，距4.75%僅47個基點。若繼續上行，Fed降息2026年的可能性急降，外資在台灣的持股機會成本大幅上升。<br><br>
+      油破$100 → 通膨預期升溫 → 美債再升 → 科技股估值壓縮，這是「惡性循環」的開端訊號，需要油價在未來1-2週內穩定才能化解。<br><br>
+      黃金<strong class="dn">-2.02%（$4,044）</strong>的反常下跌值得注意：通常油漲金也漲，金下跌可能是資金大規模移往石化/原物料類股，屬於「商品輪動」而非系統性風險。
+    </div>
+  </div>
+  <div class="expert">
+    <div class="expert-name">🗺️ 地緣政治分析師</div>
+    <div class="expert-body">
+      <strong>中東衝突進入新階段：</strong>胡塞武裝從攻擊非沙烏地船隻升級為<strong>直接攻擊沙烏地阿拉伯油輪</strong>，這是重大升級。沙烏地每日出口約700萬桶，若Red Sea+Yanbu都受阻，全球供應缺口可能達 200-300萬桶/日。<br><br>
+      Trump威脅「大規模打擊」伊朗，但實際執行機率評估：<strong>30-40%</strong>（選舉前強硬姿態為主）。一旦真正執行，油價可能衝向 $120-130，台股短線重挫後石化股反而暴漲。<br><br>
+      台海現狀：近30天無重大異動，地緣風險維持低位。
+    </div>
+  </div>
+  <div class="expert">
+    <div class="expert-name">📡 產業情報官</div>
+    <div class="expert-body">
+      今日雙主軸市場：<br><br>
+      <strong>① 石化（95分）：</strong>台塑三寶07/23漲停，外資台塑化連13買共93,486張，油$100旺季加持，今日可能繼續強。台塑化法人目標價已上看100元。<br><br>
+      <strong>② AI伺服器（90分）：</strong>緯創GB300美國量產，是「台灣製造輸出美國」的最佳範例。但連4漲+17%後追高風險大，優先等回測。<br><br>
+      <strong>意外觀察：</strong>中鋼(2002)+42,718張高居第二，鋼鐵在石化帶動下出現共振，中東重建需求預期開始被定價。
+    </div>
+  </div>
+  <div class="expert">
+    <div class="expert-name">💰 籌碼追蹤師</div>
+    <div class="expert-body">
+      07/23外資 <strong class="up">+171,551張</strong>（縮量，但方向不變）。<br><br>
+      <strong>資金輪動路徑：</strong>外資賣0050（-13,976），轉進緯創（+79,016）+台塑三寶（共+71,411）+中鋼（+42,718）。這是「從廣泛布局→集中押注石化+AI伺服器」的主動選股策略。<br><br>
+      <strong>分歧警示：</strong>金融股外資大賣、投信大買，通常外資在利率環境判斷上更準確，短線金融股承壓機率高。<br><br>
+      <strong>台指期外資：</strong>仍顯示異常數字（TAIFEX數據問題），參考前次已知：淨多方。
+    </div>
+  </div>
+  <div class="expert">
+    <div class="expert-name">📊 技術戰術師</div>
+    <div class="expert-body">
+      今日開盤 <strong class="dn">44,139（-1.2%）</strong>，關鍵技術位：<br><br>
+      • <strong>MA20=45,301</strong>：月線仍在上方，未站穩月線前偏空<br>
+      • <strong>MA10=44,576</strong>：今日跌破MA10，短線轉弱訊號<br>
+      • <strong>布林下軌=42,919</strong>：若大盤繼續回落，下方支撐在42,919<br>
+      • <strong>RSI=49.75→今日預估下修至45</strong>：趨於偏空<br><br>
+      <strong>今日關鍵：</strong>能否守住 <strong>44,000</strong> 整數關口。若跌破44,000且放量，則可能測試43,500-43,600（前次反彈起點）。
+    </div>
+  </div>
+  <div class="expert">
+    <div class="expert-name">🎙️ 觀點聚合師</div>
+    <div class="expert-body">
+      <strong>今日市場核心矛盾：</strong><br>
+      「美債/油價雙殺大盤」vs「石化AI伺服器強勢輪動」<br><br>
+      這是典型的「指數下跌、個股機會」行情。大盤因系統性風險（利率+通膨）下修，但特定族群（油價受益的石化、需求真實的AI伺服器）逆勢爆發。<br><br>
+      <strong class="warn">⚡ 矛盾點：</strong>外資同時賣0050（看空大盤）又買緯創+台塑三寶（看好個股），代表外資認為「台股指數性機會減少，要靠主動選股」。<br><br>
+      <strong>策略含義：</strong>今日不是追大盤ETF的日子，是精選石化/AI個股的行情。
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 多空辯論 ══════════════ -->
+<div class="section-hdr">⚔️ 大盤多空辯論</div>
+<div class="debate-row">
+  <div class="debate-bull">
+    <div class="debate-title">🟢 看多論據（42%）</div>
+    <div class="debate-item"><strong>外資第三日淨買+17萬張</strong>：縮量但方向持續向多，轉空需要見到淨賣超。</div>
+    <div class="debate-item"><strong>石化族群大爆發</strong>：台塑三寶漲停、中鋼+42,718張，指數跌但題材股大漲，市場有資金活水。</div>
+    <div class="debate-item"><strong>緯創GB300量產=真實訂單</strong>：AI需求不是概念，是具體產線出貨，長線支撐台灣供應鏈。</div>
+    <div class="debate-item"><strong>融資去槓桿已完成</strong>：融資5,879億（去高點-27%），斷頭風險低，市場不怕連鎖下跌。</div>
+    <div class="debate-item"><strong>黃金-2%≠全面避險</strong>：若是系統性崩盤，金應該漲；金跌說明只是輪動，非真正恐慌。</div>
+  </div>
+  <div class="debate-bear">
+    <div class="debate-title">🔴 看空論據（58%）</div>
+    <div class="debate-item"><strong>美債4.703% 52週新高</strong>：科技股本益比估值壓縮壓力最大，台股高PE族群首當其衝。</div>
+    <div class="debate-item"><strong>油破$100 → 通膨再起</strong>：Fed 2026降息預期從「確定降1次」→「可能不降」，利率長期高位。</div>
+    <div class="debate-item"><strong>大盤已開盤-1.2%</strong>：外資賣0050的訊號，指數面臨月線45,300的雙重壓制。</div>
+    <div class="debate-item"><strong>費半SOX -0.54%</strong>：半導體整體趨弱，台積電能否守2,350是關鍵。</div>
+    <div class="debate-item"><strong>GOOGL餘震未完</strong>：五大科技昨日全跌，AI股估值重新審視的情緒仍在延續。</div>
+    <div class="debate-item"><strong>美元101.4走強</strong>：外資匯兌成本上升，持台股的吸引力相對下降。</div>
+  </div>
+</div>
+<div class="verdict-bar">
+  <div class="big">大盤裁決：<span class="dn">偏空震盪</span>（42% vs 58%）</div>
+  <div class="progress-wrap">
+    <div class="progress-bull" style="width:42%"></div>
+  </div>
+  <div class="sub">
+    大盤指數今日承壓（-1%~-2%），但<strong>石化/AI伺服器個股逆勢強勢</strong>，是指數熊、個股牛的兩極分化行情。<br>
+    操作原則：<strong>放棄追大盤、聚焦石化+AI伺服器精選個股</strong>。等油價穩定在$95-$100區間、美債不再升，大盤才有重新站上45,000的機會。
+  </div>
+</div>
+
+<!-- ══════════════ 操作建議 ══════════════ -->
+<div class="section-hdr">🎯 三段式操作建議</div>
+<div class="grid3">
+  <div class="op-card bull">
+    <div class="op-title">⚔️ 進攻型（部位40-60%）</div>
+    <div class="op-body">
+      <strong>今日最強主軸：台塑化(6505)為核心</strong><br>
+      • 台塑化：開盤前10分鐘觀察，若維持強勢或漲停，以 <strong>85-90元</strong> 為進場區（止損80元）；法人目標價100元，上漲空間10%+<br>
+      • 台化(1326)：已拉第二根漲停，可觀察開盤回測前一根漲停上緣附近<br>
+      • 中鋼(2002)：外資+42,718張，相對估值低，35-37元區間可試水溫<br><br>
+      <strong>AI伺服器：緯創(3231)等回測</strong><br>
+      • 緯創已漲17%，今日不追；等拉回至160-165元才考慮<br>
+      • 鴻海(2317)：仍在合理位置，外資持續買，240-248元可分批進
+    </div>
+  </div>
+  <div class="op-card neutral">
+    <div class="op-title">⚖️ 均衡型（部位30-45%）</div>
+    <div class="op-body">
+      <strong>主軸：石化ETF等「擴散行情」</strong><br>
+      • 等待石化族群擴散效應：若台塑三寶漲停，周邊的台聚(1304)、亞聚(1308)、台苯(1310)可能補漲<br>
+      • 保留現金等大盤下跌後買ETF（0050）：今日跌1-2%後，若外資明日轉買0050，是好的補倉時機<br><br>
+      <strong>不追高原則：</strong><br>
+      • 緯創今日不碰（連4漲高位）<br>
+      • 台積電等44,000附近確認支撐後再決定<br>
+      • 金融股中性觀望：美債不確定，外資vs投信分歧太大
+    </div>
+  </div>
+  <div class="op-card bear">
+    <div class="op-title">🛡️ 防守型（部位15-30%）</div>
+    <div class="op-body">
+      <strong>今日必須迴避的族群：</strong><br>
+      • <strong class="dn">航空（華航2610、長榮航2618）</strong>：油破百最直接受害，外資已賣-20,605張，今日可能大跌5%+<br>
+      • <strong class="dn">銀行/保險（彰銀、臺企銀、第一金）</strong>：美債4.7%壓估值，外資連日賣超<br>
+      • <strong class="dn">高PE科技（台積電短線）</strong>：美債升，估值壓縮，等4.7%回落再進<br><br>
+      <strong>重新進場訊號：</strong><br>
+      • 美債降回4.5%以下<br>
+      • 油價穩定在$95以下<br>
+      • TWII守穩44,000（月線以上的可能性低，以44,000為近期基準）
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 催化劑時程 ══════════════ -->
+<div class="section-hdr">📅 近期催化劑時程</div>
+<div class="card">
+  <div class="grid2">
+    <div>
+      <div class="event-chip"><span class="event-date">今日（07/24）</span>台股開低震盪，石化族群繼續強，大盤守44,000能力是關鍵</div>
+      <div class="event-chip"><span class="event-date">今日盤後</span>外資07/23 T86數據已出，07/24的T86今晚18:00更新 → 追蹤外資是否持續買石化</div>
+      <div class="event-chip"><span class="event-date">07/25前後</span>Meta Q2法說：若Capex也大增 → AI伺服器需求再確認，緯創/鴻海再噴</div>
+      <div class="event-chip"><span class="event-date">07/25-07/30</span>Intel、Amazon AWS法說：雲端需求/AI晶片投資方向更清晰</div>
+    </div>
+    <div>
+      <div class="event-chip"><span class="event-date">持續監控</span>中東局勢：胡塞+伊朗，若Trump實際採取軍事行動 → 油價衝$120，石化再噴，大盤重挫</div>
+      <div class="event-chip"><span class="event-date">七月底</span>Fed官員發言：確認對油價通膨的態度，左右美債殖利率走勢</div>
+      <div class="event-chip"><span class="event-date">八月初</span>台積電7月營收公告：確認AI晶片/CoWoS出貨量，是台積電後市關鍵</div>
+      <div class="event-chip"><span class="event-date">2026 Q3</span>緯創GB300美國工廠正式量產出貨 → 營收/EPS加速成長期</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 免責聲明 ══════════════ -->
+<div class="disclaimer">
+  ⚠️ 本報告為技術分析與籌碼數據彙整，僅供研究參考，<strong>不構成任何投資建議</strong>。股票投資有損失本金之風險，請依個人風險承受能力自行判斷。<br>
+  數據來源：TWSE T86官方API、yfinance、Yahoo Finance、Bloomberg、Forbes、Al Jazeera、CMoney、今周刊、鉅亨網<br>
+  報告生成時間：2026-07-24 09:30 ／ 由 Claude AI 自動生成
+</div>
+
+</div><!-- /container -->
+</body>
+</html>
