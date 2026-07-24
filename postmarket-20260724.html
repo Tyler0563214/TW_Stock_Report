@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股盤後戰情室 2026/07/24 — 外資史上最大賣超1,774億，台積電被砍928億，緯創逆勢連五紅</title>
+<style>
+  :root {
+    --bg:#0d1117;--bg2:#161b22;--bg3:#1c2128;--bg4:#21262d;
+    --border:#30363d;--text:#e6edf3;--text2:#8b949e;--text3:#6e7681;
+    --green:#3fb950;--green-dim:#1a3a1f;--green-text:#7ee787;
+    --red:#f85149;--red-dim:#3a1a1f;--red-text:#ff7b72;
+    --yellow:#d29922;--yellow-dim:#2d2006;--yellow-text:#e3b341;
+    --blue:#388bfd;--blue-dim:#0d2045;--blue-text:#79c0ff;
+    --purple:#8957e5;--purple-dim:#1d1145;--purple-text:#d2a8ff;
+    --orange:#db6d28;--orange-dim:#2d1500;--orange-text:#ffa657;
+    --accent:#1f6feb;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:14px;line-height:1.5;}
+  .container{max-width:1400px;margin:0 auto;padding:16px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  @media(max-width:900px){.grid2,.grid3,.grid4{grid-template-columns:1fr;}}
+
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;}
+  .card-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+  .card-title .dot{width:8px;height:8px;border-radius:50%;}
+
+  .hero{background:linear-gradient(135deg,#1a0808 0%,#0d1117 50%,#0d1a1f 100%);border:1px solid #f85149;border-radius:12px;padding:24px;margin-bottom:16px;}
+  .hero-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;}
+  .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+  .badge-green{background:var(--green-dim);color:var(--green-text);border:1px solid var(--green);}
+  .badge-red{background:var(--red-dim);color:var(--red-text);border:1px solid var(--red);}
+  .badge-yellow{background:var(--yellow-dim);color:var(--yellow-text);border:1px solid var(--yellow);}
+  .badge-blue{background:var(--blue-dim);color:var(--blue-text);border:1px solid var(--blue);}
+  .badge-orange{background:var(--orange-dim);color:var(--orange-text);border:1px solid var(--orange);}
+  .badge-purple{background:var(--purple-dim);color:var(--purple-text);border:1px solid var(--purple);}
+
+  .ticker-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+  .ticker{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;min-width:130px;flex:1;}
+  .ticker-name{font-size:10px;color:var(--text2);margin-bottom:2px;}
+  .ticker-val{font-size:17px;font-weight:700;}
+  .ticker-chg{font-size:11px;margin-top:2px;}
+  .up{color:var(--green-text);}.dn{color:var(--red-text);}.flat{color:var(--text2);}
+  .warn{color:var(--yellow-text);}
+
+  .section-hdr{font-size:15px;font-weight:700;margin:20px 0 10px;padding-left:10px;border-left:3px solid var(--accent);display:flex;align-items:center;gap:8px;}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{background:var(--bg3);color:var(--text2);font-weight:600;padding:7px 10px;text-align:left;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.05em;}
+  td{padding:7px 10px;border-bottom:1px solid var(--border);}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:var(--bg3);}
+  .num{text-align:right;font-variant-numeric:tabular-nums;}
+  .bold{font-weight:700;}
+
+  .stat{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;}
+  .stat-label{font-size:11px;color:var(--text2);margin-bottom:4px;}
+  .stat-val{font-size:20px;font-weight:700;}
+  .stat-sub{font-size:11px;color:var(--text2);margin-top:3px;}
+
+  .highlight{background:var(--bg4);border-left:3px solid var(--accent);padding:8px 12px;border-radius:0 6px 6px 0;margin:8px 0;font-size:13px;}
+
+  .alert-box{border-radius:10px;padding:14px;margin-bottom:12px;}
+  .alert-red{background:var(--red-dim);border:1px solid var(--red);}
+  .alert-orange{background:var(--orange-dim);border:1px solid var(--orange);}
+  .alert-green{background:var(--green-dim);border:1px solid var(--green);}
+  .alert-yellow{background:var(--yellow-dim);border:1px solid var(--yellow);}
+  .alert-title{font-weight:700;margin-bottom:6px;font-size:14px;}
+  .alert-body{font-size:13px;color:var(--text2);line-height:1.7;}
+  .alert-body strong{color:var(--text);}
+
+  .debate-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:700px){.debate-row{grid-template-columns:1fr;}}
+  .debate-bull{background:var(--green-dim);border:1px solid var(--green);border-radius:10px;padding:14px;}
+  .debate-bear{background:var(--red-dim);border:1px solid var(--red);border-radius:10px;padding:14px;}
+  .debate-title{font-weight:700;font-size:13px;margin-bottom:10px;}
+  .debate-item{font-size:13px;line-height:1.7;color:var(--text2);padding:4px 0;}
+  .debate-item::before{content:"▸ ";}
+  .debate-item strong{color:var(--text);}
+  .verdict-bar{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:12px;text-align:center;}
+  .verdict-bar .big{font-size:18px;font-weight:700;}
+  .verdict-bar .sub{font-size:12px;color:var(--text2);margin-top:4px;}
+  .progress-wrap{height:10px;background:var(--bg4);border-radius:5px;overflow:hidden;margin:10px auto;max-width:500px;}
+  .progress-bull{height:100%;background:linear-gradient(90deg,var(--green),var(--green-text));border-radius:5px;}
+
+  .kline-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px;}
+  @media(max-width:600px){.kline-row{grid-template-columns:repeat(2,1fr);}}
+
+  .stock-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);}
+  .stock-row:last-child{border-bottom:none;}
+  .stock-code{font-weight:700;font-size:13px;min-width:50px;}
+  .stock-name{color:var(--text2);font-size:12px;flex:1;padding:0 8px;}
+  .stock-price{font-weight:700;font-size:14px;min-width:60px;text-align:right;}
+  .stock-chg{font-size:12px;min-width:75px;text-align:right;}
+
+  .op-card{border-radius:10px;padding:16px;}
+  .op-card.bull{background:rgba(31,111,235,.1);border:1px solid var(--blue);}
+  .op-card.neutral{background:var(--yellow-dim);border:1px solid var(--yellow);}
+  .op-card.bear{background:var(--red-dim);border:1px solid var(--red);}
+  .op-title{font-weight:700;font-size:14px;margin-bottom:10px;}
+  .op-body{font-size:13px;color:var(--text2);line-height:1.8;}
+  .op-body strong{color:var(--text);}
+
+  .event-chip{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:12px;margin-bottom:8px;}
+  .event-date{color:var(--blue-text);font-weight:700;margin-right:8px;}
+
+  /* K-line table */
+  .kline-mini{font-size:12px;}
+  .kline-mini td{padding:5px 8px;}
+
+  .disclaimer{color:var(--text3);font-size:11px;text-align:center;margin-top:24px;padding:16px;border-top:1px solid var(--border);}
+
+  /* Big number hero */
+  .hero-num{font-size:42px;font-weight:900;line-height:1;}
+  .hero-chg{font-size:18px;font-weight:700;margin-top:4px;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div style="color:var(--text2);font-size:12px;margin-bottom:6px;">🇹🇼 台股盤後戰情室 — 2026年07月24日（週四）</div>
+      <div style="font-size:21px;font-weight:700;line-height:1.35;">
+        外資史上最大單日賣超 <span class="dn">1,774億元</span><br>
+        台積電獨吃 <span class="dn">928億（-38,450張）</span>，跌55元至2,350<br>
+        <span class="up">緯創逆勢連五紅184元</span>，黃仁勳親赴德州D1開幕
+      </div>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span class="badge badge-red">🔴 外資大逃殺</span>
+        <span class="badge badge-red">📉 史上最大賣超</span>
+        <span class="badge badge-green">🤖 緯創連五紅</span>
+        <span class="badge badge-orange">🛢️ 棄電子抱傳產</span>
+      </div>
+    </div>
+    <div style="text-align:right;">
+      <div style="color:var(--text2);font-size:12px;">收盤</div>
+      <div class="hero-num dn">43,654</div>
+      <div class="hero-chg dn">-1,195.97（-2.67%）</div>
+      <div style="color:var(--text2);font-size:11px;margin-top:4px;">前收 44,850 ／ 07/20低點 41,968</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TICKER ══ -->
+<div class="ticker-bar">
+  <div class="ticker">
+    <div class="ticker-name">加權指數收盤</div>
+    <div class="ticker-val dn">43,654</div>
+    <div class="ticker-chg dn">▼ -1,196（-2.67%）</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">台積電(2330)</div>
+    <div class="ticker-val dn">2,350</div>
+    <div class="ticker-chg dn">▼ -55（-2.29%）</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">緯創(3231) 🔥</div>
+    <div class="ticker-val up">184</div>
+    <div class="ticker-chg up">▲ 連五紅（+23%週漲）</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">費半 SOX</div>
+    <div class="ticker-val dn">12,344</div>
+    <div class="ticker-chg dn">▼ -0.54%</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">🚨 美債10年</div>
+    <div class="ticker-val dn">4.703%</div>
+    <div class="ticker-chg dn">52週新高，持續高位</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">布蘭特原油</div>
+    <div class="ticker-val warn">$99.89</div>
+    <div class="ticker-chg flat">▼ -0.58%（$100關口）</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">台幣匯率</div>
+    <div class="ticker-val dn">32.360</div>
+    <div class="ticker-chg dn">貶值 +0.07（外資提款）</div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-name">黃金</div>
+    <div class="ticker-val dn">$4,038</div>
+    <div class="ticker-chg dn">▼ -0.17%</div>
+  </div>
+</div>
+
+<!-- ══ 警報 ══ -->
+<div class="alert-box alert-red">
+  <div class="alert-title">🚨 史上記錄：外資單日賣超1,774億元（創歷史新高）</div>
+  <div class="alert-body">
+    今日外資單日賣超 <strong>1,774億元</strong>，打破所有歷史紀錄（前高為07/17崩跌日）。<br>
+    其中 <strong>台積電獨佔928億元（-38,450張）</strong>，為今年來外資對台積電單日最大賣超。<br>
+    三大法人合計賣超 <strong>2,102億元</strong>，同樣創台股史上最大。<br><br>
+    ⚠️ <strong>但市場僅跌2.67%（-1,196點），遠小於07/17的-6.47%（-2,953點）</strong> —— 說明有大量買盤在承接，並非無人接手的崩跌。
+  </div>
+</div>
+
+<div class="alert-box alert-green">
+  <div class="alert-title">✅ 市場韌性訊號：緯創連五紅、棄電子抱傳產的輪動結構</div>
+  <div class="alert-body">
+    <strong>緯創(3231) 184元（連五紅）</strong>：輝達執行長黃仁勳親赴德州D1工廠開幕，AMD Helios AI機架系統亮相，成全台成交量最大個股（非ETF）。<br>
+    <strong>資金輪動：棄電子 → 傳產（石化+鋼鐵）</strong>：台塑化、台塑、台化繼續強勢；中鋼、大成鋼延續漲勢。<br>
+    <strong>市場並非全面崩盤</strong>：只是科技股（尤其台積電）遭外資大量減碼，資金換手進入傳產。
+  </div>
+</div>
+
+<!-- ══ 今日盤面解剖 ══ -->
+<div class="section-hdr">🔬 今日盤面完整解剖</div>
+<div class="grid3">
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--red)"></span>大盤走勢</div>
+    <div class="kline-row">
+      <div class="stat"><div class="stat-label">開盤</div><div class="stat-val">44,769</div></div>
+      <div class="stat"><div class="stat-label">最高</div><div class="stat-val">44,769</div><div class="stat-sub">開盤即高</div></div>
+      <div class="stat"><div class="stat-label">最低</div><div class="stat-val dn">43,607</div></div>
+      <div class="stat"><div class="stat-label">收盤</div><div class="stat-val dn">43,655</div></div>
+      <div class="stat"><div class="stat-label">振幅</div><div class="stat-val warn">1,162pts</div></div>
+    </div>
+    <div class="highlight" style="border-left-color:var(--red);">
+      <strong>「開高走低」</strong>：開盤即為今日高點，隨即一路下殺至43,607，尾盤稍微回穩收43,655。外資賣盤主導全日，台積電尾盤爆出1.3萬張大量，是最後一波殺盤。
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--blue)"></span>關鍵個股</div>
+    <div class="stock-row"><span class="stock-code">2330</span><span class="stock-name">台積電</span><span class="stock-price dn">2,350</span><span class="stock-chg dn">-55（-2.29%）</span></div>
+    <div class="stock-row"><span class="stock-code">3231</span><span class="stock-name">緯創 🔥</span><span class="stock-price up">184</span><span class="stock-chg up">連五紅+23%週漲</span></div>
+    <div class="stock-row"><span class="stock-code">2317</span><span class="stock-name">鴻海</span><span class="stock-price">—</span><span class="stock-chg flat">AI伺服器觀察</span></div>
+    <div class="stock-row"><span class="stock-code">6505</span><span class="stock-name">台塑化 🛢️</span><span class="stock-price up">~95+</span><span class="stock-chg up">繼續強勢</span></div>
+    <div class="stock-row"><span class="stock-code">1301</span><span class="stock-name">台塑</span><span class="stock-price up">—</span><span class="stock-chg up">傳產資金輪動</span></div>
+    <div class="stock-row"><span class="stock-code">2002</span><span class="stock-name">中鋼</span><span class="stock-price up">—</span><span class="stock-chg up">外資+42,718張（昨）</span></div>
+    <div class="highlight" style="margin-top:8px;border-left-color:var(--orange);">
+      ⚡ <strong>「棄電子、抱傳產」</strong>：今日市場最清晰的資金輪動主軸。
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--purple)"></span>技術面位置</div>
+    <table>
+      <tr><th>指標</th><th>數值</th><th>訊號</th></tr>
+      <tr><td>收盤</td><td class="num dn bold">43,655</td><td class="dn">第二次下探43K</td></tr>
+      <tr><td>MA5</td><td class="num">44,003</td><td class="dn">❌ 跌破</td></tr>
+      <tr><td>MA10</td><td class="num">44,406</td><td class="dn">❌ 跌破</td></tr>
+      <tr><td>MA20</td><td class="num">45,171</td><td class="dn">❌ 早已跌破</td></tr>
+      <tr><td>布林下軌</td><td class="num">42,728</td><td class="warn">⚠️ 距僅927點</td></tr>
+      <tr><td>RSI(14)</td><td class="num">42.64</td><td class="dn">偏弱，非超賣</td></tr>
+      <tr><td>07/20低點</td><td class="num">41,968</td><td class="warn">⚠️ 最終防線</td></tr>
+      <tr><td>關鍵支撐</td><td class="num">43,000</td><td class="warn">整數關口</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══ 外資史上最大賣超解析 ══ -->
+<div class="section-hdr">💣 外資賣超1,774億 — 深度解析</div>
+<div class="grid2">
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--red)"></span>賣超規模比較</div>
+    <table>
+      <tr><th>日期</th><th>外資賣超（億元）</th><th>TWII 跌幅</th><th>性質</th></tr>
+      <tr><td>07/24（今日）</td><td class="num dn bold">-1,774億（史上最大）</td><td class="dn bold">-2.67%</td><td>定向撤台積電</td></tr>
+      <tr><td>07/17（前崩跌）</td><td class="num dn">-約1,300億</td><td class="dn bold">-6.47%</td><td>系統性崩盤</td></tr>
+      <tr><td>2020/3/19（COVID）</td><td class="num dn">約-800億</td><td class="dn">大跌</td><td>全球恐慌</td></tr>
+    </table>
+    <div class="alert-box alert-yellow" style="margin-top:10px;">
+      <div class="alert-title">⚡ 關鍵洞察：1,774億賣超 vs 僅跌2.67%</div>
+      <div class="alert-body">
+        史上最大賣超，但跌幅遠小於07/17（-6.47%）。<br>
+        <strong>這說明市場有大量買盤在承接</strong>：石化/傳產逆勢買進、投信/自營反向佈局、散戶低接。<br>
+        這不是恐慌性崩盤，而是外資的<strong>「定向撤退」</strong> — 賣台積電，買石化+緯創。
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--red)"></span>外資賣超主要標的</div>
+    <table>
+      <tr><th>標的</th><th>外資賣超（億元）</th><th>占比</th></tr>
+      <tr><td class="bold dn">台積電(2330)</td><td class="num dn bold">-928億（-38,450張）</td><td class="dn bold">52%</td></tr>
+      <tr><td>華邦電(2344)</td><td class="num dn">-估計大量</td><td class="dn">—</td></tr>
+      <tr><td>0050/ETF類</td><td class="num dn">-部分</td><td class="dn">—</td></tr>
+      <tr><td>其他電子</td><td class="num dn">-餘下48%</td><td class="dn">—</td></tr>
+    </table>
+    <div style="font-size:13px;color:var(--text2);margin-top:12px;line-height:1.8;">
+      <strong style="color:var(--text);">外資賣超原因：</strong><br>
+      ① 美債4.703%（52週新高）→ 台積電高PE（約25-28倍）估值壓縮<br>
+      ② 美元走強（DXY 101.4）→ 持台股匯兌成本上升<br>
+      ③ 美、韓半導體股重挫帶動 → 跟隨全球科技股調整<br>
+      ④ Capex疑慮擴散（Alphabet $205B引發「AI投資過熱」論述）
+    </div>
+  </div>
+</div>
+
+<!-- ══ 緯創VS台積電 ══ -->
+<div class="section-hdr">🤖 本周最強對比：緯創連五紅 vs 台積電遭棄</div>
+<div class="grid2">
+  <div class="card" style="border-color:var(--green);">
+    <div class="card-title" style="color:var(--green-text);">🔥 緯創(3231) — 連五紅 184元，本週大漲23%</div>
+    <div class="grid2" style="margin-bottom:12px;">
+      <div class="stat"><div class="stat-label">今日收盤</div><div class="stat-val up">184元</div><div class="stat-sub">連五紅</div></div>
+      <div class="stat"><div class="stat-label">本週漲幅</div><div class="stat-val up">+23%</div><div class="stat-sub">149.5→184</div></div>
+    </div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.8;">
+      <strong style="color:var(--text);">今日雙重催化劑：</strong><br>
+      1️⃣ <strong>輝達執行長黃仁勳親赴德州D1工廠開幕</strong>（近$700M投資，完成GB300量產）<br>
+      2️⃣ <strong>AMD Helios AI機架系統亮相</strong> — 預計H2 2026出貨，緯創為關鍵組裝商<br><br>
+      外資累計兩日（07/22+07/23）已買進 <strong>+103,226張</strong>，今日成為全台成交量最大個股（非ETF）。<br><br>
+      <strong style="color:var(--green-text);">長線邏輯：</strong>GB300 + AMD Helios = 緯創有兩條AI伺服器產品線同時放量，2026 H2至2027 EPS加速。
+    </div>
+  </div>
+  <div class="card" style="border-color:var(--red);">
+    <div class="card-title" style="color:var(--red-text);">📉 台積電(2330) — 外資砍928億，跌55元至2,350</div>
+    <div class="grid2" style="margin-bottom:12px;">
+      <div class="stat"><div class="stat-label">今日收盤</div><div class="stat-val dn">2,350元</div><div class="stat-sub">-55（-2.29%）</div></div>
+      <div class="stat"><div class="stat-label">外資賣超</div><div class="stat-val dn">38,450張</div><div class="stat-sub">-928億元</div></div>
+    </div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.8;">
+      <strong style="color:var(--text);">短線壓力：</strong><br>
+      ① 美債4.703%壓縮高PE估值<br>
+      ② Alphabet Capex $205B引發「AI投資ROI何時回收？」的估值審視<br>
+      ③ 外資尾盤爆出1.3萬張大量，是外資最後殺盤訊號<br><br>
+      <strong style="color:var(--text);">中長線基本面不變：</strong><br>
+      四大科技商Capex合計超過$400B，台積電先進製程/CoWoS是最大受益者。<br>
+      <strong class="warn">關鍵支撐：2,350元（本日低點區）→ 2,320（整數關口）→ 2,300（心理關口）</strong>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 近期K線走勢 ══ -->
+<div class="section-hdr">📊 近期加權指數K線要覽</div>
+<div class="card">
+  <table class="kline-mini">
+    <tr><th>日期</th><th class="num">收盤</th><th class="num">漲跌</th><th class="num">漲跌幅</th><th class="num">外資流向</th><th>事件</th></tr>
+    <tr style="background:var(--red-dim);"><td>07/17（四）</td><td class="num dn bold">42,671</td><td class="num dn">-2,953</td><td class="num dn">-6.47%</td><td class="num dn">大賣超</td><td>史上最大跌點，融資-276億</td></tr>
+    <tr><td>07/20（一）</td><td class="num dn">42,450</td><td class="num dn">-221</td><td class="num dn">-0.52%</td><td class="num flat">—</td><td>低點41,968（07/20盤中）</td></tr>
+    <tr style="background:var(--green-dim);"><td>07/21（二）</td><td class="num up bold">44,233</td><td class="num up">+1,783</td><td class="num up">+4.03%</td><td class="num up">+381,320張</td><td>AMD大事件+外資轉多</td></tr>
+    <tr style="background:var(--green-dim);"><td>07/22（三）</td><td class="num up">44,826</td><td class="num up">+593</td><td class="num up">+1.34%</td><td class="num up">+650,055張</td><td>外資連13賣終結</td></tr>
+    <tr><td>07/23（四）</td><td class="num up">44,851</td><td class="num up">+25</td><td class="num up">+0.06%</td><td class="num up">+171,551張</td><td>Alphabet法說消化</td></tr>
+    <tr style="background:var(--red-dim);"><td><strong>07/24（五）今日</strong></td><td class="num dn bold">43,655</td><td class="num dn bold">-1,196</td><td class="num dn bold">-2.67%</td><td class="num dn bold">-1,774億（史上最大）</td><td>外資史上最大賣超，台積電-928億</td></tr>
+  </table>
+  <div class="highlight" style="margin-top:12px;">
+    📌 <strong>結構觀察：</strong>07/21-07/22外資回補共+103萬張（反轉信號），07/23縮量+17萬，07/24卻大賣+1,774億。<br>
+    這個U型後又急落的走勢，說明外資「先搶反彈、後獲利了結」，並非長線轉多的訊號。
+    43,655已回測07/20低點(41,968)上方不遠處，下方支撐是否守住至關重要。
+  </div>
+</div>
+
+<!-- ══ 多空辯論 ══ -->
+<div class="section-hdr">⚔️ 後市多空辯論</div>
+<div class="debate-row">
+  <div class="debate-bull">
+    <div class="debate-title">🟢 看多論據（38%）</div>
+    <div class="debate-item"><strong>大賣超但僅跌2.67%</strong>：市場有買盤承接，07/17同等恐慌賣超跌了6.47%，今日相對強勢。</div>
+    <div class="debate-item"><strong>緯創連五紅+23%</strong>：黃仁勳背書、AMD雙催化，AI伺服器真實需求持續，緯創/鴻海籌碼健康。</div>
+    <div class="debate-item"><strong>石化傳產繼續強</strong>：「棄電子抱傳產」是資金輪動，非全面撤退，傳產有油價$100撐盤。</div>
+    <div class="debate-item"><strong>融資維持率安全</strong>：融資5,879億去槓桿後，斷頭追繳風險低，不會因今日下跌引發連鎖崩跌。</div>
+    <div class="debate-item"><strong>布林下軌42,728就在附近</strong>：技術上接近超賣區，逢低買盤可能出現。</div>
+  </div>
+  <div class="debate-bear">
+    <div class="debate-title">🔴 看空論據（62%）</div>
+    <div class="debate-item"><strong>外資史上最大賣超1,774億</strong>：趨勢明確，外資在台積電上大幅減碼，方向逆轉訊號。</div>
+    <div class="debate-item"><strong>台積電跌破2,350</strong>：台積電是加權指數最大權值股（約30%），台積電走弱=大盤難漲。</div>
+    <div class="debate-item"><strong>美債4.703%維持高位</strong>：科技股估值持續承壓，外資減碼台積電的根本原因未解除。</div>
+    <div class="debate-item"><strong>技術面全線轉弱</strong>：跌破MA5、MA10，RSI 42.64偏弱，布林中軌45,171遠在上方。</div>
+    <div class="debate-item"><strong>台幣貶值至32.36</strong>：外資大賣→換匯離台→台幣貶值，形成負向循環。</div>
+    <div class="debate-item"><strong>距07/20低點（41,968）僅差1,687點</strong>：若繼續下殺，前低測試風險高，破前低則形態轉壞。</div>
+  </div>
+</div>
+<div class="verdict-bar">
+  <div class="big">裁決：<span class="dn">偏空觀望</span>（38% vs 62%）</div>
+  <div class="progress-wrap"><div class="progress-bull" style="width:38%"></div></div>
+  <div class="sub">
+    外資史上最大賣超是強烈的方向訊號，台積電在美債4.7%壓制下短期難以大漲。<br>
+    但傳產（石化/鋼鐵）與AI伺服器（緯創）提供了個股機會。<br>
+    <strong>大盤面：觀望為主，等外資轉買或美債回落 → 再進場</strong><br>
+    <strong>個股面：緯創/台塑化/中鋼 仍是積極選項</strong>
+  </div>
+</div>
+
+<!-- ══ 操作建議 ══ -->
+<div class="section-hdr">🎯 明日操作建議（07/27 週一，週末過後）</div>
+<div class="grid3">
+  <div class="op-card bull">
+    <div class="op-title">⚔️ 進攻型（部位30-50%）</div>
+    <div class="op-body">
+      <strong>聚焦逆勢強股，不碰大盤ETF</strong><br><br>
+      <strong class="up">緯創(3231)：</strong>若週末無重大利空，黃仁勳背書+AMD Helios雙題材持續。等開盤回測175-178元區間介入，停損168元。<br><br>
+      <strong class="up">台塑化(6505)：</strong>油$100關口是石化最大支撐，若油價維持$98+，台塑化繼續強。等回測88-90元介入。<br><br>
+      <strong class="up">中鋼(2002)：</strong>外資+42,718張（07/23），傳產輪動受惠，36-38元區間佈局。
+    </div>
+  </div>
+  <div class="op-card neutral">
+    <div class="op-title">⚖️ 均衡型（部位20-35%）</div>
+    <div class="op-body">
+      <strong>等待台積電止穩再決策</strong><br><br>
+      台積電(2330) <strong>2,350元是關鍵觀察點</strong>：<br>
+      • 若守穩2,350且外資減緩 → 可小量佈局（進場2,350-2,380，停損2,300）<br>
+      • 若繼續跌破2,320 → 等2,280-2,300才考慮進場<br><br>
+      持有現金比例提高至50-60%，等待週一開盤外資方向確認後再決策。
+    </div>
+  </div>
+  <div class="op-card bear">
+    <div class="op-title">🛡️ 防守型（現金為主，部位15%以下）</div>
+    <div class="op-body">
+      <strong>今日大賣超後的風控清單：</strong><br>
+      ❌ <strong>台積電</strong>：外資今日殺928億，外資方向未扭轉前觀望<br>
+      ❌ <strong>半導體設備/封測</strong>：美債高位壓估值，訂單確認前不進場<br>
+      ❌ <strong>航空</strong>：油$100持續，成本壓力未解<br><br>
+      <strong>重新進場訊號（需同時出現2項）：</strong><br>
+      ① 外資單日轉買超+300億以上<br>
+      ② 美債回落至4.5%以下<br>
+      ③ 台積電站回2,400元以上
+    </div>
+  </div>
+</div>
+
+<!-- ══ 後市觀察事項 ══ -->
+<div class="section-hdr">📅 週末關注事項與下週催化劑</div>
+<div class="card">
+  <div class="grid2">
+    <div>
+      <div class="event-chip"><span class="event-date">週末關注</span>美伊/中東局勢：是否升級影響油價走向（$95-$100 = 石化強；破$105 = 通膨危機）</div>
+      <div class="event-chip"><span class="event-date">週末關注</span>美債週末期貨走向：若繼續攀升至4.75%，週一台股補跌壓力大</div>
+      <div class="event-chip"><span class="event-date">週末關注</span>台積電ADR表現：美股收盤後的ADR走勢預告週一台積電開盤</div>
+      <div class="event-chip"><span class="event-date">07/27（週一）</span>07/24外資T86詳細數據（18:00更新） → 確認外資賣超明細，是否台積電以外也大賣</div>
+    </div>
+    <div>
+      <div class="event-chip"><span class="event-date">07/28-07/30</span>Meta Q2法說：若Capex再增 → AI伺服器（緯創/鴻海）繼續強；若獲利壓縮 → AI股下殺</div>
+      <div class="event-chip"><span class="event-date">七月底</span>Amazon AWS法說 + Intel財報：半導體景氣拼圖逐漸完整</div>
+      <div class="event-chip"><span class="event-date">未來兩週</span>台積電除息（日期待確認）、美國CPI數據 → 影響Fed路徑與美債走勢</div>
+      <div class="event-chip"><span class="event-date">關鍵技術位</span>加權指數 43,000（整數）/ 42,728（布林下軌）/ 41,968（07/20低點） — 三道防線</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DISCLAIMER ══ -->
+<div class="disclaimer">
+  ⚠️ 本報告為技術分析與籌碼數據彙整，僅供研究參考，<strong>不構成任何投資建議</strong>。股票投資有損失本金之風險，請依個人風險承受能力自行判斷。<br>
+  數據來源：TWSE T86官方API、yfinance、Yahoo Finance、ETtoday、聯合報、CMoney、今周刊、豐雲學堂<br>
+  報告生成時間：2026-07-24 15:00 ／ 由 Claude AI 自動生成
+</div>
+
+</div>
+</body>
+</html>
