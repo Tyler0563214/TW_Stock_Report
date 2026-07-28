@@ -3,896 +3,656 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>台達電 2308 深度分析報告 2026-07-28</title>
+<title>台達電 (2308) 深度分析報告 | 2026-07-28</title>
 <style>
-  :root {
-    --accent: #15803d;
-    --accent-dark: #14532d;
-    --accent-light: #86efac;
-    --bg: #F0F4F8;
-    --card: #FFFFFF;
-    --text: #1e293b;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
-    --success: #059669;
-    --warning: #d97706;
-    --danger: #dc2626;
-    --info: #0891b2;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', 'PingFang TC', 'Microsoft JhengHei', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-  a { color: var(--accent); }
-
-  /* COVER */
-  .cover {
-    background: linear-gradient(135deg, #052e16 0%, #14532d 40%, #166534 70%, #15803d 100%);
-    color: #fff; padding: 60px 40px 50px; text-align: center; position: relative; overflow: hidden;
-  }
-  .cover::before {
-    content:''; position:absolute; inset:0;
-    background: radial-gradient(ellipse at 20% 50%, rgba(21,128,61,0.3) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 20%, rgba(134,239,172,0.1) 0%, transparent 50%);
-  }
-  .cover-inner { position: relative; z-index:1; max-width: 860px; margin: 0 auto; }
-  .cover-badge { display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:4px 14px; font-size:12px; letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; }
-  .cover h1 { font-size: 3rem; font-weight: 800; margin-bottom: 6px; }
-  .cover .code { font-size: 1.1rem; color: #86efac; margin-bottom: 18px; }
-  .cover .tagline { font-size: 1.05rem; color: rgba(255,255,255,0.8); margin-bottom: 28px; }
-  .cover-meta { display:flex; justify-content:center; gap:24px; flex-wrap:wrap; }
-  .cover-meta span { background:rgba(255,255,255,0.12); border-radius:8px; padding:8px 18px; font-size:13px; }
-  .risk-badge { display:inline-block; padding:6px 18px; border-radius:20px; font-size:13px; font-weight:700; }
-  .risk-mid { background:#10b981; color:#fff; }
-  .risk-mid-high { background:#f59e0b; color:#1c1917; }
-  .risk-low { background:#3b82f6; color:#fff; }
-  .risk-high { background:#ef4444; color:#fff; }
-  .alert-badge { display:inline-block; background:#fef9c3; color:#78350f; border:1px solid #fcd34d; border-radius:20px; padding:4px 16px; font-size:12px; font-weight:700; margin-left:8px; }
-
-  /* LAYOUT */
-  .container { max-width: 960px; margin: 0 auto; padding: 32px 20px; }
-  .section { margin-bottom: 36px; }
-  .section-title {
-    font-size: 1.2rem; font-weight: 700; color: var(--accent);
-    border-left: 4px solid var(--accent); padding-left: 12px;
-    margin-bottom: 20px; display:flex; align-items:center; gap:8px;
-  }
-  .section-num { font-size:11px; color:var(--text-muted); font-weight:400; }
-  .card { background: var(--card); border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid var(--border); }
-  .card + .card { margin-top: 16px; }
-
-  /* CATALYST BANNER */
-  .catalyst-banner {
-    background: linear-gradient(135deg, #78350f, #d97706);
-    color: #fff; border-radius: 12px; padding: 16px 24px;
-    display:flex; align-items:center; gap:16px; margin-bottom: 24px;
-  }
-  .catalyst-banner .icon { font-size:2rem; }
-  .catalyst-banner h3 { font-size:1rem; font-weight:700; }
-  .catalyst-banner p { font-size:13px; opacity:0.9; }
-
-  /* CORE CONCLUSION */
-  .conclusion-card {
-    background: linear-gradient(135deg, #052e16, #166534);
-    color: #fff; border-radius: 16px; padding: 32px; margin-bottom: 16px;
-  }
-  .conclusion-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:20px; }
-  .conclusion-item h4 { font-size:12px; color:#86efac; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
-  .conclusion-item .val { font-size:1.5rem; font-weight:800; }
-  .conclusion-item .sub { font-size:12px; color:rgba(255,255,255,0.7); margin-top:4px; }
-
-  /* KPI BRICKS */
-  .kpi-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:14px; }
-  .kpi-brick { background:var(--card); border-radius:12px; padding:18px 14px; text-align:center; border:1px solid var(--border); box-shadow:0 2px 6px rgba(0,0,0,0.05); }
-  .kpi-label { font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
-  .kpi-value { font-size:1.5rem; font-weight:800; color:var(--accent); font-variant-numeric:tabular-nums; }
-  .kpi-note { font-size:11px; color:var(--text-muted); margin-top:4px; }
-  .kpi-pos { color: var(--success) !important; }
-  .kpi-neg { color: var(--danger) !important; }
-  .kpi-warn { color: var(--warning) !important; }
-  .kpi-blue { color: var(--info) !important; }
-
-  /* CHARTS */
-  .chart-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
-  .chart-box { background:var(--card); border-radius:12px; padding:16px; border:1px solid var(--border); }
-  .chart-title { font-size:13px; font-weight:600; color:var(--text); margin-bottom:10px; text-align:center; }
-  canvas { display:block; }
-  .chart-note { font-size:10px; color:var(--text-muted); text-align:center; margin-top:6px; }
-
-  /* TABLES */
-  .data-table { width:100%; border-collapse:collapse; font-size:14px; }
-  .data-table th { background:#f8fafc; font-weight:600; color:var(--text-muted); padding:10px 14px; text-align:left; border-bottom:2px solid var(--border); }
-  .data-table td { padding:10px 14px; border-bottom:1px solid var(--border); }
-  .data-table tr:hover td { background:#f8fffe; }
-  .table-wrap { overflow-x:auto; border-radius:10px; border:1px solid var(--border); }
-  .text-right { text-align:right; }
-  .text-center { text-align:center; }
-  .tag { display:inline-block; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:600; }
-  .tag-up { background:#dcfce7; color:#166534; }
-  .tag-down { background:#fee2e2; color:#991b1b; }
-  .tag-neutral { background:#f1f5f9; color:#475569; }
-  .tag-buy { background:#dbeafe; color:#1e40af; }
-  .tag-strong-buy { background:#dcfce7; color:#14532d; }
-
-  /* FUND FLOW */
-  .fund-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:14px; }
-  .fund-card { background:var(--card); border-radius:12px; padding:18px; text-align:center; border:1px solid var(--border); }
-  .fund-label { font-size:11px; color:var(--text-muted); margin-bottom:6px; }
-  .fund-value { font-size:1.3rem; font-weight:800; font-variant-numeric:tabular-nums; }
-
-  /* TECH ANALYSIS */
-  .tech-grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
-  .ma-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); }
-  .ma-label { font-size:13px; color:var(--text-muted); }
-  .ma-val { font-size:14px; font-weight:600; }
-
-  /* SCORE BAR */
-  .score-row { margin-bottom:14px; }
-  .score-label { font-size:13px; color:var(--text); margin-bottom:4px; display:flex; justify-content:space-between; }
-  .score-bar-bg { background:#e2e8f0; border-radius:6px; height:10px; overflow:hidden; }
-  .score-bar-fill { height:100%; border-radius:6px; }
-
-  /* DEBATE */
-  .debate-grid { display:grid; grid-template-columns: 1fr 1fr; gap:20px; }
-  .bull-box { background:#f0fdf4; border-left:4px solid #059669; border-radius:0 12px 12px 0; padding:20px; }
-  .bear-box { background:#fff1f2; border-left:4px solid #dc2626; border-radius:0 12px 12px 0; padding:20px; }
-  .debate-title { font-size:14px; font-weight:700; margin-bottom:14px; }
-  .debate-item { display:flex; gap:10px; margin-bottom:10px; font-size:13px; }
-  .debate-item .icon { flex-shrink:0; font-size:14px; }
-
-  /* STRATEGY */
-  .strategy-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
-  .strat-card { border-radius:12px; padding:20px; }
-  .strat-attack { background:linear-gradient(135deg,#f0fdf4,#dcfce7); border:1px solid #86efac; }
-  .strat-balance { background:linear-gradient(135deg,#fffbeb,#fef3c7); border:1px solid #fcd34d; }
-  .strat-defend { background:linear-gradient(135deg,#eff6ff,#dbeafe); border:1px solid #93c5fd; }
-  .strat-header { font-weight:700; font-size:14px; margin-bottom:12px; }
-  .strat-row { font-size:12px; margin-bottom:6px; display:flex; gap:6px; }
-  .strat-key { color:var(--text-muted); width:64px; flex-shrink:0; }
-
-  /* GLOSSARY */
-  .glossary-grid { display:grid; grid-template-columns: repeat(2,1fr); gap:14px; }
-  .glossary-item { background:#f8fafc; border-radius:10px; padding:14px 16px; border-left:3px solid var(--accent); }
-  .glossary-term { font-weight:700; font-size:13px; margin-bottom:4px; }
-  .glossary-def { font-size:12px; color:var(--text-muted); }
-
-  /* DISCLAIMER */
-  .disclaimer { background:#fffbeb; border:1px solid #fcd34d; border-radius:10px; padding:20px; font-size:12px; color:#78350f; }
-  .disclaimer h4 { font-weight:700; margin-bottom:8px; }
-
-  /* CATALYST TABLE */
-  .catalyst-table { width:100%; border-collapse:collapse; font-size:13px; }
-  .catalyst-table th { background:#f0fdf4; color:#14532d; padding:8px 12px; text-align:left; border-bottom:2px solid #bbf7d0; font-size:12px; }
-  .catalyst-table td { padding:8px 12px; border-bottom:1px solid #dcfce7; }
-
-  .highlight-box { background:#f0fdf4; border:1px solid #86efac; border-radius:10px; padding:16px; }
-
-  @media(max-width:700px){
-    .kpi-grid{ grid-template-columns:repeat(2,1fr); }
-    .chart-grid{ grid-template-columns:1fr; }
-    .debate-grid{ grid-template-columns:1fr; }
-    .strategy-grid{ grid-template-columns:1fr; }
-    .conclusion-grid{ grid-template-columns:1fr; }
-    .fund-grid{ grid-template-columns:repeat(2,1fr); }
-    .tech-grid{ grid-template-columns:1fr; }
-    .glossary-grid{ grid-template-columns:1fr; }
-    .cover h1{ font-size:2rem; }
-  }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1e293b;line-height:1.6}
+.cover{background:linear-gradient(135deg,#052e16 0%,#14532d 50%,#15803d 100%);color:#fff;padding:60px 40px;text-align:center}
+.cover-badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 16px;font-size:13px;margin-bottom:16px;letter-spacing:1px}
+.cover h1{font-size:2.8rem;font-weight:800;letter-spacing:2px;margin-bottom:8px}
+.cover h2{font-size:1.4rem;font-weight:400;opacity:.85;margin-bottom:24px}
+.cover-meta{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;margin-top:24px;font-size:13px;opacity:.8}
+.risk-badge{display:inline-block;padding:6px 20px;border-radius:20px;font-weight:700;font-size:14px;margin-top:16px}
+.risk-medium{background:#f59e0b;color:#000}
+.section{background:#fff;margin:20px auto;max-width:1000px;border-radius:12px;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.section-title{font-size:1.3rem;font-weight:700;color:#15803d;border-left:4px solid #15803d;padding-left:12px;margin-bottom:20px}
+.core-card{background:linear-gradient(135deg,#052e16,#14532d);color:#fff;border-radius:12px;padding:28px;margin-bottom:16px}
+.core-card h3{font-size:1.1rem;opacity:.7;margin-bottom:8px}
+.core-card .big{font-size:2rem;font-weight:800;color:#4ade80}
+.core-card p{opacity:.85;margin-top:8px;font-size:.95rem}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+.kpi-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;text-align:center}
+.kpi-card .val{font-size:1.5rem;font-weight:800;color:#15803d}
+.kpi-card .lbl{font-size:.78rem;color:#64748b;margin-top:4px}
+.kpi-card .hint{font-size:.72rem;color:#94a3b8;margin-top:4px;line-height:1.4}
+.chart-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:750px){.chart-grid{grid-template-columns:1fr}}
+.chart-box{background:#f8fafc;border-radius:10px;padding:16px}
+.chart-box h4{font-size:.85rem;font-weight:700;color:#374151;margin-bottom:10px;text-align:center}
+.chart-note{font-size:.7rem;color:#94a3b8;text-align:center;margin-top:6px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{background:#f1f5f9;color:#374151;padding:10px;text-align:center;font-weight:600}
+td{padding:9px;text-align:center;border-bottom:1px solid #f1f5f9}
+tr:hover td{background:#f8fafc}
+.tag{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.75rem;font-weight:600}
+.tag-green{background:#dcfce7;color:#15803d}
+.tag-red{background:#fee2e2;color:#dc2626}
+.tag-yellow{background:#fef9c3;color:#92400e}
+.tag-blue{background:#dbeafe;color:#1d4ed8}
+.inst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.inst-card{border-radius:10px;padding:14px;text-align:center}
+.inst-card .inst-val{font-size:1.3rem;font-weight:800}
+.inst-card .inst-lbl{font-size:.78rem;margin-top:4px;opacity:.8}
+.inst-buy{background:#dcfce7;color:#15803d}
+.inst-sell{background:#fee2e2;color:#dc2626}
+.tech-card{background:#f8fafc;border-radius:8px;padding:14px;margin-bottom:10px}
+.tech-card .tech-val{font-weight:700;font-size:1.05rem;color:#15803d}
+.debate-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:700px){.debate-grid{grid-template-columns:1fr}}
+.bull-card{background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:20px}
+.bear-card{background:#fff1f2;border:1px solid #fda4af;border-radius:10px;padding:20px}
+.bull-card h4{color:#15803d;font-size:1rem;margin-bottom:12px}
+.bear-card h4{color:#dc2626;font-size:1rem;margin-bottom:12px}
+.debate-item{display:flex;gap:8px;margin-bottom:10px;font-size:.88rem}
+.debate-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem}
+.bull-num{background:#bbf7d0;color:#15803d}
+.bear-num{background:#fecdd3;color:#dc2626}
+.score-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.score-label{width:100px;font-size:.82rem;color:#374151;flex-shrink:0}
+.score-track{flex:1;height:8px;background:#e2e8f0;border-radius:4px}
+.score-bar{height:100%;border-radius:4px}
+.score-val{width:30px;font-size:.82rem;font-weight:700;text-align:right;flex-shrink:0}
+.strategy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:700px){.strategy-grid{grid-template-columns:1fr}}
+.strat-card{border-radius:10px;padding:20px}
+.strat-attack{background:linear-gradient(135deg,#052e16,#15803d);color:#fff}
+.strat-neutral{background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff}
+.strat-defense{background:linear-gradient(135deg,#431407,#ea580c);color:#fff}
+.strat-card h4{font-size:1rem;font-weight:700;margin-bottom:10px}
+.strat-card .sp{font-size:.85rem;opacity:.85;margin-bottom:6px}
+.catalyst-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;padding:10px;background:#f8fafc;border-radius:8px;font-size:.88rem}
+.catalyst-date{flex-shrink:0;background:#15803d;color:#fff;border-radius:6px;padding:2px 10px;font-size:.75rem;font-weight:600}
+.glossary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(max-width:600px){.glossary-grid{grid-template-columns:1fr}}
+.gloss-item{background:#f8fafc;border-radius:8px;padding:14px}
+.gloss-item dt{font-weight:700;color:#15803d;margin-bottom:4px;font-size:.9rem}
+.gloss-item dd{font-size:.83rem;color:#475569}
+.disclaimer{background:#fefce8;border:1px solid #fde047;border-radius:10px;padding:20px;font-size:.83rem;color:#713f12}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:650px){.two-col{grid-template-columns:1fr}}
+.analyst-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+@media(max-width:600px){.analyst-cards{grid-template-columns:1fr 1fr}}
+.analyst-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;text-align:center}
+.analyst-card .a-bank{font-size:.75rem;color:#64748b;margin-bottom:4px}
+.analyst-card .a-target{font-size:1.2rem;font-weight:800;color:#15803d}
+.analyst-card .a-rating{font-size:.75rem;margin-top:4px}
 </style>
 </head>
 <body>
 
-<!-- 01 COVER -->
+<!-- 01 封面 -->
 <div class="cover">
-  <div class="cover-inner">
-    <div class="cover-badge">台股深度研究報告</div>
-    <h1>台達電子</h1>
-    <div class="code">股票代碼：2308 ｜ 台灣證券交易所上市</div>
-    <div class="tagline">AI 電源供應王者 ✦ HVDC 高壓直流技術護城河 ✦ 液冷散熱完整解決方案</div>
-    <div class="cover-meta">
-      <span>📅 報告日期：2026-07-28</span>
-      <span>💰 現股價：1,590 元（-9.4%）</span>
-      <span>📊 52W：516 → 2,585 元</span>
-      <span>⚡ 7/30 法說會即將登場</span>
-      <span><span class="risk-badge risk-mid">風險等級 4.5 / 10（中等）</span></span>
+  <div class="cover-badge">🇹🇼 台股上市 ｜ 電子零組件</div>
+  <h1>台達電子</h1>
+  <h2>2308 ｜ AI 電源王者深度分析報告</h2>
+  <div style="font-size:2rem;font-weight:900;color:#4ade80;margin:12px 0">1,580 元 <span style="font-size:1.1rem;color:#f87171">▼ -175（-9.97%）</span></div>
+  <div style="font-size:.9rem;opacity:.7">52週區間：516 ～ 2,585 元 ｜ 較高峰回落 -38.9%</div>
+  <div class="risk-badge risk-medium">⚠ 中等風險 4.5/10</div>
+  <div class="cover-meta">
+    <span>📅 報告日期：2026-07-28</span>
+    <span>💰 市值：約 4,104 億元</span>
+    <span>📊 TTM PE：58.3x</span>
+    <span>🏭 Q1'26 EPS：7.91元（歷史新高）</span>
+    <span>📣 法說會：7/30（後天！）</span>
+  </div>
+</div>
+
+<!-- 02 核心結論 -->
+<div class="section">
+  <div class="section-title">02 ｜ 核心結論</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+    <div class="core-card">
+      <h3>投資建議</h3>
+      <div class="big">分批布局</div>
+      <p>基本面強勁，Kyber 利空已大幅反映，1,500～1,650 區間逢低分批，待法說會 7/30 確認 Q2 毛利率後再加碼</p>
+    </div>
+    <div class="core-card">
+      <h3>目標價（12個月）</h3>
+      <div class="big">2,200 元</div>
+      <p>法人共識 2,200－2,800 元；FY2027E EPS 65.1元 × 34x PE = 2,213元；大和目標 2,440元，歐系外資 2,750元</p>
+    </div>
+    <div class="core-card">
+      <h3>最大風險</h3>
+      <div class="big" style="color:#f87171;font-size:1.4rem">Kyber 延遲</div>
+      <p>NVIDIA Kyber NVL144 量產推遲至 2028，AI 伺服器電源需求短期低於預期，加上 Q2 毛利率可能低於 Q1 的 37%</p>
     </div>
   </div>
 </div>
 
-<div class="container">
-
-<!-- CATALYST BANNER -->
-<div class="catalyst-banner">
-  <div class="icon">🔔</div>
-  <div>
-    <h3>重大催化劑：2026年7月30日（後天）將舉行法說會！</h3>
-    <p>Q2'26 營收 1,832億創歷史新高，法說會將釋出下半年展望、毛利率動向與 800V HVDC 放量時程，可能成為股價反彈的關鍵轉折點。</p>
-  </div>
-</div>
-
-<!-- 02 CORE CONCLUSION -->
+<!-- 03 關鍵財務 KPI -->
 <div class="section">
-  <div class="section-title">核心結論 <span class="section-num">02</span></div>
-  <div class="conclusion-card">
-    <div class="conclusion-grid">
-      <div class="conclusion-item">
-        <h4>投資建議</h4>
-        <div class="val">🟢 逢低布局</div>
-        <div class="sub">技術超賣 + 法說會催化 + Forward PE 僅 37.9x，下跌是機會</div>
-      </div>
-      <div class="conclusion-item">
-        <h4>目標價區間</h4>
-        <div class="val">2,000 – 2,440 元</div>
-        <div class="sub">法人多數：1,800-2,000元 ｜ 大和最高：2,440元</div>
-      </div>
-      <div class="conclusion-item">
-        <h4>最大風險</h4>
-        <div class="val">⚠️ 法說會利空</div>
-        <div class="sub">若Q2毛利率不如預期或下調展望，可能再跌至1,400-1,500元</div>
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <p style="font-size:14px; color:var(--text-muted);">
-      台達電是台灣 AI 電源基礎設施的絕對龍頭，Q1'26 EPS 7.91 元改寫單季紀錄，毛利率 37% 創歷史高，Jun月收 656億 YoY+55.4%。然而股價從 52 週高點 2,585 元下跌逾 38%，技術面已嚴重超賣（RSI 38.9，股價跌破布林下軌）。Forward PE（FY2026E）約 37.9x，相對成長速度（EPS 年增 >50%）已屬合理甚至偏便宜。<strong>7/30 法說會是最關鍵的近期催化劑</strong>，若管理層釋出正面展望，股價反彈空間可觀。建議在 1,550–1,700 元區間分批佈局，法說會前後酌量加碼。
-    </p>
-  </div>
-</div>
-
-<!-- 03 KPI BRICKS -->
-<div class="section">
-  <div class="section-title">關鍵財務 KPI <span class="section-num">03</span></div>
+  <div class="section-title">03 ｜ 關鍵財務 KPI</div>
   <div class="kpi-grid">
-    <div class="kpi-brick">
-      <div class="kpi-label">今日股價</div>
-      <div class="kpi-value kpi-neg">1,590元</div>
-      <div class="kpi-note">-165元（-9.4%），從高點-38.5%</div>
+    <div class="kpi-card">
+      <div class="val">7.91元</div>
+      <div class="lbl">Q1'26 EPS（單季歷史新高）</div>
+      <div class="hint">每股賺 7.91 元，比前一季 6.67 元多賺 18.6%，史上最強單季</div>
     </div>
-    <div class="kpi-brick">
-      <div class="kpi-label">Q1'26 EPS</div>
-      <div class="kpi-value kpi-pos">7.91元</div>
-      <div class="kpi-note">歷史單季新高！QoQ+18.6%</div>
+    <div class="kpi-card">
+      <div class="val">37.0%</div>
+      <div class="lbl">Q1'26 毛利率（歷史新高）</div>
+      <div class="hint">賣 100 元產品扣成本後剩 37 元毛利，AI 電源高附加值拉升</div>
     </div>
-    <div class="kpi-brick">
-      <div class="kpi-label">Q1'26 毛利率</div>
-      <div class="kpi-value kpi-pos">37.0%</div>
-      <div class="kpi-note">歷史最高，AI電源高毛利拉動</div>
+    <div class="kpi-card">
+      <div class="val">656億</div>
+      <div class="lbl">Jun'26 月收（YoY+55.4%）</div>
+      <div class="hint">6月單月創歷史新高，年增 55.4%，AI 資料中心訂單強勁</div>
     </div>
-    <div class="kpi-brick">
-      <div class="kpi-label">Jun月收（實際）</div>
-      <div class="kpi-value kpi-pos">656億</div>
-      <div class="kpi-note">YoY +55.4%，歷史最高月收！</div>
+    <div class="kpi-card">
+      <div class="val">1,833億</div>
+      <div class="lbl">Q2'26 季收（歷史季新高）</div>
+      <div class="hint">第二季季收歷史新高，YoY+47.75%，QoQ+15%，超越市場預期</div>
     </div>
-    <div class="kpi-brick">
-      <div class="kpi-label">TTM EPS</div>
-      <div class="kpi-value">27.11元</div>
-      <div class="kpi-note">近4季加總，TTM PE = 58.6x</div>
+    <div class="kpi-card">
+      <div class="val">27.11元</div>
+      <div class="lbl">TTM EPS（近四季合計）</div>
+      <div class="hint">過去一年每股合計賺 27.11 元，EPS 成長趨勢明確</div>
     </div>
-    <div class="kpi-brick">
-      <div class="kpi-label">Forward PE</div>
-      <div class="kpi-value kpi-pos">37.9x</div>
-      <div class="kpi-note">FY2026E EPS~42元，相對合理！</div>
+    <div class="kpi-card">
+      <div class="val">37.6x</div>
+      <div class="lbl">FY2026E Forward PE</div>
+      <div class="hint">以今年預估 EPS 42元計算，本益比 37.6倍，較股價高峰已大幅修正</div>
     </div>
-    <div class="kpi-brick">
-      <div class="kpi-label">市值</div>
-      <div class="kpi-value">4.14兆</div>
-      <div class="kpi-note">台股第二大，僅次台積電</div>
+    <div class="kpi-card">
+      <div class="val" style="color:#dc2626">24.3x</div>
+      <div class="lbl">FY2027E Forward PE（超吸引！）</div>
+      <div class="hint">以明年預估 EPS 65.1元計算，本益比僅 24.3倍，AI 電源龍頭歷史低估值</div>
     </div>
-    <div class="kpi-brick">
-      <div class="kpi-label">外資 7/27</div>
-      <div class="kpi-value kpi-pos">+897張</div>
-      <div class="kpi-note">外資逆勢買入，看好下半年</div>
+    <div class="kpi-card">
+      <div class="val">3,426億</div>
+      <div class="lbl">H1'26 累計營收（+41% YoY）</div>
+      <div class="hint">上半年累計創歷年同期新高，全年有望突破 7,500億</div>
     </div>
   </div>
 </div>
 
-<!-- 04 CHARTS -->
+<!-- 04 財務趨勢圖 -->
 <div class="section">
-  <div class="section-title">財務趨勢圖 <span class="section-num">04</span></div>
+  <div class="section-title">04 ｜ 財務趨勢圖（純 Canvas，零外部依賴）</div>
   <div class="chart-grid">
     <div class="chart-box">
-      <div class="chart-title">EPS 季度趨勢（元）</div>
-      <canvas id="epsChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
-      <div class="chart-note">★ Q1'26 EPS 7.91元改寫單季紀錄</div>
+      <h4>📊 季度 EPS 趨勢（元）</h4>
+      <canvas id="epsChart" width="280" height="200" style="width:100%;height:auto"></canvas>
+      <div class="chart-note">Q2'24 ～ Q1'26 ｜ 深綠色為最新季</div>
     </div>
     <div class="chart-box">
-      <div class="chart-title">月營收趨勢（億元）</div>
-      <canvas id="revChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
-      <div class="chart-note">★ Jun 月收 656億創歷史新高，YoY+55.4%</div>
+      <h4>📈 月營收趨勢（億元）</h4>
+      <canvas id="revChart" width="280" height="200" style="width:100%;height:auto"></canvas>
+      <div class="chart-note">2026年 Jan～Jun ｜ 6月創歷史月新高</div>
     </div>
     <div class="chart-box">
-      <div class="chart-title">本益比比較（Forward PE）</div>
-      <canvas id="peChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
-      <div class="chart-note">★ 台達電Forward PE已具吸引力</div>
+      <h4>📉 本益比比較（倍）</h4>
+      <canvas id="peChart" width="280" height="200" style="width:100%;height:auto"></canvas>
+      <div class="chart-note">台達電 vs 同業 vs 大盤</div>
     </div>
   </div>
 </div>
 
-<!-- 05 COMPANY OVERVIEW -->
+<!-- 05 公司概覽 -->
 <div class="section">
-  <div class="section-title">公司概覽 <span class="section-num">05</span></div>
-  <div class="card">
-    <p style="font-size:14px; margin-bottom:14px;">
-      台達電子（2308）為全球電源管理與散熱解決方案龍頭，創辦人鄭崇華，現任董事長鄭平（二代接班）。台達電 2026 年市值一度超越鴻海，成為台股第二大權值股（僅次台積電）。核心業務橫跨電源供應（PSU）、散熱管理、工業自動化、樓宇管理與能源基礎設施，受益於 <strong>AI 伺服器建置熱潮</strong>，電源與散熱事業大爆發。
-    </p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:13px;">
-      <div>
-        <strong>主要產品 / 應用</strong><br>
-        • <strong>AI 伺服器電源（PSU）</strong>：提供高功率密度電源，NVIDIA GB200 / B300 等最新平台供應商<br>
-        • <strong>±400V HVDC（高壓直流）</strong>：2026年量產，大幅提升資料中心效率<br>
-        • <strong>800V HVDC</strong>：2026H2 小量出貨，2027 年放量，下一代資料中心標配<br>
-        • <strong>液冷散熱系統</strong>：CDU（冷卻分配單元）+ 水冷板 + 風扇牆完整方案<br>
-        • <strong>BBU（備用電源）</strong>：AI 資料中心不斷電系統需求暴增
-      </div>
-      <div>
-        <strong>護城河分析（深達 3 層）</strong><br>
-        • <strong>技術護城河</strong>：HVDC 架構設計與 3000W 功率密度技術，競爭者難以短期複製<br>
-        • <strong>客戶黏著度</strong>：AI 超大規模客戶（Microsoft/Google/Meta）長期合約綁定<br>
-        • <strong>完整解決方案</strong>：從電源 → 散熱 → 能源管理，一站式服務降低客戶切換意願<br>
-        • <strong>全球產能</strong>：台灣（主力）+ 泰國 + 中國 + 美國，地緣政治風險分散<br>
-        • <strong>傳英飛凌簽 650 億碳化矽長約</strong>（尚未確認），確保次世代功率元件供應
-      </div>
+  <div class="section-title">05 ｜ 公司概覽</div>
+  <div class="two-col">
+    <div>
+      <h4 style="color:#15803d;margin-bottom:10px">🏢 業務結構</h4>
+      <p style="font-size:.88rem;color:#475569;margin-bottom:12px">台達電成立於 1971 年，總部台北，為全球電源管理解決方案龍頭，三大事業群：</p>
+      <ul style="font-size:.88rem;color:#475569;padding-left:18px;line-height:2">
+        <li><strong>電源及零組件（~50%）</strong>：AI 伺服器 PSU、HVDC（高壓直流電）、BBU（備用電源）</li>
+        <li><strong>基礎設施（~30%）</strong>：液冷散熱、UPS、資料中心整體解決方案</li>
+        <li><strong>自動化（~20%）</strong>：工業自動化、EV 充電樁、樓宇自動化</li>
+      </ul>
     </div>
-    <div style="margin-top:14px;font-size:13px;padding:12px;background:#f0fdf4;border-radius:8px;">
-      <strong>📋 最新法說會重點（2026年5月）：</strong>Q1'26 合併營收 1,593.53 億（YoY+34%），毛利率 37% 歷史新高，營益率 17.83%。±400V HVDC 今年出貨，800V 架構 2027 年進入主要貢獻期。產能吃緊，美國/中國/泰國/台灣同步擴產，資本支出再創新高。
-    </div>
-  </div>
-</div>
-
-<!-- 06 FUNDAMENTAL ANALYSIS -->
-<div class="section">
-  <div class="section-title">基本面分析 <span class="section-num">06</span></div>
-  <div class="card">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
-      <div>
-        <p style="font-weight:600;margin-bottom:12px;">評分指標</p>
-        <div class="score-row">
-          <div class="score-label"><span>營收成長力</span><span>9/10</span></div>
-          <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:#15803d;"></div></div>
-        </div>
-        <div class="score-row">
-          <div class="score-label"><span>毛利率水準</span><span>9/10</span></div>
-          <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:#059669;"></div></div>
-        </div>
-        <div class="score-row">
-          <div class="score-label"><span>EPS 成長性</span><span>9/10</span></div>
-          <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:#16a34a;"></div></div>
-        </div>
-        <div class="score-row">
-          <div class="score-label"><span>估值合理性</span><span>7/10</span></div>
-          <div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:#65a30d;"></div></div>
-        </div>
-        <div class="score-row">
-          <div class="score-label"><span>產業地位</span><span>10/10</span></div>
-          <div class="score-bar-bg"><div class="score-bar-fill" style="width:100%;background:#84cc16;"></div></div>
-        </div>
-        <div class="score-row">
-          <div class="score-label"><span>財務穩健度</span><span>8/10</span></div>
-          <div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:#22c55e;"></div></div>
-        </div>
-      </div>
-      <div>
-        <p style="font-weight:600;margin-bottom:12px;">季度財報明細</p>
-        <div class="table-wrap">
-          <table class="data-table">
-            <thead><tr><th>季度</th><th class="text-right">EPS(元)</th><th class="text-right">毛利率</th><th class="text-right">營益率</th></tr></thead>
-            <tbody>
-              <tr><td>Q2'24</td><td class="text-right">3.83</td><td class="text-right">34.13%</td><td class="text-right">12.70%</td></tr>
-              <tr><td>Q3'24</td><td class="text-right">4.75</td><td class="text-right">34.93%</td><td class="text-right">14.64%</td></tr>
-              <tr><td>Q4'24</td><td class="text-right">2.76</td><td class="text-right">30.77%</td><td class="text-right">9.37%</td></tr>
-              <tr><td>Q1'25</td><td class="text-right">3.94</td><td class="text-right">31.78%</td><td class="text-right">11.80%</td></tr>
-              <tr><td>Q2'25</td><td class="text-right">5.37</td><td class="text-right">35.51%</td><td class="text-right">15.05%</td></tr>
-              <tr><td>Q3'25</td><td class="text-right">7.16</td><td class="text-right">34.87%</td><td class="text-right">16.50%</td></tr>
-              <tr><td>Q4'25</td><td class="text-right">6.67</td><td class="text-right">34.59%</td><td class="text-right">16.35%</td></tr>
-              <tr style="background:#f0fdf4;"><td><strong>Q1'26</strong></td><td class="text-right"><strong style="color:#15803d;">7.91</strong></td><td class="text-right"><strong style="color:#15803d;">37.00%</strong></td><td class="text-right"><strong>17.83%</strong></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <div style="margin-top:16px;padding:14px;background:#f0fdf4;border-radius:8px;font-size:13px;">
-      <strong>💡 白話解說：</strong>台達電每賣 100 元的電源或散熱設備，可以留下 37 元的毛利，這在台灣製造業中屬於極高水準（台積電 67%、台達電 37%、一般製造業約 10-20%）。毛利率持續上升代表產品越來越難被取代，客戶願意付出更高的溢價。法人預估 FY2026 全年 EPS 約 42 元，是 2024 年全年（~16元）的 2.6 倍。
-    </div>
-  </div>
-</div>
-
-<!-- 07 INSTITUTIONAL ANALYSIS -->
-<div class="section">
-  <div class="section-title">籌碼面分析 <span class="section-num">07</span></div>
-  <div class="card">
-    <div class="fund-grid">
-      <div class="fund-card">
-        <div class="fund-label">外資 7/27</div>
-        <div class="fund-value kpi-pos">+897張</div>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">逆勢買入，看好下半年前景</div>
-      </div>
-      <div class="fund-card">
-        <div class="fund-label">投信 7/27</div>
-        <div class="fund-value kpi-neg">-1,085張</div>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">本土基金法說前減碼，觀望</div>
-      </div>
-      <div class="fund-card">
-        <div class="fund-label">自營商 7/27</div>
-        <div class="fund-value kpi-neg">-159張</div>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">小幅賣超，偏中性</div>
-      </div>
-      <div class="fund-card">
-        <div class="fund-label">合計 7/27</div>
-        <div class="fund-value kpi-neg">-345張</div>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">外資看多，投信觀望</div>
-      </div>
-    </div>
-    <div style="margin-top:20px;">
-      <p style="font-weight:600;margin-bottom:12px;font-size:14px;">外資法人評等摘要</p>
-      <div class="table-wrap">
-        <table class="data-table">
-          <thead><tr><th>機構</th><th>評等</th><th class="text-right">目標價</th><th>重點觀點</th></tr></thead>
-          <tbody>
-            <tr><td>大和資本</td><td><span class="tag tag-strong-buy">強力買進</span></td><td class="text-right">2,440元</td><td>HVDC 架構引領下世代革命</td></tr>
-            <tr><td>本土法人（最高）</td><td><span class="tag tag-strong-buy">強力買進</span></td><td class="text-right">2,800元</td><td>AI電源+液冷雙引擎，EPS成長確定</td></tr>
-            <tr><td>元大/中信投顧</td><td><span class="tag tag-buy">買進</span></td><td class="text-right">1,300–1,325元</td><td>FY2026E EPS 36.9-57.7元，PE 28-30x</td></tr>
-            <tr><td>美系大行</td><td><span class="tag tag-buy">買進</span></td><td class="text-right">上調中</td><td>FY2026-28E EPS 41.5/65.1/98.5元</td></tr>
-            <tr><td>日系（日系法人）</td><td><span class="tag tag-buy">買進</span></td><td class="text-right">1,000–1,050元</td><td>BBU + 液冷，PE 30x新常態</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div style="margin-top:14px;padding:12px;background:#fffbeb;border-radius:8px;font-size:13px;">
-      <strong>🔍 籌碼解讀：</strong>投信（台灣本土基金）在法說會前賣超 -1,085 張，可能是「先獲利了結，等法說後再決策」的策略性操作，而非看壞基本面。外資逆勢買入 +897 張，顯示國際大資金判斷當前1,590元為相對低估水位。外資與投信分歧，需觀察 7/30 法說會後籌碼方向。
-    </div>
-  </div>
-</div>
-
-<!-- 08 TECHNICAL ANALYSIS -->
-<div class="section">
-  <div class="section-title">技術分析 <span class="section-num">08</span></div>
-  <div class="card">
-    <div class="tech-grid">
-      <div>
-        <p style="font-weight:600;margin-bottom:10px;">均線系統（今日 1,590 元）</p>
-        <div class="ma-row"><span class="ma-label">MA5</span><span class="ma-val" style="color:#dc2626;">1,827 元（股價大幅破下）⬇⬇</span></div>
-        <div class="ma-row"><span class="ma-label">MA10</span><span class="ma-val" style="color:#dc2626;">1,823 元（股價大幅破下）⬇⬇</span></div>
-        <div class="ma-row"><span class="ma-label">MA20</span><span class="ma-val" style="color:#dc2626;">1,883 元（股價大幅破下）⬇⬇</span></div>
-        <div class="ma-row"><span class="ma-label">MA60</span><span class="ma-val" style="color:#dc2626;">2,094 元（空頭最後防線）⬇⬇</span></div>
-        <div style="margin-top:12px;font-size:12px;background:#fff1f2;border-radius:6px;padding:10px;color:#9f1239;">
-          ⚠️ 股價在四條均線下方，短中長期均線全面空頭。但這也意味著深度超賣，往往是逆向布局的好時機。
-        </div>
-        <p style="font-weight:600;margin-top:14px;margin-bottom:10px;">MACD / RSI / 布林（超賣警示）</p>
-        <div class="ma-row"><span class="ma-label">MACD</span><span class="ma-val">DIF -76.82 / DEA -76.44 → <span style="color:#dc2626;">死叉（負值區）</span></span></div>
-        <div class="ma-row"><span class="ma-label">RSI</span><span class="ma-val">38.94（<span style="color:#d97706;">接近超賣 30 關卡</span>）</span></div>
-        <div class="ma-row"><span class="ma-label">布林下軌</span><span class="ma-val" style="color:#dc2626;font-weight:700;">1,707 元（<u>股價已跌破！</u>）</span></div>
-        <div style="margin-top:8px;background:#fef9c3;border-radius:6px;padding:10px;font-size:12px;color:#78350f;">
-          💡 股價跌破布林下軌是<strong>極度超賣</strong>訊號，歷史上往往伴隨短期技術性反彈，但需基本面催化劑（法說會）配合。
-        </div>
-      </div>
-      <div>
-        <p style="font-weight:600;margin-bottom:10px;">關鍵價位</p>
-        <div class="table-wrap">
-          <table class="data-table">
-            <thead><tr><th>類型</th><th>價位</th><th>說明</th></tr></thead>
-            <tbody>
-              <tr><td>歷史高點</td><td>2,585 元</td><td>52週最高（2026年高點）</td></tr>
-              <tr><td>強壓力</td><td>2,094 元</td><td>MA60，下降趨勢主要壓力</td></tr>
-              <tr><td>次壓力</td><td>1,883 元</td><td>MA20，短期反彈重要關口</td></tr>
-              <tr><td>布林下軌</td><td>1,707 元</td><td>超賣邊界，已跌破（嚴重）</td></tr>
-              <tr><td><strong>當前支撐</strong></td><td><strong>1,550–1,600 元</strong></td><td>整數關卡 + 近期低點區間</td></tr>
-              <tr><td>強支撐</td><td>1,400–1,450 元</td><td>2025年底–2026年初密集交易區</td></tr>
-              <tr><td>極端支撐</td><td>1,200 元</td><td>多年強力支撐，低概率但需防守</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div style="margin-top:12px;padding:12px;background:#f0fdf4;border-radius:8px;font-size:12px;">
-          <strong>走勢摘要：</strong>52週低點 516元 → 高點 2,585元（+400%）急漲後，進入大幅回調整理。從高點 2,585元至今跌幅 -38.5%，RSI 逼近 30 超賣區，技術面反彈條件成熟，但需等待 7/30 法說會提供基本面支撐。
-        </div>
+    <div>
+      <h4 style="color:#15803d;margin-bottom:10px">🏆 核心護城河</h4>
+      <div style="font-size:.88rem;color:#475569;line-height:2">
+        <div>🔋 <strong>AI 電源全系列</strong>：±400V（2026年出貨）、800V（2027年放量）、固態變壓器（2028-29）</div>
+        <div>❄️ <strong>液冷散熱技術領先</strong>：高毛利產品，拉升 Q1'26 毛利率至歷史新高 37%</div>
+        <div>🌍 <strong>AI 佔比約 40%</strong>：持續擴廠搶產能，董座確認「還要再建新廠」</div>
+        <div>📐 <strong>HVDC 技術壁壘</strong>：Vera Rubin 世代功耗需求，強化應用，技術領先同業</div>
+        <div>📈 <strong>2026 市值一度超越鴻海</strong>，成台股第二大權值股</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 09 MARGIN -->
+<!-- 06 基本面分析 -->
 <div class="section">
-  <div class="section-title">融資融券 <span class="section-num">09</span></div>
-  <div class="card">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-      <div>
-        <p style="font-weight:600;margin-bottom:10px;">融資融券現況（7/27）</p>
-        <div class="table-wrap">
-          <table class="data-table">
-            <thead><tr><th>項目</th><th class="text-right">數值</th></tr></thead>
-            <tbody>
-              <tr><td>融資餘額</td><td class="text-right">—</td></tr>
-              <tr><td>融券餘額</td><td class="text-right">—</td></tr>
-              <tr><td>資券比</td><td class="text-right">—</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">
-          FinMind 目前未回傳台達電（2308）融資融券明細。建議至 <a href="https://www.twse.com.tw" target="_blank">TWSE 官網</a> → 信用交易 → 每日融資融券餘額，以代碼 2308 查詢最新數據。
-        </p>
-      </div>
-      <div>
-        <p style="font-weight:600;margin-bottom:10px;">融資融券風險趨勢判讀</p>
-        <div style="background:#f8fafc;border-radius:8px;padding:14px;font-size:13px;">
-          <p style="margin-bottom:8px;">📊 <strong>融資（多頭散戶）：</strong>台達電從 516 → 2,585元的急漲期間，可能吸引大量散戶融資追高。股價急跌 -38% 可能引發融資斷頭賣壓，這部分是造成近期拋壓沉重的原因之一。</p>
-          <p style="margin-bottom:8px;">📉 <strong>融券（放空）：</strong>股票下跌期間空頭可能增加融券放空，但若法說會後消息正面，可能引發融券軋空反彈（squeeze）。</p>
-          <p style="font-size:11px;color:var(--text-muted);">台達電屬台股第二大市值股，融資比例通常較低（大戶持股比例高），融資斷頭風險相對有限，但仍需密切追蹤。</p>
-        </div>
-      </div>
+  <div class="section-title">06 ｜ 基本面分析</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+    <span class="tag tag-green">獲利能力 ★★★★★</span>
+    <span class="tag tag-green">成長性 ★★★★★</span>
+    <span class="tag tag-yellow">估值 ★★★☆☆</span>
+    <span class="tag tag-green">財務結構 ★★★★☆</span>
+  </div>
+  <table>
+    <thead><tr><th>季度</th><th>EPS（元）</th><th>毛利率</th><th>營業利益率</th><th>EPS QoQ</th></tr></thead>
+    <tbody>
+      <tr><td>Q2'24</td><td>3.83</td><td>34.13%</td><td>12.70%</td><td>—</td></tr>
+      <tr><td>Q3'24</td><td>4.75</td><td>34.93%</td><td>14.64%</td><td><span class="tag tag-green">+24%</span></td></tr>
+      <tr><td>Q4'24</td><td>2.76</td><td>30.77%</td><td>9.37%</td><td><span class="tag tag-red">-42%</span></td></tr>
+      <tr><td>Q1'25</td><td>3.94</td><td>31.78%</td><td>11.80%</td><td><span class="tag tag-green">+43%</span></td></tr>
+      <tr><td>Q2'25</td><td>5.37</td><td>35.51%</td><td>15.05%</td><td><span class="tag tag-green">+36%</span></td></tr>
+      <tr><td>Q3'25</td><td>7.16</td><td>34.87%</td><td>16.50%</td><td><span class="tag tag-green">+33%</span></td></tr>
+      <tr><td>Q4'25</td><td>6.67</td><td>34.59%</td><td>16.35%</td><td><span class="tag tag-red">-7%</span></td></tr>
+      <tr style="background:#f0fdf4"><td><strong>Q1'26★</strong></td><td><strong>7.91</strong></td><td><strong>37.00%</strong></td><td><strong>17.83%</strong></td><td><span class="tag tag-green">+19%</span></td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.83rem;color:#64748b;margin-top:10px">★ 最新季度 ｜ Q1'26 EPS 及毛利率雙雙創歷史新高，毛利率突破 37% 是市場重要里程碑</p>
+</div>
+
+<!-- 07 籌碼面分析 -->
+<div class="section">
+  <div class="section-title">07 ｜ 籌碼面分析（三大法人）</div>
+  <p style="font-size:.83rem;color:#64748b;margin-bottom:12px">最新資料日期：2026-07-27（盤後），今日 7/28 三大法人於收盤後 18:00 更新</p>
+  <div class="inst-grid">
+    <div class="inst-card inst-buy">
+      <div class="inst-val">+897 張</div>
+      <div class="inst-lbl">🌍 外資（買超）</div>
+    </div>
+    <div class="inst-card inst-sell">
+      <div class="inst-val">-1,085 張</div>
+      <div class="inst-lbl">🏦 投信（賣超）</div>
+    </div>
+    <div class="inst-card inst-sell">
+      <div class="inst-val">-159 張</div>
+      <div class="inst-lbl">🏢 自營商（賣超）</div>
+    </div>
+  </div>
+  <div style="background:#fff7ed;border-left:4px solid #f59e0b;padding:12px 16px;border-radius:6px;margin-bottom:16px;font-size:.88rem">
+    ⚠ 三大法人合計 <strong>-345 張（賣超）</strong>。投信大賣 1,085 張為顯著賣壓，但外資逆勢買超 897 張，顯示國際資金仍看好長線。
+  </div>
+  <h4 style="margin-bottom:12px;color:#374151">外資法人目標價彙整</h4>
+  <div class="analyst-cards">
+    <div class="analyst-card">
+      <div class="a-bank">大和（日系）</div>
+      <div class="a-target">2,440 元</div>
+      <div class="a-rating"><span class="tag tag-green">買進 Buy</span></div>
+    </div>
+    <div class="analyst-card">
+      <div class="a-bank">歐系外資</div>
+      <div class="a-target">2,750 元</div>
+      <div class="a-rating"><span class="tag tag-green">買進</span></div>
+    </div>
+    <div class="analyst-card">
+      <div class="a-bank">富邦投顧</div>
+      <div class="a-target">2,200 元</div>
+      <div class="a-rating"><span class="tag tag-green">看多</span></div>
+    </div>
+    <div class="analyst-card">
+      <div class="a-bank">凱基投顧</div>
+      <div class="a-target">2,308 元</div>
+      <div class="a-rating"><span class="tag tag-green">買進</span></div>
+    </div>
+    <div class="analyst-card">
+      <div class="a-bank">本土法人</div>
+      <div class="a-target">2,800 元</div>
+      <div class="a-rating"><span class="tag tag-green">強力買進</span></div>
+    </div>
+    <div class="analyst-card">
+      <div class="a-bank">FactSet 共識</div>
+      <div class="a-target">FY26E 42元</div>
+      <div class="a-rating"><span class="tag tag-blue">EPS 共識</span></div>
     </div>
   </div>
 </div>
 
-<!-- 10 DEBATE -->
+<!-- 08 技術分析 -->
 <div class="section">
-  <div class="section-title">研究員辯論：看多 vs 看空 <span class="section-num">10</span></div>
+  <div class="section-title">08 ｜ 技術分析</div>
+  <div class="tech-card">
+    <div style="font-size:.8rem;color:#64748b">均線系統</div>
+    <div class="tech-val" style="color:#dc2626">全面空頭排列 ⚠</div>
+    <div style="font-size:.83rem;color:#475569;margin-top:6px">股價 1,580 深跌破所有均線：MA5 1,827 / MA10 1,823 / MA20 1,883 / MA60 2,095。短中長線皆空，反彈需先突破 MA5（1,827）。</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div class="tech-card">
+      <div style="font-size:.8rem;color:#64748b">MACD</div>
+      <div class="tech-val" style="color:#dc2626">死叉（賣出訊號）</div>
+      <div style="font-size:.83rem;color:#475569;margin-top:4px">DIF -76.82 / DEA -76.44 / OSC -0.38。快線低於慢線，動能偏弱。</div>
+    </div>
+    <div class="tech-card">
+      <div style="font-size:.8rem;color:#64748b">RSI（14日）</div>
+      <div class="tech-val" style="color:#f59e0b">38.9 — 接近超賣區</div>
+      <div style="font-size:.83rem;color:#475569;margin-top:4px">RSI 38.9 接近超賣（30以下），若繼續下跌至 30 以下，技術反彈機率增加。</div>
+    </div>
+    <div class="tech-card">
+      <div style="font-size:.8rem;color:#64748b">布林通道</div>
+      <div class="tech-val" style="color:#f59e0b">已跌破中軌，朝下軌移動</div>
+      <div style="font-size:.83rem;color:#475569;margin-top:4px">上軌 2,059 / 中軌 1,883 / 下軌 1,707。1,580 已跌破中軌，下軌支撐約 1,707。</div>
+    </div>
+    <div class="tech-card">
+      <div style="font-size:.8rem;color:#64748b">關鍵支撐壓力</div>
+      <div class="tech-val">支撐：1,500 ／ 壓力：1,707</div>
+      <div style="font-size:.83rem;color:#475569;margin-top:4px">1,500-1,550 為整數強支撐；反彈首要過關 1,707（布林下軌），再攻 1,827（MA5）。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <div class="section-title">09 ｜ 融資融券</div>
+  <div style="background:#f8fafc;border-radius:8px;padding:16px;font-size:.88rem;color:#475569">
+    <p style="margin-bottom:8px">FinMind 資料（2026-07-27）顯示融資融券餘額為 0，推測原因：</p>
+    <ul style="padding-left:18px;line-height:2">
+      <li>台達電為高股價股（1,580元），散戶融資成本極高，籌碼由法人主導</li>
+      <li>台達電多由外資及大型機構持有，融資融券比例本就偏低</li>
+      <li>建議至<strong>台灣證交所官網</strong>或券商平台查詢最新融資融券數據</li>
+    </ul>
+    <p style="margin-top:10px">📌 <strong>趨勢判讀</strong>：今日大跌伴隨高成交量，推測為法人調節賣壓，無明顯融券軋空風險。外資昨日逆勢買超 897 張，待外資轉為連續買超訊號出現再積極布局。</p>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <div class="section-title">10 ｜ 研究員辯論：看多 vs 看空</div>
   <div class="debate-grid">
-    <div class="bull-box">
-      <div class="debate-title" style="color:#059669;">🐂 看多研究員（65%權重）</div>
-      <div class="debate-item"><span class="icon">1️⃣</span><span><strong>Forward PE 回落至合理區：</strong>1,590元對應 FY2026E EPS 42元，Forward PE 約 37.9x，相對 EPS 年增幅 >50%，PEG 不到 1，成長性充分定價，已屬合理甚至低估。</span></div>
-      <div class="debate-item"><span class="icon">2️⃣</span><span><strong>月收連創紀錄：</strong>Jun 2026 月收 656億（YoY+55.4%），Q2'26 合計 1,832億（創單季新高）。AI 資料中心建置浪潮持續推動訂單能見度高。</span></div>
-      <div class="debate-item"><span class="icon">3️⃣</span><span><strong>毛利率強勢爬升：</strong>Q1'26 毛利率 37%（歷史最高），較 2024 年 Q4 30.77% 大幅提升 6.23pp，HVDC 高附加價值產品占比提升是主驅動力。</span></div>
-      <div class="debate-item"><span class="icon">4️⃣</span><span><strong>800V HVDC 是未來 2-3 年主催化劑：</strong>2027 年進入主要貢獻期，EPS 估算 FY2027E 65.1元、FY2028E 98.5元（美系大行），目前股價相當於 FY2027E PE 僅 24.5x，極為便宜。</span></div>
-      <div class="debate-item"><span class="icon">5️⃣</span><span><strong>外資逆勢加碼 +897 張：</strong>7/27 跌勢中外資反向買超，顯示國際機構法人在當前價位開始建立多頭倉位，視為看多訊號。</span></div>
-      <div class="debate-item"><span class="icon">6️⃣</span><span><strong>7/30 法說會有望扭轉情緒：</strong>Q2'26 營收創新高，若管理層確認 H2 展望正面、毛利率維持高檔，將為股價提供強力支撐，技術反彈空間至少 1,700–1,900 元。</span></div>
+    <div class="bull-card">
+      <h4>🟢 看多研究員（55%）</h4>
+      <div class="debate-item"><div class="debate-num bull-num">1</div><div><strong>Q1'26 EPS 7.91元、毛利率 37.0% 雙創歷史新高</strong>，AI 電源高附加值顯著拉升獲利品質</div></div>
+      <div class="debate-item"><div class="debate-num bull-num">2</div><div><strong>Jun'26 月收 656億（YoY+55.4%）創月新高</strong>，Q2'26 季收 1,833億（YoY+47.75%）創季新高，需求趨勢不可逆</div></div>
+      <div class="debate-item"><div class="debate-num bull-num">3</div><div><strong>FY2027E Forward PE 僅 24.3x</strong>（EPS 65.1元），以 AI 電源全球霸主換 24 倍，歷史性低估值機會</div></div>
+      <div class="debate-item"><div class="debate-num bull-num">4</div><div><strong>±400V 2026 出貨、800V 2027 放量</strong>，次世代電源規格升級週期清晰，未來兩年 EPS 成長動能確定</div></div>
+      <div class="debate-item"><div class="debate-num bull-num">5</div><div><strong>H1'26 累計 3,426億（+41% YoY）</strong>，全年上看 7,500億，遠優於同業</div></div>
+      <div class="debate-item"><div class="debate-num bull-num">6</div><div><strong>法說會 7/30（後天）</strong>是最大近期催化劑，若 Q2 毛利率 ≥36%，股價有望快速反彈 1,800－1,900</div></div>
+      <div class="debate-item"><div class="debate-num bull-num">7</div><div><strong>Kyber 延遲不影響 2026 訂單</strong>，現有電源規格已廣泛服務 NVL36/72，Kyber 是 2028 題材，近期業績不受影響</div></div>
     </div>
-    <div class="bear-box">
-      <div class="debate-title" style="color:#dc2626;">🐻 看空研究員（35%權重）</div>
-      <div class="debate-item"><span class="icon">1️⃣</span><span><strong>技術面空頭排列，無一不空：</strong>股價在 MA5(1827) / MA10(1823) / MA20(1883) / MA60(2094) 四條均線下方，且已跌破布林下軌(1707)，動能指標一面倒偏空。</span></div>
-      <div class="debate-item"><span class="icon">2️⃣</span><span><strong>從高點下跌 -38.5%，融資斷頭賣壓未必結束：</strong>2,585 → 1,590 元，幅度驚人。若融資戶持有大量籌碼，斷頭拋售可能持續打壓至 1,400–1,500 元。</span></div>
-      <div class="debate-item"><span class="icon">3️⃣</span><span><strong>投信連續賣超 -1,085 張：</strong>法說會前本土基金減碼，若法說會釋出任何保守展望（如毛利率不如預期），投信恐繼續大賣，引發踩踏。</span></div>
-      <div class="debate-item"><span class="icon">4️⃣</span><span><strong>競爭加劇風險：</strong>Vertiv（美）、施耐德（法）、博大科技（台）等在 AI 資料中心電源市場積極搶進，台達電 37% 毛利率能否長期維持存在不確定性。</span></div>
-      <div class="debate-item"><span class="icon">5️⃣</span><span><strong>法說會利空風險：</strong>若 Q2 毛利率遜於 Q1（37%），或管理層下調 H2 展望，股價可能再跌至 1,400–1,500 元，形成另一波下殺。</span></div>
-      <div class="debate-item"><span class="icon">6️⃣</span><span><strong>地緣政治與出口管制：</strong>美國若擴大 AI 晶片出口管制，可能衝擊 GPU 伺服器採購量，連帶影響台達電電源需求。中國大陸廠若受到限制，生產基地風險需評估。</span></div>
+    <div class="bear-card">
+      <h4>🔴 看空研究員（45%）</h4>
+      <div class="debate-item"><div class="debate-num bear-num">1</div><div><strong>NVIDIA Kyber NVL144 量產延至 2028</strong>，市場原預期 2026-2027 大量 HVDC 需求，延遲打亂投資主題，估值承壓</div></div>
+      <div class="debate-item"><div class="debate-num bear-num">2</div><div><strong>Q2'26 毛利率恐低於 Q1</strong>，市場預估約 35-36%（Q1'26 為 37%），法人下修 PE 從 45x 至 38x</div></div>
+      <div class="debate-item"><div class="debate-num bear-num">3</div><div><strong>技術面全面破線</strong>，MA5/10/20/60 全部高於 1,580，技術性空頭排列，短線難見突破</div></div>
+      <div class="debate-item"><div class="debate-num bear-num">4</div><div><strong>投信連續賣超</strong>，7/27 投信 -1,085 張力道強勁，本土法人減碼，散戶信心受損</div></div>
+      <div class="debate-item"><div class="debate-num bear-num">5</div><div><strong>較高峰下跌 38.9%</strong>（2,585→1,580），下跌週期中逢彈即賣心態主導，需時間整理</div></div>
+      <div class="debate-item"><div class="debate-num bear-num">6</div><div><strong>TTM PE 仍 58.3x</strong>，若 Q2 業績不如預期，市場或進一步下修至 35-40x FY2026E，對應 1,470-1,680元</div></div>
     </div>
   </div>
-  <div class="card" style="margin-top:16px;">
-    <p style="font-size:14px;"><strong>🗣️ 給一般投資人的話：</strong>台達電的基本面仍然優秀（EPS 成長、毛利率創高、月收破紀錄），目前下跌主要來自「估值修正」（從過高回到合理）而非「基本面惡化」。這就好比你認為某款名牌手錶值 5 萬，結果暫時降到 3 萬賣。品質沒變，但你要確認 7/30 法說會不會傳出壞消息。<strong>建議等待法說會後再決策</strong>，或在法說會前小量試水溫，確認正面消息後加碼。
-    </p>
-  </div>
-</div>
-
-<!-- 11 RISK -->
-<div class="section">
-  <div class="section-title">風控評估 <span class="section-num">11</span></div>
-  <div class="card">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
-      <div>
-        <p style="font-weight:600;margin-bottom:14px;">六維評分（10分越高越危險）</p>
-        <div class="score-row">
-          <div class="score-label"><span>估值風險（30%）</span><span style="color:#059669;font-weight:700;">4/10</span></div>
-          <div class="score-bar-bg"><div class="score-bar-fill" style="width:40%;background:#059669;"></div></div>
-        </div>
-        <div class="score-row">
-          <div class="score-label"><span>財務風險（25%）</span><span style="color:#059669;font-weight:700;">2/10</span></div>
-          <div class="score-bar-bg"><div class="score-bar-fill" style="width:20%;background:#10b981;"></div></div>
-        </div>
-        <div class="score-row">
-          <div class="score-label"><span>流動性風險（10%）</span><span style="color:#059669;font-weight:700;">2/10</span></div>
-          <div class="score-bar-bg"><div class="score-bar-fill" style="width:20%;background:#10b981;"></div></div>
-        </div>
-        <div class="score-row">
-          <div class="score-label"><span>產業風險（15%）</span><span style="color:#65a30d;font-weight:700;">4/10</span></div>
-          <div class="score-bar-bg"><div class="score-bar-fill" style="width:40%;background:#65a30d;"></div></div>
-        </div>
-        <div class="score-row">
-          <div class="score-label"><span>總經風險（10%）</span><span style="color:#f59e0b;font-weight:700;">6/10</span></div>
-          <div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:#f59e0b;"></div></div>
-        </div>
-        <div class="score-row">
-          <div class="score-label"><span>籌碼風險（10%）</span><span style="color:#f59e0b;font-weight:700;">7/10</span></div>
-          <div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:#f59e0b;"></div></div>
-        </div>
-        <div style="margin-top:16px;padding:14px;background:#f0fdf4;border-radius:8px;text-align:center;">
-          <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">綜合加權風險評分</div>
-          <div style="font-size:2rem;font-weight:800;color:#15803d;">4.5 / 10</div>
-          <div><span class="risk-badge risk-mid">中等風險（偏低）</span></div>
-        </div>
-      </div>
-      <div>
-        <p style="font-weight:600;margin-bottom:14px;">風控說明</p>
-        <div style="font-size:13px;display:flex;flex-direction:column;gap:10px;">
-          <div style="background:#f0fdf4;border-radius:8px;padding:10px 14px;">
-            <strong style="color:#15803d;">估值風險 4/10（低中）</strong><br>
-            Forward PE 37.9x（FY2026E 42元），與成長速度相符。若股價跌至 1,400-1,500元，Forward PE 降至 33-36x，更具吸引力。
-          </div>
-          <div style="background:#f0fdf4;border-radius:8px;padding:10px 14px;">
-            <strong style="color:#059669;">財務風險 2/10（極低）</strong><br>
-            毛利率 37% 歷史最高，EPS 連續成長，現金流充裕，母公司台達電集團財務極為穩健。
-          </div>
-          <div style="background:#fef9c3;border-radius:8px;padding:10px 14px;">
-            <strong style="color:#d97706;">籌碼風險 7/10（偏高）</strong><br>
-            從高點下跌 -38.5%，融資斷頭賣壓尚未完全消化，投信賣超，短期籌碼面不穩。法說會前為高不確定性窗口。
-          </div>
-          <div style="background:#fef9c3;border-radius:8px;padding:10px 14px;">
-            <strong style="color:#d97706;">總經風險 6/10（中）</strong><br>
-            美國 AI 出口管制範圍若擴大，可能影響 GPU 伺服器採購量；中美貿易摩擦影響中國廠運作。
-          </div>
-        </div>
-      </div>
-    </div>
+  <div style="background:#f0fdf4;border-radius:8px;padding:16px;margin-top:16px;font-size:.88rem">
+    <strong>📢 給一般投資人的話：</strong>台達電基本面非常優秀，但短期市場被 Kyber 延遲嚇到。最關鍵的近期事件是 <strong>7/30 法說會</strong>，若 Q2 毛利率優於 36% 且管理層給出正向 Q3 展望，股價可能快速反彈。建議不要孤注一擲，1,500-1,650 小量分批是比較穩健的做法。
   </div>
 </div>
 
-<!-- 12 STRATEGY -->
+<!-- 11 風控評估 -->
 <div class="section">
-  <div class="section-title">台股三段式操作策略 <span class="section-num">12</span></div>
+  <div class="section-title">11 ｜ 風控評估</div>
+  <div style="text-align:center;margin-bottom:20px">
+    <div style="font-size:3rem;font-weight:900;color:#f59e0b">4.5 <span style="font-size:1.2rem">/ 10</span></div>
+    <span class="tag tag-yellow" style="font-size:.9rem;padding:6px 20px">中等風險</span>
+    <div style="font-size:.83rem;color:#64748b;margin-top:8px">財務極健康、估值已大幅修正，主要風險來自 Kyber 延遲與短期技術面弱勢</div>
+  </div>
+  <div class="score-row"><div class="score-label">估值風險(30%)</div><div class="score-track"><div class="score-bar" style="width:50%;background:#f59e0b"></div></div><div class="score-val" style="color:#f59e0b">5.0</div></div>
+  <div class="score-row"><div class="score-label">財務風險(25%)</div><div class="score-track"><div class="score-bar" style="width:20%;background:#22c55e"></div></div><div class="score-val" style="color:#22c55e">2.0</div></div>
+  <div class="score-row"><div class="score-label">流動性風險(10%)</div><div class="score-track"><div class="score-bar" style="width:15%;background:#22c55e"></div></div><div class="score-val" style="color:#22c55e">1.5</div></div>
+  <div class="score-row"><div class="score-label">產業風險(15%)</div><div class="score-track"><div class="score-bar" style="width:55%;background:#f59e0b"></div></div><div class="score-val" style="color:#f59e0b">5.5</div></div>
+  <div class="score-row"><div class="score-label">總經風險(10%)</div><div class="score-track"><div class="score-bar" style="width:50%;background:#f59e0b"></div></div><div class="score-val" style="color:#f59e0b">5.0</div></div>
+  <div class="score-row"><div class="score-label">籌碼風險(10%)</div><div class="score-track"><div class="score-bar" style="width:50%;background:#f59e0b"></div></div><div class="score-val" style="color:#f59e0b">5.0</div></div>
+  <div style="font-size:.82rem;color:#64748b;margin-top:10px">加權合計：5.0×0.30+2.0×0.25+1.5×0.10+5.5×0.15+5.0×0.10+5.0×0.10 ≈ 4.0，考量 Kyber 不確定性調升至 <strong>4.5/10</strong></div>
+</div>
+
+<!-- 12 台股三段式策略 -->
+<div class="section">
+  <div class="section-title">12 ｜ 台股三段式操作策略</div>
   <div class="strategy-grid">
     <div class="strat-card strat-attack">
-      <div class="strat-header" style="color:#15803d;">⚔️ 進攻策略（積極型）</div>
-      <div class="strat-row"><span class="strat-key">適合者</span>相信 AI 電源超級週期，願意承擔法說會利空風險</div>
-      <div class="strat-row"><span class="strat-key">進場價</span>現在分批：1,590 + 1,500 + 1,400 各 1/3</div>
-      <div class="strat-row"><span class="strat-key">法說後加碼</span>7/30 法說後釋正面消息，可在 1,700-1,800 加碼</div>
-      <div class="strat-row"><span class="strat-key">目標一</span>1,900 元（MA20 回測）</div>
-      <div class="strat-row"><span class="strat-key">目標二</span>2,200 元（MA60 上方）</div>
-      <div class="strat-row"><span class="strat-key">目標三</span>2,440 元（大和目標價）</div>
-      <div class="strat-row"><span class="strat-key">停損</span>跌破 1,350 元認賠出場</div>
-      <div class="strat-row"><span class="strat-key">部位建議</span>不超過總資金 12%</div>
+      <h4>⚔️ 進攻計劃</h4>
+      <div class="sp">適合：高風險承受、熟悉波動</div>
+      <div class="sp">📌 進場：1,500－1,650 元分三批</div>
+      <div class="sp">🎯 目標：2,200 元（潛在 +39%）</div>
+      <div class="sp">🛑 停損：跌破 1,350 元</div>
+      <div class="sp">📦 建議倉位：總資金 15-20%</div>
+      <div class="sp">💡 FY2027E PE 24.3x 嚴重低估，法說會後看反彈</div>
     </div>
-    <div class="strat-card strat-balance">
-      <div class="strat-header" style="color:#d97706;">⚖️ 均衡策略（穩健型）</div>
-      <div class="strat-row"><span class="strat-key">適合者</span>看好中長期但希望降低法說前不確定性</div>
-      <div class="strat-row"><span class="strat-key">策略</span>7/30 法說後確認基本面無惡化，再進場</div>
-      <div class="strat-row"><span class="strat-key">進場價</span>法說後若股價 1,600-1,800 元，分 2 次買進</div>
-      <div class="strat-row"><span class="strat-key">目標一</span>2,000 元（法人平均目標）</div>
-      <div class="strat-row"><span class="strat-key">目標二</span>2,200 元（持至 Q2 財報）</div>
-      <div class="strat-row"><span class="strat-key">加碼觸發</span>Q2'26 EPS > 9元 或 毛利率 > 37.5%</div>
-      <div class="strat-row"><span class="strat-key">停損</span>跌破 1,450 元出場</div>
-      <div class="strat-row"><span class="strat-key">部位建議</span>不超過總資金 8%</div>
+    <div class="strat-card strat-neutral">
+      <h4>⚖️ 均衡計劃</h4>
+      <div class="sp">適合：一般投資人</div>
+      <div class="sp">📌 進場：7/30 法說會後，確認 Q2 毛利率 ≥36% 再入場</div>
+      <div class="sp">🎯 目標：1,900－2,000 元</div>
+      <div class="sp">🛑 停損：法說會後跌破 1,500 元</div>
+      <div class="sp">📦 建議倉位：總資金 10%</div>
+      <div class="sp">💡 法說會是近期最大不確定性，確認後進場降低噪音</div>
     </div>
-    <div class="strat-card strat-defend">
-      <div class="strat-header" style="color:#1d4ed8;">🛡️ 防守策略（保守型）</div>
-      <div class="strat-row"><span class="strat-key">適合者</span>不確定法說消息，以資金安全為優先</div>
-      <div class="strat-row"><span class="strat-key">建議</span>法說前不進場，完全觀望</div>
-      <div class="strat-row"><span class="strat-key">觀察條件</span>法說後股價 > 1,700 元且放量，確認反彈</div>
-      <div class="strat-row"><span class="strat-key">替代方案</span>先布局受益相近但估值較低的光寶科(2301)或群電(6412)</div>
-      <div class="strat-row"><span class="strat-key">長期入場</span>若股價回落至 1,200-1,400 元則大量布局</div>
-      <div class="strat-row"><span class="strat-key">警示訊號</span>月收連2月低於 500億、毛利率跌破 33%</div>
-      <div class="strat-row"><span class="strat-key">部位建議</span>現在 0%，法說後再評估</div>
+    <div class="strat-card strat-defense">
+      <h4>🛡️ 防守計劃</h4>
+      <div class="sp">適合：保守型投資人</div>
+      <div class="sp">📌 進場：跌至 1,400－1,450 元考慮</div>
+      <div class="sp">🎯 目標：1,700 元</div>
+      <div class="sp">🛑 停損：跌破 1,300 元</div>
+      <div class="sp">📦 建議倉位：總資金 5%</div>
+      <div class="sp">💡 等待充分修正，有更好安全邊際再出手</div>
     </div>
   </div>
-  <div class="card" style="margin-top:16px;">
-    <p style="font-weight:600;margin-bottom:12px;font-size:14px;">📅 催化劑時程表</p>
-    <table class="catalyst-table">
-      <thead><tr><th>時間</th><th>事件</th><th>預期影響</th></tr></thead>
-      <tbody>
-        <tr><td><strong>2026年7月30日</strong></td><td>⭐⭐⭐ 台達電法說會（超重要！）</td><td>🚀 若正面展望：目標 1,800-1,900元；若保守展望：跌至 1,400-1,500元</td></tr>
-        <tr><td>2026年8月</td><td>Q2'26 財報公布（EPS 估 8-10元）</td><td>📈 若 EPS > 9元 + 毛利率 > 37%，有望突破 1,883（MA20）</td></tr>
-        <tr><td>2026年下半年</td><td>±400V HVDC 出貨量放大 + 800V 小量出貨</td><td>⚡ 確認 HVDC 商業化，FY2027E EPS 上修至 70+</td></tr>
-        <tr><td>2027年</td><td>800V HVDC 進入主要貢獻期，EPS估65元</td><td>🔥 長多最大催化劑，目標價 2,500-3,000元區間</td></tr>
-        <tr><td>持續觀察</td><td>美國出口管制政策動向、中美關係</td><td>⚠️ 負面衝擊可能引發 AI 電源需求下修</td></tr>
-      </tbody>
-    </table>
+  <h4 style="margin:20px 0 12px;color:#374151">📅 催化劑時程表</h4>
+  <div class="catalyst-item">
+    <div class="catalyst-date">7/30（後天）</div>
+    <div><strong>法說會（最關鍵！）</strong>— Q2'26 財報；Q3 展望；毛利率說明；800V 進度。法說會結果將主導短期走勢。</div>
+  </div>
+  <div class="catalyst-item">
+    <div class="catalyst-date">2026 Q3</div>
+    <div><strong>±400V 出貨放量</strong> — 次世代電源量產出貨，帶動 ASP 提升與毛利再擴張</div>
+  </div>
+  <div class="catalyst-item">
+    <div class="catalyst-date">2027 H1</div>
+    <div><strong>800V HVDC 放量</strong> — Vera Rubin 世代伺服器配套，毛利率有望挑戰 38-40%</div>
+  </div>
+  <div class="catalyst-item">
+    <div class="catalyst-date">2027</div>
+    <div><strong>固態變壓器歐美樣品</strong> — 新興電力基礎建設，長線第二成長曲線</div>
+  </div>
+  <div class="catalyst-item">
+    <div class="catalyst-date">2028-2029</div>
+    <div><strong>SOFC 固態氧化物燃料電池</strong> — 30-50MW 小型生產線，能源轉型新藍海</div>
   </div>
 </div>
 
-<!-- 13 GLOSSARY -->
+<!-- 13 名詞小教室 -->
 <div class="section">
-  <div class="section-title">名詞小教室 <span class="section-num">13</span></div>
+  <div class="section-title">13 ｜ 名詞小教室</div>
   <div class="glossary-grid">
-    <div class="glossary-item">
-      <div class="glossary-term">HVDC（高壓直流）/ ±400V / 800V</div>
-      <div class="glossary-def">資料中心電力傳輸的新架構。傳統用交流電（AC）傳輸，HVDC 改用高壓直流電（DC），能大幅降低電力轉換損耗，效率提升 5-10%。±400V 是目前主流，800V 是下一代標準。台達電是全球最早量產 ±400V 的廠商之一，技術領先競爭者 1-2 年。</div>
-    </div>
-    <div class="glossary-item">
-      <div class="glossary-term">CDU（冷卻分配單元）/ 液冷散熱</div>
-      <div class="glossary-def">AI 晶片（GPU）發熱量極大，傳統風扇冷卻已不足夠。液冷散熱用冷水流過晶片旁的水冷板，效率比風冷高 5-10 倍。CDU 是液冷系統的核心控制設備，台達電提供「水冷板 + CDU + 風扇牆」一站式完整解決方案。</div>
-    </div>
-    <div class="glossary-item">
-      <div class="glossary-term">BBU（Battery Backup Unit，備用電源）</div>
-      <div class="glossary-def">資料中心的不斷電裝置。AI 訓練需要 24 小時穩定供電，任何停電都會造成數百萬美元的損失。BBU 在電網失效時立即接管供電，確保 AI 計算不中斷。AI 伺服器規模擴大，BBU 需求同步暴增。</div>
-    </div>
-    <div class="glossary-item">
-      <div class="glossary-term">PEG（本益成長比）</div>
-      <div class="glossary-def">把本益比（PE）除以盈餘成長率（G），衡量「估值是否和成長速度匹配」。PEG = 1 表示合理，< 1 表示低估。台達電 Forward PE 37.9x，EPS 年增幅約 55%，PEG = 37.9/55 ≈ 0.69，暗示股票目前相對成長率被低估。</div>
-    </div>
-    <div class="glossary-item">
-      <div class="glossary-term">碳化矽（SiC）功率元件</div>
-      <div class="glossary-def">新一代半導體材料，相比傳統矽（Si）可在更高電壓、更高溫度下工作，適合 HVDC 高壓電源設計。台達電傳聞與英飛凌（全球 SiC 龍頭）簽署 650 億元長約，確保 HVDC 產品的核心零件供應穩定。</div>
-    </div>
-    <div class="glossary-item">
-      <div class="glossary-term">布林通道（Bollinger Bands）</div>
-      <div class="glossary-def">技術分析工具，由中軌（20日均線）和上下各兩個標準差組成。股價跌破下軌（1,707元）代表「極度超賣」，統計上約 95% 的時間股價在通道內，跌破下軌往往是短期反彈的訊號，但需搭配量能與基本面確認。</div>
-    </div>
-    <div class="glossary-item">
-      <div class="glossary-term">Forward PE（預估本益比）</div>
-      <div class="glossary-def">用「預估未來一年 EPS」計算的本益比。台達電 Forward PE 37.9x（以 FY2026E 42元計）比 TTM PE 58.6x 更能反映公司快速成長後的真實估值。Forward PE 下降代表投資人買的「未來獲利」越來越多，是成長股常見的估值邏輯。</div>
-    </div>
-    <div class="glossary-item">
-      <div class="glossary-term">超大規模客戶（Hyperscaler / CSP）</div>
-      <div class="glossary-def">指 Microsoft Azure、Google Cloud、Amazon AWS、Meta 等每年砸數百億美元建置資料中心的科技巨頭。這些客戶是台達電電源和散熱的主要買家，只要 AI 軍備競賽持續，台達電訂單能見度就高。</div>
-    </div>
+    <dl class="gloss-item">
+      <dt>HVDC（高壓直流電）</dt>
+      <dd>High Voltage Direct Current。資料中心新一代電力架構，電壓從 48V 升至 ±400V 或 800V，傳輸效率更高、損耗更少。AI 伺服器耗電量爆增，HVDC 是必然趨勢，台達電是全球少數掌握量產能力的廠商。</dd>
+    </dl>
+    <dl class="gloss-item">
+      <dt>PSU / BBU</dt>
+      <dd>PSU（電源供應器）將市電轉成伺服器所需電壓；BBU（備用電源）斷電時保護資料不遺失。AI 伺服器規格升級讓台達電單台 PSU/BBU 平均售價大幅提升。</dd>
+    </dl>
+    <dl class="gloss-item">
+      <dt>Forward PE（預估本益比）</dt>
+      <dd>用未來一年預估 EPS 計算的本益比，比 TTM 更能反映未來成長性。台達電 FY2027E Forward PE 僅 24.3x，代表用今天的價錢買入，只花 24 倍的代價就能買進明年的獲利，相對歷史低估。</dd>
+    </dl>
+    <dl class="gloss-item">
+      <dt>NVIDIA Kyber（NVL144）</dt>
+      <dd>NVIDIA 下世代 AI 伺服器機架，每架裝 144 顆 GPU，需超高功率電源。原預期 2026-2027 量產，因 PCB Midplane 技術瓶頸延至 2028，短期對電源廠訂單有情緒性衝擊，但不影響 2026 年已有訂單。</dd>
+    </dl>
+    <dl class="gloss-item">
+      <dt>三大法人</dt>
+      <dd>台灣股市三類主要法人：外資（BlackRock 等外國機構）、投信（元大、富邦等台灣基金）、自營商（券商自有資金）。三大法人合計買賣超是判斷主力籌碼動向的重要指標。</dd>
+    </dl>
+    <dl class="gloss-item">
+      <dt>液冷散熱</dt>
+      <dd>AI 晶片運算產生大量熱能，傳統風扇已不夠用，改用冷卻液流過伺服器帶走熱能。台達電液冷解決方案是高毛利產品，是毛利率突破 37% 的主要貢獻來源。</dd>
+    </dl>
+    <dl class="gloss-item">
+      <dt>毛利率</dt>
+      <dd>（收入 - 直接成本）÷ 收入。台達電 Q1'26 毛利率 37.0%，代表每賣 100 元產品扣掉成本後剩 37 元。毛利率越高代表產品越有定價能力與技術壁壘。</dd>
+    </dl>
+    <dl class="gloss-item">
+      <dt>布林通道</dt>
+      <dd>以 20 日均線為中軌，上下各加減兩個標準差形成上下軌。股價觸及下軌代表短期跌幅過大可能超賣，觸及上軌代表短期漲幅過大可能超買，常用來判斷超買超賣狀態。</dd>
+    </dl>
   </div>
 </div>
 
-<!-- 14 DISCLAIMER -->
+<!-- 14 免責聲明 -->
 <div class="section">
   <div class="disclaimer">
-    <h4>⚠️ 免責聲明</h4>
-    <p>本報告僅供研究參考，<strong>不構成任何投資建議或買賣依據</strong>。股票投資涉及市場風險，過去績效不代表未來表現。投資人應自行評估風險承受能力並做出獨立判斷，必要時請諮詢專業金融顧問。</p>
-    <p style="margin-top:8px;"><strong>資料來源：</strong>富果 Fugle API（即時股價）｜FinMind（歷史K線、月營收、季度財報、三大法人）｜台灣證券交易所（三大法人 T86）｜CMoney、聯合報、Yahoo Finance、旺得富、理財週刊（法人評等與新聞）</p>
-    <p style="margin-top:8px;">報告生成時間：2026-07-28 ｜ 分析師：Claude Stock Analysis Team（AI 輔助分析）</p>
+    <strong>⚠ 免責聲明</strong><br><br>
+    本報告為 AI 多角色分析系統自動生成，<strong>所有內容僅供研究參考，不構成任何投資建議。</strong>投資人應自行評估風險，並在投資前諮詢合格的財務顧問。<br><br>
+    <strong>資料來源：</strong>富果 Fugle API（即時股價）、FinMind（歷史 K 線/財報/三大法人/月營收）、TWSE T86（三大法人）、CMoney、工商時報、Yahoo Finance Taiwan（外資目標價/法人評等）。<br><br>
+    報告生成日期：2026-07-28 ｜ 股價具時效性，請以最新市場資訊為準 ｜ 過去績效不代表未來表現
   </div>
 </div>
 
-</div><!-- /container -->
-
 <script>
-// ===== PURE CANVAS CHART LIBRARY (Zero External Dependencies) =====
-function drawBarChart(canvasId, labels, data, barColor, accentColor, unit) {
-  var canvas = document.getElementById(canvasId);
+function drawBarChart(id, labels, data, barColor, accentColor) {
+  var canvas = document.getElementById(id);
   if (!canvas) return;
   var ctx = canvas.getContext('2d');
   var W = canvas.width, H = canvas.height;
-  var pad = { t: 24, r: 16, b: 44, l: 46 };
-  var cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
-  ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
-
-  var minVal = Math.min(0, Math.min.apply(null, data));
-  var maxVal = Math.max.apply(null, data);
-  var range = maxVal - minVal || 1;
-  var paddedRange = range * 1.15;
-  var scale = ch / paddedRange;
-  var zeroY = pad.t + ch - (0 - minVal) * scale + ((paddedRange - range) / 2 * scale);
-
-  var steps = 5;
-  ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 1;
-  for (var i = 0; i <= steps; i++) {
-    var v = minVal + paddedRange * i / steps;
-    var y = pad.t + ch * (1 - i / steps);
-    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + cw, y); ctx.stroke();
-    ctx.fillStyle = '#94a3b8'; ctx.font = '9px sans-serif'; ctx.textAlign = 'right';
-    ctx.fillText(v.toFixed(1), pad.l - 4, y + 3);
-  }
-
-  ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(pad.l, zeroY); ctx.lineTo(pad.l + cw, zeroY); ctx.stroke();
-
-  var barW = Math.min(cw / labels.length * 0.6, 28);
-  var gap = cw / labels.length;
-  for (var i = 0; i < labels.length; i++) {
-    var x = pad.l + gap * i + gap / 2 - barW / 2;
-    var v = data[i];
-    var barH = Math.abs(v) * scale;
-    var y = v >= 0 ? zeroY - barH : zeroY;
-    var color = (i === labels.length - 1) ? accentColor : barColor;
-    if (v < 0) color = '#f87171';
+  var pad = {top:28, right:16, bottom:52, left:16};
+  var cW = W - pad.left - pad.right;
+  var cH = H - pad.top - pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var max = Math.max.apply(null, data.map(Math.abs)) * 1.2;
+  var min = Math.min.apply(null, data.concat([0]));
+  var range = max - min;
+  var bw = cW / data.length * 0.62;
+  var gap = cW / data.length;
+  data.forEach(function(v, i) {
+    var x = pad.left + gap * i + (gap - bw) / 2;
+    var isLast = i === data.length - 1;
+    var color = v < 0 ? '#f87171' : (isLast ? accentColor : barColor);
+    var bh = Math.abs(v) / range * cH;
+    var y0 = pad.top + (max - Math.max(v,0)) / range * cH;
+    var r = Math.min(4, bh/2);
     ctx.fillStyle = color;
     ctx.beginPath();
     if (v >= 0) {
-      ctx.roundRect ? ctx.roundRect(x, y, barW, barH, [3,3,0,0]) : ctx.rect(x, y, barW, barH);
+      ctx.moveTo(x+r, y0);
+      ctx.lineTo(x+bw-r, y0);
+      ctx.quadraticCurveTo(x+bw, y0, x+bw, y0+r);
+      ctx.lineTo(x+bw, y0+bh);
+      ctx.lineTo(x, y0+bh);
+      ctx.quadraticCurveTo(x, y0, x+r, y0);
     } else {
-      ctx.roundRect ? ctx.roundRect(x, y, barW, barH, [0,0,3,3]) : ctx.rect(x, y, barW, barH);
+      ctx.moveTo(x, y0);
+      ctx.lineTo(x+bw, y0);
+      ctx.lineTo(x+bw, y0+bh-r);
+      ctx.quadraticCurveTo(x+bw, y0+bh, x+bw-r, y0+bh);
+      ctx.lineTo(x+r, y0+bh);
+      ctx.quadraticCurveTo(x, y0+bh, x, y0+bh-r);
     }
+    ctx.closePath();
     ctx.fill();
-    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 8px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText((unit || '') + v.toFixed(2), x + barW / 2, v >= 0 ? y - 4 : y + barH + 10);
-    ctx.fillStyle = '#64748b'; ctx.font = '8px sans-serif';
-    ctx.fillText(labels[i], x + barW / 2, H - 6);
-  }
+    ctx.fillStyle = '#374151';
+    var fs = Math.max(8, Math.min(10, Math.floor(bw*0.5)));
+    ctx.font = 'bold ' + fs + 'px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(v.toFixed(2), x + bw/2, v >= 0 ? y0 - 5 : y0 + bh + 13);
+    ctx.fillStyle = '#6b7280';
+    ctx.font = '9px sans-serif';
+    ctx.fillText(labels[i], x + bw/2, H - 8);
+  });
+  var zY = pad.top + max / range * cH;
+  ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(pad.left, zY); ctx.lineTo(W - pad.right, zY); ctx.stroke();
 }
 
-function drawLineChart(canvasId, labels, data, lineColor, yFormatter) {
-  var canvas = document.getElementById(canvasId);
+function drawLineChart(id, labels, data, color) {
+  var canvas = document.getElementById(id);
   if (!canvas) return;
   var ctx = canvas.getContext('2d');
   var W = canvas.width, H = canvas.height;
-  var pad = { t: 20, r: 16, b: 40, l: 50 };
-  var cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
-  ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
-
-  var minVal = Math.min.apply(null, data) * 0.92;
-  var maxVal = Math.max.apply(null, data) * 1.06;
-  var range = maxVal - minVal || 1;
-  var fmt = yFormatter || function(v){ return v.toFixed(0); };
-
-  var steps = 4;
-  ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 1;
-  for (var i = 0; i <= steps; i++) {
-    var v = minVal + range * i / steps;
-    var y = pad.t + ch * (1 - i / steps);
-    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + cw, y); ctx.stroke();
-    ctx.fillStyle = '#94a3b8'; ctx.font = '9px sans-serif'; ctx.textAlign = 'right';
-    ctx.fillText(fmt(v), pad.l - 4, y + 3);
-  }
-
-  var pts = [];
-  for (var i = 0; i < labels.length; i++) {
-    var x = pad.l + cw * i / (labels.length - 1);
-    var y = pad.t + ch * (1 - (data[i] - minVal) / range);
-    pts.push([x, y]);
-  }
-
+  var pad = {top:28, right:16, bottom:40, left:50};
+  var cW = W - pad.left - pad.right;
+  var cH = H - pad.top - pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var min = Math.min.apply(null,data) * 0.93;
+  var max = Math.max.apply(null,data) * 1.08;
+  var range = max - min;
+  var n = data.length;
+  var gx = function(i){ return pad.left + i * cW / (n-1); };
+  var gy = function(v){ return pad.top + (max-v)/range*cH; };
+  var grad = ctx.createLinearGradient(0, pad.top, 0, pad.top+cH);
+  grad.addColorStop(0, color + '44'); grad.addColorStop(1, color + '00');
   ctx.beginPath();
-  ctx.moveTo(pts[0][0], pts[0][1]);
-  for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
-  ctx.lineTo(pts[pts.length-1][0], pad.t + ch);
-  ctx.lineTo(pts[0][0], pad.t + ch);
-  ctx.closePath();
-  var grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + ch);
-  grad.addColorStop(0, lineColor + '55');
-  grad.addColorStop(1, lineColor + '08');
-  ctx.fillStyle = grad; ctx.fill();
-
-  ctx.beginPath();
-  ctx.moveTo(pts[0][0], pts[0][1]);
-  for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
-  ctx.strokeStyle = lineColor; ctx.lineWidth = 2.5; ctx.stroke();
-
-  for (var i = 0; i < pts.length; i++) {
-    var r = (i === pts.length - 1) ? 6 : 4;
+  ctx.moveTo(gx(0), gy(data[0]));
+  for(var i=1;i<n;i++) ctx.lineTo(gx(i), gy(data[i]));
+  ctx.lineTo(gx(n-1), pad.top+cH); ctx.lineTo(gx(0), pad.top+cH);
+  ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(gx(0), gy(data[0]));
+  for(var j=1;j<n;j++) ctx.lineTo(gx(j), gy(data[j]));
+  ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.stroke();
+  ctx.fillStyle = '#94a3b8'; ctx.font = '9px sans-serif'; ctx.textAlign = 'right';
+  [min, (min+max)/2, max].forEach(function(v){
+    ctx.fillText(v.toFixed(0), pad.left-4, gy(v)+4);
+  });
+  data.forEach(function(v, i) {
+    var isLast = i === n-1;
     ctx.beginPath();
-    ctx.arc(pts[i][0], pts[i][1], r, 0, Math.PI * 2);
-    ctx.fillStyle = lineColor; ctx.fill();
-    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
-    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 9px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText(fmt(data[i]), pts[i][0], pts[i][1] - 10);
-    ctx.fillStyle = '#64748b'; ctx.font = '9px sans-serif';
-    ctx.fillText(labels[i], pts[i][0], H - 6);
-  }
+    ctx.arc(gx(i), gy(v), isLast ? 6 : 4, 0, Math.PI*2);
+    ctx.fillStyle = isLast ? color : '#fff';
+    ctx.fill(); ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = '#374151';
+    ctx.font = (isLast ? 'bold ' : '') + '9px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(v.toFixed(0), gx(i), gy(v) - 10);
+    ctx.fillStyle = '#6b7280'; ctx.font = '9px sans-serif';
+    ctx.fillText(labels[i], gx(i), H - 8);
+  });
 }
 
-function drawHBarChart(canvasId, labels, data, colors) {
-  var canvas = document.getElementById(canvasId);
+function drawHBarChart(id, labels, data, colors) {
+  var canvas = document.getElementById(id);
   if (!canvas) return;
   var ctx = canvas.getContext('2d');
   var W = canvas.width, H = canvas.height;
-  var pad = { t: 16, r: 56, b: 20, l: 76 };
-  ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
-
-  var maxVal = Math.max.apply(null, data) * 1.1;
-  var rowH = (H - pad.t - pad.b) / labels.length;
-  var bH = Math.min(rowH * 0.55, 22);
-  var barArea = W - pad.l - pad.r;
-
-  for (var i = 0; i < labels.length; i++) {
-    var y = pad.t + rowH * i + rowH / 2;
-    var bW = (data[i] / maxVal) * barArea;
-
-    ctx.fillStyle = '#f1f5f9';
+  var pad = {top:10, right:40, bottom:10, left:105};
+  var cW = W - pad.left - pad.right;
+  var cH = H - pad.top - pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var max = Math.max.apply(null, data) * 1.15;
+  var n = labels.length;
+  var bh = cH / n * 0.55;
+  var gap = cH / n;
+  labels.forEach(function(lbl, i) {
+    var y = pad.top + gap * i + (gap - bh) / 2;
+    var bw = data[i] / max * cW;
+    var r = bh/2;
+    ctx.fillStyle = '#e5e7eb';
     ctx.beginPath();
-    ctx.roundRect ? ctx.roundRect(pad.l, y - bH/2, barArea, bH, 4) : ctx.rect(pad.l, y - bH/2, barArea, bH);
-    ctx.fill();
-
-    ctx.fillStyle = colors[i] || '#15803d';
-    ctx.beginPath();
-    ctx.roundRect ? ctx.roundRect(pad.l, y - bH/2, bW, bH, 4) : ctx.rect(pad.l, y - bH/2, bW, bH);
-    ctx.fill();
-
-    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'right';
-    ctx.fillText(labels[i], pad.l - 6, y + 4);
-    ctx.textAlign = 'left';
-    ctx.fillText(data[i] + 'x', pad.l + bW + 6, y + 4);
-  }
+    ctx.moveTo(pad.left+r, y); ctx.arcTo(pad.left+cW,y,pad.left+cW,y+bh,r);
+    ctx.arcTo(pad.left+cW,y+bh,pad.left,y+bh,r); ctx.arcTo(pad.left,y+bh,pad.left,y,r);
+    ctx.arcTo(pad.left,y,pad.left+r,y,r); ctx.closePath(); ctx.fill();
+    if (bw > 2) {
+      ctx.fillStyle = colors[i] || '#6b7280';
+      var ar = Math.min(r, bw/2);
+      ctx.beginPath();
+      ctx.moveTo(pad.left+ar,y); ctx.arcTo(pad.left+bw,y,pad.left+bw,y+bh,ar);
+      ctx.arcTo(pad.left+bw,y+bh,pad.left,y+bh,ar); ctx.arcTo(pad.left,y+bh,pad.left,y,ar);
+      ctx.arcTo(pad.left,y,pad.left+ar,y,ar); ctx.closePath(); ctx.fill();
+    }
+    ctx.fillStyle = '#374151'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(lbl, pad.left - 6, y + bh/2 + 4);
+    ctx.fillStyle = '#374151'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText(data[i].toFixed(1) + 'x', pad.left + bw + 5, y + bh/2 + 4);
+  });
 }
 
-// ===== RENDER CHARTS =====
 window.addEventListener('DOMContentLoaded', function() {
-  // EPS Bar Chart (Q2'24 ~ Q1'26)
-  drawBarChart(
-    'epsChart',
-    ['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+  drawBarChart('epsChart',
+    ["Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26"],
     [3.83, 4.75, 2.76, 3.94, 5.37, 7.16, 6.67, 7.91],
-    '#86efac',
-    '#15803d',
-    ''
+    '#4ade80', '#15803d'
   );
-
-  // Monthly Revenue Line Chart (Jan-Jun 2026)
-  drawLineChart(
-    'revChart',
+  drawLineChart('revChart',
     ['Jan','Feb','Mar','Apr','May','Jun'],
     [496.75, 498.97, 597.80, 586.92, 589.62, 656.03],
-    '#15803d',
-    function(v){ return v.toFixed(0) + '億'; }
+    '#15803d'
   );
-
-  // PE Comparison HBar Chart (Forward PE)
-  drawHBarChart(
-    'peChart',
-    ['台達電Fwd', '群電Fwd', '光寶Fwd', '台股大盤'],
-    [38, 35, 28, 18],
-    ['#15803d', '#65a30d', '#84cc16', '#94a3b8']
+  drawHBarChart('peChart',
+    ["台達電TTM","台達電Fwd'26","台達電Fwd'27","群電Fwd","光寶Fwd","大盤"],
+    [58.3, 37.6, 24.3, 35.0, 28.0, 18.0],
+    ['#dc2626','#f59e0b','#15803d','#94a3b8','#94a3b8','#3b82f6']
   );
 });
 </script>
