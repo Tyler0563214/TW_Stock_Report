@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股盤中戰情室 2026/07/28｜DUV震撼彈 + 油崩雙殺</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d1117; color: #e6edf3; font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 1.5; }
+  a { color: #58a6ff; }
+
+  .header { background: linear-gradient(135deg, #161b22 0%, #0d1117 100%); border-bottom: 2px solid #21262d; padding: 18px 24px; }
+  .header-top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .header h1 { font-size: 22px; font-weight: 700; color: #e6edf3; }
+  .header .sub { font-size: 12px; color: #8b949e; margin-top: 4px; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+  .badge-danger { background: #3d1a1a; color: #f85149; border: 1px solid #f85149; }
+  .badge-warning { background: #2d2008; color: #e3b341; border: 1px solid #e3b341; }
+  .badge-ok { background: #0f2d1a; color: #3fb950; border: 1px solid #3fb950; }
+  .badge-mid { background: #1a2540; color: #79c0ff; border: 1px solid #388bfd; }
+
+  .ticker-bar { background: #161b22; border-bottom: 1px solid #21262d; padding: 10px 24px; display: flex; gap: 24px; flex-wrap: wrap; }
+  .ticker-item { display: flex; flex-direction: column; align-items: center; min-width: 90px; }
+  .ticker-label { font-size: 10px; color: #8b949e; text-transform: uppercase; }
+  .ticker-val { font-size: 15px; font-weight: 700; }
+  .up { color: #3fb950; }
+  .dn { color: #f85149; }
+  .neu { color: #e6edf3; }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 20px 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 900px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+  .card { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .card-title { font-size: 13px; font-weight: 700; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #21262d; }
+  .card-title .icon { margin-right: 6px; }
+
+  .alert-box { background: #2d1010; border: 1px solid #f85149; border-radius: 8px; padding: 14px 18px; margin-bottom: 16px; }
+  .alert-box .alert-title { color: #f85149; font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .alert-box p { color: #c9d1d9; font-size: 13px; line-height: 1.6; }
+
+  .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #21262d; }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-label { color: #8b949e; font-size: 13px; }
+  .stat-val { font-weight: 700; font-size: 13px; }
+
+  .index-hero { text-align: center; padding: 20px; background: #0d1117; border-radius: 8px; margin-bottom: 12px; }
+  .index-hero .pts { font-size: 42px; font-weight: 800; color: #f85149; }
+  .index-hero .chg { font-size: 18px; color: #f85149; margin-top: 4px; }
+  .index-hero .meta { font-size: 12px; color: #8b949e; margin-top: 8px; }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #0d1117; color: #8b949e; font-weight: 600; padding: 8px 10px; text-align: left; border-bottom: 1px solid #21262d; }
+  td { padding: 7px 10px; border-bottom: 1px solid #21262d; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+
+  .section-title { font-size: 16px; font-weight: 700; color: #e6edf3; margin: 24px 0 12px; padding-left: 10px; border-left: 4px solid #388bfd; }
+
+  .debate-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 700px) { .debate-col { grid-template-columns: 1fr; } }
+  .bull-card { background: #0f2d1a; border: 1px solid #3fb950; border-radius: 8px; padding: 14px; }
+  .bear-card { background: #2d1010; border: 1px solid #f85149; border-radius: 8px; padding: 14px; }
+  .debate-head { font-weight: 700; font-size: 14px; margin-bottom: 10px; }
+  .debate-item { display: flex; gap: 8px; margin-bottom: 8px; font-size: 13px; color: #c9d1d9; }
+  .debate-item .num { font-weight: 700; min-width: 20px; }
+
+  .verdict { background: #1c2128; border: 1px solid #388bfd; border-radius: 8px; padding: 14px; margin-top: 12px; }
+  .verdict-ratio { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+  .verdict p { font-size: 13px; color: #c9d1d9; }
+
+  .theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .theme-card { background: #0d1117; border-radius: 8px; padding: 14px; border-left: 4px solid; }
+  .theme-danger { border-color: #f85149; }
+  .theme-warn { border-color: #e3b341; }
+  .theme-ok { border-color: #3fb950; }
+  .theme-name { font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+  .theme-score { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; margin-bottom: 6px; }
+  .score-hi { background: #3fb950; color: #0d1117; }
+  .score-md { background: #e3b341; color: #0d1117; }
+  .score-lo { background: #f85149; color: #fff; }
+  .theme-body { font-size: 12px; color: #c9d1d9; line-height: 1.6; }
+
+  .strat-card { border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+  .strat-attack { background: #0d1f38; border: 1px solid #388bfd; }
+  .strat-balance { background: #1a1a0d; border: 1px solid #e3b341; }
+  .strat-defend { background: #1a0d0d; border: 1px solid #6e4040; }
+  .strat-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+  .strat-body { font-size: 13px; color: #c9d1d9; line-height: 1.7; }
+
+  .timeline-item { display: flex; gap: 12px; margin-bottom: 12px; }
+  .tl-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .tl-red { background: #f85149; }
+  .tl-yellow { background: #e3b341; }
+  .tl-green { background: #3fb950; }
+  .tl-blue { background: #388bfd; }
+  .tl-content { font-size: 13px; color: #c9d1d9; }
+  .tl-date { font-size: 11px; color: #8b949e; }
+
+  .footer { background: #161b22; border-top: 1px solid #21262d; padding: 16px 24px; margin-top: 32px; }
+  .footer p { font-size: 11px; color: #6e7681; line-height: 1.6; }
+
+  .highlight { color: #e3b341; font-weight: 700; }
+  .red { color: #f85149; font-weight: 700; }
+  .green { color: #3fb950; font-weight: 700; }
+  .blue { color: #79c0ff; font-weight: 700; }
+
+  .progress-bar-wrap { background: #21262d; border-radius: 4px; height: 8px; margin-top: 4px; }
+  .progress-bar { height: 8px; border-radius: 4px; }
+  .pb-red { background: #f85149; }
+  .pb-green { background: #3fb950; }
+</style>
+</head>
+<body>
+
+<!-- ====== 頁首 ====== -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>🔴 台股盤中戰情室</h1>
+      <div class="sub">2026年07月28日（週一）｜數據截至 10:18｜盤中持續更新</div>
+    </div>
+    <span class="badge badge-danger">大盤偏空 ▼</span>
+    <span class="badge badge-warning">盤中震盪</span>
+    <span class="badge badge-mid">史上第8慘</span>
+  </div>
+</div>
+
+<!-- ====== Ticker Bar ====== -->
+<div class="ticker-bar">
+  <div class="ticker-item">
+    <span class="ticker-label">加權指數</span>
+    <span class="ticker-val dn">41,879 ▼</span>
+    <span class="ticker-label dn">-1,755 (-4.02%)</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">費半 SOX</span>
+    <span class="ticker-val dn">11,555 ▼</span>
+    <span class="ticker-label dn">-264 (-2.23%)</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">美債10年</span>
+    <span class="ticker-val up">4.641%</span>
+    <span class="ticker-label up">-0.038% 微降</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">布蘭特油</span>
+    <span class="ticker-val dn">$87.27 ▼</span>
+    <span class="ticker-label dn">-$5.60 (-6.03%)</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">黃金</span>
+    <span class="ticker-val dn">$4,045</span>
+    <span class="ticker-label dn">-1.17%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">美元指數</span>
+    <span class="ticker-val neu">101.49</span>
+    <span class="ticker-label up">+0.28%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">USD/TWD</span>
+    <span class="ticker-val dn">32.39</span>
+    <span class="ticker-label dn">台幣貶 +0.31%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">NVDA（昨）</span>
+    <span class="ticker-val dn">-4.99%</span>
+    <span class="ticker-label dn">Apple奪市值王</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ====== 緊急警示 ====== -->
+<div class="alert-box">
+  <div class="alert-title">⚡ 盤中緊急警報：雙黑天鵝同日來襲</div>
+  <p>
+    <strong>①中國DUV光刻機量產傳聞</strong>（The Information 07/27報道）：上海國有企業傳年內向中芯、華虹交付首批DUV設備，挑戰ASML壟斷地位。ASML ADR盤後跌4.6%，美光、SK海力士全面下殺，拖累費半 -2.23%，台積電ADR隔夜重挫。<br>
+    <strong>②美伊停火協議傳聞</strong>：美伊暫停軍事互襲，霍爾木茲海峽供應中斷風險驟降，布蘭特油價單日暴跌 <span class="red">-6.03%（$87.27）</span>，WTI更跌超8%。石化庫存損失壓力立現。<br>
+    結果：台股盤中最低殺至 <span class="red">41,816</span>（開高走低，開盤43,222 → 低點41,816，單日跌幅達 <span class="red">-3.96%</span>，盤中一度達 <span class="red">史上第8大跌幅</span>）。
+  </p>
+</div>
+
+<!-- ====== 大盤即時狀態 ====== -->
+<div class="section-title">📊 大盤即時狀態</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title"><span class="icon">📉</span>加權指數盤中走勢</div>
+    <div class="index-hero">
+      <div class="pts">41,879</div>
+      <div class="chg">▼ 1,755點（-4.02%）</div>
+      <div class="meta">截至 10:18 ｜ 盤中最低 41,816 ｜ 開盤 43,222</div>
+    </div>
+    <div class="stat-row"><span class="stat-label">昨收（07/27）</span><span class="stat-val">43,634</span></div>
+    <div class="stat-row"><span class="stat-label">今日開盤</span><span class="stat-val">43,222（開跌412點）</span></div>
+    <div class="stat-row"><span class="stat-label">盤中最高</span><span class="stat-val">43,222（開盤即最高）</span></div>
+    <div class="stat-row"><span class="stat-label">盤中最低</span><span class="stat-val dn">41,816（史上第8慘）</span></div>
+    <div class="stat-row"><span class="stat-label">現價（10:18）</span><span class="stat-val dn">41,879</span></div>
+    <div class="stat-row"><span class="stat-label">成交金額（至10:18）</span><span class="stat-val">3,667億元</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">🎯</span>技術面關鍵水位</div>
+    <div class="stat-row"><span class="stat-label">MA5</span><span class="stat-val dn">44,003（已跌破）</span></div>
+    <div class="stat-row"><span class="stat-label">MA10</span><span class="stat-val dn">44,406（已跌破）</span></div>
+    <div class="stat-row"><span class="stat-label">MA20</span><span class="stat-val dn">45,171（已跌破）</span></div>
+    <div class="stat-row"><span class="stat-label">布林下軌</span><span class="stat-val dn">~42,728（已跌破！）</span></div>
+    <div class="stat-row"><span class="stat-label">07/20低點</span><span class="stat-val dn">41,968（已跌破！）</span></div>
+    <div class="stat-row"><span class="stat-label">RSI（14日）</span><span class="stat-val dn">~28（進入超賣區）</span></div>
+    <div class="stat-row"><span class="stat-label">下一支撐</span><span class="stat-val highlight">40,000整數關卡</span></div>
+    <div class="stat-row"><span class="stat-label">重要警示</span><span class="stat-val dn">布林下軌＋前低雙破，技術形態惡化</span></div>
+  </div>
+</div>
+
+<!-- ====== 核心事件解析 ====== -->
+<div class="section-title">🔍 兩大黑天鵝事件深度解析</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title"><span class="icon">🇨🇳</span>事件一：中國DUV光刻機量產傳聞</div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-red"></div>
+      <div class="tl-content"><strong>消息來源</strong>：美國科技媒體 The Information，07/27晚間發布<div class="tl-date">上海國有企業傳聞量產浸沒式DUV曝光機，目標2026年交付約5台給中芯、華虹、長鑫存儲</div></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-yellow"></div>
+      <div class="tl-content"><strong>實際技術評估</strong>：5台/年 vs ASML全年6,000+台，差距巨大<div class="tl-date">性能、可靠性仍大幅落後；尚在「小批量驗證」階段，非真正量產突破</div></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-red"></div>
+      <div class="tl-content"><strong>市場受害排行</strong>：ASML（最重災）→ 半導體設備股 → 記憶體 → 先進製程<div class="tl-date">ASML ADR -4.6%；美光/SK海力士/SanDisk ADR全線重挫</div></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-blue"></div>
+      <div class="tl-content"><strong>邏輯盲點</strong>：台積電是ASML的買家，不是競爭者<div class="tl-date">台積電真正的風險：若中國28nm以下自給率提升，台積電成熟製程訂單長期流失；但先進製程（3nm/2nm）影響極微</div></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-yellow"></div>
+      <div class="tl-content"><strong>可能過度反應</strong>：消息為「傳聞」非官方確認<div class="tl-date">歷史上多次中國突破傳聞引發恐慌→修復；需觀察後續官方消息</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">🛢️</span>事件二：油價暴跌 -6%（$87.27）</div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-red"></div>
+      <div class="tl-content"><strong>觸發原因</strong>：美伊暫停軍事互襲<div class="tl-date">美國總統宣稱雙方談判良好，霍爾木茲海峽供應中斷風險驟降，布蘭特-6%、WTI -8%+</div></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-red"></div>
+      <div class="tl-content"><strong>石化族群重傷</strong>：台塑三寶庫存損失<div class="tl-date">台塑(1301)、南亞(1303)、台塑化(6505)持有高成本庫存，油跌=立即損失；台化(1326)同受累</div></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-red"></div>
+      <div class="tl-content"><strong>上週石化行情逆轉</strong>：07/23-07/24外資大買石化已告一段落<div class="tl-date">07/27外資反手賣超台塑(-5,067張)、中石化(-9,712張)；DUV+油跌雙殺讓石化失去「避風港」角色</div></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-green"></div>
+      <div class="tl-content"><strong>利多受益：航空業</strong>（長榮航2618）<div class="tl-date">油跌6% = 燃油成本大降，07/27外資已先買超長榮航+19,049張；今日可能逆勢表現</div></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-green"></div>
+      <div class="tl-content"><strong>通膨降溫 → Fed降息預期升</strong><div class="tl-date">美債10年期從4.703%降至4.641%，降息預期升溫對科技估值長期有利（但短線DUV恐慌蓋過）</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 六大專家觀點 ====== -->
+<div class="section-title">🎯 六大專家盤中速評</div>
+<div class="grid-3">
+  <div class="card">
+    <div class="card-title">🌐 總經策略師</div>
+    <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+      <span class="highlight">油跌通縮訊號 vs DUV供應鏈重估同步發生。</span>美債10Y從4.703%→4.641%，降息預期微升，利於長債/成長股估值，但幅度遠不足以抵消DUV恐慌殺盤。台幣32.39貶值（外資已在拋售），美元指數101.49微升。<br>
+      <strong>本週最重要催化劑</strong>：①Fed利率決議（本週四，預計維持不變，但聲明措辭）②台積電法說（本週四/五，Q3展望是最重要的「DUV解毒劑」）③美CPI數據（油跌後通膨數字走向）
+    </p>
+  </div>
+  <div class="card">
+    <div class="card-title">🗺️ 地緣政治分析師</div>
+    <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+      <span class="highlight">美伊談判真實性存疑。</span>停火消息可信度：「暫停互襲」≠正式和談，中東衝突5個月，地緣溢價不可能一日消失。若美伊談判破裂，油價可能快速反彈回$95+。<br>
+      中國DUV傳聞背景：中美科技戰升溫脈絡下，消息時間點（周一亞洲開盤前）疑有「定向打擊」意圖。投資人應等待ASML/TSMC官方回應再做判斷。<br>
+      <strong>台灣關稅</strong>：美台貿易談判持續，無新消息。
+    </p>
+  </div>
+  <div class="card">
+    <div class="card-title">📡 產業情報官</div>
+    <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+      <strong>今日題材熱度重排（DUV衝擊後）：</strong><br>
+      🔴 半導體設備/ASML概念：88→20分（利空暴跌）<br>
+      🔴 石化族群：75→15分（油崩逆轉）<br>
+      🟡 AI伺服器/緯創：78→55分（DUV影響有限，但大盤拖累）<br>
+      🟢 航空：25→72分（油跌最大受益）<br>
+      🟡 金融/銀行：40→60分（利率下行有利NIM走穩）<br>
+      <strong>07/27外資最大買超：群創+56,496張、聯電+43,123張</strong>——面板/成熟製程在DUV消息後恐繼續承壓。
+    </p>
+  </div>
+  <div class="card">
+    <div class="card-title">💰 籌碼追蹤師</div>
+    <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+      <strong>07/27（昨日）三大法人：</strong><br>
+      外資買超 +335,531張（包含群創+56,496、聯電+43,123，大量承接面板/成熟製程）<br>
+      自營商賣超 -435,209張（大量賣出ETF及台灣50）<br>
+      投信：+3,306張（終結連23買超台股）<br><br>
+      <strong>今日盤中研判</strong>：外資在07/27大買的群創/聯電/銀行股，可能成為今日跌勢緩衝。台積電外資連4賣，今日在DUV消息下或加速調節。<br>
+      台指期：TAIFEX數據異常（不採用），以昨日外資已回補+335,531張看，底部籌碼尚有支撐。
+    </p>
+  </div>
+  <div class="card">
+    <div class="card-title">📊 技術戰術師</div>
+    <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+      <strong>技術形態高度惡化：</strong>布林下軌（42,728）＋07/20低點（41,968）雙雙跌破，短線支撐告急。<br>
+      <strong>RSI</strong>：預估~28，進入超賣區（<30）；歷史上超賣反彈機率高，但反彈前往往再探低。<br>
+      <strong>關鍵防守</strong>：41,000整數 → 40,000整數心理關卡。41,816盤中低點是今日首測支撐。<br>
+      <strong>反彈條件</strong>：需量縮止跌訊號 + 台積電收盤穩守2,250以上 + 費半收盤反彈 > -2%<br>
+      <strong>今日跌停板壓力</strong>：開盤即最高，「開高走低」型態為弱勢確認。
+    </p>
+  </div>
+  <div class="card">
+    <div class="card-title">🎙️ 觀點聚合師</div>
+    <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+      <strong>⚡ 矛盾點一</strong>：07/27外資大買+335,531張（07/27數據），本應支撐大盤，但DUV消息在周末發酵，今日外資可能反手調節買入的群創/聯電。<br>
+      <strong>⚡ 矛盾點二</strong>：油跌通縮 → 理論上Fed降息預期升 → 科技股估值支撐，但DUV供應鏈重估恐慌蓋過降息利多。<br>
+      <strong>股癌歷史框架</strong>：「市場最怕看不懂的消息，DUV傳聞屬之——不是業績變差，而是競爭格局改變的想像空間，最難定價。」<br>
+      <strong>盤中核心問題</strong>：是反應過度的恐慌，還是長期競爭格局轉折？需看台積電法說給定性。
+    </p>
+  </div>
+</div>
+
+<!-- ====== 多空辯論 ====== -->
+<div class="section-title">⚖️ 盤中多空辯論</div>
+<div class="debate-col">
+  <div class="bull-card">
+    <div class="debate-head" style="color:#3fb950;">🐂 看多方（反彈觀點）</div>
+    <div class="debate-item"><span class="num green">1.</span><span>RSI~28進入超賣區，歷史上台股超賣區反彈勝率 >70%，短線技術性反彈機率高</span></div>
+    <div class="debate-item"><span class="num green">2.</span><span>中國DUV僅5台/年，ASML全年6,000台，市場反應明顯過激，利空消化後可修復</span></div>
+    <div class="debate-item"><span class="num green">3.</span><span>美債10Y降至4.641%（從高點4.703%回落），油跌降通膨，Fed降息預期升，成長股估值支撐</span></div>
+    <div class="debate-item"><span class="num green">4.</span><span>07/27外資+335,531張大買（群創+56,496/聯電+43,123/長榮航+19,049/南亞+18,913），昨日已建立防線</span></div>
+    <div class="debate-item"><span class="num green">5.</span><span>台積電本週四/五法說會將提供官方DUV影響評估，「利空說清楚」後市場可定價</span></div>
+    <div class="debate-item"><span class="num green">6.</span><span>航空（長榮航）+金融族群逆勢走強，資金未全面出逃，結構性輪動仍在運作</span></div>
+  </div>
+  <div class="bear-card">
+    <div class="debate-head" style="color:#f85149;">🐻 看空方（續跌觀點）</div>
+    <div class="debate-item"><span class="num red">1.</span><span>布林下軌（42,728）＋07/20低點（41,968）雙雙跌破，技術面支撐全面失守，無明確底部</span></div>
+    <div class="debate-item"><span class="num red">2.</span><span>台積電ADR連4賣 + NVDA -4.99%，外資本週可能繼續調節台股科技持股</span></div>
+    <div class="debate-item"><span class="num red">3.</span><span>投信終結連23買超，內資最後防線失守，大盤失去重要支撐力道</span></div>
+    <div class="debate-item"><span class="num red">4.</span><span>石化避風港同步失效（油跌-6%），「棄電子抱傳產」策略雙雙失敗，資金無處可躲</span></div>
+    <div class="debate-item"><span class="num red">5.</span><span>台幣貶至32.39，外資持股成本上升，進一步提高外資調節意願</span></div>
+    <div class="debate-item"><span class="num red">6.</span><span>韓股盤中跌7%啟動熔斷，日經盤中殺2,590點，亞洲系統性拋售恐慌情緒短期難平復</span></div>
+  </div>
+</div>
+<div class="verdict">
+  <div class="verdict-ratio">
+    <span class="red">看空 65%</span> vs <span class="green">看多 35%</span>
+  </div>
+  <p>
+    <strong>裁決：短期偏空，但留意超賣反彈機會。</strong>DUV消息屬「不可定價的結構性恐慌」，難以快速消化；技術面支撐全面失守更讓空頭氣焰旺盛。然而RSI超賣（~28）+ 美債微降 + 油跌降通膨，短線反彈動能正在累積。<strong>策略：不追空，不接刀，等41,000止穩或台積電法說後再行動。</strong>
+  </p>
+</div>
+
+<!-- ====== 個股題材戰況 ====== -->
+<div class="section-title">🏆 今日題材戰況（DUV衝擊後重排）</div>
+<div class="theme-grid">
+  <div class="theme-card theme-danger">
+    <div class="theme-name">🔴 半導體設備／ASML概念</div>
+    <span class="theme-score score-lo">熱度 20/100</span>
+    <div class="theme-body">
+      <strong>今日判定：🔴 迴避</strong><br>
+      中國DUV量產傳聞（5台/年）引爆ASML ADR -4.6%，ASML在台無直接上市股，但漢翔（軍工）昨外資-10,324張，設備概念：崇越/辛耘/家登逃不過。<br>
+      <strong>代表個股</strong>：逃避為主，法人賣超<br>
+      <strong>風險</strong>：若台積電法說否認DUV威脅，此族群反彈最猛
+    </div>
+  </div>
+  <div class="theme-card theme-danger">
+    <div class="theme-name">🔴 石化族群（台塑三寶）</div>
+    <span class="theme-score score-lo">熱度 15/100</span>
+    <div class="theme-body">
+      <strong>今日判定：🔴 迴避</strong><br>
+      布蘭特-6.03%（$87.27），台塑(1301)/南亞(1303)/台塑化(6505)持有高成本庫存，面臨庫存跌價損失。昨外資已賣超台塑-5,067、中石化-9,712。上週「避風港」角色今日全面失守。<br>
+      <strong>代表個股</strong>：台塑1301、南亞1303、台塑化6505<br>
+      <strong>反彈條件</strong>：需油價重回$95+
+    </div>
+  </div>
+  <div class="theme-card theme-warn">
+    <div class="theme-name">🟡 AI伺服器／緯創</div>
+    <span class="theme-score score-md">熱度 55/100</span>
+    <div class="theme-body">
+      <strong>今日判定：🟡 觀望</strong><br>
+      DUV消息對AI伺服器本質衝擊有限（GB300訂單仍在），但NVDA -4.99%拖累情緒。緯創(3231)連5紅後是否守住175元支撐是關鍵。黃仁勳德州D1催化劑仍有效。<br>
+      <strong>代表個股</strong>：緯創3231（觀察175元守不守）<br>
+      <strong>風險</strong>：NVDA若繼續跌，緯創恐補跌
+    </div>
+  </div>
+  <div class="theme-card theme-ok">
+    <div class="theme-name">🟢 航空族群</div>
+    <span class="theme-score score-hi">熱度 72/100</span>
+    <div class="theme-body">
+      <strong>今日判定：🟢 進攻（選擇性）</strong><br>
+      油跌-6%是航空業最大利多：燃油成本直接下降，Q3獲利展望大幅改善。長榮航(2618)昨外資先布局+19,049張，今日料逆勢走強。<br>
+      <strong>代表個股</strong>：長榮航2618（優先）、華航2610<br>
+      <strong>進場區間</strong>：長榮航盤中回測不追高，等回檔再接
+    </div>
+  </div>
+  <div class="theme-card theme-ok">
+    <div class="theme-name">🟢 金融／銀行</div>
+    <span class="theme-score score-hi">熱度 60/100</span>
+    <div class="theme-body">
+      <strong>今日判定：🟢 相對抗跌</strong><br>
+      美債利率下行（4.641%）有利NIM走穩。昨外資買超台中銀+24,494、臺企銀+21,094、合庫金+16,541，顯示外資已在大盤下跌前布局防守部位。<br>
+      <strong>代表個股</strong>：台中銀2812、合庫金5880<br>
+      <strong>注意</strong>：中信金昨外資賣超-6,244，個股分化
+    </div>
+  </div>
+  <div class="theme-card theme-warn">
+    <div class="theme-name">🟡 面板族群（群創/友達）</div>
+    <span class="theme-score score-md">熱度 40/100</span>
+    <div class="theme-body">
+      <strong>今日判定：🟡 觀望</strong><br>
+      昨外資大買群創+56,496（07/27最大買超），理由不明（可能是資金輪出科技後的成本低窪選擇）。但今日大盤重挫，外資昨日建立的面板部位面臨評估。友達昨外資-7,944張（反向指標）。<br>
+      <strong>代表個股</strong>：群創3481、AUO2409<br>
+      <strong>風險</strong>：若外資今日獲利了結群創，跌幅恐大
+    </div>
+  </div>
+</div>
+
+<!-- ====== 外資籌碼（昨日T86）====== -->
+<div class="section-title">💼 外資籌碼深挖（07/27 T86，昨日資料）</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">外資買超前10名</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>代碼</th><th>名稱</th><th>外資淨買(張)</th><th>三大法人合計</th></tr>
+        <tr><td>3481</td><td>群創</td><td class="up">+56,496</td><td class="up">+58,023</td></tr>
+        <tr><td>2303</td><td>聯電</td><td class="up">+43,123</td><td class="up">+28,074</td></tr>
+        <tr><td>2812</td><td>台中銀</td><td class="up">+24,494</td><td class="up">+24,623</td></tr>
+        <tr><td>2834</td><td>臺企銀</td><td class="up">+21,094</td><td class="up">+21,283</td></tr>
+        <tr><td>2618</td><td>長榮航</td><td class="up">+19,049</td><td class="up">+21,029</td></tr>
+        <tr><td>1303</td><td>南亞</td><td class="up">+18,913</td><td class="up">+16,104</td></tr>
+        <tr><td>2002</td><td>中鋼</td><td class="up">+17,467</td><td class="up">+17,719</td></tr>
+        <tr><td>1101</td><td>台泥</td><td class="up">+17,345</td><td class="up">+17,627</td></tr>
+        <tr><td>5880</td><td>合庫金</td><td class="up">+16,541</td><td class="up">+17,788</td></tr>
+        <tr><td>00992A</td><td>主動群益科技創新ETF</td><td class="up">+18,254</td><td class="neu">-128</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">外資賣超前10名</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>代碼</th><th>名稱</th><th>外資淨賣(張)</th><th>三大法人合計</th></tr>
+        <tr><td>8112</td><td>至上</td><td class="dn">-11,244</td><td class="dn">-11,685</td></tr>
+        <tr><td>2344</td><td>華邦電</td><td class="dn">-10,621</td><td class="dn">-9,854</td></tr>
+        <tr><td>2634</td><td>漢翔</td><td class="dn">-10,324</td><td class="dn">-11,421</td></tr>
+        <tr><td>1314</td><td>中石化</td><td class="dn">-9,712</td><td class="dn">-9,842</td></tr>
+        <tr><td>2409</td><td>友達</td><td class="dn">-7,944</td><td class="dn">-9,096</td></tr>
+        <tr><td>00631L</td><td>元大台50正2</td><td class="dn">-7,156</td><td class="dn">-29,071</td></tr>
+        <tr><td>1312</td><td>國喬</td><td class="dn">-6,807</td><td class="dn">-7,694</td></tr>
+        <tr><td>2891</td><td>中信金</td><td class="dn">-6,244</td><td class="dn">-3,859</td></tr>
+        <tr><td>1301</td><td>台塑</td><td class="dn">-5,067</td><td class="dn">-5,355</td></tr>
+        <tr><td>0050</td><td>元大台灣50</td><td class="dn">-4,723</td><td class="dn">-37,212</td></tr>
+      </table>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:#8b949e;">全市場外資合計：+335,531張（昨日大量買進）｜自營商：-435,209張（大賣ETF）｜投信：+3,306張（終結連23買超）</div>
+  </div>
+</div>
+
+<!-- ====== 本週關鍵事件行程 ====== -->
+<div class="section-title">📅 本週關鍵催化劑行程</div>
+<div class="card">
+  <div class="timeline-item">
+    <div class="tl-dot tl-red"></div>
+    <div class="tl-content"><strong>07/28（今日）盤中</strong>：中國DUV消息衝擊發酵中<div class="tl-date">核心觀察：台積電盤中是否守住2,250支撐？費半ADR今晚是否反彈？</div></div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-dot tl-red"></div>
+    <div class="tl-content"><strong>07/29（週二）</strong>：亞洲市場繼續消化DUV消息<div class="tl-date">ASML、Applied Materials等半導體設備股態度（是否跟進發聲明）將決定利空持續時間</div></div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-dot tl-yellow"></div>
+    <div class="tl-content"><strong>07/30（週三）</strong>：美國ADP就業數據<div class="tl-date">就業強弱影響Fed降息預期，油跌降通膨配合就業降溫 → 9月降息概率可能升溫</div></div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-dot tl-blue"></div>
+    <div class="tl-content"><strong>07/31（週四）⭐ 超級重磅</strong>：Fed利率決議 + 台積電法說會<div class="tl-date">Fed：預計維持利率，關注聲明是否暗示9月降息 | 台積電法說：DUV對競爭格局的官方定性，是今週最重要的「解毒劑」或「確認利空」時刻</div></div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-dot tl-yellow"></div>
+    <div class="tl-content"><strong>08/01（週五）</strong>：美國非農就業報告<div class="tl-date">若就業走弱，強化降息預期，有助大盤技術性反彈</div></div>
+  </div>
+</div>
+
+<!-- ====== 三段式操作建議 ====== -->
+<div class="section-title">⚔️ 三段式操作建議</div>
+<div class="strat-card strat-attack">
+  <div class="strat-title">⚔️ 進攻型（部位20-30%，極謹慎）</div>
+  <div class="strat-body">
+    <strong>航空族群：</strong>長榮航(2618)、華航(2610)——油跌-6%是最直接的獲利利多，07/27外資已先布局長榮航+19,049張，今日若大盤繼續下殺，可等長榮航回測支撐（長榮航今日預計逆勢或小跌），分批買入。<br>
+    <strong>進場區間：</strong>長榮航若回測前次整理區（參考近期區間低點），可小量試單。<br>
+    <strong>停損條件：</strong>若美伊停火傳聞破局油價反彈至$93+，立即停損。
+  </div>
+</div>
+<div class="strat-card strat-balance">
+  <div class="strat-title">⚖️ 均衡型（現金主、部位10-20%）</div>
+  <div class="strat-body">
+    <strong>等待台積電法說（07/31）後再行動。</strong>今日及明日的下跌屬「恐慌定價階段」，法說前不宜逆風接刀。可持有少量金融股（台中銀2812、合庫金5880）作為防守倉位。<br>
+    <strong>等待回調區間：</strong>若台積電法說否認DUV威脅 + 費半反彈超過+2%，可在大盤42,500以下加碼AI伺服器（緯創3231、廣達2382）。<br>
+    <strong>不追高原則：</strong>反彈前3%不買，等量縮確認底部。
+  </div>
+</div>
+<div class="strat-card strat-defend">
+  <div class="strat-title">🛡️ 防守型（現金為主，部位0-10%）</div>
+  <div class="strat-body">
+    <strong>今日全面觀望。</strong>技術面布林下軌+07/20低點雙破，無明確支撐，不宜接刀。若已持有半導體/石化/AI伺服器部位，考慮在今日反彈時（可能出現技術性反彈）減持至舒適部位。<br>
+    <strong>規避族群：</strong>台積電(2330)、ASML相關設備股、台塑三寶——DUV利空 + 油跌 + 技術破位三重壓力。<br>
+    <strong>重新進場訊號：</strong>①台積電法說明確否認DUV威脅 ②費半連續2日收紅 ③美債10Y降至4.5%以下
+  </div>
+</div>
+
+<!-- ====== 免責聲明 ====== -->
+<div class="footer">
+  <p>
+    ⚠️ <strong>免責聲明：</strong>本報告由AI自動生成，僅供研究參考，不構成任何投資建議。股市投資有風險，過去績效不代表未來結果。所有數據來源：Yahoo Finance (yfinance)、台灣證券交易所T86官方API，盤中數據截至2026-07-28 10:18，可能有延遲。投資人應自行判斷並承擔相應風險。本報告不對任何因參考本報告所做投資決策造成的損失負責。<br>
+    數據來源：<a href="https://finance.yahoo.com/quote/%5ETWII/">Yahoo Finance</a> | <a href="https://www.twse.com.tw/zh/trading/fund/T86.html">TWSE T86</a> | <a href="https://tw.stock.yahoo.com">Yahoo股市台灣</a> | <a href="https://news.cnyes.com">鉅亨網</a>
+  </p>
+</div>
+
+</div>
+</body>
+</html>
