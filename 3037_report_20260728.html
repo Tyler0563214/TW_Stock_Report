@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>欣興 3037 深度分析報告 2026-07-28</title>
+<style>
+  :root {
+    --accent: #1e40af;
+    --accent-dark: #1e3a8a;
+    --accent-light: #93c5fd;
+    --bg: #F0F4F8;
+    --card: #FFFFFF;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --success: #059669;
+    --warning: #d97706;
+    --danger: #dc2626;
+    --info: #0891b2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI','PingFang TC','Microsoft JhengHei',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+  a { color:var(--accent); }
+
+  .cover {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 45%, #1d4ed8 80%, #3b82f6 100%);
+    color:#fff; padding:60px 40px 50px; text-align:center; position:relative; overflow:hidden;
+  }
+  .cover::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(59,130,246,0.3) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(147,197,253,0.15) 0%, transparent 50%);
+  }
+  .cover-inner { position:relative; z-index:1; max-width:860px; margin:0 auto; }
+  .cover-badge { display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:20px; padding:4px 14px; font-size:12px; letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; }
+  .cover h1 { font-size:3rem; font-weight:800; margin-bottom:6px; }
+  .cover .code { font-size:1.1rem; color:#93c5fd; margin-bottom:18px; }
+  .cover .tagline { font-size:1.05rem; color:rgba(255,255,255,0.8); margin-bottom:28px; }
+  .cover-meta { display:flex; justify-content:center; gap:24px; flex-wrap:wrap; }
+  .cover-meta span { background:rgba(255,255,255,0.12); border-radius:8px; padding:8px 18px; font-size:13px; }
+  .risk-badge { display:inline-block; padding:6px 18px; border-radius:20px; font-size:13px; font-weight:700; }
+  .risk-mid-high { background:#f59e0b; color:#1c1917; }
+  .risk-mid { background:#10b981; color:#fff; }
+
+  .container { max-width:960px; margin:0 auto; padding:32px 20px; }
+  .section { margin-bottom:36px; }
+  .section-title { font-size:1.2rem; font-weight:700; color:var(--accent); border-left:4px solid var(--accent); padding-left:12px; margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+  .section-num { font-size:11px; color:var(--text-muted); font-weight:400; }
+  .card { background:var(--card); border-radius:12px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,0.06); border:1px solid var(--border); }
+  .card+.card { margin-top:16px; }
+
+  .alert-banner { background:linear-gradient(135deg,#1e3a8a,#1d4ed8); color:#fff; border-radius:12px; padding:16px 24px; display:flex; align-items:center; gap:16px; margin-bottom:24px; }
+  .alert-banner .icon { font-size:2rem; }
+  .alert-banner h3 { font-size:1rem; font-weight:700; }
+  .alert-banner p { font-size:13px; opacity:0.9; }
+
+  .conclusion-card { background:linear-gradient(135deg,#0f172a,#1e3a8a); color:#fff; border-radius:16px; padding:32px; margin-bottom:16px; }
+  .conclusion-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .conclusion-item h4 { font-size:12px; color:#93c5fd; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+  .conclusion-item .val { font-size:1.4rem; font-weight:800; }
+  .conclusion-item .sub { font-size:12px; color:rgba(255,255,255,0.7); margin-top:4px; }
+
+  .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .kpi-brick { background:var(--card); border-radius:12px; padding:18px 14px; text-align:center; border:1px solid var(--border); }
+  .kpi-label { font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
+  .kpi-value { font-size:1.5rem; font-weight:800; color:var(--accent); font-variant-numeric:tabular-nums; }
+  .kpi-note { font-size:11px; color:var(--text-muted); margin-top:4px; }
+  .kpi-pos { color:var(--success) !important; }
+  .kpi-neg { color:var(--danger) !important; }
+  .kpi-warn { color:var(--warning) !important; }
+
+  .chart-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .chart-box { background:var(--card); border-radius:12px; padding:16px; border:1px solid var(--border); }
+  .chart-title { font-size:13px; font-weight:600; color:var(--text); margin-bottom:10px; text-align:center; }
+  canvas { display:block; }
+  .chart-note { font-size:10px; color:var(--text-muted); text-align:center; margin-top:6px; }
+
+  .data-table { width:100%; border-collapse:collapse; font-size:14px; }
+  .data-table th { background:#f8fafc; font-weight:600; color:var(--text-muted); padding:10px 14px; text-align:left; border-bottom:2px solid var(--border); }
+  .data-table td { padding:10px 14px; border-bottom:1px solid var(--border); }
+  .data-table tr:hover td { background:#f0f6ff; }
+  .table-wrap { overflow-x:auto; border-radius:10px; border:1px solid var(--border); }
+  .text-right { text-align:right; }
+  .tag { display:inline-block; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:600; }
+  .tag-buy { background:#dbeafe; color:#1e40af; }
+  .tag-strong-buy { background:#dcfce7; color:#14532d; }
+  .tag-neutral { background:#f1f5f9; color:#475569; }
+  .tag-down { background:#fee2e2; color:#991b1b; }
+
+  .fund-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .fund-card { background:var(--card); border-radius:12px; padding:18px; text-align:center; border:1px solid var(--border); }
+  .fund-label { font-size:11px; color:var(--text-muted); margin-bottom:6px; }
+  .fund-value { font-size:1.3rem; font-weight:800; font-variant-numeric:tabular-nums; }
+
+  .tech-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .ma-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); }
+  .ma-label { font-size:13px; color:var(--text-muted); }
+  .ma-val { font-size:14px; font-weight:600; }
+
+  .score-row { margin-bottom:14px; }
+  .score-label { font-size:13px; color:var(--text); margin-bottom:4px; display:flex; justify-content:space-between; }
+  .score-bar-bg { background:#e2e8f0; border-radius:6px; height:10px; overflow:hidden; }
+  .score-bar-fill { height:100%; border-radius:6px; }
+
+  .debate-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .bull-box { background:#f0fdf4; border-left:4px solid #059669; border-radius:0 12px 12px 0; padding:20px; }
+  .bear-box { background:#fff1f2; border-left:4px solid #dc2626; border-radius:0 12px 12px 0; padding:20px; }
+  .debate-title { font-size:14px; font-weight:700; margin-bottom:14px; }
+  .debate-item { display:flex; gap:10px; margin-bottom:10px; font-size:13px; }
+  .debate-item .icon { flex-shrink:0; }
+
+  .strategy-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .strat-card { border-radius:12px; padding:20px; }
+  .strat-attack { background:linear-gradient(135deg,#eff6ff,#dbeafe); border:1px solid #93c5fd; }
+  .strat-balance { background:linear-gradient(135deg,#fffbeb,#fef3c7); border:1px solid #fcd34d; }
+  .strat-defend { background:linear-gradient(135deg,#f8fafc,#f1f5f9); border:1px solid #cbd5e1; }
+  .strat-header { font-weight:700; font-size:14px; margin-bottom:12px; }
+  .strat-row { font-size:12px; margin-bottom:6px; display:flex; gap:6px; }
+  .strat-key { color:var(--text-muted); width:64px; flex-shrink:0; }
+
+  .glossary-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  .glossary-item { background:#f8fafc; border-radius:10px; padding:14px 16px; border-left:3px solid var(--accent); }
+  .glossary-term { font-weight:700; font-size:13px; margin-bottom:4px; }
+  .glossary-def { font-size:12px; color:var(--text-muted); }
+
+  .disclaimer { background:#fffbeb; border:1px solid #fcd34d; border-radius:10px; padding:20px; font-size:12px; color:#78350f; }
+  .disclaimer h4 { font-weight:700; margin-bottom:8px; }
+
+  .catalyst-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .catalyst-table th { background:#eff6ff; color:#1e40af; padding:8px 12px; text-align:left; border-bottom:2px solid #bfdbfe; font-size:12px; }
+  .catalyst-table td { padding:8px 12px; border-bottom:1px solid #dbeafe; }
+
+  @media(max-width:700px){
+    .kpi-grid{grid-template-columns:repeat(2,1fr);}
+    .chart-grid{grid-template-columns:1fr;}
+    .debate-grid{grid-template-columns:1fr;}
+    .strategy-grid{grid-template-columns:1fr;}
+    .conclusion-grid{grid-template-columns:1fr;}
+    .fund-grid{grid-template-columns:repeat(2,1fr);}
+    .tech-grid{grid-template-columns:1fr;}
+    .glossary-grid{grid-template-columns:1fr;}
+    .cover h1{font-size:2rem;}
+  }
+</style>
+</head>
+<body>
+
+<!-- 01 COVER -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-badge">台股深度研究報告</div>
+    <h1>欣興電子</h1>
+    <div class="code">股票代碼：3037 ｜ 台灣證券交易所上市</div>
+    <div class="tagline">全球 ABF 高階載板兩強之一 ✦ ASIC 市占 >70% ✦ AI 算力基礎設施關鍵供應鏈</div>
+    <div class="cover-meta">
+      <span>📅 報告日期：2026-07-28</span>
+      <span>💰 現股價：764 元（-9.91%）</span>
+      <span>📊 52W：129.5 → 1,130 元</span>
+      <span>⚠️ Kyber 延遲重擊同業</span>
+      <span><span class="risk-badge risk-mid-high">風險等級 6.0 / 10（中高）</span></span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ALERT BANNER -->
+<div class="alert-banner">
+  <div class="icon">⚡</div>
+  <div>
+    <h3>今日大跌 -9.91% 主因：NVIDIA Kyber NVL144 量產推遲至 2028 年！</h3>
+    <p>SemiAnalysis 報告指出 Kyber PCB Midplane 存在技術瓶頸，量產時程大幅右移。欣興、南電、台光電等 ABF 載板族群今日全面重挫。然而欣興基本面無惡化，Q2 營收 428.9 億創近 10 季高。</p>
+  </div>
+</div>
+
+<!-- 02 CORE CONCLUSION -->
+<div class="section">
+  <div class="section-title">核心結論 <span class="section-num">02</span></div>
+  <div class="conclusion-card">
+    <div class="conclusion-grid">
+      <div class="conclusion-item">
+        <h4>投資建議</h4>
+        <div class="val">📌 觀望後分批</div>
+        <div class="sub">Kyber 遞延衝擊情緒，等待市場消化後再進場</div>
+      </div>
+      <div class="conclusion-item">
+        <h4>目標價區間</h4>
+        <div class="val">900 – 1,225 元</div>
+        <div class="sub">FactSet 共識 935-1,000元 ｜ 外資最高 1,225元</div>
+      </div>
+      <div class="conclusion-item">
+        <h4>最大風險</h4>
+        <div class="val">⚠️ Kyber 延至 2028</div>
+        <div class="sub">原 2026-2027 放量預期落空，法人可能大幅下修EPS</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <p style="font-size:14px;color:var(--text-muted);">
+      欣興是全球最大 IC 載板廠，在 ABF 高階 ASIC 載板的市占率超過 70%，全球真正的競爭對手只剩日本 Ibiden。Q2'26 營收 428.9 億（YoY+32%，創近 10 季高），Q1'26 EPS 3.28 元、毛利率 17.96%，基本面持續改善。然而 NVIDIA Kyber NVL144 量產推遲至 2028，市場對 2026-2027 年 ABF 需求高峰的時程出現疑慮，是本次急跌的核心原因。Forward PE（FY2026E 15.34 元）約 49.8x，相比 FY2027E（24.03 元）的 31.8x 則相當合理。建議先觀望 1-2 週，待市場消化 Kyber 利空後，在 700–780 元區間試探性布局。
+    </p>
+  </div>
+</div>
+
+<!-- 03 KPI BRICKS -->
+<div class="section">
+  <div class="section-title">關鍵財務 KPI <span class="section-num">03</span></div>
+  <div class="kpi-grid">
+    <div class="kpi-brick">
+      <div class="kpi-label">今日股價</div>
+      <div class="kpi-value kpi-neg">764元</div>
+      <div class="kpi-note">-84元（-9.91%），52W高點跌幅-32%</div>
+    </div>
+    <div class="kpi-brick">
+      <div class="kpi-label">Q1'26 EPS</div>
+      <div class="kpi-value kpi-pos">3.28元</div>
+      <div class="kpi-note">逐季成長，連5季改善</div>
+    </div>
+    <div class="kpi-brick">
+      <div class="kpi-label">Q1'26 毛利率</div>
+      <div class="kpi-value kpi-pos">17.96%</div>
+      <div class="kpi-note">創歷史新高！較2024谷底+6pp</div>
+    </div>
+    <div class="kpi-brick">
+      <div class="kpi-label">Q2'26 季收（實際）</div>
+      <div class="kpi-value kpi-pos">428.9億</div>
+      <div class="kpi-note">YoY+32%，近10季新高</div>
+    </div>
+    <div class="kpi-brick">
+      <div class="kpi-label">Jun月收（實際）</div>
+      <div class="kpi-value kpi-pos">149.0億</div>
+      <div class="kpi-note">YoY+36.3%，MoM+6.0%</div>
+    </div>
+    <div class="kpi-brick">
+      <div class="kpi-label">Forward PE</div>
+      <div class="kpi-value kpi-warn">49.8x</div>
+      <div class="kpi-note">以FY2026E 15.34元估；FY2027E 31.8x</div>
+    </div>
+    <div class="kpi-brick">
+      <div class="kpi-label">市值</div>
+      <div class="kpi-value">1.21兆</div>
+      <div class="kpi-note">台灣前 20 大市值股</div>
+    </div>
+    <div class="kpi-brick">
+      <div class="kpi-label">三大法人 7/27</div>
+      <div class="kpi-value kpi-neg">-1,002張</div>
+      <div class="kpi-note">外資-1,283，自營+311，偏空</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 CHARTS -->
+<div class="section">
+  <div class="section-title">財務趨勢圖 <span class="section-num">04</span></div>
+  <div class="chart-grid">
+    <div class="chart-box">
+      <div class="chart-title">EPS 季度趨勢（元）</div>
+      <canvas id="epsChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ Q1'26 EPS 3.28元，毛利率17.96%，逐季攀升</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">月營收趨勢（億元，實際月份）</div>
+      <canvas id="revChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ Jun實際月收149億，YoY+36%</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">本益比比較（Forward PE）</div>
+      <canvas id="peChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ FY2027E PE 31.8x，長線具吸引力</div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 COMPANY OVERVIEW -->
+<div class="section">
+  <div class="section-title">公司概覽 <span class="section-num">05</span></div>
+  <div class="card">
+    <p style="font-size:14px;margin-bottom:14px;">
+      欣興電子（3037）是台灣最大 IC 載板廠，也是全球 ABF 高階載板的<strong>雙寡頭之一</strong>（另一家為日本 Ibiden）。其 ABF 載板主要用於 AI GPU（NVIDIA H200/B200/B300）、ASIC（Google TPU / Broadcom）及高階 CPU 的封裝基板。在 ASIC 載板市場，欣興市占超過 70%，具備事實上的壟斷地位。
+    </p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:13px;">
+      <div>
+        <strong>主要產品</strong><br>
+        • <strong>ABF 載板</strong>：AI GPU（NVIDIA）+ ASIC（Google TPU、Broadcom Tomahawk）封裝基板<br>
+        • <strong>BT 載板</strong>：一般伺服器/網通設備<br>
+        • <strong>光通訊基板</strong>：矽光子（Silicon Photonics）新興需求，正擴產 50%<br>
+        • <strong>HDI PCB</strong>：智慧型手機/消費電子
+      </div>
+      <div>
+        <strong>護城河（雙寡頭格局）</strong><br>
+        • <strong>全球兩強壁壘</strong>：真正具備高階 ABF 供應能力的廠商僅欣興 + Ibiden，技術壁壘極高<br>
+        • <strong>ASIC 市占 >70%</strong>：Google / Amazon / Meta 等自研晶片主要靠欣興供應<br>
+        • <strong>持續擴產</strong>：楊梅廠 + 光復廠資本支出衝上 340 億，搶先卡位<br>
+        • <strong>光通訊爆發</strong>：矽光子載板需求爆炸，擴產 50% 迎接 CoPackaging 商機<br>
+        • <strong>董座親認供不應求</strong>：高階載板供不應求至少一年以上（2026年初法說）
+      </div>
+    </div>
+    <div style="margin-top:14px;padding:12px;background:#eff6ff;border-radius:8px;font-size:13px;">
+      <strong>📋 Q2'26 業績亮點（7月22日公布）：</strong>Q2 營收 428.9 億（創近 10 季新高，季增 14.5%，YoY+32%），法人看好 ABF 擴產帶動營收。Q1'26 毛利率 17.96%，EPS 3.28 元，均創歷史新高。資本支出 340 億規模，為未來 2-3 年產能擴張奠基。
+    </div>
+  </div>
+</div>
+
+<!-- 06 FUNDAMENTAL ANALYSIS -->
+<div class="section">
+  <div class="section-title">基本面分析 <span class="section-num">06</span></div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <p style="font-weight:600;margin-bottom:12px;">評分指標</p>
+        <div class="score-row">
+          <div class="score-label"><span>營收成長力</span><span>9/10</span></div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:#1e40af;"></div></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label"><span>毛利率改善</span><span>8/10</span></div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:#2563eb;"></div></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label"><span>EPS 成長性</span><span>8/10</span></div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:#3b82f6;"></div></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label"><span>估值合理性</span><span>5/10</span></div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:50%;background:#60a5fa;"></div></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label"><span>產業地位</span><span>10/10</span></div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:100%;background:#93c5fd;"></div></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label"><span>財務穩健度</span><span>7/10</span></div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:#bfdbfe;"></div></div>
+        </div>
+      </div>
+      <div>
+        <p style="font-weight:600;margin-bottom:12px;">季度財報明細</p>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>季度</th><th class="text-right">EPS(元)</th><th class="text-right">毛利率</th><th class="text-right">營益率</th></tr></thead>
+            <tbody>
+              <tr><td>Q2'24</td><td class="text-right">1.05</td><td class="text-right">13.21%</td><td class="text-right">3.22%</td></tr>
+              <tr><td>Q3'24</td><td class="text-right">0.66</td><td class="text-right">15.58%</td><td class="text-right">6.19%</td></tr>
+              <tr><td>Q4'24</td><td class="text-right" style="color:#dc2626;">0.04</td><td class="text-right">11.57%</td><td class="text-right">2.31%</td></tr>
+              <tr><td>Q1'25</td><td class="text-right">0.60</td><td class="text-right">13.38%</td><td class="text-right">4.21%</td></tr>
+              <tr><td>Q2'25</td><td class="text-right" style="color:#dc2626;">0.02</td><td class="text-right">13.08%</td><td class="text-right">4.65%</td></tr>
+              <tr><td>Q3'25</td><td class="text-right">1.44</td><td class="text-right">13.38%</td><td class="text-right">4.51%</td></tr>
+              <tr><td>Q4'25</td><td class="text-right">2.32</td><td class="text-right">15.77%</td><td class="text-right">6.82%</td></tr>
+              <tr style="background:#eff6ff;"><td><strong>Q1'26</strong></td><td class="text-right"><strong style="color:#1e40af;">3.28</strong></td><td class="text-right"><strong style="color:#1e40af;">17.96%</strong></td><td class="text-right"><strong>7.36%</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:14px;background:#eff6ff;border-radius:8px;font-size:13px;">
+      <strong>💡 白話解說：</strong>欣興過去幾年因 ABF 供過於求，EPS 幾乎為零（2024 Q4 才 0.04 元）。但隨著 AI 伺服器爆炸性增長，ABF 需求大逆轉，毛利率從 11% 一路爬升到 17.96%（Q1'26 新高），EPS 也快速從個位數衝上每季 3 元以上。法人預估全年 FY2026E EPS 約 13-15 元，FY2027E 可達 24 元，長線成長性強。
+    </div>
+  </div>
+</div>
+
+<!-- 07 INSTITUTIONAL -->
+<div class="section">
+  <div class="section-title">籌碼面分析 <span class="section-num">07</span></div>
+  <div class="card">
+    <div class="fund-grid">
+      <div class="fund-card">
+        <div class="fund-label">外資 7/27</div>
+        <div class="fund-value kpi-neg">-1,283張</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Kyber 利空驅動撤退</div>
+      </div>
+      <div class="fund-card">
+        <div class="fund-label">投信 7/27</div>
+        <div class="fund-value kpi-neg">-30張</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">小幅賣超，觀望</div>
+      </div>
+      <div class="fund-card">
+        <div class="fund-label">自營商 7/27</div>
+        <div class="fund-value kpi-pos">+311張</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">逆勢少量布局</div>
+      </div>
+      <div class="fund-card">
+        <div class="fund-label">合計 7/27</div>
+        <div class="fund-value kpi-neg">-1,002張</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">外資主導賣超</div>
+      </div>
+    </div>
+    <div style="margin-top:20px;">
+      <p style="font-weight:600;margin-bottom:12px;font-size:14px;">法人目標價摘要</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>機構</th><th>評等</th><th class="text-right">目標價</th><th>重點</th></tr></thead>
+          <tbody>
+            <tr><td>美系外資（最高）</td><td><span class="tag tag-strong-buy">強力買進</span></td><td class="text-right">1,225元</td><td>2027E EPS 24.03元，51x PE；光通訊擴產50%</td></tr>
+            <tr><td>FactSet 共識</td><td><span class="tag tag-buy">買進</span></td><td class="text-right">935–1,000元</td><td>FY2026E EPS 15.34元（21家分析師中位數）</td></tr>
+            <tr><td>EPS 共識區間</td><td><span class="tag tag-neutral">中位</span></td><td class="text-right">—</td><td>FY2026E：10.5–21.12元（中位 15.34元）</td></tr>
+            <tr><td>Kyber 遞延後調整</td><td><span class="tag tag-neutral">觀望</span></td><td class="text-right">下修中</td><td>Kyber 2028 量產，部分法人下修 EPS 估值</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div style="margin-top:14px;padding:12px;background:#fff7ed;border-radius:8px;font-size:13px;">
+      <strong>⚠️ 籌碼警示：</strong>外資連續賣超 -1,283 張，Kyber 延遲讓外資對 2026-2027 年 ABF 需求高峰出現疑慮。然而自營商逆勢少量買入（+311張），可能是認為超跌。後續觀察重點：ABF 需求替代方案（GB300 其他平台）能否彌補 Kyber 缺口，決定外資是否回補。
+    </div>
+  </div>
+</div>
+
+<!-- 08 TECHNICAL -->
+<div class="section">
+  <div class="section-title">技術分析 <span class="section-num">08</span></div>
+  <div class="card">
+    <div class="tech-grid">
+      <div>
+        <p style="font-weight:600;margin-bottom:10px;">均線系統（今日 764 元）</p>
+        <div class="ma-row"><span class="ma-label">MA5</span><span class="ma-val" style="color:#dc2626;">863 元（股價大幅破下 -11.5%）⬇</span></div>
+        <div class="ma-row"><span class="ma-label">MA10</span><span class="ma-val" style="color:#dc2626;">855 元（股價大幅破下）⬇</span></div>
+        <div class="ma-row"><span class="ma-label">MA20</span><span class="ma-val" style="color:#dc2626;">899 元（股價大幅破下）⬇</span></div>
+        <div class="ma-row"><span class="ma-label">MA60</span><span class="ma-val" style="color:#dc2626;">923 元（空頭全面主導）⬇</span></div>
+        <div style="margin-top:12px;font-size:12px;background:#fff1f2;border-radius:6px;padding:10px;color:#9f1239;">
+          ⚠️ 四線全空排列，但股價已跌至布林下軌（744.68元）附近，超賣信號明顯。
+        </div>
+        <p style="font-weight:600;margin-top:14px;margin-bottom:10px;">MACD / RSI / 布林</p>
+        <div class="ma-row"><span class="ma-label">MACD</span><span class="ma-val">DIF -25.26 / DEA -21.68 → <span style="color:#dc2626;">死叉（負值區）</span></span></div>
+        <div class="ma-row"><span class="ma-label">RSI</span><span class="ma-val">46.08（<span style="color:#d97706;">中性偏空，未達超賣</span>）</span></div>
+        <div class="ma-row"><span class="ma-label">布林下軌</span><span class="ma-val" style="color:#d97706;font-weight:700;">744.68元（股價 764 逼近下軌）</span></div>
+        <div style="margin-top:8px;background:#fef9c3;border-radius:6px;padding:10px;font-size:12px;color:#78350f;">
+          💡 股價接近布林下軌（744元），若跌破則可能繼續探底；若守住則可能出現技術反彈至 850–900 元。
+        </div>
+      </div>
+      <div>
+        <p style="font-weight:600;margin-bottom:10px;">關鍵價位</p>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>類型</th><th>價位</th><th>說明</th></tr></thead>
+            <tbody>
+              <tr><td>歷史高點</td><td>1,130 元</td><td>52週最高（2026年6月高峰）</td></tr>
+              <tr><td>強壓力</td><td>923 元</td><td>MA60，下降趨勢主要壓力</td></tr>
+              <tr><td>次壓力</td><td>863–899 元</td><td>MA5/MA10/MA20 密集區</td></tr>
+              <tr><td>布林下軌</td><td>745 元</td><td>超賣邊界，今日逼近</td></tr>
+              <tr><td><strong>當前支撐</strong></td><td><strong>750–780 元</strong></td><td>7/20 低點 750元，短期防守區</td></tr>
+              <tr><td>強支撐</td><td>700 元</td><td>整數關卡，心理防線</td></tr>
+              <tr><td>極端支撐</td><td>600 元</td><td>2024年底底部整理區</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:12px;padding:12px;background:#f0f6ff;border-radius:8px;font-size:12px;">
+          <strong>走勢摘要：</strong>52W低點 129.5元 → 6月高點 1,075元（+730%）急漲後，7月因 Kyber 利空急速回調，7/7 單日暴跌至 840 元（-7.7%），7/20 最低 747 元後反彈至 907 元，今日再度下殺至 764 元。來回震盪顯示市場對 Kyber 消息的消化尚未完成。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 09 MARGIN -->
+<div class="section">
+  <div class="section-title">融資融券 <span class="section-num">09</span></div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div>
+        <p style="font-weight:600;margin-bottom:10px;">融資融券現況（7/27）</p>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>項目</th><th class="text-right">數值</th></tr></thead>
+            <tbody>
+              <tr><td>融資餘額</td><td class="text-right">—</td></tr>
+              <tr><td>融券餘額</td><td class="text-right">—</td></tr>
+              <tr><td>資券比</td><td class="text-right">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">FinMind 未回傳明細。請至 <a href="https://www.twse.com.tw" target="_blank">TWSE 官網</a> → 信用交易 → 每日融資融券餘額，代碼 3037 查詢。</p>
+      </div>
+      <div>
+        <p style="font-weight:600;margin-bottom:10px;">融資融券趨勢判讀</p>
+        <div style="background:#f8fafc;border-radius:8px;padding:14px;font-size:13px;">
+          <p style="margin-bottom:8px;">📊 <strong>融資風險（高度警戒）：</strong>欣興從 129.5 元暴漲至 1,130 元（+773%），吸引大量融資追高。高位融資在股價急跌 -32% 的過程中，可能形成龐大斷頭賣壓，這是今日急跌幅度偏大的原因之一。</p>
+          <p style="font-size:11px;color:var(--text-muted);">欣興股價波動極大，建議使用現股操作而非融資，避免強制斷頭風險。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 10 DEBATE -->
+<div class="section">
+  <div class="section-title">研究員辯論：看多 vs 看空 <span class="section-num">10</span></div>
+  <div class="debate-grid">
+    <div class="bull-box">
+      <div class="debate-title" style="color:#059669;">🐂 看多研究員（50%權重）</div>
+      <div class="debate-item"><span class="icon">1️⃣</span><span><strong>全球 ABF 雙寡頭，不可替代：</strong>有能力供應高階 AI GPU/ASIC 載板的廠商全球僅欣興 + Ibiden，即使 Kyber 延遲，其他 AI 平台（GB300 / Blackwell Ultra / ASIC）需求仍在，欣興護城河不受影響。</span></div>
+      <div class="debate-item"><span class="icon">2️⃣</span><span><strong>Q2'26 創近10季新高：</strong>Q2 季收 428.9 億（YoY+32%，QoQ+14.5%），Kyber 利空是「情緒恐慌」而非「訂單取消」，基本面無實質惡化。</span></div>
+      <div class="debate-item"><span class="icon">3️⃣</span><span><strong>FY2027E PE 僅 31.8x（具吸引力）：</strong>以 FY2027E EPS 24.03 元計，764 元對應 PE = 31.8x，相對全球 AI 晶片供應鏈已非高估。</span></div>
+      <div class="debate-item"><span class="icon">4️⃣</span><span><strong>毛利率持續上升，Q1'26 達 17.96%：</strong>從 2024 谷底 11.57% 爬升至 17.96%，顯示 ABF 漲價持續滲透，欣興定價能力改善中。法人預估 2026 年毛利率可望突破 20%。</span></div>
+      <div class="debate-item"><span class="icon">5️⃣</span><span><strong>光通訊新業務加速：</strong>矽光子（Silicon Photonics）載板需求爆炸，欣興正擴產 50%。Co-Packaging Optics（CPO）是 2027-2028 年的下一個成長引擎，可彌補部分 Kyber 遞延影響。</span></div>
+      <div class="debate-item"><span class="icon">6️⃣</span><span><strong>股價已從高點修正 -32%：</strong>1,130 → 764 元，超賣跡象明顯（接近布林下軌 745 元），情緒面修正可能已超過基本面合理調整幅度。</span></div>
+    </div>
+    <div class="bear-box">
+      <div class="debate-title" style="color:#dc2626;">🐻 看空研究員（50%權重）</div>
+      <div class="debate-item"><span class="icon">1️⃣</span><span><strong>Kyber NVL144 量產延至 2028：</strong>SemiAnalysis 揭露 PCB Midplane 技術瓶頸，原預計 2026-2027 年量產放量的時程大幅右移，直接衝擊欣興 2026-2027 年 ABF 需求高峰預期。</span></div>
+      <div class="debate-item"><span class="icon">2️⃣</span><span><strong>法人可能大幅下修 EPS：</strong>Kyber 是欣興 2027 年 EPS 24 元預估的關鍵假設之一，若量產推遲至 2028，FY2027E EPS 可能下修至 15-18 元，對應 Forward PE 大幅抬升。</span></div>
+      <div class="debate-item"><span class="icon">3️⃣</span><span><strong>外資大幅賣超 -1,283 張：</strong>外資資金撤出是最重要的籌碼空頭訊號，且持續賣超代表國際機構尚未認為當前股價是底部。</span></div>
+      <div class="debate-item"><span class="icon">4️⃣</span><span><strong>技術面空頭全面，支撐未確立：</strong>四條均線全數空頭排列，MACD 死叉位於負值區，且 RSI 46 未達超賣（<30），技術反彈條件不充分，可能繼續下探 700 元整數關卡。</span></div>
+      <div class="debate-item"><span class="icon">5️⃣</span><span><strong>ABF 供需缺口若縮小，漲價動能減弱：</strong>若 Kyber 延遲導致 2026-2027 年 ABF 需求增長低於預期，欣興的定價能力和毛利率改善幅度可能受限，FY2026E EPS 15.34 元的共識估算存在下修風險。</span></div>
+      <div class="debate-item"><span class="icon">6️⃣</span><span><strong>資本支出 340 億帶來折舊壓力：</strong>擴產投入 340 億，若需求遞延而產能提前上線，折舊成本將壓縮毛利率。資本密集型擴張在需求不確定下存在「產能過剩」轉折風險。</span></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <p style="font-size:14px;"><strong>🗣️ 給一般投資人的話：</strong>欣興好比是 AI 算力基礎設施裡的「地基工廠」，地基需求量是否如原先預期，現在因為 NVIDIA 的工程延遲出現了不確定性。但地基本身的品質（欣興的技術）和市場地位（全球兩強）並未改變。目前問題是「訂單的時程往後移」，而非「訂單消失」。建議不要急於追殺，也不要在消息未明朗前重押，等待 2 週後市場消化 Kyber 消息，確認支撐位再布局。</p>
+  </div>
+</div>
+
+<!-- 11 RISK -->
+<div class="section">
+  <div class="section-title">風控評估 <span class="section-num">11</span></div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <p style="font-weight:600;margin-bottom:14px;">六維評分（10分越高越危險）</p>
+        <div class="score-row">
+          <div class="score-label"><span>估值風險（30%）</span><span style="color:#d97706;font-weight:700;">6/10</span></div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:#d97706;"></div></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label"><span>財務風險（25%）</span><span style="color:#059669;font-weight:700;">3/10</span></div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:30%;background:#10b981;"></div></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label"><span>流動性風險（10%）</span><span style="color:#059669;font-weight:700;">2/10</span></div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:20%;background:#10b981;"></div></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label"><span>產業風險（15%）</span><span style="color:#d97706;font-weight:700;">6/10</span></div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:#f59e0b;"></div></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label"><span>總經風險（10%）</span><span style="color:#d97706;font-weight:700;">5/10</span></div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:50%;background:#f59e0b;"></div></div>
+        </div>
+        <div class="score-row">
+          <div class="score-label"><span>籌碼風險（10%）</span><span style="color:#dc2626;font-weight:700;">8/10</span></div>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:#dc2626;"></div></div>
+        </div>
+        <div style="margin-top:16px;padding:14px;background:#eff6ff;border-radius:8px;text-align:center;">
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">綜合加權風險評分</div>
+          <div style="font-size:2rem;font-weight:800;color:#d97706;">6.0 / 10</div>
+          <div><span class="risk-badge risk-mid-high">中高風險</span></div>
+        </div>
+      </div>
+      <div>
+        <p style="font-weight:600;margin-bottom:14px;">風控說明</p>
+        <div style="font-size:13px;display:flex;flex-direction:column;gap:10px;">
+          <div style="background:#fff7ed;border-radius:8px;padding:10px 14px;">
+            <strong style="color:#d97706;">估值風險 6/10（中）</strong><br>
+            Forward PE（FY2026E）49.8x 偏高，FY2027E 31.8x 合理。Kyber 遞延若導致法人下修 EPS，估值壓力將上升。
+          </div>
+          <div style="background:#f0fdf4;border-radius:8px;padding:10px 14px;">
+            <strong style="color:#059669;">財務風險 3/10（低）</strong><br>
+            毛利率 17.96% 歷史新高，Q2 季收創新高，現金流健康。擴產 340 億雖帶來折舊，但成長確定性高。
+          </div>
+          <div style="background:#fee2e2;border-radius:8px;padding:10px 14px;">
+            <strong style="color:#dc2626;">籌碼風險 8/10（高）</strong><br>
+            外資持續賣超，從 52W 高點融資追高的散戶面臨斷頭壓力，短期籌碼結構不穩，是最大風險。
+          </div>
+          <div style="background:#fff7ed;border-radius:8px;padding:10px 14px;">
+            <strong style="color:#d97706;">產業風險 6/10（中）</strong><br>
+            Kyber 量產遞延 → ABF 需求高峰時程右移。玻璃基板長期替代（2028+）。但雙寡頭格局確保長期地位。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 12 STRATEGY -->
+<div class="section">
+  <div class="section-title">台股三段式操作策略 <span class="section-num">12</span></div>
+  <div class="strategy-grid">
+    <div class="strat-card strat-attack">
+      <div class="strat-header" style="color:#1e40af;">⚔️ 進攻策略（積極型）</div>
+      <div class="strat-row"><span class="strat-key">適合者</span>相信雙寡頭格局，願意承擔 Kyber 不確定性</div>
+      <div class="strat-row"><span class="strat-key">進場價</span>750–780 元（布林下軌附近，分 2 批）</div>
+      <div class="strat-row"><span class="strat-key">加碼條件</span>站穩 850 元並放量，確認反彈趨勢</div>
+      <div class="strat-row"><span class="strat-key">目標一</span>900 元（MA20 下方阻力）</div>
+      <div class="strat-row"><span class="strat-key">目標二</span>1,000 元（法人共識目標）</div>
+      <div class="strat-row"><span class="strat-key">目標三</span>1,225 元（外資長期目標）</div>
+      <div class="strat-row"><span class="strat-key">停損</span>跌破 700 元出場</div>
+      <div class="strat-row"><span class="strat-key">部位建議</span>不超過總資金 8%</div>
+    </div>
+    <div class="strat-card strat-balance">
+      <div class="strat-header" style="color:#d97706;">⚖️ 均衡策略（穩健型）</div>
+      <div class="strat-row"><span class="strat-key">適合者</span>看好長線但不想接刀的投資人</div>
+      <div class="strat-row"><span class="strat-key">策略</span>等 1-2 週讓市場消化 Kyber 消息</div>
+      <div class="strat-row"><span class="strat-key">進場條件</span>股價回穩 780–830元 + 外資停止賣超</div>
+      <div class="strat-row"><span class="strat-key">目標一</span>900 元（反彈第一目標）</div>
+      <div class="strat-row"><span class="strat-key">目標二</span>1,000 元（法人共識）</div>
+      <div class="strat-row"><span class="strat-key">加碼觸發</span>Q2 財報 EPS > 3.5元 + 毛利率 > 18%</div>
+      <div class="strat-row"><span class="strat-key">停損</span>跌破 700 元出場</div>
+      <div class="strat-row"><span class="strat-key">部位建議</span>不超過總資金 5%</div>
+    </div>
+    <div class="strat-card strat-defend">
+      <div class="strat-header" style="color:#475569;">🛡️ 防守策略（保守型）</div>
+      <div class="strat-row"><span class="strat-key">適合者</span>風險容忍度低，不確定 Kyber 影響</div>
+      <div class="strat-row"><span class="strat-key">建議</span>目前完全觀望，等待市場明朗化</div>
+      <div class="strat-row"><span class="strat-key">觀察重點</span>Kyber 最新進展、NVIDIA 官方說明</div>
+      <div class="strat-row"><span class="strat-key">進場時機</span>若股價跌至 600-650元則視為長線機會</div>
+      <div class="strat-row"><span class="strat-key">替代方案</span>考慮南電（8046）估值更低，短期漲幅空間類似</div>
+      <div class="strat-row"><span class="strat-key">警示線</span>月收連2月低於 130億 → 訂單需求疑慮</div>
+      <div class="strat-row"><span class="strat-key">部位建議</span>現在 0%</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <p style="font-weight:600;margin-bottom:12px;font-size:14px;">📅 催化劑時程表</p>
+    <table class="catalyst-table">
+      <thead><tr><th>時間</th><th>事件</th><th>預期影響</th></tr></thead>
+      <tbody>
+        <tr><td>2026年8月初</td><td>Q2'26 財報公布（EPS 估 4-5元）</td><td>🚀 若 EPS > 4元 + 毛利率 > 18.5%，可能成為股價止跌催化劑</td></tr>
+        <tr><td>2026年8月</td><td>NVIDIA 官方回應 Kyber 量產時程</td><td>🔑 若官方確認延遲，外資可能繼續賣；若否認，急速反彈</td></tr>
+        <tr><td>2026年Q3</td><td>ABF 漲價新合約（Q3 供需確認）</td><td>📈 若漲價落地，毛利率有望超過 20%，EPS 上修</td></tr>
+        <tr><td>2026年下半年</td><td>光通訊（矽光子）載板出貨放量</td><td>⚡ 新業務貢獻，可彌補 Kyber 遞延部分影響</td></tr>
+        <tr><td>2027年</td><td>ASIC 載板需求持續成長（自研晶片）</td><td>🔥 Google / Amazon / Meta 自研晶片擴張，欣興受益最深</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 13 GLOSSARY -->
+<div class="section">
+  <div class="section-title">名詞小教室 <span class="section-num">13</span></div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">Kyber NVL144（NVIDIA 次世代機櫃）</div>
+      <div class="glossary-def">NVIDIA 即將推出的新世代 AI 伺服器機櫃，每台可放 144 顆 GPU（比現在的 NVL72 多一倍），是未來 AI 算力的重大升級。因為機櫃中間的「PCB Midplane」（信號傳輸板）技術難度過高，量產時程傳出從 2026-2027 年延至 2028 年，這是欣興、台達電等股票今日大跌的主因。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">ASIC（特殊應用積體電路）</div>
+      <div class="glossary-def">Google（TPU）、Amazon（Trainium）、Meta（MTIA）等科技巨頭自行設計的 AI 晶片。與通用 GPU 不同，ASIC 是為特定 AI 任務量身打造，效率更高。欣興是這些 ASIC 載板的主要供應商，ASIC 市占超過 70%，且不受 NVIDIA 單一客戶集中風險影響。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">矽光子（Silicon Photonics）/ CPO</div>
+      <div class="glossary-def">用光（光子）代替電子傳輸訊號的技術，速度更快、耗電更低。Co-Packaging Optics（CPO）是把光子引擎直接封裝在晶片旁邊，是資料中心下一代高速傳輸的標準。欣興正擴產 50% 搶攻矽光子載板商機，是 2027-2028 年的新成長引擎。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">PCB Midplane（中介板）</div>
+      <div class="glossary-def">在大型伺服器機櫃中，連接各個模組（GPU、網路、電源）的核心電路板。Kyber 機櫃因 GPU 數量倍增（144 顆），信號複雜度大幅提升，Midplane 設計挑戰遠超現有水準，導致技術瓶頸。這是欣興、台光電等 PCB 廠近期被波及的原因。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">SemiAnalysis</div>
+      <div class="glossary-def">全球知名的半導體產業研究機構（付費訂閱），其分析報告被業界高度重視。當 SemiAnalysis 發佈 Kyber 量產延遲的報告時，市場立即反應，相關族群股價單日暴跌。這類機構報告對載板、PCB、電源等 AI 供應鏈股票的短期走勢影響巨大。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">雙寡頭（Duopoly）格局</div>
+      <div class="glossary-def">全球真正具備量產高階 ABF 載板能力的廠商只剩兩家：欣興（台灣）和 Ibiden（日本）。這種高度集中的市場結構賦予兩家公司極強的定價能力，即使 AI 需求短期波動，長期護城河仍然深厚。對投資人而言，這是欣興最核心的投資邏輯。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">FactSet 共識估值</div>
+      <div class="glossary-def">FactSet 是全球主要金融數據商，會匯整多家分析師的 EPS 預測，計算出「共識估值」（中位數/均值）。欣興目前 FactSet 共識 FY2026E EPS = 15.34 元（21 家分析師），是最常被法人引用的估值基準。共識數字若被大幅下修，往往是股價進一步下跌的信號。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">資本支出（Capex）折舊壓力</div>
+      <div class="glossary-def">欣興宣布 340 億資本支出用於擴廠。資本支出本身不算費用，但買進的機台設備每年都要「折舊」（分年認列費用）。若新廠完工但訂單不如預期（如 Kyber 延遲），折舊費用會侵蝕毛利率。這是高資本支出擴張期的典型風險。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 14 DISCLAIMER -->
+<div class="section">
+  <div class="disclaimer">
+    <h4>⚠️ 免責聲明</h4>
+    <p>本報告僅供研究參考，<strong>不構成任何投資建議或買賣依據</strong>。股票投資涉及市場風險，過去績效不代表未來表現。投資人應自行評估風險承受能力並做出獨立判斷，必要時請諮詢專業金融顧問。</p>
+    <p style="margin-top:8px;"><strong>資料來源：</strong>富果 Fugle API（即時股價）｜FinMind（歷史K線、月營收、季度財報、三大法人）｜台灣證券交易所（三大法人 T86）｜CMoney、聯合報、Yahoo Finance、鉅亨網、FactSet、SemiAnalysis（Kyber 延遲報告）</p>
+    <p style="margin-top:8px;">報告生成時間：2026-07-28 ｜ 分析師：Claude Stock Analysis Team（AI 輔助分析）</p>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ===== PURE CANVAS CHART LIBRARY =====
+function drawBarChart(canvasId, labels, data, barColor, accentColor, unit) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {t:24,r:16,b:44,l:44};
+  var cw = W-pad.l-pad.r, ch = H-pad.t-pad.b;
+  ctx.clearRect(0,0,W,H); ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+  var minVal = Math.min(0, Math.min.apply(null,data));
+  var maxVal = Math.max.apply(null,data);
+  var range = maxVal-minVal||1;
+  var paddedRange = range*1.18;
+  var scale = ch/paddedRange;
+  var zeroY = pad.t+ch-(0-minVal)*scale+((paddedRange-range)/2*scale);
+  var steps=5;
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  for(var i=0;i<=steps;i++){
+    var v=minVal+paddedRange*i/steps;
+    var y=pad.t+ch*(1-i/steps);
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+cw,y); ctx.stroke();
+    ctx.fillStyle='#94a3b8'; ctx.font='9px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(v.toFixed(2),pad.l-4,y+3);
+  }
+  ctx.strokeStyle='#94a3b8'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(pad.l,zeroY); ctx.lineTo(pad.l+cw,zeroY); ctx.stroke();
+  var barW=Math.min(cw/labels.length*0.6,26);
+  var gap=cw/labels.length;
+  for(var i=0;i<labels.length;i++){
+    var x=pad.l+gap*i+gap/2-barW/2;
+    var v=data[i];
+    var barH=Math.abs(v)*scale;
+    var y=v>=0?zeroY-barH:zeroY;
+    var color=(i===labels.length-1)?accentColor:barColor;
+    if(v<0) color='#f87171';
+    ctx.fillStyle=color;
+    ctx.beginPath();
+    ctx.roundRect?ctx.roundRect(x,y,barW,barH,v>=0?[3,3,0,0]:[0,0,3,3]):ctx.rect(x,y,barW,barH);
+    ctx.fill();
+    ctx.fillStyle='#1e293b'; ctx.font='bold 8px sans-serif'; ctx.textAlign='center';
+    ctx.fillText((unit||'')+v.toFixed(2),x+barW/2,v>=0?y-4:y+barH+10);
+    ctx.fillStyle='#64748b'; ctx.font='8px sans-serif';
+    ctx.fillText(labels[i],x+barW/2,H-6);
+  }
+}
+
+function drawLineChart(canvasId, labels, data, lineColor, yFormatter) {
+  var canvas = document.getElementById(canvasId);
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var pad={t:20,r:16,b:40,l:46};
+  var cw=W-pad.l-pad.r, ch=H-pad.t-pad.b;
+  ctx.clearRect(0,0,W,H); ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+  var minVal=Math.min.apply(null,data)*0.92;
+  var maxVal=Math.max.apply(null,data)*1.06;
+  var range=maxVal-minVal||1;
+  var fmt=yFormatter||function(v){return v.toFixed(0);};
+  var steps=4;
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  for(var i=0;i<=steps;i++){
+    var v=minVal+range*i/steps;
+    var y=pad.t+ch*(1-i/steps);
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+cw,y); ctx.stroke();
+    ctx.fillStyle='#94a3b8'; ctx.font='9px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(fmt(v),pad.l-4,y+3);
+  }
+  var pts=[];
+  for(var i=0;i<labels.length;i++){
+    var x=pad.l+cw*i/(labels.length-1);
+    var y=pad.t+ch*(1-(data[i]-minVal)/range);
+    pts.push([x,y]);
+  }
+  ctx.beginPath(); ctx.moveTo(pts[0][0],pts[0][1]);
+  for(var i=1;i<pts.length;i++) ctx.lineTo(pts[i][0],pts[i][1]);
+  ctx.lineTo(pts[pts.length-1][0],pad.t+ch); ctx.lineTo(pts[0][0],pad.t+ch); ctx.closePath();
+  var grad=ctx.createLinearGradient(0,pad.t,0,pad.t+ch);
+  grad.addColorStop(0,lineColor+'55'); grad.addColorStop(1,lineColor+'08');
+  ctx.fillStyle=grad; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(pts[0][0],pts[0][1]);
+  for(var i=1;i<pts.length;i++) ctx.lineTo(pts[i][0],pts[i][1]);
+  ctx.strokeStyle=lineColor; ctx.lineWidth=2.5; ctx.stroke();
+  for(var i=0;i<pts.length;i++){
+    var r=(i===pts.length-1)?6:4;
+    ctx.beginPath(); ctx.arc(pts[i][0],pts[i][1],r,0,Math.PI*2);
+    ctx.fillStyle=lineColor; ctx.fill();
+    ctx.strokeStyle='#fff'; ctx.lineWidth=1.5; ctx.stroke();
+    ctx.fillStyle='#1e293b'; ctx.font='bold 9px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(fmt(data[i]),pts[i][0],pts[i][1]-10);
+    ctx.fillStyle='#64748b'; ctx.font='9px sans-serif';
+    ctx.fillText(labels[i],pts[i][0],H-6);
+  }
+}
+
+function drawHBarChart(canvasId, labels, data, colors) {
+  var canvas = document.getElementById(canvasId);
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var pad={t:16,r:56,b:20,l:80};
+  ctx.clearRect(0,0,W,H); ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+  var maxVal=Math.max.apply(null,data)*1.1;
+  var rowH=(H-pad.t-pad.b)/labels.length;
+  var bH=Math.min(rowH*0.55,22);
+  var barArea=W-pad.l-pad.r;
+  for(var i=0;i<labels.length;i++){
+    var y=pad.t+rowH*i+rowH/2;
+    var bW=(data[i]/maxVal)*barArea;
+    ctx.fillStyle='#f1f5f9';
+    ctx.beginPath();
+    ctx.roundRect?ctx.roundRect(pad.l,y-bH/2,barArea,bH,4):ctx.rect(pad.l,y-bH/2,barArea,bH);
+    ctx.fill();
+    ctx.fillStyle=colors[i]||'#1e40af';
+    ctx.beginPath();
+    ctx.roundRect?ctx.roundRect(pad.l,y-bH/2,bW,bH,4):ctx.rect(pad.l,y-bH/2,bW,bH);
+    ctx.fill();
+    ctx.fillStyle='#1e293b'; ctx.font='bold 10px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(labels[i],pad.l-6,y+4);
+    ctx.textAlign='left';
+    ctx.fillText(data[i]+'x',pad.l+bW+6,y+4);
+  }
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  // EPS Bar Chart
+  drawBarChart('epsChart',
+    ['Q2\'24','Q3\'24','Q4\'24','Q1\'25','Q2\'25','Q3\'25','Q4\'25','Q1\'26'],
+    [1.05, 0.66, 0.04, 0.60, 0.02, 1.44, 2.32, 3.28],
+    '#93c5fd', '#1e40af', '');
+
+  // Monthly Revenue Line Chart (Jan-Jun 2026, actual months)
+  drawLineChart('revChart',
+    ['Jan','Feb','Mar','Apr','May','Jun'],
+    [127.67, 116.00, 130.79, 139.33, 140.60, 148.97],
+    '#1e40af',
+    function(v){ return v.toFixed(0)+'億'; });
+
+  // PE Comparison (Forward PE)
+  drawHBarChart('peChart',
+    ['欣興2026E','欣興2027E','南電2026E','台股大盤'],
+    [50, 32, 104, 18],
+    ['#1e40af','#3b82f6','#e11d48','#94a3b8']);
+});
+</script>
+</body>
+</html>
