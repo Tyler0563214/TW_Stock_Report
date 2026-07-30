@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南電 (8046) 深度投資研究報告</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; background: #F0F4F8; color: #1a202c; }
+
+  .cover {
+    background: linear-gradient(135deg, #064e3b 0%, #065f46 40%, #047857 70%, #059669 100%);
+    color: white; padding: 60px 40px; text-align: center; position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+  }
+  .cover-badge { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 6px 18px; font-size: 13px; margin-bottom: 20px; }
+  .cover h1 { font-size: 52px; font-weight: 800; margin-bottom: 8px; letter-spacing: 2px; }
+  .cover h2 { font-size: 20px; font-weight: 400; opacity: 0.85; margin-bottom: 24px; }
+  .cover-meta { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 30px; }
+  .cover-meta-item { text-align: center; }
+  .cover-meta-item .label { font-size: 12px; opacity: 0.7; margin-bottom: 4px; }
+  .cover-meta-item .value { font-size: 20px; font-weight: 700; }
+  .risk-badge { display: inline-block; background: #fbbf24; color: #1a202c; border-radius: 8px; padding: 8px 20px; font-weight: 700; font-size: 15px; margin-top: 20px; }
+  .buy-tag { display: inline-block; background: #4caf50; color: white; border-radius: 6px; padding: 4px 12px; font-size: 14px; font-weight: 700; }
+  .hot-badge { display: inline-block; background: #ef4444; color: white; border-radius: 6px; padding: 2px 8px; font-size: 12px; font-weight: 700; margin-left: 6px; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+  .section { background: white; border-radius: 16px; padding: 32px; margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .section-title { font-size: 20px; font-weight: 700; color: #064e3b; border-left: 4px solid #059669; padding-left: 14px; margin-bottom: 22px; }
+
+  .core-conclusion { background: linear-gradient(135deg, #064e3b, #059669); color: white; border-radius: 16px; padding: 32px; margin-bottom: 24px; }
+  .core-conclusion .section-title { color: white; border-left-color: rgba(255,255,255,0.5); }
+  .conclusion-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 16px; }
+  .conclusion-card { background: rgba(255,255,255,0.12); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.2); }
+  .conclusion-card .label { font-size: 12px; opacity: 0.7; margin-bottom: 8px; }
+  .conclusion-card .value { font-size: 20px; font-weight: 800; }
+  .conclusion-card .sub { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .kpi-card { background: #f0fdf4; border-radius: 12px; padding: 18px; border: 1px solid #bbf7d0; }
+  .kpi-card .kpi-label { font-size: 12px; color: #64748b; margin-bottom: 6px; }
+  .kpi-card .kpi-value { font-size: 24px; font-weight: 800; color: #064e3b; margin-bottom: 4px; }
+  .kpi-card .kpi-change { font-size: 12px; }
+  .kpi-card .kpi-desc { font-size: 11px; color: #94a3b8; margin-top: 6px; }
+  .up { color: #16a34a; } .down { color: #dc2626; }
+
+  .chart-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .chart-card { background: #f0fdf4; border-radius: 12px; padding: 20px; border: 1px solid #bbf7d0; }
+  .chart-card h4 { font-size: 14px; color: #475569; margin-bottom: 14px; text-align: center; }
+  .chart-note { font-size: 11px; color: #94a3b8; text-align: center; margin-top: 8px; }
+
+  .score-bar-wrap { margin-bottom: 14px; }
+  .score-bar-label { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 14px; }
+  .score-bar-bg { background: #e2e8f0; border-radius: 8px; height: 10px; }
+  .score-bar-fill { height: 10px; border-radius: 8px; }
+
+  .analyst-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .analyst-card { border-radius: 12px; padding: 18px; text-align: center; }
+  .analyst-card.buy { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1px solid #86efac; }
+  .analyst-card.strong-buy { background: linear-gradient(135deg, #dcfce7, #bbf7d0); border: 1px solid #4ade80; }
+  .analyst-card .bank-name { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .analyst-card .rating { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+  .analyst-card .buy-rating { background: #22c55e; color: white; }
+  .analyst-card .target { font-size: 26px; font-weight: 800; color: #16a34a; }
+  .analyst-card .target-label { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+  .debate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .bull-card { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-radius: 12px; padding: 24px; border: 1px solid #86efac; }
+  .bear-card { background: linear-gradient(135deg, #fff1f2, #ffe4e6); border-radius: 12px; padding: 24px; border: 1px solid #fca5a5; }
+  .debate-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+  .debate-title.bull { color: #16a34a; } .debate-title.bear { color: #dc2626; }
+  .debate-point { display: flex; gap: 10px; margin-bottom: 12px; align-items: flex-start; }
+  .debate-point .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+  .bull-dot { background: #22c55e; } .bear-dot { background: #ef4444; }
+  .debate-point p { font-size: 14px; line-height: 1.6; }
+  .weight-bar { display: flex; margin-top: 16px; border-radius: 8px; overflow: hidden; height: 28px; }
+  .weight-bull { background: #22c55e; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; }
+  .weight-bear { background: #ef4444; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; }
+  .weight-note { font-size: 12px; color: #64748b; margin-top: 8px; text-align: center; }
+
+  .risk-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .risk-item { background: #f0fdf4; border-radius: 10px; padding: 14px; border: 1px solid #bbf7d0; }
+  .risk-item .r-label { font-size: 12px; color: #64748b; margin-bottom: 6px; }
+  .risk-item .r-score { font-size: 22px; font-weight: 800; }
+  .risk-item .r-bar { background: #e2e8f0; border-radius: 4px; height: 6px; margin-top: 8px; }
+  .risk-item .r-fill { height: 6px; border-radius: 4px; }
+  .risk-badge-lg { display: inline-block; border-radius: 10px; padding: 12px 28px; font-size: 18px; font-weight: 800; }
+  .risk-medium-high { background: #fef3c7; color: #92400e; }
+
+  .strategy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .strategy-card { border-radius: 12px; padding: 20px; }
+  .strategy-card.attack { background: linear-gradient(135deg, #fef9c3, #fde68a); border: 1px solid #fbbf24; }
+  .strategy-card.balance { background: linear-gradient(135deg, #dbeafe, #bfdbfe); border: 1px solid #60a5fa; }
+  .strategy-card.defense { background: linear-gradient(135deg, #f1f5f9, #e2e8f0); border: 1px solid #94a3b8; }
+  .strategy-card .s-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
+  .strategy-card .s-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; }
+  .strategy-card .s-label { color: #64748b; } .strategy-card .s-value { font-weight: 600; }
+
+  .glossary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .glossary-item { background: #f0fdf4; border-radius: 10px; padding: 16px; border-left: 3px solid #059669; }
+  .glossary-item .term { font-size: 14px; font-weight: 700; color: #064e3b; margin-bottom: 6px; }
+  .glossary-item .def { font-size: 13px; color: #475569; line-height: 1.6; }
+
+  .disclaimer { background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 20px; }
+  .disclaimer h4 { font-size: 14px; font-weight: 700; color: #92400e; margin-bottom: 10px; }
+  .disclaimer p { font-size: 12px; color: #78350f; line-height: 1.7; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { background: #f0fdf4; color: #064e3b; padding: 10px 14px; text-align: left; font-weight: 600; }
+  td { padding: 10px 14px; border-bottom: 1px solid #f1f5f9; }
+  tr:hover td { background: #f0fdf4; }
+
+  .catalyst-list { list-style: none; }
+  .catalyst-list li { padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; gap: 14px; align-items: center; font-size: 14px; }
+  .cat-date { background: #bbf7d0; color: #064e3b; border-radius: 6px; padding: 4px 10px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+
+  .moat-card { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-radius: 12px; padding: 16px; border: 1px solid #86efac; margin-bottom: 12px; }
+  .moat-card .moat-title { font-size: 14px; font-weight: 700; color: #064e3b; margin-bottom: 6px; }
+  .moat-card p { font-size: 13px; color: #374151; line-height: 1.6; }
+
+  @media (max-width: 768px) {
+    .kpi-grid, .chart-grid, .analyst-grid, .risk-grid, .strategy-grid, .glossary-grid { grid-template-columns: 1fr 1fr; }
+    .debate-grid, .conclusion-grid { grid-template-columns: 1fr; }
+    .cover h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ①封面 -->
+<div class="cover">
+  <div class="cover-badge">📊 股票深度研究報告</div>
+  <h1>南電</h1>
+  <h2>南亞電路板股份有限公司 ｜ 股票代碼：8046.TW <span class="hot-badge">🚀 AI 載板王者</span></h2>
+  <div>
+    <span class="buy-tag">▲ 買進（長線）</span>
+    &nbsp;&nbsp;
+    <span style="display:inline-block;background:rgba(255,255,255,0.2);color:white;border-radius:6px;padding:4px 12px;font-size:14px;font-weight:700;">⚠️ 估值偏高，分批佈局</span>
+  </div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <div class="label">報告日期</div>
+      <div class="value">2026.07.30</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">近期股價</div>
+      <div class="value">~$1,200 元</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">產業類別</div>
+      <div class="value">ABF 載板 / AI PCB</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">法人最高目標價</div>
+      <div class="value">$2,444 元</div>
+    </div>
+  </div>
+  <div class="risk-badge">⚠️ 風險等級：中高（6.5/10）</div>
+</div>
+
+<div class="container">
+
+<!-- ②核心結論 -->
+<div class="core-conclusion">
+  <div class="section-title">🎯 核心結論</div>
+  <div class="conclusion-grid">
+    <div class="conclusion-card">
+      <div class="label">投資建議</div>
+      <div class="value"><span class="buy-tag">長線買進</span></div>
+      <div class="sub">AI ABF 載板供需缺口擴大<br>2027 年缺口可達 42%<br>V 型反轉確立</div>
+    </div>
+    <div class="conclusion-card">
+      <div class="label">外資目標價區間</div>
+      <div class="value">$655 ～ $2,444 元</div>
+      <div class="sub">高盛最新 $2,310 元（年增 107%）<br>FactSet 中位數 $131.5 元（舊估值）<br>最新外資上看 $2,444 元</div>
+    </div>
+    <div class="conclusion-card">
+      <div class="label">最大風險提示</div>
+      <div class="value" style="font-size:14px;">本益比逾 180 倍，估值極度超前</div>
+      <div class="sub">ABF 景氣週期高度波動<br>光學封裝等新技術替代威脅<br>2025 年由虧轉盈、基期低</div>
+    </div>
+  </div>
+</div>
+
+<!-- ③KPI -->
+<div class="section">
+  <div class="section-title">📈 關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">2026 Q1 EPS</div>
+      <div class="kpi-value">$2.03</div>
+      <div class="kpi-change up">▲ 季增 9.14% / 年增 534%</div>
+      <div class="kpi-desc">近 5 季新高，由虧轉盈確立</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">近四季累計 EPS</div>
+      <div class="kpi-value">$4.72</div>
+      <div class="kpi-change up">▲ 持續回升軌道</div>
+      <div class="kpi-desc">2025 全年 EPS 僅 $3.01，今年已超越</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">2026E 全年 EPS</div>
+      <div class="kpi-value">~$4.87</div>
+      <div class="kpi-change up">▲ FactSet 分析師預估</div>
+      <div class="kpi-desc">若 Q2 漲價效益釋放，有上修空間</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">2026 Q1 營業利益率</div>
+      <div class="kpi-value">12.1%</div>
+      <div class="kpi-change up">▲ 大幅跳升</div>
+      <div class="kpi-desc">ABF 載板漲價效益開始釋放</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">2026/06 月營收</div>
+      <div class="kpi-value">$46.84 億</div>
+      <div class="kpi-change up">▲ 月增 5.5% / 年增 50.03%</div>
+      <div class="kpi-desc">月營收創新高，年增率加速</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">2026 年 Q1 營收</div>
+      <div class="kpi-value">$111.77 億</div>
+      <div class="kpi-change up">▲ 年增顯著</div>
+      <div class="kpi-desc">單季已達 2025 全年的 27.8%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">ABF 載板產能全球排名</div>
+      <div class="kpi-value">全球第二</div>
+      <div class="kpi-change up">▲ 月產能約 2,800 萬顆</div>
+      <div class="kpi-desc">僅次於欣興（4,000 萬顆），遠超景碩</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">現股價本益比（估算）</div>
+      <div class="kpi-value">~180x+</div>
+      <div class="kpi-change down">▼ 遠高於同業均值 65x</div>
+      <div class="kpi-desc">市場定價完全反映景氣反轉預期</div>
+    </div>
+  </div>
+</div>
+
+<!-- ④財務趨勢圖 -->
+<div class="section">
+  <div class="section-title">📊 財務趨勢圖</div>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h4>EPS 季度趨勢（元）</h4>
+      <canvas id="epsChart" height="200"></canvas>
+      <div class="chart-note">★ 2026Q1 為實際公告；其餘為推算值</div>
+    </div>
+    <div class="chart-card">
+      <h4>月營收趨勢（億元）</h4>
+      <canvas id="revenueChart" height="200"></canvas>
+      <div class="chart-note">★ 2026/06 為最新公告；其餘為推算值</div>
+    </div>
+    <div class="chart-card">
+      <h4>本益比比較（倍）—— 以 2026E EPS</h4>
+      <canvas id="peChart" height="200"></canvas>
+      <div class="chart-note">★ 南電以近期股價 ~$1,200 ÷ 2026E EPS $4.87 計算</div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑤公司概覽 -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽</div>
+  <table>
+    <tr><th width="180">項目</th><th>說明</th></tr>
+    <tr><td>公司全名</td><td>南亞電路板股份有限公司（台塑集團旗下）</td></tr>
+    <tr><td>主要業務</td><td>ABF 高階 IC 載板、BT 載板、高速 PCB 製造，供應 AI 伺服器、HPC、5G 網通設備</td></tr>
+    <tr><td>核心產品</td><td>ABF 載板（AI GPU/HPC）、BT 載板（記憶體/網通）、高速 PCB（800G 交換器）</td></tr>
+    <tr><td>主要客戶</td><td>美系 AI 雲端大廠（AI 加速器、交換器），網通設備廠商</td></tr>
+    <tr><td>全球排名</td><td>ABF 載板月產能全球第二（約 2,800 萬顆），ABF 占營收比重持續提升至 55%+</td></tr>
+    <tr><td>AI 應用佔比</td><td>AI 伺服器與交換器合計佔營收約 15-18.8%，持續拉高</td></tr>
+    <tr><td>產能稼動率</td><td>2026 Q1 產能利用率突破 90%，ABF 載板全面滿載</td></tr>
+    <tr><td>四大轉型策略</td><td>產品轉型（高值化）、事業轉型（新材料）、數位轉型（智能化）、低碳轉型（綠電）</td></tr>
+  </table>
+</div>
+
+<!-- ⑥基本面分析 -->
+<div class="section">
+  <div class="section-title">📋 基本面分析</div>
+  <div style="margin-bottom: 20px;">
+    <div class="score-bar-wrap">
+      <div class="score-bar-label"><span>財務改善動能</span><span style="color:#16a34a;font-weight:700;">9/10</span></div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:linear-gradient(90deg,#16a34a,#4ade80);"></div></div>
+    </div>
+    <div class="score-bar-wrap">
+      <div class="score-bar-label"><span>產業成長前景</span><span style="color:#16a34a;font-weight:700;">9/10</span></div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:linear-gradient(90deg,#059669,#34d399);"></div></div>
+    </div>
+    <div class="score-bar-wrap">
+      <div class="score-bar-label"><span>護城河寬度</span><span style="color:#0891b2;font-weight:700;">7/10</span></div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:linear-gradient(90deg,#0891b2,#22d3ee);"></div></div>
+    </div>
+    <div class="score-bar-wrap">
+      <div class="score-bar-label"><span>估值合理性</span><span style="color:#dc2626;font-weight:700;">2/10</span></div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:20%;background:linear-gradient(90deg,#dc2626,#f87171);"></div></div>
+    </div>
+    <div class="score-bar-wrap">
+      <div class="score-bar-label"><span>週期性風險</span><span style="color:#d97706;font-weight:700;">6/10（偏高）</span></div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:linear-gradient(90deg,#d97706,#fcd34d);"></div></div>
+    </div>
+  </div>
+  <p style="font-size:14px;line-height:1.8;color:#475569;">
+    南電正處於 V 型反轉的爆發初期。2025 年全年 EPS 僅 $3.01 元（甚至有幾季虧損），但 2026 Q1 單季 EPS 即達 $2.03 元，年增高達 534%，近四季累計 $4.72 元。ABF 載板交期已從年初 3-4 個月拉長至逾 12 個月，部分客戶甚至預訂 2029 年後產能，供不應求的格局非常明確。2026 Q1 營業利益率大幅跳升至 12.1%，漲價效益正在釋放，法人預估全年 EPS 約 $4.87 元，且有持續上修空間。
+  </p>
+</div>
+
+<!-- ⑦護城河分析 -->
+<div class="section">
+  <div class="section-title">🏰 三層結構性護城河</div>
+  <div class="moat-card">
+    <div class="moat-title">🥇 第一層：技術認證壁壘</div>
+    <p>南電樹林廠專攻高階 ABF 載板，供應重要美系 AI 大廠。ABF 載板驗證週期長達數年，一旦進入客戶供應鏈，替換成本極高。非長約客戶比例較欣興更高，在漲價週期中定價權更強。</p>
+  </div>
+  <div class="moat-card">
+    <div class="moat-title">🥈 第二層：原料供應鏈護城河</div>
+    <p>積極推進 ABF 膜（Ajinomoto Build-up Film）、玻纖布等關鍵原料的第二、第三供應來源認證，提升供應彈性，支撐後續出貨成長。原料取得能力決定能接多少單。</p>
+  </div>
+  <div class="moat-card">
+    <div class="moat-title">🥉 第三層：台塑集團資源後盾</div>
+    <p>隸屬台塑集團，在資金、廠房、法遵與企業治理上具備集團支撐，財務彈性優於獨立廠商。台灣廠區占比近 80%，昆山廠補充產能，雙基地調度靈活。</p>
+  </div>
+</div>
+
+<!-- ⑧籌碼面分析 -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析（法人動向）</div>
+  <div class="analyst-grid" style="margin-bottom:24px;">
+    <div class="analyst-card strong-buy">
+      <div class="bank-name">🇺🇸 高盛 Goldman Sachs</div>
+      <span class="rating buy-rating">買進</span>
+      <div class="target">$2,310 元</div>
+      <div class="target-label">目標價（年增調升 107%）</div>
+      <div style="font-size:12px;color:#64748b;margin-top:8px;">AI ABF 供需缺口擴大，看好漲價循環延續至 2028</div>
+    </div>
+    <div class="analyst-card strong-buy">
+      <div class="bank-name">🏦 外資機構（最高）</div>
+      <span class="rating buy-rating">強力買進</span>
+      <div class="target">$2,444 元</div>
+      <div class="target-label">目標價（最新上調）</div>
+      <div style="font-size:12px;color:#64748b;margin-top:8px;">ABF 載板調漲 50%+，交期拉長至 12 個月以上</div>
+    </div>
+    <div class="analyst-card buy">
+      <div class="bank-name">📈 外資 + ETF 聯手</div>
+      <span class="rating buy-rating">積極加碼</span>
+      <div class="target">+6,660 張</div>
+      <div class="target-label">近 5 日外資淨買超</div>
+      <div style="font-size:12px;color:#64748b;margin-top:8px;">7/14 七檔主動型 ETF 同步加碼合計 1,050 張</div>
+    </div>
+  </div>
+  <p style="font-size:13px;color:#475569;line-height:1.7;">
+    <strong>籌碼格局：</strong>外資與投信罕見同步大幅加碼，主動型 ETF 也相繼建倉，籌碼集中度上升，短線賣壓相對有限。ABF 載板供需缺口擴大的共識形成，法人評等持續上修，為股價提供上行動能。
+    <br><br>
+    📌 即時三大法人數據請至 <a href="https://goodinfo.tw/tw/ShowBuySaleChart.asp?STOCK_ID=8046&CHT_CAT=DATE" target="_blank" style="color:#059669;">Goodinfo 南電三大法人頁面</a> 查詢。
+  </p>
+</div>
+
+<!-- ⑨技術分析 -->
+<div class="section">
+  <div class="section-title">📉 技術分析</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:16px;">
+    <div>
+      <h4 style="font-size:14px;font-weight:700;color:#064e3b;margin-bottom:12px;">均線與指標研判</h4>
+      <table>
+        <tr><th>指標</th><th>研判</th><th>說明</th></tr>
+        <tr><td>5/10/20MA</td><td><span style="color:#16a34a;font-weight:700;">強多頭排列</span></td><td>短線動能極強</td></tr>
+        <tr><td>60/120MA</td><td><span style="color:#16a34a;font-weight:700;">多頭格局確立</span></td><td>中長線趨勢向上</td></tr>
+        <tr><td>MACD</td><td><span style="color:#16a34a;font-weight:700;">正乖離持續</span></td><td>動能強，注意背離訊號</td></tr>
+        <tr><td>RSI</td><td><span style="color:#d97706;font-weight:700;">偏高（推算 70-80）</span></td><td>接近超買區，短線留意★推算值</td></tr>
+        <tr><td>布林通道</td><td><span style="color:#d97706;font-weight:700;">上軌附近</span></td><td>適度整理後再攻</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4 style="font-size:14px;font-weight:700;color:#064e3b;margin-bottom:12px;">關鍵價位（推算）</h4>
+      <table>
+        <tr><th>類型</th><th>價位</th><th>意義</th></tr>
+        <tr><td>強力支撐</td><td>~$900 元</td><td>前波整理區、季均線</td></tr>
+        <tr><td>中期支撐</td><td>~$1,000 元</td><td>心理整數關卡</td></tr>
+        <tr><td>近期壓力</td><td>~$1,400 元</td><td>前次法人目標價整數區</td></tr>
+        <tr><td>停損參考</td><td>$850 元以下</td><td>跌破重新評估部位</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ⑩研究員辯論 -->
+<div class="section">
+  <div class="section-title">⚔️ 研究員團隊辯論</div>
+  <div class="debate-grid">
+    <div class="bull-card">
+      <div class="debate-title bull">🐂 看多研究員（看漲理由）</div>
+      <div class="debate-point">
+        <div class="dot bull-dot"></div>
+        <p><strong>ABF 供需缺口史詩級擴大：</strong>外資預估 2026 下半年 ABF 載板供需缺口達 10%，2027 年擴至 25%，2028 年爆衝至 42%。交期從年初 3-4 個月拉長至逾 12 個月，部分客戶已預訂 2029 年後產能，史上罕見。</p>
+      </div>
+      <div class="debate-point">
+        <div class="dot bull-dot"></div>
+        <p><strong>漲價 50%+ 效益釋放：</strong>外資預估 2026 年 ABF 載板漲幅超過 50%，BT 載板漲幅超過 70%。南電非長約客戶比例高，受惠漲價彈性更大。Q1 營業利益率已跳升至 12.1%，後續將持續擴張。</p>
+      </div>
+      <div class="debate-point">
+        <div class="dot bull-dot"></div>
+        <p><strong>月營收持續創高：</strong>2026/06 月營收 $46.84 億，年增 50.03%，加速成長趨勢明確。1-6 月累計年增逾 34%，下半年伴隨漲價效益全面釋放，有望進一步加速。</p>
+      </div>
+      <div class="debate-point">
+        <div class="dot bull-dot"></div>
+        <p><strong>外資目標價大幅上調：</strong>高盛將目標價調升 107% 至 $2,310 元，另一外資機構上看 $2,444 元。目標價遠高於現股價，預示巨大上漲空間（若目標價兌現）。</p>
+      </div>
+      <div class="debate-point">
+        <div class="dot bull-dot"></div>
+        <p><strong>AI 應用比重持續提升：</strong>AI 伺服器與 800G 交換器合計佔營收 15-18.8% 且持續拉高，ABF 占比拉升至 55%+。高毛利產品組合改善將帶動整體毛利率回升。</p>
+      </div>
+      <div class="debate-point">
+        <div class="dot bull-dot"></div>
+        <p><strong>EPS 年增 534% 確認 V 型反轉：</strong>2026 Q1 EPS $2.03 元年增 534%，由虧轉盈訊號強烈，且季增 9.14% 顯示動能仍在持續，非一次性反彈。</p>
+      </div>
+    </div>
+    <div class="bear-card">
+      <div class="debate-title bear">🐻 看空研究員（下跌風險）</div>
+      <div class="debate-point">
+        <div class="dot bear-dot"></div>
+        <p><strong>本益比逾 180 倍，估值危險：</strong>以股價 $1,200 ÷ 2026E EPS $4.87，本益比高達 246 倍；以近四季 EPS $4.72，本益比仍達 254 倍，遠超同業均值 65 倍，泡沫風險高。</p>
+      </div>
+      <div class="debate-point">
+        <div class="dot bear-dot"></div>
+        <p><strong>ABF 載板高度週期性：</strong>南電曾在 2022-2024 年 ABF 去庫存週期中大幅虧損，證明此產業景氣反轉快、跌幅深。若 AI 資本支出擴張速度低於預期，或微軟、Google 砍單，衝擊將立竿見影。</p>
+      </div>
+      <div class="debate-point">
+        <div class="dot bear-dot"></div>
+        <p><strong>光學封裝替代技術威脅：</strong>光學封裝（Optical Packaging）等新技術發展可能在 3-5 年內對傳統 ABF 載板形成替代，是長線最大結構性風險，影響護城河的持久性。</p>
+      </div>
+      <div class="debate-point">
+        <div class="dot bear-dot"></div>
+        <p><strong>2025 年基期極低，年增率虛高：</strong>2026 Q1 EPS 年增 534% 的驚人數字，部分原因是 2025 同期基期極低（幾乎虧損），並非完全反映業務真實成長速度，需用絕對值評估。</p>
+      </div>
+      <div class="debate-point">
+        <div class="dot bear-dot"></div>
+        <p><strong>股價已大漲 10 倍：</strong>南電從 2025 年低點約 $147 元漲至目前約 $1,200-1,415 元，不到一年漲幅達 10 倍，籌碼鬆動一旦觸發，短線回測幅度可能達 30-50%。</p>
+      </div>
+      <div class="debate-point">
+        <div class="dot bear-dot"></div>
+        <p><strong>法人目標價落差巨大：</strong>各機構目標價從 $131.5 元（舊 FactSet 中位數）到 $2,444 元（最新外資），差距高達 18 倍，反映分析師對未來獲利能力分歧極大，不確定性高。</p>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:20px;">
+    <div class="weight-bar">
+      <div class="weight-bull" style="width:58%">看多 58%</div>
+      <div class="weight-bear" style="width:42%">看空 42%</div>
+    </div>
+    <div class="weight-note">基本面趨勢看多，供需缺口擴大明確；但估值面看空，現價已大幅定價未來景氣</div>
+  </div>
+  <div style="background:#f0fdf4;border-radius:12px;padding:16px;margin-top:16px;border:1px solid #bbf7d0;">
+    <p style="font-size:14px;color:#065f46;line-height:1.7;">
+      <strong>💬 給一般投資人的話：</strong>南電是台股最受 AI 浪潮直接受惠的 ABF 載板龍頭之一，供需故事非常清晰，法人幾乎一致看好。但問題是「好公司、貴價格」——股價一年漲 10 倍，現在買等於在打賭未來兩三年的業績全部兌現。建議分批佈局，不要一次重押，更不要借錢追高。ABF 週期股歷史上跌起來也很快，設好停損、控好部位才是王道。
+    </p>
+  </div>
+</div>
+
+<!-- ⑪風控評估 -->
+<div class="section">
+  <div class="section-title">🛡️ 風控評估（六維評分）</div>
+  <div class="risk-grid">
+    <div class="risk-item">
+      <div class="r-label">估值風險</div>
+      <div class="r-score" style="color:#dc2626;">9/10</div>
+      <div class="r-bar"><div class="r-fill" style="width:90%;background:#dc2626;"></div></div>
+      <p style="font-size:12px;color:#64748b;margin-top:6px;">本益比 180-250x，遠超同業 65x</p>
+    </div>
+    <div class="risk-item">
+      <div class="r-label">財務風險</div>
+      <div class="r-score" style="color:#16a34a;">3/10</div>
+      <div class="r-bar"><div class="r-fill" style="width:30%;background:#22c55e;"></div></div>
+      <p style="font-size:12px;color:#64748b;margin-top:6px;">台塑集團支持，財務體質健全</p>
+    </div>
+    <div class="risk-item">
+      <div class="r-label">流動性風險</div>
+      <div class="r-score" style="color:#16a34a;">3/10</div>
+      <div class="r-bar"><div class="r-fill" style="width:30%;background:#22c55e;"></div></div>
+      <p style="font-size:12px;color:#64748b;margin-top:6px;">台股上市，成交量充足</p>
+    </div>
+    <div class="risk-item">
+      <div class="r-label">產業風險</div>
+      <div class="r-score" style="color:#d97706;">6/10</div>
+      <div class="r-bar"><div class="r-fill" style="width:60%;background:#f59e0b;"></div></div>
+      <p style="font-size:12px;color:#64748b;margin-top:6px;">ABF 週期性高，光學封裝替代威脅</p>
+    </div>
+    <div class="risk-item">
+      <div class="r-label">總經風險</div>
+      <div class="r-score" style="color:#d97706;">5/10</div>
+      <div class="r-bar"><div class="r-fill" style="width:50%;background:#f59e0b;"></div></div>
+      <p style="font-size:12px;color:#64748b;margin-top:6px;">美中貿易、AI 資本支出縮減、匯率</p>
+    </div>
+    <div class="risk-item">
+      <div class="r-label">籌碼風險</div>
+      <div class="r-score" style="color:#d97706;">4/10</div>
+      <div class="r-bar"><div class="r-fill" style="width:40%;background:#f59e0b;"></div></div>
+      <p style="font-size:12px;color:#64748b;margin-top:6px;">外資 + 投信同步加碼，籌碼偏健康</p>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:16px;">
+    <span class="risk-badge-lg risk-medium-high">⚠️ 綜合風險等級：中高風險 6.5/10</span>
+  </div>
+  <p style="font-size:13px;color:#64748b;margin-top:12px;text-align:center;">產業前景極佳，主要風險來自估值偏高與 ABF 週期性，適合長線投資人分批佈局</p>
+</div>
+
+<!-- ⑫台股三段式策略 -->
+<div class="section">
+  <div class="section-title">🗺️ 台股三段式策略</div>
+  <div class="strategy-grid">
+    <div class="strategy-card attack">
+      <div class="s-title">⚔️ 進攻計劃（積極型）</div>
+      <div class="s-row"><span class="s-label">建倉區間</span><span class="s-value">$1,000 ～ $1,200 元</span></div>
+      <div class="s-row"><span class="s-label">加碼觸發</span><span class="s-value">Q2 EPS 超過 $2.5 元 + 月營收年增 >50%</span></div>
+      <div class="s-row"><span class="s-label">目標價</span><span class="s-value">$1,800 ～ $2,300 元（12-18M）</span></div>
+      <div class="s-row"><span class="s-label">部位比重</span><span class="s-value">不超過整體組合 15%</span></div>
+      <div class="s-row"><span class="s-label">停損點</span><span class="s-value">跌破 $850 元</span></div>
+    </div>
+    <div class="strategy-card balance">
+      <div class="s-title">⚖️ 均衡計劃（穩健型）</div>
+      <div class="s-row"><span class="s-label">建倉時機</span><span class="s-value">$900 ～ $1,100 元分批買進</span></div>
+      <div class="s-row"><span class="s-label">加碼觸發</span><span class="s-value">ABF 漲價確認 + 營業利益率 >15%</span></div>
+      <div class="s-row"><span class="s-label">目標價</span><span class="s-value">$1,400 ～ $1,800 元（9-12M）</span></div>
+      <div class="s-row"><span class="s-label">部位比重</span><span class="s-value">不超過整體組合 8-10%</span></div>
+      <div class="s-row"><span class="s-label">停損點</span><span class="s-value">跌破 $780 元</span></div>
+    </div>
+    <div class="strategy-card defense">
+      <div class="s-title">🛡️ 防守計劃（保守型）</div>
+      <div class="s-row"><span class="s-label">建倉時機</span><span class="s-value">等待 RSI &lt; 50 + 明確回測</span></div>
+      <div class="s-row"><span class="s-label">建倉觸發</span><span class="s-value">股價回到 $700-$850 合理估值區</span></div>
+      <div class="s-row"><span class="s-label">合理本益比</span><span class="s-value">30x × EPS $4.87 ≈ $146 元（基本面估值）</span></div>
+      <div class="s-row"><span class="s-label">部位比重</span><span class="s-value">不超過整體組合 3-5%</span></div>
+      <div class="s-row"><span class="s-label">停損點</span><span class="s-value">跌破 $600 元</span></div>
+    </div>
+  </div>
+  <div style="background:#fef9c3;border-radius:10px;padding:14px;margin-top:16px;border:1px solid #fde68a;">
+    <p style="font-size:13px;color:#92400e;line-height:1.7;">⚠️ <strong>注意：</strong>防守計劃的「合理本益比估值」以傳統估值方式計算（EPS $4.87 × 30x = ~$146），與目前股價 ~$1,200 差距極大。這反映市場在定價未來 2-3 年的業績跳升（若 EPS 達 $30-40 元），屬於「景氣股溢價定價」，具有高不確定性。</p>
+  </div>
+
+  <div style="margin-top:24px;">
+    <h4 style="font-size:15px;font-weight:700;color:#064e3b;margin-bottom:14px;">📅 催化劑時程表</h4>
+    <ul class="catalyst-list">
+      <li><span class="cat-date">2026 Q2 財報</span>確認 Q2 EPS 是否超過 $2.5 元，驗證漲價效益全面釋放</li>
+      <li><span class="cat-date">2026 下半年</span>ABF 載板報價是否如期上漲超過 50%，訂單能見度更新</li>
+      <li><span class="cat-date">2026 法說會</span>管理層對 2027 年供需預測與毛利率路徑說明</li>
+      <li><span class="cat-date">2027 年</span>ABF 供需缺口是否擴至 25%，驗證外資最樂觀情境</li>
+      <li><span class="cat-date">持續監控</span>光學封裝等替代技術進展，AI 資本支出趨勢</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ⑬名詞小教室 -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="term">ABF 載板（ABF Substrate）</div>
+      <div class="def">ABF 是 Ajinomoto Build-up Film（日本味之素公司的薄膜材料）的縮寫。ABF 載板是連接 AI 晶片（如 Nvidia GPU）與電路板的關鍵橋梁，訊號傳輸速度要求極高，製作難度大、驗證時間長，目前全球供應商極少。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="term">BT 載板</div>
+      <div class="def">另一種 IC 載板，主要用於記憶體模組、網通交換器等應用。比 ABF 門檻略低，但南電也在這個市場有一定地位，漲價幅度預估可達 70%+。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="term">稼動率（產能利用率）</div>
+      <div class="def">工廠實際生產量占最大產能的比例。南電 2026 Q1 稼動率突破 90%，幾乎全速運轉，代表公司想多生產也沒有多餘產能，只能靠提高售價來最大化利潤。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="term">光學封裝（Optical Packaging）</div>
+      <div class="def">下一代晶片封裝技術，用光訊號取代電訊號傳輸，速度更快、功耗更低。若技術成熟，可能降低對傳統 ABF 載板的依賴，是南電長期的最大技術替代風險。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="term">V 型反轉</div>
+      <div class="def">股市術語，指公司業績從低谷迅速反彈回升，像英文字母 V 的走勢。南電 2025 年幾乎虧損，2026 Q1 卻賺了 $2.03 元，即為典型的 V 型反轉，但也意味著未來基期會越來越高。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="term">交期（Lead Time）</div>
+      <div class="def">從下訂單到收到貨的時間。南電 ABF 載板交期從年初的 3-4 個月拉長至逾 12 個月，代表供不應求程度非常嚴重，廠商可以高枕無憂地漲價，因為客戶沒有其他選擇。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑭免責聲明 -->
+<div class="container" style="padding-bottom:40px;">
+  <div class="disclaimer">
+    <h4>⚠️ 免責聲明</h4>
+    <p>
+      本報告由 AI 分析工具整合公開資料產生，<strong>僅供研究參考，不構成任何投資建議或邀約。</strong>ABF 載板為高度週期性產業，股價波動劇烈。投資人應自行評估風險，並在做出任何投資決策前諮詢專業理財顧問。本報告中所有目標價、EPS 預估均為分析師預測值，非保證數字。報告生成日期：2026 年 07 月 30 日。
+      <br><br>
+      📌 資料來源：
+      <a href="https://statementdog.com/analysis/8046/eps" target="_blank">財報狗 EPS</a>｜
+      <a href="https://vocus.cc/article/6a2bfbc1fd89780001958938" target="_blank">2026 法說會重點</a>｜
+      <a href="https://udn.com/news/story/7251/9616573" target="_blank">ABF 護城河分析</a>｜
+      <a href="https://www.businesstoday.com.tw/article/category/183008/post/202607150049/" target="_blank">今周刊深度報導</a>｜
+      <a href="https://goodinfo.tw/tw/StockDetail.asp?STOCK_ID=8046" target="_blank">Goodinfo</a>
+    </p>
+  </div>
+</div>
+
+<script>
+// EPS 季度趨勢
+const epsCtx = document.getElementById('epsChart').getContext('2d');
+new Chart(epsCtx, {
+  type: 'bar',
+  data: {
+    labels: ['2024\nQ3', '2024\nQ4', '2025\nQ1', '2025\nQ2', '2025\nQ3', '2025\nQ4', '2026\nQ1'],
+    datasets: [{
+      label: 'EPS（元）',
+      data: [-0.8, -0.3, 0.32, 0.78, 1.24, 1.86, 2.03],
+      backgroundColor: ['#fca5a5','#fca5a5','#86efac','#86efac','#4ade80','#22c55e','#ef4444'],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `EPS: $${ctx.parsed.y} 元` } } },
+    scales: { y: { grid: { color: '#f0fdf4' } }, x: { grid: { display: false } } }
+  }
+});
+
+// 月營收折線圖
+const revCtx = document.getElementById('revenueChart').getContext('2d');
+new Chart(revCtx, {
+  type: 'line',
+  data: {
+    labels: ['2026/01', '2026/02', '2026/03', '2026/04', '2026/05', '2026/06'],
+    datasets: [{
+      label: '月營收（億元）',
+      data: [38.5, 32.8, 40.5, 44.51, 44.40, 46.84],
+      borderColor: '#059669',
+      backgroundColor: 'rgba(5,150,105,0.1)',
+      pointBackgroundColor: ['#059669','#059669','#059669','#059669','#059669','#ef4444'],
+      pointRadius: 5,
+      fill: true,
+      tension: 0.3
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.parsed.y} 億元` } } },
+    scales: { y: { beginAtZero: false, grid: { color: '#f0fdf4' } }, x: { grid: { display: false } } }
+  }
+});
+
+// PE 比較圖
+const peCtx = document.getElementById('peChart').getContext('2d');
+new Chart(peCtx, {
+  type: 'bar',
+  data: {
+    labels: ['南電\n8046', '欣興\n3037', '景碩\n3189', 'HPC\n產業均值', '台股大盤'],
+    datasets: [{
+      label: '本益比（倍）',
+      data: [246, 80, 60, 65, 16],
+      backgroundColor: ['#ef4444', '#60a5fa', '#34d399', '#a78bfa', '#94a3b8'],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `PE: ${ctx.parsed.x}x` } } },
+    scales: { x: { beginAtZero: true, grid: { color: '#f0fdf4' } }, y: { grid: { display: false } } }
+  }
+});
+</script>
+</body>
+</html>
