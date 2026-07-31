@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>國巨 (2327) 深度分析報告 2026-07-31</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Helvetica Neue',Arial,'PingFang TC','Microsoft JhengHei',sans-serif;background:#f1f5f9;color:#1e293b;line-height:1.6}
+.cover{background:linear-gradient(135deg,#1e1b4b 0%,#312e81 40%,#4338ca 75%,#1d4ed8 100%);color:white;padding:64px 40px 56px;text-align:center;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;top:-30%;left:-20%;width:140%;height:160%;background:radial-gradient(ellipse at 60% 40%,rgba(139,92,246,0.15) 0%,transparent 60%);pointer-events:none}
+.cover-eyebrow{display:inline-block;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:5px 18px;font-size:12px;letter-spacing:2px;margin-bottom:20px}
+.cover h1{font-size:54px;font-weight:900;letter-spacing:-2px}
+.cover h2{font-size:18px;font-weight:400;opacity:.75;margin-top:6px}
+.cover-price-wrap{margin:28px 0 12px}
+.cover-price{font-size:72px;font-weight:900;color:#fbbf24;line-height:1}
+.cover-change{font-size:22px;color:#34d399;font-weight:700;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px}
+.limit-badge{background:#dc2626;color:white;border-radius:6px;padding:2px 10px;font-size:14px;font-weight:800;letter-spacing:1px}
+.cover-meta{display:flex;justify-content:center;gap:48px;margin-top:32px;font-size:13px;opacity:.65}
+.risk-badge-cover{display:inline-block;background:linear-gradient(135deg,#f59e0b,#d97706);color:white;border-radius:20px;padding:8px 22px;font-size:14px;font-weight:700;margin-top:22px}
+.section{padding:52px 40px}
+.section:nth-child(even){background:#f8fafc}
+.section-title{font-size:21px;font-weight:800;color:#1e1b4b;margin-bottom:28px;display:flex;align-items:center;gap:12px}
+.section-title::before{content:'';width:4px;height:24px;background:linear-gradient(180deg,#4f46e5,#818cf8);border-radius:2px;flex-shrink:0}
+.conclusion-card{background:linear-gradient(135deg,#1e1b4b 0%,#4338ca 100%);color:white;border-radius:16px;padding:36px;box-shadow:0 8px 32px rgba(79,70,229,0.3)}
+.conclusion-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.conclusion-item label{font-size:11px;opacity:.65;letter-spacing:1.5px;text-transform:uppercase;font-weight:600}
+.conclusion-item .val{font-size:28px;font-weight:900;margin-top:8px}
+.val-buy{color:#34d399}.val-target{color:#fbbf24}.val-risk{color:#f87171}
+.conclusion-desc{font-size:12px;opacity:.7;margin-top:6px;line-height:1.5}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi-card{background:white;border-radius:12px;padding:20px 18px;box-shadow:0 1px 4px rgba(0,0,0,0.07);border-left:3px solid #4f46e5}
+.kpi-card .lbl{font-size:10px;color:#64748b;letter-spacing:.8px;text-transform:uppercase;font-weight:700}
+.kpi-card .num{font-size:22px;font-weight:800;color:#1e1b4b;margin:5px 0 3px}
+.kpi-card .num.up{color:#dc2626}.kpi-card .num.dn{color:#16a34a}.kpi-card .num.gold{color:#d97706}
+.kpi-card .note{font-size:11px;color:#94a3b8;line-height:1.4}
+.chart-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.chart-box{background:white;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.chart-box h3{font-size:12px;font-weight:700;color:#475569;margin-bottom:10px;letter-spacing:.5px}
+.chart-note{font-size:10px;color:#94a3b8;margin-top:8px;text-align:center}
+.analyst-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.analyst-card{background:white;border-radius:12px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.analyst-card h3{font-size:14px;font-weight:700;color:#1e1b4b;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #f1f5f9}
+.analyst-card p{font-size:13px;color:#475569;line-height:1.7;margin-bottom:8px}
+.highlight{background:#eef2ff;border-radius:6px;padding:12px 16px;margin:10px 0;font-size:13px}
+.inst-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.inst-card{background:white;border-radius:12px;padding:18px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.inst-card .iname{font-size:11px;color:#64748b;font-weight:700;letter-spacing:.5px}
+.inst-card .inum{font-size:30px;font-weight:900;margin:8px 0}
+.inum.pos{color:#dc2626}.inum.neg{color:#16a34a}.inum.neutral{color:#94a3b8}
+.inst-card .iunit{font-size:10px;color:#94a3b8}
+.target-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+.target-card{background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.target-card .broker{font-size:11px;color:#64748b;font-weight:700}
+.target-card .rating{font-size:12px;font-weight:700;color:#dc2626;margin:4px 0}
+.target-card .tprice{font-size:24px;font-weight:900;color:#1e1b4b}
+.tech-table{width:100%;border-collapse:collapse;background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.tech-table th{background:#1e1b4b;color:white;padding:12px 16px;font-size:12px;text-align:left;letter-spacing:.5px}
+.tech-table td{padding:11px 16px;border-bottom:1px solid #f1f5f9;font-size:13px}
+.tech-table tr:last-child td{border-bottom:none}
+.sig-bear{background:#fef2f2;color:#dc2626;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700}
+.sig-bull{background:#f0fdf4;color:#16a34a;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700}
+.sig-neutral{background:#fefce8;color:#ca8a04;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700}
+.sig-os{background:#fdf4ff;color:#9333ea;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700}
+.debate-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.bull-card{background:linear-gradient(160deg,#fef2f2,#fff7f7);border-radius:12px;padding:24px;border-top:4px solid #dc2626}
+.bear-card{background:linear-gradient(160deg,#f0fdf4,#f6fff7);border-radius:12px;padding:24px;border-top:4px solid #16a34a}
+.debate-title{font-size:15px;font-weight:800;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(0,0,0,0.06)}
+.bull-title{color:#dc2626}.bear-title{color:#16a34a}
+.debate-item{display:flex;gap:10px;margin-bottom:12px;font-size:12.5px;line-height:1.65}
+.debate-icon{flex-shrink:0;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;margin-top:2px}
+.bi{background:#dc2626}.gi{background:#16a34a}
+.weight-bar{display:flex;border-radius:8px;overflow:hidden;margin-top:20px}
+.bull-w{background:#dc2626;color:white;text-align:center;padding:10px;font-weight:700;font-size:14px}
+.bear-w{background:#16a34a;color:white;text-align:center;padding:10px;font-weight:700;font-size:14px}
+.takeaway{background:#eef2ff;border-radius:8px;padding:16px 20px;margin-top:20px;font-size:13px;color:#3730a3;line-height:1.6}
+.risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.risk-item{background:white;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.risk-item .rlabel{font-size:12px;color:#64748b;font-weight:700}
+.risk-item .rscore{font-size:24px;font-weight:900;color:#1e1b4b;margin:6px 0 2px}
+.risk-item .rweight{font-size:10px;color:#94a3b8;margin-bottom:8px}
+.rbar-bg{height:8px;background:#e2e8f0;border-radius:4px}
+.rbar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#4f46e5,#818cf8)}
+.risk-total{background:linear-gradient(135deg,#1e1b4b,#4338ca);color:white;border-radius:12px;padding:24px;margin-top:20px;display:flex;align-items:center;gap:24px}
+.risk-total .rt-score{font-size:48px;font-weight:900;color:#fbbf24}
+.risk-total .rt-label{font-size:18px;font-weight:700}
+.risk-total .rt-desc{font-size:13px;opacity:.75;margin-top:4px}
+.strategy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.strat-card{border-radius:12px;padding:24px}
+.s-attack{background:linear-gradient(135deg,#dc2626,#ef4444);color:white}
+.s-balance{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:white}
+.s-defend{background:linear-gradient(135deg,#059669,#10b981);color:white}
+.strat-card h3{font-size:16px;font-weight:800;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.3)}
+.strat-item{font-size:13px;margin-bottom:9px;opacity:.95;line-height:1.5}
+.strat-item b{opacity:1}
+.catalyst-table{width:100%;border-collapse:collapse;margin-top:24px;background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.catalyst-table th{background:#312e81;color:white;padding:11px 16px;font-size:12px;text-align:left}
+.catalyst-table td{padding:10px 16px;border-bottom:1px solid #f1f5f9;font-size:12.5px}
+.catalyst-table tr:last-child td{border-bottom:none}
+.cat-pos{color:#dc2626;font-weight:700}.cat-neg{color:#16a34a;font-weight:700}.cat-neutral{color:#ca8a04;font-weight:700}
+.glossary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.glos-item{background:white;border-radius:10px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.glos-item .term{font-size:13px;font-weight:700;color:#4f46e5;margin-bottom:5px}
+.glos-item .def{font-size:12px;color:#64748b;line-height:1.65}
+.disclaimer{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:20px 24px;margin:0 40px 40px}
+.disclaimer h4{font-size:13px;font-weight:700;color:#92400e;margin-bottom:8px}
+.disclaimer p{font-size:11px;color:#78350f;line-height:1.8}
+.company-grid{display:grid;grid-template-columns:3fr 2fr;gap:24px}
+.info-tbl{width:100%;border-collapse:collapse}
+.info-tbl td{padding:9px 0;border-bottom:1px solid #f1f5f9;font-size:13px}
+.info-tbl td:first-child{color:#64748b;width:38%}
+.moat-list{margin-top:12px}
+.moat-item{display:flex;gap:10px;margin-bottom:10px;font-size:13px;line-height:1.6}
+.moat-dot{width:8px;height:8px;border-radius:50%;background:#4f46e5;flex-shrink:0;margin-top:6px}
+.fin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.fin-card{background:white;border-radius:12px;padding:22px;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.fin-card h4{font-size:13px;font-weight:700;color:#1e1b4b;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid #eef2ff}
+.fin-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #f8fafc;font-size:12.5px}
+.fin-row:last-child{border-bottom:none}
+.fin-row .fval{font-weight:700;color:#1e1b4b}
+.fval-up{color:#dc2626!important}.fval-down{color:#16a34a!important}
+@media(max-width:768px){
+  .kpi-grid,.inst-wrap,.risk-grid,.strategy-grid{grid-template-columns:repeat(2,1fr)}
+  .chart-grid,.company-grid,.analyst-grid,.debate-grid,.fin-grid{grid-template-columns:1fr}
+  .conclusion-grid{grid-template-columns:1fr}
+  .target-grid{grid-template-columns:repeat(2,1fr)}
+  .cover h1{font-size:38px}.cover-price{font-size:52px}
+}
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div class="cover-eyebrow">深度研究報告</div>
+  <h1>國巨</h1>
+  <h2>YAGEO Corporation &nbsp;|&nbsp; 2327.TW &nbsp;|&nbsp; 被動元件</h2>
+  <div class="cover-price-wrap">
+    <div class="cover-price">502元</div>
+    <div class="cover-change">
+      <span class="limit-badge">漲停</span>
+      <span>+45.5元 (+9.97%)</span>
+      <span style="opacity:.6;font-size:16px">昨收 456.5元</span>
+    </div>
+  </div>
+  <div class="cover-meta">
+    <span>52週高低：1,220 / 130.5元</span>
+    <span>市值：約9,398億元</span>
+    <span>分析日期：2026-07-31</span>
+    <span>TTM PE：25.1倍</span>
+  </div>
+  <div><span class="risk-badge-cover">🛡 風險等級 4.0 / 10 &nbsp;·&nbsp; 中低風險</span></div>
+</div>
+
+<!-- 02 核心結論 -->
+<div class="section">
+  <div class="section-title">核心結論</div>
+  <div class="conclusion-card">
+    <div class="conclusion-grid">
+      <div class="conclusion-item">
+        <label>投資建議</label>
+        <div class="val val-buy">積極關注</div>
+        <div class="conclusion-desc">RSI 25超賣＋外資大力買超＋漲停反彈，技術底部訊號明確；基本面毛利率、營業利益率皆創歷史新高，長線具競爭力</div>
+      </div>
+      <div class="conclusion-item">
+        <label>6個月目標價</label>
+        <div class="val val-target">780 元</div>
+        <div class="conclusion-desc">以法人目標價中位估算：FY2027E EPS 24.46元 × 32倍PE；短線震盪後可望回歸基本面估值</div>
+      </div>
+      <div class="conclusion-item">
+        <label>最大風險</label>
+        <div class="val val-risk">籌碼分歧</div>
+        <div class="conclusion-desc">7/30 外資大買+6,347張 vs 投信大賣-5,719張；方向分歧顯示機構間判斷存在重大分歧，短期波動劇烈</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 關鍵財務KPI -->
+<div class="section">
+  <div class="section-title">關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="lbl">今日股價</div>
+      <div class="num up">502元</div>
+      <div class="note">漲停 +9.97%，昨收 456.5元（幾近跌停）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">52週高低</div>
+      <div class="num">1,220 / 130.5</div>
+      <div class="note">距52週高點-58.9%；7/1高峰至7/30跌幅-62.6%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">Q1'26 EPS</div>
+      <div class="num gold">3.90元</div>
+      <div class="note">毛利率 38.10%、營業利益率 25.19%，均創歷史新高</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">Jun'26 月營收</div>
+      <div class="num up">153.59億</div>
+      <div class="note">YoY +38.91%，連續創今年新高</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">TTM EPS</div>
+      <div class="num">20.03元</div>
+      <div class="note">Q2'25+Q3'25+Q4'25+Q1'26 合計</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">TTM PE（今日）</div>
+      <div class="num gold">25.1倍</div>
+      <div class="note">FY2026E PE 25.5倍；FY2027E PE 20.5倍，極具吸引力</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">外資 7/30 買超</div>
+      <div class="num up">+6,347張</div>
+      <div class="note">單日大幅買超，外資在跌停日逆勢進場</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">RSI（7/30收盤）</div>
+      <div class="num" style="color:#9333ea">25.27</div>
+      <div class="note">低於30超賣門檻，技術反彈條件成立</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 財務趨勢圖 -->
+<div class="section">
+  <div class="section-title">財務趨勢圖</div>
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>EPS 季度趨勢（元）</h3>
+      <canvas id="epsChart" width="280" height="200" style="width:100%;height:auto"></canvas>
+      <div class="chart-note">Q2'24 → Q1'26 ｜ 金色=最新季；H2'25 EPS下滑因非營業費用增加，營業利益率反創新高</div>
+    </div>
+    <div class="chart-box">
+      <h3>月營收趨勢（億元）2026年</h3>
+      <canvas id="revChart" width="280" height="200" style="width:100%;height:auto"></canvas>
+      <div class="chart-note">1月–6月 2026 ｜ 六月 153.59億，YoY+38.91%，持續創今年新高</div>
+    </div>
+    <div class="chart-box">
+      <h3>本益比比較</h3>
+      <canvas id="peChart" width="280" height="200" style="width:100%;height:auto"></canvas>
+      <div class="chart-note">國巨 TTM/Fwd'26/Fwd'27 vs 同業 ｜ FY2027E PE 20.5x 低於大盤 18x 附近具吸引力</div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <div class="section-title">公司概覽</div>
+  <div class="company-grid">
+    <div>
+      <div class="analyst-card" style="margin-bottom:16px">
+        <h3>業務簡介</h3>
+        <p>國巨成立於1977年，是<b>台灣第一大、全球前三大被動元件廠商</b>。主要產品涵蓋積層陶瓷電容（MLCC）、晶片電阻、鉭電容及磁性元件，年營收逾1,700億元。透過積極併購（KEMET、Pulse Electronics等），已成為全球被動元件版圖最完整的廠商。</p>
+        <p style="margin-top:8px">主要客戶涵蓋蘋果（Apple）、輝達（NVIDIA）、特斯拉（Tesla）、博世（Bosch）等全球頂尖科技與汽車品牌。</p>
+      </div>
+      <div class="analyst-card">
+        <h3>核心護城河</h3>
+        <div class="moat-list">
+          <div class="moat-item"><div class="moat-dot"></div><div><b>全球唯一四大被動元件全進前三</b>：MLCC（全球第3）、晶片電阻（全球第1）、鉭電容（全球第2）、磁性元件（全球第4），提供客戶一站式採購。</div></div>
+          <div class="moat-item"><div class="moat-dot"></div><div><b>AI伺服器高階MLCC受惠者</b>：GB200/Kyber等高規格AI伺服器每台需被動元件數量是傳統伺服器的10倍以上，國巨受惠明確。</div></div>
+          <div class="moat-item"><div class="moat-dot"></div><div><b>電動車規格升級</b>：高壓車用MLCC單價是消費性的3–5倍，車用占比持續提升強化獲利結構。</div></div>
+          <div class="moat-item"><div class="moat-dot"></div><div><b>規模經濟與垂直整合</b>：全球生產據點涵蓋台灣、中國、歐洲、美洲，供應鏈彈性極強，不易被新進者替代。</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="analyst-card">
+      <h3>基本資料</h3>
+      <table class="info-tbl">
+        <tr><td>股票代碼</td><td><b>2327.TW</b></td></tr>
+        <tr><td>中文名稱</td><td><b>國巨股份有限公司</b></td></tr>
+        <tr><td>英文名稱</td><td><b>YAGEO Corporation</b></td></tr>
+        <tr><td>產業類別</td><td>電子零組件</td></tr>
+        <tr><td>分析日期</td><td>2026-07-31</td></tr>
+        <tr><td>今日收盤</td><td><b style="color:#dc2626">502元（漲停）</b></td></tr>
+        <tr><td>昨日收盤</td><td>456.5元</td></tr>
+        <tr><td>52週高點</td><td>1,220元（2026-07-01）</td></tr>
+        <tr><td>52週低點</td><td>130.5元</td></tr>
+        <tr><td>漲停板</td><td>557.7元</td></tr>
+        <tr><td>跌停板</td><td>456.3元</td></tr>
+        <tr><td>市值（約）</td><td>9,398億元</td></tr>
+        <tr><td>TTM EPS</td><td>20.03元</td></tr>
+        <tr><td>FY2026E EPS</td><td>19.73元（FactSet中位）</td></tr>
+        <tr><td>FY2027E EPS</td><td>24.46元</td></tr>
+        <tr><td>PBR</td><td>5.63倍</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 06 基本面分析 -->
+<div class="section">
+  <div class="section-title">基本面分析</div>
+  <div class="fin-grid">
+    <div class="fin-card">
+      <h4>季度損益摘要（Q2'24→Q1'26）</h4>
+      <div class="fin-row"><span>季度</span><span>EPS</span><span>毛利率</span><span>營益率</span></div>
+      <div class="fin-row"><span>Q2 2024</span><span class="fval">13.02元</span><span>35.13%</span><span>20.63%</span></div>
+      <div class="fin-row"><span>Q3 2024</span><span class="fval">11.01元</span><span>35.22%</span><span>20.91%</span></div>
+      <div class="fin-row"><span>Q4 2024</span><span class="fval">7.07元</span><span>33.17%</span><span>17.68%</span></div>
+      <div class="fin-row"><span>Q1 2025</span><span class="fval">10.77元</span><span>35.64%</span><span>20.78%</span></div>
+      <div class="fin-row"><span>Q2 2025</span><span class="fval">9.74元</span><span>35.56%</span><span>21.49%</span></div>
+      <div class="fin-row"><span>Q3 2025</span><span class="fval fval-down">3.10元⚠</span><span>36.19%↑</span><span>22.86%↑</span></div>
+      <div class="fin-row"><span>Q4 2025</span><span class="fval fval-down">3.29元</span><span>37.30%↑</span><span>24.28%↑</span></div>
+      <div class="fin-row"><span style="font-weight:700">Q1 2026</span><span class="fval fval-up" style="font-weight:700">3.90元▲</span><span style="font-weight:700;color:#dc2626">38.10%★</span><span style="font-weight:700;color:#dc2626">25.19%★</span></div>
+    </div>
+    <div class="fin-card">
+      <h4>月營收趨勢（2026年）</h4>
+      <div class="fin-row"><span>月份</span><span class="fval">億元</span><span>YoY</span></div>
+      <div class="fin-row"><span>2026年 1月</span><span class="fval">130.30億</span><span class="fval-up">+27.13%</span></div>
+      <div class="fin-row"><span>2026年 2月</span><span class="fval">115.05億</span><span class="fval-up">+17.97%</span></div>
+      <div class="fin-row"><span>2026年 3月</span><span class="fval">136.30億</span><span class="fval-up">+22.78%</span></div>
+      <div class="fin-row"><span>2026年 4月</span><span class="fval">140.39億</span><span class="fval-up">+22.04%</span></div>
+      <div class="fin-row"><span>2026年 5月</span><span class="fval">150.58億</span><span class="fval-up">+47.46%</span></div>
+      <div class="fin-row"><span style="font-weight:700">2026年 6月</span><span class="fval fval-up" style="font-weight:700">153.59億★</span><span class="fval-up" style="font-weight:700">+38.91%</span></div>
+      <div style="margin-top:12px;padding:10px 12px;background:#f0fdf4;border-radius:6px;font-size:12px;color:#166534">
+        Q1'26季收 381.65億（YoY+22.7%）；Q2'26季收 444.56億（YoY強勁），收入端完全健康。
+      </div>
+      <div style="margin-top:10px;padding:10px 12px;background:#fef2f2;border-radius:6px;font-size:12px;color:#991b1b">
+        ⚠ EPS異常分析：H2'25 EPS 3.10/3.29元，而同期毛利率37-38%創新高。推測係H2'25併購整合費用、匯損或財務費用增加所致，屬非經常性項目。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 07 籌碼面分析 -->
+<div class="section">
+  <div class="section-title">籌碼面分析</div>
+  <div class="inst-wrap">
+    <div class="inst-card">
+      <div class="iname">外資</div>
+      <div class="inum pos">+6,347</div>
+      <div class="iunit">張（7/30）</div>
+    </div>
+    <div class="inst-card">
+      <div class="iname">投信</div>
+      <div class="inum neg">-5,719</div>
+      <div class="iunit">張（7/30）</div>
+    </div>
+    <div class="inst-card">
+      <div class="iname">自營商</div>
+      <div class="inum neg">-1,556</div>
+      <div class="iunit">張（7/30）</div>
+    </div>
+    <div class="inst-card">
+      <div class="iname">三大法人合計</div>
+      <div class="inum neutral">-927</div>
+      <div class="iunit">張（外資主導買進）</div>
+    </div>
+  </div>
+  <div class="highlight" style="margin-bottom:20px">
+    <b>籌碼解讀</b>：7/30（幾近跌停日）外資大力逆勢買超+6,347張，是本波最明顯的底部訊號。然而投信同步大賣-5,719張，反映機構間對後市有重大分歧。外資代表國際長線資金，認同現價具吸引力；投信代表台灣短線動能派，選擇撤出觀望。兩強相爭，短期波動劇烈。
+  </div>
+  <p style="font-size:13px;color:#475569;margin-bottom:16px;font-weight:700">外資機構評等與目標價</p>
+  <div class="target-grid">
+    <div class="target-card">
+      <div class="broker">花旗環球</div>
+      <div class="rating">買進（BUY）</div>
+      <div class="tprice">1,500元</div>
+    </div>
+    <div class="target-card">
+      <div class="broker">法人中位（Buy）</div>
+      <div class="rating">買進（BUY）</div>
+      <div class="tprice">780元</div>
+    </div>
+    <div class="target-card">
+      <div class="broker">摩根士丹利</div>
+      <div class="rating">加碼（OW）</div>
+      <div class="tprice">360元</div>
+    </div>
+    <div class="target-card">
+      <div class="broker">高盛</div>
+      <div class="rating">買進（BUY）</div>
+      <div class="tprice">346元</div>
+    </div>
+  </div>
+  <div style="margin-top:12px;font-size:11px;color:#94a3b8">* 大摩/高盛目標價可能為較早設定之保守估值；花旗及法人中位780元為較新之預估。FactSet共識FY2026E EPS中位數19.73元（14位分析師），最高20.92、最低17元。</div>
+</div>
+
+<!-- 08 技術分析 -->
+<div class="section">
+  <div class="section-title">技術分析</div>
+  <table class="tech-table" style="margin-bottom:24px">
+    <thead>
+      <tr><th>指標</th><th>數值</th><th>訊號</th><th>白話解讀</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>今日股價（7/31）</td><td>502元（+9.97%）</td><td><span class="sig-bear">漲停反彈</span></td><td>昨跌停→今漲停，V型反彈訊號出現</td></tr>
+      <tr><td>MA5（5日均線）</td><td>558.7元</td><td><span class="sig-bear">上方壓力</span></td><td>5日均線在上，短線仍是反壓</td></tr>
+      <tr><td>MA10（10日均線）</td><td>619.2元</td><td><span class="sig-bear">上方壓力</span></td><td>距離現價差距大，技術面尚未修復</td></tr>
+      <tr><td>MA20（20日均線）</td><td>758.0元</td><td><span class="sig-bear">嚴重跌破</span></td><td>股價在所有均線下方，多空格局破壞</td></tr>
+      <tr><td>MA60（60日均線）</td><td>754.5元</td><td><span class="sig-bear">嚴重跌破</span></td><td>季線大幅跌破，長期趨勢受損</td></tr>
+      <tr><td>MACD（DIF）</td><td>-94.3</td><td><span class="sig-bear">死叉擴大</span></td><td>動能仍負值，多空動能尚未轉換</td></tr>
+      <tr><td>MACD（OSC柱體）</td><td>-37.21</td><td><span class="sig-neutral">縮小中</span></td><td>空頭柱體有縮小趨勢，賣壓稍減</td></tr>
+      <tr><td>RSI（14日）</td><td>25.27</td><td><span class="sig-os">超賣！</span></td><td>低於30超賣線，技術反彈條件成立</td></tr>
+      <tr><td>布林上軌</td><td>1,090.98元</td><td>—</td><td>—</td></tr>
+      <tr><td>布林中軌（MA20）</td><td>758.02元</td><td><span class="sig-bear">跌破</span></td><td>已在中軌下方，短線目標先看中軌</td></tr>
+      <tr><td>布林下軌</td><td>425.07元</td><td><span class="sig-bull">强支撐</span></td><td>昨低456＞下軌425，尚未跌破</td></tr>
+      <tr><td>成交量（7/30）</td><td>1.0683億股</td><td><span class="sig-bull">放量</span></td><td>約5日均量1.8倍，量能配合反彈</td></tr>
+    </tbody>
+  </table>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px">
+    <div class="analyst-card">
+      <h3>關鍵支撐區間</h3>
+      <div class="fin-row"><span>強支撐一</span><span class="fval">425–430元</span></div>
+      <div class="fin-row"><span>強支撐二</span><span class="fval">456–460元</span></div>
+      <div class="fin-row"><span>今日漲停確認</span><span class="fval">502元</span></div>
+      <div class="fin-row"><span>布林下軌</span><span class="fval">425元</span></div>
+    </div>
+    <div class="analyst-card">
+      <h3>關鍵壓力區間</h3>
+      <div class="fin-row"><span>近期壓力一</span><span class="fval">557–560元（MA5）</span></div>
+      <div class="fin-row"><span>近期壓力二</span><span class="fval">619–630元（MA10）</span></div>
+      <div class="fin-row"><span>中期壓力</span><span class="fval">754–760元（MA60/MA20）</span></div>
+      <div class="fin-row"><span>長期目標</span><span class="fval">780–1,000元</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <div class="section-title">融資融券</div>
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <h3>融資（散戶借錢做多）</h3>
+      <p>本次腳本未取得精確融資餘額，但從股價行為推判：</p>
+      <div class="highlight">
+        股價自1,220元崩跌至456元，跌幅高達-62.6%，期間若融資餘額高，斷頭壓力是放大跌幅的重要因素。今日漲停 (+9.97%) 若配合融資大幅回補，則底部訊號更可靠。建議透過台灣證交所每日公告查詢最新融資餘額與融資維持率。
+      </div>
+      <p style="font-size:12px;color:#94a3b8;margin-top:8px">查詢方式：台灣證交所 → 市場資訊 → 融資融券 → 個股融資融券餘額</p>
+    </div>
+    <div class="analyst-card">
+      <h3>融券（借股票放空）</h3>
+      <p>從7/30外資逆勢大買+6,347張的行為來看，若同期融券放空比例高，外資的強力買盤可能觸發空頭回補。</p>
+      <div class="highlight">
+        在急跌後出現漲停反彈，常見原因之一是軋空（Short Squeeze）：大量空單被迫在上漲中回補，形成正反饋。本次漲停若為軋空行情，需觀察後續是否有實質買盤跟進，否則反彈恐曇花一現。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <div class="section-title">研究員辯論</div>
+  <div class="debate-grid">
+    <div class="bull-card">
+      <div class="debate-title bull-title">▲ 看多研究員</div>
+      <div class="debate-item"><div class="debate-icon bi">1</div><div><b>外資跌停日大力買超+6,347張</b>：7/30幾乎跌停（收456.5元，跌停板456.3元），外資仍大幅逆勢介入，顯示國際長線資金認為現價極具吸引力，是最有說服力的底部訊號。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">2</div><div><b>RSI 25.27超賣＋今日漲停</b>：RSI低於25歷史上是極度超賣訊號，隔日漲停確認技術面彈升。RSI歷史上跌破25後3個月平均報酬率顯著為正。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">3</div><div><b>毛利率38.10%、營業利益率25.19%，雙創歷史新高</b>：Q1'26的毛利率和營益率是公司有史以來最高，顯示產品結構升級（AI/車用高值化）方向正確，本業競爭力不容置疑。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">4</div><div><b>月營收強勁且加速：Jun'26 153.59億 YoY+38.91%</b>，Q2'26季收444.56億創歷史新高，收入端完全健康，與股價崩跌形成極大背離，估值修復空間大。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">5</div><div><b>估值回到極具吸引力水位：TTM PE 25.1倍、FY2027E PE 20.5倍</b>。考量國巨全球護城河地位，25倍TTM PE在被動元件超級周期中屬合理甚至偏低水準。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">6</div><div><b>全球唯一4大被動元件均前三的公司</b>：晶片電阻全球第1、鉭電容全球第2、MLCC全球第3，高門檻護城河讓競爭者難以複製，AI/EV長期受惠結構未變。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">7</div><div><b>股價自1,220崩至456（-62.6%）已反映過度悲觀</b>：下跌觸發因素（NVIDIA Kyber延遲傳言、大股東質押疑慮）已被公司否認，股價反應已超過基本面應有跌幅。</div></div>
+    </div>
+    <div class="bear-card">
+      <div class="debate-title bear-title">▼ 看空研究員</div>
+      <div class="debate-item"><div class="debate-icon gi">1</div><div><b>均線全面死亡：MA5 558、MA10 619、MA20 758、MA60 754</b>，股價502元在所有均線下方，技術結構嚴重破壞。反彈若無法站上MA5（558元），容易形成逃命波。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">2</div><div><b>MACD死叉持續擴大（OSC -37.21）</b>：空頭動能仍在，尚未出現黃金交叉或柱體轉正，技術面底部尚未正式確認，今日漲停可能只是技術反彈而非趨勢反轉。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">3</div><div><b>投信7/30大賣-5,719張</b>：台灣本土法人持續大幅減碼，顯示對短期動能失去信心。投信和外資罕見地出現如此大幅分歧，方向不明時風險極大。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">4</div><div><b>EPS H2'25異常下滑待解釋</b>：Q3'25 3.10元 vs Q2'25 9.74元，暴跌68%，但公司未充分說明原因。若H2'25非經常性費用延續進入FY2026，市場可能再度下修EPS預估。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">5</div><div><b>大股東質押疑慮未完全消散</b>：雖然公司已聲明否認，但「陳氏傳承公司」質押事件的市場疑慮在沒有明確時程表下，難以完全排除潛在賣壓。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">6</div><div><b>NVIDIA Kyber NVL144延期衝擊整體AI供應鏈</b>：本波被動元件股集體重挫的最大催化劑，Kyber正式量產時程若再有任何不確定，相關供應鏈估值將再受壓。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">7</div><div><b>技術面動量極弱</b>：30天跌幅-62.6%的強力下跌往往不會V型反轉，更常見的是「跌深反彈→整理→再測試低點」的W底或長時間底部打磨過程，短期有二次測低風險。</div></div>
+    </div>
+  </div>
+  <div class="weight-bar" style="margin-top:16px">
+    <div class="bull-w" style="width:55%">看多 55%</div>
+    <div class="bear-w" style="width:45%">看空 45%</div>
+  </div>
+  <div class="takeaway">
+    <b>給一般投資人的話：</b>今天的漲停是好消息，但一次漲停不代表趨勢反轉。國巨的長期基本面（護城河、月收新高、利潤率新高）確實優秀，估值也已回到合理水平。若您是長線投資者，現在開始分批布局邏輯成立；若您是短線操作者，請注意漲停次日常有「開低走高」或「高開殺盤」，要有承受震盪的心理準備。<b>不要all-in，分批、分時布局是管理不確定性最好的方式。</b>
+  </div>
+</div>
+
+<!-- 11 風控評估 -->
+<div class="section">
+  <div class="section-title">風控評估（六維評分）</div>
+  <div class="risk-grid">
+    <div class="risk-item">
+      <div class="rlabel">估值風險（權重30%）</div>
+      <div class="rscore">3.0<span style="font-size:14px;color:#94a3b8">/10</span></div>
+      <div class="rweight">低風險</div>
+      <div class="rbar-bg"><div class="rbar-fill" style="width:30%"></div></div>
+      <p style="font-size:11px;color:#64748b;margin-top:6px">TTM PE 25.1x、FY2027E PE 20.5x，在被動元件超級周期中估值低廉；距離52週高點-58.9%也大幅降低高估風險</p>
+    </div>
+    <div class="risk-item">
+      <div class="rlabel">財務風險（權重25%）</div>
+      <div class="rscore">4.0<span style="font-size:14px;color:#94a3b8">/10</span></div>
+      <div class="rweight">中低風險</div>
+      <div class="rbar-bg"><div class="rbar-fill" style="width:40%"></div></div>
+      <p style="font-size:11px;color:#64748b;margin-top:6px">毛利率/營益率創歷史新高，財務結構健全；但H2'25 EPS異常下滑的原因尚未充分說明，存在一定不確定性</p>
+    </div>
+    <div class="risk-item">
+      <div class="rlabel">流動性風險（權重10%）</div>
+      <div class="rscore">2.0<span style="font-size:14px;color:#94a3b8">/10</span></div>
+      <div class="rweight">低風險</div>
+      <div class="rbar-bg"><div class="rbar-fill" style="width:20%"></div></div>
+      <p style="font-size:11px;color:#64748b;margin-top:6px">市值9,398億元，台灣前15大市值股，日均成交量龐大，流動性充沛，進出自如</p>
+    </div>
+    <div class="risk-item">
+      <div class="rlabel">產業風險（權重15%）</div>
+      <div class="rscore">3.0<span style="font-size:14px;color:#94a3b8">/10</span></div>
+      <div class="rweight">低風險</div>
+      <div class="rbar-bg"><div class="rbar-fill" style="width:30%"></div></div>
+      <p style="font-size:11px;color:#64748b;margin-top:6px">AI伺服器+電動車雙引擎驅動，高階MLCC供不應求；全球護城河深厚，新競爭者難以切入</p>
+    </div>
+    <div class="risk-item">
+      <div class="rlabel">總經風險（權重10%）</div>
+      <div class="rscore">5.0<span style="font-size:14px;color:#94a3b8">/10</span></div>
+      <div class="rweight">中等風險</div>
+      <div class="rbar-bg"><div class="rbar-fill" style="width:50%"></div></div>
+      <p style="font-size:11px;color:#64748b;margin-top:6px">美伊衝突引發地緣政治風險；NVIDIA Kyber量產時程不確定；台幣升值可能影響出口報價</p>
+    </div>
+    <div class="risk-item">
+      <div class="rlabel">籌碼風險（權重10%）</div>
+      <div class="rscore">7.0<span style="font-size:14px;color:#94a3b8">/10</span></div>
+      <div class="rweight">較高風險</div>
+      <div class="rbar-bg"><div class="rbar-fill" style="width:70%;background:linear-gradient(90deg,#f59e0b,#ef4444)"></div></div>
+      <p style="font-size:11px;color:#64748b;margin-top:6px">外資+6,347張 vs 投信-5,719張：史上罕見的機構間大分歧，短期波動將劇烈；大股東疑慮未消</p>
+    </div>
+  </div>
+  <div class="risk-total">
+    <div class="rt-score">4.0</div>
+    <div>
+      <div class="rt-label">綜合風險等級：中低風險</div>
+      <div class="rt-desc">加權計算：3.0×30%＋4.0×25%＋2.0×10%＋3.0×15%＋5.0×10%＋7.0×10% ≈ 3.75分</div>
+      <div class="rt-desc" style="margin-top:4px">基本面優秀，估值吸引，主要風險在籌碼分歧與短期技術面尚未修復</div>
+    </div>
+  </div>
+</div>
+
+<!-- 12 台股三段式策略 -->
+<div class="section">
+  <div class="section-title">台股三段式策略</div>
+  <div class="strategy-grid">
+    <div class="strat-card s-attack">
+      <h3>⚔️ 進攻策略（積極型）</h3>
+      <div class="strat-item"><b>進場時機：</b>今日漲停(502元)確認，明日開盤若不破495元可積極介入</div>
+      <div class="strat-item"><b>建倉區間：</b>495–520元（漲停板附近整理區）</div>
+      <div class="strat-item"><b>目標一：</b>558元（MA5突破確認）</div>
+      <div class="strat-item"><b>目標二：</b>780元（法人目標中位）</div>
+      <div class="strat-item"><b>停損設定：</b>跌破430元出場（布林下軌425元前留緩衝）</div>
+      <div class="strat-item"><b>建議倉位：</b>15–20%資金，留子彈分批加碼</div>
+    </div>
+    <div class="strat-card s-balance">
+      <h3>⚖️ 均衡策略（穩健型）</h3>
+      <div class="strat-item"><b>觀察條件：</b>等候法說會（預計近期召開）確認EPS異常原因</div>
+      <div class="strat-item"><b>分批建倉：</b>440–480元區間逢拉回分三批布局</div>
+      <div class="strat-item"><b>確認訊號：</b>RSI重回40以上且收復MA5（558元）</div>
+      <div class="strat-item"><b>目標區間：</b>630–780元（中期，3–6個月）</div>
+      <div class="strat-item"><b>停損設定：</b>跌破420元全數出場</div>
+      <div class="strat-item"><b>建議倉位：</b>分三批共20–25%資金</div>
+    </div>
+    <div class="strat-card s-defend">
+      <h3>🛡️ 防守策略（保守型）</h3>
+      <div class="strat-item"><b>等待確認：</b>不急於入場，等技術面修復（RSI回40+、MA5翻揚）</div>
+      <div class="strat-item"><b>最佳入場：</b>確認W底成形或站回MA10（619元）後</div>
+      <div class="strat-item"><b>停損嚴格：</b>跌破布林下軌425元則回避</div>
+      <div class="strat-item"><b>替代操作：</b>先以小部位(5%)試探，確認底部再加碼</div>
+      <div class="strat-item"><b>目標：</b>中期目標630–680元（6–9個月）</div>
+      <div class="strat-item"><b>建議倉位：</b>初始5%，確認後再加碼至15%</div>
+    </div>
+  </div>
+  <table class="catalyst-table">
+    <thead>
+      <tr><th>催化劑事件</th><th>預計時程</th><th>影響方向</th><th>說明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>法說會召開</td><td>近期（2026-08預計）</td><td><span class="cat-pos">正向觸媒</span></td><td>若說明H2'25 EPS下滑屬非經常性，估值修復力道強</td></tr>
+      <tr><td>Q2'26財報公告</td><td>2026-08</td><td><span class="cat-pos">正向觸媒</span></td><td>Q2'26季收444.56億創歷史新高，EPS有望改善</td></tr>
+      <tr><td>NVIDIA Kyber NVL144量產確認</td><td>2026-Q3~Q4</td><td><span class="cat-pos">正向觸媒</span></td><td>量產確認將帶動高階MLCC訂單能見度提升</td></tr>
+      <tr><td>月營收公告（每月10日）</td><td>2026-08-10</td><td><span class="cat-pos">月月關注</span></td><td>若7月月收持續創高（>153.59億），可正面解讀</td></tr>
+      <tr><td>大股東持股動向</td><td>隨時</td><td><span class="cat-neg">風險事件</span></td><td>陳氏傳承公司若出現持股申報異動，需高度警戒</td></tr>
+      <tr><td>美伊地緣政治風險</td><td>持續關注</td><td><span class="cat-neg">系統性風險</span></td><td>局勢升溫將拖累整體台股，被動元件股同步受壓</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 13 名詞小教室 -->
+<div class="section">
+  <div class="section-title">名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glos-item">
+      <div class="term">MLCC（積層陶瓷電容）</div>
+      <div class="def">Multi-Layer Ceramic Capacitor，電子產品最基礎的被動元件之一，用於儲存電能、濾除雜訊。一台智慧型手機需要約1,000顆，一台AI伺服器需要上萬顆。國巨是全球第三大MLCC製造商。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">TTM EPS（過去12個月每股盈餘）</div>
+      <div class="def">Trailing Twelve Months EPS，把最近4個季度的每股盈餘加總，反映公司「現在」真實的獲利能力。國巨TTM EPS = 9.74+3.10+3.29+3.90 = 20.03元。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">RSI超賣（RSI &lt; 30）</div>
+      <div class="def">相對強弱指數（RSI）低於30代表股票在短期內已被「賣過頭」，技術上有反彈的需要。國巨7/30 RSI為25.27，是明確的超賣訊號，但超賣不代表立刻反彈，仍需搭配其他訊號確認。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">外資vs投信的籌碼分歧</div>
+      <div class="def">外資（Foreign Investors）代表國際長線機構法人，傾向基本面投資；投信（Investment Trust）代表台灣境內基金，更注重短期動能。兩者方向一致時趨勢較強；分歧時（如本次：外資大買/投信大賣）代表市場共識破裂，短期波動劇烈。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">布林通道（Bollinger Bands）</div>
+      <div class="def">以20日均線為中軌，上下各加減2個標準差形成上下軌。上軌是「相對高點」，下軌是「相對低點」。國巨現價502元在中軌758元和下軌425元之間，尚未跌破下軌但也未回到中軌，空間頗大。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">漲停/跌停板</div>
+      <div class="def">台灣股市規定，每天股價最多漲/跌10%。「漲停」= 已漲滿10%無法再漲，表示買盤熱烈；「跌停」= 已跌滿10%無法再跌，代表賣壓極重。國巨7/30幾乎跌停（456.5元，跌停板456.3元），7/31今日漲停（502元，+9.97%），一日之間天翻地覆。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">Forward PE（預估本益比）</div>
+      <div class="def">用未來一年的預估EPS去計算的本益比，比TTM PE更「向前看」。國巨FY2026E PE = 502÷19.73 ≈ 25.5倍，FY2027E PE = 502÷24.46 ≈ 20.5倍，以全球最強護城河被動元件龍頭而言，估值相當便宜。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">FactSet共識EPS</div>
+      <div class="def">FactSet是全球領先的金融數據公司，彙整多位分析師的EPS預估並計算中位數，代表「市場共識」。國巨FY2026E EPS FactSet共識為19.73元（14位分析師，最高20.92、最低17元），數字越集中代表共識越高。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 14 免責聲明 -->
+<div class="disclaimer">
+  <h4>⚠️ 重要免責聲明</h4>
+  <p>
+    本報告由AI輔助分析系統生成，僅供學術研究與資訊參考用途，<b>不構成任何投資建議或買賣邀約</b>。所有財務數據來源包含：Fugle即時行情API、FinMind開源財務資料庫、公開新聞報導（兆豐、鉅亨網、今周刊、Yahoo財經、中時旺得富）。
+    市場具有高度不確定性，過去績效不代表未來結果。投資人應獨立判斷並承擔自身投資風險，建議在做出任何投資決策前諮詢合格之投資顧問。本報告所載目標價係分析師估算，非保證價格。
+    <br><br>
+    資料來源：<a href="https://www.sinotrade.com.tw/richclub/hotstock" style="color:#92400e">兆豐豐雲學堂</a> ｜
+    <a href="https://www.businesstoday.com.tw/article/category/183008/post/202607280024/" style="color:#92400e">今周刊</a> ｜
+    <a href="https://today.line.me/tw/v3/article/0M5wJWj" style="color:#92400e">鉅亨網FactSet</a> ｜
+    <a href="https://tw.stock.yahoo.com/news/%E5%9C%8B%E5%B7%A8q1%E9%9B%99%E7%8E%87%E9%9B%99%E5%8D%87-%E5%A4%A7%E6%91%A9%E5%96%8A%E5%8A%A0%E7%A2%BC" style="color:#92400e">Yahoo財經</a> ｜
+    <a href="https://wantrich.chinatimes.com/news/20260609900240-420101" style="color:#92400e">中時旺得富</a> ｜
+    <a href="https://www.pocket.tw/school/report/perspective/6410/" style="color:#92400e">口袋學堂</a>
+  </p>
+</div>
+
+<script>
+// =========================================
+// Pure Canvas 2D Chart Functions (No CDN)
+// =========================================
+function drawBarChart(id, labels, data, barColor, accentColor) {
+  var canvas = document.getElementById(id);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:28,right:14,bottom:52,left:14};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var maxV = Math.max.apply(null, data.map(Math.abs));
+  var minV = Math.min.apply(null, data.concat([0]));
+  var range = (maxV * 1.25) - minV;
+  if(range === 0) range = 1;
+  var bw = cW / data.length * 0.6;
+  var gap = cW / data.length;
+  var zeroY = pad.top + cH * (1 - (0 - minV) / range);
+  // zero line
+  ctx.beginPath(); ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1;
+  ctx.setLineDash([3,3]); ctx.moveTo(pad.left, zeroY); ctx.lineTo(pad.left+cW, zeroY); ctx.stroke();
+  ctx.setLineDash([]);
+  data.forEach(function(v, i) {
+    var x = pad.left + gap * i + (gap - bw) / 2;
+    var barH = Math.abs(v) / range * cH;
+    var y = v >= 0 ? zeroY - barH : zeroY;
+    var color = v < 0 ? '#ef4444' : (i === data.length-1 ? accentColor : barColor);
+    // rounded top
+    var r = Math.min(4, bw/2, barH/2);
+    ctx.beginPath();
+    if(v >= 0) {
+      ctx.moveTo(x+r, y); ctx.lineTo(x+bw-r, y);
+      ctx.quadraticCurveTo(x+bw, y, x+bw, y+r);
+      ctx.lineTo(x+bw, y+barH); ctx.lineTo(x, y+barH);
+      ctx.lineTo(x, y+r); ctx.quadraticCurveTo(x, y, x+r, y);
+    } else {
+      ctx.moveTo(x, y); ctx.lineTo(x+bw, y);
+      ctx.lineTo(x+bw, y+barH-r);
+      ctx.quadraticCurveTo(x+bw, y+barH, x+bw-r, y+barH);
+      ctx.lineTo(x+r, y+barH); ctx.quadraticCurveTo(x, y+barH, x, y+barH-r);
+      ctx.lineTo(x, y);
+    }
+    ctx.fillStyle = color; ctx.fill();
+    // value label
+    ctx.fillStyle = '#1e293b'; ctx.font = 'bold 9px Arial'; ctx.textAlign = 'center';
+    var valY = v >= 0 ? y-4 : y+barH+10;
+    ctx.fillText(v.toFixed(2), x+bw/2, valY);
+    // x label
+    ctx.fillStyle = '#64748b'; ctx.font = '9px Arial';
+    ctx.fillText(labels[i], x+bw/2, H-6);
+  });
+}
+
+function drawLineChart(id, labels, data, color) {
+  var canvas = document.getElementById(id);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:28,right:16,bottom:42,left:14};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var maxV = Math.max.apply(null,data)*1.08, minV = Math.min.apply(null,data)*0.92;
+  var range = maxV-minV; if(range===0) range=1;
+  function px(i){ return pad.left + i/(data.length-1)*cW; }
+  function py(v){ return pad.top + (1-(v-minV)/range)*cH; }
+  // area fill
+  var grad = ctx.createLinearGradient(0,pad.top,0,pad.top+cH);
+  grad.addColorStop(0, color.replace(')',',0.25)').replace('rgb(','rgba(').replace('#',''));
+  grad.addColorStop(1, 'rgba(255,255,255,0)');
+  // simple gradient using color
+  ctx.beginPath();
+  ctx.moveTo(px(0), py(data[0]));
+  data.forEach(function(v,i){ if(i>0) ctx.lineTo(px(i),py(v)); });
+  ctx.lineTo(px(data.length-1), pad.top+cH);
+  ctx.lineTo(px(0), pad.top+cH);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(79,70,229,0.12)'; ctx.fill();
+  // line
+  ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.lineJoin = 'round';
+  data.forEach(function(v,i){ i===0?ctx.moveTo(px(i),py(v)):ctx.lineTo(px(i),py(v)); });
+  ctx.stroke();
+  // dots + labels
+  data.forEach(function(v,i){
+    var isLast = i===data.length-1;
+    ctx.beginPath();
+    ctx.arc(px(i),py(v),isLast?5:3,0,Math.PI*2);
+    ctx.fillStyle = isLast?color:'white';
+    ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.fill(); ctx.stroke();
+    ctx.fillStyle = isLast?color:'#475569';
+    ctx.font = isLast?'bold 10px Arial':'9px Arial';
+    ctx.textAlign='center';
+    ctx.fillText(v.toFixed(2), px(i), py(v)-10);
+    ctx.fillStyle='#94a3b8'; ctx.font='9px Arial';
+    ctx.fillText(labels[i], px(i), H-6);
+  });
+}
+
+function drawHBarChart(id, labels, data, colors) {
+  var canvas = document.getElementById(id);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var padL=14, padR=52, padT=14, padB=14;
+  var cW=W-padL-padR, cH=H-padT-padB;
+  ctx.clearRect(0,0,W,H);
+  var maxV = Math.max.apply(null,data)*1.15;
+  var rowH = cH/labels.length;
+  var barH = rowH*0.52;
+  labels.forEach(function(lbl,i){
+    var y = padT + i*rowH + (rowH-barH)/2;
+    var bw = data[i]/maxV*cW;
+    // track
+    ctx.beginPath(); ctx.fillStyle='#f1f5f9';
+    var r=4;
+    ctx.roundRect(padL,y,cW,barH,r); ctx.fill();
+    // bar
+    ctx.beginPath(); ctx.fillStyle=colors[i];
+    if(bw>r*2) ctx.roundRect(padL,y,bw,barH,r);
+    else ctx.rect(padL,y,bw,barH);
+    ctx.fill();
+    // label
+    ctx.fillStyle='#1e293b'; ctx.font='bold 9px Arial'; ctx.textAlign='left';
+    ctx.fillText(lbl, padL+4, y+barH/2+3.5);
+    // value
+    ctx.fillStyle=colors[i]; ctx.font='bold 10px Arial'; ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(1)+'x', padL+cW+4, y+barH/2+3.5);
+  });
+}
+
+window.addEventListener('DOMContentLoaded',function(){
+  // EPS chart
+  drawBarChart('epsChart',
+    ["Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26"],
+    [13.02,11.01,7.07,10.77,9.74,3.10,3.29,3.90],
+    '#4f46e5','#f59e0b'
+  );
+  // Revenue chart
+  drawLineChart('revChart',
+    ['1月','2月','3月','4月','5月','6月'],
+    [130.30,115.05,136.30,140.39,150.58,153.59],
+    '#4f46e5'
+  );
+  // PE chart
+  drawHBarChart('peChart',
+    ['國巨TTM','國巨Fwd26','國巨Fwd27','華新科','村田','大盤'],
+    [25.1,25.5,20.5,22,28,18],
+    ['#4f46e5','#6366f1','#818cf8','#94a3b8','#94a3b8','#64748b']
+  );
+});
+</script>
+</body>
+</html>
