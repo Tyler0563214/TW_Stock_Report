@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高明鐵 (4573) 深度分析報告 2026-08-10</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Helvetica Neue',Arial,'PingFang TC','Microsoft JhengHei',sans-serif;background:#fafaf9;color:#1c1917;line-height:1.6}
+.cover{background:linear-gradient(135deg,#431407 0%,#7c2d12 35%,#c2410c 75%,#ea580c 100%);color:white;padding:64px 40px 56px;text-align:center;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;top:-40%;left:-10%;width:120%;height:200%;background:radial-gradient(ellipse at 70% 30%,rgba(251,191,36,0.12) 0%,transparent 55%);pointer-events:none}
+.cover-eyebrow{display:inline-block;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.28);border-radius:20px;padding:5px 18px;font-size:12px;letter-spacing:2px;margin-bottom:20px}
+.cover h1{font-size:54px;font-weight:900;letter-spacing:-2px}
+.cover h2{font-size:18px;font-weight:400;opacity:.75;margin-top:6px}
+.cover-price-wrap{margin:28px 0 12px}
+.cover-price{font-size:68px;font-weight:900;color:#fef08a;line-height:1}
+.cover-change{font-size:22px;color:#86efac;font-weight:700;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px}
+.near-limit-badge{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:white;border-radius:6px;padding:2px 10px;font-size:13px;font-weight:700}
+.cover-meta{display:flex;justify-content:center;gap:40px;margin-top:32px;font-size:13px;opacity:.65;flex-wrap:wrap}
+.risk-badge-cover{display:inline-block;background:linear-gradient(135deg,#dc2626,#b91c1c);color:white;border-radius:20px;padding:8px 22px;font-size:14px;font-weight:700;margin-top:22px}
+.warning-tag{display:inline-block;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.35);color:#fef08a;border-radius:6px;padding:3px 12px;font-size:11px;font-weight:700;margin-left:10px;letter-spacing:1px}
+.section{padding:52px 40px}
+.section:nth-child(even){background:#f5f5f4}
+.section-title{font-size:21px;font-weight:800;color:#431407;margin-bottom:28px;display:flex;align-items:center;gap:12px}
+.section-title::before{content:'';width:4px;height:24px;background:linear-gradient(180deg,#c2410c,#f97316);border-radius:2px;flex-shrink:0}
+.conclusion-card{background:linear-gradient(135deg,#431407 0%,#9a3412 100%);color:white;border-radius:16px;padding:36px;box-shadow:0 8px 32px rgba(194,65,12,0.3)}
+.conclusion-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.conclusion-item label{font-size:11px;opacity:.65;letter-spacing:1.5px;text-transform:uppercase;font-weight:600}
+.conclusion-item .val{font-size:26px;font-weight:900;margin-top:8px}
+.val-watch{color:#fef08a}.val-target{color:#86efac}.val-risk{color:#fca5a5}
+.conclusion-desc{font-size:12px;opacity:.75;margin-top:6px;line-height:1.5}
+.alert-box{background:linear-gradient(135deg,#7f1d1d,#991b1b);border:1px solid rgba(239,68,68,0.4);border-radius:10px;padding:16px 20px;margin-top:20px;color:#fca5a5;font-size:13px;line-height:1.6}
+.alert-box b{color:#f87171}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi-card{background:white;border-radius:12px;padding:20px 18px;box-shadow:0 1px 4px rgba(0,0,0,0.07);border-left:3px solid #c2410c}
+.kpi-card .lbl{font-size:10px;color:#78716c;letter-spacing:.8px;text-transform:uppercase;font-weight:700}
+.kpi-card .num{font-size:22px;font-weight:800;color:#1c1917;margin:5px 0 3px}
+.kpi-card .num.up{color:#dc2626}.kpi-card .num.dn{color:#16a34a}.kpi-card .num.gold{color:#d97706}.kpi-card .num.red{color:#ef4444}
+.kpi-card .note{font-size:11px;color:#a8a29e;line-height:1.4}
+.chart-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.chart-box{background:white;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.chart-box h3{font-size:12px;font-weight:700;color:#57534e;margin-bottom:10px;letter-spacing:.5px}
+.chart-note{font-size:10px;color:#a8a29e;margin-top:8px;text-align:center}
+.analyst-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.analyst-card{background:white;border-radius:12px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.analyst-card h3{font-size:14px;font-weight:700;color:#1c1917;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #f5f5f4}
+.analyst-card p{font-size:13px;color:#57534e;line-height:1.7;margin-bottom:8px}
+.highlight{background:#fff7ed;border-left:3px solid #f97316;border-radius:0 6px 6px 0;padding:12px 16px;margin:10px 0;font-size:13px;color:#431407}
+.warn-highlight{background:#fef2f2;border-left:3px solid #ef4444;border-radius:0 6px 6px 0;padding:12px 16px;margin:10px 0;font-size:13px;color:#7f1d1d}
+.inst-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.inst-card{background:white;border-radius:12px;padding:18px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.inst-card .iname{font-size:11px;color:#78716c;font-weight:700;letter-spacing:.5px}
+.inst-card .inum{font-size:28px;font-weight:900;margin:8px 0}
+.inum.pos{color:#dc2626}.inum.neg{color:#16a34a}.inum.neutral{color:#a8a29e}
+.inst-card .iunit{font-size:10px;color:#a8a29e}
+.tech-table{width:100%;border-collapse:collapse;background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.tech-table th{background:#431407;color:white;padding:12px 16px;font-size:12px;text-align:left;letter-spacing:.5px}
+.tech-table td{padding:11px 16px;border-bottom:1px solid #fafaf9;font-size:13px}
+.tech-table tr:last-child td{border-bottom:none}
+.sig-bull{background:#fef2f2;color:#dc2626;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700}
+.sig-bear{background:#f0fdf4;color:#16a34a;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700}
+.sig-neutral{background:#fefce8;color:#ca8a04;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700}
+.sig-golden{background:#fef3c7;color:#d97706;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700}
+.debate-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.bull-card{background:linear-gradient(160deg,#fef2f2,#fff7f7);border-radius:12px;padding:24px;border-top:4px solid #dc2626}
+.bear-card{background:linear-gradient(160deg,#f0fdf4,#f6fff7);border-radius:12px;padding:24px;border-top:4px solid #16a34a}
+.debate-title{font-size:15px;font-weight:800;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(0,0,0,0.06)}
+.bull-title{color:#dc2626}.bear-title{color:#16a34a}
+.debate-item{display:flex;gap:10px;margin-bottom:12px;font-size:12.5px;line-height:1.65}
+.debate-icon{flex-shrink:0;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;margin-top:2px}
+.bi{background:#dc2626}.gi{background:#16a34a}
+.weight-bar{display:flex;border-radius:8px;overflow:hidden;margin-top:16px}
+.bull-w{background:#dc2626;color:white;text-align:center;padding:10px;font-weight:700;font-size:14px}
+.bear-w{background:#16a34a;color:white;text-align:center;padding:10px;font-weight:700;font-size:14px}
+.takeaway{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:16px 20px;margin-top:20px;font-size:13px;color:#431407;line-height:1.6}
+.risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.risk-item{background:white;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.risk-item .rlabel{font-size:12px;color:#78716c;font-weight:700}
+.risk-item .rscore{font-size:24px;font-weight:900;color:#1c1917;margin:6px 0 2px}
+.risk-item .rweight{font-size:10px;color:#a8a29e;margin-bottom:8px}
+.rbar-bg{height:8px;background:#e7e5e4;border-radius:4px}
+.rbar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#c2410c,#f97316)}
+.rbar-high{background:linear-gradient(90deg,#dc2626,#ef4444)!important}
+.risk-total{background:linear-gradient(135deg,#431407,#9a3412);color:white;border-radius:12px;padding:24px;margin-top:20px;display:flex;align-items:center;gap:24px}
+.risk-total .rt-score{font-size:48px;font-weight:900;color:#fef08a}
+.risk-total .rt-label{font-size:18px;font-weight:700}
+.risk-total .rt-desc{font-size:13px;opacity:.75;margin-top:4px}
+.strategy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.strat-card{border-radius:12px;padding:24px}
+.s-attack{background:linear-gradient(135deg,#c2410c,#ea580c);color:white}
+.s-balance{background:linear-gradient(135deg,#b45309,#d97706);color:white}
+.s-defend{background:linear-gradient(135deg,#166534,#16a34a);color:white}
+.strat-card h3{font-size:16px;font-weight:800;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.3)}
+.strat-item{font-size:13px;margin-bottom:9px;opacity:.95;line-height:1.5}
+.strat-item b{opacity:1}
+.catalyst-table{width:100%;border-collapse:collapse;margin-top:24px;background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.catalyst-table th{background:#7c2d12;color:white;padding:11px 16px;font-size:12px;text-align:left}
+.catalyst-table td{padding:10px 16px;border-bottom:1px solid #fafaf9;font-size:12.5px}
+.catalyst-table tr:last-child td{border-bottom:none}
+.cat-pos{color:#dc2626;font-weight:700}.cat-neg{color:#16a34a;font-weight:700}.cat-neutral{color:#ca8a04;font-weight:700}
+.glossary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.glos-item{background:white;border-radius:10px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.glos-item .term{font-size:13px;font-weight:700;color:#c2410c;margin-bottom:5px}
+.glos-item .def{font-size:12px;color:#78716c;line-height:1.65}
+.company-grid{display:grid;grid-template-columns:3fr 2fr;gap:24px}
+.info-tbl{width:100%;border-collapse:collapse}
+.info-tbl td{padding:9px 0;border-bottom:1px solid #f5f5f4;font-size:13px}
+.info-tbl td:first-child{color:#78716c;width:40%}
+.moat-list{margin-top:12px}
+.moat-item{display:flex;gap:10px;margin-bottom:10px;font-size:13px;line-height:1.6}
+.moat-dot{width:8px;height:8px;border-radius:50%;background:#c2410c;flex-shrink:0;margin-top:6px}
+.fin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.fin-card{background:white;border-radius:12px;padding:22px;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.fin-card h4{font-size:13px;font-weight:700;color:#1c1917;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid #fff7ed}
+.fin-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #fafaf9;font-size:12.5px}
+.fin-row:last-child{border-bottom:none}
+.fin-row .fval{font-weight:700;color:#1c1917}
+.fval-up{color:#dc2626!important}.fval-dn{color:#16a34a!important}.fval-red{color:#ef4444!important}
+.rev-summary{background:linear-gradient(135deg,#fff7ed,#fef3c7);border-radius:12px;padding:20px 24px;margin-top:20px;border:1px solid #fed7aa}
+.rev-summary h4{font-size:14px;font-weight:800;color:#92400e;margin-bottom:10px}
+.rev-summary p{font-size:13px;color:#431407;line-height:1.7}
+@media(max-width:768px){
+  .kpi-grid,.inst-wrap,.risk-grid,.strategy-grid{grid-template-columns:repeat(2,1fr)}
+  .chart-grid,.company-grid,.analyst-grid,.debate-grid,.fin-grid{grid-template-columns:1fr}
+  .conclusion-grid{grid-template-columns:1fr}
+  .cover h1{font-size:38px}.cover-price{font-size:52px}
+  .cover-meta{gap:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div class="cover-eyebrow">深度研究報告</div>
+  <h1>高明鐵</h1>
+  <h2>高明鐵企業 &nbsp;|&nbsp; 4573.TWO &nbsp;|&nbsp; 線性傳動 × 人形機器人
+    <span class="warning-tag">⚠ 高風險小型股</span>
+  </h2>
+  <div class="cover-price-wrap">
+    <div class="cover-price">396.5元</div>
+    <div class="cover-change">
+      <span class="near-limit-badge">逼近漲停</span>
+      <span>+25.79元（+6.97%）</span>
+      <span style="opacity:.6;font-size:16px">漲停板 399.85元</span>
+    </div>
+  </div>
+  <div class="cover-meta">
+    <span>52週高低：682 / 58元</span>
+    <span>市值：約163億元</span>
+    <span>股本：4.17億元</span>
+    <span>分析日期：2026-08-10</span>
+    <span>H1'26累計月收：7.03億（已超去年全年！）</span>
+  </div>
+  <div><span class="risk-badge-cover">⚠ 風險等級 7.0 / 10 &nbsp;·&nbsp; 高風險 · 投機性小型股</span></div>
+</div>
+
+<!-- 02 核心結論 -->
+<div class="section">
+  <div class="section-title">核心結論</div>
+  <div class="conclusion-card">
+    <div class="conclusion-grid">
+      <div class="conclusion-item">
+        <label>投資建議</label>
+        <div class="val val-watch">高風險關注</div>
+        <div class="conclusion-desc">月收爆增 YoY+224%，人形機器人題材核心受益；但EPS仍虧損（TTM -2.32元），純業績轉機+題材投機雙刃刀，嚴控倉位</div>
+      </div>
+      <div class="conclusion-item">
+        <label>6個月目標區間</label>
+        <div class="val val-target">450–600元</div>
+        <div class="conclusion-desc">若2026年下半年EPS轉正，月收維持高成長，有機會挑戰歷史高點682元；短線收復MA60(393)後看450-500</div>
+      </div>
+      <div class="conclusion-item">
+        <label>最大風險</label>
+        <div class="val val-risk">估值泡沫</div>
+        <div class="conclusion-desc">EPS為負、無PE估值參考，股價完全由題材與月收成長驅動；題材退燒或月收不如預期，跌回200元以下非不可能</div>
+      </div>
+    </div>
+    <div class="alert-box">
+      ⚠️ <b>重要風險警示：</b>本股為上櫃小型股（股本4.17億），EPS TTM -2.32元，目前無法用PE估值。股價從52週低點58元漲至682元（歷史高點），現價396元仍是低點的6.8倍。此類高波動小型股，適合具有承擔高風險能力之積極型投資人，<b>不宜重倉或以借貸資金操作</b>。
+    </div>
+  </div>
+</div>
+
+<!-- 03 關鍵財務KPI -->
+<div class="section">
+  <div class="section-title">關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="lbl">今日股價</div>
+      <div class="num up">396.5元</div>
+      <div class="note">+6.97%，近漲停板（399.85元），開盤368、盤中高401.5</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">52週高低</div>
+      <div class="num">682 / 58元</div>
+      <div class="note">距52週高點 -41.8%；從52週低點58元至今 +583%！</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">Jun'26 月營收</div>
+      <div class="num up">1.635億</div>
+      <div class="note">YoY +224.56%，MoM +5.92%，連續創今年新高</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">H1'26 累計月收</div>
+      <div class="num up">7.03億</div>
+      <div class="note">已超越FY2025全年（6.03億）！YoY累計+145%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">TTM EPS</div>
+      <div class="num red">-2.32元</div>
+      <div class="note">近四季合計虧損，EPS仍為負；Q4'25已大幅縮減至-0.10元</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">Q4'25 EPS</div>
+      <div class="num gold">-0.10元</div>
+      <div class="note">Q4'25毛利率28.08%，虧損大幅縮小；趨勢向上</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">市值（約）</div>
+      <div class="num">163億元</div>
+      <div class="note">股本4.17億；上櫃小型股，流動性有限</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">MACD訊號</div>
+      <div class="num gold">金叉！</div>
+      <div class="note">DIF -10.37 穿越 DEA -16.98 向上，OSC柱體+6.61轉正</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 財務趨勢圖 -->
+<div class="section">
+  <div class="section-title">財務趨勢圖</div>
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>EPS 趨勢（元）</h3>
+      <canvas id="epsChart" width="280" height="200" style="width:100%;height:auto"></canvas>
+      <div class="chart-note">H1'24→Q4'25 ｜ H1'25 EPS -1.64元最差；Q4'25已縮至-0.10元，趨勢改善中</div>
+    </div>
+    <div class="chart-box">
+      <h3>月營收趨勢（億元）2026年</h3>
+      <canvas id="revChart" width="280" height="200" style="width:100%;height:auto"></canvas>
+      <div class="chart-note">Jan–Jun 2026 ｜ 六月 1.635億，YoY+224%，月收持續加速創新高</div>
+    </div>
+    <div class="chart-box">
+      <h3>月收 YoY 年增率（%）</h3>
+      <canvas id="peChart" width="280" height="200" style="width:100%;height:auto"></canvas>
+      <div class="chart-note">2026年每月YoY成長率 ｜ 加速成長中，Jun 已達+224.6%（PE不適用，以成長率替代）</div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <div class="section-title">公司概覽</div>
+  <div class="company-grid">
+    <div>
+      <div class="analyst-card" style="margin-bottom:16px">
+        <h3>業務簡介</h3>
+        <p>高明鐵企業股份有限公司（4573.TWO）成立於台灣，主要經營<b>金屬模具製造</b>、<b>線性傳動模組及零組件製造</b>、機械製造修配等業務。公司專注於精密機械傳動元件，產品應用涵蓋自動化設備、機器人系統、半導體製程設備等高價值領域。</p>
+        <p style="margin-top:8px">2026年受惠於<b>人形機器人（Humanoid Robot）</b>產業爆發性成長，高明鐵的線性傳動模組需求急速攀升，月營收從2025年月均約5,000萬元，暴增至2026年6月的1.635億元，<b>YoY成長224%</b>，成為台灣機器人概念股的重要標的。</p>
+      </div>
+      <div class="analyst-card">
+        <h3>核心受惠邏輯</h3>
+        <div class="moat-list">
+          <div class="moat-item"><div class="moat-dot"></div><div><b>線性傳動模組是人形機器人關節的核心零件</b>：人形機器人每台需要大量線性傳動組件（滾珠螺桿、線性滑軌等），台灣精密機械廠商是全球重要供應鏈之一。</div></div>
+          <div class="moat-item"><div class="moat-dot"></div><div><b>月收爆發驗證訂單落地</b>：H1'26累計月收7.03億元，已超越2025全年6.03億元，顯示訂單確實在落地，非純炒作題材。</div></div>
+          <div class="moat-item"><div class="moat-dot"></div><div><b>虧損快速收窄</b>：從H1'25 EPS -1.64元，縮窄至Q4'25 -0.10元，2026年在收入大幅提升下，有機會實現EPS首次轉正。</div></div>
+          <div class="moat-item"><div class="moat-dot"></div><div><b>AI伺服器+半導體設備雙主軸</b>：搜尋資料顯示其與矽光子領域亦有關聯，客戶基礎多元化。</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="analyst-card">
+      <h3>基本資料</h3>
+      <table class="info-tbl">
+        <tr><td>股票代碼</td><td><b>4573.TWO（上櫃）</b></td></tr>
+        <tr><td>中文名稱</td><td><b>高明鐵企業股份有限公司</b></td></tr>
+        <tr><td>產業類別</td><td>電機機械／精密機械</td></tr>
+        <tr><td>分析日期</td><td>2026-08-10</td></tr>
+        <tr><td>今日收盤</td><td><b style="color:#dc2626">396.5元（+6.97%）</b></td></tr>
+        <tr><td>昨日收盤</td><td>~370.7元</td></tr>
+        <tr><td>漲停板</td><td>399.85元</td></tr>
+        <tr><td>跌停板</td><td>327.15元</td></tr>
+        <tr><td>52週高點</td><td>682元（歷史高點）</td></tr>
+        <tr><td>52週低點</td><td>58元（2025年低點）</td></tr>
+        <tr><td>市值（約）</td><td>163億元</td></tr>
+        <tr><td>股本</td><td>4.17億元</td></tr>
+        <tr><td>TTM EPS</td><td style="color:#ef4444">-2.32元（虧損中）</td></tr>
+        <tr><td>PE / PBR</td><td style="color:#a8a29e">不適用（EPS為負）</td></tr>
+        <tr><td>H1'26 累計月收</td><td><b style="color:#dc2626">7.03億（YoY+145%）</b></td></tr>
+        <tr><td>最近月收</td><td>Jun'26 1.635億（+224.56%）</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 06 基本面分析 -->
+<div class="section">
+  <div class="section-title">基本面分析</div>
+  <div class="fin-grid">
+    <div class="fin-card">
+      <h4>季度損益摘要（H1'24→Q4'25）</h4>
+      <div class="fin-row"><span>季度</span><span>EPS</span><span>毛利率</span><span>營益率</span></div>
+      <div class="fin-row"><span>H1 2024</span><span class="fval fval-red">-0.11元</span><span>25.87%</span><span>-5.00%</span></div>
+      <div class="fin-row"><span>H2 2024</span><span class="fval" style="color:#ca8a04">+0.01元</span><span>37.08%↑</span><span>+2.81%</span></div>
+      <div class="fin-row"><span>H1 2025</span><span class="fval fval-red">-1.64元⚠</span><span>22.64%↓</span><span>-19.81%</span></div>
+      <div class="fin-row"><span>Q3 2025</span><span class="fval fval-red">-0.58元</span><span>23.77%↑</span><span>-20.48%</span></div>
+      <div class="fin-row"><span style="font-weight:700">Q4 2025</span><span class="fval fval-red" style="font-weight:700">-0.10元↑</span><span style="font-weight:700;color:#dc2626">28.08%★</span><span style="font-weight:700;color:#ca8a04">-15.99%↑</span></div>
+      <div style="margin-top:12px;padding:10px 12px;background:#fff7ed;border-radius:6px;font-size:12px;color:#431407">
+        ⭐ <b>趨勢解讀</b>：H1'25是最慘時期（OP -19.81%），Q3'25開始改善，Q4'25毛利率回到28%、EPS縮至-0.10元。2026年月收爆發後，EPS有機會於2026上半年轉正。
+      </div>
+    </div>
+    <div class="fin-card">
+      <h4>月營收趨勢（2026年）</h4>
+      <div class="fin-row"><span>月份</span><span class="fval">收入（億）</span><span>YoY</span></div>
+      <div class="fin-row"><span>2026年 1月</span><span class="fval">0.788億</span><span class="fval-up">+93.5%</span></div>
+      <div class="fin-row"><span>2026年 2月</span><span class="fval">0.657億</span><span class="fval-up">+61.2%</span></div>
+      <div class="fin-row"><span>2026年 3月</span><span class="fval">1.075億</span><span class="fval-up">+144.2%</span></div>
+      <div class="fin-row"><span>2026年 4月</span><span class="fval">1.332億</span><span class="fval-up">+120.3%</span></div>
+      <div class="fin-row"><span>2026年 5月</span><span class="fval">1.543億</span><span class="fval-up">+207.6%</span></div>
+      <div class="fin-row"><span style="font-weight:700">2026年 6月</span><span class="fval fval-up" style="font-weight:700">1.635億★</span><span class="fval-up" style="font-weight:700">+224.6%</span></div>
+      <div style="margin-top:12px;padding:10px 12px;background:#fef2f2;border-radius:6px;font-size:12px;color:#7f1d1d">
+        🚀 <b>爆炸性成長</b>：2025年月均收入約5,000萬元；2026年已提升至1.5-1.6億/月（3倍以上！），半年收入就超過去年全年。若7月、8月維持此水準，FY2026月收有機會達到18-20億元。
+      </div>
+    </div>
+  </div>
+  <div class="rev-summary">
+    <h4>業績轉機關鍵觀察</h4>
+    <p><b>最大看點：</b>H1'25 EPS -1.64元時，月收才5,000萬/月；現在月收已成長到1.6億（3倍多），而毛利率在Q4'25已回升至28%。以1.6億月收×12個月=年化收入約20億，對比股本4.17億，若毛利率穩定在25-30%、費用率控制在20%內，<b>EPS全年轉正至3-5元並非不可能</b>。這就是股價從58元飛到682元的核心邏輯。</p>
+    <p style="margin-top:8px;"><b>最大不確定性：</b>歷史虧損深、費用率仍偏高，Q1'26 EPS尚未公告（最快8月底法說會或9月公告）。月收能否持續？人形機器人訂單是否如預期量產放量？這些問題決定股價能否突破歷史高點682元。</p>
+  </div>
+</div>
+
+<!-- 07 籌碼面分析 -->
+<div class="section">
+  <div class="section-title">籌碼面分析</div>
+  <div class="inst-wrap">
+    <div class="inst-card">
+      <div class="iname">外資</div>
+      <div class="inum neutral">0</div>
+      <div class="iunit">張（8/7）</div>
+    </div>
+    <div class="inst-card">
+      <div class="iname">投信</div>
+      <div class="inum neutral">0</div>
+      <div class="iunit">張（8/7）</div>
+    </div>
+    <div class="inst-card">
+      <div class="iname">自營商</div>
+      <div class="inum neutral">0</div>
+      <div class="iunit">張（8/7）</div>
+    </div>
+    <div class="inst-card">
+      <div class="iname">三大法人合計</div>
+      <div class="inum neutral">0</div>
+      <div class="iunit">張（無法人持倉）</div>
+    </div>
+  </div>
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <h3>籌碼面分析</h3>
+      <p><b>三大法人全數掛零</b>：高明鐵是上櫃小型股（市值163億），外資和投信通常不持有此類小型股，三大法人買賣超為0是正常現象。這意味著<b>股價完全由散戶/自然人主導</b>。</p>
+      <div class="warn-highlight">
+        ⚠ <b>風險提示</b>：缺乏法人持倉代表兩件事：(1) 沒有「法人護盤」的安全網；(2) 市場資訊不透明度高，大戶/主力可能更容易影響股價。7/29–7/30的急殺（400→279元），以及7/31的急彈（279→327.5元），都是小型股缺乏法人的特徵：暴漲暴跌。
+      </div>
+    </div>
+    <div class="analyst-card">
+      <h3>近期股價行為解讀</h3>
+      <div class="fin-row"><span>7/29</span><span class="fval fval-red">急殺至300元（-7.6%）</span></div>
+      <div class="fin-row"><span>7/30</span><span class="fval fval-red">再跌至279元（-7.0%）</span></div>
+      <div class="fin-row"><span>7/31</span><span class="fval fval-up">急彈+327.5（+17.3%！）</span></div>
+      <div class="fin-row"><span>8/3–8/7</span><span class="fval">持續回升至368元</span></div>
+      <div class="fin-row"><span>8/10（今日）</span><span class="fval fval-up">396.5元（+6.97%）</span></div>
+      <div style="margin-top:12px;font-size:12px;color:#78716c;line-height:1.6">
+        從7/30低點279元至今396.5元，<b>9個交易日+42.1%</b>。這種強力反彈配合MACD金叉，在技術面上形成有效底部。但也需警惕是否為誘多行情。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div class="section">
+  <div class="section-title">技術分析</div>
+  <table class="tech-table" style="margin-bottom:24px">
+    <thead>
+      <tr><th>指標</th><th>數值</th><th>訊號</th><th>白話解讀</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>今日股價（8/10）</td><td>396.5元（+6.97%）</td><td><span class="sig-bull">強勢上漲</span></td><td>逼近漲停板399.85元，買盤積極</td></tr>
+      <tr><td>MA5（5日均線）</td><td>359.0元</td><td><span class="sig-bull">站上均線</span></td><td>短期均線在下方，多頭結構確立</td></tr>
+      <tr><td>MA10（10日均線）</td><td>338.0元</td><td><span class="sig-bull">站上均線</span></td><td>中短期均線下方，支撐完整</td></tr>
+      <tr><td>MA20（20日均線）</td><td>348.1元</td><td><span class="sig-bull">站上均線</span></td><td>股價396.5站上MA20(348.1)，短線偏多</td></tr>
+      <tr><td>MA60（60日均線）</td><td>393.32元</td><td><span class="sig-golden">剛突破！</span></td><td>今日396.5剛突破MA60(393.32)，季線突破是重要轉多訊號</td></tr>
+      <tr><td>MACD（DIF/DEA）</td><td>-10.37 / -16.98</td><td><span class="sig-golden">金叉！</span></td><td>DIF由下方穿越DEA，買方動能增強，趨勢轉多訊號</td></tr>
+      <tr><td>MACD OSC柱體</td><td>+6.61</td><td><span class="sig-bull">轉正</span></td><td>柱體由負轉正，多頭動能確立，後市偏多</td></tr>
+      <tr><td>RSI（14日）</td><td>51.55</td><td><span class="sig-neutral">中性偏多</span></td><td>RSI剛回到50以上，多空力量相當，空間充裕（未超買）</td></tr>
+      <tr><td>布林上軌</td><td>407.08元</td><td><span class="sig-neutral">近在咫尺</span></td><td>距上軌仅10.5元，突破407是確認強勢的關鍵</td></tr>
+      <tr><td>布林中軌（MA20）</td><td>348.1元</td><td><span class="sig-bull">已站上</span></td><td>股價在中軌上方，短期偏多</td></tr>
+      <tr><td>布林下軌</td><td>289.12元</td><td><span class="sig-bear">強支撐</span></td><td>7/30低點279元一度略跌破下軌，確認強支撐區</td></tr>
+      <tr><td>布林帶寬</td><td>33.9%</td><td><span class="sig-neutral">波動大</span></td><td>帶寬33.9%屬高波動，表示股性活躍，短線震盪劇烈</td></tr>
+    </tbody>
+  </table>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div class="analyst-card">
+      <h3>關鍵支撐區間</h3>
+      <div class="fin-row"><span>第一支撐</span><span class="fval">375–385元（MA5/MA10）</span></div>
+      <div class="fin-row"><span>第二支撐</span><span class="fval">348–360元（MA20/MA5）</span></div>
+      <div class="fin-row"><span>強力支撐</span><span class="fval">289–300元（布林下軌+7/30低點）</span></div>
+      <div class="fin-row"><span>極端支撐</span><span class="fval">268元（7/29盤中最低）</span></div>
+    </div>
+    <div class="analyst-card">
+      <h3>關鍵壓力區間</h3>
+      <div class="fin-row"><span>立即壓力</span><span class="fval">399.85元（今日漲停板）</span></div>
+      <div class="fin-row"><span>近期壓力</span><span class="fval">407元（布林上軌）</span></div>
+      <div class="fin-row"><span>中期壓力</span><span class="fval">430–441元（7/1前高）</span></div>
+      <div class="fin-row"><span>歷史高點</span><span class="fval">682元（52週高點）</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <div class="section-title">融資融券</div>
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <h3>融資（散戶借錢做多）</h3>
+      <p>本次腳本未取得融資餘額資料，但從價格行為判斷：</p>
+      <div class="highlight">
+        7/29–7/30股價急殺（400元→279元），疑似觸發融資強制平倉（斷頭賣壓），後續在低點成交量放大後V型反彈，符合「殺融資殺尾、物極必反」的典型模式。7/31至8/10的+42%強力回升，部分可能為軋空+融資重新做多。
+      </div>
+      <p style="font-size:12px;color:#a8a29e;margin-top:8px">查詢方式：公開資訊觀測站 → 上市櫃股票 → 融資融券餘額</p>
+    </div>
+    <div class="analyst-card">
+      <h3>融券（放空）</h3>
+      <p>上櫃小型股（4573）融券相對少見，但在高波動期間：</p>
+      <div class="warn-highlight">
+        若有放空部位在7/30低點附近，7/31的急彈+17%可能觸發空頭回補（軋空），形成正反饋。此類小型股軋空行情速度極快，建議<b>不輕易放空此類高波動小型股</b>，風險不對稱。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <div class="section-title">研究員辯論</div>
+  <div class="debate-grid">
+    <div class="bull-card">
+      <div class="debate-title bull-title">▲ 看多研究員</div>
+      <div class="debate-item"><div class="debate-icon bi">1</div><div><b>月收爆發性成長驗證訂單落地</b>：Jun'26月收1.635億 YoY+224.56%，H1'26累計7.03億已超FY2025全年6.03億。這是實際訂單、真實收入，非炒作。月收三倍成長是最硬的基本面支撐。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">2</div><div><b>人形機器人線性傳動需求結構性爆發</b>：全球主要AI科技廠商（特斯拉、Figure、Boston Dynamics等）大量布局人形機器人，每台需大量線性傳動組件，台灣精密機械廠是重要供應鏈，高明鐵直接受益。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">3</div><div><b>MACD金叉＋站上MA60（393元）雙重技術確認</b>：MACD呈現金叉（OSC轉正+6.61）且今日股價396.5元突破季線MA60（393.32），技術面底部確立，向上突破動能明確。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">4</div><div><b>EPS虧損快速收窄，轉正可期</b>：H1'25 EPS -1.64元 → Q4'25 EPS -0.10元，縮窄幅度達94%。以目前月收水準（1.6億/月）若稅前毛利率維持25-28%，2026年EPS轉正至3-5元有望，PE可望正常化。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">5</div><div><b>從低點683%的漲幅說明市場已認同其潛力</b>：股價從52W低點58元漲至682元（10倍），現在拉回至396元（-41.8%），是長線布局的好時機，市場已經為成長故事定價。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">6</div><div><b>RSI 51.5，上漲空間充足，未超買</b>：RSI剛回到中性偏多區，遠未到70以上的超買區域，若業績持續兌現，還有大幅上漲空間，不會因為技術超買而短期被迫回調。</div></div>
+    </div>
+    <div class="bear-card">
+      <div class="debate-title bear-title">▼ 看空研究員</div>
+      <div class="debate-item"><div class="debate-icon gi">1</div><div><b>EPS仍為負，TTM -2.32元，無法用PE估值</b>：股價396.5元×股本4.17億=市值163億，但公司仍在虧損，無法計算合理PE。股價完全依賴「未來EPS轉正」的預期，一旦預期落空，股價無基本面支撐。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">2</div><div><b>H1'25曾出現嚴重虧損（EPS -1.64元），體質未完全康復</b>：2025年出現大幅營業損失（OP -19.81%），說明固定費用結構問題嚴重。即使月收倍增，若費用管控失當，仍可能持續虧損。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">3</div><div><b>小型股、無法人持倉，主力操控風險高</b>：市值163億、股本4.17億，三大法人全數掛零。此類股票容易被大戶/主力拉高出貨，散戶在沒有法人「壓艙石」的環境下，跟著主力買進風險極高。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">4</div><div><b>股性極度活躍，短期內可再度急殺</b>：7/29–7/30兩天從400元跌至279元（-30%），7/31急彈+17%，8/10再漲+7%。如此劇烈波動說明籌碼極不穩定，任何市場消息都可能引發暴跌，止損難以執行。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">5</div><div><b>人形機器人題材已充分炒作，估值泡沫化</b>：高明鐵從58元漲至682元（+1076%），遠超過同期任何可量化的業績提升。若人形機器人產業化進程低於預期（延期、良率問題），相關概念股可能面臨價值重估。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">6</div><div><b>歷史高點682元未破，中期均線仍有壓力</b>：今日雖突破MA60（393元），但距歷史高點682元仍有72%的上漲空間，若在400-410元遇到上軌阻力回落，形成雙頂的機率不低。</div></div>
+    </div>
+  </div>
+  <div class="weight-bar" style="margin-top:16px">
+    <div class="bull-w" style="width:48%">看多 48%</div>
+    <div class="bear-w" style="width:52%">看空 52%</div>
+  </div>
+  <div class="takeaway">
+    <b>給一般投資人的話：</b>高明鐵是一個「高風險、高潛力」的投機性小型股。月收爆炸性成長是真實的基本面改善，但EPS仍為負、估值無法量化、主力掌控程度高，是這個故事的三大隱憂。如果您決定參與，請謹記：<b>①只用閒置資金，不借錢操作；②嚴設停損（建議280-300元）；③不超過總資產5%配置；④一旦月收成長趨勢逆轉，立即減碼。</b>這種股票「坐得住的賺大錢，坐不住的虧大錢」。
+  </div>
+</div>
+
+<!-- 11 風控評估 -->
+<div class="section">
+  <div class="section-title">風控評估（六維評分）</div>
+  <div class="risk-grid">
+    <div class="risk-item">
+      <div class="rlabel">估值風險（權重30%）</div>
+      <div class="rscore">9.0<span style="font-size:14px;color:#a8a29e">/10</span></div>
+      <div class="rweight">極高風險</div>
+      <div class="rbar-bg"><div class="rbar-fill rbar-high" style="width:90%"></div></div>
+      <p style="font-size:11px;color:#78716c;margin-top:6px">EPS TTM -2.32元，無PE可參考；市值163億全靠「未來業績轉正」的預期支撐，若轉正時程拖延，現價無合理估值支撐</p>
+    </div>
+    <div class="risk-item">
+      <div class="rlabel">財務風險（權重25%）</div>
+      <div class="rscore">7.0<span style="font-size:14px;color:#a8a29e">/10</span></div>
+      <div class="rweight">高風險</div>
+      <div class="rbar-bg"><div class="rbar-fill rbar-high" style="width:70%"></div></div>
+      <p style="font-size:11px;color:#78716c;margin-top:6px">月收三倍成長是正面訊號，但歷史虧損深重（H1'25 EPS -1.64），固定費用率偏高；Q1'26 EPS尚未公告，轉正確認前財務風險仍高</p>
+    </div>
+    <div class="risk-item">
+      <div class="rlabel">流動性風險（權重10%）</div>
+      <div class="rscore">7.0<span style="font-size:14px;color:#a8a29e">/10</span></div>
+      <div class="rweight">高風險</div>
+      <div class="rbar-bg"><div class="rbar-fill rbar-high" style="width:70%"></div></div>
+      <p style="font-size:11px;color:#78716c;margin-top:6px">上櫃小型股（市值163億），日成交量不穩定，有時僅數千張；急跌時可能出現流動性枯竭，難以及時出場</p>
+    </div>
+    <div class="risk-item">
+      <div class="rlabel">產業風險（權重15%）</div>
+      <div class="rscore">3.0<span style="font-size:14px;color:#a8a29e">/10</span></div>
+      <div class="rweight">低風險</div>
+      <div class="rbar-bg"><div class="rbar-fill" style="width:30%"></div></div>
+      <p style="font-size:11px;color:#78716c;margin-top:6px">人形機器人是2026年最熱題材，全球AI科技公司大力投入，線性傳動需求結構性成長，產業前景正面</p>
+    </div>
+    <div class="risk-item">
+      <div class="rlabel">總經風險（權重10%）</div>
+      <div class="rscore">5.0<span style="font-size:14px;color:#a8a29e">/10</span></div>
+      <div class="rweight">中等風險</div>
+      <div class="rbar-bg"><div class="rbar-fill" style="width:50%"></div></div>
+      <p style="font-size:11px;color:#78716c;margin-top:6px">美伊地緣政治風險、AI資本支出是否維持、台灣出口景氣是主要總經不確定性</p>
+    </div>
+    <div class="risk-item">
+      <div class="rlabel">籌碼風險（權重10%）</div>
+      <div class="rscore">8.0<span style="font-size:14px;color:#a8a29e">/10</span></div>
+      <div class="rweight">高風險</div>
+      <div class="rbar-bg"><div class="rbar-fill rbar-high" style="width:80%"></div></div>
+      <p style="font-size:11px;color:#78716c;margin-top:6px">三大法人零持倉，完全散戶/自然人主導，主力影響力大；7/29–7/30急殺30%就是最好的例證</p>
+    </div>
+  </div>
+  <div class="risk-total">
+    <div class="rt-score">7.0</div>
+    <div>
+      <div class="rt-label">綜合風險等級：高風險</div>
+      <div class="rt-desc">加權計算：9×30%＋7×25%＋7×10%＋3×15%＋5×10%＋8×10% = 2.70+1.75+0.70+0.45+0.50+0.80 = 6.90分</div>
+      <div class="rt-desc" style="margin-top:4px">月收爆發為核心亮點，但估值無錨、籌碼不穩、EPS仍負，屬高投機性小型股，嚴控倉位為首要原則</div>
+    </div>
+  </div>
+</div>
+
+<!-- 12 台股三段式策略 -->
+<div class="section">
+  <div class="section-title">台股三段式策略</div>
+  <div class="strategy-grid">
+    <div class="strat-card s-attack">
+      <h3>⚔️ 進攻策略（積極型）</h3>
+      <div class="strat-item"><b>進場時機：</b>今日396.5近漲停，若明日開盤不破375元則可積極介入</div>
+      <div class="strat-item"><b>建倉區間：</b>375–400元（MA5~漲停板之間）</div>
+      <div class="strat-item"><b>目標一：</b>430–441元（7/1前高壓力區）</div>
+      <div class="strat-item"><b>目標二：</b>500–550元（前高後估值修復）</div>
+      <div class="strat-item"><b>停損設定：</b>跌破340元出場（MA5下方緩衝）</div>
+      <div class="strat-item"><b>建議倉位：</b><b>最多5%</b>（高風險小型股，嚴限倉位）</div>
+    </div>
+    <div class="strat-card s-balance">
+      <h3>⚖️ 均衡策略（穩健型）</h3>
+      <div class="strat-item"><b>等待確認：</b>等Q1'26財報公告（EPS是否轉正）</div>
+      <div class="strat-item"><b>分批建倉：</b>350–380元區間逢拉回分批布局</div>
+      <div class="strat-item"><b>確認訊號：</b>EPS轉正、月收維持1.5億+</div>
+      <div class="strat-item"><b>目標區間：</b>480–600元（3–6個月）</div>
+      <div class="strat-item"><b>停損設定：</b>跌破320元出場</div>
+      <div class="strat-item"><b>建議倉位：</b>分批共3–5%資金</div>
+    </div>
+    <div class="strat-card s-defend">
+      <h3>🛡️ 防守策略（保守型）</h3>
+      <div class="strat-item"><b>觀望等待：</b>此類高風險股，保守型投資人不建議介入</div>
+      <div class="strat-item"><b>若已持有：</b>跌破300元則立即停損（布林下軌附近）</div>
+      <div class="strat-item"><b>最佳進場：</b>EPS正式轉正且月收連3個月≥1.5億後</div>
+      <div class="strat-item"><b>目標：</b>長線400–500元（12個月）</div>
+      <div class="strat-item"><b>最高倉位：</b>2–3%（保守型投資人不宜超過此限）</div>
+      <div class="strat-item"><b>最重要：</b><b>不借錢、不重倉、不All-in</b></div>
+    </div>
+  </div>
+  <table class="catalyst-table">
+    <thead>
+      <tr><th>催化劑事件</th><th>預計時程</th><th>影響方向</th><th>說明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Q1'26財報公告</td><td>2026-08底或9月</td><td><span class="cat-pos">最關鍵正向催化劑</span></td><td>若EPS正式轉正，估值可望大幅修復，股價有望挑戰500元+</td></tr>
+      <tr><td>7月月收公告</td><td>2026-08-10（今日）</td><td><span class="cat-pos">正向觸媒</span></td><td>若維持1.5億以上，確認成長可持續性</td></tr>
+      <tr><td>人形機器人客戶訂單公告</td><td>隨時</td><td><span class="cat-pos">強力正向觸媒</span></td><td>若揭露特定大客戶（如特斯拉/鴻海機器人等），股價可能急拉</td></tr>
+      <tr><td>布林上軌407元突破</td><td>近期技術關鍵</td><td><span class="cat-pos">技術突破確認</span></td><td>突破407元代表布林帶突破，短線目標430-441</td></tr>
+      <tr><td>月收低於1.2億</td><td>任何月份</td><td><span class="cat-neg">重大利空</span></td><td>月收若出現明顯下滑，代表訂單不穩，股價恐快速回落至300元以下</td></tr>
+      <tr><td>EPS公告仍虧損</td><td>2026-08底</td><td><span class="cat-neg">利空</span></td><td>若Q1'26 EPS仍為負值（哪怕只是-0.1元），市場可能失望性拋售</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 13 名詞小教室 -->
+<div class="section">
+  <div class="section-title">名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glos-item">
+      <div class="term">線性傳動模組（Linear Motion Module）</div>
+      <div class="def">一種精密機械零件，將旋轉運動轉換為直線運動，廣泛用於自動化設備、CNC加工機、半導體製程設備，以及<b>人形機器人的關節和手臂</b>。每台人形機器人需要大量這類零件，使高明鐵成為熱門概念股。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">業績轉機股</div>
+      <div class="def">指公司過去業績不佳（甚至虧損），但因業務改善、訂單增加或產業爆發，業績開始顯著好轉的股票。高明鐵就是典型例子：過去每季虧損，現在月收暴增3倍，市場預期EPS即將轉正，股價提前大漲。高風險高報酬，是轉機股的特性。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">MACD金叉（Golden Cross）</div>
+      <div class="def">MACD是一個技術指標，有兩條線（快線DIF和慢線DEA）。「金叉」就是快線從下方穿越慢線往上走，代表短期動能增強、趨勢轉多，是買進訊號之一。高明鐵今天正出現MACD金叉，配合RSI回升，技術面由空轉多。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">布林通道突破</div>
+      <div class="def">布林通道是「正常波動區間」。上軌（407元）是相對高點，下軌（289元）是相對低點。當股價突破上軌時，代表上漲力道強勁，超出正常波動範圍，可能進入加速上漲段。高明鐵現價396元接近上軌，突破407元是下一個重要技術關卡。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">小型股vs大型股</div>
+      <div class="def">台股依市值分類：大型股（市值>1,000億）、中型股（100-1,000億）、小型股（<100億）。高明鐵市值163億屬小型偏中型。小型股特色是：漲跌幅大（容易暴漲暴跌）、法人少持有、流動性較差，但一旦業績爆發，漲幅往往遠超大型股。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">TTM（過去12個月）</div>
+      <div class="def">Trailing Twelve Months，把最近4個季度的數字加總，反映「現在」的業績狀況。高明鐵TTM EPS = H1'25(-1.64) + Q3'25(-0.58) + Q4'25(-0.10) = -2.32元。但注意：TTM是「過去」，若公司正在高速轉型，TTM可能嚴重低估「未來」獲利能力。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">上櫃股（TWO）</div>
+      <div class="def">台灣有兩個股票市場：台灣證券交易所（TWSE，即「上市」）和櫃檯買賣中心（TPEX，即「上櫃」）。上市通常是規模較大的公司；上櫃（高明鐵屬於此類）通常是規模較小、資格較寬鬆的公司。上櫃股流動性相對較低，波動更大。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">停損（Stop Loss）</div>
+      <div class="def">事先設定一個「最多可接受的虧損金額」，一旦股價跌到這個價位就賣出，避免虧損繼續擴大。例如：在390元買入高明鐵，設停損340元，代表最多虧損約13%就出場。高風險股停損尤為重要，因為它可以在一天內跌去20-30%！</div>
+    </div>
+  </div>
+</div>
+
+<!-- 14 免責聲明 -->
+<div class="disclaimer" style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:20px 24px;margin:0 40px 40px">
+  <h4 style="font-size:13px;font-weight:700;color:#92400e;margin-bottom:8px">⚠️ 重要免責聲明與風險提示</h4>
+  <p style="font-size:11px;color:#78350f;line-height:1.8">
+    本報告由AI輔助分析系統生成，僅供學術研究與資訊參考用途，<b>不構成任何投資建議或買賣邀約</b>。高明鐵（4573）屬上櫃高波動小型股，EPS仍為負值，本報告無法計算合理PE估值，所有目標價僅為技術面及趨勢面之推算，非基本面合理估值。投資此類高風險股票可能造成本金全部損失。投資人應獨立判斷並承擔自身投資風險，建議在做出任何投資決策前諮詢合格之投資顧問。
+    <br><br>
+    資料來源：<a href="https://www.cmoney.tw/forum/stock/4573" style="color:#92400e">CMoney股市爆料同學會</a> ｜
+    <a href="https://goodinfo.tw/tw/StockDetail.asp?STOCK_ID=4573" style="color:#92400e">Goodinfo台灣股市資訊</a> ｜
+    <a href="https://statementdog.com/analysis/4573/monthly-revenue-growth-rate" style="color:#92400e">財報狗</a> ｜
+    <a href="https://www.nstock.tw/%E9%AB%98%E6%98%8E%E9%90%B5%E5%81%9A%E4%BB%80%E9%BA%BC.html" style="color:#92400e">nStock</a> ｜
+    <a href="https://histock.tw/stock/4573/%E6%AF%8F%E8%82%A1%E7%9B%88%E9%A4%98" style="color:#92400e">HiStock</a> ｜
+    富果Fugle API ｜ FinMind
+  </p>
+</div>
+
+<script>
+// =========================================
+// Pure Canvas 2D Chart Functions (No CDN)
+// =========================================
+function drawBarChart(id, labels, data, barColor, accentColor) {
+  var canvas = document.getElementById(id);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:28,right:12,bottom:52,left:12};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var maxV = Math.max.apply(null,[0].concat(data.map(Math.abs)));
+  var minV = Math.min.apply(null,[0].concat(data));
+  var range = (maxV*1.3) - minV; if(range===0) range=1;
+  var bw = cW/data.length*0.58;
+  var gap = cW/data.length;
+  var zeroY = pad.top + cH*(1-(0-minV)/range);
+  ctx.beginPath(); ctx.strokeStyle='#e7e5e4'; ctx.lineWidth=1;
+  ctx.setLineDash([3,3]); ctx.moveTo(pad.left,zeroY); ctx.lineTo(pad.left+cW,zeroY); ctx.stroke();
+  ctx.setLineDash([]);
+  data.forEach(function(v,i){
+    var x = pad.left + gap*i + (gap-bw)/2;
+    var barH = Math.abs(v)/range*cH;
+    var y = v>=0 ? zeroY-barH : zeroY;
+    var color = v<0 ? '#ef4444' : (i===data.length-1 ? accentColor : barColor);
+    var r = Math.min(4, bw/2, Math.max(barH/2, 1));
+    ctx.beginPath();
+    if(v>=0){
+      ctx.moveTo(x+r,y); ctx.lineTo(x+bw-r,y);
+      ctx.quadraticCurveTo(x+bw,y,x+bw,y+r);
+      ctx.lineTo(x+bw,y+barH); ctx.lineTo(x,y+barH);
+      ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y);
+    } else {
+      ctx.moveTo(x,y); ctx.lineTo(x+bw,y);
+      ctx.lineTo(x+bw,y+barH-r);
+      ctx.quadraticCurveTo(x+bw,y+barH,x+bw-r,y+barH);
+      ctx.lineTo(x+r,y+barH); ctx.quadraticCurveTo(x,y+barH,x,y+barH-r);
+      ctx.lineTo(x,y);
+    }
+    ctx.fillStyle=color; ctx.fill();
+    ctx.fillStyle='#1c1917'; ctx.font='bold 9px Arial'; ctx.textAlign='center';
+    var valY = v>=0 ? y-4 : y+barH+10;
+    ctx.fillText(v.toFixed(2), x+bw/2, valY);
+    ctx.fillStyle='#78716c'; ctx.font='9px Arial';
+    ctx.fillText(labels[i], x+bw/2, H-6);
+  });
+}
+
+function drawLineChart(id, labels, data, color) {
+  var canvas = document.getElementById(id);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var pad = {top:28,right:14,bottom:42,left:14};
+  var cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var maxV = Math.max.apply(null,data)*1.1;
+  var minV = Math.min.apply(null,data)*0.9;
+  var range = maxV-minV; if(range===0) range=1;
+  function px(i){ return pad.left + i/(data.length-1)*cW; }
+  function py(v){ return pad.top + (1-(v-minV)/range)*cH; }
+  ctx.beginPath();
+  ctx.moveTo(px(0),py(data[0]));
+  data.forEach(function(v,i){ if(i>0) ctx.lineTo(px(i),py(v)); });
+  ctx.lineTo(px(data.length-1),pad.top+cH);
+  ctx.lineTo(px(0),pad.top+cH); ctx.closePath();
+  ctx.fillStyle='rgba(194,65,12,0.10)'; ctx.fill();
+  ctx.beginPath(); ctx.strokeStyle=color; ctx.lineWidth=2.5; ctx.lineJoin='round';
+  data.forEach(function(v,i){ i===0?ctx.moveTo(px(i),py(v)):ctx.lineTo(px(i),py(v)); });
+  ctx.stroke();
+  data.forEach(function(v,i){
+    var isLast=i===data.length-1;
+    ctx.beginPath(); ctx.arc(px(i),py(v),isLast?5:3,0,Math.PI*2);
+    ctx.fillStyle=isLast?color:'white'; ctx.strokeStyle=color; ctx.lineWidth=2; ctx.fill(); ctx.stroke();
+    ctx.fillStyle=isLast?color:'#57534e'; ctx.font=isLast?'bold 10px Arial':'9px Arial'; ctx.textAlign='center';
+    ctx.fillText(v.toFixed(2), px(i), py(v)-10);
+    ctx.fillStyle='#a8a29e'; ctx.font='9px Arial';
+    ctx.fillText(labels[i], px(i), H-6);
+  });
+}
+
+function drawHBarChart(id, labels, data, colors) {
+  var canvas = document.getElementById(id);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var padL=14, padR=58, padT=14, padB=14;
+  var cW=W-padL-padR, cH=H-padT-padB;
+  ctx.clearRect(0,0,W,H);
+  var maxV = Math.max.apply(null,data)*1.12;
+  var rowH=cH/labels.length;
+  var barH=rowH*0.52;
+  labels.forEach(function(lbl,i){
+    var y=padT+i*rowH+(rowH-barH)/2;
+    var bw=data[i]/maxV*cW;
+    ctx.beginPath(); ctx.fillStyle='#f5f5f4';
+    ctx.roundRect(padL,y,cW,barH,4); ctx.fill();
+    ctx.beginPath(); ctx.fillStyle=colors[i];
+    if(bw>8) ctx.roundRect(padL,y,bw,barH,4);
+    else ctx.rect(padL,y,bw,barH);
+    ctx.fill();
+    ctx.fillStyle='#1c1917'; ctx.font='bold 9px Arial'; ctx.textAlign='left';
+    ctx.fillText(lbl, padL+4, y+barH/2+3.5);
+    ctx.fillStyle=colors[i]; ctx.font='bold 10px Arial'; ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(0)+'%', padL+cW+4, y+barH/2+3.5);
+  });
+}
+
+window.addEventListener('DOMContentLoaded',function(){
+  // EPS chart (semi-annual periods)
+  drawBarChart('epsChart',
+    ["H1'24","H2'24","H1'25","Q3'25","Q4'25"],
+    [-0.11, 0.01, -1.64, -0.58, -0.10],
+    '#c2410c','#f97316'
+  );
+  // Revenue chart (2026 monthly, 億)
+  drawLineChart('revChart',
+    ['1月','2月','3月','4月','5月','6月'],
+    [0.788, 0.657, 1.075, 1.332, 1.543, 1.635],
+    '#c2410c'
+  );
+  // YoY growth rate chart (as horizontal bars)
+  drawHBarChart('peChart',
+    ['1月YoY','2月YoY','3月YoY','4月YoY','5月YoY','6月YoY'],
+    [93.5, 61.2, 144.2, 120.3, 207.6, 224.6],
+    ['#fbbf24','#fbbf24','#f97316','#f97316','#c2410c','#9a3412']
+  );
+});
+</script>
+</body>
+</html>
