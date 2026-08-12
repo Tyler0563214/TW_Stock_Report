@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高明鐵 (4573) 深度分析報告 2026-08-12</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Helvetica Neue',Arial,'PingFang TC','Microsoft JhengHei',sans-serif;background:#fafaf9;color:#1c1917;line-height:1.6}
+.cover{background:linear-gradient(135deg,#1c1917 0%,#44403c 30%,#7c2d12 70%,#c2410c 100%);color:white;padding:64px 40px 56px;text-align:center;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;top:-40%;left:-10%;width:120%;height:200%;background:radial-gradient(ellipse at 70% 30%,rgba(251,191,36,0.10) 0%,transparent 55%);pointer-events:none}
+.cover-eyebrow{display:inline-block;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:5px 18px;font-size:12px;letter-spacing:2px;margin-bottom:20px}
+.cover h1{font-size:54px;font-weight:900;letter-spacing:-2px}
+.cover h2{font-size:17px;font-weight:400;opacity:.75;margin-top:6px}
+.new-badge{display:inline-block;background:linear-gradient(135deg,#7c3aed,#a855f7);color:white;border-radius:6px;padding:2px 10px;font-size:12px;font-weight:700;margin-left:8px}
+.cover-price-wrap{margin:24px 0 10px}
+.cover-price{font-size:68px;font-weight:900;color:#fef08a;line-height:1}
+.cover-change{font-size:21px;color:#fca5a5;font-weight:700;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px}
+.cover-change.up{color:#86efac}
+.pullback-badge{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fef08a;border-radius:6px;padding:2px 10px;font-size:12px;font-weight:700}
+.cover-meta{display:flex;justify-content:center;gap:36px;margin-top:28px;font-size:13px;opacity:.65;flex-wrap:wrap}
+.hero-stat{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:16px 24px;margin:20px auto;display:inline-flex;gap:40px;flex-wrap:wrap;justify-content:center}
+.hero-stat-item label{font-size:10px;opacity:.65;letter-spacing:1.5px;text-transform:uppercase;display:block}
+.hero-stat-item .hval{font-size:22px;font-weight:900;color:#fef08a}
+.hero-stat-item .hsub{font-size:11px;opacity:.75;margin-top:2px}
+.risk-badge-cover{display:inline-block;background:linear-gradient(135deg,#dc2626,#b91c1c);color:white;border-radius:20px;padding:8px 22px;font-size:14px;font-weight:700;margin-top:20px}
+.section{padding:48px 40px}
+.section:nth-child(even){background:#f5f5f4}
+.section-title{font-size:21px;font-weight:800;color:#431407;margin-bottom:26px;display:flex;align-items:center;gap:12px}
+.section-title::before{content:'';width:4px;height:24px;background:linear-gradient(180deg,#c2410c,#f97316);border-radius:2px;flex-shrink:0}
+.new-label{background:#7c3aed;color:white;border-radius:4px;padding:1px 8px;font-size:10px;font-weight:700;margin-left:8px;letter-spacing:.5px}
+.conclusion-card{background:linear-gradient(135deg,#431407 0%,#9a3412 100%);color:white;border-radius:16px;padding:36px;box-shadow:0 8px 32px rgba(194,65,12,0.3)}
+.conclusion-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.conclusion-item label{font-size:11px;opacity:.65;letter-spacing:1.5px;text-transform:uppercase;font-weight:600}
+.conclusion-item .val{font-size:26px;font-weight:900;margin-top:8px}
+.val-watch{color:#fef08a}.val-target{color:#86efac}.val-risk{color:#fca5a5}
+.conclusion-desc{font-size:12px;opacity:.75;margin-top:6px;line-height:1.5}
+.update-box{background:linear-gradient(135deg,#1e1b4b,#4338ca);border-radius:10px;padding:16px 20px;margin-top:20px;color:white;font-size:13px;line-height:1.7}
+.update-box b{color:#c7d2fe}
+.alert-box{background:rgba(127,29,29,0.5);border:1px solid rgba(239,68,68,0.35);border-radius:10px;padding:14px 18px;margin-top:14px;color:#fca5a5;font-size:13px;line-height:1.6}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi-card{background:white;border-radius:12px;padding:18px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.07);border-left:3px solid #c2410c}
+.kpi-card.new-kpi{border-left-color:#7c3aed}
+.kpi-card .lbl{font-size:10px;color:#78716c;letter-spacing:.8px;text-transform:uppercase;font-weight:700}
+.kpi-card .num{font-size:21px;font-weight:800;color:#1c1917;margin:5px 0 3px}
+.kpi-card .num.up{color:#dc2626}.kpi-card .num.dn{color:#16a34a}.kpi-card .num.gold{color:#d97706}.kpi-card .num.red{color:#ef4444}.kpi-card .num.purple{color:#7c3aed}
+.kpi-card .note{font-size:11px;color:#a8a29e;line-height:1.4}
+.chart-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.chart-box{background:white;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.chart-box h3{font-size:12px;font-weight:700;color:#57534e;margin-bottom:10px;letter-spacing:.5px}
+.chart-note{font-size:10px;color:#a8a29e;margin-top:8px;text-align:center}
+.analyst-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.analyst-card{background:white;border-radius:12px;padding:22px;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.analyst-card h3{font-size:14px;font-weight:700;color:#1c1917;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #f5f5f4}
+.analyst-card p{font-size:13px;color:#57534e;line-height:1.7;margin-bottom:8px}
+.highlight{background:#fff7ed;border-left:3px solid #f97316;border-radius:0 6px 6px 0;padding:12px 16px;margin:10px 0;font-size:13px;color:#431407}
+.warn-highlight{background:#fef2f2;border-left:3px solid #ef4444;border-radius:0 6px 6px 0;padding:12px 16px;margin:10px 0;font-size:13px;color:#7f1d1d}
+.purple-highlight{background:#f5f3ff;border-left:3px solid #7c3aed;border-radius:0 6px 6px 0;padding:12px 16px;margin:10px 0;font-size:13px;color:#3b0764}
+.inst-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.inst-card{background:white;border-radius:12px;padding:18px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.inst-card .iname{font-size:11px;color:#78716c;font-weight:700}
+.inst-card .inum{font-size:28px;font-weight:900;margin:8px 0}
+.inum.neutral{color:#a8a29e}
+.inst-card .iunit{font-size:10px;color:#a8a29e}
+.tech-table{width:100%;border-collapse:collapse;background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.tech-table th{background:#431407;color:white;padding:11px 16px;font-size:12px;text-align:left}
+.tech-table td{padding:10px 16px;border-bottom:1px solid #fafaf9;font-size:13px}
+.tech-table tr:last-child td{border-bottom:none}
+.sig-bull{background:#fef2f2;color:#dc2626;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700}
+.sig-bear{background:#f0fdf4;color:#16a34a;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700}
+.sig-neutral{background:#fefce8;color:#ca8a04;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700}
+.sig-golden{background:#fef3c7;color:#d97706;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700}
+.sig-strong{background:#f5f3ff;color:#7c3aed;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700}
+.debate-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.bull-card{background:linear-gradient(160deg,#fef2f2,#fff7f7);border-radius:12px;padding:24px;border-top:4px solid #dc2626}
+.bear-card{background:linear-gradient(160deg,#f0fdf4,#f6fff7);border-radius:12px;padding:24px;border-top:4px solid #16a34a}
+.debate-title{font-size:15px;font-weight:800;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.06)}
+.bull-title{color:#dc2626}.bear-title{color:#16a34a}
+.debate-item{display:flex;gap:10px;margin-bottom:11px;font-size:12.5px;line-height:1.65}
+.debate-icon{flex-shrink:0;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;margin-top:2px}
+.bi{background:#dc2626}.gi{background:#16a34a}
+.weight-bar{display:flex;border-radius:8px;overflow:hidden;margin-top:14px}
+.bull-w{background:#dc2626;color:white;text-align:center;padding:10px;font-weight:700;font-size:14px}
+.bear-w{background:#16a34a;color:white;text-align:center;padding:10px;font-weight:700;font-size:14px}
+.takeaway{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:16px 20px;margin-top:18px;font-size:13px;color:#431407;line-height:1.6}
+.risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.risk-item{background:white;border-radius:12px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.risk-item .rlabel{font-size:12px;color:#78716c;font-weight:700}
+.risk-item .rscore{font-size:24px;font-weight:900;color:#1c1917;margin:6px 0 2px}
+.risk-item .rweight{font-size:10px;color:#a8a29e;margin-bottom:8px}
+.rbar-bg{height:8px;background:#e7e5e4;border-radius:4px}
+.rbar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#c2410c,#f97316)}
+.rbar-high{background:linear-gradient(90deg,#dc2626,#ef4444)!important}
+.rbar-mid{background:linear-gradient(90deg,#d97706,#fbbf24)!important}
+.risk-total{background:linear-gradient(135deg,#431407,#9a3412);color:white;border-radius:12px;padding:22px;margin-top:18px;display:flex;align-items:center;gap:24px}
+.risk-total .rt-score{font-size:48px;font-weight:900;color:#fef08a}
+.strategy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.strat-card{border-radius:12px;padding:22px}
+.s-attack{background:linear-gradient(135deg,#c2410c,#ea580c);color:white}
+.s-balance{background:linear-gradient(135deg,#7c3aed,#a855f7);color:white}
+.s-defend{background:linear-gradient(135deg,#166534,#16a34a);color:white}
+.strat-card h3{font-size:15px;font-weight:800;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.3)}
+.strat-item{font-size:13px;margin-bottom:8px;opacity:.95;line-height:1.5}
+.catalyst-table{width:100%;border-collapse:collapse;margin-top:20px;background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.catalyst-table th{background:#7c2d12;color:white;padding:10px 16px;font-size:12px;text-align:left}
+.catalyst-table td{padding:9px 16px;border-bottom:1px solid #fafaf9;font-size:12.5px}
+.catalyst-table tr:last-child td{border-bottom:none}
+.cat-pos{color:#dc2626;font-weight:700}.cat-neg{color:#16a34a;font-weight:700}.cat-neutral{color:#ca8a04;font-weight:700}
+.glossary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.glos-item{background:white;border-radius:10px;padding:14px 16px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.glos-item .term{font-size:13px;font-weight:700;color:#c2410c;margin-bottom:4px}
+.glos-item .def{font-size:12px;color:#78716c;line-height:1.65}
+.company-grid{display:grid;grid-template-columns:3fr 2fr;gap:22px}
+.info-tbl{width:100%;border-collapse:collapse}
+.info-tbl td{padding:8px 0;border-bottom:1px solid #f5f5f4;font-size:13px}
+.info-tbl td:first-child{color:#78716c;width:40%}
+.moat-item{display:flex;gap:10px;margin-bottom:10px;font-size:13px;line-height:1.6}
+.moat-dot{width:8px;height:8px;border-radius:50%;background:#7c3aed;flex-shrink:0;margin-top:6px}
+.fin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.fin-card{background:white;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.fin-card h4{font-size:13px;font-weight:700;color:#1c1917;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #fff7ed}
+.fin-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #fafaf9;font-size:12.5px}
+.fin-row:last-child{border-bottom:none}
+.fin-row .fval{font-weight:700;color:#1c1917}
+.fval-up{color:#dc2626!important}.fval-dn{color:#16a34a!important}.fval-red{color:#ef4444!important}.fval-purple{color:#7c3aed!important}
+.rev-summary{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-radius:12px;padding:18px 22px;margin-top:18px;border:1px solid #ddd6fe}
+.rev-summary h4{font-size:14px;font-weight:800;color:#3b0764;margin-bottom:8px}
+.rev-summary p{font-size:13px;color:#1c1917;line-height:1.7}
+@media(max-width:768px){
+  .kpi-grid,.inst-wrap,.risk-grid,.strategy-grid{grid-template-columns:repeat(2,1fr)}
+  .chart-grid,.company-grid,.analyst-grid,.debate-grid,.fin-grid{grid-template-columns:1fr}
+  .conclusion-grid{grid-template-columns:1fr}
+  .hero-stat{gap:20px}
+  .cover h1{font-size:38px}.cover-price{font-size:52px}
+}
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div class="cover-eyebrow">深度研究報告（更新版）</div>
+  <h1>高明鐵</h1>
+  <h2>4573.TWO &nbsp;｜&nbsp; 矽光子 × 光通訊 × 半導體設備
+    <span class="new-badge">✦ 業務重新定位</span>
+  </h2>
+  <div class="cover-price-wrap">
+    <div class="cover-price">397元</div>
+    <div class="cover-change">
+      <span class="pullback-badge">高點回調</span>
+      <span>-18.29元（-4.40%）</span>
+      <span style="opacity:.6;font-size:15px">昨高 426.5元 ｜ 漲停 441.65</span>
+    </div>
+  </div>
+  <div class="hero-stat">
+    <div class="hero-stat-item">
+      <label>7月月收</label>
+      <div class="hval">2.00億</div>
+      <div class="hsub">YoY +298.5% ★ 單月新高</div>
+    </div>
+    <div class="hero-stat-item">
+      <label>7M累計月收</label>
+      <div class="hval">9.03億</div>
+      <div class="hsub">YoY +168.2%（去年全年6.03億）</div>
+    </div>
+    <div class="hero-stat-item">
+      <label>矽光子占比</label>
+      <div class="hval">65–70%</div>
+      <div class="hsub">AI光通訊核心受益廠</div>
+    </div>
+  </div>
+  <div class="cover-meta">
+    <span>52週高低：682 / 58元</span>
+    <span>市值：約163億元</span>
+    <span>股本：4.17億元</span>
+    <span>分析日期：2026-08-12</span>
+  </div>
+  <div><span class="risk-badge-cover">⚠ 風險等級 6.5 / 10 &nbsp;·&nbsp; 高風險 · 業績轉機題材股</span></div>
+</div>
+
+<!-- 02 核心結論 -->
+<div class="section">
+  <div class="section-title">核心結論</div>
+  <div class="conclusion-card">
+    <div class="conclusion-grid">
+      <div class="conclusion-item">
+        <label>投資建議</label>
+        <div class="val val-watch">積極關注 / 逢低布局</div>
+        <div class="conclusion-desc">7月月收突破2億（YoY+299%）創新高；矽光子AI光通訊需求持續爆發；今日-4.4%高點回調提供更好的進場點</div>
+      </div>
+      <div class="conclusion-item">
+        <label>6個月目標區間</label>
+        <div class="val val-target">500–682元</div>
+        <div class="conclusion-desc">若EPS轉正（Q1'26財報確認）且月收維持2億+，下半年有機會挑戰52週歷史高點682元；中期目標先看500-550</div>
+      </div>
+      <div class="conclusion-item">
+        <label>最大風險</label>
+        <div class="val val-risk">EPS仍為負</div>
+        <div class="conclusion-desc">月收雖爆發，EPS仍為負（TTM -2.96元）；Q1'26財報尚未公告，轉正前股價全靠預期撐場，題材退燒風險高</div>
+      </div>
+    </div>
+    <div class="update-box">
+      <b>🆕 重大業務更正（vs 8/10報告）：</b>高明鐵<b>主要驅動力是矽光子+光通訊+半導體設備（占收入65-70%）</b>，而非人形機器人。公司已完成業務轉型——從傳統自動化零組件廠，轉型為<b>高階光通訊精密元件供應商</b>，直接受益AI伺服器800G光收發器爆發需求。7月月收2.00億破2億大關，持續加速成長。
+    </div>
+    <div class="alert-box">
+      ⚠️ <b>風險提示：</b>上櫃小型股（股本4.17億），EPS TTM -2.96元，無PE錨點，今日高點415.5拉回至397（-4.4%），若跌破MA60（392.75元）需保持警惕。
+    </div>
+  </div>
+</div>
+
+<!-- 03 關鍵財務KPI -->
+<div class="section">
+  <div class="section-title">關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card new-kpi">
+      <div class="lbl">7月月收 🆕</div>
+      <div class="num purple">2.00億</div>
+      <div class="note">YoY +298.52% / MoM +22.47%，創單月歷史新高！</div>
+    </div>
+    <div class="kpi-card new-kpi">
+      <div class="lbl">7M累計月收 🆕</div>
+      <div class="num purple">9.03億</div>
+      <div class="note">YoY+168.2%，是FY2025全年6.03億的1.5倍</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">今日股價</div>
+      <div class="num dn">397元</div>
+      <div class="note">-4.40%，昨高426.5（近前高441），今日回調整理</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">52週高低</div>
+      <div class="num">682 / 58元</div>
+      <div class="note">距52週高點-41.8%；今日距歷史高點682元仍有+71.8%空間</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">矽光子占比</div>
+      <div class="num purple">65–70%</div>
+      <div class="note">矽光子+光通訊+半導體設備，AI伺服器800G核心受益</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">TTM EPS</div>
+      <div class="num red">-2.96元</div>
+      <div class="note">仍虧損；但月收加速成長，EPS轉正可期（Q1'26待公告）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">MACD OSC</div>
+      <div class="num gold">+10.88</div>
+      <div class="note">金叉後柱體持續擴大（8/10為+6.61），多頭動能增強</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">RSI（8/11）</div>
+      <div class="num">58.62</div>
+      <div class="note">多方強勢（8/10為51.55），空間仍充裕，未超買</div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 財務趨勢圖 -->
+<div class="section">
+  <div class="section-title">財務趨勢圖</div>
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>EPS 趨勢（元）</h3>
+      <canvas id="epsChart" width="280" height="200" style="width:100%;height:auto"></canvas>
+      <div class="chart-note">H1'24→Q4'25 ｜ Q4'25已縮至-0.10元，2025全年EPS累計-2.96元；Q1'26待公告</div>
+    </div>
+    <div class="chart-box">
+      <h3>月營收趨勢（億元）2026年</h3>
+      <canvas id="revChart" width="280" height="200" style="width:100%;height:auto"></canvas>
+      <div class="chart-note">1月–7月 2026 ｜ 七月2.00億突破2億大關，YoY+298.5%，月收加速</div>
+    </div>
+    <div class="chart-box">
+      <h3>月收 YoY 年增率（%）</h3>
+      <canvas id="peChart" width="280" height="200" style="width:100%;height:auto"></canvas>
+      <div class="chart-note">2026年1月–7月年增率 ｜ 持續加速，7月達+298.5%，年化20億收入規模可期</div>
+    </div>
+  </div>
+</div>
+
+<!-- 05 公司概覽 -->
+<div class="section">
+  <div class="section-title">公司概覽
+    <span class="new-label">業務重新定位</span>
+  </div>
+  <div class="company-grid">
+    <div>
+      <div class="analyst-card" style="margin-bottom:16px">
+        <h3>業務重新定位：矽光子 × AI光通訊</h3>
+        <p>高明鐵企業（4573.TWO）已完成<b>業務轉型</b>：從傳統自動化零組件廠，轉型為<b>高階光通訊與半導體設備精密元件商</b>。矽光子（Silicon Photonics）、光通訊及半導體相關業務目前占總收入<b>65–70%</b>。</p>
+        <div class="purple-highlight">
+          📡 <b>核心受益邏輯</b>：AI伺服器（如NVIDIA GB200/Blackwell）的爆炸性部署，需要大量800G/1.6T高速光收發器。光收發器內部關鍵元件（矽光子晶片封裝、精密模組）正是高明鐵的核心產品。每台AI伺服器需要的光通訊元件數量遠超傳統伺服器。
+        </div>
+        <p style="margin-top:8px">鉅亨網報導：「高明鐵4月營收延續首季強勁需求創新高，<b>矽光子動能全面浮現</b>」。法人預期下半年營收與獲利大幅優於上半年，全年挑戰歷史新高。</p>
+      </div>
+      <div class="analyst-card">
+        <h3>核心受益護城河</h3>
+        <div>
+          <div class="moat-item"><div class="moat-dot"></div><div><b>矽光子精密元件供應：65-70%收入占比</b>，AI伺服器800G光收發器訂單驅動；高精密度製造門檻高，新進者難以快速切入。</div></div>
+          <div class="moat-item"><div class="moat-dot"></div><div><b>轉型成功驗證：月收翻三倍</b>，從2025年月均~5,000萬，成長至2026年7月的2億元，增速超過任何傳統自動化廠商。</div></div>
+          <div class="moat-item"><div class="moat-dot"></div><div><b>線性傳動+矽光子雙軌並行：</b>傳統精密機械製造基礎，支撐半導體設備和光通訊兩條成長線，業務結構多元。</div></div>
+          <div class="moat-item"><div class="moat-dot"></div><div><b>客戶滲透深度：</b>隨AI伺服器出貨量持續放大，重複採購率高，訂單能見度強；7月月收再破新高驗證趨勢持續。</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="analyst-card">
+      <h3>基本資料</h3>
+      <table class="info-tbl">
+        <tr><td>股票代碼</td><td><b>4573.TWO（上櫃）</b></td></tr>
+        <tr><td>中文名稱</td><td><b>高明鐵企業股份有限公司</b></td></tr>
+        <tr><td>主要業務</td><td><b style="color:#7c3aed">矽光子/光通訊精密元件</b></td></tr>
+        <tr><td>次要業務</td><td>半導體設備、線性傳動模組</td></tr>
+        <tr><td>分析日期</td><td>2026-08-12</td></tr>
+        <tr><td>今日股價</td><td><b>397元（-4.40%）</b></td></tr>
+        <tr><td>昨日高點</td><td><b style="color:#dc2626">426.5元</b></td></tr>
+        <tr><td>漲停板</td><td>441.65元</td></tr>
+        <tr><td>52週高點</td><td>682元</td></tr>
+        <tr><td>52週低點</td><td>58元</td></tr>
+        <tr><td>市值（約）</td><td>163億元</td></tr>
+        <tr><td>股本</td><td>4.17億元</td></tr>
+        <tr><td>TTM EPS</td><td style="color:#ef4444">-2.96元（2025全年）</td></tr>
+        <tr><td>7月月收</td><td><b style="color:#7c3aed">2.00億（+298.5%）🆕</b></td></tr>
+        <tr><td>7M累計月收</td><td><b style="color:#7c3aed">9.03億（+168.2%）</b></td></tr>
+        <tr><td>矽光子/光通訊占比</td><td><b>65–70%</b></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 06 基本面分析 -->
+<div class="section">
+  <div class="section-title">基本面分析</div>
+  <div class="fin-grid">
+    <div class="fin-card">
+      <h4>季度損益摘要（H1'24→Q4'25）</h4>
+      <div class="fin-row"><span>季度</span><span>EPS</span><span>毛利率</span><span>營益率</span></div>
+      <div class="fin-row"><span>H1 2024</span><span class="fval fval-red">-0.11元</span><span>25.87%</span><span>-5.00%</span></div>
+      <div class="fin-row"><span>H2 2024</span><span class="fval" style="color:#ca8a04">+0.01元</span><span>37.08%</span><span>+2.81%</span></div>
+      <div class="fin-row"><span>H1 2025</span><span class="fval fval-red">-1.64元</span><span>22.64%</span><span>-19.81%</span></div>
+      <div class="fin-row"><span>Q3 2025</span><span class="fval fval-red">-0.58元</span><span>23.77%↑</span><span>-20.48%</span></div>
+      <div class="fin-row"><span>Q4 2025</span><span class="fval fval-red" style="font-weight:700">-0.10元↑</span><span style="color:#dc2626;font-weight:700">28.08%★</span><span>-15.99%↑</span></div>
+      <div class="fin-row"><span style="font-weight:700;color:#7c3aed">Q1 2026</span><span class="fval fval-purple" style="font-weight:700">待公告…</span><span style="color:#7c3aed">推估30%+</span><span style="color:#7c3aed">推估轉正</span></div>
+      <div style="margin-top:10px;padding:10px;background:#f5f3ff;border-radius:6px;font-size:12px;color:#3b0764">
+        <b>EPS轉正邏輯</b>：Q4'25月均收入≈1.3億，毛利率28%；Q1'26月均已達0.84億→推估Q1'26毛利率有機會回到30-35%，費用率若控制在25%以內，營業利益轉正可期。
+      </div>
+    </div>
+    <div class="fin-card">
+      <h4>月營收趨勢（2026年，億元）</h4>
+      <div class="fin-row"><span>月份</span><span class="fval">億元</span><span>YoY</span></div>
+      <div class="fin-row"><span>2026年 1月</span><span class="fval">0.788億</span><span class="fval-up">+93.5%</span></div>
+      <div class="fin-row"><span>2026年 2月</span><span class="fval">0.657億</span><span class="fval-up">+61.2%</span></div>
+      <div class="fin-row"><span>2026年 3月</span><span class="fval">1.075億</span><span class="fval-up">+144.2%</span></div>
+      <div class="fin-row"><span>2026年 4月</span><span class="fval">1.332億</span><span class="fval-up">+120.3%</span></div>
+      <div class="fin-row"><span>2026年 5月</span><span class="fval">1.543億</span><span class="fval-up">+207.6%</span></div>
+      <div class="fin-row"><span>2026年 6月</span><span class="fval">1.635億</span><span class="fval-up">+224.6%</span></div>
+      <div class="fin-row"><span style="font-weight:700;color:#7c3aed">2026年 7月 🆕</span><span class="fval fval-purple" style="font-weight:700">2.001億★</span><span class="fval-purple" style="font-weight:700">+298.52%</span></div>
+    </div>
+  </div>
+  <div class="rev-summary">
+    <h4>📊 FY2026年化收入估算</h4>
+    <p><b>7M累計9.03億</b>（YoY+168.2%）。若H2維持月均2億水準（已達7月實績），則FY2026年收入估算：9.03億 + 2×5個月 = <b>約19億元（全年）</b>，較FY2025全年6.03億成長超過3倍。若淨利率達10-15%，EPS估算約4.6-6.8元，對應現價397元PE=58-86倍。這仍是高估值，但矽光子成長故事下，PEG（PE/成長率）評估更合理。</p>
+  </div>
+</div>
+
+<!-- 07 籌碼面分析 -->
+<div class="section">
+  <div class="section-title">籌碼面分析</div>
+  <div class="inst-wrap">
+    <div class="inst-card"><div class="iname">外資</div><div class="inum neutral">0</div><div class="iunit">張（8/11）</div></div>
+    <div class="inst-card"><div class="iname">投信</div><div class="inum neutral">0</div><div class="iunit">張（8/11）</div></div>
+    <div class="inst-card"><div class="iname">自營商</div><div class="inum neutral">0</div><div class="iunit">張（8/11）</div></div>
+    <div class="inst-card"><div class="iname">三大法人合計</div><div class="inum neutral">0</div><div class="iunit">（散戶市場）</div></div>
+  </div>
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <h3>近期股價行為解讀（關鍵轉折）</h3>
+      <div class="fin-row"><span>7/29–7/30</span><span class="fval fval-red">急殺 400→279元（-30%）</span></div>
+      <div class="fin-row"><span>7/31</span><span class="fval fval-up">急彈 +17%（327.5元）</span></div>
+      <div class="fin-row"><span>8/3–8/7</span><span class="fval">持續回升至368元</span></div>
+      <div class="fin-row"><span>8/10</span><span class="fval fval-up">+6.97%，收401.5元（突破400）</span></div>
+      <div class="fin-row"><span>8/11</span><span class="fval fval-up">高426.5元！放量，收408元附近</span></div>
+      <div class="fin-row"><span>8/12（今日）</span><span class="fval fval-red">開403，高415.5，低372.5，現397</span></div>
+      <div style="margin-top:10px;font-size:12px;color:#57534e;line-height:1.6">
+        8/11放量攻 426.5（近前高 441.5），今日高開後回落。<b>日成交量 972,796（5日均量1.7倍）</b>，量能充足，技術面健康。今日-4.4%是高位整理，非轉空訊號。
+      </div>
+    </div>
+    <div class="analyst-card">
+      <h3>籌碼特性與注意事項</h3>
+      <p><b>三大法人全數掛零</b>：上櫃小型股的正常現象，股價由自然人（散戶/主力）主導。法人不持倉表示無機構護盤，急跌時沒有「下接單」。</p>
+      <div class="warn-highlight">
+        <b>今日盤中關鍵行為：</b>開盤403元、攻高415.5元（觸及布林上軌414.84）後急殺至372.5（低點），之後回升至397元。這是典型的「試探上軌→獲利了結→尋底回穩」模式。布林上軌414-415元現在是近期關鍵壓力，若無法有效突破，短線在385-400元震盪整理為主。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 08 技術分析 -->
+<div class="section">
+  <div class="section-title">技術分析</div>
+  <table class="tech-table" style="margin-bottom:22px">
+    <thead>
+      <tr><th>指標</th><th>數值</th><th>訊號</th><th>白話解讀</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>今日股價（8/12）</td><td>397元（-4.40%）</td><td><span class="sig-neutral">高位整理</span></td><td>昨高426.5後回調，高點試探布林上軌後正常整理</td></tr>
+      <tr><td>MA5（5日均線）</td><td>383.3元</td><td><span class="sig-bull">站上均線</span></td><td>397站上MA5(383.3)，5日趨勢向上</td></tr>
+      <tr><td>MA10（10日均線）</td><td>351.1元</td><td><span class="sig-bull">大幅站上</span></td><td>均線在下，多頭趨勢完整</td></tr>
+      <tr><td>MA20（20日均線）</td><td>350.05元</td><td><span class="sig-bull">大幅站上</span></td><td>股價在中軌上方+47元，短線偏多</td></tr>
+      <tr><td>MA60（60日均線）</td><td>392.75元</td><td><span class="sig-golden">勉強守住</span></td><td>397 &gt; MA60(392.75)，若回落跌破392則警戒</td></tr>
+      <tr><td>MACD OSC</td><td>+10.88（↑ vs 8/10的+6.61）</td><td><span class="sig-strong">金叉擴大</span></td><td>金叉後柱體持續擴大，多頭動能加速，訊號強烈</td></tr>
+      <tr><td>RSI（14日）</td><td>58.62</td><td><span class="sig-bull">多方強勢</span></td><td>RSI接近60，多方主導；距超買70還有空間</td></tr>
+      <tr><td>布林上軌</td><td>414.84元</td><td><span class="sig-neutral">已觸及</span></td><td>昨高426.5突破，今高415.5再次測試；上軌附近壓力大</td></tr>
+      <tr><td>布林中軌（MA20）</td><td>350.05元</td><td><span class="sig-bull">站上</span></td><td>股價在中軌上方，短線多頭結構</td></tr>
+      <tr><td>布林下軌</td><td>285.26元</td><td><span class="sig-bear">強支撐</span></td><td>7/30低點279一度觸及，確認強支撐</td></tr>
+      <tr><td>今日成交量</td><td>盤中（8/12）</td><td><span class="sig-neutral">觀察中</span></td><td>8/11昨日放量 972,796（5日均量1.7倍），健康</td></tr>
+    </tbody>
+  </table>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+    <div class="analyst-card">
+      <h3>關鍵支撐區間</h3>
+      <div class="fin-row"><span>立即支撐</span><span class="fval">392–395元（MA60）</span></div>
+      <div class="fin-row"><span>第二支撐</span><span class="fval">380–385元（MA5）</span></div>
+      <div class="fin-row"><span>強力支撐</span><span class="fval">350–355元（MA20/布林中軌）</span></div>
+      <div class="fin-row"><span>極端支撐</span><span class="fval">285–290元（布林下軌）</span></div>
+    </div>
+    <div class="analyst-card">
+      <h3>關鍵壓力區間</h3>
+      <div class="fin-row"><span>近期壓力一</span><span class="fval">414–427元（布林上軌~8/11高點）</span></div>
+      <div class="fin-row"><span>近期壓力二</span><span class="fval">430–441元（7/1前高）</span></div>
+      <div class="fin-row"><span>中期壓力</span><span class="fval">550–600元（中期目標）</span></div>
+      <div class="fin-row"><span>歷史高點</span><span class="fval">682元（最終目標）</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 09 融資融券 -->
+<div class="section">
+  <div class="section-title">融資融券</div>
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <h3>融資（散戶借錢做多）</h3>
+      <div class="highlight">融資資料未取得。從8/11放量（972K張，5日均量1.7倍）且股價上攻426.5來看，盤中有積極多方力量。若融資餘額偏高，高點回調時需留意斷頭壓力。</div>
+      <p style="font-size:12px;color:#a8a29e;margin-top:8px">查詢：公開資訊觀測站 → 上市櫃 → 融資融券餘額</p>
+    </div>
+    <div class="analyst-card">
+      <h3>今日盤中行為分析</h3>
+      <div class="warn-highlight">今日開盤403，攻高415.5（超過布林上軌），後殺至372.5（當日跌幅-10%），再回升至397元。這種「開盤大漲→急殺→回穩」形態，說明高點有大量獲利了結賣壓。短線若無法重返415以上，需等待能量重新積蓄。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 10 研究員辯論 -->
+<div class="section">
+  <div class="section-title">研究員辯論</div>
+  <div class="debate-grid">
+    <div class="bull-card">
+      <div class="debate-title bull-title">▲ 看多研究員</div>
+      <div class="debate-item"><div class="debate-icon bi">1</div><div><b>7月月收2.00億，創單月新高，YoY+298.5%！</b>月收從1.6億再躍升至2億，月增22.4%，成長動能持續加速，訂單能見度強。7M累計9.03億，全年20億可期。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">2</div><div><b>矽光子主業（65-70%占比）結構性成長</b>：AI伺服器800G光收發器需求持續爆發，NVIDIA GB200/Blackwell每台需大量高階光通訊元件，高明鐵是直接受益廠商，非短暫題材。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">3</div><div><b>MACD金叉後柱體持續擴大（+10.88 vs +6.61）</b>：多頭動能不斷增強，顯示主力持續進場，非短暫反彈；RSI 58.62距超買尚有空間。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">4</div><div><b>今日-4.4%是健康回調，非趨勢轉空</b>：8/11放量攻426.5後，今日高點整理完全合理。MA60(392.75)仍守住，技術結構未被破壞，回調提供更好的進場點。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">5</div><div><b>EPS轉正可期，Q1'26財報是關鍵催化劑</b>：Q4'25 EPS已縮至-0.10元，而Q1'26月均收入約0.84億（是Q4'25的三倍），若毛利率維持28%+，EPS轉正機率極高。</div></div>
+      <div class="debate-item"><div class="debate-icon bi">6</div><div><b>法人預期下半年營收與獲利大幅優於上半年</b>（鉅亨網）：有分析師跟蹤，機構覆蓋率雖低但已有關注，一旦EPS轉正可能觸發分析師升評。</div></div>
+    </div>
+    <div class="bear-card">
+      <div class="debate-title bear-title">▼ 看空研究員</div>
+      <div class="debate-item"><div class="debate-icon gi">1</div><div><b>EPS仍為負（TTM -2.96元），無法用PE估值</b>：月收再高，若費用管控失當，帳面仍虧損。QI'26財報未公告前，股價完全靠市場預期支撐，一旦財報不如預期即暴跌。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">2</div><div><b>今日盤中急殺10%（415.5→372.5），結構性空頭</b>：高點大量賣壓說明市場對380-415元區間有大量獲利了結意願。若無法站穩400元之上，容易形成雙頂或頭肩型態。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">3</div><div><b>矽光子占比65-70%雖是利多，但競爭激烈</b>：800G光通訊供應鏈競爭者眾，台灣廠商包括訊芯-KY、光聖、智邦等。高明鐵的差異化優勢尚不明確，訂單能否持續成為主要不確定因素。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">4</div><div><b>市值163億 vs 年化收入19億 = PS比8.6倍</b>：對一家EPS仍為負的公司，PS 8.6倍屬高估值。若市場情緒轉冷，合理PS可能壓縮至3-5倍（股價約100-160元），下跌風險仍大。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">5</div><div><b>三大法人零持倉，散戶驅動的高風險</b>：沒有法人護盤，任何市場消息都可能觸發劇烈波動，7/29-7/30的-30%急殺就是警示。</div></div>
+      <div class="debate-item"><div class="debate-icon gi">6</div><div><b>距52週高點682元仍有+72%上漲才能創新高</b>：若在400-415元區間形成頂部，回測280-300元支撐的機率不小，下行空間大於上行空間。</div></div>
+    </div>
+  </div>
+  <div class="weight-bar" style="margin-top:14px">
+    <div class="bull-w" style="width:52%">看多 52%</div>
+    <div class="bear-w" style="width:48%">看空 48%</div>
+  </div>
+  <div class="takeaway">
+    <b>給一般投資人的話：</b>今天的-4.40%讓情緒緊張，但從客觀角度看，8/11的426.5高點已驗證上方需要時間整理。月收2億是確確實實的業績利多，矽光子AI光通訊的需求也是真實的結構性成長。<b>進場策略建議</b>：趁今日回落至392-400（MA60支撐區）逐步布局，停損設定在380元（跌破MA5視為短線轉弱）；Q1'26財報是下一個最重要的觸媒——若EPS轉正，目標看500+；若EPS再度虧損，需重新評估。<b>最重要：只用閒錢，最多5%倉位。</b>
+  </div>
+</div>
+
+<!-- 11 風控評估 -->
+<div class="section">
+  <div class="section-title">風控評估（六維評分）</div>
+  <div class="risk-grid">
+    <div class="risk-item">
+      <div class="rlabel">估值風險（權重30%）</div>
+      <div class="rscore">8.0<span style="font-size:14px;color:#a8a29e">/10</span></div>
+      <div class="rweight">高風險</div>
+      <div class="rbar-bg"><div class="rbar-fill rbar-high" style="width:80%"></div></div>
+      <p style="font-size:11px;color:#78716c;margin-top:6px">EPS仍為負，無PE錨點；PS 8.6倍（市值163億/年化收入19億）偏高。但矽光子成長故事下，PEG更合適作為估值框架</p>
+    </div>
+    <div class="risk-item">
+      <div class="rlabel">財務風險（權重25%）</div>
+      <div class="rscore">6.0<span style="font-size:14px;color:#a8a29e">/10</span></div>
+      <div class="rweight">中高風險（改善中）</div>
+      <div class="rbar-bg"><div class="rbar-fill rbar-mid" style="width:60%"></div></div>
+      <p style="font-size:11px;color:#78716c;margin-top:6px">月收三倍成長確認業務轉型成功，Q4'25 EPS已縮至-0.10元；Q1'26轉正機率高但尚未確認，財務風險較8/10報告下降</p>
+    </div>
+    <div class="risk-item">
+      <div class="rlabel">流動性風險（權重10%）</div>
+      <div class="rscore">6.0<span style="font-size:14px;color:#a8a29e">/10</span></div>
+      <div class="rweight">中高風險</div>
+      <div class="rbar-bg"><div class="rbar-fill rbar-mid" style="width:60%"></div></div>
+      <p style="font-size:11px;color:#78716c;margin-top:6px">8/11日成交量破百萬張（972K），流動性改善中；但上櫃小型股，大單進出仍可能影響股價</p>
+    </div>
+    <div class="risk-item">
+      <div class="rlabel">產業風險（權重15%）</div>
+      <div class="rscore">2.0<span style="font-size:14px;color:#a8a29e">/10</span></div>
+      <div class="rweight">低風險</div>
+      <div class="rbar-bg"><div class="rbar-fill" style="width:20%"></div></div>
+      <p style="font-size:11px;color:#78716c;margin-top:6px">AI伺服器800G光通訊需求2026-2028年持續強勁，矽光子是全球算力基礎設施核心技術，產業前景清晰</p>
+    </div>
+    <div class="risk-item">
+      <div class="rlabel">總經風險（權重10%）</div>
+      <div class="rscore">5.0<span style="font-size:14px;color:#a8a29e">/10</span></div>
+      <div class="rweight">中等風險</div>
+      <div class="rbar-bg"><div class="rbar-fill rbar-mid" style="width:50%"></div></div>
+      <p style="font-size:11px;color:#78716c;margin-top:6px">美伊地緣政治、AI資本支出週期、匯率風險（台幣升值）為主要總經變數</p>
+    </div>
+    <div class="risk-item">
+      <div class="rlabel">籌碼風險（權重10%）</div>
+      <div class="rscore">8.0<span style="font-size:14px;color:#a8a29e">/10</span></div>
+      <div class="rweight">高風險</div>
+      <div class="rbar-bg"><div class="rbar-fill rbar-high" style="width:80%"></div></div>
+      <p style="font-size:11px;color:#78716c;margin-top:6px">三大法人零持倉，全散戶主導；今日盤中急殺-10%（415.5→372.5）顯示主力操控痕跡，籌碼不穩</p>
+    </div>
+  </div>
+  <div class="risk-total">
+    <div class="rt-score">6.5</div>
+    <div>
+      <div style="font-size:18px;font-weight:700">綜合風險等級：高風險（vs 8/10報告7.0分微降）</div>
+      <div style="font-size:13px;opacity:.75;margin-top:4px">加權：8×30%＋6×25%＋6×10%＋2×15%＋5×10%＋8×10% = 2.4+1.5+0.6+0.3+0.5+0.8 = 6.1分</div>
+      <div style="font-size:13px;opacity:.75;margin-top:4px">月收7月創新高、業務轉型矽光子確認，使財務/產業面風險略降；估值無錨、籌碼不穩仍是核心風險</div>
+    </div>
+  </div>
+</div>
+
+<!-- 12 台股三段式策略 -->
+<div class="section">
+  <div class="section-title">台股三段式策略（2026-08-12更新）</div>
+  <div class="strategy-grid">
+    <div class="strat-card s-attack">
+      <h3>⚔️ 進攻策略（積極型）</h3>
+      <div class="strat-item"><b>進場機會：</b>今日-4.4%回調至397元，MA60（392.75）守住，提供進場機會</div>
+      <div class="strat-item"><b>建倉區間：</b>392–405元（MA60~今日收盤附近）</div>
+      <div class="strat-item"><b>目標一：</b>430–441元（前高壓力，近期目標）</div>
+      <div class="strat-item"><b>目標二：</b>500–550元（EPS轉正後中期目標）</div>
+      <div class="strat-item"><b>停損設定：</b>跌破380元出場（MA5下緩衝）</div>
+      <div class="strat-item"><b>建議倉位：</b><b>最多5%</b>，高風險小型股</div>
+    </div>
+    <div class="strat-card s-balance">
+      <h3>⚖️ 均衡策略（穩健型）</h3>
+      <div class="strat-item"><b>等待確認：</b>等Q1'26財報（EPS轉正確認）</div>
+      <div class="strat-item"><b>建倉：</b>370–395元（MA5/MA60支撐區）逢低分批</div>
+      <div class="strat-item"><b>確認訊號：</b>EPS正式轉正 + 月收連續≥1.8億</div>
+      <div class="strat-item"><b>目標：</b>500–600元（3–6個月）</div>
+      <div class="strat-item"><b>停損：</b>跌破355元出場（MA20）</div>
+      <div class="strat-item"><b>建議倉位：</b>分三批共3–5%資金</div>
+    </div>
+    <div class="strat-card s-defend">
+      <h3>🛡️ 防守策略（保守型）</h3>
+      <div class="strat-item"><b>觀望：</b>等EPS轉正財報確認後再進場</div>
+      <div class="strat-item"><b>若已持有：</b>跌破355（MA20）立即停損</div>
+      <div class="strat-item"><b>觸媒：</b>Q1'26財報EPS≥0.5元才考慮介入</div>
+      <div class="strat-item"><b>目標：</b>長線500–682元（12個月）</div>
+      <div class="strat-item"><b>最高倉位：</b>2–3%，嚴禁重倉</div>
+      <div class="strat-item"><b>原則：</b><b>不借錢、不All-in</b></div>
+    </div>
+  </div>
+  <table class="catalyst-table">
+    <thead>
+      <tr><th>催化劑事件</th><th>時程</th><th>方向</th><th>說明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Q1'26財報公告</td><td>2026-08底或9月初</td><td><span class="cat-pos">最關鍵正向觸媒</span></td><td>若EPS正式轉正（哪怕+0.1元），市場估值可重構，目標價看500+</td></tr>
+      <tr><td>8月月收公告</td><td>2026-09-10</td><td><span class="cat-pos">持續正向確認</span></td><td>若維持≥2億（延續7月新高），確認成長可持續，估值修復</td></tr>
+      <tr><td>矽光子大客戶揭露</td><td>隨時</td><td><span class="cat-pos">股價飛升觸媒</span></td><td>若揭露NVIDIA/英特爾/台積電旗下光通訊供應鏈，股價可大幅躍升</td></tr>
+      <tr><td>布林上軌415元突破站穩</td><td>近期技術關鍵</td><td><span class="cat-pos">技術強攻訊號</span></td><td>今日觸及415.5後回落，若能在415上方站穩2日，視為突破確認，目標430</td></tr>
+      <tr><td>跌破MA60（392.75元）</td><td>近期風險</td><td><span class="cat-neg">技術警戒訊號</span></td><td>若跌破MA60且收盤確認，短線轉弱，需降低倉位</td></tr>
+      <tr><td>月收回落至1.2億以下</td><td>任何月份</td><td><span class="cat-neg">業績利空</span></td><td>成長故事瓦解，股價恐回落至280-300元</td></tr>
+      <tr><td>EPS公告仍虧損</td><td>2026-08底</td><td><span class="cat-neg">重大利空</span></td><td>市場失望性拋售，可能急跌10-20%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 13 名詞小教室 -->
+<div class="section">
+  <div class="section-title">名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glos-item">
+      <div class="term">矽光子（Silicon Photonics）</div>
+      <div class="def">用矽晶圓材料製作的光學元件，把光訊號和電訊號整合在一起，大幅提升光纖通訊速度和效率。AI伺服器之間需要超高速光通訊（800G、1.6T），矽光子是核心技術。高明鐵生產矽光子精密封裝元件，受惠AI算力基礎設施爆發。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">800G光收發器（Optical Transceiver）</div>
+      <div class="def">每秒傳輸800Gbps（吉比特）數據的光通訊模組，是AI伺服器群（如NVIDIA H100/B200機架）中連接GPU的核心零件。一個AI訓練中心需要數千個光收發器，每個都包含矽光子晶片和精密機械元件，直接帶動高明鐵需求。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">PS比（Price to Sales）</div>
+      <div class="def">股價/每股年收入，即市值/年營收。當公司EPS為負（無法計算PE）時，PS是常用的估值替代方法。高明鐵市值163億 ÷ 年化收入19億 = PS 8.6倍。對成長股，PS比5倍以下通常偏便宜，10倍以上偏貴。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">布林上軌突破</div>
+      <div class="def">布林通道代表「正常波動區間」。上軌（今日414元）是近期高點，股價短暫突破後回落（今日高415.5→現397），稱為「假突破」或「觸軌回調」。需要量能配合且連續收盤在上軌之上，才算「有效突破」；否則視為整理訊號。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">業績轉機（EPS轉正）</div>
+      <div class="def">公司從虧損轉為獲利的關鍵節點。高明鐵從2025年虧損（TTM -2.96元）邁向2026年可能轉正的過程，就是業績轉機。一旦財報確認EPS轉正，市場可以用PE估值，估值可能大幅重構，股價往往出現一波大漲。這是當前最重要的觀察指標。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">PEG比（PE/成長率）</div>
+      <div class="def">用本益比除以成長率，評估高PE是否合理。若PE=60倍、年成長率=60%，則PEG=1.0（通常1以下才算合理）。對年收入成長168%的高明鐵，即使PE60倍，PEG=60/168=0.36，顯示估值其實相當合理。這是評估高成長股更好的指標。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">MA60（季線）</div>
+      <div class="def">60日（約3個月）移動平均線，代表近一季的平均成本，是判斷中期趨勢的重要均線。今日股價397元 vs MA60 392.75元，差距只有4.25元——這就是為什麼今日下跌讓人緊張：若收盤跌破MA60，中期趨勢可能轉弱。今日收盤守住397元 &gt; MA60，技術上尚安全。</div>
+    </div>
+    <div class="glos-item">
+      <div class="term">年化收入（Annualized Revenue）</div>
+      <div class="def">把最近一個月的月收乘以12個月，估算全年可能的收入水準。高明鐵7月月收2億元，年化 = 2×12 = 24億。但若下半年持續成長，全年實際可能更高；若有季節性波動，實際可能略低。年化收入是評估業務規模的快速工具，不等於實際全年結果。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 14 免責聲明 -->
+<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:20px 24px;margin:0 40px 40px">
+  <h4 style="font-size:13px;font-weight:700;color:#92400e;margin-bottom:8px">⚠️ 重要免責聲明與風險提示</h4>
+  <p style="font-size:11px;color:#78350f;line-height:1.8">
+    本報告由AI輔助分析系統生成（更新版 2026-08-12），僅供學術研究與資訊參考，<b>不構成任何投資建議或買賣邀約</b>。高明鐵（4573）屬上櫃高波動小型股，EPS仍為負值，本報告無法計算合理PE估值，所有目標價僅為技術面及趨勢面推算，非基本面合理估值。投資此類高風險股票可能造成本金全部損失，請嚴格控制倉位。
+    <br><br>
+    資料來源：
+    <a href="https://udn.com/news/story/7252/9682979" style="color:#92400e">聯合新聞網（7月月收報導）</a> ｜
+    <a href="https://news.cnyes.com/news/id/6452734" style="color:#92400e">鉅亨網（矽光子動能分析）</a> ｜
+    <a href="https://goodinfo.tw/tw/StockDetail.asp?STOCK_ID=4573" style="color:#92400e">Goodinfo</a> ｜
+    <a href="https://statementdog.com/analysis/4573/monthly-revenue-growth-rate" style="color:#92400e">財報狗</a> ｜
+    富果Fugle API ｜ FinMind
+  </p>
+</div>
+
+<script>
+function drawBarChart(id,labels,data,barColor,accentColor){
+  var canvas=document.getElementById(id);if(!canvas)return;
+  var ctx=canvas.getContext('2d');var W=canvas.width,H=canvas.height;
+  var pad={top:28,right:12,bottom:52,left:12};
+  var cW=W-pad.left-pad.right,cH=H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var maxV=Math.max.apply(null,[0].concat(data.map(Math.abs)));
+  var minV=Math.min.apply(null,[0].concat(data));
+  var range=(maxV*1.3)-minV;if(range===0)range=1;
+  var bw=cW/data.length*0.58,gap=cW/data.length;
+  var zeroY=pad.top+cH*(1-(0-minV)/range);
+  ctx.beginPath();ctx.strokeStyle='#e7e5e4';ctx.lineWidth=1;ctx.setLineDash([3,3]);
+  ctx.moveTo(pad.left,zeroY);ctx.lineTo(pad.left+cW,zeroY);ctx.stroke();ctx.setLineDash([]);
+  data.forEach(function(v,i){
+    var x=pad.left+gap*i+(gap-bw)/2;
+    var barH=Math.abs(v)/range*cH;var y=v>=0?zeroY-barH:zeroY;
+    var color=v<0?'#ef4444':(i===data.length-1?accentColor:barColor);
+    var r=Math.min(4,bw/2,Math.max(barH/2,1));
+    ctx.beginPath();
+    if(v>=0){ctx.moveTo(x+r,y);ctx.lineTo(x+bw-r,y);ctx.quadraticCurveTo(x+bw,y,x+bw,y+r);ctx.lineTo(x+bw,y+barH);ctx.lineTo(x,y+barH);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);}
+    else{ctx.moveTo(x,y);ctx.lineTo(x+bw,y);ctx.lineTo(x+bw,y+barH-r);ctx.quadraticCurveTo(x+bw,y+barH,x+bw-r,y+barH);ctx.lineTo(x+r,y+barH);ctx.quadraticCurveTo(x,y+barH,x,y+barH-r);ctx.lineTo(x,y);}
+    ctx.fillStyle=color;ctx.fill();
+    ctx.fillStyle='#1c1917';ctx.font='bold 9px Arial';ctx.textAlign='center';
+    ctx.fillText(v.toFixed(2),x+bw/2,v>=0?y-4:y+barH+10);
+    ctx.fillStyle='#78716c';ctx.font='9px Arial';ctx.fillText(labels[i],x+bw/2,H-6);
+  });
+}
+
+function drawLineChart(id,labels,data,color){
+  var canvas=document.getElementById(id);if(!canvas)return;
+  var ctx=canvas.getContext('2d');var W=canvas.width,H=canvas.height;
+  var pad={top:28,right:14,bottom:42,left:14};
+  var cW=W-pad.left-pad.right,cH=H-pad.top-pad.bottom;
+  ctx.clearRect(0,0,W,H);
+  var maxV=Math.max.apply(null,data)*1.1,minV=Math.min.apply(null,data)*0.88;
+  var range=maxV-minV;if(range===0)range=1;
+  function px(i){return pad.left+i/(data.length-1)*cW;}
+  function py(v){return pad.top+(1-(v-minV)/range)*cH;}
+  ctx.beginPath();ctx.moveTo(px(0),py(data[0]));
+  data.forEach(function(v,i){if(i>0)ctx.lineTo(px(i),py(v));});
+  ctx.lineTo(px(data.length-1),pad.top+cH);ctx.lineTo(px(0),pad.top+cH);ctx.closePath();
+  ctx.fillStyle='rgba(124,58,237,0.10)';ctx.fill();
+  ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.lineJoin='round';
+  data.forEach(function(v,i){i===0?ctx.moveTo(px(i),py(v)):ctx.lineTo(px(i),py(v));});
+  ctx.stroke();
+  data.forEach(function(v,i){
+    var isLast=i===data.length-1;
+    ctx.beginPath();ctx.arc(px(i),py(v),isLast?5:3,0,Math.PI*2);
+    ctx.fillStyle=isLast?color:'white';ctx.strokeStyle=color;ctx.lineWidth=2;ctx.fill();ctx.stroke();
+    ctx.fillStyle=isLast?color:'#57534e';ctx.font=isLast?'bold 10px Arial':'9px Arial';ctx.textAlign='center';
+    ctx.fillText(v.toFixed(2),px(i),py(v)-10);
+    ctx.fillStyle='#a8a29e';ctx.font='9px Arial';ctx.fillText(labels[i],px(i),H-6);
+  });
+}
+
+function drawHBarChart(id,labels,data,colors){
+  var canvas=document.getElementById(id);if(!canvas)return;
+  var ctx=canvas.getContext('2d');var W=canvas.width,H=canvas.height;
+  var padL=14,padR=60,padT=12,padB=12;
+  var cW=W-padL-padR,cH=H-padT-padB;
+  ctx.clearRect(0,0,W,H);
+  var maxV=Math.max.apply(null,data)*1.1;
+  var rowH=cH/labels.length,barH=rowH*0.52;
+  labels.forEach(function(lbl,i){
+    var y=padT+i*rowH+(rowH-barH)/2;var bw=data[i]/maxV*cW;
+    ctx.beginPath();ctx.fillStyle='#f5f5f4';ctx.roundRect(padL,y,cW,barH,4);ctx.fill();
+    ctx.beginPath();ctx.fillStyle=colors[i];
+    if(bw>8)ctx.roundRect(padL,y,bw,barH,4);else ctx.rect(padL,y,bw,barH);
+    ctx.fill();
+    ctx.fillStyle='#1c1917';ctx.font='bold 9px Arial';ctx.textAlign='left';ctx.fillText(lbl,padL+4,y+barH/2+3.5);
+    ctx.fillStyle=colors[i];ctx.font='bold 10px Arial';ctx.textAlign='left';ctx.fillText('+'+data[i].toFixed(0)+'%',padL+cW+4,y+barH/2+3.5);
+  });
+}
+
+window.addEventListener('DOMContentLoaded',function(){
+  drawBarChart('epsChart',
+    ["H1'24","H2'24","H1'25","Q3'25","Q4'25"],
+    [-0.11,0.01,-1.64,-0.58,-0.10],
+    '#c2410c','#f97316'
+  );
+  drawLineChart('revChart',
+    ['1月','2月','3月','4月','5月','6月','7月'],
+    [0.788,0.657,1.075,1.332,1.543,1.635,2.001],
+    '#7c3aed'
+  );
+  drawHBarChart('peChart',
+    ['1月YoY','2月YoY','3月YoY','4月YoY','5月YoY','6月YoY','7月YoY'],
+    [93.5,61.2,144.2,120.3,207.6,224.6,298.5],
+    ['#fbbf24','#fbbf24','#f97316','#f97316','#c2410c','#9a3412','#7c3aed']
+  );
+});
+</script>
+</body>
+</html>
