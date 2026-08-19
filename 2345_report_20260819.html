@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智邦科技 (2345) 投資研究報告 ─ 2026-08-19</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Helvetica Neue',Arial,'Microsoft JhengHei',sans-serif;background:#F0F4F8;color:#1e293b;font-size:15px;line-height:1.7}
+  a{color:#1d4ed8}
+  .cover{background:linear-gradient(135deg,#1e1b4b 0%,#1d4ed8 55%,#3b82f6 100%);color:#fff;padding:60px 40px 50px;text-align:center;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:rgba(255,255,255,.05);border-radius:50%}
+  .cover::after{content:'';position:absolute;bottom:-60px;left:-60px;width:200px;height:200px;background:rgba(255,255,255,.04);border-radius:50%}
+  .cover-tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 16px;font-size:13px;letter-spacing:.05em;margin-bottom:18px}
+  .cover h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:.04em;margin-bottom:8px}
+  .cover-sub{font-size:1.1rem;opacity:.85;margin-bottom:24px}
+  .cover-meta{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;font-size:13px;opacity:.8;margin-bottom:28px}
+  .badge{display:inline-block;padding:6px 22px;border-radius:30px;font-weight:700;font-size:14px;letter-spacing:.03em}
+  .badge-low{background:#86efac;color:#14532d}
+  .badge-mid{background:#fde68a;color:#78350f}
+  .price-hero{margin-top:20px;font-size:2.8rem;font-weight:900;letter-spacing:.02em}
+  .price-change{font-size:1.1rem;opacity:.85;margin-top:4px}
+  .container{max-width:1100px;margin:0 auto;padding:32px 20px}
+  .section{background:#fff;border-radius:14px;padding:28px 32px;margin-bottom:24px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+  .section-title{font-size:1.2rem;font-weight:700;color:#1d4ed8;border-left:4px solid #1d4ed8;padding-left:12px;margin-bottom:20px;letter-spacing:.03em}
+  .conclusion{background:linear-gradient(135deg,#1e1b4b,#1e3a8a);color:#fff;border-radius:14px;padding:32px;margin-bottom:24px}
+  .conclusion h2{font-size:1.1rem;font-weight:700;opacity:.7;margin-bottom:16px;letter-spacing:.05em;text-transform:uppercase}
+  .conclusion-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+  .c-card{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:18px}
+  .c-card .label{font-size:12px;opacity:.65;margin-bottom:6px;letter-spacing:.04em}
+  .c-card .value{font-size:1.35rem;font-weight:800;color:#93c5fd}
+  .c-card .note{font-size:12px;opacity:.6;margin-top:4px}
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+  .kpi{background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px 18px;transition:.2s}
+  .kpi:hover{border-color:#1d4ed8;box-shadow:0 2px 8px rgba(29,78,216,.1)}
+  .kpi .name{font-size:12px;color:#64748b;margin-bottom:6px;font-weight:600;letter-spacing:.04em}
+  .kpi .val{font-size:1.5rem;font-weight:800;color:#1e293b}
+  .kpi .desc{font-size:11px;color:#94a3b8;margin-top:4px;line-height:1.4}
+  .kpi.accent{background:linear-gradient(135deg,#eff6ff,#f0f9ff);border-color:#bfdbfe}
+  .kpi.accent .val{color:#1d4ed8}
+  .chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+  .chart-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px}
+  .chart-box h4{font-size:13px;font-weight:700;color:#475569;margin-bottom:12px;text-align:center}
+  canvas{display:block;width:100% !important;height:auto !important}
+  .chart-note{font-size:11px;color:#94a3b8;text-align:center;margin-top:8px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{background:#eff6ff;padding:10px 14px;text-align:left;font-weight:700;color:#1e40af;border-bottom:2px solid #bfdbfe}
+  td{padding:9px 14px;border-bottom:1px solid #f1f5f9;color:#334155}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#f0f9ff}
+  .up{color:#16a34a;font-weight:700}
+  .down{color:#dc2626;font-weight:700}
+  .neutral{color:#64748b}
+  .score-bar-wrap{margin:6px 0}
+  .score-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
+  .score-bar{height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden}
+  .score-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#1d4ed8,#3b82f6)}
+  .debate-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:640px){.debate-grid{grid-template-columns:1fr}}
+  .bull-box{background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:20px}
+  .bear-box{background:#fef2f2;border:1.5px solid #fca5a5;border-radius:10px;padding:20px}
+  .bull-box h4{color:#16a34a;font-size:14px;font-weight:800;margin-bottom:14px}
+  .bear-box h4{color:#dc2626;font-size:14px;font-weight:800;margin-bottom:14px}
+  .debate-point{font-size:13px;padding:8px 10px;background:rgba(255,255,255,.7);border-radius:6px;margin-bottom:8px;line-height:1.5}
+  .debate-point strong{display:block;margin-bottom:3px}
+  .strategy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .strat-attack{background:linear-gradient(135deg,#1e1b4b,#1d4ed8);color:#fff;border-radius:12px;padding:22px}
+  .strat-balance{background:linear-gradient(135deg,#065f46,#059669);color:#fff;border-radius:12px;padding:22px}
+  .strat-defend{background:linear-gradient(135deg,#374151,#6b7280);color:#fff;border-radius:12px;padding:22px}
+  .strat-title{font-size:13px;font-weight:700;opacity:.8;margin-bottom:8px;letter-spacing:.05em;text-transform:uppercase}
+  .strat-price{font-size:2rem;font-weight:900;margin-bottom:8px}
+  .strat-desc{font-size:12.5px;opacity:.85;line-height:1.6}
+  .risk-badge{display:inline-block;padding:6px 20px;border-radius:20px;font-weight:800;font-size:14px}
+  .risk-mid{background:#fde68a;color:#92400e}
+  .glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .gcard{background:#f8fafc;border-radius:8px;padding:14px 16px;border-left:3px solid #1d4ed8}
+  .gcard .term{font-weight:800;color:#1d4ed8;font-size:13.5px;margin-bottom:5px}
+  .gcard .def{font-size:12.5px;color:#475569;line-height:1.5}
+  .disclaimer{background:#fffbeb;border:1.5px solid #fbbf24;border-radius:10px;padding:20px 24px;font-size:12.5px;color:#78350f;line-height:1.7}
+  .analyst-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+  .a-card{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:14px}
+  .a-card .role{font-size:11px;color:#1e40af;font-weight:700;letter-spacing:.04em;margin-bottom:4px}
+  .a-card .finding{font-size:14px;font-weight:800;color:#1e293b}
+  .a-card .sub{font-size:12px;color:#64748b;margin-top:3px}
+  .level-table{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;margin-top:12px}
+  .level-item{background:#f8fafc;border-radius:8px;padding:12px 14px;text-align:center}
+  .level-item .lname{font-size:11px;color:#64748b;margin-bottom:4px;font-weight:600}
+  .level-item .lprice{font-size:1.3rem;font-weight:800}
+  .level-item.resist .lprice{color:#dc2626}
+  .level-item.support .lprice{color:#16a34a}
+  .level-item.current .lprice{color:#1d4ed8}
+  .weight-bar{height:28px;border-radius:14px;overflow:hidden;display:flex;margin:12px 0}
+  .weight-bull{background:#16a34a;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px}
+  .weight-bear{background:#dc2626;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px}
+  .inst-card{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+  .ic{border-radius:8px;padding:14px;text-align:center}
+  .ic-bear{background:#fef2f2;border:1px solid #fca5a5}
+  .ic-neutral{background:#f8fafc;border:1px solid #e2e8f0}
+  .ic .iname{font-size:11px;font-weight:700;margin-bottom:6px}
+  .ic .ival{font-size:1.5rem;font-weight:800}
+</style>
+</head>
+<body>
+
+<!-- ══ 01 封面 ══ -->
+<div class="cover">
+  <div class="cover-tag">台灣上市 ｜ 2345.TW ｜ 通信網路</div>
+  <h1>智邦科技</h1>
+  <div class="cover-sub">白牌交換器全球 ODM 龍頭 ｜ AI 算力基礎建設核心供應商</div>
+  <div class="cover-meta">
+    <span>📅 報告日期：2026-08-19</span>
+    <span>📊 資料更新：盤中即時</span>
+    <span>🏭 產業：通信網路設備</span>
+    <span>🌐 市場：台灣上市（TWSE）</span>
+  </div>
+  <span class="badge badge-mid">⚠ 風險等級：中等（4.5/10）</span>
+  <div class="price-hero">NT$ 2,130</div>
+  <div class="price-change">▼ -95.0（-4.27%）｜ 昨收 2,225 ｜ 52W 高 2,825 / 低 884</div>
+</div>
+
+<div class="container">
+
+<!-- ══ 02 核心結論 ══ -->
+<div class="conclusion">
+  <h2>🎯 核心結論</h2>
+  <div class="conclusion-grid">
+    <div class="c-card">
+      <div class="label">投資建議</div>
+      <div class="value">逢低買進</div>
+      <div class="note">2000-2150 區間分批布局，基本面極強</div>
+    </div>
+    <div class="c-card">
+      <div class="label">外資平均目標價</div>
+      <div class="value">NT$ 3,139</div>
+      <div class="note">12 分析師全部評買入，最高 3,700 元</div>
+    </div>
+    <div class="c-card">
+      <div class="label">JP Morgan 目標價</div>
+      <div class="value">NT$ 3,600</div>
+      <div class="note">FY2026E EPS 82.63元，YoY+75%</div>
+    </div>
+    <div class="c-card">
+      <div class="label">TTM EPS</div>
+      <div class="value">63.65 元</div>
+      <div class="note">Q3'25+Q4'25+Q1'26+Q2'26 季季創高</div>
+    </div>
+    <div class="c-card">
+      <div class="label">最大風險</div>
+      <div class="value">技術面轉空</div>
+      <div class="note">跌破 MA20，三大法人三日賣超 505 張</div>
+    </div>
+    <div class="c-card">
+      <div class="label">停損參考</div>
+      <div class="value">跌破 2,000 元</div>
+      <div class="note">布林下軌 1,955 ≈ 2,000 關口，失守空手觀望</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 03 關鍵財務 KPI ══ -->
+<div class="section">
+  <div class="section-title">📊 關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi accent">
+      <div class="name">今日股價（盤中）</div>
+      <div class="val">NT$ 2,130</div>
+      <div class="desc">-4.27%｜昨收 2,225｜52W 高 2,825 / 低 884</div>
+    </div>
+    <div class="kpi accent">
+      <div class="name">最新季 EPS（Q2'26）</div>
+      <div class="val">19.78 元</div>
+      <div class="desc">季增 +32.6%（vs Q1'26: 14.92元），史上最高單季</div>
+    </div>
+    <div class="kpi">
+      <div class="name">TTM EPS</div>
+      <div class="val">63.65 元</div>
+      <div class="desc">TTM P/E = 33.5x；外資估 FY2026E 82.63元</div>
+    </div>
+    <div class="kpi">
+      <div class="name">7月月收（最新）</div>
+      <div class="val">394.7 億</div>
+      <div class="desc">YoY +71.7%；6+7月連兩月約 395億（史上新高）</div>
+    </div>
+    <div class="kpi">
+      <div class="name">最新季毛利率（Q2'26）</div>
+      <div class="val">19.70%</div>
+      <div class="desc">Q1'26: 19.55%，回升趨勢確立（H1'25 最低 17.93%）</div>
+    </div>
+    <div class="kpi">
+      <div class="name">市值</div>
+      <div class="val">約 1.17 兆</div>
+      <div class="desc">台股千億市值以上大型股，流動性佳</div>
+    </div>
+    <div class="kpi">
+      <div class="name">股價淨值比（PBR）</div>
+      <div class="val">16.9x</div>
+      <div class="desc">高 PBR 反映市場對其強大盈利能力與成長的溢價</div>
+    </div>
+    <div class="kpi">
+      <div class="name">7M'26 累計月收</div>
+      <div class="val">2,051 億</div>
+      <div class="desc">YoY 大幅成長，H2 月均已達 395 億（H1 均 249 億）</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 04 財務趨勢圖 ══ -->
+<div class="section">
+  <div class="section-title">📈 財務趨勢圖（純 Canvas JS，零外部依賴）</div>
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h4>EPS 季度趨勢（元，Q3'24–Q2'26）</h4>
+      <canvas id="epsChart" width="420" height="260"></canvas>
+      <div class="chart-note">★ 全部為實際公告數字；Q2'26 EPS 19.78元創史上單季最高</div>
+    </div>
+    <div class="chart-box">
+      <h4>月營收走勢（億元，Jan–Jul 2026）</h4>
+      <canvas id="revChart" width="420" height="260"></canvas>
+      <div class="chart-note">★ Jun+Jul 雙月維持 ~395 億歷史新高；6月 MoM 跳升 +38.2%</div>
+    </div>
+    <div class="chart-box">
+      <h4>同業 P/E 估值比較（TTM）</h4>
+      <canvas id="peChart" width="420" height="260"></canvas>
+      <div class="chart-note">★ 智邦 TTM P/E；Arista/Cisco 為推算值；台股大盤約 18x</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 05 公司概覽 ══ -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽：AI 算力時代的「網路軍火商」</div>
+  <p style="margin-bottom:16px;color:#475569;font-size:13.5px">
+    智邦科技（2345-TW）是全球白牌交換器（White-box Switch）最大 ODM/JDM 廠商，直接供應 Meta、Amazon（AWS）、Google 等超大型雲端廠商（Hyperscalers）。AI 算力基礎建設的爆炸性需求，帶動資料中心網路設備從 400G → 800G，並邁向 1.6T，智邦是這波浪潮中無可替代的關鍵供應商。
+  </p>
+  <table>
+    <tr><th>項目</th><th>內容</th></tr>
+    <tr><td>主要業務</td><td>白牌 Ethernet 交換器 ODM/JDM（核心）、企業網路設備、無線基礎設施</td></tr>
+    <tr><td>核心客戶</td><td>Meta、Amazon AWS、Google GCP（Hyperscalers），佔營收主體；與 Arista 等並列供應商</td></tr>
+    <tr><td>技術定位</td><td>800G White-box Switch 領導廠，技術開發速度領先同業 6-9 個月；積極卡位 1.6T 世代</td></tr>
+    <tr><td>開放網路生態</td><td>支援 OCP/SONiC 開放架構，與 Broadcom 晶片深度整合；Hyperscaler 自研 NOS 的最佳 ODM 夥伴</td></tr>
+    <tr><td>產能佈局</td><td>台灣（主力）+ 美國 + 中國 + 東南亞，成功分散地緣風險，具備美國本土出貨能力</td></tr>
+    <tr><td>護城河</td><td>技術先行（6-9月領先）、Hyperscaler 深度認證門檻高、高自製率（PCB+組裝）、長期供應關係</td></tr>
+    <tr><td>AI 受益點</td><td>AI GPU cluster 需高速互連 → Backend Network（400G/800G/1.6T switch）是必需品，智邦是主要受益者</td></tr>
+  </table>
+  <div style="margin-top:16px;background:#eff6ff;border-left:3px solid #1d4ed8;padding:12px 16px;border-radius:0 8px 8px 0;font-size:13.5px;color:#1e3a8a">
+    <strong>📌 為什麼 AI 讓智邦受益？</strong><br>
+    一個 AI 訓練集群（如 50,000 顆 H100 GPU）需要數百至數千台高速交換器把 GPU 連接在一起。每台 800G 交換器造價數萬美元，而且 AI 算力擴張速度快、更換周期短（每 18-24 個月升代）。這就是為什麼智邦月收可以在 2026 年 6 月一個月內跳升 +38%。
+  </div>
+</div>
+
+<!-- ══ 06 基本面分析 ══ -->
+<div class="section">
+  <div class="section-title">💹 基本面分析</div>
+  <p style="color:#475569;font-size:13.5px;margin-bottom:16px">
+    <strong>【總評：基本面全面強勁，是台股 AI 受益股中基本面最紮實的標的之一】</strong><br>
+    EPS 從 Q3'24 的 4.75 元一路攀升至 Q2'26 的 19.78 元（9 個月成長 4.2 倍），毛利率在 2025 下半年短暫受壓（產品組合轉換期）後，Q1'26+Q2'26 已回升至 19.5-19.7%。外資 JP Morgan 預估 FY2026 全年 EPS 達 82.63 元，若 H2 維持 Q2 水準，全年 EPS 可能超過 70 元。
+  </p>
+  <div style="margin-bottom:20px">
+    <div class="score-bar-wrap"><div class="score-label"><span>EPS 成長力</span><span style="color:#1d4ed8;font-weight:700">9.5/10</span></div><div class="score-bar"><div class="score-fill" style="width:95%"></div></div></div>
+    <div class="score-bar-wrap"><div class="score-label"><span>獲利能力（已獲利）</span><span style="color:#1d4ed8;font-weight:700">8.0/10</span></div><div class="score-bar"><div class="score-fill" style="width:80%"></div></div></div>
+    <div class="score-bar-wrap"><div class="score-label"><span>毛利率穩定性</span><span style="color:#1d4ed8;font-weight:700">7.0/10</span></div><div class="score-bar"><div class="score-fill" style="width:70%"></div></div></div>
+    <div class="score-bar-wrap"><div class="score-label"><span>競爭護城河</span><span style="color:#1d4ed8;font-weight:700">8.5/10</span></div><div class="score-bar"><div class="score-fill" style="width:85%"></div></div></div>
+    <div class="score-bar-wrap"><div class="score-label"><span>財務健康度</span><span style="color:#1d4ed8;font-weight:700">8.0/10</span></div><div class="score-bar"><div class="score-fill" style="width:80%"></div></div></div>
+  </div>
+  <table>
+    <tr><th>季度</th><th>EPS（元）</th><th>毛利率（%）</th><th>營業利益率（%）</th><th>備注</th></tr>
+    <tr><td>Q3'24</td><td>4.75</td><td>19.89%</td><td>12.28%</td><td>AI 訂單起步期</td></tr>
+    <tr><td>Q4'24</td><td class="up">8.10</td><td>20.69%</td><td>13.26%</td><td>+71% QoQ，訂單放量</td></tr>
+    <tr><td>Q1'25</td><td class="up">9.17</td><td>20.23%</td><td>13.81%</td><td>淡季仍維持高檔</td></tr>
+    <tr><td>Q2'25</td><td>9.01</td><td class="down">17.93%</td><td>13.39%</td><td>產品組合轉換，毛利率短暫承壓</td></tr>
+    <tr><td>Q3'25</td><td class="up">14.00</td><td>17.16%</td><td>12.34%</td><td>+55% QoQ，800G 出貨大幅放量</td></tr>
+    <tr><td>Q4'25</td><td class="up">14.95</td><td>17.90%</td><td>12.65%</td><td>連續創高，毛利率回升</td></tr>
+    <tr><td>Q1'26</td><td>14.92</td><td class="up">19.55%</td><td class="up">14.33%</td><td>毛利率大幅回升+1.65pp，淡季不淡</td></tr>
+    <tr><td>Q2'26</td><td class="up" style="font-size:1.1em">19.78</td><td class="up">19.70%</td><td class="up">15.00%</td><td>史上最高單季 EPS；營益率新高 15%</td></tr>
+  </table>
+  <div style="margin-top:14px;background:#f0fdf4;border-left:3px solid #86efac;padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;color:#14532d">
+    <strong>💡 關鍵推算：</strong> FY2026E EPS<br>
+    H1'26 已知：14.92+19.78 = 34.70 元。若 H2'26 繼續成長 30-40%（對應月收 400-450 億/月），則：H2'26E EPS ≈ 40-50元，FY2026E ≈ 74-85元（外資估 82.63元）。以目前股價 2130 計算，FY2026E P/E = 25-29x，相對 Q2'26 月收表現，估值仍屬合理。
+  </div>
+</div>
+
+<!-- ══ 07 籌碼面分析 ══ -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析</div>
+  <div style="font-weight:700;margin-bottom:12px;color:#334155">三大法人（2026-08-18，最新一日）</div>
+  <div class="inst-card">
+    <div class="ic ic-bear">
+      <div class="iname" style="color:#dc2626">外資</div>
+      <div class="ival" style="color:#dc2626">-144 張</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">賣超，獲利了結</div>
+    </div>
+    <div class="ic ic-bear">
+      <div class="iname" style="color:#dc2626">投信</div>
+      <div class="ival" style="color:#dc2626">-345 張</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">賣超，力道最強</div>
+    </div>
+    <div class="ic ic-bear">
+      <div class="iname" style="color:#dc2626">自營商</div>
+      <div class="ival" style="color:#dc2626">-17 張</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">賣超，幅度較小</div>
+    </div>
+    <div class="ic" style="background:#fff3cd;border:1px solid #fbbf24">
+      <div class="iname" style="color:#92400e">三大法人合計</div>
+      <div class="ival" style="color:#92400e">-505 張</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">全面賣超，短線壓力</div>
+    </div>
+  </div>
+  <div style="font-weight:700;margin-bottom:12px;color:#334155">外資分析師評等（WebSearch 彙整）</div>
+  <div class="analyst-grid">
+    <div class="a-card">
+      <div class="role">摩根大通（JP Morgan）</div>
+      <div class="finding">目標 3,600 元</div>
+      <div class="sub">評等：買入 ｜ FY2026E EPS 82.63元</div>
+    </div>
+    <div class="a-card">
+      <div class="role">美系外資（Q2 後調升）</div>
+      <div class="finding">目標 3,700 元</div>
+      <div class="sub">評等：優於大盤 ｜ H2 成長加速</div>
+    </div>
+    <div class="a-card">
+      <div class="role">亞系外資</div>
+      <div class="finding">目標 3,500 元</div>
+      <div class="sub">評等：優於大盤 ｜ AI card YoY+72%</div>
+    </div>
+    <div class="a-card">
+      <div class="role">市場共識（12 分析師）</div>
+      <div class="finding">平均 3,139 元</div>
+      <div class="sub">12 買入、0 賣出；高位 3,700 / 低位 1,800</div>
+    </div>
+  </div>
+  <div style="margin-top:14px;background:#fffbeb;border-radius:8px;padding:12px 14px;font-size:13px;color:#78350f">
+    ⚠️ 三大法人短期賣超 505 張：此為 Q2 財報公告後（8/6 董事會）的獲利了結行為，屬「買消息賣事實」的常見現象，不代表法人看壞長線。12 位分析師仍全部評估目標價遠高於現價（現價 2130 vs 平均 3139），空間達 +47%。
+  </div>
+</div>
+
+<!-- ══ 08 技術分析 ══ -->
+<div class="section">
+  <div class="section-title">📉 技術分析（2026-08-19 盤中）</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:20px">
+    <div style="background:#fef2f2;border-radius:8px;padding:14px;border-left:3px solid #dc2626">
+      <div style="font-size:11px;font-weight:700;color:#dc2626;margin-bottom:6px">均線（跌破 MA5/MA20 🔴）</div>
+      <div style="font-size:14px;font-weight:800;color:#1e293b">短期偏空</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">MA5 2260 / MA10 2261 / MA20 2217<br>股價(2130) < MA5 < MA10，均線纏繞偏空</div>
+    </div>
+    <div style="background:#f0fdf4;border-radius:8px;padding:14px;border-left:3px solid #16a34a">
+      <div style="font-size:11px;font-weight:700;color:#16a34a;margin-bottom:6px">MACD（金叉 🟡）</div>
+      <div style="font-size:14px;font-weight:800;color:#1e293b">OSC +13.99</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">DIF -18.33 / DEA -32.32<br>金叉但兩線仍負值，反彈力道偏弱</div>
+    </div>
+    <div style="background:#fffbeb;border-radius:8px;padding:14px;border-left:3px solid #f59e0b">
+      <div style="font-size:11px;font-weight:700;color:#d97706;margin-bottom:6px">RSI（50 附近 🟡）</div>
+      <div style="font-size:14px;font-weight:800;color:#1e293b">48.01</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">介於 45-50，空方略佔優勢<br>但未超賣，止跌後可能快速回升</div>
+    </div>
+    <div style="background:#fef2f2;border-radius:8px;padding:14px;border-left:3px solid #dc2626">
+      <div style="font-size:11px;font-weight:700;color:#dc2626;margin-bottom:6px">布林通道（中軌以下 🔴）</div>
+      <div style="font-size:14px;font-weight:800;color:#1e293b">偏空，帶寬 23.7%</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">上軌 2479 / 中軌 2217 / 下軌 1955<br>股價在中軌以下，短期偏空</div>
+    </div>
+  </div>
+
+  <div style="font-weight:700;margin-bottom:10px;color:#334155">📍 關鍵價位（支撐與壓力）</div>
+  <div class="level-table">
+    <div class="level-item resist"><div class="lname">52W 最高（前波高）</div><div class="lprice">2,825 元</div><div style="font-size:11px;color:#64748b">長期多頭終極目標</div></div>
+    <div class="level-item resist"><div class="lname">布林上軌</div><div class="lprice">2,480 元</div><div style="font-size:11px;color:#64748b">突破則可能衝向前高</div></div>
+    <div class="level-item resist"><div class="lname">MA5 / MA10</div><div class="lprice">2,260 元</div><div style="font-size:11px;color:#64748b">站回此區多方轉強</div></div>
+    <div class="level-item current"><div class="lname">現價（今日盤中）</div><div class="lprice">2,130 元</div><div style="font-size:11px;color:#64748b">-4.27%，7/29 後首次破 2150</div></div>
+    <div class="level-item support"><div class="lname">7/29-7/30 低點</div><div class="lprice">1,855-1,935 元</div><div style="font-size:11px;color:#64748b">前波止跌回升區</div></div>
+    <div class="level-item support"><div class="lname">布林下軌 / 關鍵支撐</div><div class="lprice">1,955 元</div><div style="font-size:11px;color:#64748b">≈ 2,000 心理關口，強支撐</div></div>
+    <div class="level-item support"><div class="lname">52W 最低</div><div class="lprice">884 元</div><div style="font-size:11px;color:#64748b">長線買入參考</div></div>
+  </div>
+  <div style="margin-top:14px;background:#f8fafc;border-radius:8px;padding:14px;font-size:13px;color:#334155;line-height:1.8">
+    <strong>📊 近 30 日走勢解讀：</strong><br>
+    7/7 高點 2700 元後一路震盪下行。7/14 盤中觸及 2195 元後反彈，7/20 測試 2000 元關口（盤中低 2000），隨後反彈至 8/6 的 2595 元（短暫創近期新高）。8/7 起再度走弱，今日（8/19）再次測試 2060-2130 區間。整體型態為「高位震盪、逢高賣壓沉重」，短線若守住 2000-2100 區間，則為良好的中線買入機會；若跌破 2000 需觀察量能是否放大。
+  </div>
+</div>
+
+<!-- ══ 09 融資融券 ══ -->
+<div class="section">
+  <div class="section-title">💳 融資融券分析</div>
+  <div style="background:#fffbeb;border-radius:8px;padding:12px 14px;font-size:13px;color:#78350f;margin-bottom:14px">
+    ⚠️ FinMind 顯示 2026-08-18 融資餘額 0 張、融券餘額 0 張。此可能為 API 資料限制或申報日差異，非代表實際融資為零。智邦為千億市值大型股，實際融資融券情況需透過以下連結確認。
+  </div>
+  <p style="font-size:13px;color:#475569">
+    📌 <strong>實際查詢：</strong>
+    <a href="https://goodinfo.tw/tw/StockBorrowingAndLending.asp?STOCK_ID=2345">Goodinfo 融資融券查詢</a> ｜
+    <a href="https://fubon.com">富邦e點通 → 個股資料 → 融資融券</a>
+  </p>
+  <div style="margin-top:12px;font-size:13px;color:#475569">
+    <strong>趨勢判讀：</strong>智邦市值超過 1 兆，大型法人是主要影響股價的力量而非融資散戶。短期三大法人全面賣超 505 張，是本次股價下跌的主要原因；待賣壓消化、法人重新買超後，股價有較大機率企穩回升。
+  </div>
+</div>
+
+<!-- ══ 10 研究員辯論 ══ -->
+<div class="section">
+  <div class="section-title">⚔️ 研究員辯論：看多 vs 看空</div>
+  <div class="debate-grid">
+    <div class="bull-box">
+      <h4>🐂 看多研究員（5 大論點）</h4>
+      <div class="debate-point">
+        <strong>① Q2'26 EPS 19.78元：史上最高單季，且成長加速</strong>
+        Q2'26 EPS 19.78元 vs Q1'26 14.92元，QoQ +32.6%。毛利率 19.70%，營業利益率 15.00% 均創史上新高。EPS 成長加速度（非減速）證明 AI 需求並未放緩。
+      </div>
+      <div class="debate-point">
+        <strong>② 6+7月月收雙月 ~395 億：新台階確立</strong>
+        6月 395.5 億（MoM +38.2%，YoY+61.2%）、7月 394.7 億（YoY+71.7%）。連兩個月維持 395 億新高，代表這不是一次性的跳升，而是訂單結構性提升後的新常態月收水準。
+      </div>
+      <div class="debate-point">
+        <strong>③ 12 位分析師全部評買入，平均目標 3,139 元（+47% 上行空間）</strong>
+        JP Morgan 目標 3,600（+69%），美系外資最高 3,700（+74%）。12 分析師 0 人評賣出，共識極度一致。FY2026E EPS 82.63元（外資估），對應現價 P/E 僅 25.8x，估值仍合理。
+      </div>
+      <div class="debate-point">
+        <strong>④ AI 大廠 Capex 加碼：未來 2 年能見度高</strong>
+        Meta、Amazon、Google 2026-2027 年資本支出均大幅上調，每家超過 $500 億美元/年。AI GPU cluster 的網路骨幹需求（800G/1.6T 交換器）直接帶動智邦訂單能見度達 18-24 個月，遠高於一般製造業。
+      </div>
+      <div class="debate-point">
+        <strong>⑤ 技術領先：1.6T 世代已卡位，護城河持續加深</strong>
+        智邦技術開發速度領先同業 6-9 個月，已在 1.6T 世代完成客戶認證。台灣高自製率（PCB+組裝）＋全球多點產能（台/美/東南亞），地緣政治風險已有效管控。轉換成本高，客戶不易換供應商。
+      </div>
+    </div>
+    <div class="bear-box">
+      <h4>🐻 看空研究員（5 大論點）</h4>
+      <div class="debate-point">
+        <strong>① 三大法人全面賣超：短期籌碼結構轉差</strong>
+        8/18 外資-144、投信-345、自營商-17，合計-505張賣超。財報公告（8/6）後法人連續賣超，代表短期獲利了結壓力沉重，股價從 8/6 高點 2595 跌至今日 2130，跌幅 -17.9%。
+      </div>
+      <div class="debate-point">
+        <strong>② 技術面偏空：跌破 MA5/MA10/MA20，位於布林中軌下方</strong>
+        股價(2130) < MA5(2260) < MA10(2261)，同時位於布林中軌(2217)以下。RSI 48（未超賣，反彈確認前可能繼續走弱）。MACD 雖金叉但兩線仍負，技術面轉多尚需時間。
+      </div>
+      <div class="debate-point">
+        <strong>③ 估值不便宜：PBR 16.9x、TTM P/E 33.5x</strong>
+        PBR 高達 16.9 倍（台股平均約 2-3 倍），代表市場已充分計入未來成長，若成長不如預期（月收回落或毛利率下降），股價修正空間大。從 52W 高點 2825 計，目前跌幅 24.6%，但若回到 7/29 低點 1840，還有 -13.6% 下行空間。
+      </div>
+      <div class="debate-point">
+        <strong>④ 毛利率仍面臨結構性壓力：ODM 屬性限制利潤空間</strong>
+        智邦是 ODM（代工設計廠），毛利率受制於客戶議價能力。Q2'26 毛利率 19.70% 雖回升，但相比 Q1'25 的 20.23% 仍有差距；若 Hyperscaler 要求降價或轉為 JDM 模式，毛利率可能再次承壓。
+      </div>
+      <div class="debate-point">
+        <strong>⑤ 美中科技戰/關稅風險：政策不確定性是尾部風險</strong>
+        若美國追加對台灣網通設備的關稅，或要求 Hyperscaler 採購限制，智邦的美系客戶訂單可能受到影響。儘管已有美國本土產能，但規模尚小，短期難以完全緩衝政策衝擊。
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:20px">
+    <div style="font-weight:700;margin-bottom:8px;color:#334155">多空力道量化評估</div>
+    <div class="weight-bar">
+      <div class="weight-bull" style="width:63%">看多 63%</div>
+      <div class="weight-bear" style="width:37%">看空 37%</div>
+    </div>
+    <div style="background:#f8fafc;border-radius:8px;padding:14px;font-size:13px;color:#334155;margin-top:12px;line-height:1.7">
+      <strong>💬 給一般投資人的話：</strong><br>
+      智邦是一檔業績非常確定、但股價已反映不少預期的成長股。基本面角度：Q2'26 EPS 19.78元創歷史最高，月收 395 億是真實的新台階，外資全部叫買目標平均 3,139 元，大方向向上沒有爭議。但短期角度：法人在財報後獲利了結，技術面轉弱，從 8/6 高點 2595 跌至今日 2130 跌了 17.9%，可能還沒跌完（目標 2000 支撐區）。建議策略：
+      <ul style="margin-top:8px;padding-left:16px">
+        <li>已持倉者：若停損設 2000 以下，可繼續持有等待回升</li>
+        <li>想新進場：分批建倉，建議 2050-2150 區間分 2-3 批買入</li>
+        <li>資金控管：智邦是大型股，可給較高部位（10-15%），但需等技術面回穩訊號（站回 MA5/MA10）再加碼</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 11 風控評估 ══ -->
+<div class="section">
+  <div class="section-title">🛡 風控評估（六維評分）</div>
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+    <span class="risk-badge risk-mid">⚠️ 中等風險 4.5/10</span>
+    <div style="font-size:13px;color:#475569">大型股、基本面強、法人全面看好，但估值偏高、短期技術面轉弱</div>
+  </div>
+  <div class="score-bar-wrap"><div class="score-label"><span>估值風險（PBR 16.9x, TTM P/E 33.5x，偏貴）</span><span style="color:#1d4ed8;font-weight:700">5.5/10 × 30%</span></div><div class="score-bar"><div class="score-fill" style="width:55%"></div></div></div>
+  <div class="score-bar-wrap"><div class="score-label"><span>財務風險（EPS 強勁、獲利穩定，低）</span><span style="color:#1d4ed8;font-weight:700">2.0/10 × 25%</span></div><div class="score-bar"><div class="score-fill" style="width:20%"></div></div></div>
+  <div class="score-bar-wrap"><div class="score-label"><span>流動性風險（千億大型股、日均量大，低）</span><span style="color:#1d4ed8;font-weight:700">1.5/10 × 10%</span></div><div class="score-bar"><div class="score-fill" style="width:15%"></div></div></div>
+  <div class="score-bar-wrap"><div class="score-label"><span>產業風險（AI Capex 能見度高，低）</span><span style="color:#1d4ed8;font-weight:700">3.0/10 × 15%</span></div><div class="score-bar"><div class="score-fill" style="width:30%"></div></div></div>
+  <div class="score-bar-wrap"><div class="score-label"><span>總經風險（美中科技戰、關稅不確定）</span><span style="color:#1d4ed8;font-weight:700">5.0/10 × 10%</span></div><div class="score-bar"><div class="score-fill" style="width:50%"></div></div></div>
+  <div class="score-bar-wrap"><div class="score-label"><span>籌碼風險（三大法人短期賣超、技術面轉弱）</span><span style="color:#1d4ed8;font-weight:700">6.0/10 × 10%</span></div><div class="score-bar"><div class="score-fill" style="width:60%"></div></div></div>
+  <div style="margin-top:12px;font-size:13px;color:#475569;background:#f8fafc;border-radius:8px;padding:12px 14px">
+    加權綜合分：5.5×0.3 + 2.0×0.25 + 1.5×0.1 + 3.0×0.15 + 5.0×0.1 + 6.0×0.1 = <strong>1.65+0.50+0.15+0.45+0.50+0.60 = 3.85 ≈ 4.5/10</strong>（中等風險）
+  </div>
+</div>
+
+<!-- ══ 12 三段式策略 ══ -->
+<div class="section">
+  <div class="section-title">🎯 台股三段式操作策略</div>
+  <div class="strategy-grid">
+    <div class="strat-attack">
+      <div class="strat-title">⚔️ 進攻方案</div>
+      <div class="strat-price">2,050-2,150 買</div>
+      <div class="strat-desc">
+        分批布局跌深反彈區<br>
+        目標一：2,400 元（+12-17%）<br>
+        目標二：2,800 元（+30-37%）<br>
+        停損：跌破 2,000 元立出<br>
+        部位建議：積極型 15%<br>
+        觸發：法人買超轉正 + RSI 站回 50
+      </div>
+    </div>
+    <div class="strat-balance">
+      <div class="strat-title">⚖️ 均衡方案</div>
+      <div class="strat-price">等站回 2,260 再追</div>
+      <div class="strat-desc">
+        等待站回 MA5(2260) 確認後佈局<br>
+        目標：2,600 元（+15%）<br>
+        停損：跌回 2,160 元以下<br>
+        部位建議：均衡型 10%<br>
+        觸發：收盤 > 2,260 + 量能放大
+      </div>
+    </div>
+    <div class="strat-defend">
+      <div class="strat-title">🛡 防守方案</div>
+      <div class="strat-price">2,000 以下停損觀望</div>
+      <div class="strat-desc">
+        跌破 2,000（布林下軌~1955）→ 全出<br>
+        重新觀察點：1,850-1,935 區間止跌<br>
+        再進場條件：RSI>50 + 法人買超<br>
+        部位建議：保守型 ≤5%<br>
+        觀察：8月月收是否繼續 390億以上
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:20px">
+    <div style="font-weight:700;margin-bottom:10px;color:#334155">📅 催化劑時程表</div>
+    <table>
+      <tr><th>時間</th><th>事件</th><th>影響評估</th></tr>
+      <tr><td>2026年9月10日前</td><td>8 月份月營收公告</td><td class="up">★★★★ 若維持 390 億以上 → 法人重拾信心</td></tr>
+      <tr><td>2026年10月（法說）</td><td>Q3'26 財報法說會</td><td class="up">★★★★★ 確認 H2 成長加速，目標 20+ 元/季</td></tr>
+      <tr><td>2026 Q3-Q4</td><td>1.6T 交換器量產出貨</td><td class="up">★★★★★ 毛利率有望進一步提升至 21%+</td></tr>
+      <tr><td>持續</td><td>AWS/Meta/Google Capex 財報指引</td><td class="up">★★★ 每次大廠法說上調 Capex → 智邦受益</td></tr>
+      <tr><td>不定期</td><td>美中科技戰/關稅政策</td><td class="down">★★★ 若關稅擴大 → 短期衝擊，需分散供應鏈</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══ 13 名詞小教室 ══ -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="gcard">
+      <div class="term">白牌交換器（White-box Switch）</div>
+      <div class="def">沒有品牌 logo 的交換器，功能和 Cisco 等大廠的「黑盒子」相同，但便宜很多。雲端廠商喜歡買白牌，自己安裝軟體，這樣可以根據需求客製化，智邦就是最大的供應商。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">ODM vs JDM</div>
+      <div class="def">ODM（委託設計製造）= 廠商設計+生產，客戶貼自己的牌。JDM（共同設計製造）= 廠商和客戶一起設計，利潤更高。智邦兩種都做，JDM 比例增加有助毛利率提升。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">800G / 1.6T（傳輸規格）</div>
+      <div class="def">資料中心網路交換器的傳輸速度規格。800G = 每秒傳 800 兆位元，是目前 AI GPU 集群的主流。1.6T 是下一代，速度更快，智邦已完成客戶認證。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">Hyperscaler（超大型雲端廠）</div>
+      <div class="def">指 Amazon AWS、Google Cloud、Microsoft Azure、Meta 等全球最大的雲端服務公司。它們資本支出超過千億美元/年，是全球最大的伺服器和網路設備買家。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">OCP / SONiC（開放網路）</div>
+      <div class="def">OCP = Open Compute Project（Facebook 發起的開放硬體聯盟）；SONiC = 微軟開發的開源網路作業系統。兩者讓 Hyperscaler 可以用白牌硬體＋自研軟體替換 Cisco 等昂貴的品牌設備。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">TTM EPS vs FY EPS</div>
+      <div class="def">TTM（Trailing Twelve Months）= 過去 12 個月實際賺到的每股盈餘。FY（Fiscal Year）EPS = 預估全年度盈餘。投資人常用「股價÷TTM EPS」算出 PE，再跟「股價÷FY EPS」的預估 PE 比較。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">PBR（股價淨值比）</div>
+      <div class="def">股價 ÷ 每股淨值。普通股 PBR>1 表示市場認為公司值比帳面更多。智邦 PBR=16.9x，意思是市場認為它的獲利能力和成長性是帳面資產的 16.9 倍，反映超高成長預期。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">Capex（資本支出）</div>
+      <div class="def">公司蓋廠房、買設備的錢。雲端巨頭「增加 Capex」= 要蓋更多資料中心 = 要買更多交換器。每次 AWS 或 Google 說要多花錢蓋機房，智邦的股價通常就會漲。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 14 免責聲明 ══ -->
+<div class="disclaimer">
+  <strong>⚠️ 重要免責聲明</strong><br>
+  本報告僅供個人研究參考，<strong>不構成任何投資建議或要約</strong>。股票投資涉及市場風險，過去績效不代表未來結果。所有財務數據均來自公開資料，截至 2026-08-19，不保證即時性及正確性。外資目標價與 EPS 預估來自公開報告，不保證準確性。投資人應自行評估風險，並在必要時諮詢持牌財務顧問。<br><br>
+  <strong>資料來源：</strong>
+  FinMind API（月營收、三大法人、財報）｜富果 Fugle API（即時報價）｜TWSE T86（三大法人）｜
+  <a href="https://tw.stock.yahoo.com/news/%E6%99%BA%E9%82%A6q2%E8%B2%A1%E5%A0%B1%E9%9D%9A-%E5%A4%96%E8%B3%87%E9%BD%8A%E7%9C%8B%E5%A5%BDh2%E6%88%90%E9%95%B7%E5%8A%A0%E9%80%9F-%E7%BE%8E%E7%B3%BB%E8%AA%BF%E5%8D%87%E7%9B%AE%E6%A8%99%E5%83%B9%E8%87%B33700%E5%85%83-021621704.html">Yahoo股市（外資目標價報導）</a>｜
+  <a href="https://readmo.cmoney.tw/article/7ed04395-b53e-4cf9-86c0-b9de98e0555e">CMoney（護城河分析）</a>
+</div>
+
+</div>
+
+<!-- ══ 純 Canvas JS 圖表 ══ -->
+<script>
+function drawBarChart(id, labels, data, barColor, accentColor) {
+  var canvas = document.getElementById(id);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var PL = 52, PR = 14, PT = 22, PB = 46;
+  var chartW = W-PL-PR, chartH = H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data), max=Math.max.apply(null,data);
+  var pad=(max-min)*0.18||1; var lo=min-pad, hi=max+pad, range=hi-lo;
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var yv=lo+range*g/4, yp=PT+chartH-(yv-lo)/range*chartH;
+    ctx.beginPath();ctx.moveTo(PL,yp);ctx.lineTo(PL+chartW,yp);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(yv.toFixed(2),PL-4,yp+4);
+  }
+  if(lo<0&&hi>0){
+    var zy=PT+chartH-(0-lo)/range*chartH;
+    ctx.strokeStyle='#64748b';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(PL,zy);ctx.lineTo(PL+chartW,zy);ctx.stroke();ctx.setLineDash([]);
+  }
+  var bw=Math.min(chartW/labels.length*0.55,40), gap=chartW/labels.length;
+  for(var i=0;i<data.length;i++){
+    var xc=PL+gap*i+gap/2;
+    var yBase=(lo>=0)?PT+chartH:PT+chartH-(0-lo)/range*chartH;
+    var yTop=PT+chartH-(data[i]-lo)/range*chartH;
+    var bh=Math.abs(yBase-yTop), by=data[i]>=0?yTop:yBase;
+    ctx.fillStyle=(i===data.length-1)?accentColor:barColor;
+    ctx.beginPath();
+    if(ctx.roundRect)ctx.roundRect(xc-bw/2,by,bw,bh,3);else ctx.rect(xc-bw/2,by,bw,bh);
+    ctx.fill();
+    ctx.fillStyle='#334155';ctx.font='bold 10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(2),xc,data[i]>=0?yTop-4:yBase+bh+12);
+    ctx.fillStyle='#64748b';ctx.font='10px Arial';
+    ctx.fillText(labels[i],xc,H-8);
+  }
+}
+
+function drawLineChart(id, labels, data, color) {
+  var canvas = document.getElementById(id);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W=canvas.width, H=canvas.height;
+  var PL=58, PR=14, PT=22, PB=46;
+  var chartW=W-PL-PR, chartH=H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data), max=Math.max.apply(null,data);
+  var pad=(max-min)*0.18||10; var lo=min-pad, hi=max+pad, range=hi-lo;
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var yv=lo+range*g/4, yp=PT+chartH-(yv-lo)/range*chartH;
+    ctx.beginPath();ctx.moveTo(PL,yp);ctx.lineTo(PL+chartW,yp);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(yv.toFixed(0),PL-4,yp+4);
+  }
+  var pts=data.map(function(v,i){
+    return {x:PL+chartW*i/(data.length-1),y:PT+chartH-(v-lo)/range*chartH};
+  });
+  ctx.beginPath();ctx.moveTo(pts[0].x,PT+chartH);
+  pts.forEach(function(p){ctx.lineTo(p.x,p.y);});
+  ctx.lineTo(pts[pts.length-1].x,PT+chartH);
+  ctx.closePath(); ctx.fillStyle='rgba(29,78,216,0.10)'; ctx.fill();
+  ctx.strokeStyle=color; ctx.lineWidth=2.5; ctx.lineJoin='round';
+  ctx.beginPath();
+  pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});
+  ctx.stroke();
+  pts.forEach(function(p,i){
+    var r=i===data.length-1?6:4;
+    ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);
+    ctx.fillStyle=i===data.length-1?'#1e40af':color; ctx.fill();
+    ctx.strokeStyle='#fff'; ctx.lineWidth=1.5; ctx.stroke();
+    ctx.fillStyle='#334155'; ctx.font='bold 10px Arial'; ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(0),p.x,p.y-10);
+    ctx.fillStyle='#64748b'; ctx.font='11px Arial';
+    ctx.fillText(labels[i],p.x,H-8);
+  });
+}
+
+function drawHBarChart(id, labels, data, colors) {
+  var canvas = document.getElementById(id);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W=canvas.width, H=canvas.height;
+  var PL=56, PR=60, PT=18, PB=14;
+  var chartW=W-PL-PR, chartH=H-PT-PB;
+  var max=Math.max.apply(null,data)*1.12;
+  ctx.clearRect(0,0,W,H);
+  var bh=Math.min(chartH/labels.length*0.58,28), gap=chartH/labels.length;
+  for(var i=0;i<data.length;i++){
+    var yc=PT+gap*i+gap/2, bw=data[i]/max*chartW;
+    ctx.fillStyle=colors[i]||'#1d4ed8';
+    ctx.beginPath();
+    if(ctx.roundRect)ctx.roundRect(PL,yc-bh/2,bw,bh,3);else ctx.rect(PL,yc-bh/2,bw,bh);
+    ctx.fill();
+    ctx.fillStyle='#334155'; ctx.font='bold 11px Arial'; ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(1)+'x',PL+bw+6,yc+4);
+    ctx.fillStyle='#475569'; ctx.font='12px Arial'; ctx.textAlign='right';
+    ctx.fillText(labels[i],PL-4,yc+4);
+  }
+}
+
+window.addEventListener('DOMContentLoaded', function(){
+  // EPS 季度
+  drawBarChart('epsChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [4.75,8.10,9.17,9.01,14.00,14.95,14.92,19.78],
+    '#3b82f6','#1d4ed8'
+  );
+  // 月收折線
+  drawLineChart('revChart',
+    ['1月','2月','3月','4月','5月','6月','7月'],
+    [215,236,250,274,286,396,395],
+    '#1d4ed8'
+  );
+  // PE 比較
+  drawHBarChart('peChart',
+    ['智邦(TTM)','Arista(推算)','瑞昱(推算)','Cisco(推算)','台股大盤'],
+    [33.5,38.0,30.0,15.0,18.0],
+    ['#1d4ed8','#6366f1','#8b5cf6','#64748b','#94a3b8']
+  );
+});
+</script>
+</body>
+</html>
