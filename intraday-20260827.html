@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股盤中快報 2026/08/27｜接近布林上軌 46,670</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d1117; color: #e6edf3; font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 1.5; }
+  .header { background: linear-gradient(135deg, #0d1f0d 0%, #0d1117 100%); border-bottom: 2px solid #3fb950; padding: 18px 24px; }
+  .header h1 { font-size: 22px; font-weight: 700; }
+  .header .sub { font-size: 12px; color: #8b949e; margin-top: 4px; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-right: 6px; }
+  .badge-ok { background: #0f2d1a; color: #3fb950; border: 1px solid #3fb950; }
+  .badge-warn { background: #2d2008; color: #e3b341; border: 1px solid #e3b341; }
+  .badge-info { background: #1a2540; color: #79c0ff; border: 1px solid #388bfd; }
+  .badge-danger { background: #3d1a1a; color: #f85149; border: 1px solid #f85149; }
+  .ticker-bar { background: #161b22; border-bottom: 1px solid #21262d; padding: 10px 24px; display: flex; gap: 20px; flex-wrap: wrap; }
+  .ticker-item { display: flex; flex-direction: column; align-items: center; min-width: 85px; }
+  .ticker-label { font-size: 10px; color: #8b949e; }
+  .ticker-val { font-size: 15px; font-weight: 700; }
+  .up { color: #3fb950; } .dn { color: #f85149; } .neu { color: #e6edf3; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 20px 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  @media (max-width: 900px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  .card { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .card-title { font-size: 13px; font-weight: 700; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #21262d; }
+  .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #21262d; }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-label { color: #8b949e; font-size: 13px; }
+  .stat-val { font-weight: 700; font-size: 13px; }
+  .alert-box { border-radius: 8px; padding: 14px 18px; margin-bottom: 16px; }
+  .alert-green { background: #0f2d1a; border: 1px solid #3fb950; }
+  .alert-yellow { background: #2d2008; border: 1px solid #e3b341; }
+  .alert-blue { background: #0d1f38; border: 1px solid #388bfd; }
+  .alert-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+  .section-title { font-size: 16px; font-weight: 700; color: #e6edf3; margin: 24px 0 12px; padding-left: 10px; border-left: 4px solid #3fb950; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #0d1117; color: #8b949e; font-weight: 600; padding: 8px 10px; text-align: left; border-bottom: 1px solid #21262d; }
+  td { padding: 7px 10px; border-bottom: 1px solid #21262d; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+  .highlight { color: #e3b341; font-weight: 700; }
+  .red { color: #f85149; font-weight: 700; }
+  .green { color: #3fb950; font-weight: 700; }
+  .blue { color: #79c0ff; font-weight: 700; }
+  .kline-table tr.today td { background: #0f2d1a; }
+  .kline-table tr.key td { background: #2d2008; }
+  .chart-bar-wrap { padding: 8px 0; }
+  .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 12px; }
+  .bar-label { width: 80px; color: #8b949e; text-align: right; flex-shrink: 0; }
+  .bar-bg { flex: 1; background: #21262d; border-radius: 3px; height: 14px; position: relative; }
+  .bar-fill { height: 100%; border-radius: 3px; }
+  .bar-val { width: 70px; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+  .timeline-item { display: flex; gap: 12px; margin-bottom: 10px; }
+  .tl-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .tl-red { background: #f85149; } .tl-yellow { background: #e3b341; } .tl-green { background: #3fb950; } .tl-blue { background: #388bfd; }
+  .tl-content { font-size: 13px; color: #c9d1d9; }
+  .tl-date { font-size: 11px; color: #8b949e; }
+  .footer { background: #161b22; border-top: 1px solid #21262d; padding: 16px 24px; margin-top: 32px; }
+  .footer p { font-size: 11px; color: #6e7681; line-height: 1.6; }
+  .big-stat { text-align: center; padding: 18px; }
+  .big-stat .num { font-size: 36px; font-weight: 900; }
+  .big-stat .sub-num { font-size: 16px; margin-top: 4px; }
+  .big-stat .note { font-size: 11px; color: #8b949e; margin-top: 6px; }
+  .pressure-block { background: #0d1117; border-radius: 8px; padding: 12px; margin-bottom: 8px; }
+  .pressure-label { font-size: 11px; color: #8b949e; margin-bottom: 4px; }
+  .pressure-val { font-size: 18px; font-weight: 800; }
+  .gauge-row { display: flex; gap: 12px; margin-bottom: 12px; }
+  .gauge-item { flex: 1; background: #0d1117; border-radius: 8px; padding: 12px; text-align: center; }
+  .gauge-val { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+  .gauge-label { font-size: 11px; color: #8b949e; }
+  .recovery-box { background: linear-gradient(135deg, #0f2d1a, #0d1117); border: 1px solid #3fb950; border-radius: 10px; padding: 18px; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🟢 台股盤中快報 — 鮑威爾反彈週，接近布林上軌</h1>
+  <div class="sub">2026年08月27日（週四）｜資料時間：11:28｜TWII 盤中 +0.95%，反彈浪延續</div>
+  <div style="margin-top:10px;">
+    <span class="badge badge-ok">大盤偏多 ▲</span>
+    <span class="badge badge-ok">+433（+0.95%）</span>
+    <span class="badge badge-warn">接近布林上軌 46,670</span>
+    <span class="badge badge-warn">縮量上攻 留意反轉</span>
+    <span class="badge badge-info">本週三連漲</span>
+  </div>
+</div>
+
+<div class="ticker-bar">
+  <div class="ticker-item">
+    <span class="ticker-label">TWII 盤中</span>
+    <span class="ticker-val up">46,266</span>
+    <span class="ticker-label up">+434（+0.95%）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">今日開盤</span>
+    <span class="ticker-val neu">45,890</span>
+    <span class="ticker-label">今日高點：46,401</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">08/19 低點</span>
+    <span class="ticker-val dn">44,308</span>
+    <span class="ticker-label up">+1,958（+4.4%反彈）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">MA20（20日均）</span>
+    <span class="ticker-val up">44,929</span>
+    <span class="ticker-label up">站上 +1,337點</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">布林上軌 ⚠️</span>
+    <span class="ticker-val highlight">46,670</span>
+    <span class="ticker-label">距離僅 404點</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">RSI（14日）</span>
+    <span class="ticker-val up">64.09</span>
+    <span class="ticker-label">多方強勢（偏高）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">5日均量</span>
+    <span class="ticker-val dn">311.7萬張</span>
+    <span class="ticker-label dn">縮量（前10日均395萬）</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 核心情況 -->
+<div class="recovery-box">
+  <div class="alert-title" style="color:#3fb950;">✅ 08/19-08/27：費半崩跌後完整反彈路線圖</div>
+  <p style="font-size:13px;color:#c9d1d9;line-height:1.8;">
+    08/19 費半-4.98%重擊台股，TWII一度跌至 <span class="red">44,308</span> 低點（-763，-1.69%），但並未跌破 08/03 後的季線支撐 <span class="highlight">44,794</span>；加上台幣升值至31.97護盤外資成本，投信強力承接，當日收 44,719。<br>
+    接下來 6 個交易日連續反彈：08/19→08/27 大盤回升 <span class="green">+1,958點（+4.4%）</span>，關鍵轉折點為 <strong>08/21 鮑威爾 Jackson Hole 演講</strong>明確暗示 9月可能降息，引發全球科技股急速回補。<br>
+    今日（08/27）盤中高點 46,401，距布林上軌 46,670 僅剩 <span class="highlight">269點</span>，技術面需留意短線過熱。
+  </p>
+</div>
+
+<!-- 關鍵技術水位 -->
+<div class="section-title">📊 盤中技術面儀表板</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">加權指數技術指標（11:28）</div>
+    <div class="gauge-row">
+      <div class="gauge-item">
+        <div class="gauge-val up">46,266</div>
+        <div class="gauge-label">目前點位</div>
+      </div>
+      <div class="gauge-item">
+        <div class="gauge-val up">+434</div>
+        <div class="gauge-label">漲跌點數（+0.95%）</div>
+      </div>
+      <div class="gauge-item">
+        <div class="gauge-val up">64.09</div>
+        <div class="gauge-label">RSI（偏多）</div>
+      </div>
+    </div>
+    <div class="stat-row"><span class="stat-label">布林上軌（壓力）</span><span class="stat-val highlight">46,670（剩 +404點）</span></div>
+    <div class="stat-row"><span class="stat-label">52週高（終極壓力）</span><span class="stat-val dn">48,218（距 +4.2%）</span></div>
+    <div class="stat-row"><span class="stat-label">MA5（5日均）</span><span class="stat-val up">45,451（已站上，偏多）</span></div>
+    <div class="stat-row"><span class="stat-label">MA10（10日均）</span><span class="stat-val up">45,388（已站上，偏多）</span></div>
+    <div class="stat-row"><span class="stat-label">MA20（支撐）</span><span class="stat-val up">44,929（高達 +1,337點保護）</span></div>
+    <div class="stat-row"><span class="stat-label">布林中軌</span><span class="stat-val up">44,929</span></div>
+    <div class="stat-row"><span class="stat-label">布林下軌（強支撐）</span><span class="stat-val up">43,187</span></div>
+    <div class="stat-row"><span class="stat-label">今日高點</span><span class="stat-val up">46,401（極接近布林上軌）</span></div>
+    <div class="stat-row"><span class="stat-label">今日低點</span><span class="stat-val">45,890（=開盤，未回測）</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">壓力/支撐層次</div>
+    <div class="pressure-block" style="border:1px solid #f85149;">
+      <div class="pressure-label" style="color:#f85149;">🔴 上方壓力一</div>
+      <div class="pressure-val highlight">46,670</div>
+      <div style="font-size:11px;color:#8b949e;">布林通道上軌（今日高點46,401已觸碰邊緣）</div>
+    </div>
+    <div class="pressure-block" style="border:1px solid #f85149;">
+      <div class="pressure-label" style="color:#f85149;">🔴 上方壓力二</div>
+      <div class="pressure-val highlight">46,500</div>
+      <div style="font-size:11px;color:#8b949e;">整數關卡 + 08/13-14高點密集區（46,021-46,402）</div>
+    </div>
+    <div class="pressure-block" style="border:1px solid #3fb950;">
+      <div class="pressure-label" style="color:#3fb950;">🟢 下方支撐一</div>
+      <div class="pressure-val up">45,832</div>
+      <div style="font-size:11px;color:#8b949e;">昨日（08/26）收盤，近期重要整理平台</div>
+    </div>
+    <div class="pressure-block" style="border:1px solid #3fb950;">
+      <div class="pressure-label" style="color:#3fb950;">🟢 下方支撐二</div>
+      <div class="pressure-val up">45,224</div>
+      <div style="font-size:11px;color:#8b949e;">08/21（鮑威爾演講日）收盤，強力支撐</div>
+    </div>
+    <div class="pressure-block" style="border:1px solid #3fb950;">
+      <div class="pressure-label" style="color:#3fb950;">🟢 下方支撐三（強力）</div>
+      <div class="pressure-val up">44,929</div>
+      <div style="font-size:11px;color:#8b949e;">MA20 = 布林中軌，下跌必守</div>
+    </div>
+  </div>
+</div>
+
+<!-- 近期K線回顧 -->
+<div class="section-title">📅 近期K線 — 費半崩跌與反彈全記錄</div>
+<div class="card">
+  <div class="table-wrap">
+    <table class="kline-table">
+      <tr>
+        <th>日期</th><th>收盤</th><th>漲跌點</th><th>漲跌%</th><th>成交量（萬張）</th><th>關鍵事件</th>
+      </tr>
+      <tr><td>08/13</td><td class="up">46,021</td><td class="up">+209</td><td class="up">+0.46%</td><td>557.1</td><td>高點區：近期高位盤整</td></tr>
+      <tr><td>08/14</td><td class="dn">45,811</td><td class="dn">-210</td><td class="dn">-0.46%</td><td>581.0</td><td>量大收黑，高位警示</td></tr>
+      <tr><td>08/17</td><td class="up">45,857</td><td class="up">+46</td><td class="up">+0.10%</td><td>510.0</td><td>震盪整理</td></tr>
+      <tr class="key"><td>08/18</td><td class="dn">45,308</td><td class="dn">-549</td><td class="dn">-1.19%</td><td>457.5</td><td>⚠️ 費半昨夜-4.98%前夕，提前殺跌</td></tr>
+      <tr class="key"><td>08/19</td><td class="dn">44,719</td><td class="dn">-589</td><td class="dn">-1.30%</td><td>429.1</td><td>🔴 費半-4.98%+台積電ADR-4.07%衝擊，低點44,308；季線44,794守住</td></tr>
+      <tr><td>08/20</td><td class="up">44,933</td><td class="up">+214</td><td class="up">+0.48%</td><td>417.0</td><td>止穩反彈，縮量（417萬張）</td></tr>
+      <tr class="key"><td>08/21</td><td class="up">45,224</td><td class="up">+291</td><td class="up">+0.65%</td><td>378.0</td><td>🟢 <strong>鮑威爾Jackson Hole暗示9月降息</strong>，全球科技急彈</td></tr>
+      <tr><td>08/24</td><td class="dn">44,762</td><td class="dn">-462</td><td class="dn">-1.02%</td><td>385.4</td><td>週一回測，縮量整理（正常拉回）</td></tr>
+      <tr><td>08/25</td><td class="up">45,169</td><td class="up">+407</td><td class="up">+0.91%</td><td>392.6</td><td>量縮但收高，反彈延續</td></tr>
+      <tr><td>08/26</td><td class="up">45,832</td><td class="up">+663</td><td class="up">+1.46%</td><td>402.7</td><td>🟢 三連漲加速，突破45,800；量仍偏低</td></tr>
+      <tr class="today"><td><strong>08/27今日</strong></td><td class="up"><strong>46,266</strong></td><td class="up"><strong>+434</strong></td><td class="up"><strong>+0.95%</strong></td><td>盤中</td><td>🟢 接近布林上軌46,670；縮量上攻需留意</td></tr>
+    </table>
+  </div>
+  <div style="margin-top:8px;font-size:11px;color:#8b949e;">今（今）= 今日，key（黃）= 關鍵轉折日</div>
+</div>
+
+<!-- 量能分析 -->
+<div class="section-title">📉 量能警示：縮量上攻，多頭力道存疑</div>
+<div class="alert-box alert-yellow">
+  <div class="alert-title" style="color:#e3b341;">⚠️ 縮量上攻：漲了+1,958點，但成交量從557萬張縮至402萬張</div>
+  <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+    從08/14成交量高峰 <span class="highlight">581萬張</span>（見高跌），到今日盤中換算全日估計 <span class="red">~400萬張</span>，整個反彈段成交量持續萎縮。<br>
+    <strong>縮量上攻的兩種解讀：</strong><br>
+    ① 樂觀解讀：賣壓枯竭，少量買盤即可推高指數，代表多頭信心強，持股意願高<br>
+    ② 悲觀解讀：追漲意願薄弱，若反轉賣壓一出，支撐薄弱；接近布林上軌時尤需謹慎<br>
+    <strong>今日量能若無法放大至450萬張以上突破46,670，布林上軌壓力大概率使大盤出現短線整理。</strong>
+  </p>
+</div>
+
+<!-- 量能視覺化 -->
+<div class="card">
+  <div class="card-title">近期成交量趨勢（萬張）</div>
+  <div class="chart-bar-wrap">
+    <div class="bar-row">
+      <div class="bar-label">08/13</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:96%;background:#3fb950;"></div></div>
+      <div class="bar-val up">557萬</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">08/14</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:100%;background:#f85149;"></div></div>
+      <div class="bar-val dn">581萬 🔴高峰</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">08/17</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:87%;background:#3fb950;"></div></div>
+      <div class="bar-val up">510萬</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">08/18</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:78%;background:#f85149;"></div></div>
+      <div class="bar-val dn">457萬</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">08/19</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:73%;background:#f85149;"></div></div>
+      <div class="bar-val dn">429萬（低點日）</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">08/20</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:71%;background:#3fb950;"></div></div>
+      <div class="bar-val up">417萬</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">08/21</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:65%;background:#3fb950;"></div></div>
+      <div class="bar-val up">378萬（鮑威爾日）</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">08/24</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:66%;background:#f85149;"></div></div>
+      <div class="bar-val dn">385萬</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">08/25</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:67%;background:#3fb950;"></div></div>
+      <div class="bar-val up">393萬</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">08/26</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:69%;background:#3fb950;"></div></div>
+      <div class="bar-val up">403萬</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label" style="color:#3fb950;font-weight:700;">08/27今日</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:67%;background:#79c0ff;"></div></div>
+      <div class="bar-val blue">盤中估~390萬</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:#8b949e;margin-top:8px;">藍色=今日盤中；明顯縮量趨勢（8/14峰值581→8/27約390萬張）</div>
+</div>
+
+<!-- 背景事件：鮑威爾Jackson Hole -->
+<div class="section-title">🎙️ 關鍵催化劑：08/21 鮑威爾 Jackson Hole 演講</div>
+<div class="alert-box alert-blue">
+  <div class="alert-title" style="color:#79c0ff;">08/21 Jackson Hole 年會：鮑威爾暗示9月降息，全球反彈啟動</div>
+  <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+    鮑威爾在 Jackson Hole 演講中暗示「通膨回落進展良好，政策調整時機可能已到」，市場解讀為 <strong>9月18日 FOMC 降息25bp 機率大幅攀升</strong>。<br>
+    演講後：NASDAQ 急彈，費半從 08/19 低點強力反彈，台積電ADR回升，台股隨之補漲。<br>
+    <strong>盤中觀察：</strong>今日大盤繼續反彈，但鮑威爾催化劑已充分消化；若後續無新利多（如9月降息確認、AI訂單數據），大盤進入布林上軌壓力後可能需要整理。<br>
+    <strong>下一個關鍵事件：9月18日 FOMC 會議（降息25bp是否落地）。</strong>
+  </p>
+</div>
+
+<!-- 盤中研判 -->
+<div class="section-title">⚖️ 盤中研判：今日尾盤焦點</div>
+<div class="grid-2">
+  <div class="card" style="border-color:#3fb950;">
+    <div class="card-title" style="color:#3fb950;">🐂 短線多頭續攻依據</div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-green"></div>
+      <div class="tl-content">鮑威爾降息預期確立，全球科技股重評估，台股反映中<div class="tl-date">8/21演講後台股連漲3日（08/21→08/27，+1,300點）</div></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-green"></div>
+      <div class="tl-content">MA5（45,451）、MA10（45,388）、MA20（44,929）全部站上，均線多頭排列<div class="tl-date">技術面短中期偏多</div></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-green"></div>
+      <div class="tl-content">台幣仍在31.97附近強勢（美元指數DXY破100），外資持台股成本低<div class="tl-date">外資回流台股意願提升</div></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-green"></div>
+      <div class="tl-content">RSI 64（多方強勢，尚未超買70），仍有向上空間<div class="tl-date">非過熱，技術不排斥繼續上攻</div></div>
+    </div>
+  </div>
+  <div class="card" style="border-color:#e3b341;">
+    <div class="card-title" style="color:#e3b341;">⚠️ 短線風險：布林上軌壓力</div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-yellow"></div>
+      <div class="tl-content">布林上軌 46,670，今日高點 46,401 已極接近（差-269點）<div class="tl-date">歷史上布林上軌附近常出現短線整理</div></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-yellow"></div>
+      <div class="tl-content">縮量上攻：成交量從581萬降至~390萬，多頭推升力道衰竭跡象<div class="tl-date">若量能無法放大，突破上軌困難</div></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-yellow"></div>
+      <div class="tl-content">鮑威爾利多充分消化，需要新催化劑（費半持續強、9月降息確認）<div class="tl-date">「Buy the rumor, sell the fact」風險</div></div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot tl-yellow"></div>
+      <div class="tl-content">美債10Y 仍在4.7%附近（需確認），油價$91維持，通膨疑慮未完全消除<div class="tl-date">科技股估值壓制因素未除</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 今日尾盤建議 -->
+<div class="section-title">🎯 今日尾盤操作建議</div>
+<div class="card">
+  <div class="card-title">核心判斷：看量決定方向</div>
+  <div class="stat-row">
+    <span class="stat-label">情境一：尾盤放量突破46,401（今日高點）</span>
+    <span class="stat-val up">🟢 多頭有效突破，46,670布林上軌可測試；加碼信號</span>
+  </div>
+  <div class="stat-row">
+    <span class="stat-label">情境二：量縮收在46,200-46,400整理</span>
+    <span class="stat-val highlight">🟡 正常鞏固，持多靜待；明日量能是關鍵</span>
+  </div>
+  <div class="stat-row">
+    <span class="stat-label">情境三：量縮跌回45,800-46,000</span>
+    <span class="stat-val dn">⚠️ 布林上軌反壓確認，短線整理；勿追空但可減倉</span>
+  </div>
+  <div class="stat-row">
+    <span class="stat-label">嚴格停損線</span>
+    <span class="stat-val dn">🔴 跌破45,224（08/21鮑威爾日收盤）→ 反彈結束訊號，需大幅減倉</span>
+  </div>
+  <div class="stat-row">
+    <span class="stat-label">不追漲建議</span>
+    <span class="stat-val">接近布林上軌不宜追漲新倉；等回測45,800-46,000再布局</span>
+  </div>
+</div>
+
+<!-- 個股觀察 -->
+<div class="section-title">🔍 盤中個股族群觀察</div>
+<div class="grid-3">
+  <div class="card">
+    <div class="card-title">台積電 2330</div>
+    <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+      08/19 ADR -4.07%，預估開在2,310-2,340；若大盤今日+0.95%，台積電應回補至 <span class="green">2,420-2,480</span> 範圍（8/19大跌已充分反映）。今日台積電走勢強弱決定大盤能否站穩46,200以上。<br>
+      <strong>關鍵觀察</strong>：是否站回2,450整數關卡
+    </p>
+  </div>
+  <div class="card">
+    <div class="card-title">航運（長榮/陽明）</div>
+    <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+      08/18外資大買長榮+15,066張、陽明+14,344張，航運本週相對抗跌。今日觀察：油價若持續$91，燃油成本稍漲，但對貨運影響有限（Capesize/Panamax費率走強）。<br>
+      <strong>關鍵觀察</strong>：長榮2603今日站穩與否
+    </p>
+  </div>
+  <div class="card">
+    <div class="card-title">漢翔（2634）防務題材</div>
+    <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+      08/18外資回補+14,816張，防務題材與科技無關，本週應維持相對強勢。台灣國防預算增加趨勢支持長線布局。<br>
+      <strong>關鍵觀察</strong>：量能是否延續，外資是否繼續加碼
+    </p>
+  </div>
+</div>
+
+<!-- 未來關鍵事件 -->
+<div class="section-title">📅 未來關鍵事件日曆</div>
+<div class="card">
+  <div class="stat-row"><span class="stat-label">08/27 今日尾盤</span><span class="stat-val">布林上軌攻防；成交量是否放大至450萬張以上</span></div>
+  <div class="stat-row"><span class="stat-label">08/28（明日）</span><span class="stat-val">美國 PCE 通膨數據（Fed偏好的通膨指標）→ 決定9月降息確信度</span></div>
+  <div class="stat-row"><span class="stat-label">09/01 開始</span><span class="stat-val">台灣8月製造業PMI；各大台廠月營收（8月營收9/10前公布）</span></div>
+  <div class="stat-row"><span class="stat-label highlight">09/18 FOMC</span><span class="stat-val highlight">美聯儲會議 — 降息25bp是否落地？若降息確認 → 台股多頭延續</span></div>
+  <div class="stat-row"><span class="stat-label">持續追蹤</span><span class="stat-val">費半走勢（需站回12,500以上）；台積電ADR是否回到$430+；美債10Y是否降至4.5%以下</span></div>
+</div>
+
+</div>
+
+<div class="footer">
+  <p>
+    ⚠️ <strong>免責聲明：</strong>本報告由AI自動生成，僅供研究參考，不構成任何投資建議。數據來源：Yahoo Finance (yfinance) / FinMind，歷史K線截至2026-08-27 11:28。股市投資有風險，過去績效不代表未來結果。<br>
+    台灣加權指數（^TWII）盤中即時點位會持續變動，本報告截至11:28資料。
+  </p>
+</div>
+
+</body>
+</html>
