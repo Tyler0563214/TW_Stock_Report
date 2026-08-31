@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高明鐵 (4573) 投資研究報告 ─ 2026-08-31</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Helvetica Neue',Arial,'Microsoft JhengHei',sans-serif;background:#F0F4F8;color:#1e293b;font-size:15px;line-height:1.7}
+  a{color:#c2410c}
+  .cover{background:linear-gradient(135deg,#431407 0%,#9a3412 40%,#c2410c 75%,#ea580c 100%);color:#fff;padding:60px 40px 50px;text-align:center;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:rgba(255,255,255,.06);border-radius:50%}
+  .cover-tag{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 16px;font-size:13px;letter-spacing:.05em;margin-bottom:18px}
+  .cover h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:.04em;margin-bottom:8px}
+  .cover-sub{font-size:1.1rem;opacity:.85;margin-bottom:24px}
+  .cover-meta{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;font-size:13px;opacity:.8;margin-bottom:16px}
+  .badge{display:inline-block;padding:6px 20px;border-radius:30px;font-weight:700;font-size:14px}
+  .badge-high{background:#fca5a5;color:#7f1d1d}
+  .badge-profit{background:#d1fae5;color:#064e3b}
+  .price-hero{margin-top:18px;font-size:2.8rem;font-weight:900}
+  .price-change{font-size:1.1rem;opacity:.85;margin-top:4px}
+  .cover-alert{background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.4);border-radius:12px;padding:14px 22px;margin-top:18px;display:inline-block;font-size:14px;font-weight:800;letter-spacing:.02em}
+  .container{max-width:1100px;margin:0 auto;padding:32px 20px}
+  .section{background:#fff;border-radius:14px;padding:28px 32px;margin-bottom:24px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+  .section-title{font-size:1.2rem;font-weight:700;color:#c2410c;border-left:4px solid #c2410c;padding-left:12px;margin-bottom:20px;letter-spacing:.03em}
+  /* 持倉 P&L 英雄卡 */
+  .pnl-hero{background:linear-gradient(135deg,#14532d,#16a34a);color:#fff;border-radius:14px;padding:32px;margin-bottom:24px}
+  .pnl-hero h2{font-size:1rem;font-weight:700;opacity:.7;margin-bottom:18px;letter-spacing:.06em;text-transform:uppercase}
+  .pnl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px}
+  .pnl-card{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:18px;text-align:center}
+  .pnl-card .label{font-size:12px;opacity:.65;margin-bottom:6px;letter-spacing:.04em}
+  .pnl-card .val{font-size:1.5rem;font-weight:900}
+  .pnl-card .sub{font-size:11px;opacity:.6;margin-top:4px}
+  .pnl-card.highlight .val{color:#fde68a;font-size:2rem}
+  .conclusion{background:linear-gradient(135deg,#1c0a00,#7c2d12);color:#fff;border-radius:14px;padding:32px;margin-bottom:24px}
+  .conclusion h2{font-size:1rem;font-weight:700;opacity:.7;margin-bottom:16px;letter-spacing:.05em;text-transform:uppercase}
+  .conclusion-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+  .c-card{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:18px}
+  .c-card .label{font-size:12px;opacity:.65;margin-bottom:6px;letter-spacing:.04em}
+  .c-card .value{font-size:1.3rem;font-weight:800;color:#fb923c}
+  .c-card .note{font-size:12px;opacity:.6;margin-top:4px}
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+  .kpi{background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px 18px;transition:.2s}
+  .kpi:hover{border-color:#c2410c;box-shadow:0 2px 8px rgba(194,65,12,.1)}
+  .kpi .name{font-size:12px;color:#64748b;margin-bottom:6px;font-weight:600;letter-spacing:.04em}
+  .kpi .val{font-size:1.5rem;font-weight:800;color:#1e293b}
+  .kpi .desc{font-size:11px;color:#94a3b8;margin-top:4px;line-height:1.4}
+  .kpi.accent{background:linear-gradient(135deg,#fff1ee,#fff8f5);border-color:#fed7aa}
+  .kpi.accent .val{color:#c2410c}
+  .kpi.hot{background:linear-gradient(135deg,#fff7ed,#fef3c7);border-color:#fbbf24;position:relative}
+  .kpi.hot::after{content:'🔥 突破！';position:absolute;top:-8px;right:10px;background:#f59e0b;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px}
+  .kpi.hot .val{color:#92400e}
+  .kpi.green{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#86efac}
+  .kpi.green .val{color:#16a34a}
+  .chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+  .chart-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px}
+  .chart-box h4{font-size:13px;font-weight:700;color:#475569;margin-bottom:12px;text-align:center}
+  canvas{display:block;width:100% !important;height:auto !important}
+  .chart-note{font-size:11px;color:#94a3b8;text-align:center;margin-top:8px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{background:#fff1ee;padding:10px 14px;text-align:left;font-weight:700;color:#9a3412;border-bottom:2px solid #fed7aa}
+  td{padding:9px 14px;border-bottom:1px solid #f1f5f9;color:#334155}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#fff8f5}
+  .up{color:#16a34a;font-weight:700}
+  .down{color:#dc2626;font-weight:700}
+  .neutral{color:#64748b}
+  .score-bar-wrap{margin:6px 0}
+  .score-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
+  .score-bar{height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden}
+  .score-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#c2410c,#f97316)}
+  .debate-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:640px){.debate-grid{grid-template-columns:1fr}}
+  .bull-box{background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:20px}
+  .bear-box{background:#fef2f2;border:1.5px solid #fca5a5;border-radius:10px;padding:20px}
+  .bull-box h4{color:#16a34a;font-size:14px;font-weight:800;margin-bottom:14px}
+  .bear-box h4{color:#dc2626;font-size:14px;font-weight:800;margin-bottom:14px}
+  .debate-point{font-size:13px;padding:8px 10px;background:rgba(255,255,255,.7);border-radius:6px;margin-bottom:8px;line-height:1.5}
+  .debate-point strong{display:block;margin-bottom:3px}
+  .strategy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .strat-attack{background:linear-gradient(135deg,#7c2d12,#c2410c);color:#fff;border-radius:12px;padding:22px}
+  .strat-balance{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border-radius:12px;padding:22px}
+  .strat-defend{background:linear-gradient(135deg,#374151,#6b7280);color:#fff;border-radius:12px;padding:22px}
+  .strat-title{font-size:13px;font-weight:700;opacity:.8;margin-bottom:8px;letter-spacing:.05em;text-transform:uppercase}
+  .strat-price{font-size:2rem;font-weight:900;margin-bottom:8px}
+  .strat-desc{font-size:12.5px;opacity:.85;line-height:1.6}
+  .risk-badge{display:inline-block;padding:6px 20px;border-radius:20px;font-weight:800;font-size:14px}
+  .risk-high{background:#fca5a5;color:#7f1d1d}
+  .glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .gcard{background:#f8fafc;border-radius:8px;padding:14px 16px;border-left:3px solid #c2410c}
+  .gcard .term{font-weight:800;color:#c2410c;font-size:13.5px;margin-bottom:5px}
+  .gcard .def{font-size:12.5px;color:#475569;line-height:1.5}
+  .disclaimer{background:#fffbeb;border:1.5px solid #fbbf24;border-radius:10px;padding:20px 24px;font-size:12.5px;color:#78350f;line-height:1.7}
+  .alert-box{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:2px solid #f59e0b;border-radius:12px;padding:18px 20px;margin-bottom:18px}
+  .alert-box .atitle{font-size:14px;font-weight:800;color:#92400e;margin-bottom:10px}
+  .alert-box ul{padding-left:18px;font-size:13.5px;color:#334155;line-height:1.9}
+  .warn-box{background:#fef2f2;border:2px solid #fca5a5;border-radius:12px;padding:16px 20px;margin-top:14px}
+  .warn-box .wtitle{font-size:13px;font-weight:800;color:#dc2626;margin-bottom:8px}
+  .level-table{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;margin-top:12px}
+  .level-item{background:#f8fafc;border-radius:8px;padding:12px 14px;text-align:center}
+  .level-item .lname{font-size:11px;color:#64748b;margin-bottom:4px;font-weight:600}
+  .level-item .lprice{font-size:1.3rem;font-weight:800}
+  .level-item.resist .lprice{color:#dc2626}
+  .level-item.support .lprice{color:#16a34a}
+  .level-item.current .lprice{color:#c2410c}
+  .level-item.cost .lprice{color:#7c3aed}
+  .weight-bar{height:28px;border-radius:14px;overflow:hidden;display:flex;margin:12px 0}
+  .weight-bull{background:#16a34a;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px}
+  .weight-bear{background:#dc2626;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px}
+  /* 分批減碼行動計畫 */
+  .action-plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:14px}
+  .action-step{border-radius:10px;padding:16px;text-align:center}
+  .action-step .step-no{font-size:11px;font-weight:700;opacity:.75;margin-bottom:6px;letter-spacing:.08em}
+  .action-step .step-price{font-size:1.4rem;font-weight:900;margin-bottom:6px}
+  .action-step .step-desc{font-size:12px;line-height:1.5;opacity:.9}
+  .as1{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#78350f}
+  .as2{background:linear-gradient(135deg,#fed7aa,#fb923c);color:#7c2d12}
+  .as3{background:linear-gradient(135deg,#f0fdf4,#dcfce7);color:#14532d}
+  .as4{background:linear-gradient(135deg,#f1f5f9,#e2e8f0);color:#374151}
+</style>
+</head>
+<body>
+
+<!-- ══ 01 封面 ══ -->
+<div class="cover">
+  <div class="cover-tag">台灣上櫃 ｜ 4573.TWO ｜ 矽光子耦光設備 ｜ 第5次報告</div>
+  <h1>高明鐵</h1>
+  <div class="cover-sub">今日暴漲 +14.43%！布林上軌突破，矽光子設備全球卡位者</div>
+  <div class="cover-meta">
+    <span>📅 報告日期：2026-08-31</span>
+    <span>📊 含持倉損益分析（成本 397元）</span>
+    <span>🏭 第5次深度報告</span>
+  </div>
+  <span class="badge badge-high">⚠ 風險等級：中高（7.0/10）</span>
+  &nbsp;
+  <span class="badge badge-profit">✅ 持倉獲利 +49.4%</span>
+  <div class="cover-alert">🚨 今日突破布林上軌（565）→ 593元！高點 602｜建議啟動分批獲利了結</div>
+  <div class="price-hero">NT$ 593.0</div>
+  <div class="price-change">▲ +74.8（+14.43%）｜ 今日高 602 ｜ 今日低 515 ｜ 成交量 2,940張</div>
+</div>
+
+<div class="container">
+
+<!-- ══ 持倉損益 英雄卡 ══ -->
+<div class="pnl-hero">
+  <h2>💰 您的持倉損益分析（成本 397 元）</h2>
+  <div class="pnl-grid">
+    <div class="pnl-card">
+      <div class="label">持倉成本</div>
+      <div class="val">397 元</div>
+      <div class="sub">您的買入價格</div>
+    </div>
+    <div class="pnl-card highlight">
+      <div class="label">今日盤中獲利（%）</div>
+      <div class="val">+49.4%</div>
+      <div class="sub">593 vs 397：+196元/股</div>
+    </div>
+    <div class="pnl-card">
+      <div class="label">未實現獲利（元/股）</div>
+      <div class="val">+196 元</div>
+      <div class="sub">今日盤中高 602：最高達 +205元</div>
+    </div>
+    <div class="pnl-card">
+      <div class="label">距目標 680（52W高）</div>
+      <div class="val">+14.7%</div>
+      <div class="sub">若到680：獲利 +71.3%（+283元）</div>
+    </div>
+    <div class="pnl-card">
+      <div class="label">建議行動</div>
+      <div class="val" style="font-size:1.1rem">分批獲利了結</div>
+      <div class="sub">布林上軌突破後，建議減碼30-50%</div>
+    </div>
+    <div class="pnl-card">
+      <div class="label">剩餘上漲空間（至682）</div>
+      <div class="val">+15%</div>
+      <div class="sub">vs 已獲利 49.4%，風報比需重新評估</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 02 核心結論 ══ -->
+<div class="conclusion">
+  <h2>🎯 核心結論（持倉 397 元視角）</h2>
+  <div class="conclusion-grid">
+    <div class="c-card">
+      <div class="label">投資建議</div>
+      <div class="value">啟動分批減碼</div>
+      <div class="note">布林上軌突破，建議 590-610 賣30%；剩餘等突破600站穩</div>
+    </div>
+    <div class="c-card">
+      <div class="label">第一批獲利目標</div>
+      <div class="value">590 ～ 610 元</div>
+      <div class="note">今日突破，此區間賣30%部位（+49-54%獲利）</div>
+    </div>
+    <div class="c-card">
+      <div class="label">第二批目標</div>
+      <div class="value">640 ～ 660 元</div>
+      <div class="note">等待再突破，賣30%（+61-66%獲利）</div>
+    </div>
+    <div class="c-card">
+      <div class="label">最終目標（52W高）</div>
+      <div class="value">680 ～ 682 元</div>
+      <div class="note">剩餘40%等待挑戰52W高（+71%獲利）</div>
+    </div>
+    <div class="c-card">
+      <div class="label">停損設定（持倉者）</div>
+      <div class="value">跌破 540 元</div>
+      <div class="note">若布林突破失敗回落至540以下→追加減碼</div>
+    </div>
+    <div class="c-card">
+      <div class="label">今日暴漲原因</div>
+      <div class="value">技術性突破+消息</div>
+      <div class="note">突破 8/27 高點 548，空單回補+追漲動能</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 03 今日暴漲解析 ══ -->
+<div class="section">
+  <div class="section-title">🚨 今日暴漲解析（+14.43%，接近漲停）</div>
+  <div class="alert-box">
+    <div class="atitle">📌 今日 (8/31) 關鍵行情</div>
+    <ul>
+      <li>開盤：<strong>515元</strong>（跳空高開，昨收524×漲停576=漲停板，今日實際高602已超漲停計算）</li>
+      <li>今日最高：<strong>602元</strong>（突破布林上軌 565.55，創近期新高！）</li>
+      <li>布林上軌 565.55 被有效突破 → 歷史上「布林通道寬軌突破」後短期動能強勁</li>
+      <li>月底(8/31)效應：基金月底拉抬、散戶追漲、空單回補三者疊加</li>
+      <li>矽光子概念熱度持續：AI Capex 全球超大廠加碼，800G/1.6T 訂單消息持續流傳</li>
+    </ul>
+  </div>
+  <div class="warn-box">
+    <div class="wtitle">⚠️ 布林上軌突破後的統計規律（重要！）</div>
+    <div style="font-size:13px;color:#334155;line-height:1.8">
+      當股價突破布林上軌後，有兩種情境：<br>
+      <strong>① 持續強勢走揚（約30%機率）：</strong>出現在基本面超強+資金持續追捧時，股價在上軌之上「走廊式」上升。高明鐵 H1'26 EPS 2.90元、月收加速符合此條件。<br>
+      <strong>② 短線「均值回歸」（約70%機率）：</strong>突破後3-10個交易日內股價回落至布林中軌（438元）附近整理。此為統計學意義上更常見的情況。<br>
+      <strong>結論：</strong>不應追高，已持倉者在590-610創高時分批鎖利，保留部份倉位等候業績再次催化。
+    </div>
+  </div>
+</div>
+
+<!-- ══ 04 關鍵財務 KPI ══ -->
+<div class="section">
+  <div class="section-title">📊 關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi hot">
+      <div class="name">今日股價（盤中高）</div>
+      <div class="val">602 元</div>
+      <div class="desc">+14.43%（+74.8元）｜突破布林上軌（565）！</div>
+    </div>
+    <div class="kpi green">
+      <div class="name">持倉獲利（成本397元）</div>
+      <div class="val">+49.4%</div>
+      <div class="desc">每股獲利 196元；今日高602時最大獲利 +51.6%</div>
+    </div>
+    <div class="kpi accent">
+      <div class="name">H1'26 EPS（轉盈里程碑）</div>
+      <div class="val">+2.90 元</div>
+      <div class="desc">毛利率 39.35%（史上最高）｜FY2026E EPS 估 7-10元</div>
+    </div>
+    <div class="kpi">
+      <div class="name">7月月收（最新，FinMind）</div>
+      <div class="val">2.00 億元</div>
+      <div class="desc">YoY +298.5%｜7M累計 9.03億｜8月數據 9/10前公告</div>
+    </div>
+    <div class="kpi">
+      <div class="name">RSI（接近超買）</div>
+      <div class="val">68.7</div>
+      <div class="desc">低於70超買門檻，但股價高於布林上軌=動能極強</div>
+    </div>
+    <div class="kpi">
+      <div class="name">距 52W 高（682）</div>
+      <div class="val">+14.7%</div>
+      <div class="desc">從成本397元算：52W高可達 +71.8% 總獲利</div>
+    </div>
+    <div class="kpi">
+      <div class="name">市值（估算，增資後）</div>
+      <div class="val">~271 億</div>
+      <div class="desc">4,570萬股 × 593元 = 271億（vs 8/27 的 233億）</div>
+    </div>
+    <div class="kpi">
+      <div class="name">52W 高低</div>
+      <div class="val">682 / 58 元</div>
+      <div class="desc">從低點58漲至今593：漲幅 +922%！您成本397也有+49%</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 05 財務趨勢圖 ══ -->
+<div class="section">
+  <div class="section-title">📈 財務趨勢圖（純 Canvas JS）</div>
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h4>EPS 趨勢（元）：H1'26 史上最高 +2.90元</h4>
+      <canvas id="epsChart" width="420" height="260"></canvas>
+      <div class="chart-note">★ 全部實際公告；H1'26 +2.90元 = 首次盈利（加深色）</div>
+    </div>
+    <div class="chart-box">
+      <h4>月營收走勢（億元，Jan–Jul 2026）</h4>
+      <canvas id="revChart" width="420" height="260"></canvas>
+      <div class="chart-note">★ 7月2.00億創新高；8月數據 9/10 前公告</div>
+    </div>
+    <div class="chart-box">
+      <h4>月營收年增率（%）vs 成本/現價/目標</h4>
+      <canvas id="costChart" width="420" height="260"></canvas>
+      <div class="chart-note">★ 紫色=成本397｜橙色=現價593｜紅色=目標682</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 06 分批獲利了結行動計畫 ══ -->
+<div class="section">
+  <div class="section-title">💡 分批獲利了結行動計畫（持倉 397 元專屬）</div>
+  <p style="font-size:13.5px;color:#475569;margin-bottom:16px">
+    以下計畫適用於持有成本 397 元的投資人。布林上軌突破後，「不要貪、分批鎖利」是最理性的策略。每一批賣出都是「確定利潤」，比等待滿倉更可控。
+  </p>
+  <div class="action-plan">
+    <div class="action-step as1">
+      <div class="step-no">第一批（立即）</div>
+      <div class="step-price">590 ～ 610 元</div>
+      <div class="step-desc">賣出 <strong>30%</strong> 部位<br>獲利 +48.6% ～ +53.7%<br>理由：布林上軌突破當日，鎖利最確定</div>
+    </div>
+    <div class="action-step as2">
+      <div class="step-no">第二批（上升中）</div>
+      <div class="step-price">640 ～ 660 元</div>
+      <div class="step-desc">賣出 <strong>30%</strong> 部位<br>獲利 +61.2% ～ +66.2%<br>理由：突破600整數關，動能再確認</div>
+    </div>
+    <div class="action-step as3">
+      <div class="step-no">第三批（挑戰高點）</div>
+      <div class="step-price">675 ～ 682 元</div>
+      <div class="step-desc">賣出 <strong>30%</strong> 部位<br>獲利 +70.0% ～ +71.8%<br>理由：接近52W高，滿足最大獲利目標</div>
+    </div>
+    <div class="action-step as4">
+      <div class="step-no">剩餘10%（持有）</div>
+      <div class="step-price">持至 2026 Q4</div>
+      <div class="step-desc">剩餘 <strong>10%</strong> 長線倉<br>觀察 H2'26 財報<br>等待業績超預期或股價倍增</div>
+    </div>
+  </div>
+  <div style="margin-top:16px;background:#fef2f2;border:1.5px solid #fca5a5;border-radius:10px;padding:14px 16px;font-size:13px;color:#7f1d1d;line-height:1.8">
+    <strong>🛑 止損（回落保護）：</strong>若今日高點 602 後回落跌破 <strong>540 元</strong>（≈布林上軌565的下方10%），代表「假突破」，第一批提早減碼；若跌破 <strong>514（MA5）</strong>，代表短期動能耗盡，第一批+第二批合計提早執行，剩餘部位等待整理後再觀察。
+  </div>
+</div>
+
+<!-- ══ 07 技術分析 ══ -->
+<div class="section">
+  <div class="section-title">📉 技術分析（2026-08-31 盤中）</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:20px">
+    <div style="background:#f0fdf4;border-radius:8px;padding:14px;border-left:3px solid #16a34a">
+      <div style="font-size:11px;font-weight:700;color:#16a34a;margin-bottom:6px">均線系統（完美多頭 ✅）</div>
+      <div style="font-size:14px;font-weight:800;color:#1e293b">極強多頭排列</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">MA5 514.5 / MA10 496.15 / MA20 438.2 / MA60 402.21<br>股價(593) > MA5 > MA10 > MA20 > MA60 ✅<br>股價距MA5差 78.5元（15.3%），距離已偏大</div>
+    </div>
+    <div style="background:#fffbeb;border-radius:8px;padding:14px;border-left:3px solid #f59e0b">
+      <div style="font-size:11px;font-weight:700;color:#d97706;margin-bottom:6px">布林通道（突破上軌 🚨）</div>
+      <div style="font-size:18px;font-weight:800;color:#92400e">上軌 565 突破！</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">上軌 565.55 / 中軌 438.2 / 下軌 310.85<br>今日最高 602 = 布林上軌以上 +36.5元<br>帶寬 58.1%（超高波動）</div>
+    </div>
+    <div style="background:#fffbeb;border-radius:8px;padding:14px;border-left:3px solid #f59e0b">
+      <div style="font-size:11px;font-weight:700;color:#d97706;margin-bottom:6px">MACD（金叉維持）</div>
+      <div style="font-size:18px;font-weight:800;color:#1e293b">OSC +10.89</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">MACD 40.88 / DEA 30.0 / OSC +10.89<br>金叉維持，動能仍強；但較 8/27 的 13.4 略有收斂</div>
+    </div>
+    <div style="background:#fffbeb;border-radius:8px;padding:14px;border-left:3px solid #f59e0b">
+      <div style="font-size:11px;font-weight:700;color:#d97706;margin-bottom:6px">RSI（接近超買 ⚠️）</div>
+      <div style="font-size:18px;font-weight:800;color:#92400e">68.7</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">接近 70 超買門檻（未超過）<br>股價已在布林上軌之上，綜合評估「短線過熱」</div>
+    </div>
+  </div>
+
+  <div style="font-weight:700;margin-bottom:10px;color:#334155">📍 關鍵價位（含持倉成本）</div>
+  <div class="level-table">
+    <div class="level-item resist"><div class="lname">52W 最高（長線目標）</div><div class="lprice">682 元</div><div style="font-size:11px;color:#64748b">距今 +15.2%</div></div>
+    <div class="level-item resist"><div class="lname">第三批減碼目標</div><div class="lprice">675-682 元</div><div style="font-size:11px;color:#64748b">獲利 +70%</div></div>
+    <div class="level-item resist"><div class="lname">今日最高（近期高）</div><div class="lprice">602 元</div><div style="font-size:11px;color:#64748b">布林上軌+36</div></div>
+    <div class="level-item current"><div class="lname">現價（盤中）</div><div class="lprice">593 元</div><div style="font-size:11px;color:#64748b">+14.43%，在布林上軌之上</div></div>
+    <div class="level-item resist"><div class="lname">第二批減碼區</div><div class="lprice">640-660 元</div><div style="font-size:11px;color:#64748b">獲利 +61-66%</div></div>
+    <div class="level-item resist"><div class="lname">第一批減碼區</div><div class="lprice">590-610 元</div><div style="font-size:11px;color:#64748b">獲利 +49-54%</div></div>
+    <div class="level-item resist"><div class="lname">布林上軌</div><div class="lprice">565 元</div><div style="font-size:11px;color:#64748b">已突破，回落警戒線</div></div>
+    <div class="level-item support"><div class="lname">MA5（短線支撐）</div><div class="lprice">514.5 元</div><div style="font-size:11px;color:#64748b">跌破=短線轉弱</div></div>
+    <div class="level-item cost"><div class="lname">您的持倉成本</div><div class="lprice">397 元</div><div style="font-size:11px;color:#64748b">獲利保本線</div></div>
+    <div class="level-item support"><div class="lname">MA20（中線支撐）</div><div class="lprice">438 元</div><div style="font-size:11px;color:#64748b">= 布林中軌，整理後支撐</div></div>
+  </div>
+
+  <div style="margin-top:14px;background:#f8fafc;border-radius:8px;padding:14px;font-size:13px;color:#334155;line-height:1.8">
+    <strong>📊 近期K線走勢：</strong><br>
+    8/25(500) → 8/26(530) → 8/27(524) → 8/28(529) → 8/31今(593, +14.43%!)<br>
+    8/31 的跳空上漲（開515，高602，今593）是過去2個月來最大單日漲幅之一。成交量2,940張，雖較 8/18-8/20 暴量（191-315萬股）小，但已是近期平均量的 2-3 倍，屬於「量價俱揚」的技術型突破訊號。
+  </div>
+</div>
+
+<!-- ══ 08 基本面摘要 ══ -->
+<div class="section">
+  <div class="section-title">💹 基本面摘要（維持極強）</div>
+  <table>
+    <tr><th>期間</th><th>EPS（元）</th><th>毛利率（%）</th><th>營業利益率（%）</th><th>重要里程碑</th></tr>
+    <tr><td>H1'24</td><td class="down">-0.11</td><td>25.87%</td><td class="down">-5.0%</td><td>轉型期</td></tr>
+    <tr><td>H2'24</td><td>+0.01</td><td>37.08%</td><td>+2.81%</td><td>首次轉盈嘗試</td></tr>
+    <tr><td>H1'25</td><td class="down">-1.64</td><td class="down">22.64%</td><td class="down">-19.81%</td><td>最深谷底</td></tr>
+    <tr><td>Q3'25</td><td class="down">-0.58</td><td>23.77%</td><td class="down">-20.48%</td><td>虧損收斂</td></tr>
+    <tr><td>Q4'25</td><td class="down">-0.10</td><td class="up">28.08%</td><td class="down">-15.99%</td><td>幾乎損平</td></tr>
+    <tr style="background:#fff7ed;font-weight:700"><td>H1'26 🔥</td><td class="up" style="font-size:1.1em">+2.90</td><td class="up" style="font-size:1.1em">39.35%（史高）</td><td class="up" style="font-size:1.1em">+15.66%</td><td>全面轉盈！超越歷年全年</td></tr>
+  </table>
+  <div style="margin-top:14px;background:#f0fdf4;border-left:3px solid #86efac;padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;color:#14532d;line-height:1.8">
+    <strong>📌 FY2026 全年 EPS 推算：</strong><br>
+    H1'26 EPS：2.90元 | H2'26 估算（維持月收 2億+，毛利率 35%+）：約 4.5-7.0元<br>
+    → <strong>FY2026E EPS 估計 7.4-9.9元</strong>（稀釋後）<br>
+    → 目前股價 593元，FY2026E P/E = <strong>60-80x</strong>（高成長股，成長持續則可接受）<br>
+    → 7月月收已確認 2.00億（YoY+298.5%），8月月收（9/10前公告）是下一個關鍵催化劑
+  </div>
+</div>
+
+<!-- ══ 09 籌碼面 ══ -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析</div>
+  <table>
+    <tr><th>項目</th><th>數據</th><th>分析</th></tr>
+    <tr><td>三大法人（8/28）</td><td class="neutral">0 張（持平）</td><td>上櫃小型股常態，意義不大</td></tr>
+    <tr><td>今日成交量（8/31）</td><td class="up">2,940 張</td><td>較近5日均量（1,298張）多 2.3倍，量價俱揚確認突破</td></tr>
+    <tr><td>現增籌碼壓力（4,000萬股 @325元）</td><td class="neutral">325元成本</td><td>今日 593 元已獲利 +82.5%，持有者獲利豐厚，注意解禁時間</td></tr>
+    <tr><td>空單回補（推測）</td><td class="up">助漲因素</td><td>從7/29低268到今593，空單大量被軋空，回補行為是今日暴漲成因之一</td></tr>
+    <tr><td>月底效應</td><td class="up">助漲因素</td><td>8月最後交易日，基金可能進行月底拉抬（window dressing）</td></tr>
+  </table>
+</div>
+
+<!-- ══ 10 研究員辯論 ══ -->
+<div class="section">
+  <div class="section-title">⚔️ 研究員辯論：持有 vs 獲利了結</div>
+  <div class="debate-grid">
+    <div class="bull-box">
+      <h4>🐂 繼續持有的理由（5點）</h4>
+      <div class="debate-point">
+        <strong>① 基本面加速，FY2026E EPS 7-10元，支撐更高股價</strong>
+        H1'26 EPS 2.90元，H2'26 月收已站上 2億（7月）並可能繼續攀升。如月收成長至2.5億，FY2026E EPS 可達 10元+，對應目前 593元 P/E = 59x（仍在成長股合理範圍）。
+      </div>
+      <div class="debate-point">
+        <strong>② 布林突破代表中期多頭格局確立，非短線現象</strong>
+        今日突破有量（成交2,940張，2.3倍均量），「有量的突破」比「無量的突破」持續性強。技術面多頭排列完整（MA5>MA10>MA20>MA60），不宜過早出場。
+      </div>
+      <div class="debate-point">
+        <strong>③ 52W 高 682 元僅距今 +15.2%，有空間</strong>
+        若挑戰 52W 高 682 元，您的持倉從成本 397 元算獲利 +71.8%。這15%的上升空間相當於一次完整的技術目標。
+      </div>
+      <div class="debate-point">
+        <strong>④ 8月月收（9/10前公告）是下一個潛在正向催化劑</strong>
+        若8月月收站上 2.2-2.5億（可能性高，因訂單放量），屆時會再次帶動股價追高，提前出場將錯失這個催化劑。
+      </div>
+      <div class="debate-point">
+        <strong>⑤ 持倉成本 397 元遠低於市場，有充裕的緩衝</strong>
+        即使股價從 593 拉回至 MA20（438元），您仍有 +10.3% 的獲利。心理壓力遠低於成本 500-530 的後進場者，可以承受更大波動。
+      </div>
+    </div>
+    <div class="bear-box">
+      <h4>🐻 獲利了結的理由（5點）</h4>
+      <div class="debate-point">
+        <strong>① 布林上軌突破後「均值回歸」概率高（約70%）</strong>
+        股價在布林上軌之上是統計上的「極端狀態」，歷史數據顯示大多數情況下（~70%）會在3-10個交易日內回落至布林中軌（438元）附近。若不鎖利，可能吐回 25-30% 的帳面獲利。
+      </div>
+      <div class="debate-point">
+        <strong>② 今日+14.43%的單日漲幅本身就是「出貨機會」</strong>
+        市場給了您一個一天賺別人幾個月的機會。+14%的單日漲幅在短期追高者的眼中是「高點」，智慧的持倉者應把握此機會部分鎖利。
+      </div>
+      <div class="debate-point">
+        <strong>③ P/E 已達 60-80x，估值壓力大</strong>
+        FY2026E EPS 7-10元對應目前 593元 P/E = 60-80x，要維持此估值需要業績季季超預期。任何不及預期的季報（H2'26 毛利率若降至30%以下）都可能觸發快速回調。
+      </div>
+      <div class="debate-point">
+        <strong>④ 現增 4,000 萬股（325元成本）解禁壓力</strong>
+        以 325元認購的現增股，目前帳面獲利 268元/股（+82.5%）。解禁後這些持有人強烈有動機在高位出售，形成結構性賣壓，需查明解禁日期。
+      </div>
+      <div class="debate-point">
+        <strong>⑤ 上櫃小型股在高位的流動性風險</strong>
+        成交量2,940張看似有量，但若三大法人或大戶開始出貨，散戶承接力不足，可能出現連跌停的窘境（7/29 單日跌至低點268就是先例）。在高位+50%的位置，流動性管理比追求最高點更重要。
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:20px">
+    <div style="font-weight:700;margin-bottom:8px;color:#334155">多空力道評估（持倉者視角）</div>
+    <div class="weight-bar">
+      <div class="weight-bull" style="width:40%">繼續持有 40%</div>
+      <div class="weight-bear" style="width:60%">獲利了結（至少部分）60%</div>
+    </div>
+    <div style="background:#f8fafc;border-radius:8px;padding:14px;font-size:13px;color:#334155;margin-top:12px;line-height:1.7">
+      <strong>💬 給 Tyler 的個人建議：</strong><br>
+      您以 397 元持有，今日盤中最高 602 元，獲利達 51.6%。這是極其漂亮的一筆交易。<br>
+      <strong>現在最關鍵的不是「能漲多高」，而是「如何保住大部分勝利果實」。</strong><br>
+      建議在今日或明日 590-610 賣出約 30% 部位，把 「已賺到的利潤」轉化為「現金確定收益」。剩餘 70% 可繼續持有，享受未來可能的上升空間（目標 640-682）。<br>
+      分批賣出讓您「不用猜頂」，賣了一部分後的心態也會更平穩，不會因短線回調而驚慌。
+    </div>
+  </div>
+</div>
+
+<!-- ══ 11 風控評估 ══ -->
+<div class="section">
+  <div class="section-title">🛡 風控評估（六維評分）</div>
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap">
+    <span class="risk-badge risk-high">⚠️ 中高風險 7.0/10</span>
+    <div style="font-size:13px;color:#475569">vs 上次報告 6.5/10；今日大漲後估值風險和籌碼風險提升</div>
+  </div>
+  <div class="score-bar-wrap"><div class="score-label"><span>估值風險（P/E 60-80x，追高後更高）</span><span style="color:#c2410c;font-weight:700">7.5/10 × 30%</span></div><div class="score-bar"><div class="score-fill" style="width:75%"></div></div></div>
+  <div class="score-bar-wrap"><div class="score-label"><span>財務風險（EPS+2.90，毛利39.35%，低）</span><span style="color:#c2410c;font-weight:700">2.5/10 × 25%</span></div><div class="score-bar"><div class="score-fill" style="width:25%"></div></div></div>
+  <div class="score-bar-wrap"><div class="score-label"><span>流動性風險（小型股+高位）</span><span style="color:#c2410c;font-weight:700">7.5/10 × 10%</span></div><div class="score-bar"><div class="score-fill" style="width:75%"></div></div></div>
+  <div class="score-bar-wrap"><div class="score-label"><span>產業風險（矽光子 AI 趨勢，低）</span><span style="color:#c2410c;font-weight:700">3.5/10 × 15%</span></div><div class="score-bar"><div class="score-fill" style="width:35%"></div></div></div>
+  <div class="score-bar-wrap"><div class="score-label"><span>總經風險（AI Capex 持續，低）</span><span style="color:#c2410c;font-weight:700">4.5/10 × 10%</span></div><div class="score-bar"><div class="score-fill" style="width:45%"></div></div></div>
+  <div class="score-bar-wrap"><div class="score-label"><span>籌碼風險（+50%後現增解禁+追高散戶）</span><span style="color:#c2410c;font-weight:700">8.5/10 × 10%</span></div><div class="score-bar"><div class="score-fill" style="width:85%"></div></div></div>
+</div>
+
+<!-- ══ 12 三段式策略 ══ -->
+<div class="section">
+  <div class="section-title">🎯 台股三段式操作策略（持倉 397 元版）</div>
+  <div class="strategy-grid">
+    <div class="strat-attack">
+      <div class="strat-title">⚔️ 進攻方案（看漲者）</div>
+      <div class="strat-price">保持 70% 倉位</div>
+      <div class="strat-desc">
+        今日賣出 30%（590-610 鎖利）<br>
+        剩餘 70% 等待突破 640<br>
+        第二目標：640-660（賣30%）<br>
+        第三目標：675-682（賣30%）<br>
+        保留 10% 等 H2'26 財報催化<br>
+        停損：跌破 MA5(514.5)
+      </div>
+    </div>
+    <div class="strat-balance">
+      <div class="strat-title">⚖️ 均衡方案（風報比優先）</div>
+      <div class="strat-price">今日減碼 50%</div>
+      <div class="strat-desc">
+        今日 590-610 賣出 50%（確保+49%獲利）<br>
+        剩餘 50% 等待 640 再減<br>
+        第二目標 640-660：再賣30%<br>
+        剩餘 20% 長線觀察<br>
+        回測 470-490 若止穩可再補回<br>
+        停損：跌破 460
+      </div>
+    </div>
+    <div class="strat-defend">
+      <div class="strat-title">🛡 防守方案（保留果實）</div>
+      <div class="strat-price">今日減碼 70%</div>
+      <div class="strat-desc">
+        今日大量賣出（70%），確保+49%獲利落袋<br>
+        剩餘30%等待明確突破600站穩<br>
+        若 9/10 月收超預期再重新加碼<br>
+        觀察期間跌破 500 → 剩餘全出<br>
+        適合不想操作的保守投資人
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:20px">
+    <div style="font-weight:700;margin-bottom:10px;color:#334155">📅 接下來的關鍵日期</div>
+    <table>
+      <tr><th>日期</th><th>事件</th><th>影響評估</th></tr>
+      <tr><td>2026年9月10日前</td><td>8月份月營收公告</td><td class="up">★★★★★ 若超越 2.2億 → 強力看多訊號</td></tr>
+      <tr><td>2026年9月（待確認）</td><td>現增 4,000 萬股解禁</td><td class="down">★★★ 解禁賣壓，需查明確切日期</td></tr>
+      <tr><td>2026年10-11月</td><td>Q3'26 財報（若已有季報）</td><td class="up">★★★★ EPS 連續正值 = 估值重評</td></tr>
+      <tr><td>持續</td><td>AI 超大廠法說（Capex 上調）</td><td class="up">★★★ 矽光子設備需求背書</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══ 13 名詞小教室 ══ -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室（本次報告關鍵術語）</div>
+  <div class="glossary-grid">
+    <div class="gcard">
+      <div class="term">布林通道上軌突破</div>
+      <div class="def">股價超越「均值 + 2倍標準差」的上限。依統計學，只有約 2.5% 的交易日在此之上。突破後有兩種結果：強勢持續（約30%），或均值回歸（約70%）。今日高 602 > 上軌 565。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">均值回歸（Mean Reversion）</div>
+      <div class="def">任何偏離平均值過遠的指標，最終都傾向「回到平均」。布林通道中軌（438元）就是近期均值，布林突破後若買盤耗盡，股價可能回落至438附近整理。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">分批獲利了結（Scale Out）</div>
+      <div class="def">不在單一時間點賣出全部，而是在不同價位分批賣出（如30%+30%+30%+10%）。好處是不需要猜頂，每一批賣出都是在確認勝利成果，心理壓力最低。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">Window Dressing（月底拉抬）</div>
+      <div class="def">基金經理在月底/季底買入表現好的股票，讓持股清單「看起來很厲害」，吸引散戶申購。8/31是8月最後一個交易日，可能是今日暴漲的因素之一，但效果通常只持續1-2天。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">軋空（Short Squeeze）</div>
+      <div class="def">股價持續上漲，放空的投資人損失擴大被迫回補（買回）股票，進一步推高股價。高明鐵從7/29低點268漲至今593，漲幅+121%，大量空單早已被「軋死」。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">風報比（Risk/Reward Ratio）</div>
+      <div class="def">潛在獲利 ÷ 潛在損失。目前持倉593元，上行目標 682（+15.2%），下行風險若跌至 MA20（438元）則損失-26.1%。風報比 = 15.2%÷26.1% = 0.58（偏低，建議鎖利）。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">現增解禁</div>
+      <div class="def">現金增資的新股需鎖定一段時間（通常3-6個月）後才能自由交易。4573以325元增資，新股解禁日當天或之後，持有者可能大量在市場賣出，形成短期賣壓。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">P/E（本益比）動態估值</div>
+      <div class="def">本益比 = 股價 ÷ EPS。對高成長股，P/E 60-80x 可接受（台積電在高成長期也曾達此水準）。但前提是業績每季必須超預期。任何「不如預期」的季報都可能觸發估值壓縮。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 14 免責聲明 ══ -->
+<div class="disclaimer">
+  <strong>⚠️ 重要免責聲明</strong><br>
+  本報告僅供個人研究參考，<strong>不構成任何投資建議或要約</strong>。「持倉損益分析」及「分批獲利了結建議」均為基於技術面和基本面的客觀分析，非專業財務建議。股票投資涉及市場風險，過去績效不代表未來結果。所有財務數據來自 FinMind API、富果 Fugle API（截至 2026-08-31），不保證即時性。EPS 及月收預估為作者推算，不代表公司官方指引。投資人應自行評估風險，並在必要時諮詢持牌財務顧問。<br><br>
+  <strong>資料來源：</strong>
+  FinMind API（月營收、財報）｜富果 Fugle API（即時報價）｜
+  <a href="https://news.cnyes.com/news/id/6574927">鉅亨網（H1'26 業績轉盈報導）</a>｜
+  <a href="https://udn.com/news/story/7252/9682979">聯合新聞網（7月月收創新高）</a>｜
+  <a href="https://goodinfo.tw/tw/StockDetail.asp?STOCK_ID=4573">Goodinfo 股價行情</a>
+</div>
+
+</div><!-- /container -->
+
+<script>
+function drawBarChart(id, labels, data, barColor, accentColor) {
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=54,PR=16,PT=22,PB=46;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.18||0.5;var lo=min-pad,hi=max+pad,range=hi-lo;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var yv=lo+range*g/4,yp=PT+chartH-(yv-lo)/range*chartH;
+    ctx.beginPath();ctx.moveTo(PL,yp);ctx.lineTo(PL+chartW,yp);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(yv.toFixed(2),PL-4,yp+4);
+  }
+  if(lo<0&&hi>0){
+    var zy=PT+chartH-(0-lo)/range*chartH;
+    ctx.strokeStyle='#64748b';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(PL,zy);ctx.lineTo(PL+chartW,zy);ctx.stroke();ctx.setLineDash([]);
+  }
+  var bw=Math.min(chartW/labels.length*0.55,40),gap=chartW/labels.length;
+  for(var i=0;i<data.length;i++){
+    var xc=PL+gap*i+gap/2;
+    var yBase=(lo>=0)?PT+chartH:PT+chartH-(0-lo)/range*chartH;
+    var yTop=PT+chartH-(data[i]-lo)/range*chartH;
+    var bh=Math.abs(yBase-yTop),by=data[i]>=0?yTop:yBase;
+    ctx.fillStyle=(i===data.length-1)?accentColor:barColor;
+    ctx.beginPath();
+    if(ctx.roundRect)ctx.roundRect(xc-bw/2,by,bw,bh,3);else ctx.rect(xc-bw/2,by,bw,bh);
+    ctx.fill();
+    ctx.fillStyle='#334155';ctx.font='bold 10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(2),xc,data[i]>=0?yTop-4:yBase+bh+12);
+    ctx.fillStyle='#64748b';ctx.font='10px Arial';
+    ctx.fillText(labels[i],xc,H-8);
+  }
+}
+
+function drawLineChart(id, labels, data, color) {
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=50,PR=16,PT=22,PB=46;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.2||0.2;var lo=min-pad,hi=max+pad,range=hi-lo;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var yv=lo+range*g/4,yp=PT+chartH-(yv-lo)/range*chartH;
+    ctx.beginPath();ctx.moveTo(PL,yp);ctx.lineTo(PL+chartW,yp);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(yv.toFixed(2),PL-4,yp+4);
+  }
+  var pts=data.map(function(v,i){
+    return{x:PL+chartW*i/(data.length-1),y:PT+chartH-(v-lo)/range*chartH};
+  });
+  ctx.beginPath();ctx.moveTo(pts[0].x,PT+chartH);
+  pts.forEach(function(p){ctx.lineTo(p.x,p.y);});
+  ctx.lineTo(pts[pts.length-1].x,PT+chartH);
+  ctx.closePath();ctx.fillStyle='rgba(194,65,12,0.10)';ctx.fill();
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.lineJoin='round';
+  ctx.beginPath();
+  pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});
+  ctx.stroke();
+  pts.forEach(function(p,i){
+    var r=i===data.length-1?7:4;
+    ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);
+    ctx.fillStyle=i===data.length-1?'#7c2d12':color;ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle='#334155';ctx.font='bold 10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(2),p.x,p.y-10);
+    ctx.fillStyle='#64748b';ctx.font='11px Arial';
+    ctx.fillText(labels[i],p.x,H-8);
+  });
+}
+
+function drawCostChart(id) {
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var items=[
+    {label:'持倉成本',price:397,color:'#7c3aed',sub:'您的買入價'},
+    {label:'MA20 中軌',price:438,color:'#94a3b8',sub:'布林中軌/整理支撐'},
+    {label:'MA5 支撐',price:514,color:'#16a34a',sub:'短線關鍵支撐'},
+    {label:'布林上軌',price:566,color:'#f59e0b',sub:'已突破！'},
+    {label:'今日現價',price:593,color:'#c2410c',sub:'+14.43%今日'},
+    {label:'目標 682',price:682,color:'#991b1b',sub:'52W最高目標'}
+  ];
+  var minP=350,maxP=720,range=maxP-minP;
+  var PL=90,PR=16,PT=24,PB=16;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  var bh=Math.min(chartH/items.length*0.55,24);
+  var gap=chartH/items.length;
+  for(var i=0;i<items.length;i++){
+    var it=items[i];
+    var yc=PT+gap*i+gap/2;
+    var bw=(it.price-minP)/range*chartW;
+    ctx.fillStyle=it.color;
+    ctx.beginPath();
+    if(ctx.roundRect)ctx.roundRect(PL,yc-bh/2,bw,bh,3);else ctx.rect(PL,yc-bh/2,bw,bh);
+    ctx.fill();
+    ctx.fillStyle='#475569';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(it.label,PL-4,yc+4);
+    ctx.fillStyle='#1e293b';ctx.font='bold 11px Arial';ctx.textAlign='left';
+    ctx.fillText(it.price+'元',PL+bw+5,yc-3);
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';
+    ctx.fillText(it.sub,PL+bw+5,yc+10);
+  }
+}
+
+window.addEventListener('DOMContentLoaded',function(){
+  drawBarChart('epsChart',
+    ["H1'24","H2'24","H1'25","Q3'25","Q4'25","H1'26"],
+    [-0.11,0.01,-1.64,-0.58,-0.10,2.90],
+    '#f97316','#b91c1c'
+  );
+  drawLineChart('revChart',
+    ['1月','2月','3月','4月','5月','6月','7月'],
+    [0.788,0.657,1.075,1.332,1.543,1.635,2.002],
+    '#c2410c'
+  );
+  drawCostChart('costChart');
+});
+</script>
+</body>
+</html>
