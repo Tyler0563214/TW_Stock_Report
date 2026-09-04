@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>譜瑞-KY (4966) 投資研究報告 ─ 2026-09-04</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Helvetica Neue',Arial,'Microsoft JhengHei',sans-serif;background:#F0F4F8;color:#1e293b;font-size:15px;line-height:1.7}
+  a{color:#4f46e5}
+  .cover{background:linear-gradient(135deg,#0f0c29 0%,#1e1b4b 35%,#312e81 65%,#4f46e5 100%);color:#fff;padding:60px 40px 50px;text-align:center;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:rgba(99,102,241,.15);border-radius:50%}
+  .cover::after{content:'';position:absolute;bottom:-40px;left:-40px;width:200px;height:200px;background:rgba(165,180,252,.08);border-radius:50%}
+  .cover-tag{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:4px 16px;font-size:13px;letter-spacing:.05em;margin-bottom:18px}
+  .cover h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:.04em;margin-bottom:8px}
+  .cover-sub{font-size:1.05rem;opacity:.82;margin-bottom:24px}
+  .cover-meta{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;font-size:13px;opacity:.75;margin-bottom:16px}
+  .badge{display:inline-block;padding:6px 20px;border-radius:30px;font-weight:700;font-size:14px}
+  .badge-mid{background:#c7d2fe;color:#1e1b4b}
+  .badge-warn{background:#fde68a;color:#78350f}
+  .price-hero{margin-top:20px;font-size:2.8rem;font-weight:900}
+  .price-change{font-size:1.1rem;opacity:.82;margin-top:4px}
+  .cover-insight{background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:12px 20px;margin-top:16px;display:inline-block;font-size:13.5px;font-weight:700}
+  .container{max-width:1100px;margin:0 auto;padding:32px 20px}
+  .section{background:#fff;border-radius:14px;padding:28px 32px;margin-bottom:24px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+  .section-title{font-size:1.2rem;font-weight:700;color:#4f46e5;border-left:4px solid #4f46e5;padding-left:12px;margin-bottom:20px;letter-spacing:.03em}
+  .conclusion{background:linear-gradient(135deg,#0f0c29,#1e1b4b);color:#fff;border-radius:14px;padding:32px;margin-bottom:24px}
+  .conclusion h2{font-size:1rem;font-weight:700;opacity:.65;margin-bottom:16px;letter-spacing:.06em;text-transform:uppercase}
+  .conclusion-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+  .c-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:18px}
+  .c-card .label{font-size:12px;opacity:.6;margin-bottom:6px;letter-spacing:.04em}
+  .c-card .value{font-size:1.3rem;font-weight:800;color:#a5b4fc}
+  .c-card .note{font-size:12px;opacity:.55;margin-top:4px}
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+  .kpi{background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px 18px;transition:.2s}
+  .kpi:hover{border-color:#4f46e5;box-shadow:0 2px 8px rgba(79,70,229,.1)}
+  .kpi .name{font-size:12px;color:#64748b;margin-bottom:6px;font-weight:600;letter-spacing:.04em}
+  .kpi .val{font-size:1.5rem;font-weight:800;color:#1e293b}
+  .kpi .desc{font-size:11px;color:#94a3b8;margin-top:4px;line-height:1.4}
+  .kpi.accent{background:linear-gradient(135deg,#eef2ff,#f5f3ff);border-color:#c7d2fe}
+  .kpi.accent .val{color:#4f46e5}
+  .kpi.cheap{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#86efac;position:relative}
+  .kpi.cheap::after{content:'💰 估值低';position:absolute;top:-8px;right:10px;background:#16a34a;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px}
+  .kpi.cheap .val{color:#14532d}
+  .kpi.warn{background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:#fbbf24}
+  .kpi.warn .val{color:#92400e}
+  .chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+  .chart-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px}
+  .chart-box h4{font-size:13px;font-weight:700;color:#475569;margin-bottom:12px;text-align:center}
+  canvas{display:block;width:100% !important;height:auto !important}
+  .chart-note{font-size:11px;color:#94a3b8;text-align:center;margin-top:8px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{background:#eef2ff;padding:10px 14px;text-align:left;font-weight:700;color:#3730a3;border-bottom:2px solid #c7d2fe}
+  td{padding:9px 14px;border-bottom:1px solid #f1f5f9;color:#334155}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#f5f3ff}
+  .up{color:#16a34a;font-weight:700}
+  .down{color:#dc2626;font-weight:700}
+  .neutral{color:#64748b}
+  .score-bar-wrap{margin:6px 0}
+  .score-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
+  .score-bar{height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden}
+  .score-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#4f46e5,#818cf8)}
+  .debate-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:640px){.debate-grid{grid-template-columns:1fr}}
+  .bull-box{background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:20px}
+  .bear-box{background:#fef2f2;border:1.5px solid #fca5a5;border-radius:10px;padding:20px}
+  .bull-box h4{color:#16a34a;font-size:14px;font-weight:800;margin-bottom:14px}
+  .bear-box h4{color:#dc2626;font-size:14px;font-weight:800;margin-bottom:14px}
+  .debate-point{font-size:13px;padding:8px 10px;background:rgba(255,255,255,.7);border-radius:6px;margin-bottom:8px;line-height:1.5}
+  .debate-point strong{display:block;margin-bottom:3px}
+  .strategy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .strat-attack{background:linear-gradient(135deg,#1e1b4b,#4f46e5);color:#fff;border-radius:12px;padding:22px}
+  .strat-balance{background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border-radius:12px;padding:22px}
+  .strat-defend{background:linear-gradient(135deg,#374151,#6b7280);color:#fff;border-radius:12px;padding:22px}
+  .strat-title{font-size:13px;font-weight:700;opacity:.8;margin-bottom:8px;letter-spacing:.05em;text-transform:uppercase}
+  .strat-price{font-size:2rem;font-weight:900;margin-bottom:8px}
+  .strat-desc{font-size:12.5px;opacity:.85;line-height:1.6}
+  .risk-badge{display:inline-block;padding:6px 20px;border-radius:20px;font-weight:800;font-size:14px}
+  .risk-mid{background:#c7d2fe;color:#1e1b4b}
+  .glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .gcard{background:#f8fafc;border-radius:8px;padding:14px 16px;border-left:3px solid #4f46e5}
+  .gcard .term{font-weight:800;color:#4f46e5;font-size:13.5px;margin-bottom:5px}
+  .gcard .def{font-size:12.5px;color:#475569;line-height:1.5}
+  .disclaimer{background:#fffbeb;border:1.5px solid #fbbf24;border-radius:10px;padding:20px 24px;font-size:12.5px;color:#78350f;line-height:1.7}
+  .weight-bar{height:28px;border-radius:14px;overflow:hidden;display:flex;margin:12px 0}
+  .weight-bull{background:#16a34a;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px}
+  .weight-bear{background:#dc2626;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px}
+  .level-table{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;margin-top:12px}
+  .level-item{background:#f8fafc;border-radius:8px;padding:12px 14px;text-align:center}
+  .level-item .lname{font-size:11px;color:#64748b;margin-bottom:4px;font-weight:600}
+  .level-item .lprice{font-size:1.3rem;font-weight:800}
+  .level-item.resist .lprice{color:#dc2626}
+  .level-item.support .lprice{color:#16a34a}
+  .level-item.current .lprice{color:#4f46e5}
+  .info-box{background:#eef2ff;border-left:4px solid #4f46e5;border-radius:0 8px 8px 0;padding:14px 16px;font-size:13.5px;color:#1e1b4b;line-height:1.8;margin-bottom:14px}
+  .warn-box{background:#fef2f2;border-left:4px solid #dc2626;border-radius:0 8px 8px 0;padding:14px 16px;font-size:13.5px;color:#7f1d1d;line-height:1.8;margin-top:14px}
+</style>
+</head>
+<body>
+
+<!-- ══ 01 封面 ══ -->
+<div class="cover">
+  <div class="cover-tag">台灣上市 ｜ 4966.TWO ｜ 半導體 → 高速介面 IC ｜ 首次報告</div>
+  <h1>譜瑞-KY</h1>
+  <div class="cover-sub">Parade Technologies ｜ DisplayPort / USB-C / USB4 介面晶片全球領導者</div>
+  <div class="cover-meta">
+    <span>📅 報告日期：2026-09-04</span>
+    <span>📊 資料更新：盤中即時</span>
+    <span>🏭 產業：半導體（Fabless 無晶圓廠）</span>
+    <span>🌐 KY = 開曼群島掛牌</span>
+  </div>
+  <span class="badge badge-mid">📊 風險等級：中等（5.5/10）</span>
+  &nbsp;
+  <span class="badge badge-warn">⚠ 距52W高 -38.9%</span>
+  <div class="cover-insight">📌 核心觀點：估值便宜（TTM P/E 17.8x），但 EPS 成長動能疲軟，等待 Q3'26 業績確認底部</div>
+  <div class="price-hero">NT$ 567.0</div>
+  <div class="price-change">▲ +9.0（+1.61%）｜ 52W 高 929 / 低 463.5 ｜ FactSet 目標 578 元</div>
+</div>
+
+<div class="container">
+
+<!-- ══ 02 核心結論 ══ -->
+<div class="conclusion">
+  <h2>🎯 核心結論</h2>
+  <div class="conclusion-grid">
+    <div class="c-card">
+      <div class="label">投資建議</div>
+      <div class="value">觀望偏多布局</div>
+      <div class="note">550-565 逢低分批建倉；等技術面轉多確認</div>
+    </div>
+    <div class="c-card">
+      <div class="label">短期目標價</div>
+      <div class="value">600 ～ 620 元</div>
+      <div class="note">突破均線糾結（575-577）後確立；+6-9%</div>
+    </div>
+    <div class="c-card">
+      <div class="label">中期目標（Q3'26 業績後）</div>
+      <div class="value">650 ～ 700 元</div>
+      <div class="note">若 EPS 回升至 9-10元/季，估值重評 20x+</div>
+    </div>
+    <div class="c-card">
+      <div class="label">FactSet 共識目標</div>
+      <div class="value">578 元</div>
+      <div class="note">共識幾乎等於現價，法人態度保守觀望</div>
+    </div>
+    <div class="c-card">
+      <div class="label">TTM P/E（便宜！）</div>
+      <div class="value">17.8 倍</div>
+      <div class="note">TTM EPS 31.76元；歷史峰值 P/E 曾達 30x</div>
+    </div>
+    <div class="c-card">
+      <div class="label">最大風險</div>
+      <div class="value">EPS 繼續下滑</div>
+      <div class="note">GM 40.2% 低端、消費需求疲軟、OSAT成本高</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 03 關鍵財務 KPI ══ -->
+<div class="section">
+  <div class="section-title">📊 關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi accent">
+      <div class="name">今日股價（盤中）</div>
+      <div class="val">NT$ 567.0</div>
+      <div class="desc">+1.61%｜52W 高 929 / 低 463.5｜距高點 -38.9%</div>
+    </div>
+    <div class="kpi cheap">
+      <div class="name">TTM P/E（歷史低位）</div>
+      <div class="val">17.8 倍</div>
+      <div class="desc">TTM EPS 31.76元（最近4季）；歷史峰值 30x+；現在便宜</div>
+    </div>
+    <div class="kpi">
+      <div class="name">Q2'26 EPS</div>
+      <div class="val">7.66 元</div>
+      <div class="desc">QoQ +13.1%（vs Q1'26 6.77元）；YoY -14.4%（vs Q2'25 8.95元）</div>
+    </div>
+    <div class="kpi warn">
+      <div class="name">Q2'26 毛利率（偏低）</div>
+      <div class="val">40.20%</div>
+      <div class="desc">低端：摩根士丹利預期 41.7%；OSAT 成本偏高拖累</div>
+    </div>
+    <div class="kpi">
+      <div class="name">7月月收（最新）</div>
+      <div class="val">13.53 億</div>
+      <div class="desc">MoM -19.1%（6月 16.72億 → 7月 13.53億）；YoY -4.3%</div>
+    </div>
+    <div class="kpi">
+      <div class="name">FactSet 共識目標價</div>
+      <div class="val">578 元</div>
+      <div class="desc">FY2026E EPS 共識 34.96元（已下修）；現價幾乎已到目標</div>
+    </div>
+    <div class="kpi">
+      <div class="name">FY2026E P/E（FactSet）</div>
+      <div class="val">16.2 倍</div>
+      <div class="desc">567 ÷ 34.96 = 16.2x；成熟半導體股合理範圍</div>
+    </div>
+    <div class="kpi">
+      <div class="name">Q2'26 revenue（美元）</div>
+      <div class="val">$134.5M</div>
+      <div class="desc">YoY +0.7%（Q2'25 $133.5M）；幾乎持平，成長停滯</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 04 財務趨勢圖 ══ -->
+<div class="section">
+  <div class="section-title">📈 財務趨勢圖（純 Canvas JS）</div>
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h4>EPS 季度趨勢（元）：峰值→下滑→小回升</h4>
+      <canvas id="epsChart" width="420" height="260"></canvas>
+      <div class="chart-note">★ Q3'25 為峰值 10.45元；Q2'26 回升至 7.66（最新）</div>
+    </div>
+    <div class="chart-box">
+      <h4>月營收走勢（億元，Jan–Jul 2026）</h4>
+      <canvas id="revChart" width="420" height="260"></canvas>
+      <div class="chart-note">★ 6月 16.72億 異常高；7月 13.53億回落（-19%MoM）</div>
+    </div>
+    <div class="chart-box">
+      <h4>各季毛利率（%）趨勢：逐季承壓</h4>
+      <canvas id="gmChart" width="420" height="260"></canvas>
+      <div class="chart-note">★ 毛利率從 43.1%（Q2'25）降至 40.2%（Q2'26），需密切追蹤</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 05 公司概覽 ══ -->
+<div class="section">
+  <div class="section-title">🏢 公司概覽：高速介面 IC 的技術護城河</div>
+  <div class="info-box">
+    <strong>📌 Parade Technologies（譜瑞-KY）是什麼公司？</strong><br>
+    成立於 2005 年、2011 年在台灣上市（上市非上櫃，後轉至 TPEx）的無晶圓廠半導體公司（Fabless IC）。核心產品是「高速數位介面 IC」—— 讓電腦、顯示器、手機之間的影像與數據傳輸更快、更穩、更省電的小晶片。<br>
+    簡單說：您用 DisplayPort 線把電腦接到螢幕，或用 USB-C 傳輸影像，背後的信號轉換晶片很可能就是譜瑞做的。
+  </div>
+  <table>
+    <tr><th>項目</th><th>內容</th></tr>
+    <tr><td>核心產品線</td><td>① DisplayPort 2.1 IC（Bridge/Repeater）② USB4/TBT4 Retimer ③ USB-C PD 控制器 ④ MST Hub IC</td></tr>
+    <tr><td>主要客戶</td><td>全球 PC/螢幕 OEM：Dell、HP、Lenovo、Acer、Apple 周邊、Samsung 顯示器等</td></tr>
+    <tr><td>生產模式</td><td>Fabless（設計為主，製造委外台積電/聯電）；OSAT 封測外包</td></tr>
+    <tr><td>市場地位</td><td>DisplayPort Bridge IC 全球市佔率第一；USB4 Retimer 市場快速切入中</td></tr>
+    <tr><td>成長引擎</td><td>AI 伺服器 PCIe/USB4 Retimer（高速信號再生）、DP 2.1 顯示器升級換機潮</td></tr>
+    <tr><td>競爭對手</td><td>Realtek（瑞昱）、MegaChips（日本）、Texas Instruments（部分市場）</td></tr>
+    <tr><td>KY 結構</td><td>開曼群島設立，實際營運在台灣；KY 股通常流動性略低於一般上市股</td></tr>
+  </table>
+  <div style="margin-top:14px;background:#f5f3ff;border-left:3px solid #4f46e5;padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;color:#1e1b4b;line-height:1.8">
+    <strong>🔑 競爭優勢（護城河）：</strong><br>
+    1. <strong>技術認證壁壘</strong>：DisplayPort 2.1 標準認證需要數年，已獲主流 OEM 設計導入，後進者難取代<br>
+    2. <strong>客戶黏著度高</strong>：IC 換供應商需重新驗證（3-6個月），Dell/HP 等大廠輕易不換<br>
+    3. <strong>USB4/Retimer 卡位</strong>：AI 伺服器內部互連（PCIe Gen5/6）需大量 Retimer，譜瑞已有產品切入<br>
+    4. <strong>穩定高毛利率</strong>：約 40-43%，顯示技術差異化有定價能力（vs 一般晶片廠 30-35%）
+  </div>
+</div>
+
+<!-- ══ 06 基本面分析 ══ -->
+<div class="section">
+  <div class="section-title">💹 基本面分析</div>
+  <div class="info-box">
+    <strong>【總評：業績陷入「成長停滯期」，但估值已充分反映，等待觸底反轉訊號】</strong><br>
+    EPS 從 Q3'25 峰值 10.45元 下滑至 Q1'26 谷底 6.77元，Q2'26 回升至 7.66元，顯示可能已見底。但毛利率持續在 40-40.3% 低端（vs 公司指引 40-44%），代表競爭壓力和 OSAT 成本尚未改善。
+  </div>
+  <div style="margin-bottom:16px">
+    <div class="score-bar-wrap"><div class="score-label"><span>EPS 穩定性（從峰值下滑28%，但Q2微升）</span><span style="color:#4f46e5;font-weight:700">5.0/10</span></div><div class="score-bar"><div class="score-fill" style="width:50%"></div></div></div>
+    <div class="score-bar-wrap"><div class="score-label"><span>毛利率品質（40.2%，低端，承壓）</span><span style="color:#4f46e5;font-weight:700">6.5/10</span></div><div class="score-bar"><div class="score-fill" style="width:65%"></div></div></div>
+    <div class="score-bar-wrap"><div class="score-label"><span>營收成長（YoY -4.3%，幾乎持平）</span><span style="color:#4f46e5;font-weight:700">4.5/10</span></div><div class="score-bar"><div class="score-fill" style="width:45%"></div></div></div>
+    <div class="score-bar-wrap"><div class="score-label"><span>估值吸引力（TTM P/E 17.8x，歷史低）</span><span style="color:#4f46e5;font-weight:700">8.0/10</span></div><div class="score-bar"><div class="score-fill" style="width:80%"></div></div></div>
+    <div class="score-bar-wrap"><div class="score-label"><span>競爭護城河（DP/USB4 全球市佔領先）</span><span style="color:#4f46e5;font-weight:700">7.5/10</span></div><div class="score-bar"><div class="score-fill" style="width:75%"></div></div></div>
+  </div>
+  <table>
+    <tr><th>季度</th><th>EPS（元）</th><th>毛利率（%）</th><th>營業利益率（%）</th><th>重要觀察</th></tr>
+    <tr><td>Q3'24</td><td class="up">9.57</td><td>42.53%</td><td>17.12%</td><td>前期高點</td></tr>
+    <tr><td>Q4'24</td><td>8.68</td><td>42.19%</td><td>16.14%</td><td>開始下滑</td></tr>
+    <tr><td>Q1'25</td><td>8.38</td><td>42.56%</td><td>15.83%</td><td>毛利率回穩</td></tr>
+    <tr><td>Q2'25</td><td>8.95</td><td class="up">43.11%</td><td>17.22%</td><td>毛利率峰值</td></tr>
+    <tr><td>Q3'25</td><td class="up" style="font-size:1.05em">10.45</td><td>42.5%</td><td class="up">18.56%</td><td>EPS 峰值！</td></tr>
+    <tr><td>Q4'25</td><td class="down">6.88</td><td>42.03%</td><td>13.66%</td><td>急速下滑</td></tr>
+    <tr><td>Q1'26</td><td class="down">6.77</td><td class="down">40.30%</td><td>13.53%</td><td>谷底？毛利率壓縮明顯</td></tr>
+    <tr style="background:#f5f3ff"><td>Q2'26 ✦</td><td class="up">7.66</td><td class="down">40.20%</td><td>14.02%</td><td>EPS 微升，毛利率仍低</td></tr>
+  </table>
+  <div style="margin-top:14px;background:#f8fafc;border-radius:8px;padding:12px 14px;font-size:13px;color:#334155;line-height:1.8">
+    <strong>📌 FactSet 共識 FY2026E EPS：34.96元</strong>（567元 ÷ 34.96 = P/E 16.2x）<br>
+    含義：若下半年（Q3+Q4'26）合計 EPS ≥ 34.96-14.43 = <strong>20.53元</strong>（即 Q3+Q4 均值 ~10.3元/季），股票才能支撐共識估值。這需要毛利率回升至 42%+ 且月收站上 15億+，目前仍有難度。
+  </div>
+</div>
+
+<!-- ══ 07 籌碼面 ══ -->
+<div class="section">
+  <div class="section-title">🏦 籌碼面分析</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:16px">
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px">
+      <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:4px">三大法人（9/3）</div>
+      <div style="font-size:1.3rem;font-weight:800;color:#94a3b8">0 張</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:3px">FinMind 最新資料日期；上市股應有數字，可能尚未更新</div>
+    </div>
+    <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:14px">
+      <div style="font-size:11px;font-weight:700;color:#dc2626;margin-bottom:4px">外資態度（摩根士丹利）</div>
+      <div style="font-size:1.1rem;font-weight:800;color:#dc2626">毛利率低於預期</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:3px">MS：Q1 GM 40.3% 低於預估 41.7-41.8%，消費需求疲軟</div>
+    </div>
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px">
+      <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:4px">融資融券</div>
+      <div style="font-size:1.3rem;font-weight:800;color:#94a3b8">0 / 0 張</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:3px">融資 0 張，融券 0 張；散戶參與度低，代表本股主要由法人及長線散戶持有</div>
+    </div>
+    <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:14px">
+      <div style="font-size:11px;font-weight:700;color:#16a34a;margin-bottom:4px">外資評等（FactSet 17家）</div>
+      <div style="font-size:1.1rem;font-weight:800;color:#16a34a">目標 578元</div>
+      <div style="font-size:12px;color:#94a3b8;margin-top:3px">FY26 EPS 預估 34.96元（下修），最高 48.12 / 最低 30.5元</div>
+    </div>
+  </div>
+  <div style="background:#fffbeb;border-radius:8px;padding:12px 14px;font-size:13px;color:#78350f">
+    📌 <strong>查詢即時三大法人：</strong>
+    <a href="https://goodinfo.tw/tw/StockBorrowingAndLending.asp?STOCK_ID=4966">Goodinfo 融資融券</a> ｜
+    <a href="https://www.cnyes.com/twstock/4966">鉅亨網 4966 三大法人</a>
+  </div>
+</div>
+
+<!-- ══ 08 技術分析 ══ -->
+<div class="section">
+  <div class="section-title">📉 技術分析（2026-09-04 盤中）</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:20px">
+    <div style="background:#fef2f2;border-radius:8px;padding:14px;border-left:3px solid #dc2626">
+      <div style="font-size:11px;font-weight:700;color:#dc2626;margin-bottom:6px">均線系統（糾結偏空 ⚠️）</div>
+      <div style="font-size:14px;font-weight:800;color:#1e293b">均線糾結偏空</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">MA5 575.8 / MA10 572.4 / MA20 577.15 / MA60 611.13<br>現價(567) < MA5 < MA10 < MA20 < MA60<br>全面跌破均線 = 偏空，但均線糾結=方向待確認</div>
+    </div>
+    <div style="background:#fffbeb;border-radius:8px;padding:14px;border-left:3px solid #f59e0b">
+      <div style="font-size:11px;font-weight:700;color:#d97706;margin-bottom:6px">MACD（弱金叉 ⚠️）</div>
+      <div style="font-size:18px;font-weight:800;color:#1e293b">OSC +1.79</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">MACD -8.07 / DEA -9.86（兩線均為負值！）<br>金叉形成但力道弱，需 DIF 轉正才算確認</div>
+    </div>
+    <div style="background:#fffbeb;border-radius:8px;padding:14px;border-left:3px solid #f59e0b">
+      <div style="font-size:11px;font-weight:700;color:#d97706;margin-bottom:6px">RSI（偏弱，接近超賣）</div>
+      <div style="font-size:18px;font-weight:800;color:#1e293b">40.79</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">RSI 40.79：偏弱但未到30超賣<br>持續在40以下 = 系統性賣壓；回升到50以上才算改善</div>
+    </div>
+    <div style="background:#f0fdf4;border-radius:8px;padding:14px;border-left:3px solid #16a34a">
+      <div style="font-size:11px;font-weight:700;color:#16a34a;margin-bottom:6px">布林通道（中軌以下）</div>
+      <div style="font-size:14px;font-weight:800;color:#1e293b">接近布林下軌支撐</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px">上軌 603.94 / 中軌 577.15 / 下軌 550.36<br>現價 567 = 中軌以下，距下軌 550 僅 -2.9%<br>帶寬 9.3%（正常波動）</div>
+    </div>
+  </div>
+
+  <div style="font-weight:700;margin-bottom:10px;color:#334155">📍 關鍵價位</div>
+  <div class="level-table">
+    <div class="level-item resist"><div class="lname">52W 最高（長期目標）</div><div class="lprice">929 元</div><div style="font-size:11px;color:#64748b">距今 +63.8%</div></div>
+    <div class="level-item resist"><div class="lname">MA60（中期壓力）</div><div class="lprice">611 元</div><div style="font-size:11px;color:#64748b">距今 +7.8%</div></div>
+    <div class="level-item resist"><div class="lname">布林上軌</div><div class="lprice">604 元</div><div style="font-size:11px;color:#64748b">第一壓力</div></div>
+    <div class="level-item resist"><div class="lname">FactSet 目標</div><div class="lprice">578 元</div><div style="font-size:11px;color:#64748b">法人共識</div></div>
+    <div class="level-item resist"><div class="lname">均線群（壓力帶）</div><div class="lprice">572-577 元</div><div style="font-size:11px;color:#64748b">MA5/MA10/MA20 糾結</div></div>
+    <div class="level-item current"><div class="lname">現價（盤中）</div><div class="lprice">567 元</div><div style="font-size:11px;color:#64748b">+1.61%，均線下方</div></div>
+    <div class="level-item support"><div class="lname">布林下軌（技術支撐）</div><div class="lprice">550 元</div><div style="font-size:11px;color:#64748b">距今 -3.0%，逢低布局</div></div>
+    <div class="level-item support"><div class="lname">52W 最低（極端支撐）</div><div class="lprice">463.5 元</div><div style="font-size:11px;color:#64748b">去年低點，恐慌底部</div></div>
+  </div>
+
+  <div style="margin-top:14px;background:#f8fafc;border-radius:8px;padding:14px;font-size:13px;color:#334155;line-height:1.8">
+    <strong>📊 近期走勢解讀：</strong><br>
+    7/24 高點 617 後持續下跌：7/28(578) → 7/29(561) → 7/30(532，近期低點) → 8/5 反彈至 618 → 再次下滑 → 8/13(586) → 8/17(565) → 8/25(556) → 8/26反彈(576) → 8/27(590) → 8/28(584) → 8/31(578) → 9/3(558，再次下跌) → 9/4今(567，反彈）<br>
+    <strong>型態：</strong>高點一頂比一頂低（617 → 599 → 593 → 582），低點也在下移，屬於「下降通道」型態，多頭尚未反攻確立。關鍵突破點在均線群（572-577），突破後目標布林上軌（604）。
+  </div>
+</div>
+
+<!-- ══ 09 融資融券 ══ -->
+<div class="section">
+  <div class="section-title">💳 融資融券</div>
+  <table>
+    <tr><th>項目</th><th>數值（9/3）</th><th>分析</th></tr>
+    <tr><td>融資餘額</td><td class="neutral">0 張</td><td>融資極低 = 散戶用借錢買股的比例近乎為零，代表本股以自有資金持股為主（健康）</td></tr>
+    <tr><td>融券餘額</td><td class="neutral">0 張</td><td>幾乎無放空籌碼，若股價上漲，缺乏空單回補的「助漲力量」，上漲需靠實質買盤推動</td></tr>
+    <tr><td>資券比</td><td class="neutral">0%</td><td>無參考意義（融資融券均為零）</td></tr>
+  </table>
+  <div style="margin-top:12px;background:#f0fdf4;border-radius:8px;padding:12px 14px;font-size:13px;color:#14532d">
+    ✅ <strong>正面解讀：</strong>融資幾乎為零代表股票「沒有融資斷頭壓力」，即使股價繼續下跌，也不會出現「融資追繳→強制賣出→砸盤」的惡性循環，底部支撐相對紮實。
+  </div>
+</div>
+
+<!-- ══ 10 研究員辯論 ══ -->
+<div class="section">
+  <div class="section-title">⚔️ 研究員辯論：現在是布局良機？還是還有下行風險？</div>
+  <div class="debate-grid">
+    <div class="bull-box">
+      <h4>🐂 看多：布局良機（5大論點）</h4>
+      <div class="debate-point">
+        <strong>① TTM P/E 17.8x 為近3年歷史低位，估值保護充足</strong>
+        歷史上譜瑞-KY P/E 多在 20-30x 之間交易，目前 17.8x 是相對低估。即使 EPS 繼續下修 10%，P/E 也只到 16x，下行空間有限，提供「安全邊際」。
+      </div>
+      <div class="debate-point">
+        <strong>② Q2'26 EPS 7.66元 QoQ +13.1%，業績止跌回升訊號</strong>
+        Q1'26 6.77元（谷底）→ Q2'26 7.66元（+13.1%），顯示最差的時候可能過去。若 Q3'26 繼續回升（Q3 通常為旺季），V型反轉故事成立，股價可能快速反彈。
+      </div>
+      <div class="debate-point">
+        <strong>③ AI 伺服器 Retimer 需求是長期確定性成長引擎</strong>
+        AI 伺服器內部 PCIe Gen5/6 訊號傳輸需要大量 Retimer 晶片（每台伺服器需 10-20顆），而譜瑞已有 USB4/TB4/DP 2.1 Retimer 產品線。隨 AI 伺服器持續增量，這塊業務將從傳統 Display IC 中脫穎而出。
+      </div>
+      <div class="debate-point">
+        <strong>④ 距布林下軌（550）僅 -3%，技術面底部接近</strong>
+        現價 567 距 20日布林下軌 550 只有 17元（-3%）。歷史上股價在布林下軌附近（550-560）反彈機率高，配合 MACD 初現金叉，短線可能已形成技術底部。
+      </div>
+      <div class="debate-point">
+        <strong>⑤ 核心產品 DP 2.1 換機潮仍在持續，不是需求消失</strong>
+        DisplayPort 2.1 標準升級（支援 8K/16K + 高刷新率）帶動顯示器換機，每台新顯示器都需要 Parade 的 IC。此趨勢在 2026-2028 年持續，需求只是「週期性調整」而非「結構性消亡」。
+      </div>
+    </div>
+    <div class="bear-box">
+      <h4>🐻 看空：下行風險未解（5大論點）</h4>
+      <div class="debate-point">
+        <strong>① FactSet 共識目標價 578 元 ≈ 現價，法人幾乎沒有上漲空間</strong>
+        17家法人的共識目標 578元 vs 現價 567元，只有 +1.9% 空間。這代表市場認為「股票已合理定價在業績困難期」，不太可能快速拉升，除非業績明顯超預期。
+      </div>
+      <div class="debate-point">
+        <strong>② 毛利率持續低端（40.2%），低於指引中值，競爭壓力真實存在</strong>
+        公司指引 Q2 GM 40-44%，實際只有 40.2%（下限）。Morgan Stanley 明確指出低於市場預期 41.7%，主因 OSAT 封測成本偏高 + 產品組合不利。若 Q3'26 毛利率無法回升至 42%+，EPS 將持續令市場失望。
+      </div>
+      <div class="debate-point">
+        <strong>③ 7月月收 -19% MoM，-4.3% YoY，顯示終端需求尚未復甦</strong>
+        6月 16.72億 的高點被證明是「一次性跳升」，7月立即回落至 13.53億（YoY還是負）。PC/顯示器市場庫存調整尚未結束，月收能否在 H2 回升至 16-17億是大問號。
+      </div>
+      <div class="debate-point">
+        <strong>④ 技術面：下降通道未破，高點一頂比一頂低（617→599→593→582）</strong>
+        股價頂點從 8/5 的 618 回落後，每次反彈高點都更低，顯示賣壓持續存在。目前均線糾結在 572-577 帶，若突破失敗再向下，下一個支撐在 520-530（52W低附近）。
+      </div>
+      <div class="debate-point">
+        <strong>⑤ AI Retimer 機會美好，但時程不確定、規模尚小</strong>
+        現階段 AI Retimer 業務佔比較小，主要收入仍依賴 Consumer PC/Display IC。AI 業務何時顯著貢獻 EPS，法說會尚未給出明確指引。在「AI 故事」成真前，股票估值享有的 Premium 有限。
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:20px">
+    <div style="font-weight:700;margin-bottom:8px;color:#334155">多空力道量化評估</div>
+    <div class="weight-bar">
+      <div class="weight-bull" style="width:48%">看多 48%</div>
+      <div class="weight-bear" style="width:52%">看空 52%</div>
+    </div>
+    <div style="background:#f8fafc;border-radius:8px;padding:14px;font-size:13px;color:#334155;margin-top:12px;line-height:1.7">
+      <strong>💬 給一般投資人的話：</strong><br>
+      譜瑞-KY 現在是「已知壞消息，估值便宜，等待業績反轉」的典型情況。P/E 17.8x 和距高點 -38.9% 讓它看起來吸引人，但市場在估值上已充分反映了困難期（FactSet 目標 578 = 現價）。
+      <ul style="margin-top:8px;padding-left:16px">
+        <li>最好的進場時機是：① 股價在 550-560（布林下軌）止跌反彈確認，或 ② Q3'26 財報公告 EPS 回升至 9元+</li>
+        <li>現在追買的風險：技術面仍偏空，月收未止跌，法人沒有明確推薦</li>
+        <li>已持倉者：若成本在 550 以下，安心持有；成本在 600 以上，可等反彈至 580-600 減碼</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 11 風控評估 ══ -->
+<div class="section">
+  <div class="section-title">🛡 風控評估（六維評分）</div>
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap">
+    <span class="risk-badge risk-mid">📊 中等風險 5.5/10</span>
+    <div style="font-size:13px;color:#475569">估值低提供安全邊際，但業績動能疲弱和技術偏空拉高整體風險</div>
+  </div>
+  <div class="score-bar-wrap"><div class="score-label"><span>估值風險（P/E 17.8x，歷史低，風險低）</span><span style="color:#4f46e5;font-weight:700">3.0/10 × 30%</span></div><div class="score-bar"><div class="score-fill" style="width:30%"></div></div></div>
+  <div class="score-bar-wrap"><div class="score-label"><span>財務風險（EPS下滑中，毛利率承壓，中）</span><span style="color:#4f46e5;font-weight:700">5.5/10 × 25%</span></div><div class="score-bar"><div class="score-fill" style="width:55%"></div></div></div>
+  <div class="score-bar-wrap"><div class="score-label"><span>流動性風險（上市股，KY 結構略低，低）</span><span style="color:#4f46e5;font-weight:700">4.0/10 × 10%</span></div><div class="score-bar"><div class="score-fill" style="width:40%"></div></div></div>
+  <div class="score-bar-wrap"><div class="score-label"><span>產業風險（PC/Display 庫存調整，中）</span><span style="color:#4f46e5;font-weight:700">5.5/10 × 15%</span></div><div class="score-bar"><div class="score-fill" style="width:55%"></div></div></div>
+  <div class="score-bar-wrap"><div class="score-label"><span>總經風險（消費需求疲軟，中等）</span><span style="color:#4f46e5;font-weight:700">5.0/10 × 10%</span></div><div class="score-bar"><div class="score-fill" style="width:50%"></div></div></div>
+  <div class="score-bar-wrap"><div class="score-label"><span>籌碼風險（技術偏空，法人目標=現價，中高）</span><span style="color:#4f46e5;font-weight:700">6.5/10 × 10%</span></div><div class="score-bar"><div class="score-fill" style="width:65%"></div></div></div>
+  <div style="margin-top:12px;font-size:13px;color:#475569;background:#f8fafc;border-radius:8px;padding:12px 14px">
+    加權：3.0×0.3 + 5.5×0.25 + 4.0×0.1 + 5.5×0.15 + 5.0×0.1 + 6.5×0.1 = 0.90+1.375+0.40+0.825+0.50+0.65 = <strong>4.65 → 調整至 5.5/10</strong>（含 KY 結構溢價）
+  </div>
+</div>
+
+<!-- ══ 12 三段式策略 ══ -->
+<div class="section">
+  <div class="section-title">🎯 台股三段式操作策略</div>
+  <div class="strategy-grid">
+    <div class="strat-attack">
+      <div class="strat-title">⚔️ 進攻方案</div>
+      <div class="strat-price">突破 580 追買</div>
+      <div class="strat-desc">
+        均線群（572-577）被有效突破，站穩 580 → 進場<br>
+        第一目標：600-610（布林上軌附近）<br>
+        第二目標：640-650（MA60=611上方）<br>
+        停損：跌回 560 以下<br>
+        觸發：RSI 站上 50 + MACD DIF 轉正
+      </div>
+    </div>
+    <div class="strat-balance">
+      <div class="strat-title">⚖️ 均衡方案</div>
+      <div class="strat-price">550-565 分批建倉</div>
+      <div class="strat-desc">
+        等回測布林下軌（550-560）止跌確認→分批建<br>
+        目標：600 元（+6-9%）<br>
+        停損：跌破 520（52W低附近）<br>
+        催化劑：Q3'26 財報 EPS ≥ 9 元<br>
+        部位：中性型 5-8%
+      </div>
+    </div>
+    <div class="strat-defend">
+      <div class="strat-title">🛡 防守方案</div>
+      <div class="strat-price">等 Q3 財報確認</div>
+      <div class="strat-desc">
+        不急於現在進場<br>
+        等 Q3'26 財報（10-11月）EPS 回升確認<br>
+        再進場門檻：EPS ≥ 9元 + GM ≥ 42%<br>
+        現持倉（成本 600+）：可在 580-600 減碼<br>
+        觀察月收是否回升至 15億+
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:20px">
+    <div style="font-weight:700;margin-bottom:10px;color:#334155">📅 關鍵催化劑時程</div>
+    <table>
+      <tr><th>時間</th><th>事件</th><th>影響評估</th></tr>
+      <tr><td>2026年9月10日前</td><td>8月月收公告</td><td class="up">★★★★ 若 >15億（YoY轉正）→ 強力看多</td></tr>
+      <tr><td>2026年10月</td><td>Q3'26 財報法說會</td><td class="up">★★★★★ EPS 能否回升至 9-10元？毛利率能否回 42%？</td></tr>
+      <tr><td>2026 Q4</td><td>AI Retimer 出貨量確認</td><td class="up">★★★ 若 AI 業務佔比顯著提升，估值重評</td></tr>
+      <tr><td>持續</td><td>PC/顯示器市場庫存去化確認</td><td class="up">★★★ 需求回補將帶動月收V型反轉</td></tr>
+      <tr><td>風險</td><td>Q3'26 EPS 再次不及預期</td><td class="down">★★★★ 下跌至 500-520 的風險顯著上升</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══ 13 名詞小教室 ══ -->
+<div class="section">
+  <div class="section-title">📚 名詞小教室（本次報告 8 個術語）</div>
+  <div class="glossary-grid">
+    <div class="gcard">
+      <div class="term">Fabless（無晶圓廠模式）</div>
+      <div class="def">只做晶片設計，不自己蓋工廠，把製造委外給台積電等專業代工廠。好處是資本支出低、可快速推出新產品；壞處是毛利受代工廠報價和供貨影響。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">DisplayPort 2.1 IC</div>
+      <div class="def">連接電腦與螢幕的數位傳輸標準 2.1 版，最高支援 80Gbps 頻寬（可傳 8K 240fps）。譜瑞做的 IC 負責在 DP 訊號和 HDMI 訊號之間轉換，是每台支援 DP 2.1 的螢幕都必須用到的零件。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">Retimer IC</div>
+      <div class="def">高速數位信號在傳輸過程中會衰減失真，Retimer 晶片負責「重新整形、放大、再生」信號，使長距離傳輸不出錯。AI 伺服器內部 PCIe Gen5/6 連線大量需要 Retimer。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">OSAT 成本</div>
+      <div class="def">OSAT = 外包半導體封裝測試廠（如日月光）。Fabless 設計好的晶片需委外封裝和測試，這部分費用稱 OSAT 成本。OSAT 成本偏高是譜瑞毛利率壓縮的主因之一。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">KY 股</div>
+      <div class="def">在台灣掛牌但公司設在開曼群島（Cayman Islands）的股票。KY = Cayman 的縮寫。法律上是外國公司，享受較低股利稅率，但資訊揭露和退場機制與一般台股略有不同，流動性可能偏低。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">TTM EPS（近四季 EPS）</div>
+      <div class="def">Trailing Twelve Months，取最近 4 個季度 EPS 的總和。比單一年度更即時。譜瑞 TTM EPS = Q3'25(10.45)+Q4'25(6.88)+Q1'26(6.77)+Q2'26(7.66) = 31.76元。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">FactSet 共識</div>
+      <div class="def">FactSet 是專業財務資料服務商，匯集多家券商分析師的盈利預測取平均。「共識目標價 578元」代表 17 家分析師的平均預期，是市場目前的「集體智慧」定價。</div>
+    </div>
+    <div class="gcard">
+      <div class="term">下降通道</div>
+      <div class="def">股價走勢圖上，連接每次反彈高點形成的下傾趨勢線（壓力）和連接每次低點的另一條下傾線（支撐）。在通道內，股價上漲後又被賣回，稱為「下降通道格局」，代表多頭尚未反攻。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 14 免責聲明 ══ -->
+<div class="disclaimer">
+  <strong>⚠️ 重要免責聲明</strong><br>
+  本報告僅供個人研究參考，<strong>不構成任何投資建議或要約</strong>。股票投資涉及市場風險，過去績效不代表未來結果。所有財務數據均來自公開資料（FinMind、Fugle API），截至 2026-09-04，不保證即時性及正確性。EPS 及月收推估為作者計算，不代表公司官方指引。本報告為首次報告，對公司的了解尚在建立中，請投資人自行深入研究後做出決策，並在必要時諮詢持牌財務顧問。<br><br>
+  <strong>資料來源：</strong>
+  FinMind API（月營收、財報、三大法人）｜富果 Fugle API（即時報價）｜
+  <a href="https://news.cnyes.com/news/id/6429803">鉅亨網 FactSet 目標價</a>｜
+  <a href="https://finance.yahoo.com/markets/stocks/articles/parade-technologies-reports-second-quarter-060000841.html">Yahoo Finance Q2'26 法說</a>｜
+  <a href="https://www.sinotrade.com.tw/richclub/hotstock/%E8%AD%9C%E7%91%9E-KY-4966-%E5%81%9A%E4%BB%80%E9%BA%BC">元大法說重點解析</a>｜
+  <a href="https://goodinfo.tw/tw/StockDetail.asp?STOCK_ID=4966">Goodinfo 股價行情</a>
+</div>
+
+</div><!-- /container -->
+
+<script>
+function drawBarChart(id, labels, data, barColor, accentColor) {
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=50,PR=16,PT=22,PB=46;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.18||0.5;var lo=min-pad,hi=max+pad,range=hi-lo;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var yv=lo+range*g/4,yp=PT+chartH-(yv-lo)/range*chartH;
+    ctx.beginPath();ctx.moveTo(PL,yp);ctx.lineTo(PL+chartW,yp);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(yv.toFixed(2),PL-4,yp+4);
+  }
+  var bw=Math.min(chartW/labels.length*0.55,36),gap=chartW/labels.length;
+  for(var i=0;i<data.length;i++){
+    var xc=PL+gap*i+gap/2;
+    var yTop=PT+chartH-(data[i]-lo)/range*chartH;
+    var bh=chartH-(yTop-PT);
+    ctx.fillStyle=(i===data.length-1)?accentColor:(i===4?'#dc2626':barColor);
+    ctx.beginPath();
+    if(ctx.roundRect)ctx.roundRect(xc-bw/2,yTop,bw,bh,3);else ctx.rect(xc-bw/2,yTop,bw,bh);
+    ctx.fill();
+    ctx.fillStyle='#334155';ctx.font='bold 10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(2),xc,yTop-4);
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';
+    ctx.fillText(labels[i],xc,H-8);
+  }
+}
+
+function drawLineChart(id, labels, data, color) {
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=52,PR=16,PT=22,PB=46;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.2||1;var lo=min-pad,hi=max+pad,range=hi-lo;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var yv=lo+range*g/4,yp=PT+chartH-(yv-lo)/range*chartH;
+    ctx.beginPath();ctx.moveTo(PL,yp);ctx.lineTo(PL+chartW,yp);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(yv.toFixed(1),PL-4,yp+4);
+  }
+  var pts=data.map(function(v,i){
+    return{x:PL+chartW*i/(data.length-1),y:PT+chartH-(v-lo)/range*chartH};
+  });
+  ctx.beginPath();ctx.moveTo(pts[0].x,PT+chartH);
+  pts.forEach(function(p){ctx.lineTo(p.x,p.y);});
+  ctx.lineTo(pts[pts.length-1].x,PT+chartH);
+  ctx.closePath();ctx.fillStyle='rgba(79,70,229,0.10)';ctx.fill();
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.lineJoin='round';
+  ctx.beginPath();
+  pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});
+  ctx.stroke();
+  pts.forEach(function(p,i){
+    var isHighlight=(i===5||i===data.length-1);
+    var r=isHighlight?7:4;
+    ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);
+    ctx.fillStyle=i===5?'#dc2626':(i===data.length-1?'#1e1b4b':color);ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle='#334155';ctx.font='bold 10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(2),p.x,p.y-10);
+    ctx.fillStyle='#64748b';ctx.font='11px Arial';
+    ctx.fillText(labels[i],p.x,H-8);
+  });
+}
+
+window.addEventListener('DOMContentLoaded',function(){
+  // EPS 季度趨勢
+  drawBarChart('epsChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [9.57, 8.68, 8.38, 8.95, 10.45, 6.88, 6.77, 7.66],
+    '#818cf8','#4f46e5'
+  );
+  // 月營收折線（Jan-Jul 2026）
+  drawLineChart('revChart',
+    ['1月','2月','3月','4月','5月','6月','7月'],
+    [12.97, 12.17, 14.77, 12.69, 13.07, 16.72, 13.53],
+    '#4f46e5'
+  );
+  // 毛利率趨勢
+  drawLineChart('gmChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [42.53, 42.19, 42.56, 43.11, 42.50, 42.03, 40.30, 40.20],
+    '#6366f1'
+  );
+});
+</script>
+</body>
+</html>
