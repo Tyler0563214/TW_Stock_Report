@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股大盤分析 2026/09/17｜FOMC降息日 + 美債5% + 油$105 三重矛盾</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d1117; color: #e6edf3; font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 1.5; }
+  .header { background: linear-gradient(135deg, #1a1508 0%, #0d1117 100%); border-bottom: 2px solid #e3b341; padding: 18px 24px; }
+  .header h1 { font-size: 22px; font-weight: 700; }
+  .header .sub { font-size: 12px; color: #8b949e; margin-top: 4px; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-right: 6px; }
+  .badge-ok { background: #0f2d1a; color: #3fb950; border: 1px solid #3fb950; }
+  .badge-warn { background: #2d2008; color: #e3b341; border: 1px solid #e3b341; }
+  .badge-danger { background: #3d1a1a; color: #f85149; border: 1px solid #f85149; }
+  .badge-info { background: #1a2540; color: #79c0ff; border: 1px solid #388bfd; }
+  .ticker-bar { background: #161b22; border-bottom: 1px solid #21262d; padding: 10px 24px; display: flex; gap: 20px; flex-wrap: wrap; }
+  .ticker-item { display: flex; flex-direction: column; align-items: center; min-width: 90px; }
+  .ticker-label { font-size: 10px; color: #8b949e; }
+  .ticker-val { font-size: 15px; font-weight: 700; }
+  .up { color: #3fb950; } .dn { color: #f85149; } .neu { color: #e6edf3; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 20px 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  @media (max-width: 900px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  .card { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .card-title { font-size: 13px; font-weight: 700; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #21262d; }
+  .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #21262d; }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-label { color: #8b949e; font-size: 13px; }
+  .stat-val { font-weight: 700; font-size: 13px; }
+  .alert-box { border-radius: 8px; padding: 14px 18px; margin-bottom: 16px; }
+  .alert-red { background: #2d1010; border: 1px solid #f85149; }
+  .alert-yellow { background: #2d2008; border: 1px solid #e3b341; }
+  .alert-green { background: #0f2d1a; border: 1px solid #3fb950; }
+  .alert-blue { background: #0d1f38; border: 1px solid #388bfd; }
+  .alert-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+  .section-title { font-size: 16px; font-weight: 700; color: #e6edf3; margin: 24px 0 12px; padding-left: 10px; border-left: 4px solid #e3b341; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #0d1117; color: #8b949e; font-weight: 600; padding: 8px 10px; text-align: left; border-bottom: 1px solid #21262d; }
+  td { padding: 7px 10px; border-bottom: 1px solid #21262d; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+  .highlight { color: #e3b341; font-weight: 700; }
+  .red { color: #f85149; font-weight: 700; }
+  .green { color: #3fb950; font-weight: 700; }
+  .blue { color: #79c0ff; font-weight: 700; }
+  .timeline-item { display: flex; gap: 12px; margin-bottom: 10px; }
+  .tl-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .tl-red { background: #f85149; } .tl-yellow { background: #e3b341; } .tl-green { background: #3fb950; } .tl-blue { background: #388bfd; }
+  .tl-content { font-size: 13px; color: #c9d1d9; }
+  .tl-date { font-size: 11px; color: #8b949e; }
+  .debate-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width:700px) { .debate-col { grid-template-columns:1fr; } }
+  .bull-card { background: #0f2d1a; border: 1px solid #3fb950; border-radius: 8px; padding: 14px; }
+  .bear-card { background: #2d1010; border: 1px solid #f85149; border-radius: 8px; padding: 14px; }
+  .debate-head { font-weight: 700; font-size: 14px; margin-bottom: 10px; }
+  .debate-item { display: flex; gap: 8px; margin-bottom: 8px; font-size: 13px; color: #c9d1d9; }
+  .verdict { background: #1c2128; border: 1px solid #388bfd; border-radius: 8px; padding: 14px; margin-top: 12px; }
+  .footer { background: #161b22; border-top: 1px solid #21262d; padding: 16px 24px; margin-top: 32px; }
+  .footer p { font-size: 11px; color: #6e7681; line-height: 1.6; }
+  .big-num { font-size: 32px; font-weight: 900; }
+  .contrast-box { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; padding: 16px; background: #161b22; border-radius: 10px; margin-bottom: 16px; border: 1px solid #21262d; }
+  .contrast-arrow { font-size: 24px; color: #8b949e; }
+  .contrast-side { text-align: center; }
+  .contrast-label { font-size: 11px; color: #8b949e; margin-bottom: 4px; }
+  .contrast-val { font-size: 22px; font-weight: 900; }
+  .gauge-row { display: flex; gap: 12px; margin-bottom: 12px; }
+  .gauge-item { flex: 1; background: #0d1117; border-radius: 8px; padding: 12px; text-align: center; }
+  .gauge-val { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+  .gauge-label { font-size: 11px; color: #8b949e; }
+  .flip-card { background: #161b22; border-radius: 10px; padding: 16px; border-left: 5px solid #e3b341; margin-bottom: 12px; }
+  .flip-title { font-weight: 700; font-size: 14px; margin-bottom: 8px; color: #e3b341; }
+  .flip-body { font-size: 13px; color: #c9d1d9; line-height: 1.7; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>⚡ 台股大盤分析 — FOMC降息日三重矛盾</h1>
+  <div class="sub">2026年09月17日（週三）｜資料時間：13:18｜美聯儲今夜決議 · 美債5% · 油價$105</div>
+  <div style="margin-top:10px;">
+    <span class="badge badge-ok">大盤偏多 +1.37%</span>
+    <span class="badge badge-info">FOMC今夜決議</span>
+    <span class="badge badge-danger">美債10Y 5.006%</span>
+    <span class="badge badge-danger">布蘭特油 $105.70</span>
+    <span class="badge badge-warn">費半 11,246（年內-23%）</span>
+  </div>
+</div>
+
+<div class="ticker-bar">
+  <div class="ticker-item">
+    <span class="ticker-label">TWII（今日）</span>
+    <span class="ticker-val up">46,438</span>
+    <span class="ticker-label up">+629（+1.37%）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">費半 SOX</span>
+    <span class="ticker-val up">11,246</span>
+    <span class="ticker-label up">+70（+0.63%）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">美債10Y ⚠️</span>
+    <span class="ticker-val dn">5.006%</span>
+    <span class="ticker-label dn">接近52週高5.02%！</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">布蘭特油 🔴</span>
+    <span class="ticker-val dn">$105.70</span>
+    <span class="ticker-label dn">+0.71%（持續上攻）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">黃金</span>
+    <span class="ticker-val up">$4,336</span>
+    <span class="ticker-label up">+0.27%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">DXY美元指數</span>
+    <span class="ticker-val neu">100.27</span>
+    <span class="ticker-label dn">-0.01%（仍低於101）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">USD/TWD</span>
+    <span class="ticker-val up">31.867</span>
+    <span class="ticker-label up">台幣持續偏強</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 今日三大矛盾 -->
+<div class="alert-box alert-yellow">
+  <div class="alert-title" style="color:#e3b341;">⚡ 09/17 三重矛盾：股漲 vs 債漲 vs 油漲，市場邏輯衝突！</div>
+  <p style="font-size:13px;color:#c9d1d9;line-height:1.8;">
+    今日台股大漲 <span class="green">+1.37%</span>，理論上反映「FOMC今夜降息25bp落地」的激勵，但同時出現三個矛盾訊號：<br>
+    ① <strong>美債10Y 5.006%（接近52週高5.02%）</strong> — 若Fed降息，長端利率應下降；但長債持續賣壓意味市場預期「鷹派降息」（降但不多）或通膨風險重燃<br>
+    ② <strong>布蘭特油 $105.70</strong>（從08/03低點$83.54暴漲+26.5%）— 油價大漲代表通膨壓力，與降息邏輯矛盾；可能是地緣政治/OPEC供應側衝擊<br>
+    ③ <strong>費半 11,246</strong>（較08/19的11,992繼續下行，距52週高14,655跌幅達-23%）— 科技/AI估值仍承壓<br>
+    <strong>今日股市上漲的最大風險：「利多出盡賣」（Buy the rumor, sell the news）—— 若鮑威爾今夜降息但措辭偏鷹，台股明日可能反轉。</strong>
+  </p>
+</div>
+
+<!-- 三大變化對比（自08/19以來） -->
+<div class="section-title">📈 自08/19費半崩跌以來的市場大轉變</div>
+<div class="grid-3">
+  <div class="card">
+    <div class="card-title">美債10年期殖利率</div>
+    <div class="contrast-box">
+      <div class="contrast-side"><div class="contrast-label">08/19（費半崩跌日）</div><div class="contrast-val up">4.706%</div></div>
+      <div class="contrast-arrow">→</div>
+      <div class="contrast-side"><div class="contrast-label">09/17（今日）</div><div class="contrast-val dn">5.006%</div></div>
+    </div>
+    <p style="font-size:12px;color:#c9d1d9;">上升 <span class="red">+30bps</span>，接近52週高5.02%。<br>鮑威爾暗示降息後，長端利率反而上升（市場質疑降息可持續性 or 通膨擔憂加劇）。</p>
+  </div>
+  <div class="card">
+    <div class="card-title">布蘭特原油</div>
+    <div class="contrast-box">
+      <div class="contrast-side"><div class="contrast-label">08/03（08週反彈起點）</div><div class="contrast-val up">$83.54</div></div>
+      <div class="contrast-arrow">→</div>
+      <div class="contrast-side"><div class="contrast-label">09/17（今日）</div><div class="contrast-val dn">$105.70</div></div>
+    </div>
+    <p style="font-size:12px;color:#c9d1d9;">上漲 <span class="red">+26.5%</span>（約6週）。<br>美伊停火徹底破局 + OPEC減產 → 油價狂漲，通膨風險重燃，壓縮降息空間。</p>
+  </div>
+  <div class="card">
+    <div class="card-title">費城半導體（SOX）</div>
+    <div class="contrast-box">
+      <div class="contrast-side"><div class="contrast-label">52週高點（今年初）</div><div class="contrast-val up">14,655</div></div>
+      <div class="contrast-arrow">→</div>
+      <div class="contrast-side"><div class="contrast-label">09/17（今日）</div><div class="contrast-val dn">11,246</div></div>
+    </div>
+    <p style="font-size:12px;color:#c9d1d9;">下跌 <span class="red">-23.3%</span>（技術熊市）。<br>油漲+高債息持續壓制科技估值，AI訂單可見度雖強但本益比下修。</p>
+  </div>
+</div>
+
+<!-- FOMC解析 -->
+<div class="section-title">🏦 今夜焦點：FOMC決議（美東時間14:00）</div>
+<div class="alert-box alert-blue">
+  <div class="alert-title" style="color:#79c0ff;">市場已price-in降息25bp，焦點轉向「鮑威爾措辭是否偏鷹」</div>
+  <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+    今日台股上漲+1.37%，大部分是提前反映「9月降息確認」。FOMC最重要的不再是降不降，而是：<br>
+    ① <strong>點陣圖（Dot Plot）</strong>：2026年全年降息幾次？若從4次縮減到2-3次 → 鷹派，科技股壓力<br>
+    ② <strong>通膨評估</strong>：油價$105.70讓核心PCE有上行壓力，鮑威爾若提通膨「上行風險」→ 台股明日反轉<br>
+    ③ <strong>記者會措辭</strong>：「謹慎降息」vs「寬鬆週期開啟」語境差異巨大<br>
+    <strong>最佳情境（台股明日續漲）</strong>：降息25bp + 暗示年底前再降一次 + 通膨視為暫時<br>
+    <strong>最差情境（台股明日暴跌）</strong>：降息25bp + 「one and done」暗示 + 提及油價通膨風險
+  </p>
+</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">今夜 FOMC 情境分析</div>
+    <div class="stat-row"><span class="stat-label">基本情境（60%）</span><span class="stat-val up">降25bp + 措辭中性 → 台股小漲或平盤</span></div>
+    <div class="stat-row"><span class="stat-label">樂觀情境（15%）</span><span class="stat-val up">降25bp + 鴿派信號 → 台股+1-2%</span></div>
+    <div class="stat-row"><span class="stat-val dn" style="width:100%">鷹派情境（25%）：降25bp但「鷹派降息」</span></div>
+    <div class="stat-row"><span class="stat-label"> → 點陣圖縮減</span><span class="stat-val dn">→ 美債10Y衝破5.02% → 台股明日-1%~-2%</span></div>
+    <div class="stat-row"><span class="stat-label">決議時間</span><span class="stat-val">美東 14:00（台灣時間 09/18 凌晨2:00）</span></div>
+    <div class="stat-row"><span class="stat-label">鮑威爾記者會</span><span class="stat-val">美東 14:30（台灣 09/18 凌晨2:30）</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">利率路徑對台股影響</div>
+    <div class="stat-row"><span class="stat-label">美債10Y 若降至4.7%</span><span class="stat-val up">科技股估值回升，台積電目標價上調</span></div>
+    <div class="stat-row"><span class="stat-label">美債10Y 若維持5%+</span><span class="stat-val dn">費半難以回升，科技本益比壓縮繼續</span></div>
+    <div class="stat-row"><span class="stat-label">美債10Y 若突破5.02%（52週高）</span><span class="stat-val dn">⚠️ 技術性突破，恐慌拋售科技股風險</span></div>
+    <div class="stat-row"><span class="stat-label">油價若繼續漲至$110</span><span class="stat-val dn">PCE通膨升溫，Fed降息路徑受阻</span></div>
+    <div class="stat-row"><span class="stat-label">台積電ADR今日估計</span><span class="stat-val up">隨台股上漲，估約$420-430</span></div>
+  </div>
+</div>
+
+<!-- T86籌碼大逆轉 -->
+<div class="section-title">💼 外資籌碼大逆轉！（T86 09/16數據）</div>
+<div class="alert-box alert-green">
+  <div class="alert-title" style="color:#3fb950;">🔄 重大逆轉：外資09/16大買面板+記憶體，賣台積電！</div>
+  <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+    08/18外資大賣面板（友達-32,024、群創-29,692）；到了09/16，外資完全逆轉：<br>
+    <span class="green">友達 +52,472張、力積電 +42,640張、群創 +20,867張、華邦電 +18,474張</span> — 面板+記憶體族群全面回補！<br>
+    同時，外資賣出台積電 <span class="red">-8,745張</span>、緯創 <span class="red">-9,687張</span> — 從AI/半導體獲利了結，轉進面板/記憶體低估值族群。<br>
+    全市場外資合計 <span class="green">+85,516張</span>（淨買超！）、投信 <span class="green">+125,032張</span>（連買），雙多合力。<br>
+    <strong>這是典型的「資金輪動」訊號：高估值科技（台積電/緯創）→ 低估值舊經濟（面板/記憶體）</strong>
+  </p>
+</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">外資買超前10名（T86 09/16）</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>代碼</th><th>名稱</th><th>外資淨買(張)</th><th>族群</th></tr>
+        <tr><td>2409</td><td>友達</td><td class="up">+52,472</td><td class="highlight">面板（08/18-35,767後大回補）</td></tr>
+        <tr><td>6770</td><td>力積電</td><td class="up">+42,640</td><td class="highlight">記憶體（08/18-35,767後大回補）</td></tr>
+        <tr><td>3481</td><td>群創</td><td class="up">+20,867</td><td class="highlight">面板（08/18-29,692後回補）</td></tr>
+        <tr><td>2344</td><td>華邦電</td><td class="up">+18,474</td><td class="highlight">記憶體（DRAM）</td></tr>
+        <tr><td>2609</td><td>陽明</td><td class="up">+13,282</td><td class="up">航運（持續買超）</td></tr>
+        <tr><td>2834</td><td>臺企銀</td><td class="up">+11,140</td><td class="neu">金融</td></tr>
+        <tr><td>2889</td><td>國票金</td><td class="up">+9,670</td><td class="neu">金融</td></tr>
+        <tr><td>2481</td><td>強茂</td><td class="up">+9,276</td><td class="up">半導體元件</td></tr>
+        <tr><td>2887</td><td>台新新光金</td><td class="up">+7,598</td><td class="neu">金控（08/18大賣後回補）</td></tr>
+        <tr><td>2303</td><td>聯電</td><td class="up">+6,968</td><td class="up">半導體成熟製程</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">外資賣超前10名（T86 09/16）</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>代碼</th><th>名稱</th><th>外資淨賣(張)</th><th>族群</th></tr>
+        <tr><td>00981A</td><td>主動統一台股增長ETF</td><td class="dn">-24,241</td><td>ETF（自營避險）</td></tr>
+        <tr><td>009816</td><td>凱基台灣TOP50</td><td class="dn">-18,735</td><td>ETF</td></tr>
+        <tr><td>2002</td><td>中鋼</td><td class="dn">-16,481</td><td class="dn">鋼鐵（油漲成本壓力？）</td></tr>
+        <tr><td>0050</td><td>元大台灣50</td><td class="dn">-16,247</td><td>ETF（被贖回）</td></tr>
+        <tr><td>2890</td><td>永豐金</td><td class="dn">-12,739</td><td class="neu">金融（但投信+16,189對沖）</td></tr>
+        <tr><td>3231</td><td>緯創</td><td class="dn">-9,687</td><td class="dn">AI伺服器（獲利了結）</td></tr>
+        <tr><td>00991A</td><td>主動復華未來50 ETF</td><td class="dn">-8,966</td><td>ETF</td></tr>
+        <tr><td>2330</td><td>台積電</td><td class="dn">-8,745</td><td class="dn">半導體龍頭（獲利了結）</td></tr>
+        <tr><td>6505</td><td>台塑化</td><td class="dn">-7,952</td><td class="dn">石化（油漲但盈虧複雜）</td></tr>
+        <tr><td>00919</td><td>群益台灣精選高息</td><td class="dn">-7,273</td><td>ETF</td></tr>
+      </table>
+    </div>
+    <div style="margin-top:8px;font-size:12px;color:#8b949e;">
+      全市場外資：<span class="green">+85,516張</span>｜投信：<span class="green">+125,032張</span>｜自營：-599,631張（ETF避險）
+    </div>
+  </div>
+</div>
+
+<!-- 資金輪動解析 -->
+<div class="section-title">🔄 資金輪動主題解析</div>
+<div class="grid-3">
+  <div class="flip-card" style="border-color:#3fb950;">
+    <div class="flip-title" style="color:#3fb950;">🟢 新多頭題材：面板/記憶體觸底輪動</div>
+    <div class="flip-body">
+      外資在08/18賣光面板後，於09/16大幅回補（友達+5.2萬、力積電+4.3萬、群創+2.1萬）。<br>
+      <strong>可能原因</strong>：<br>
+      ①面板/記憶體股價跌至歷史低估值，本益比/PB均接近底部<br>
+      ②DRAM/NAND需求Q4回升（Samsung/SK海力士法說提到2026H2去化完成）<br>
+      ③面板需求受惠油漲後消費降級（便宜面板TV需求增加）<br>
+      <strong>代表個股</strong>：友達2409、群創3481、力積電6770、華邦電2344
+    </div>
+  </div>
+  <div class="flip-card" style="border-color:#e3b341;">
+    <div class="flip-title" style="color:#e3b341;">🟡 持續題材：航運（油漲雙刃劍）</div>
+    <div class="flip-body">
+      陽明09/16外資仍持續買超+13,282張，航運族群從08/18以來持續獲外資青睞。<br>
+      <strong>油漲對航運雙刃劍</strong>：<br>
+      ①利空：燃油成本上升（油$105對HFO成本影響+10-15%）<br>
+      ②利多：波斯灣繞道 → 航線距離拉長 → 運費指數上升（SCFI/BDI走強）<br>
+      目前來看，航線拉長效益 > 燃油成本，外資持續買超確認多頭。<br>
+      <strong>代表個股</strong>：長榮2603、陽明2609（陽明更受外資偏愛）
+    </div>
+  </div>
+  <div class="flip-card" style="border-color:#f85149;">
+    <div class="flip-title" style="color:#f85149;">🔴 降溫題材：AI伺服器/台積電</div>
+    <div class="flip-body">
+      外資09/16賣台積電-8,745張、緯創-9,687張。8月以來連續多週外資減持。<br>
+      <strong>原因</strong>：<br>
+      ①費半從14,655跌至11,246（-23%），AI股估值已大幅下修<br>
+      ②美債5%持續壓縮科技本益比<br>
+      ③AI訂單持續但「NVDA vs AMD競爭格局重估」不確定性<br>
+      台積電估值仍處合理區間，但短線外資獲利了結壓力。<br>
+      <strong>觀察</strong>：FOMC後若美債降至4.7%，台積電可能快速反彈
+    </div>
+  </div>
+</div>
+
+<!-- 大盤多空辯論 -->
+<div class="section-title">⚖️ 大盤多空辯論</div>
+<div class="debate-col">
+  <div class="bull-card">
+    <div class="debate-head" style="color:#3fb950;">🐂 看多方</div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">1.</span><span>FOMC今夜降息25bp（高確信度），「降息週期開啟」是今年最大宏觀利多，歷史上首次降息後3個月股市上漲機率超過75%</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">2.</span><span>外資+投信雙買超（09/16：+85,516+125,032張），三大法人合計扣除ETF自營避險後仍偏多</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">3.</span><span>台幣31.867強勢（從32.77升值+2.7%），美元指數DXY 100.27跌破101，有利外資持台股意願</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">4.</span><span>面板/記憶體外資大回補（友達+5.2萬、力積電+4.3萬），代表低估值族群有接棒輪動意願</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">5.</span><span>大盤技術面：MA5/MA10/MA20多頭排列，RSI 64（偏多未過熱），布林通道中軌以上</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">6.</span><span>黃金$4,336（高位）代表全球通膨對沖需求，但也意味市場流動性充裕，資金風險偏好回升</span></div>
+  </div>
+  <div class="bear-card">
+    <div class="debate-head" style="color:#f85149;">🐻 看空方</div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">1.</span><span>美債10Y 5.006%（接近52週高5.02%），長端利率逆勢上升是最危險訊號，代表通膨預期 or 財政赤字擔憂壓倒降息邏輯</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">2.</span><span>油價$105.70（6週漲+26.5%）是本輪最大黑天鵝：核心PCE若因油漲反彈，Fed可能被迫暫停降息</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">3.</span><span>費半11,246距52週高14,655跌-23%，已進入技術熊市；AI伺服器題材高點可能已過，外資09/16賣緯創/台積電</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">4.</span><span>今日大漲+1.37%是「Buy the rumor」，若今夜FOMC措辭偏鷹（點陣圖縮減降息次數），明日恐「Sell the news」</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">5.</span><span>自營商09/16賣超-599,631張（巨量），主要為ETF避險操作，但也壓縮大盤上行動力</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">6.</span><span>台股目前46,438，距52週高48,218僅剩-3.7%，上方空間受限，歷史高點壓力大</span></div>
+  </div>
+</div>
+<div class="verdict">
+  <div style="font-size:20px;font-weight:800;margin-bottom:6px;"><span class="up">看多 55%</span> vs <span class="dn">看空 45%</span></div>
+  <p style="font-size:13px;color:#c9d1d9;line-height:1.6;">
+    <strong>裁決：短線偏多但高度不確定，今夜FOMC是最大二元事件。</strong>若鮑威爾今夜鴿派 → 台股明日繼續上漲測試47,000甚至48,000；若鷹派降息 → 美債突破5%，台股明日可能跌回45,000-45,500。建議今日尾盤不宜追高新倉，持有部位可設停利（跌破45,832昨收即出場）。
+  </p>
+</div>
+
+<!-- 操作建議 -->
+<div class="section-title">⚔️ 操作建議（FOMC前後）</div>
+<div class="grid-3">
+  <div class="card" style="border-color:#388bfd;">
+    <div class="card-title" style="color:#79c0ff;">📋 今日尾盤（FOMC前）</div>
+    <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+      <strong>❌ 不追漲新倉</strong>：已漲+1.37%，FOMC前買入風險/報酬不佳<br>
+      <strong>✅ 持倉設停利</strong>：跌破45,832（昨收）即減倉50%；跌破45,224（鮑威爾演講日）全出<br>
+      <strong>✅ 面板/記憶體族群</strong>：外資大回補確認，可少量持有（友達/力積電/群創）<br>
+      <strong>✅ 航運</strong>：長榮/陽明仍是外資持續偏多的族群，可持有
+    </p>
+  </div>
+  <div class="card" style="border-color:#3fb950;">
+    <div class="card-title" style="color:#3fb950;">🕑 明日開盤（FOMC後）- 鴿派情境</div>
+    <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+      <strong>條件</strong>：降息25bp + 措辭鴿（暗示年底前再降一次）+ 美債10Y降回4.7%<br>
+      <strong>操作</strong>：開盤後量能放大確認 → 積極加碼台積電（2330）、AI供應鏈（廣達2382）<br>
+      <strong>目標</strong>：挑戰52週高48,218（距今約+3.8%）
+    </p>
+  </div>
+  <div class="card" style="border-color:#f85149;">
+    <div class="card-title" style="color:#f85149;">⚠️ 明日開盤（FOMC後）- 鷹派情境</div>
+    <p style="font-size:13px;color:#c9d1d9;line-height:1.7;">
+      <strong>條件</strong>：降息25bp但點陣圖縮減 + 美債突破5.02%<br>
+      <strong>操作</strong>：快速減倉，等跌到45,000-45,224再找支撐<br>
+      <strong>嚴格停損</strong>：台積電跌破2,350、大盤跌破45,000 → 轉防守（面板/航運相對抗跌）<br>
+      <strong>注意</strong>：這種情境下現金為王，不要搶反彈
+    </p>
+  </div>
+</div>
+
+<!-- 今日關鍵觀察 -->
+<div class="section-title">🔍 今日尾盤關鍵觀察清單</div>
+<div class="card">
+  <div class="stat-row"><span class="stat-label">美債10Y（最重要）</span><span class="stat-val dn">是否守在5.006%以下？突破5.02%（52週高）是最大風險</span></div>
+  <div class="stat-row"><span class="stat-label">布蘭特油</span><span class="stat-val dn">是否繼續上攻$106-110？油>$110 = Fed降息路徑受阻</span></div>
+  <div class="stat-row"><span class="stat-label">台積電 2330</span><span class="stat-val highlight">是否站回2,450？外資09/16賣-8,745張，今日是否有買回</span></div>
+  <div class="stat-row"><span class="stat-label">友達/力積電/群創</span><span class="stat-val up">面板輪動是否持續？09/17外資是否繼續買超</span></div>
+  <div class="stat-row"><span class="stat-label">成交量</span><span class="stat-val">今日總量是否達450萬張以上？縮量+漲 = 不健康</span></div>
+  <div class="stat-row"><span class="stat-label highlight">09/18 凌晨2:00</span><span class="stat-val highlight">FOMC決議公布 — 本週最重要事件，決定台股下週方向</span></div>
+</div>
+
+</div>
+
+<div class="footer">
+  <p>
+    ⚠️ <strong>免責聲明：</strong>本報告由AI自動生成，僅供研究參考，不構成任何投資建議。數據來源：Yahoo Finance (yfinance)、台灣證券交易所T86官方API（09/16）。FOMC決議時間為美東09/17 14:00（台灣09/18凌晨2:00）。股市投資有風險，過去績效不代表未來結果。
+  </p>
+</div>
+
+</body>
+</html>
