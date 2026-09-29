@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股研究報告索引 | TW Stock Report</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#eef2f7;--card:#fff;--text:#16212e;--muted:#64748b;--faint:#94a3b8;
+    --border:#dde4ec;--accent:#1e3a5f;--accent2:#2d6a9f;--hl:#0d9488;
+    --mono:'SF Mono',Menlo,Consolas,'Courier New',monospace;
+  }
+  body{background:var(--bg);color:var(--text);
+    font-family:'Helvetica Neue',-apple-system,'Segoe UI','Microsoft JhengHei',Arial,sans-serif;
+    font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  time,.code,.count{font-variant-numeric:tabular-nums}
+
+  /* header */
+  .masthead{background:linear-gradient(135deg,#0f1d2e 0%,#1e3a5f 55%,#2d6a9f 100%);
+    color:#fff;padding:38px 24px 30px}
+  .mh-inner{max-width:940px;margin:0 auto}
+  .mh-eyebrow{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;opacity:.62;margin-bottom:8px}
+  .mh-title{font-size:29px;font-weight:800;letter-spacing:-.5px}
+  .mh-sub{font-size:14px;opacity:.78;margin-top:6px}
+  .mh-stats{display:flex;gap:26px;flex-wrap:wrap;margin-top:20px}
+  .stat .n{font-size:23px;font-weight:800;line-height:1}
+  .stat .l{font-size:11px;opacity:.65;letter-spacing:1px;margin-top:3px}
+
+  /* toolbar */
+  .toolbar{position:sticky;top:0;z-index:20;background:rgba(238,242,247,.94);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:12px 24px}
+  .tb-inner{max-width:940px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  #q{flex:1;min-width:200px;padding:9px 13px;border:1px solid var(--border);border-radius:9px;
+    font-size:14px;background:#fff;color:var(--text);font-family:inherit}
+  #q:focus{outline:2px solid var(--accent2);outline-offset:1px;border-color:var(--accent2)}
+  .tabs{display:flex;gap:4px;background:#e2e8f0;border-radius:9px;padding:3px}
+  .tab{border:0;background:transparent;color:var(--muted);font:600 13px inherit;
+    padding:6px 13px;border-radius:7px;cursor:pointer;font-family:inherit}
+  .tab[aria-selected="true"]{background:#fff;color:var(--accent);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+  .tab:focus-visible{outline:2px solid var(--accent2);outline-offset:1px}
+
+  /* layout */
+  .wrap{max-width:940px;margin:0 auto;padding:22px 24px 64px}
+  .sec-head{font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--muted);margin:26px 0 12px;display:flex;align-items:center;gap:9px}
+  .sec-head::before{content:'';width:3px;height:14px;background:var(--accent);border-radius:2px}
+  .sec-count{background:#dde4ec;color:var(--muted);border-radius:20px;
+    padding:1px 9px;font-size:11px;letter-spacing:0}
+  section:first-of-type .sec-head{margin-top:6px}
+
+  /* stock cards */
+  .grid{display:grid;gap:11px}
+  .stock,.card{background:var(--card);border-radius:12px;border:1px solid var(--border);
+    box-shadow:0 1px 3px rgba(16,33,46,.05);overflow:hidden}
+  .stock header{display:flex;align-items:center;gap:10px;padding:13px 16px;
+    border-bottom:1px solid var(--border);background:#f8fafc;flex-wrap:wrap}
+  .stock h3{font-size:16px;font-weight:800;letter-spacing:-.2px}
+  .code{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent2);
+    background:#e6effa;border:1px solid #c9ddf2;border-radius:6px;padding:1px 7px}
+  .count{font-size:12px;color:var(--muted);margin-left:auto}
+  .last{font-size:11px;color:var(--faint);font-family:var(--mono)}
+
+  .reports{list-style:none}
+  .reports li + li{border-top:1px solid #eef2f7}
+  .reports a{display:flex;align-items:center;gap:11px;padding:9px 16px;
+    text-decoration:none;color:var(--text);transition:background .12s}
+  .reports a:hover{background:#f3f8fd}
+  .reports a:focus-visible{outline:2px solid var(--accent2);outline-offset:-2px}
+  .reports time{font-family:var(--mono);font-size:12px;color:var(--muted);flex-shrink:0;min-width:80px}
+  .rtitle{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+  .nth{font-size:10.5px;color:var(--faint);flex-shrink:0}
+  .badge-new{font-size:10px;font-weight:800;letter-spacing:.5px;color:#0d9488;
+    background:#ccfbf1;border:1px solid #99f6e4;border-radius:20px;padding:1px 7px;flex-shrink:0}
+  .est{color:var(--faint);font-size:11px;cursor:help;flex-shrink:0;margin-left:-7px}
+  .mlabel{font-size:11px;font-weight:700;color:var(--accent2);background:#e6effa;
+    border-radius:5px;padding:1px 7px;flex-shrink:0;min-width:74px;text-align:center}
+  .reports.flat li:first-child a{padding-top:12px}
+  .reports.flat li:last-child a{padding-bottom:12px}
+
+  .empty{display:none;text-align:center;color:var(--muted);padding:44px 20px;font-size:14px}
+  .empty.on{display:block}
+  .hidden{display:none !important}
+
+  footer{max-width:940px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color:var(--faint);line-height:1.7}
+  footer code{font-family:var(--mono);background:#e2e8f0;border-radius:4px;padding:1px 5px;color:var(--muted)}
+
+  @media(max-width:560px){
+    .mh-title{font-size:23px}
+    .reports a{flex-wrap:wrap;gap:6px 10px}
+    .rtitle{white-space:normal;flex-basis:100%}
+    .count{margin-left:0}
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="mh-inner">
+    <div class="mh-eyebrow">TW Stock Report</div>
+    <h1 class="mh-title">台股研究報告索引</h1>
+    <div class="mh-sub">多角色團隊深度分析 · 基本面 / 籌碼面 / 技術面 / 風控評分 / 三段式策略</div>
+    <div class="mh-stats">
+      <div class="stat"><div class="n">96</div><div class="l">報告總數</div></div>
+      <div class="stat"><div class="n">30</div><div class="l">個股檔數</div></div>
+      <div class="stat"><div class="n">25</div><div class="l">大盤報告</div></div>
+      <div class="stat"><div class="n">2026-09-29</div><div class="l">最新更新</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="toolbar">
+  <div class="tb-inner">
+    <input id="q" type="search" placeholder="搜尋公司名稱或代號，例如：智邦、2345、天虹…"
+           autocomplete="off" aria-label="搜尋報告">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-filter="all" aria-selected="true">全部</button>
+      <button class="tab" role="tab" data-filter="stock" aria-selected="false">個股</button>
+      <button class="tab" role="tab" data-filter="market" aria-selected="false">大盤</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section id="sec-stock" data-group="stock">
+    <h2 class="sec-head">個股深度報告 <span class="sec-count">30 檔</span></h2>
+    <div class="grid">
+<article class="stock" data-search="天虹科技 6937"><header><h3>天虹科技</h3><span class="code">6937</span><span class="count">1 份</span><span class="last">最新 2026-09-29</span></header><ul class="reports"><li><a href="6937_report_20260929.html"><time>2026-09-29</time><span class="rtitle">天虹科技(6937) 深度研究報告 首次 | 2026-09-29</span><span class="badge-new">最新</span></a></li></ul></article>
+<article class="stock" data-search="智邦科技 2345"><header><h3>智邦科技</h3><span class="code">2345</span><span class="count">4 份</span><span class="last">最新 2026-09-17</span></header><ul class="reports"><li><a href="2345_report_20260917.html"><time>2026-09-17</time><span class="rtitle">智邦科技(2345) 深度研究報告 第2次 | 2026-09-17</span><span class="nth">第4份</span><span class="badge-new">最新</span></a></li><li><a href="2345_report_20260911.html"><time>2026-09-11</time><span class="rtitle">智邦 (2345) 投資研究報告 ─ 2026-09-11</span><span class="nth">第3份</span></a></li><li><a href="2345_report_20260819.html"><time>2026-08-19</time><span class="rtitle">智邦科技 (2345) 投資研究報告 ─ 2026-08-19</span><span class="nth">第2份</span></a></li><li><a href="2345_report_20260721.html"><time>2026-07-21</time><span class="rtitle">智邦 2345 深度分析報告 | 2026-07-21</span><span class="nth">第1份</span></a></li></ul></article>
+<article class="stock" data-search="華通 2313"><header><h3>華通</h3><span class="code">2313</span><span class="count">5 份</span><span class="last">最新 2026-09-07</span></header><ul class="reports"><li><a href="2313_report_20260907.html"><time>2026-09-07</time><span class="rtitle">華通 (2313) 投資研究報告 ─ 2026-09-07</span><span class="nth">第5份</span><span class="badge-new">最新</span></a></li><li><a href="2313_report_20260715.html"><time>2026-07-15</time><span class="rtitle">華通電腦 2313 投資研究報告 2026-07-15</span><span class="nth">第4份</span></a></li><li><a href="2313_report_20260713.html"><time>2026-07-13</time><span class="rtitle">華通電腦(2313) 深度分析報告 | 2026-07-13</span><span class="nth">第3份</span></a></li><li><a href="2313_report_20260708.html"><time>2026-07-08</time><span class="rtitle">華通電腦 (2313) 深度分析報告 2026-07-08</span><span class="nth">第2份</span></a></li><li><a href="2313_report_20260703.html"><time>2026-07-03</time><span class="rtitle">華通電腦 (2313) 深度分析報告 2026-07-03</span><span class="nth">第1份</span></a></li></ul></article>
+<article class="stock" data-search="漢測 7856"><header><h3>漢測</h3><span class="code">7856</span><span class="count">1 份</span><span class="last">最新 2026-09-04</span></header><ul class="reports"><li><a href="7856_report_20260904.html"><time>2026-09-04</time><span class="rtitle">漢測 (7856) 投資研究報告 ─ 2026-09-04</span><span class="badge-new">最新</span></a></li></ul></article>
+<article class="stock" data-search="譜瑞-ky 4966"><header><h3>譜瑞-KY</h3><span class="code">4966</span><span class="count">1 份</span><span class="last">最新 2026-09-04</span></header><ul class="reports"><li><a href="4966_report_20260904.html"><time>2026-09-04</time><span class="rtitle">譜瑞-KY (4966) 投資研究報告 ─ 2026-09-04</span><span class="badge-new">最新</span></a></li></ul></article>
+<article class="stock" data-search="高明鐵 4573"><header><h3>高明鐵</h3><span class="code">4573</span><span class="count">5 份</span><span class="last">最新 2026-08-31</span></header><ul class="reports"><li><a href="4573_report_20260831.html"><time>2026-08-31</time><span class="rtitle">高明鐵 (4573) 投資研究報告 ─ 2026-08-31</span><span class="nth">第5份</span><span class="badge-new">最新</span></a></li><li><a href="4573_report_20260827.html"><time>2026-08-27</time><span class="rtitle">高明鐵 (4573) 投資研究報告 ─ 2026-08-27</span><span class="nth">第4份</span></a></li><li><a href="4573_report_20260813.html"><time>2026-08-13</time><span class="rtitle">高明鐵 (4573) 投資研究報告 ─ 2026-08-13</span><span class="nth">第3份</span></a></li><li><a href="4573_report_20260812.html"><time>2026-08-12</time><span class="rtitle">高明鐵 (4573) 深度分析報告 2026-08-12</span><span class="nth">第2份</span></a></li><li><a href="4573_report_20260810.html"><time>2026-08-10</time><span class="rtitle">高明鐵 (4573) 深度分析報告 2026-08-10</span><span class="nth">第1份</span></a></li></ul></article>
+<article class="stock" data-search="國巨 2327"><header><h3>國巨</h3><span class="code">2327</span><span class="count">2 份</span><span class="last">最新 2026-07-31</span></header><ul class="reports"><li><a href="2327_report_20260731.html"><time>2026-07-31</time><span class="rtitle">國巨 (2327) 深度分析報告 2026-07-31</span><span class="nth">第2份</span><span class="badge-new">最新</span></a></li><li><a href="2327_report_20260713.html"><time>2026-07-13</time><span class="rtitle">國巨(2327) 深度分析報告 | 2026-07-13</span><span class="nth">第1份</span></a></li></ul></article>
+<article class="stock" data-search="南電 8046"><header><h3>南電</h3><span class="code">8046</span><span class="count">6 份</span><span class="last">最新 2026-07-30</span></header><ul class="reports"><li><a href="8046_report_20260730.html"><time>2026-07-30</time><span class="rtitle">南電 (8046) 深度投資研究報告</span><span class="nth">第6份</span><span class="badge-new">最新</span></a></li><li><a href="8046_report_20260728.html"><time>2026-07-28</time><span class="rtitle">南電 (8046) 深度分析報告 | 2026-07-28</span><span class="nth">第5份</span></a></li><li><a href="8046_report_20260724.html"><time>2026-07-24</time><span class="rtitle">南電 8046 深度分析報告 2026-07-24</span><span class="nth">第4份</span></a></li><li><a href="8046_report_20260706.html"><time>2026-07-06</time><span class="rtitle">南電 (8046) 深度分析報告 2026-07-06</span><span class="nth">第3份</span></a></li><li><a href="8046_report_20260703.html"><time>2026-07-03</time><span class="rtitle">8046 南電 深度分析報告 2026-07-03</span><span class="nth">第2份</span></a></li><li><a href="8046_report_20260701.html"><time>2026-07-01</time><span class="rtitle">南電(8046) 投資研究報告 2026-07-01</span><span class="nth">第1份</span></a></li></ul></article>
+<article class="stock" data-search="欣興 3037"><header><h3>欣興</h3><span class="code">3037</span><span class="count">6 份</span><span class="last">最新 2026-07-28</span></header><ul class="reports"><li><a href="3037_report_20260728.html"><time>2026-07-28</time><span class="rtitle">欣興 3037 深度分析報告 2026-07-28</span><span class="nth">第6份</span><span class="badge-new">最新</span></a></li><li><a href="3037_report_20260706.html"><time>2026-07-06</time><span class="rtitle">欣興電子 (3037) 深度分析報告 2026-07-06</span><span class="nth">第5份</span></a></li><li><a href="3037_report_20260703.html"><time>2026-07-03</time><span class="rtitle">3037 欣興電子 深度分析報告 2026-07-03</span><span class="nth">第4份</span></a></li><li><a href="欣興電子3037_投資研究報告_v2.html"><time>2026-07-01</time> <span class="est" title="檔名無日期，以檔案時間推估">≈</span><span class="rtitle">欣興電子 3037 深度研究報告 v2（API 即時數據）</span><span class="nth">第3份</span></a></li><li><a href="欣興電子3037_投資研究報告.html"><time>2026-07-01</time> <span class="est" title="檔名無日期，以檔案時間推估">≈</span><span class="rtitle">欣興電子 (3037) 深度投資研究報告</span><span class="nth">第2份</span></a></li><li><a href="欣興3037深度分析報告_20260623.html"><time>2026-06-23</time><span class="rtitle">欣興 3037 深度研究報告｜2026-06-23</span><span class="nth">第1份</span></a></li></ul></article>
+<article class="stock" data-search="台達電 2308"><header><h3>台達電</h3><span class="code">2308</span><span class="count">2 份</span><span class="last">最新 2026-07-28</span></header><ul class="reports"><li><a href="2308_report_20260728.html"><time>2026-07-28</time><span class="rtitle">台達電 (2308) 深度分析報告 | 2026-07-28</span><span class="nth">第2份</span><span class="badge-new">最新</span></a></li><li><a href="2308_report_20260720.html"><time>2026-07-20</time><span class="rtitle">台達電 2308 深度研究報告 2026-07-20</span><span class="nth">第1份</span></a></li></ul></article>
+<article class="stock" data-search="台積電 2330"><header><h3>台積電</h3><span class="code">2330</span><span class="count">1 份</span><span class="last">最新 2026-07-22</span></header><ul class="reports"><li><a href="2330_report_20260722.html"><time>2026-07-22</time><span class="rtitle">台積電 2330 深度分析報告 | 2026-07-22</span><span class="badge-new">最新</span></a></li></ul></article>
+<article class="stock" data-search="創見 2451"><header><h3>創見</h3><span class="code">2451</span><span class="count">1 份</span><span class="last">最新 2026-07-21</span></header><ul class="reports"><li><a href="2451_report_20260721.html"><time>2026-07-21</time><span class="rtitle">創見 2451 深度分析報告 2026-07-21</span><span class="badge-new">最新</span></a></li></ul></article>
+<article class="stock" data-search="廣達 2382"><header><h3>廣達</h3><span class="code">2382</span><span class="count">1 份</span><span class="last">最新 2026-07-21</span></header><ul class="reports"><li><a href="2382_report_20260721.html"><time>2026-07-21</time><span class="rtitle">廣達 2382 深度分析報告 | 2026-07-21</span><span class="badge-new">最新</span></a></li></ul></article>
+<article class="stock" data-search="聯電 2303"><header><h3>聯電</h3><span class="code">2303</span><span class="count">1 份</span><span class="last">最新 2026-07-21</span></header><ul class="reports"><li><a href="2303_report_20260721.html"><time>2026-07-21</time><span class="rtitle">聯電 2303 深度分析報告 | 2026-07-21</span><span class="badge-new">最新</span></a></li></ul></article>
+<article class="stock" data-search="日月光投控 3711"><header><h3>日月光投控</h3><span class="code">3711</span><span class="count">9 份</span><span class="last">最新 2026-07-20</span></header><ul class="reports"><li><a href="3711_report_20260720.html"><time>2026-07-20</time><span class="rtitle">日月光投控 3711 持倉決策報告 2026-07-20</span><span class="nth">第9份</span><span class="badge-new">最新</span></a></li><li><a href="3711_report_20260717.html"><time>2026-07-17</time><span class="rtitle">日月光投控 3711 持倉決策報告 2026-07-17</span><span class="nth">第8份</span></a></li><li><a href="3711_report_20260715.html"><time>2026-07-15</time><span class="rtitle">日月光投控 3711 投資研究報告 2026-07-15</span><span class="nth">第7份</span></a></li><li><a href="3711_report_20260714.html"><time>2026-07-14</time><span class="rtitle">日月光投控 3711 投資研究報告 2026-07-14</span><span class="nth">第6份</span></a></li><li><a href="3711_report_20260713.html"><time>2026-07-13</time><span class="rtitle">日月光投控(3711) 深度分析報告 | 2026-07-13</span><span class="nth">第5份</span></a></li><li><a href="3711_report_20260711.html"><time>2026-07-11</time><span class="rtitle">日月光投控(3711) 深度分析報告 | 2026-07-11</span><span class="nth">第4份</span></a></li><li><a href="3711_report_20260708.html"><time>2026-07-08</time><span class="rtitle">日月光投控 (3711) 深度分析報告 2026-07-08</span><span class="nth">第3份</span></a></li><li><a href="3711_report_20260706.html"><time>2026-07-06</time><span class="rtitle">日月光投控 (3711) 深度分析報告 2026-07-06</span><span class="nth">第2份</span></a></li><li><a href="3711_report_20260703.html"><time>2026-07-03</time><span class="rtitle">3711 日月光投控 深度分析報告 2026-07-03</span><span class="nth">第1份</span></a></li></ul></article>
+<article class="stock" data-search="南亞科 2408"><header><h3>南亞科</h3><span class="code">2408</span><span class="count">3 份</span><span class="last">最新 2026-07-20</span></header><ul class="reports"><li><a href="2408_report_20260720.html"><time>2026-07-20</time><span class="rtitle">南亞科 2408 深度研究報告 2026-07-20</span><span class="nth">第3份</span><span class="badge-new">最新</span></a></li><li><a href="2408_report_20260702.html"><time>2026-07-02</time><span class="rtitle">南亞科 (2408) 投資研究報告 2026-07-02</span><span class="nth">第2份</span></a></li><li><a href="2408_report_20260701.html"><time>2026-07-01</time><span class="rtitle">南亞科（2408）深度研究報告｜2026-07-01 收盤版</span><span class="nth">第1份</span></a></li></ul></article>
+<article class="stock" data-search="台光電 2383"><header><h3>台光電</h3><span class="code">2383</span><span class="count">3 份</span><span class="last">最新 2026-07-20</span></header><ul class="reports"><li><a href="2383_report_20260720.html"><time>2026-07-20</time><span class="rtitle">台光電 2383 深度分析報告 2026-07-20</span><span class="nth">第3份</span><span class="badge-new">最新</span></a></li><li><a href="台光電2383_投資研究報告.html"><time>2026-07-01</time> <span class="est" title="檔名無日期，以檔案時間推估">≈</span><span class="rtitle">台光電 2383 深度研究報告（API 即時數據）</span><span class="nth">第2份</span></a></li><li><a href="台光電_2383_研究報告_20260624.html"><time>2026-06-24</time><span class="rtitle">台光電（2383）深度研究報告｜2026-06-24</span><span class="nth">第1份</span></a></li></ul></article>
+<article class="stock" data-search="元大台灣50 0050"><header><h3>元大台灣50</h3><span class="code">0050</span><span class="count">1 份</span><span class="last">最新 2026-07-20</span></header><ul class="reports"><li><a href="0050_report_20260720.html"><time>2026-07-20</time><span class="rtitle">元大台灣50 0050 深度研究報告 2026-07-20</span><span class="badge-new">最新</span></a></li></ul></article>
+<article class="stock" data-search="信驊科技 5274"><header><h3>信驊科技</h3><span class="code">5274</span><span class="count">2 份</span><span class="last">最新 2026-07-14</span></header><ul class="reports"><li><a href="5274_report_20260714.html"><time>2026-07-14</time><span class="rtitle">信驊科技 5274 投資研究報告 2026-07-14</span><span class="nth">第2份</span><span class="badge-new">最新</span></a></li><li><a href="信驊科技5274_投資研究報告.html"><time>2026-07-01</time> <span class="est" title="檔名無日期，以檔案時間推估">≈</span><span class="rtitle">信驊科技 5274 投資研究報告</span><span class="nth">第1份</span></a></li></ul></article>
+<article class="stock" data-search="聯發科技 2454"><header><h3>聯發科技</h3><span class="code">2454</span><span class="count">2 份</span><span class="last">最新 2026-07-14</span></header><ul class="reports"><li><a href="2454_report_20260714.html"><time>2026-07-14</time><span class="rtitle">聯發科技 2454 投資研究報告 2026-07-14</span><span class="nth">第2份</span><span class="badge-new">最新</span></a></li><li><a href="聯發科2454_投資研究報告.html"><time>2026-07-01</time> <span class="est" title="檔名無日期，以檔案時間推估">≈</span><span class="rtitle">聯發科 2454 投資研究報告</span><span class="nth">第1份</span></a></li></ul></article>
+<article class="stock" data-search="英業達 2356"><header><h3>英業達</h3><span class="code">2356</span><span class="count">2 份</span><span class="last">最新 2026-07-13</span></header><ul class="reports"><li><a href="2356_report_20260713.html"><time>2026-07-13</time><span class="rtitle">英業達(2356) 深度分析報告 | 2026-07-13 更新</span><span class="nth">第2份</span><span class="badge-new">最新</span></a></li><li><a href="2356_report_20260710.html"><time>2026-07-10</time><span class="rtitle">英業達(2356) 深度分析報告 | 2026-07-10</span><span class="nth">第1份</span></a></li></ul></article>
+<article class="stock" data-search="寶雅國際 5904"><header><h3>寶雅國際</h3><span class="code">5904</span><span class="count">1 份</span><span class="last">最新 2026-07-04</span></header><ul class="reports"><li><a href="5904_report_20260704.html"><time>2026-07-04</time><span class="rtitle">寶雅國際 (5904) 深度分析報告 2026-07-04</span><span class="badge-new">最新</span></a></li></ul></article>
+<article class="stock" data-search="穩懋半導體 3105"><header><h3>穩懋半導體</h3><span class="code">3105</span><span class="count">1 份</span><span class="last">最新 2026-07-03</span></header><ul class="reports"><li><a href="3105_report_20260703.html"><time>2026-07-03</time><span class="rtitle">穩懋半導體 (3105) 深度分析報告 2026-07-03</span><span class="badge-new">最新</span></a></li></ul></article>
+<article class="stock" data-search="聯策 6658"><header><h3>聯策</h3><span class="code">6658</span><span class="count">1 份</span><span class="last">最新 2026-07-02</span></header><ul class="reports"><li><a href="6658_report_20260702.html"><time>2026-07-02</time><span class="rtitle">聯策 (6658) 深度分析報告 — 2026-07-02</span><span class="badge-new">最新</span></a></li></ul></article>
+<article class="stock" data-search="台燿 6274"><header><h3>台燿</h3><span class="code">6274</span><span class="count">1 份</span><span class="last">最新 2026-07-02</span></header><ul class="reports"><li><a href="6274_report_20260702.html"><time>2026-07-02</time><span class="rtitle">台燿 (6274) 深度分析報告 — 2026-07-02</span><span class="badge-new">最新</span></a></li></ul></article>
+<article class="stock" data-search="信昌電 6173"><header><h3>信昌電</h3><span class="code">6173</span><span class="count">1 份</span><span class="last">最新 2026-07-02</span></header><ul class="reports"><li><a href="6173_report_20260702.html"><time>2026-07-02</time><span class="rtitle">信昌電 (6173) 深度分析報告 — 2026-07-02</span><span class="badge-new">最新</span></a></li></ul></article>
+<article class="stock" data-search="台耀化學 4746"><header><h3>台耀化學</h3><span class="code">4746</span><span class="count">1 份</span><span class="last">最新 2026-07-02</span></header><ul class="reports"><li><a href="4746_report_20260702.html"><time>2026-07-02</time><span class="rtitle">台耀化學 (4746) 深度研究報告 — 2026-07-02</span><span class="badge-new">最新</span></a></li></ul></article>
+<article class="stock" data-search="華邦電 2344"><header><h3>華邦電</h3><span class="code">2344</span><span class="count">2 份</span><span class="last">最新 2026-07-02</span></header><ul class="reports"><li><a href="2344_report_20260702.html"><time>2026-07-02</time><span class="rtitle">華邦電 (2344) 投資研究報告 2026-07-02</span><span class="nth">第2份</span><span class="badge-new">最新</span></a></li><li><a href="2344_report_20260701.html"><time>2026-07-01</time><span class="rtitle">華邦電 (2344) 投資研究報告 2026-07-01</span><span class="nth">第1份</span></a></li></ul></article>
+<article class="stock" data-search="富喬 1815"><header><h3>富喬</h3><span class="code">1815</span><span class="count">1 份</span><span class="last">最新 2026-07-01</span></header><ul class="reports"><li><a href="1815_report_20260701.html"><time>2026-07-01</time><span class="rtitle">富喬(1815) 投資研究報告 2026-07-01</span><span class="badge-new">最新</span></a></li></ul></article>
+<article class="stock" data-search="景碩科技 3189"><header><h3>景碩科技</h3><span class="code">3189</span><span class="count">1 份</span><span class="last">最新 2026-06-23</span></header><ul class="reports"><li><a href="景碩_3189_研究報告_20260623.html"><time>2026-06-23</time><span class="rtitle">景碩科技（3189）深度研究報告｜2026-06-23</span><span class="badge-new">最新</span></a></li></ul></article>
+    </div>
+  </section>
+
+  <section id="sec-market" data-group="market">
+    <h2 class="sec-head">大盤 / 盤勢報告 <span class="sec-count">25</span></h2>
+    <div class="card"><ul class="reports flat"><li data-search="早盤戰情室 2026-09-29"><a href="premarket-20260929.html"><time>2026-09-29</time><span class="mlabel">早盤戰情室</span><span class="rtitle">台股早盤戰情室 2026/09/29｜美債5.24%新高 vs 油崩破百</span></a></li><li data-search="盤中戰況 2026-09-17"><a href="intraday-20260917.html"><time>2026-09-17</time><span class="mlabel">盤中戰況</span><span class="rtitle">台股大盤分析 2026/09/17｜FOMC降息日 + 美債5% + 油$105 三重矛盾</span></a></li><li data-search="盤中戰況 2026-08-27"><a href="intraday-20260827.html"><time>2026-08-27</time><span class="mlabel">盤中戰況</span><span class="rtitle">台股盤中快報 2026/08/27｜接近布林上軌 46,670</span></a></li><li data-search="早盤戰情室 2026-08-19"><a href="premarket-20260819.html"><time>2026-08-19</time><span class="mlabel">早盤戰情室</span><span class="rtitle">台股早盤戰情室 2026/08/19｜費半崩-5%，45K保衛戰</span></a></li><li data-search="盤後分析 2026-08-03"><a href="postmarket-20260803.html"><time>2026-08-03</time><span class="mlabel">盤後分析</span><span class="rtitle">台股盤後戰情室 2026/08/03｜震盪+0.62%，美債新高+外資轉賣成新隱憂</span></a></li><li data-search="盤中戰況 2026-07-28"><a href="intraday-20260728.html"><time>2026-07-28</time><span class="mlabel">盤中戰況</span><span class="rtitle">台股盤中戰情室 2026/07/28｜DUV震撼彈 + 油崩雙殺</span></a></li><li data-search="盤後分析 2026-07-28"><a href="postmarket-20260728.html"><time>2026-07-28</time><span class="mlabel">盤後分析</span><span class="rtitle">台股盤後戰情室 2026/07/28｜史上第3大跌點 -2,031點</span></a></li><li data-search="早盤戰情室 2026-07-24"><a href="premarket-20260724.html"><time>2026-07-24</time><span class="mlabel">早盤戰情室</span><span class="rtitle">台股早盤戰情室 2026/07/24 — 油破$100×美債破4.7% 大盤承壓，石化爆噴+緯創GB300連4漲</span></a></li><li data-search="盤後分析 2026-07-24"><a href="postmarket-20260724.html"><time>2026-07-24</time><span class="mlabel">盤後分析</span><span class="rtitle">台股盤後戰情室 2026/07/24 — 外資史上最大賣超1,774億，台積電被砍928億，緯創逆勢連五紅</span></a></li><li data-search="早盤戰情室 2026-07-22"><a href="premarket-20260722.html"><time>2026-07-22</time><span class="mlabel">早盤戰情室</span><span class="rtitle">台股早盤戰情室 2026-07-22</span></a></li><li data-search="盤後分析 2026-07-22"><a href="postmarket-20260722.html"><time>2026-07-22</time><span class="mlabel">盤後分析</span><span class="rtitle">台股盤後戰情室 2026/07/22 — 外資連13賣終結+65萬張，Alphabet法說capex爆表</span></a></li><li data-search="早盤戰情室 2026-07-21"><a href="premarket-20260721.html"><time>2026-07-21</time><span class="mlabel">早盤戰情室</span><span class="rtitle">台股早盤戰情室 2026-07-21</span></a></li><li data-search="早盤戰情室 2026-07-20"><a href="premarket-20260720.html"><time>2026-07-20</time><span class="mlabel">早盤戰情室</span><span class="rtitle">台股早盤戰情室 2026-07-20</span></a></li><li data-search="盤後分析 2026-07-20"><a href="postmarket-20260720.html"><time>2026-07-20</time><span class="mlabel">盤後分析</span><span class="rtitle">台股盤後戰情室 2026-07-20</span></a></li><li data-search="早盤戰情室 2026-07-17"><a href="premarket-20260717.html"><time>2026-07-17</time><span class="mlabel">早盤戰情室</span><span class="rtitle">台股早盤戰情室 2026-07-17｜半導體熊市邊緣 法說利多出盡</span></a></li><li data-search="盤中戰況 2026-07-17"><a href="intraday-20260717.html"><time>2026-07-17</time><span class="mlabel">盤中戰況</span><span class="rtitle">台股盤中戰情 2026-07-17｜聯電跌停 台積電毛利率惹禍 TWII破44K</span></a></li><li data-search="盤後分析 2026-07-15"><a href="postmarket-20260715.html"><time>2026-07-15</time><span class="mlabel">盤後分析</span><span class="rtitle">台股盤後分析 2026/07/15</span></a></li><li data-search="盤中戰況 2026-07-14"><a href="intraday-20260714.html"><time>2026-07-14</time><span class="mlabel">盤中戰況</span><span class="rtitle">台股盤中戰況 2026/07/14</span></a></li><li data-search="盤後分析 2026-07-14"><a href="postmarket-20260714.html"><time>2026-07-14</time><span class="mlabel">盤後分析</span><span class="rtitle">台股盤後分析 2026/07/14</span></a></li><li data-search="早盤戰情室 2026-07-10"><a href="premarket-20260710.html"><time>2026-07-10</time><span class="mlabel">早盤戰情室</span><span class="rtitle">台股早盤戰情室 2026/07/11</span></a></li><li data-search="早盤戰情室 2026-07-09"><a href="premarket-20260709.html"><time>2026-07-09</time><span class="mlabel">早盤戰情室</span><span class="rtitle">台股早盤戰情室 2026/07/10</span></a></li><li data-search="早盤戰情室 2026-07-07"><a href="premarket-20260707.html"><time>2026-07-07</time><span class="mlabel">早盤戰情室</span><span class="rtitle">台股早盤戰情室 2026-07-07</span></a></li><li data-search="早盤戰情室 2026-07-06"><a href="premarket-20260706.html"><time>2026-07-06</time><span class="mlabel">早盤戰情室</span><span class="rtitle">台股早盤戰情室 2026-07-06</span></a></li><li data-search="早盤戰情室 2026-07-03"><a href="premarket-20260703.html"><time>2026-07-03</time><span class="mlabel">早盤戰情室</span><span class="rtitle">台股早盤戰情室 2026-07-03</span></a></li><li data-search="盤後總結 2026-07-03"><a href="eod-20260703.html"><time>2026-07-03</time><span class="mlabel">盤後總結</span><span class="rtitle">台股盤後總結 2026-07-03</span></a></li></ul></div>
+  </section>
+
+  <section id="sec-other" data-group="other">
+    <h2 class="sec-head">其他文件 <span class="sec-count">2</span></h2>
+    <div class="card"><ul class="reports flat"><li data-search="3677禹彣 選片建議 v7 3677禹彣_選片建議_v7.html"><a href="3677禹彣_選片建議_V7.html"><time>2026-08-27</time><span class="rtitle">3677禹彣 選片建議 V7</span></a></li><li data-search="3677禹彣 選片建議 v5 零重複版 3677禹彣_選片_v5.html"><a href="3677禹彣_選片_V5.html"><time>2026-08-19</time><span class="rtitle">3677禹彣 選片建議 V5 零重複版</span></a></li></ul></div>
+  </section>
+  <div class="empty" id="empty">找不到符合的報告，換個關鍵字試試。</div>
+</div>
+
+<footer>
+  資料來源：富果 Fugle API（即時報價）· FinMind（K線 / 月營收 / 財報 / 融資融券）· 台灣證交所 T86（三大法人）· WebSearch（法人評等與產業資訊）<br>
+  ⚠️ 所有報告僅供研究與資訊參考，<strong>不構成投資建議</strong>。投資有風險，請自行判斷並承擔盈虧。<br>
+  標註 <span class="est">≈</span> 者檔名無日期，日期以檔案修改時間推估。索引由 <code>build_index.py</code> 自動產生 —
+  新增報告後執行 <code>python build_index.py</code> 即可更新。
+</footer>
+
+<script>
+(function(){
+  var q = document.getElementById('q');
+  var empty = document.getElementById('empty');
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section[data-group]'));
+  var filter = 'all';
+
+  function apply(){
+    var term = q.value.trim().toLowerCase();
+    var anyVisible = false;
+
+    sections.forEach(function(sec){
+      var group = sec.getAttribute('data-group');
+      var groupAllowed = (filter === 'all') || (filter === group);
+      if (!groupAllowed) { sec.classList.add('hidden'); return; }
+
+      var items = sec.querySelectorAll('[data-search]');
+      var shown = 0;
+      Array.prototype.forEach.call(items, function(el){
+        var hit = !term || el.getAttribute('data-search').indexOf(term) !== -1;
+        el.classList.toggle('hidden', !hit);
+        if (hit) shown++;
+      });
+      sec.classList.toggle('hidden', shown === 0);
+      if (shown > 0) anyVisible = true;
+    });
+
+    empty.classList.toggle('on', !anyVisible);
+  }
+
+  q.addEventListener('input', apply);
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){
+      filter = t.getAttribute('data-filter');
+      tabs.forEach(function(x){ x.setAttribute('aria-selected', String(x === t)); });
+      apply();
+    });
+  });
+  // "/" 快速聚焦搜尋
+  document.addEventListener('keydown', function(e){
+    if (e.key === '/' && document.activeElement !== q) { e.preventDefault(); q.focus(); }
+    if (e.key === 'Escape' && document.activeElement === q) { q.value = ''; apply(); }
+  });
+  apply();
+})();
+</script>
+</body>
+</html>
