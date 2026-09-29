@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>天虹科技(6937) 深度研究報告 首次 | 2026-09-29</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+    --accent:#059669;--accent2:#10b981;--accent3:#6ee7b7;
+    --green:#16a34a;--red:#dc2626;--yellow:#d97706;--blue:#2563eb;--violet:#7c3aed;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.6}
+  a{color:var(--accent)}
+
+  /* COVER — 薄膜干涉色調（ALD 主題） */
+  .cover{background:linear-gradient(135deg,#052e2b 0%,#064e3b 28%,#0d9488 62%,#22d3ee 100%);color:#fff;padding:56px 40px 48px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-70px;right:-50px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,0.07)}
+  .cover::after{content:'';position:absolute;bottom:-90px;left:-50px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,0.045)}
+  .iridescent{height:4px;width:190px;border-radius:2px;margin:10px 0 22px;background:linear-gradient(90deg,#f0abfc,#818cf8,#22d3ee,#6ee7b7,#fde047,#fb923c)}
+  .cover-ticker{font-size:13px;opacity:.72;margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+  .cover-name{font-size:36px;font-weight:800;line-height:1.1;margin-bottom:4px}
+  .cover-subtitle{font-size:15px;opacity:.82;margin-bottom:26px}
+  .cover-price-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+  .cover-price{font-size:56px;font-weight:900;line-height:1}
+  .cover-chg{font-size:22px;padding:4px 14px;border-radius:8px;background:rgba(16,185,129,0.28);border:1px solid rgba(110,231,183,0.55)}
+  .cover-meta{display:flex;gap:24px;flex-wrap:wrap}
+  .cover-meta-item{font-size:13px;opacity:.78}
+  .cover-meta-item strong{opacity:1;font-weight:700}
+  .risk-badge{position:absolute;top:32px;right:40px;background:rgba(217,119,6,0.25);border:1.5px solid rgba(251,191,36,0.6);border-radius:12px;padding:10px 18px;text-align:center}
+  .risk-badge .num{font-size:28px;font-weight:900;color:#fcd34d}
+  .risk-badge .lbl{font-size:11px;opacity:.85;letter-spacing:1px}
+  .report-no-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(110,231,183,0.22);border:1px solid rgba(110,231,183,0.45);border-radius:8px;padding:3px 12px;font-size:12px;margin-bottom:12px}
+
+  /* LAYOUT */
+  .container{max-width:960px;margin:0 auto;padding:0 20px 60px}
+  section{margin-top:32px}
+  .section-title{font-size:18px;font-weight:800;color:var(--accent);border-left:4px solid var(--accent);padding-left:12px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .section-num{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+  .card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07),0 0 0 1px var(--border)}
+  .card + .card{margin-top:12px}
+
+  /* KEY CONCLUSION */
+  .conclusion-card{background:linear-gradient(135deg,#052e2b 0%,#065f46 55%,#0d9488 100%);color:#fff;border-radius:16px;padding:28px 32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+  .conc-item .label{font-size:11px;opacity:.68;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+  .conc-item .val{font-size:21px;font-weight:800;line-height:1.15}
+  .conc-item .sub{font-size:12px;opacity:.75;margin-top:4px}
+  @media(max-width:640px){.conclusion-card{grid-template-columns:1fr 1fr}}
+
+  /* KPI GRID */
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+  .kpi-card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border);text-align:center}
+  .kpi-label{font-size:11px;color:var(--muted);margin-bottom:4px;letter-spacing:.5px}
+  .kpi-val{font-size:21px;font-weight:800;color:var(--accent)}
+  .kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+  /* CHARTS */
+  .charts-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  @media(max-width:760px){.charts-grid{grid-template-columns:1fr}}
+  .chart-box{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border)}
+  .chart-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px}
+  .chart-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center}
+
+  /* TABLE */
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{background:var(--bg);padding:8px 12px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+  .tag-green{background:#dcfce7;color:#16a34a}
+  .tag-red{background:#fee2e2;color:#dc2626}
+  .tag-yellow{background:#fef9c3;color:#d97706}
+  .tag-blue{background:#dbeafe;color:#2563eb}
+  .tag-teal{background:#ccfbf1;color:#0d9488}
+
+  /* ANALYSIS CARDS */
+  .analyst-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.analyst-grid{grid-template-columns:1fr}}
+  .analyst-card{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border)}
+  .analyst-card h4{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .analyst-card ul{list-style:none;padding:0}
+  .analyst-card li{font-size:13px;padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px}
+  .analyst-card li:last-child{border-bottom:none}
+  .bull-icon{color:#16a34a;font-weight:900;flex-shrink:0}
+  .bear-icon{color:#dc2626;font-weight:900;flex-shrink:0}
+
+  /* SCORE BAR */
+  .score-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+  .score-label{width:90px;font-size:13px;flex-shrink:0}
+  .score-bar-bg{flex:1;height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+  .score-bar-fill{height:100%;border-radius:5px}
+  .score-num{width:32px;font-size:13px;font-weight:700;text-align:right;flex-shrink:0}
+
+  /* STRATEGY */
+  .strategy-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:640px){.strategy-grid{grid-template-columns:1fr}}
+  .strat-card{border-radius:14px;padding:20px;color:#fff}
+  .strat-card.attack{background:linear-gradient(135deg,#dc2626,#ef4444)}
+  .strat-card.balance{background:linear-gradient(135deg,#0d9488,#14b8a6)}
+  .strat-card.defend{background:linear-gradient(135deg,#2563eb,#3b82f6)}
+  .strat-card h3{font-size:15px;font-weight:800;margin-bottom:12px}
+  .strat-item{font-size:13px;margin:6px 0;display:flex;gap:8px}
+  .strat-item span:first-child{opacity:.72;flex-shrink:0}
+
+  .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.tech-grid{grid-template-columns:1fr}}
+
+  /* ALERT */
+  .alert{border-radius:10px;padding:14px 18px;margin-bottom:12px;font-size:13px;display:flex;gap:12px;align-items:flex-start}
+  .alert-red{background:#fee2e2;border-left:4px solid #dc2626;color:#7f1d1d}
+  .alert-green{background:#dcfce7;border-left:4px solid #16a34a;color:#14532d}
+  .alert-yellow{background:#fef9c3;border-left:4px solid #d97706;color:#713f12}
+  .alert-teal{background:#ccfbf1;border-left:4px solid #0d9488;color:#134e4a}
+
+  .disclaimer{background:#fef9c3;border:1px solid #d97706;border-radius:10px;padding:16px 20px;font-size:12px;color:#713f12;margin-top:32px}
+
+  .glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:540px){.glossary-grid{grid-template-columns:1fr}}
+  .glossary-item{background:var(--card);border-radius:10px;padding:12px 14px;border:1px solid var(--border)}
+  .glossary-term{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:4px}
+  .glossary-def{font-size:12px;color:var(--muted);line-height:1.5}
+
+  .product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  @media(max-width:700px){.product-grid{grid-template-columns:repeat(2,1fr)}}
+  .product-tile{background:#f0fdfa;border:1px solid #99f6e4;border-radius:10px;padding:12px;text-align:center}
+  .product-tile .pt-name{font-size:13px;font-weight:800;color:#0d9488}
+  .product-tile .pt-desc{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4}
+</style>
+</head>
+<body>
+
+<!-- ===== 01 COVER ===== -->
+<div class="cover">
+  <div class="risk-badge">
+    <div class="num">5.5</div>
+    <div class="lbl">風險指數</div>
+  </div>
+  <div class="report-no-badge">★ 首次深度報告</div>
+  <div class="cover-ticker">TWSE: 6937</div>
+  <div class="cover-name">天虹科技</div>
+  <div class="iridescent"></div>
+  <div class="cover-subtitle">Sky Tech｜台灣第一家量產型 ALD 薄膜設備廠・半導體設備國產化核心標的</div>
+  <div class="cover-price-row">
+    <div class="cover-price">NT$308.0</div>
+    <div class="cover-chg">▲ 7.5元 (+2.50%)</div>
+  </div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">📅 報告日期 <strong>2026-09-29</strong></div>
+    <div class="cover-meta-item">昨收 <strong>300.5元</strong></div>
+    <div class="cover-meta-item">52W高低 <strong>358.5 / 199.5</strong></div>
+    <div class="cover-meta-item">距52W高 <strong style="color:#fcd34d">-14.1%</strong></div>
+    <div class="cover-meta-item">市值 <strong>207.5億元</strong></div>
+    <div class="cover-meta-item">FY2026E P/E <strong style="color:#fca5a5">64.2x（偏高）</strong></div>
+    <div class="cover-meta-item">訂單能見度 <strong style="color:#6ee7b7">2027 Q2</strong></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===== 02 核心結論 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">2</span> 核心結論與投資建議</div>
+  <div class="alert alert-teal">
+    <span style="font-size:18px">🧭</span>
+    <div><strong>一句話定調：</strong>基本面處於「獲利加速期」——H1'26 EPS 2.54 元 YoY +151%、8 月月營收 YoY +123%、訂單能見度已看到 2027 年 Q2，技術面完全多頭排列並突破布林上軌；<strong>唯一的問題是估值</strong>：FY2026E P/E 64x、TTM P/E 67.7x，已高於同業一大截。這是一檔「基本面該買、價格該等」的股票，操作重心在<strong>進場位置</strong>而非方向。</div>
+  </div>
+  <div class="conclusion-card">
+    <div class="conc-item">
+      <div class="label">投資評級</div>
+      <div class="val">逢回布局</div>
+      <div class="sub">成長明確・不宜追高</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">12個月目標價</div>
+      <div class="val">340–380元</div>
+      <div class="sub">FY2027E EPS 6.2元 × 55–61x</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">最大風險</div>
+      <div class="val">估值偏高</div>
+      <div class="sub">P/E 64x vs 同業約35x</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">核心邏輯</div>
+      <div class="val">設備國產化 + 先進封裝</div>
+      <div class="sub">ALD／PLP PVD／EUV量測三箭齊發</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">建議布局區</div>
+      <div class="val">290–302元</div>
+      <div class="sub">MA20(290.8)–MA5(301.2) 回測區</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">停損設定</div>
+      <div class="val">276元</div>
+      <div class="sub">MA60(276.1)／布林下軌(275.6)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 KPI ===== -->
+<section>
+  <div class="section-title"><span class="section-num">3</span> 關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">最新股價</div>
+      <div class="kpi-val" style="color:#16a34a">308.0元</div>
+      <div class="kpi-sub">今漲2.50%，突破布林上軌306</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q2'26 EPS</div>
+      <div class="kpi-val">1.58元</div>
+      <div class="kpi-sub">YoY <strong style="color:#16a34a">+464%</strong>，同期歷史新高</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">H1'26 EPS</div>
+      <div class="kpi-val">2.54元</div>
+      <div class="kpi-sub">YoY +151%（H1'25僅1.01元）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">8月月營收</div>
+      <div class="kpi-val">2.65億</div>
+      <div class="kpi-sub">YoY <strong style="color:#16a34a">+123.3%</strong>，MoM +27.9%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q2'26 毛利率</div>
+      <div class="kpi-val">41.65%</div>
+      <div class="kpi-sub">OPM 16.04%，近8季次高</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">FY2026E EPS（法人）</div>
+      <div class="kpi-val">4.8元</div>
+      <div class="kpi-sub">P/E = <strong style="color:#dc2626">64.2x</strong>（估值偏高）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">訂單能見度</div>
+      <div class="kpi-val" style="color:#0d9488">2027 Q2</div>
+      <div class="kpi-sub">同業中能見度最長之一</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TTM EPS</div>
+      <div class="kpi-val">4.54元</div>
+      <div class="kpi-sub">TTM P/E 67.7x｜P/B 5.85x</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 04 財務趨勢圖 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">4</span> 財務趨勢圖</div>
+  <div class="charts-grid">
+    <div class="chart-box">
+      <div class="chart-title">EPS 季度趨勢（元）</div>
+      <canvas id="epsChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">Q2'26: 1.58元 ★ 同期歷史新高</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">月營收走勢（億元，實際月份）</div>
+      <canvas id="revChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">8月: 2.65億，YoY +123.3% ★</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">毛利率趨勢（%）</div>
+      <canvas id="gmChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">Q2'26: 41.65%，自Q3'25谷底回升5.1pp</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05 公司概覽 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">5</span> 公司概覽</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:var(--accent)">🏢 公司基本資訊</h4>
+        <table>
+          <tr><td style="color:var(--muted);font-size:13px">公司名稱</td><td style="font-weight:700;font-size:13px">天虹科技股份有限公司</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">英文名稱</td><td style="font-size:13px">Sky Tech Inc.（Skytech）</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">成立年份</td><td style="font-size:13px">2002年（新竹）</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">主要業務</td><td style="font-size:13px">半導體前段製程設備、設備零備件</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">實收資本額</td><td style="font-size:13px">6.76億元（小型股）</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">產業定位</td><td style="font-size:13px">台灣<strong style="color:var(--accent)">第一家</strong>量產型ALD薄膜設備本土廠</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">FY2025營收</td><td style="font-size:13px">22.45億元</td></tr>
+        </table>
+      </div>
+      <div>
+        <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:var(--accent)">🏰 競爭護城河</h4>
+        <ul style="list-style:none;padding:0">
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">✓</span><strong>利基市場避戰策略：</strong>不與應材（AMAT）正面搶矽基代工大單，聚焦氮化矽等化合物半導體</li>
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">✓</span><strong>客製化腔體設計：</strong>可依客戶需求彈性調整腔體配置與先驅物供應，國際大廠難以配合</li>
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">✓</span><strong>技術從追隨到領先：</strong>自研光化學 UV ALD，為全球首次挑戰此路線</li>
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">✓</span><strong>與晶圓大廠共同開發：</strong>綁定型研發關係，一旦導入量產轉換成本極高</li>
+          <li style="font-size:13px;padding:6px 0;display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">✓</span><strong>設備國產化政策紅利：</strong>台灣半導體設備自主化趨勢的少數本土受惠標的</li>
+        </ul>
+      </div>
+    </div>
+
+    <h4 style="font-size:14px;font-weight:800;margin:18px 0 0;color:var(--accent)">🔬 四大產品線</h4>
+    <div class="product-grid">
+      <div class="product-tile">
+        <div class="pt-name">ALD 設備</div>
+        <div class="pt-desc">原子層沉積<br>單原子層厚度控制</div>
+      </div>
+      <div class="product-tile">
+        <div class="pt-name">PVD 設備</div>
+        <div class="pt-desc">物理氣相沉積<br>含 PLP 面板級封裝版</div>
+      </div>
+      <div class="product-tile">
+        <div class="pt-name">Bonder</div>
+        <div class="pt-desc">鍵合機<br>先進封裝晶圓接合</div>
+      </div>
+      <div class="product-tile">
+        <div class="pt-name">De-Bonder</div>
+        <div class="pt-desc">解鍵合機<br>暫時性載板分離</div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;padding:14px;background:#f0fdfa;border-radius:10px;border:1px solid #99f6e4">
+      <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px">📡 2026 三大成長引擎</div>
+      <div style="font-size:13px;color:var(--text);line-height:1.7">
+        <strong>① 先進封裝（占營收約4成）：</strong>面板級封裝用 PLP PVD 設備已成功交付高雄封測廠客戶，是本土設備商切入 PLP 的關鍵一步。<br>
+        <strong>② EUV 光罩保護層量測設備：</strong>2026 年起放量，搭上美國與台灣先進製程擴產列車。<br>
+        <strong>③ 光化學 UV ALD：</strong>全球首創路線，若驗證成功將從「技術追隨者」轉為「規格制定者」。<br>
+        <span style="color:var(--muted)">應用領域橫跨矽基半導體、化合物半導體、光電半導體與半導體封裝；客戶含晶圓代工廠、記憶體廠、化合物半導體廠（如晶電、中國三安）與封測廠。</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 06 基本面 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">6</span> 基本面分析</div>
+  <div class="analyst-grid">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">📊 季度財報趨勢</h4>
+      <table>
+        <thead><tr><th>季度</th><th>EPS(元)</th><th>毛利率</th><th>OPM</th></tr></thead>
+        <tbody>
+          <tr><td>Q3'24</td><td>1.23</td><td>43.66%</td><td>14.98%</td></tr>
+          <tr><td>Q4'24</td><td>2.16</td><td>42.91%</td><td>16.05%</td></tr>
+          <tr><td>Q1'25</td><td>0.73</td><td>41.91%</td><td>5.92%</td></tr>
+          <tr style="background:#fef2f2"><td>Q2'25</td><td style="color:#dc2626">0.28</td><td>39.21%</td><td style="color:#dc2626">5.95%</td></tr>
+          <tr style="background:#fef2f2"><td>Q3'25</td><td>0.91</td><td style="color:#dc2626">36.51%</td><td style="color:#dc2626">4.80%</td></tr>
+          <tr><td>Q4'25</td><td>1.09</td><td>42.29%</td><td>15.23%</td></tr>
+          <tr><td>Q1'26</td><td>0.96</td><td>41.77%</td><td>12.97%</td></tr>
+          <tr style="background:#ecfdf5"><td><strong>Q2'26 ★</strong></td><td><strong style="color:var(--accent)">1.58</strong></td><td><strong>41.65%</strong></td><td><strong style="color:#16a34a">16.04%</strong></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">H1'26 EPS 2.54元 YoY +151% ｜ TTM EPS 4.54元 ｜ <strong>Q3'25 是獲利谷底（OPM僅4.8%），此後連3季回升</strong></div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">💰 月營收（實際月份）</h4>
+      <table>
+        <thead><tr><th>月份</th><th>月收(億)</th><th>YoY</th><th>MoM</th></tr></thead>
+        <tbody>
+          <tr><td>3月</td><td>2.87</td><td>+26.7%</td><td>+100.9%</td></tr>
+          <tr><td>4月</td><td>1.53</td><td>+22.4%</td><td>-46.6%</td></tr>
+          <tr><td>5月</td><td>1.91</td><td>+19.9%</td><td>+24.5%</td></tr>
+          <tr><td>6月</td><td>3.74</td><td>+64.2%</td><td>+96.2%</td></tr>
+          <tr><td>7月</td><td>2.07</td><td>+61.6%</td><td>-44.6%</td></tr>
+          <tr style="background:#ecfdf5"><td><strong>8月★</strong></td><td><strong style="color:var(--accent)">2.65</strong></td><td><strong style="color:#16a34a">+123.3%</strong></td><td>+27.9%</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">
+        1–8月累計 <strong>17.74億元</strong>（FY2025全年22.45億）｜H1'26營收13.01億 YoY +33.6%<br>
+        ⚠️ <strong>設備業營收天生不平滑</strong>：認列隨機台交機時點跳動（單月1.5億～3.7億），看 YoY 趨勢比看 MoM 有意義。YoY 從3月+27% 一路加速到 8月<strong>+123%</strong>，是本檔最強的基本面訊號。
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">📐 估值分析（本檔最關鍵的一頁）</h4>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;text-align:center">
+      <div style="padding:12px;background:var(--bg);border-radius:10px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">現價</div>
+        <div style="font-size:20px;font-weight:800;color:#16a34a">308元</div>
+        <div style="font-size:11px;color:var(--muted)">盤中，昨收300.5</div>
+      </div>
+      <div style="padding:12px;background:#fee2e2;border-radius:10px;border:1.5px solid #f87171">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">TTM P/E</div>
+        <div style="font-size:20px;font-weight:800;color:#dc2626">67.7x</div>
+        <div style="font-size:11px;color:var(--muted)">TTM EPS 4.54元</div>
+      </div>
+      <div style="padding:12px;background:#fef9c3;border-radius:10px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">FY2026E P/E</div>
+        <div style="font-size:20px;font-weight:800;color:#d97706">64.2x</div>
+        <div style="font-size:11px;color:var(--muted)">EPS 4.8元（法人估）</div>
+      </div>
+      <div style="padding:12px;background:#ecfdf5;border-radius:10px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">FY2027E P/E</div>
+        <div style="font-size:20px;font-weight:800;color:var(--accent)">49.7x</div>
+        <div style="font-size:11px;color:var(--muted)">EPS 6.2元（推算值）</div>
+      </div>
+    </div>
+    <div class="alert alert-yellow" style="margin-top:12px">
+      <span style="font-size:18px">⚖️</span>
+      <div><strong>估值兩面刃：</strong>用 FY2026E EPS 4.8 元看，64x 明顯貴（同業約 35x、大盤約 20x）。但若「訂單能見度到 2027 Q2 + 營收看增逾2成」成真，FY2027E EPS 可推估至 6.0–6.5 元，P/E 降至約 50x，才勉強進入台灣半導體設備成長股的合理帶（45–60x）。<br><br><strong>推論：現價已把 2026 年成長「全部算進去」，投資人實際上是在買 2027 年。</strong>這代表兩件事——① 上漲空間需靠 FY2027 獲利兌現，② 一旦任何一季 EPS 不如預期，高本益比會先殺估值。這就是為什麼本報告建議「逢回布局」而非「立即追高」。</div>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:var(--muted)">📌 FY2027E EPS 6.2 元為<strong>推算值</strong>，依據：法人「2026 年營收創新高、訂單能見度 2027 Q2、營收看增逾2成」之公開說法，搭配 OPM 回升至 16% 水準推估，非公司財測。</div>
+  </div>
+</section>
+
+<!-- ===== 07 籌碼面 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">7</span> 籌碼面分析</div>
+  <div class="alert alert-teal">
+    <span style="font-size:18px">🔍</span>
+    <div><strong>本檔籌碼判讀方式說明：</strong>天虹股本僅 6.76 億元，屬中小型股，公開資料庫（FinMind）對其三大法人逐日買賣超的揭露有限（2026/09/24 回傳三方均為 0，非「全面持平」而是資料庫未收錄該檔明細）。因此本節<strong>改以「量能結構 + 公開法人動向報導」雙軌判讀</strong>，並明確標示來源，不以單一缺漏資料下結論。</div>
+  </div>
+  <div class="analyst-grid">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">📊 量能籌碼結構（可驗證數據）</h4>
+      <table>
+        <thead><tr><th>指標</th><th>數值</th><th>判讀</th></tr></thead>
+        <tbody>
+          <tr><td style="font-size:13px">最近日成交量</td><td style="font-weight:700">678,835股（約679張）</td><td><span class="tag tag-green">量增</span></td></tr>
+          <tr><td style="font-size:13px">5日均量</td><td style="font-weight:700">580,241股</td><td style="font-size:12px;color:#16a34a">高於10日均量</td></tr>
+          <tr><td style="font-size:13px">10日均量</td><td>485,312股</td><td style="font-size:12px;color:var(--muted)">基準量</td></tr>
+          <tr style="background:#ecfdf5"><td style="font-size:13px"><strong>5日/10日均量比</strong></td><td style="font-weight:700;color:var(--accent)"><strong>+19.6%</strong></td><td><span class="tag tag-green">量能擴張中</span></td></tr>
+          <tr><td style="font-size:13px">09/02 單日爆量</td><td style="font-weight:700">1,730,542股</td><td style="font-size:12px;color:#2563eb">近月最大量（起漲點）</td></tr>
+          <tr><td style="font-size:13px">09/10 單日大量</td><td style="font-weight:700">1,528,367股</td><td style="font-size:12px;color:#2563eb">突破量（收296）</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px;font-size:12px;background:#dcfce7;padding:10px;border-radius:8px;color:#14532d">
+        <strong>量價結構判讀：</strong>5日均量高於10日均量近20%，且股價同步從 8/21 的 260 元走高至 308 元（+18.5%），屬<strong>「量增價漲」的健康多頭結構</strong>——上漲有量能支撐，非無量虛漲。9/2 與 9/10 兩根爆量長紅為關鍵籌碼換手點。
+      </div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">🌍 法人動向與市場評價</h4>
+      <table>
+        <thead><tr><th>來源</th><th>內容</th><th>方向</th></tr></thead>
+        <tbody>
+          <tr><td style="font-size:13px">CMoney 研究員</td><td style="font-size:13px">亮燈漲停 312.5 元，題材為先進封裝 ALD 與 PLP，並指<strong>「主力與投信同步加碼」</strong></td><td><span class="tag tag-green">偏多</span></td></tr>
+          <tr><td style="font-size:13px">多家機構</td><td style="font-size:13px">近期給予買進評價與高檔目標價，視天虹為<strong>台灣半導體設備自主化受惠股</strong></td><td><span class="tag tag-green">買進</span></td></tr>
+          <tr><td style="font-size:13px">法人共識</td><td style="font-size:13px">FY2026E EPS <strong>4.8元</strong>；看好營收逐季走高、全年創新高</td><td><span class="tag tag-green">成長</span></td></tr>
+          <tr><td style="font-size:13px">公司說法</td><td style="font-size:13px">訂單能見度已達 <strong>2027 年 Q2</strong>；先進封裝設備 2027/4 出貨、營收看增逾2成</td><td><span class="tag tag-teal">能見度高</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px;font-size:12px;background:#fef9c3;padding:10px;border-radius:8px;color:#713f12">
+        <strong>籌碼面提醒：</strong>中小型股的最大籌碼風險不是「法人賣超」，而是<strong>流動性本身</strong>。5 日均量約 580 張，若單筆大單進出（例如 200 張以上），足以造成數個百分點的價格衝擊。這是本檔在風控評分中「流動性風險」被獨立標出的原因。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 08 技術面 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">8</span> 技術分析</div>
+
+  <div class="alert alert-green" style="margin-bottom:12px">
+    <span style="font-size:18px">📈</span>
+    <div><strong>技術面評估：完全多頭排列，但已觸頂布林上軌</strong>　MA5(301.2) &gt; MA10(293.7) &gt; MA20(290.8) &gt; MA60(276.1) 完美多頭排列，股價 308 站上全部均線；MACD 金叉（OSC +0.96）、RSI 58.7 多方強勢、量增 1.2 倍。<strong>但股價已突破布林上軌 305.99</strong>，短線進入過熱區間——趨勢站在多方，位置卻不利新進場者。技術面結論與估值面完全一致：<strong>方向對，價格不對</strong>。</div>
+  </div>
+
+  <div class="tech-grid">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">📈 均線系統（多頭排列）</h4>
+      <table>
+        <tbody>
+          <tr><td style="font-size:13px;color:var(--muted)">現價</td><td style="font-weight:700;color:#16a34a;font-size:14px">308.0元</td><td><span class="tag tag-green">站上全部均線</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA5</td><td style="font-weight:700">301.2元</td><td style="font-size:12px;color:#16a34a">支撐 -2.2%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA10</td><td style="font-weight:700">293.65元</td><td style="font-size:12px;color:#16a34a">支撐 -4.7%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA20</td><td style="font-weight:700">290.77元</td><td style="font-size:12px;color:#16a34a">支撐 -5.6%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA60</td><td style="font-weight:700">276.06元</td><td style="font-size:12px;color:#16a34a">強支撐 -10.4%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">排列</td><td colspan="2"><span class="tag tag-green">完全多頭排列（強勢）</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">📊 動能指標</h4>
+      <table>
+        <tbody>
+          <tr><td style="font-size:13px;color:var(--muted)">MACD</td><td style="font-weight:700;color:#16a34a">+6.52</td><td><span class="tag tag-green">金叉</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">訊號線</td><td>+5.56</td><td style="font-size:12px;color:#16a34a">買入訊號</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">OSC柱</td><td>+0.96</td><td style="font-size:12px;color:#d97706">動能正向但偏弱</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">RSI</td><td style="font-weight:700;color:#16a34a">58.69</td><td><span class="tag tag-green">多方強勢</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">布林上軌</td><td style="font-weight:700;color:#d97706">305.99元</td><td><span class="tag tag-yellow">已突破！過熱</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">布林中軌</td><td>290.77元</td><td style="font-size:12px;color:var(--muted)">= MA20</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">布林下軌</td><td>275.56元</td><td style="font-size:12px;color:#16a34a">強支撐</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">布林帶寬 10.5%（正常），非極端擠壓或爆開狀態</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">🗺️ 關鍵價位表</h4>
+    <table>
+      <thead><tr><th>價位</th><th>意義</th><th>方向</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:700">380元</td><td>樂觀目標（FY2027E EPS 6.2 × 61x）</td><td><span class="tag tag-green">上檔目標</span></td></tr>
+        <tr><td style="font-weight:700">358.5元</td><td><strong>52週高點</strong>（首要壓力）</td><td><span class="tag tag-yellow">強壓力</span></td></tr>
+        <tr><td style="font-weight:700">340元</td><td>保守目標（FY2027E EPS 6.2 × 55x）</td><td><span class="tag tag-green">上檔目標</span></td></tr>
+        <tr><td style="font-weight:700">330元</td><td>今日漲停板（昨收×110%）</td><td><span class="tag tag-blue">日內上限</span></td></tr>
+        <tr><td style="font-weight:700">312.5元</td><td>近期漲停高點（先進封裝題材）</td><td><span class="tag tag-yellow">近壓</span></td></tr>
+        <tr style="background:#fef9c3"><td style="font-weight:700">306.0元</td><td>布林上軌（現價308已突破）</td><td><span class="tag tag-yellow">過熱線</span></td></tr>
+        <tr style="background:#ecfdf5"><td style="font-weight:700">308.0元</td><td><strong>現價（盤中）</strong></td><td><span class="tag tag-green">關鍵位</span></td></tr>
+        <tr><td style="font-weight:700">301.2元</td><td>MA5 支撐</td><td><span class="tag tag-teal">短支撐</span></td></tr>
+        <tr style="background:#ecfdf5"><td style="font-weight:700">290.8–293.7元</td><td><strong>MA20／MA10 布局區</strong>（布林中軌）</td><td><span class="tag tag-green">建議進場</span></td></tr>
+        <tr><td style="font-weight:700">276.1元</td><td>MA60 ／布林下軌 275.6（停損線）</td><td><span class="tag tag-red">停損</span></td></tr>
+        <tr><td style="font-weight:700">260.0元</td><td>8月波段低點</td><td><span class="tag tag-red">重大支撐</span></td></tr>
+      </tbody>
+    </table>
+    <canvas id="peChart" width="560" height="170" style="width:100%;height:auto;margin-top:16px;"></canvas>
+    <div class="chart-note">P/E 比較：天虹 TTM 67.7x / FY26E 64.2x 明顯高於半導體設備同業約35x 與台股大盤約20x（同業與大盤為產業推算值）</div>
+  </div>
+</section>
+
+<!-- ===== 09 融資融券 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">9</span> 融資融券</div>
+  <div class="card">
+    <div class="alert alert-yellow">
+      <span style="font-size:18px">ℹ️</span>
+      <div>公開資料庫（FinMind，2026/09/24）對天虹的融資融券明細<strong>未收錄有效數字</strong>。這在股本 6.76 億的中小型股並不罕見——本節不以「餘額為 0」作為結論，改採<strong>間接訊號趨勢判讀</strong>，並說明正確查詢管道。</div>
+    </div>
+    <div style="margin-top:10px">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">📉 間接訊號趨勢判讀</h4>
+      <table>
+        <thead><tr><th>觀察角度</th><th>實際數據</th><th>對信用交易的推論</th></tr></thead>
+        <tbody>
+          <tr><td style="font-size:13px">量價結構</td><td style="font-size:13px">量增19.6%、價漲18.5%（8/21→今日）</td><td style="font-size:13px">量增價漲，未見<strong>融券軋空式急拉</strong>（無單日暴量+跳空漲停組合）</td></tr>
+          <tr><td style="font-size:13px">回檔型態</td><td style="font-size:13px">9/15 回測277.5 後迅速拉回290以上</td><td style="font-size:13px">回檔淺、承接快，不像高融資追價後的斷頭賣壓</td></tr>
+          <tr><td style="font-size:13px">RSI 位置</td><td style="font-size:13px">58.69（未過熱）</td><td style="font-size:13px">若融資高度追價，RSI 通常已在70+；目前屬健康區</td></tr>
+          <tr><td style="font-size:13px">突破量能</td><td style="font-size:13px">9/2 173萬股、9/10 153萬股</td><td style="font-size:13px">兩次大量為真實籌碼換手，非信用交易單邊堆積特徵</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;font-size:13px;color:var(--muted)">
+        📝 <strong>綜合研判：</strong>從量價與均線結構看，本波上漲屬<strong>現股承接主導</strong>，未出現融資過度擴張或融券軋空的典型特徵。<br>
+        🔎 <strong>精確查詢管道：</strong>台灣證券交易所／證券櫃檯買賣中心官網「融資融券餘額」每日盤後公告，或 Goodinfo!、玩股網之個股信用交易頁面，輸入代號 6937 可查得逐日餘額與資券比。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 研究員辯論 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">10</span> 研究員辯論｜看多 vs 看空</div>
+
+  <div class="alert alert-teal" style="margin-bottom:12px">
+    <span style="font-size:18px">⚖️</span>
+    <div><strong>多空辯論量化權重：看多 58% vs 看空 42%</strong>　多方在「獲利成長動能」與「訂單能見度」兩項壓倒性勝出；空方在「估值」單一項目上的分量極重，足以抵銷大半多方優勢。<strong>結論不是「不要買」，而是「不要在這個價位買」</strong>——這是一場關於進場點而非方向的辯論。</div>
+  </div>
+
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <h4><span style="background:#dcfce7;color:#16a34a;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:14px">🐂</span> 看多研究員（7點）</h4>
+      <ul>
+        <li><span class="bull-icon">▲</span><div><strong>獲利爆發性成長：</strong>Q2'26 EPS 1.58元 YoY <strong>+464%</strong>（Q2'25僅0.28元），H1'26 累計2.54元 YoY +151%，為同期歷史新高。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>月營收 YoY 逐月加速：</strong>實際3月+26.7% → 6月+64.2% → 7月+61.6% → <strong>8月+123.3%</strong>。加速度而非單月高點，才是真需求訊號。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>訂單能見度到 2027 Q2：</strong>約 3 個季度的營收可預見性，在台灣中小型設備商中屬最長之列，大幅降低營運不確定性。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>先進封裝占營收4成且已出貨：</strong>PLP PVD 設備已實際交付高雄封測廠客戶——是「已交機」而非「洽談中」，題材具備營收落地基礎。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>獲利品質回升明確：</strong>OPM 從 Q3'25 谷底 4.80% 連3季回升至 Q2'26 <strong>16.04%</strong>（近8季次高），毛利率同步自36.51%回到41.65%，反映產品組合優化而非單純衝量。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>技術面量增價漲：</strong>MA5/10/20/60 完全多頭排列、MACD 金叉、5日均量高於10日均量19.6%，股價自8月低點260元上漲18.5%，結構健康。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>國產化政策紅利 + 避戰策略：</strong>不與應材搶矽基大單，聚焦氮化矽等化合物半導體利基市場，同時受惠台灣半導體設備自主化長期趨勢；光化學 UV ALD 為全球首創路線。</div></li>
+      </ul>
+    </div>
+    <div class="analyst-card">
+      <h4><span style="background:#fee2e2;color:#dc2626;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:14px">🐻</span> 看空研究員（6點）</h4>
+      <ul>
+        <li><span class="bear-icon">▼</span><div><strong>估值明顯偏高（最強論點）：</strong>TTM P/E 67.7x、FY2026E P/E 64.2x，vs 半導體設備同業約35x、台股大盤約20x。<strong>現價已把 2026 年成長完全定價，投資人實際在買 2027 年。</strong></div></li>
+        <li><span class="bear-icon">▼</span><div><strong>營收極不平滑，單季易失常：</strong>設備業依交機認列，實際月營收在1.53億～3.74億間劇烈跳動。任一季交機遞延，就會出現 EPS 大幅低於預期，而 64x 本益比對此毫無緩衝。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>毛利率未回到歷史高點：</strong>Q2'26 41.65% 仍低於 Q3'24 的 43.66%，長期呈緩降趨勢。設備國產化的另一面是價格競爭，議價能力未必如題材樂觀。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>流動性風險實質存在：</strong>股本僅6.76億，5日均量約580張。單筆200張以上的進出即可造成數個百分點價格衝擊，不利需要彈性調節部位的投資人。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>短線位置不利：</strong>股價308已突破布林上軌305.99，屬過熱區；距52週高358.5僅剩16.4%空間，但距MA20支撐僅5.6%——<strong>上方空間小、下方回檔空間大的不對稱結構</strong>。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>籌碼透明度低：</strong>公開資料庫未收錄本檔三大法人逐日買賣超與融資融券明細，投資人難以即時掌握主力動向，資訊劣勢高於大型權值股。</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">💬 給一般投資人的話</h4>
+    <p style="font-size:13px;line-height:1.75;color:var(--text)">
+    天虹是一家「故事好、數字也真的好」的公司：獲利連續三季回升、8 月營收年增超過一倍、訂單看到 2027 年中——這些不是題材，是已公告的數字。它做的 ALD 設備，簡單說就是在晶圓上一層一層「鋪原子」，精度到單原子層，是先進製程與先進封裝的關鍵機台，而天虹是台灣第一家做到量產的本土廠。<br><br>
+    <strong>但好公司不等於好價格。</strong>現在用 308 元買它，等於付出 64 倍本益比——意思是「如果公司獲利不再成長，你要 64 年才能靠盈餘回本」。市場願意付這個價，是因為相信它 2027 年還會大幅成長。這個假設可能對，但代價是：<strong>只要有一季交機遞延、EPS 沒達標，高本益比會先被殺一輪</strong>，而設備業的營收本來就是這樣一個月多、一個月少地跳。<br><br>
+    <strong>實務建議三句話：</strong>① 不要在突破布林上軌（306 元以上）的位置追價；② 等回測 290–302 元（MA20 至 MA5 區間）再分批，同樣的股票便宜 3–6%；③ 因為股本小、量少，部位務必控制在可承受範圍，並把停損放在 276 元（MA60），跌破就代表多頭結構已壞，先出場不等反彈。
+    </p>
+  </div>
+</section>
+
+<!-- ===== 11 風控 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">11</span> 風控評估｜六維評分</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <div class="score-row"><span class="score-label">估值風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:linear-gradient(90deg,#dc2626,#ef4444)"></div></div><span class="score-num" style="color:#dc2626">8.5</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">P/E 64–68x 遠高於同業35x、大盤20x，<strong>本檔最大風險來源</strong>（權重30%）</div>
+
+        <div class="score-row"><span class="score-label">財務風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:30%;background:linear-gradient(90deg,#16a34a,#22c55e)"></div></div><span class="score-num" style="color:#16a34a">3.0</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">毛利率41.65%、OPM 16.04% 回升，EPS 連3季成長，財務體質良好（權重25%）</div>
+
+        <div class="score-row"><span class="score-label">流動性風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:45%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div></div><span class="score-num" style="color:#d97706">4.5</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">股本6.76億、5日均量約580張，大單易造成價格衝擊（權重10%）</div>
+      </div>
+      <div>
+        <div class="score-row"><span class="score-label">產業風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:45%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div></div><span class="score-num" style="color:#d97706">4.5</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">半導體設備高度連動客戶資本支出循環，且單一大單影響營收比重高（權重15%）</div>
+
+        <div class="score-row"><span class="score-label">總經風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:40%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div></div><span class="score-num" style="color:#d97706">4.0</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">半導體資本支出景氣循環與關稅／地緣政治不確定性（權重10%）</div>
+
+        <div class="score-row"><span class="score-label">籌碼風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:40%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div></div><span class="score-num" style="color:#d97706">4.0</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">量增價漲結構健康，但法人／信用交易明細透明度低於大型股（權重10%）</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;margin-top:16px;padding:16px;background:var(--bg);border-radius:10px;flex-wrap:wrap">
+      <div style="text-align:center;flex-shrink:0">
+        <div style="font-size:40px;font-weight:900;color:#d97706">5.5</div>
+        <div style="font-size:11px;color:var(--muted)">加權綜合風險</div>
+      </div>
+      <div style="flex:1;min-width:240px">
+        <div style="font-size:14px;font-weight:800;color:#d97706;margin-bottom:4px">中等風險｜高估值成長型</div>
+        <div style="font-size:13px;color:var(--muted)">加權計算：8.5×30% + 3.0×25% + 4.5×10% + 4.5×15% + 4.0×10% + 4.0×10% ≈ <strong>5.2</strong>，考量小型股波動放大效應後<strong>上調至 5.5</strong>。<br>風險結構特殊：<strong>財務面極健康（3.0），估值面極危險（8.5）</strong>——風險不來自公司體質，而完全來自買入價格。建議：分批進場、單一部位不超過總倉位 20–25%、嚴設 276 元停損。</div>
+      </div>
+      <div style="flex-shrink:0"><span class="tag tag-yellow" style="font-size:13px;padding:6px 14px">中等風險</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12 三段式策略 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">12</span> 台股三段式策略</div>
+  <div class="strategy-grid">
+    <div class="strat-card attack">
+      <h3>🔴 進攻策略</h3>
+      <div class="strat-item"><span>目標：</span><span>358–380元（+16%–+23%）</span></div>
+      <div class="strat-item"><span>入場：</span><span>站穩306（布林上軌）不破且帶量，追多1/2倉</span></div>
+      <div class="strat-item"><span>倉位：</span><span>20–25%（小型股上限）</span></div>
+      <div class="strat-item"><span>加碼：</span><span>突破312.5（近期漲停高點）加碼另1/2</span></div>
+      <div class="strat-item"><span>停損：</span><span>290元（MA20，-5.8%）</span></div>
+      <div style="margin-top:10px;font-size:12px;background:rgba(255,255,255,0.16);border-radius:8px;padding:8px">⚡ 適合：能接受64x本益比、追求Q3財報行情的積極型投資者。<strong>注意：此為高風險追價策略</strong></div>
+    </div>
+    <div class="strat-card balance">
+      <h3>🟢 均衡策略（推薦）</h3>
+      <div class="strat-item"><span>目標：</span><span>340–358元（+13%–+19%）</span></div>
+      <div class="strat-item"><span>入場：</span><span>回測 <strong>290–302元</strong>（MA20→MA5）分3批</span></div>
+      <div class="strat-item"><span>倉位：</span><span>15–20%（均衡）</span></div>
+      <div class="strat-item"><span>催化劑：</span><span>Q3'26財報（10–11月）EPS若＞1.58元</span></div>
+      <div class="strat-item"><span>停損：</span><span>276元（MA60，-5%～-8%）</span></div>
+      <div style="margin-top:10px;font-size:12px;background:rgba(255,255,255,0.16);border-radius:8px;padding:8px">⚖️ <strong>本報告首選：</strong>同樣的公司、同樣的成長故事，在MA20附近進場便宜3–6%，且停損空間更明確</div>
+    </div>
+    <div class="strat-card defend">
+      <h3>🔵 防守策略</h3>
+      <div class="strat-item"><span>目標：</span><span>等估值消化，觀望為主</span></div>
+      <div class="strat-item"><span>進場條件：</span><span>①回測MA60 276元 或 ②Q3'26財報確認EPS達標</span></div>
+      <div class="strat-item"><span>倉位：</span><span>0–10%或空手</span></div>
+      <div class="strat-item"><span>觀察重點：</span><span>FY2027E EPS 是否真能上6元（使P/E降至50x）</span></div>
+      <div class="strat-item"><span>現金優先：</span><span>不接受60x以上本益比者應等待</span></div>
+      <div style="margin-top:10px;font-size:12px;background:rgba(255,255,255,0.16);border-radius:8px;padding:8px">🛡️ 適合：重視估值紀律的價值型投資者；276元（MA60）是最有吸引力的等待位置</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">🗓️ 催化劑時程表</h4>
+    <table>
+      <thead><tr><th>時間</th><th>事件</th><th>方向</th></tr></thead>
+      <tbody>
+        <tr><td>2026/10月初</td><td>9月（實際）月營收公告　→ 觀察 YoY 能否延續三位數成長</td><td><span class="tag tag-blue">關鍵觀察</span></td></tr>
+        <tr><td>2026/10–11月</td><td><strong>Q3'26 財報</strong>：EPS 若突破 Q2 的 1.58 元，FY2026E 4.8 元達標機率大增</td><td><span class="tag tag-green">最強催化劑</span></td></tr>
+        <tr><td>2026 Q4</td><td>EUV 光罩保護層量測設備放量進度確認</td><td><span class="tag tag-teal">題材驗證</span></td></tr>
+        <tr><td>2026 Q4–2027 Q1</td><td>光化學 UV ALD 客戶驗證結果（全球首創路線成敗關鍵）</td><td><span class="tag tag-teal">長線動能</span></td></tr>
+        <tr><td>2027/04</td><td>先進封裝設備出貨，公司預期營收看增逾2成</td><td><span class="tag tag-green">FY2027成長基礎</span></td></tr>
+        <tr><td>隨時</td><td>技術面：跌破 MA20 290元 → 多頭結構轉弱；跌破 MA60 276元 → 出場</td><td><span class="tag tag-red">風控觸發</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 13 名詞小教室 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">13</span> 名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">ALD（原子層沉積）</div>
+      <div class="glossary-def">在晶圓表面「一層一層鋪原子」的鍍膜技術，厚度可控制到單一原子層。優點是膜厚極均勻、能包覆3D立體結構、製程溫度溫和不傷材料。是先進製程與先進封裝的關鍵機台，天虹是台灣第一家做到量產型的本土廠。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">PVD（物理氣相沉積）</div>
+      <div class="glossary-def">用物理方式（如濺鍍）把金屬材料打到晶圓上形成薄膜，速度比ALD快但精度較低，兩者互補使用。天虹的 <strong>PLP PVD</strong> 是專為面板級封裝設計的版本，已交付高雄封測廠客戶。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">PLP（面板級封裝）</div>
+      <div class="glossary-def">傳統封裝一次處理一片圓形晶圓，PLP 改成在大片方形面板上一次封裝更多顆晶片，單位成本更低。是先進封裝的重要新方向，設備需求全新，本土廠有切入機會。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Bonder／De-Bonder（鍵合／解鍵合機）</div>
+      <div class="glossary-def">Bonder 把兩片晶圓或晶片精準貼合在一起（先進封裝堆疊必需）；De-Bonder 則把製程中暫時用來支撐的載板安全分離。兩者都是 3D 封裝產線的必備機台。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">訂單能見度</div>
+      <div class="glossary-def">公司「已經拿到、看得到」的訂單能支撐未來多久的營收。天虹能見度到 2027 年 Q2，約等於 3 個季度——對設備業來說算長，代表短期營收不確定性低。這是本檔最實在的多方論點。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">本益比（P/E）</div>
+      <div class="glossary-def">股價 ÷ 每股盈餘。天虹 64x 的意思是：若獲利停止成長，要64年才靠盈餘回本。高本益比代表市場預期未來大幅成長；反面是<strong>一旦成長不如預期，股價會先殺估值</strong>，跌幅往往大於獲利衰退幅度。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">OPM（營業利益率）</div>
+      <div class="glossary-def">本業賺錢效率 = 營業利益 ÷ 營收，扣掉生產成本和管銷費用後的真實獲利力。天虹從 Q3'25 谷底 4.80% 回升到 Q2'26 的 16.04%，是「獲利品質改善」最直接的證據，比單看營收成長更重要。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">多頭排列 / 布林上軌</div>
+      <div class="glossary-def"><strong>多頭排列</strong>：短期均線 &gt; 中期 &gt; 長期且股價在全部均線之上，趨勢最強的型態。<strong>布林上軌</strong>：股價正常波動的上緣（均線+2個標準差），突破代表短線偏熱、追高風險升高——天虹目前正是「趨勢強但位置熱」。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 14 免責聲明 ===== -->
+<div class="disclaimer">
+  <strong>⚠️ 免責聲明</strong>　本報告由 AI 分析系統於 2026 年 9 月 29 日自動生成，純供學術研究與資訊參考，<strong>不構成任何投資建議或勸誘買賣證券之行為</strong>。股票投資涉及風險，過去績效不代表未來表現。報告中 FY2027E EPS 6.2 元、同業 P/E 約35x、大盤 P/E 約20x 為推算值而非公司財測或官方統計，已於文中標示。投資人應自行研判並承擔投資盈虧責任。<br><br>
+  <strong>資料來源：</strong>即時報價 富果 Fugle API ｜ 歷史K線・技術指標・月營收・季度財報 FinMind ｜ 法人動向與產業資訊 WebSearch（工商時報、TechNews 科技新報、CMoney 投資網誌、財報狗、天下雜誌、臺灣證券交易所）｜ 報告日期：2026-09-29（首次報告）<br>
+  <strong>月營收月份對應說明：</strong>資料庫申報月份減 1 為實際賺取月份，本報告已統一換算為實際月份呈現；H1'26 加總 13.01 億元與公司公告一致，換算已交叉驗證。
+</div>
+
+</div><!-- /container -->
+
+<script>
+function drawBarChart(id,labels,data,barColor,accentColor){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=44,PR=12,PT=20,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.18||0.5;
+  var lo=Math.max(0,min-pad),hi=max+pad,range=hi-lo;
+  var n=data.length;
+  var barW=chartW/n*0.6,gap=chartW/n;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(1),PL-4,gy+3);
+  }
+  for(var i=0;i<n;i++){
+    var x=PL+i*gap+(gap-barW)/2;
+    var bh=(data[i]-lo)/range*chartH;
+    var y=PT+chartH-bh;
+    var isLast=(i===n-1);
+    var color=isLast?accentColor:barColor;
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,y,barW,bh,3);ctx.fillStyle=color;ctx.fill();}
+    else{ctx.fillStyle=color;ctx.fillRect(x,y,barW,bh);}
+    ctx.fillStyle=isLast?accentColor:'#475569';ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(2),x+barW/2,y-4);
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    var lx=PL+i*gap+gap/2,ly=PT+chartH+14;
+    if(labels[i].length>4){ctx.save();ctx.translate(lx,ly);ctx.rotate(-Math.PI/6);ctx.fillText(labels[i],0,0);ctx.restore();}
+    else ctx.fillText(labels[i],lx,ly);
+  }
+}
+function drawLineChart(id,labels,data,color){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=44,PR=12,PT=20,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.18||1;
+  var lo=min-pad,hi=max+pad,range=hi-lo;
+  var n=data.length;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(1),PL-4,gy+3);
+  }
+  var pts=[];
+  for(var i=0;i<n;i++){
+    pts.push({x:PL+i*chartW/(n-1),y:PT+chartH-(data[i]-lo)/range*chartH});
+  }
+  ctx.beginPath();ctx.moveTo(pts[0].x,PT+chartH);
+  for(var i=0;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.lineTo(pts[n-1].x,PT+chartH);ctx.closePath();
+  var grad=ctx.createLinearGradient(0,PT,0,PT+chartH);
+  var hex=color.slice(1);
+  var r=parseInt(hex.slice(0,2),16),g2=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  grad.addColorStop(0,'rgba('+r+','+g2+','+b+',0.25)');
+  grad.addColorStop(1,'rgba('+r+','+g2+','+b+',0.02)');
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+  for(var i=1;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+  for(var i=0;i<n;i++){
+    var isLast=(i===n-1);
+    ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,isLast?5:3,0,Math.PI*2);
+    ctx.fillStyle=isLast?color:'#fff';ctx.fill();
+    ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=isLast?color:'#475569';ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(2),pts[i].x,pts[i].y+(isLast?-10:-8));
+  }
+  for(var i=0;i<n;i++){
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    ctx.fillText(labels[i],pts[i].x,PT+chartH+14);
+  }
+}
+function drawHBarChart(id,labels,data,colors){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var max=Math.max.apply(null,data)*1.32;
+  var n=labels.length;
+  var rowH=H/(n+0.6);
+  var PL=132,PR=56;
+  for(var i=0;i<n;i++){
+    var y=rowH*(i+0.3)+rowH*0.12;
+    var bh=rowH*0.66;
+    ctx.fillStyle='#f1f5f9';ctx.fillRect(PL,y,(W-PL-PR),bh);
+    var bw=(data[i]/max)*(W-PL-PR);
+    var col=colors?colors[i]:'#059669';
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(PL,y,bw,bh,4);ctx.fillStyle=col;ctx.fill();}
+    else{ctx.fillStyle=col;ctx.fillRect(PL,y,bw,bh);}
+    ctx.fillStyle='#1e293b';ctx.font='12px Arial';ctx.textAlign='right';
+    ctx.fillText(labels[i],PL-8,y+bh/2+4);
+    ctx.fillStyle='#1e293b';ctx.font='bold 12px Arial';ctx.textAlign='left';
+    ctx.fillText(data[i]+'x',PL+bw+6,y+bh/2+4);
+  }
+}
+window.addEventListener('DOMContentLoaded',function(){
+  drawBarChart('epsChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [1.23,2.16,0.73,0.28,0.91,1.09,0.96,1.58],
+    '#6ee7b7','#059669');
+  drawLineChart('revChart',
+    ['3月','4月','5月','6月','7月','8月'],
+    [2.87,1.53,1.91,3.74,2.07,2.65],
+    '#059669');
+  drawLineChart('gmChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [43.66,42.91,41.91,39.21,36.51,42.29,41.77,41.65],
+    '#0d9488');
+  drawHBarChart('peChart',
+    ['天虹 TTM','天虹 FY2026E','天虹 FY2027E(推算)','半導體設備同業','台股大盤'],
+    [67.7,64.2,49.7,35,20],
+    ['#dc2626','#d97706','#059669','#0d9488','#2563eb']);
+});
+</script>
+</body>
+</html>
