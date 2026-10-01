@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>群創光電(3481) 深度研究報告 首次 | 2026-10-01</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+    --accent:#be123c;--accent2:#e11d48;--accent3:#fb7185;
+    --green:#16a34a;--red:#dc2626;--yellow:#d97706;--blue:#2563eb;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.6}
+  a{color:var(--accent)}
+  time,.code{font-variant-numeric:tabular-nums}
+
+  /* COVER */
+  .cover{background:linear-gradient(135deg,#4c0519 0%,#881337 32%,#be123c 68%,#fb7185 100%);color:#fff;padding:56px 40px 48px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-70px;right:-50px;width:310px;height:310px;border-radius:50%;background:rgba(255,255,255,0.07)}
+  .cover::after{content:'';position:absolute;bottom:-90px;left:-50px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.045)}
+  .cover-ticker{font-size:13px;opacity:.72;margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+  .cover-name{font-size:36px;font-weight:800;line-height:1.1;margin-bottom:6px}
+  .cover-subtitle{font-size:15px;opacity:.83;margin-bottom:22px}
+  .cover-price-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:10px}
+  .cover-price{font-size:56px;font-weight:900;line-height:1}
+  .cover-chg{font-size:22px;padding:4px 14px;border-radius:8px;background:rgba(22,163,74,0.32);border:1px solid rgba(134,239,172,0.55)}
+  .price-caveat{font-size:12px;background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.25);border-radius:8px;padding:7px 12px;margin-bottom:22px;display:inline-block}
+  .cover-meta{display:flex;gap:24px;flex-wrap:wrap}
+  .cover-meta-item{font-size:13px;opacity:.78}
+  .cover-meta-item strong{opacity:1;font-weight:700}
+  .risk-badge{position:absolute;top:32px;right:40px;background:rgba(220,38,38,0.35);border:1.5px solid rgba(252,165,165,0.7);border-radius:12px;padding:10px 18px;text-align:center}
+  .risk-badge .num{font-size:28px;font-weight:900;color:#fecaca}
+  .risk-badge .lbl{font-size:11px;opacity:.88;letter-spacing:1px}
+  .report-no-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(251,113,133,0.22);border:1px solid rgba(251,113,133,0.45);border-radius:8px;padding:3px 12px;font-size:12px;margin-bottom:12px}
+
+  /* LAYOUT */
+  .container{max-width:960px;margin:0 auto;padding:0 20px 60px}
+  section{margin-top:32px}
+  .section-title{font-size:18px;font-weight:800;color:var(--accent);border-left:4px solid var(--accent);padding-left:12px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .section-num{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+  .card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07),0 0 0 1px var(--border)}
+  .card + .card{margin-top:12px}
+
+  /* CONCLUSION */
+  .conclusion-card{background:linear-gradient(135deg,#4c0519 0%,#9f1239 55%,#e11d48 100%);color:#fff;border-radius:16px;padding:28px 32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+  .conc-item .label{font-size:11px;opacity:.68;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+  .conc-item .val{font-size:21px;font-weight:800;line-height:1.15}
+  .conc-item .sub{font-size:12px;opacity:.75;margin-top:4px}
+  @media(max-width:640px){.conclusion-card{grid-template-columns:1fr 1fr}}
+
+  /* KPI */
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+  .kpi-card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border);text-align:center}
+  .kpi-label{font-size:11px;color:var(--muted);margin-bottom:4px;letter-spacing:.5px}
+  .kpi-val{font-size:21px;font-weight:800;color:var(--accent)}
+  .kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+  /* CHARTS */
+  .charts-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  @media(max-width:760px){.charts-grid{grid-template-columns:1fr}}
+  .chart-box{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border)}
+  .chart-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px}
+  .chart-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center}
+
+  /* TABLE */
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{background:var(--bg);padding:8px 12px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+  .tag-green{background:#dcfce7;color:#16a34a}
+  .tag-red{background:#fee2e2;color:#dc2626}
+  .tag-yellow{background:#fef9c3;color:#d97706}
+  .tag-blue{background:#dbeafe;color:#2563eb}
+  .tag-rose{background:#ffe4e6;color:#be123c}
+
+  /* ANALYST */
+  .analyst-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.analyst-grid{grid-template-columns:1fr}}
+  .analyst-card{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border)}
+  .analyst-card h4{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .analyst-card ul{list-style:none;padding:0}
+  .analyst-card li{font-size:13px;padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px}
+  .analyst-card li:last-child{border-bottom:none}
+  .bull-icon{color:#16a34a;font-weight:900;flex-shrink:0}
+  .bear-icon{color:#dc2626;font-weight:900;flex-shrink:0}
+
+  /* SCORE */
+  .score-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+  .score-label{width:90px;font-size:13px;flex-shrink:0}
+  .score-bar-bg{flex:1;height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+  .score-bar-fill{height:100%;border-radius:5px}
+  .score-num{width:32px;font-size:13px;font-weight:700;text-align:right;flex-shrink:0}
+
+  /* STRATEGY */
+  .strategy-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:640px){.strategy-grid{grid-template-columns:1fr}}
+  .strat-card{border-radius:14px;padding:20px;color:#fff}
+  .strat-card.attack{background:linear-gradient(135deg,#dc2626,#ef4444)}
+  .strat-card.balance{background:linear-gradient(135deg,#be123c,#f43f5e)}
+  .strat-card.defend{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
+  .strat-card h3{font-size:15px;font-weight:800;margin-bottom:12px}
+  .strat-item{font-size:13px;margin:6px 0;display:flex;gap:8px}
+  .strat-item span:first-child{opacity:.72;flex-shrink:0}
+
+  .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.tech-grid{grid-template-columns:1fr}}
+
+  /* ALERT */
+  .alert{border-radius:10px;padding:14px 18px;margin-bottom:12px;font-size:13px;display:flex;gap:12px;align-items:flex-start}
+  .alert-red{background:#fee2e2;border-left:4px solid #dc2626;color:#7f1d1d}
+  .alert-green{background:#dcfce7;border-left:4px solid #16a34a;color:#14532d}
+  .alert-yellow{background:#fef9c3;border-left:4px solid #d97706;color:#713f12}
+  .alert-rose{background:#ffe4e6;border-left:4px solid #be123c;color:#881337}
+
+  .disclaimer{background:#fef9c3;border:1px solid #d97706;border-radius:10px;padding:16px 20px;font-size:12px;color:#713f12;margin-top:32px}
+
+  .glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:540px){.glossary-grid{grid-template-columns:1fr}}
+  .glossary-item{background:var(--card);border-radius:10px;padding:12px 14px;border:1px solid var(--border)}
+  .glossary-term{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:4px}
+  .glossary-def{font-size:12px;color:var(--muted);line-height:1.5}
+
+  .biz-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+  @media(max-width:700px){.biz-grid{grid-template-columns:1fr}}
+  .biz-tile{background:#fff1f2;border:1px solid #fecdd3;border-radius:10px;padding:13px;text-align:center}
+  .biz-tile .bt-name{font-size:13px;font-weight:800;color:#be123c}
+  .biz-tile .bt-desc{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.45}
+
+  .verdict-box{background:linear-gradient(135deg,#fff1f2,#ffe4e6);border:2px solid #be123c;border-radius:14px;padding:20px 24px;margin-bottom:14px}
+  .verdict-box h4{font-size:15px;font-weight:800;color:#9f1239;margin-bottom:8px}
+  .verdict-box p{font-size:13.5px;line-height:1.75;color:#881337}
+</style>
+</head>
+<body>
+
+<!-- ===== 01 COVER ===== -->
+<div class="cover">
+  <div class="risk-badge">
+    <div class="num">7.0</div>
+    <div class="lbl">風險指數</div>
+  </div>
+  <div class="report-no-badge">★ 首次深度報告</div>
+  <div class="cover-ticker">TWSE: 3481</div>
+  <div class="cover-name">群創光電</div>
+  <div class="cover-subtitle">Innolux｜面板廠轉型 FOPLP 面板級先進封裝・SpaceX 供應鏈題材股</div>
+  <div class="cover-price-row">
+    <div class="cover-price">NT$59.9</div>
+    <div class="cover-chg">▲ 5.2元 (+9.51%)</div>
+  </div>
+  <div class="price-caveat">⚠️ 此為 10/01 08:50 <strong>開盤前試撮參考價</strong>（成交量 0、開高低皆未成交）；昨日 09/30 已<strong>鎖漲停</strong>收 54.70 元，今日漲停價 60.17 元</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">📅 報告日期 <strong>2026-10-01</strong></div>
+    <div class="cover-meta-item">昨收 <strong>54.70元（漲停）</strong></div>
+    <div class="cover-meta-item">52W高低 <strong>72.6 / 12.1</strong></div>
+    <div class="cover-meta-item">市值 <strong>4,366億元</strong></div>
+    <div class="cover-meta-item">TTM P/E <strong style="color:#fecaca">76.8x</strong></div>
+    <div class="cover-meta-item">法人中位目標 <strong style="color:#fecaca">52.5元（已跌破）</strong></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===== 02 核心結論 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">2</span> 核心結論與投資建議</div>
+
+  <div class="verdict-box">
+    <h4>🚨 本報告結論與前幾檔不同：好公司在轉型，但現在不是好價格</h4>
+    <p>群創的轉型是<strong>真的</strong>——本業營業利益率在連 6 季為負後，Q1'26 轉正至 +2.25%、Q2'26 +2.56%；毛利率從 8% 級距跳到 14.5%；FOPLP 產能滿載、SpaceX 訂單確實拿到。<strong>但現在的股價問題有三個，必須說清楚：</strong><br><br>
+    <strong>① 現價已超越法人共識目標價。</strong>法人中位目標價 52.5 元（2026/09/15），評等共識為「中立」（看多僅 33.3%）。試撮價 59.9 元已高出中位目標 <strong>+14%</strong>，逼近最高目標 65 元。<br>
+    <strong>② 2026 年 EPS 大半來自賣廠，不是本業。</strong>三筆廠房處分業外收益合計 <strong>197.59 億元</strong>，市場推估貢獻全年 EPS 約 2.47 元。若全年 EPS 落在 2.96–3.5 元，代表<strong>本業僅貢獻約 0.5–1.0 元</strong>。而公司已明言「暫不再處分資產」——這筆錢是一次性的。<br>
+    <strong>③ 本業營收動能正在轉弱。</strong>月營收 YoY 從實際 3 月的 +33.1% 一路滑到 7 月 <strong>-1.94%</strong>、8 月 +0.02%。公司自己表示 Q3 電視面板價格轉弱、消費性顯示器出貨預估季減高個位數%、明年 NB 保守。<br><br>
+    <strong>而台積電龍潭廠合作目前僅是市場傳聞，公司低調表示不予評論。</strong>這波漲停行情建立在尚未證實的消息上。</p>
+  </div>
+
+  <div class="conclusion-card">
+    <div class="conc-item">
+      <div class="label">投資評級</div>
+      <div class="val">不宜追高</div>
+      <div class="sub">轉型真實・價格已透支</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">法人共識目標價</div>
+      <div class="val">52.5元（中位）</div>
+      <div class="sub">最高65 / 最低26｜評等「中立」</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">最大風險</div>
+      <div class="val">題材未證實</div>
+      <div class="sub">台積電合作僅傳聞・公司不評論</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">核心矛盾</div>
+      <div class="val">題材大・實質貢獻小</div>
+      <div class="sub">FOPLP 年貢獻十億元 ≈ 總營收 0.4%</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">合理布局區</div>
+      <div class="val">49–52.5元</div>
+      <div class="sub">均線群＋法人中位目標價</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">若已持有</div>
+      <div class="val">分批獲利了結</div>
+      <div class="sub">停利參考 65元（法人最高目標）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 KPI ===== -->
+<section>
+  <div class="section-title"><span class="section-num">3</span> 關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">試撮參考價</div>
+      <div class="kpi-val" style="color:#16a34a">59.9元</div>
+      <div class="kpi-sub">昨收54.70（漲停）｜今漲停60.17</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q2'26 營業利益率</div>
+      <div class="kpi-val" style="color:#16a34a">+2.56%</div>
+      <div class="kpi-sub"><strong>連6季為負後轉正</strong>（真轉機）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q2'26 毛利率</div>
+      <div class="kpi-val">14.56%</div>
+      <div class="kpi-sub">自 8% 級距結構性上移</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">H1'26 EPS</div>
+      <div class="kpi-val">0.77元</div>
+      <div class="kpi-sub">H1'25 僅 0.02 元</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">8月月營收</div>
+      <div class="kpi-val" style="color:#dc2626">187.0億</div>
+      <div class="kpi-sub">YoY <strong style="color:#dc2626">+0.02%</strong>（動能幾近停滯）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">賣廠業外收益</div>
+      <div class="kpi-val" style="color:#d97706">197.6億</div>
+      <div class="kpi-sub">推估貢獻 EPS 2.47元（<strong>一次性</strong>）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TTM EPS</div>
+      <div class="kpi-val">0.78元</div>
+      <div class="kpi-sub">TTM P/E <strong style="color:#dc2626">76.8x</strong>｜P/B 1.94x</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">FOPLP 年營收貢獻</div>
+      <div class="kpi-val">十億元級</div>
+      <div class="kpi-sub">約占總營收 <strong>0.4%</strong>（題材>實質）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 04 圖表 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">4</span> 財務趨勢圖</div>
+  <div class="charts-grid">
+    <div class="chart-box">
+      <div class="chart-title">EPS 季度趨勢（元）</div>
+      <canvas id="epsChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">Q2'26: 0.57元｜Q4'24 的 1.05 元亦含業外</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">月營收走勢（億元，實際月份）</div>
+      <canvas id="revChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">自3月249.8億高點回落至8月187.0億</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">營業利益率 OPM（%）</div>
+      <canvas id="opmChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ Q1'26 由負轉正，連6季虧損終結</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05 公司概覽 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">5</span> 公司概覽</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:var(--accent)">🏢 公司基本資訊</h4>
+        <table>
+          <tr><td style="color:var(--muted);font-size:13px">公司名稱</td><td style="font-weight:700;font-size:13px">群創光電股份有限公司</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">英文名稱</td><td style="font-size:13px">Innolux Corporation</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">傳統主業</td><td style="font-size:13px">TFT-LCD 面板（TV／NB／監視器／車用）</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">轉型方向</td><td style="font-size:13px"><strong style="color:var(--accent)">FOPLP 面板級先進封裝</strong>＋車用座艙</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">車用占比</td><td style="font-size:13px">已衝近 <strong>4 成</strong>（CarUX 座艙轉型）</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">市值</td><td style="font-size:13px">4,366億元（9/30收盤計）</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">策略方向</td><td style="font-size:13px">輕資產化、擴大高毛利業務</td></tr>
+        </table>
+      </div>
+      <div>
+        <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:var(--accent)">⚖️ 轉型進度：真實的與尚待驗證的</h4>
+        <ul style="list-style:none;padding:0">
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">✓</span><strong>已確認：</strong>SpaceX 訂單——承接 RF 晶片地端接收模組封裝，用於 Starlink 地面終端</li>
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">✓</span><strong>已確認：</strong>FOPLP 產能滿載，訂單能見度至 2026 年中</li>
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">✓</span><strong>已確認：</strong>chip-first 月產量由 400 萬顆提升至逾 <strong>4,000 萬顆</strong>（10 倍）</li>
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">✓</span><strong>已確認：</strong>本業 OPM 連 6 季負值後，Q1'26 起連兩季轉正</li>
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#d97706;font-weight:700">？</span><strong>僅為傳聞：</strong>與台積電龍潭廠合作 AI／HPC 先進封裝——<strong>公司低調不予評論</strong></li>
+          <li style="font-size:13px;padding:6px 0;display:flex;gap:8px"><span style="color:#dc2626;font-weight:700">✗</span><strong>隱憂：</strong>高階 FOPLP 技術量產仍待醞釀；短期對整體營收貢獻有限</li>
+        </ul>
+      </div>
+    </div>
+
+    <h4 style="font-size:14px;font-weight:800;margin:18px 0 0;color:var(--accent)">🏗️ 三塊業務拼圖</h4>
+    <div class="biz-grid">
+      <div class="biz-tile"><div class="bt-name">面板本業（主體）</div><div class="bt-desc">TV／NB／監視器<br>營收絕大部分來源<br><strong style="color:#dc2626">需求轉弱中</strong></div></div>
+      <div class="biz-tile"><div class="bt-name">車用／CarUX（近4成）</div><div class="bt-desc">智慧座艙系統<br>毛利優於消費性面板<br><strong style="color:#16a34a">穩定成長</strong></div></div>
+      <div class="biz-tile"><div class="bt-name">FOPLP 封裝（題材）</div><div class="bt-desc">SpaceX／潛在台積電<br>年貢獻十億元級<br><strong style="color:#d97706">占營收僅約0.4%</strong></div></div>
+    </div>
+
+    <div class="alert alert-rose" style="margin-top:16px">
+      <span style="font-size:18px">🔬</span>
+      <div><strong>FOPLP 是什麼，為什麼市場這麼興奮？</strong><br>
+      扇出型<strong>面板級</strong>封裝（Fan-Out Panel Level Packaging）＝把半導體封裝從「圓形晶圓」搬到「方形大面板」上做。面板廠做了二十年的大尺寸方形基板製程，正好是這門技術的天然強項——這是群創從「面板製造」跨到「面板級半導體」的邏輯支點，也是本次價值重估的核心敘事。<br><br>
+      <strong>但要看清楚比例：</strong>FOPLP 2025 年貢獻數億元、2026 年上看十億元以上。而群創 1–8 月累計營收約 <strong>1,678 億元</strong>——十億元只占約 <strong>0.4%</strong>。<strong>故事的規模遠大於目前的損益貢獻</strong>，這正是「本益比該給多少」的爭論所在。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 06 基本面 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">6</span> 基本面分析</div>
+  <div class="analyst-grid">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">📊 季度財報趨勢</h4>
+      <table>
+        <thead><tr><th>季度</th><th>EPS(元)</th><th>毛利率</th><th>OPM</th></tr></thead>
+        <tbody>
+          <tr><td>Q3'24</td><td>0.05</td><td>9.02%</td><td style="color:#dc2626">-1.42%</td></tr>
+          <tr><td>Q4'24</td><td>1.05 <span style="font-size:10px;color:var(--muted)">(含業外)</span></td><td style="color:#dc2626">2.46%</td><td style="color:#dc2626">-8.05%</td></tr>
+          <tr><td>Q1'25</td><td>0.12</td><td>7.57%</td><td style="color:#dc2626">-2.22%</td></tr>
+          <tr style="background:#fef2f2"><td>Q2'25</td><td style="color:#dc2626">-0.10</td><td>8.38%</td><td style="color:#dc2626">-1.38%</td></tr>
+          <tr><td>Q3'25</td><td>0.01</td><td>7.89%</td><td style="color:#dc2626">-1.69%</td></tr>
+          <tr><td>Q4'25</td><td>0.00</td><td>9.08%</td><td style="color:#dc2626">-2.06%</td></tr>
+          <tr style="background:#dcfce7"><td><strong>Q1'26</strong></td><td>0.20</td><td><strong>14.43%</strong></td><td><strong style="color:#16a34a">+2.25%</strong></td></tr>
+          <tr style="background:#dcfce7"><td><strong>Q2'26 ★</strong></td><td><strong style="color:var(--accent)">0.57</strong></td><td><strong>14.56%</strong></td><td><strong style="color:#16a34a">+2.56%</strong></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">
+        <strong>這張表最重要的一欄是 OPM。</strong>連續 6 季為負（Q3'24～Q4'25）後，Q1'26 轉正並連兩季擴大——毛利率同步從 8% 級距跳上 14.5%。<strong>本業確實出現結構性改善，這點不容否認。</strong>但 OPM 僅 2.5%，距健康製造業仍有距離。
+      </div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">💰 月營收（實際月份）</h4>
+      <table>
+        <thead><tr><th>月份</th><th>月收(億)</th><th>YoY</th><th>MoM</th></tr></thead>
+        <tbody>
+          <tr><td>3月</td><td>249.77</td><td style="color:#16a34a">+33.1%</td><td>+27.8%</td></tr>
+          <tr><td>4月</td><td>212.37</td><td style="color:#16a34a">+11.8%</td><td style="color:#dc2626">-15.0%</td></tr>
+          <tr><td>5月</td><td>206.48</td><td style="color:#16a34a">+10.3%</td><td style="color:#dc2626">-2.8%</td></tr>
+          <tr><td>6月</td><td>217.03</td><td style="color:#16a34a">+17.3%</td><td>+5.1%</td></tr>
+          <tr style="background:#fef2f2"><td>7月</td><td>188.90</td><td style="color:#dc2626"><strong>-1.9%</strong></td><td style="color:#dc2626">-13.0%</td></tr>
+          <tr style="background:#fef2f2"><td><strong>8月</strong></td><td><strong>186.97</strong></td><td style="color:#dc2626"><strong>+0.02%</strong></td><td style="color:#dc2626">-1.0%</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">
+        1–8月累計約 <strong>1,678億元</strong><br>
+        🔴 <strong>這是本報告最需要注意的數字：</strong>YoY 從 3 月的 +33.1% 單調滑落至 7 月 -1.9%、8 月 +0.02%，<strong>成長動能已實質消失</strong>。與公司說法完全吻合——Q3 電視面板價格轉弱、消費性顯示器出貨預估季減高個位數%、明年 NB 保守。<strong>股價漲停與營收走平，方向相反。</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">📐 估值分析｜拆開「賣廠」才看得到真相</h4>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;text-align:center">
+      <div style="padding:12px;background:var(--bg);border-radius:10px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">試撮價</div>
+        <div style="font-size:20px;font-weight:800;color:#16a34a">59.9元</div>
+        <div style="font-size:11px;color:var(--muted)">昨收54.70（漲停）</div>
+      </div>
+      <div style="padding:12px;background:#fee2e2;border-radius:10px;border:1.5px solid #f87171">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">TTM P/E</div>
+        <div style="font-size:20px;font-weight:800;color:#dc2626">76.8x</div>
+        <div style="font-size:11px;color:var(--muted)">TTM EPS 0.78元</div>
+      </div>
+      <div style="padding:12px;background:#dcfce7;border-radius:10px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">FY26E P/E（含賣廠）</div>
+        <div style="font-size:20px;font-weight:800;color:#16a34a">18.5x</div>
+        <div style="font-size:11px;color:var(--muted)">EPS 3.23元（2.96–3.5中值）</div>
+      </div>
+      <div style="padding:12px;background:#fee2e2;border-radius:10px;border:1.5px solid #f87171">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">FY26E P/E（<strong>扣除賣廠</strong>）</div>
+        <div style="font-size:20px;font-weight:800;color:#dc2626">78.8x</div>
+        <div style="font-size:11px;color:var(--muted)">本業 EPS 僅約 0.76元（推算）</div>
+      </div>
+    </div>
+    <div class="alert alert-red" style="margin-top:12px">
+      <span style="font-size:18px">🔍</span>
+      <div><strong>估值核心論點：那個「18.5 倍」是假的便宜。</strong><br>
+      群創上半年公告三筆廠房處分，業外收益合計 <strong>197.59 億元</strong>，市場推估貢獻全年 EPS 約 <strong>2.47 元</strong>。若 FY2026 全年 EPS 落在 2.96–3.5 元（中值 3.23），<strong>扣掉賣廠後本業只剩約 0.76 元</strong>——對應本益比不是 18.5 倍，而是接近 <strong>79 倍</strong>。<br><br>
+      更關鍵的是：公司已明確表示<strong>「暫不再對外處分資產」</strong>。這代表 2027 年不會再有這筆收益，獲利基期會自然大幅下滑。用一次性利得撐出來的低本益比，不能當作持續性的估值基礎。<br><br>
+      <strong>對照本系列前幾檔：</strong>金像電（2368）FY2026E P/E 28–36x，是靠營收年增 71%、EPS 年增超過 100% 的<strong>本業成長</strong>撐起來的；群創的「18.5 倍」則是靠賣廠。兩者性質完全不同。</div>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:var(--muted)">📌 法人 FY2026E EPS 預估存在兩套：共識中位 2.29 元（2026/09/15）、另有估 2.96–3.5 元。本報告取 3.23 元（後者中值）計算「含賣廠」本益比，並以 3.23 − 2.47 = 0.76 元<strong>推算</strong>本業 EPS；本業數字為推算值，非公司財測。</div>
+  </div>
+</section>
+
+<!-- ===== 07 籌碼面 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">7</span> 籌碼面分析</div>
+  <div class="alert alert-yellow">
+    <span style="font-size:18px">🔍</span>
+    <div><strong>資料揭露說明：</strong>本次擷取時公開資料庫（FinMind，2026/09/30）回傳之三大法人買賣超與融資融券欄位<strong>均為空值（顯示 0）</strong>，屬資料庫當次未收錄，<strong>並非「法人持平」或「餘額為零」</strong>。本節改以量能結構與公開法人評等雙軌判讀。</div>
+  </div>
+  <div class="analyst-grid">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">📊 量能籌碼結構（可驗證數據）</h4>
+      <table>
+        <thead><tr><th>日期／指標</th><th>數值</th><th>判讀</th></tr></thead>
+        <tbody>
+          <tr style="background:#fee2e2"><td style="font-size:13px"><strong>09/30 漲停</strong></td><td style="font-weight:700;color:#dc2626">486,059,149股</td><td><span class="tag tag-red">爆量鎖漲停</span></td></tr>
+          <tr><td style="font-size:13px">5日均量</td><td style="font-weight:700">282,882,698股</td><td style="font-size:12px;color:#16a34a">高於10日均量</td></tr>
+          <tr><td style="font-size:13px">10日均量</td><td>214,827,546股</td><td style="font-size:12px;color:var(--muted)">基準量</td></tr>
+          <tr style="background:#fef3c7"><td style="font-size:13px"><strong>9/30量 / 5日均量</strong></td><td style="font-weight:700;color:#dc2626"><strong>1.7倍</strong></td><td><span class="tag tag-red">放量</span></td></tr>
+          <tr><td style="font-size:13px">09/22 前次大量</td><td style="font-weight:700">502,870,543股</td><td style="font-size:12px;color:#d97706">高52.2收50.5（上影線）</td></tr>
+          <tr><td style="font-size:13px">09/03</td><td style="font-weight:700">365,400,350股</td><td style="font-size:12px;color:#dc2626">高52.4收48.1（長上影）</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px;font-size:12px;background:#fee2e2;padding:10px;border-radius:8px;color:#7f1d1d">
+        <strong>量價結構警訊：</strong>注意 9/03 與 9/22 這兩天——<strong>都曾衝到 52.2–52.4 元後收黑，留下長上影線</strong>，顯示該價位帶有明顯賣壓。9/30 以 4.86 億股爆量一舉鎖上漲停，是以消息面強行突破該壓力帶。這種「題材驅動的跳空突破」若隔日無法維持，容易形成<strong>島狀反轉</strong>，追價者將直接套在最高點。
+      </div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">🌍 法人評等與目標價（關鍵）</h4>
+      <table>
+        <thead><tr><th>項目</th><th>數值</th><th>vs 試撮價59.9</th></tr></thead>
+        <tbody>
+          <tr style="background:#fee2e2"><td style="font-size:13px"><strong>共識中位目標價</strong></td><td style="font-weight:700">52.5元</td><td><span class="tag tag-red">現價已高出 +14%</span></td></tr>
+          <tr><td style="font-size:13px">最高目標價</td><td style="font-weight:700">65.0元</td><td style="font-size:12px;color:#d97706">僅剩 +8.5%</td></tr>
+          <tr><td style="font-size:13px">最低目標價</td><td style="font-weight:700">26.0元</td><td style="font-size:12px;color:#dc2626">-56.6%</td></tr>
+          <tr><td style="font-size:13px">部分機構區間</td><td>30–47元</td><td style="font-size:12px;color:#dc2626">低於現價</td></tr>
+          <tr><td style="font-size:13px">共識 EPS 中位</td><td>2.29元</td><td style="font-size:12px;color:var(--muted)">P/E 26.2x</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px;padding:10px;background:var(--bg);border-radius:8px">
+        <div style="font-size:12px;font-weight:700;margin-bottom:6px">法人評等分布（共識：<span style="color:#d97706">中立</span>）</div>
+        <div style="display:flex;height:22px;border-radius:5px;overflow:hidden;font-size:10px;color:#fff;font-weight:700;text-align:center;line-height:22px">
+          <div style="width:33.3%;background:#16a34a">看多 33.3%</div>
+          <div style="width:50%;background:#d97706">中立 50.0%</div>
+          <div style="width:16.7%;background:#dc2626">看空 16.7%</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:12px;background:#fef9c3;padding:10px;border-radius:8px;color:#713f12">
+        <strong>與前幾檔的決定性差異：</strong>金像電法人共識明確看多（目標價 1,380–1,700 元 vs 現價 1,105 元，上檔 25–54%）；群創則是<strong>僅 33.3% 看多、半數中立</strong>，且<strong>現價已超越中位目標價</strong>。這不是「法人看錯」，而是股價已跑在基本面預期之前。資料截至 2026/09/15，尚未反映 9/30 的漲停與台積電傳聞。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 08 技術面 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">8</span> 技術分析</div>
+
+  <div class="alert alert-red" style="margin-bottom:12px">
+    <span style="font-size:18px">🚨</span>
+    <div><strong>技術面評估：極度超買，股價嚴重偏離所有參考位置</strong><br>
+    均線 MA5(50.82)／MA10(49.67)／MA20(49.26)／MA60(50.43) 全部<strong>糾結在 49–51 元的窄帶</strong>內，而試撮價 59.9 元已高出 MA20 達 <strong>+21.6%</strong>、突破布林上軌 52.40 達 <strong>+14.3%</strong>。<br><br>
+    <strong>白話說：過去三個月這檔股票的「合理活動範圍」是 46–52 元，現在一夜之間跳到 60 元。</strong>這不是趨勢推進，是消息面造成的跳空。技術指標在這種狀態下已失去參考意義——MACD 金叉、RSI 66.6 都是漲停前的數值，實際 RSI 今日將衝進嚴重超買區。<strong>此時進場等於為題材的不確定性支付全額溢價。</strong></div>
+  </div>
+
+  <div class="tech-grid">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">📈 均線系統（全數糾結於49–51）</h4>
+      <table>
+        <tbody>
+          <tr><td style="font-size:13px;color:var(--muted)">試撮價</td><td style="font-weight:700;color:#16a34a;font-size:14px">59.9元</td><td><span class="tag tag-red">遠離均線群</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA5</td><td style="font-weight:700">50.82元</td><td style="font-size:12px;color:#dc2626">現價高出 +17.9%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA10</td><td style="font-weight:700">49.67元</td><td style="font-size:12px;color:#dc2626">現價高出 +20.6%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA20</td><td style="font-weight:700">49.26元</td><td style="font-size:12px;color:#dc2626">現價高出 +21.6%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA60</td><td style="font-weight:700">50.43元</td><td style="font-size:12px;color:#dc2626">現價高出 +18.8%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">排列</td><td colspan="2"><span class="tag tag-yellow">均線糾結（方向不明）</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:#dc2626">⚠️ 四條均線最大落差僅 1.56 元（3.2%），顯示過去三個月股價高度盤整，<strong>59.9 元完全沒有均線支撐</strong></div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">📊 動能指標（計算至 09/30）</h4>
+      <table>
+        <tbody>
+          <tr><td style="font-size:13px;color:var(--muted)">MACD</td><td style="font-weight:700;color:#16a34a">+0.58</td><td><span class="tag tag-green">金叉</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">訊號線</td><td>+0.05</td><td style="font-size:12px;color:#16a34a">買入訊號</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">OSC柱</td><td>+0.53</td><td style="font-size:12px;color:#16a34a">動能轉強</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">RSI</td><td style="font-weight:700;color:#d97706">66.59</td><td><span class="tag tag-yellow">偏多（今日將更高）</span></td></tr>
+          <tr style="background:#fee2e2"><td style="font-size:13px;color:var(--muted)">布林上軌</td><td style="font-weight:700;color:#dc2626">52.40元</td><td><span class="tag tag-red">已突破 +14.3%</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">布林中軌</td><td>49.26元</td><td style="font-size:12px;color:var(--muted)">= MA20</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">布林下軌</td><td>46.12元</td><td style="font-size:12px;color:#16a34a">強支撐</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">布林帶寬 12.7%（正常）— 但股價已跑到通道外，<strong>通道本身暫時失效</strong></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">🗺️ 關鍵價位表</h4>
+    <table>
+      <thead><tr><th>價位</th><th>意義</th><th>方向</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:700">72.6元</td><td><strong>52週高點</strong></td><td><span class="tag tag-yellow">極限壓力</span></td></tr>
+        <tr><td style="font-weight:700">65.0元</td><td>法人最高目標價（僅剩 +8.5%）</td><td><span class="tag tag-yellow">壓力</span></td></tr>
+        <tr><td style="font-weight:700">60.17元</td><td>今日漲停價</td><td><span class="tag tag-blue">日內上限</span></td></tr>
+        <tr style="background:#ffe4e6"><td style="font-weight:700">59.9元</td><td><strong>試撮參考價（未成交）</strong></td><td><span class="tag tag-rose">關鍵位</span></td></tr>
+        <tr><td style="font-weight:700">54.70元</td><td>09/30 漲停收盤價</td><td><span class="tag tag-blue">昨收</span></td></tr>
+        <tr style="background:#fee2e2"><td style="font-weight:700">52.2–52.4元</td><td><strong>9/03、9/22 兩度留長上影線的賣壓帶</strong></td><td><span class="tag tag-red">回測關鍵</span></td></tr>
+        <tr style="background:#dcfce7"><td style="font-weight:700">52.5元</td><td><strong>法人共識中位目標價</strong></td><td><span class="tag tag-green">合理上緣</span></td></tr>
+        <tr style="background:#dcfce7"><td style="font-weight:700">49.3–50.8元</td><td><strong>均線群（MA20～MA5）布局區</strong></td><td><span class="tag tag-green">建議進場</span></td></tr>
+        <tr><td style="font-weight:700">46.12元</td><td>布林下軌／8月低點區</td><td><span class="tag tag-red">停損</span></td></tr>
+        <tr><td style="font-weight:700">45.45元</td><td>8/24 波段低點</td><td><span class="tag tag-red">重大支撐</span></td></tr>
+      </tbody>
+    </table>
+    <canvas id="peChart" width="560" height="180" style="width:100%;height:auto;margin-top:16px;"></canvas>
+    <div class="chart-note">P/E 比較：扣除一次性賣廠利益後，本業本益比約 78.8x，遠高於面板同業約 15x（同業與大盤為產業推算值；本業 EPS 為推算值）</div>
+  </div>
+</section>
+
+<!-- ===== 09 融資融券 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">9</span> 融資融券</div>
+  <div class="card">
+    <div class="alert alert-yellow">
+      <span style="font-size:18px">ℹ️</span>
+      <div>公開資料庫（FinMind，2026/09/30）本次回傳之融資融券欄位為空值。本節<strong>不以「餘額為 0」作結論</strong>，改採間接訊號趨勢判讀，並說明官方查詢管道。</div>
+    </div>
+    <div style="margin-top:10px">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">📉 間接訊號趨勢判讀</h4>
+      <table>
+        <thead><tr><th>觀察角度</th><th>實際數據</th><th>對信用交易的推論</th></tr></thead>
+        <tbody>
+          <tr><td style="font-size:13px">9/30 鎖漲停</td><td style="font-size:13px">爆量 4.86 億股，一字鎖死</td><td style="font-size:13px">漲停鎖死會<strong>吸引大量融資追價掛單</strong>，隔日若打開，融資浮額將瞬間暴增</td></tr>
+          <tr><td style="font-size:13px">題材驅動特性</td><td style="font-size:13px">SpaceX＋台積電傳聞雙題材</td><td style="font-size:13px">消息行情最易吸引散戶槓桿買盤，<strong>融資增幅通常遠高於股價漲幅</strong></td></tr>
+          <tr><td style="font-size:13px">前兩次衝高型態</td><td style="font-size:13px">9/03、9/22 衝 52.2–52.4 後收黑</td><td style="font-size:13px">兩度追價失敗，顯示<strong>該區已累積套牢融資</strong>，為日後反壓來源</td></tr>
+          <tr><td style="font-size:13px">股本與股價特性</td><td style="font-size:13px">市值4,366億、股價不到60元</td><td style="font-size:13px">低價＋大型股＋高話題，<strong>典型散戶與融資高參與標的</strong></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;font-size:13px;color:var(--muted)">
+        📝 <strong>綜合研判：</strong>本波屬<strong>典型題材驅動的融資行情</strong>風險結構。漲停鎖死會把大量融資買單推到隔日，一旦消息未獲證實或開高走低，<strong>高槓桿浮額的連鎖停損可能放大跌幅</strong>。這是本檔籌碼風險評分達 8.0 的主因。建議實際交易前務必查閱最新融資餘額變化。<br>
+        🔎 <strong>精確查詢管道：</strong>台灣證券交易所官網「融資融券餘額」每日盤後公告，或 Goodinfo!、玩股網之個股信用交易頁面，輸入代號 3481 可查得逐日餘額與資券比。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 研究員辯論 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">10</span> 研究員辯論｜看多 vs 看空</div>
+
+  <div class="alert alert-rose" style="margin-bottom:12px">
+    <span style="font-size:18px">⚖️</span>
+    <div><strong>多空辯論量化權重：看多 38% vs 看空 62%</strong>　這是本系列首次<strong>空方權重過半</strong>的個案。需特別說明：空方勝出的理由<strong>不是公司不好</strong>——轉型是真的、本業確實轉正。空方勝在<strong>價格</strong>：現價已超越法人共識目標、關鍵題材尚未證實、而本業營收動能正在下滑。這是一場關於「現在值不值得買」的辯論，不是「這家公司行不行」。</div>
+  </div>
+
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <h4><span style="background:#dcfce7;color:#16a34a;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:14px">🐂</span> 看多研究員（5點）</h4>
+      <ul>
+        <li><span class="bull-icon">▲</span><div><strong>本業確實轉正（最實在的多方論點）：</strong>OPM 連 6 季為負後，Q1'26 +2.25%、Q2'26 +2.56% 連兩季轉正；毛利率從 8% 級距結構性跳上 14.5%。這是財報已證實的改善。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>SpaceX 訂單是真的：</strong>承接 RF 晶片地端接收模組封裝，用於 Starlink 地面終端，2026 Q3 可望小量量產。FOPLP 產能滿載、訂單能見度至 2026 年中。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>FOPLP 產能放大 10 倍：</strong>chip-first 月產量由初期 400 萬顆提升至逾 <strong>4,000 萬顆</strong>，2025 貢獻數億元、2026 上看十億元以上，成長斜率陡峭。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>車用占比近 4 成：</strong>CarUX 智慧座艙轉型，毛利結構優於消費性面板，是支撐毛利率上移的實質因素，且需求相對不受消費性電子景氣拖累。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>若台積電合作成真，估值邏輯將徹底改寫：</strong>面板廠轉型「面板級半導體」的敘事一旦獲龍頭背書，市場將以半導體封裝而非面板本益比重估——這是 52W 高點 72.6 元以上的想像空間所在。</div></li>
+      </ul>
+    </div>
+    <div class="analyst-card">
+      <h4><span style="background:#fee2e2;color:#dc2626;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:14px">🐻</span> 看空研究員（6點）</h4>
+      <ul>
+        <li><span class="bear-icon">▼</span><div><strong>現價已超越法人共識目標價（最強論點）：</strong>共識中位目標 52.5 元，試撮價 59.9 元<strong>高出 +14%</strong>，距最高目標 65 元僅剩 8.5%。評等分布看多僅 33.3%、中立 50%。<strong>上檔空間幾乎被提前吃光。</strong></div></li>
+        <li><span class="bear-icon">▼</span><div><strong>2026 EPS 大半來自一次性賣廠：</strong>三筆廠房處分業外收益 197.59 億元，推估貢獻 EPS 2.47 元。扣除後本業僅約 0.76 元，<strong>真實本業本益比接近 79 倍</strong>。且公司已明言暫不再處分資產，2027 年基期將大幅下滑。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>本業營收動能已消失：</strong>月營收 YoY 從實際 3 月 +33.1% 單調滑落至 7 月 <strong>-1.9%</strong>、8 月 +0.02%。公司自承 Q3 電視面板價格轉弱、消費性顯示器出貨季減高個位數%、明年 NB 保守。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>關鍵題材尚未證實：</strong>台積電龍潭廠合作<strong>僅為市場傳聞，公司低調不予評論</strong>。漲停行情建立在未經證實的消息上，若最終未落實，股價將回吐全部題材溢價。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>FOPLP 實質貢獻極小：</strong>年貢獻十億元級，對照 1–8 月累計營收約 1,678 億元，<strong>占比僅約 0.4%</strong>。且外部分析指出高階技術量產「仍待醞釀」。故事規模遠大於損益規模。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>技術面極度超買、無支撐可言：</strong>四條均線全擠在 49–51 元，現價高出 MA20 達 +21.6%、突破布林上軌 +14.3%。9/03 與 9/22 兩度在 52.2–52.4 留長上影線，該區賣壓明確。追價者一旦回測，將直接面對近 15% 的真空帶。</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">💬 給一般投資人的話</h4>
+    <p style="font-size:13px;line-height:1.75;color:var(--text)">
+    先講好消息：<strong>群創真的在改變</strong>。它做了二十年面板，一直賠錢（本業連 6 季虧損），但從今年第一季開始本業轉正了，毛利率從 8% 提到 14.5%，而且真的拿到 SpaceX 的訂單——幫 Starlink 地面接收器做晶片封裝。這些都是財報和新聞證實過的，不是畫大餅。<br><br>
+    <strong>但壞消息是：市場已經把好消息算進去，而且算過頭了。</strong>三件事要看清楚：<br><br>
+    <strong>第一，今年賺的錢大部分是「賣廠房」賺的，不是本業賺的。</strong>公司賣了三座廠，業外進帳 197.59 億，估計貢獻每股 2.47 元。今年全年預估賺 2.96–3.5 元，扣掉賣廠就只剩 0.5–1 元。而且公司說「暫時不會再賣了」——明年沒有這筆錢。<br><br>
+    <strong>第二，本業的生意其實在變差。</strong>月營收年增率從 3 月的 +33% 一路掉到 7 月的 -1.9%、8 月只剩 +0.02%。公司自己也說電視面板價格在跌、筆電明年保守。<strong>營收走平，股價卻漲停，這兩件事方向是相反的。</strong><br><br>
+    <strong>第三，漲停的主因「跟台積電合作」只是傳聞，公司不願證實。</strong>SpaceX 是真的，但那筆生意一年大概十億元，而群創八個月營收就有 1,678 億——占比約 0.4%。故事很大，但目前對獲利的實際貢獻很小。<br><br>
+    <strong>實務建議三句話：</strong>① <strong>不要追漲停</strong>——法人中位目標價 52.5 元，現在 59.9 元已經超過了，等於你比專業機構還樂觀 14%；② 真的想參與，等回測 <strong>49–52.5 元</strong>（過去三個月的均線密集區）再分批，那裡才有支撐；③ <strong>已經持有的人反而是好消息</strong>——這是難得的高點，可以考慮分批獲利了結，65 元（法人最高目標）是合理的停利參考。
+    </p>
+  </div>
+</section>
+
+<!-- ===== 11 風控 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">11</span> 風控評估｜六維評分</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <div class="score-row"><span class="score-label">估值風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:linear-gradient(90deg,#dc2626,#ef4444)"></div></div><span class="score-num" style="color:#dc2626">8.5</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">TTM P/E 76.8x；扣除賣廠後本業 P/E 約 78.8x；現價已超越法人中位目標價（權重30%）</div>
+
+        <div class="score-row"><span class="score-label">財務風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:65%;background:linear-gradient(90deg,#dc2626,#ef4444)"></div></div><span class="score-num" style="color:#dc2626">6.5</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">本業剛轉正但 OPM 僅 2.5%；獲利品質差（大半來自一次性處分）（權重25%）</div>
+
+        <div class="score-row"><span class="score-label">流動性風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:10%;background:linear-gradient(90deg,#16a34a,#22c55e)"></div></div><span class="score-num" style="color:#16a34a">1.0</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">市值4,366億、日均量逾2億股，流動性為本系列最佳（權重10%）</div>
+      </div>
+      <div>
+        <div class="score-row"><span class="score-label">產業風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:linear-gradient(90deg,#dc2626,#ef4444)"></div></div><span class="score-num" style="color:#dc2626">7.0</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">面板產業循環性極強；月營收 YoY 已轉負；Q3 電視面板價格走弱（權重15%）</div>
+
+        <div class="score-row"><span class="score-label">總經風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:55%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div></div><span class="score-num" style="color:#d97706">5.5</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">消費性電子需求疲軟，公司自承明年 NB 保守（權重10%）</div>
+
+        <div class="score-row"><span class="score-label">籌碼風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:linear-gradient(90deg,#dc2626,#ef4444)"></div></div><span class="score-num" style="color:#dc2626">8.0</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">連續漲停爆量、題材驅動、股價遠離均線21.6%、融資浮額恐暴增（權重10%）</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;margin-top:16px;padding:16px;background:var(--bg);border-radius:10px;flex-wrap:wrap">
+      <div style="text-align:center;flex-shrink:0">
+        <div style="font-size:40px;font-weight:900;color:#dc2626">7.0</div>
+        <div style="font-size:11px;color:var(--muted)">加權綜合風險</div>
+      </div>
+      <div style="flex:1;min-width:240px">
+        <div style="font-size:14px;font-weight:800;color:#dc2626;margin-bottom:4px">高風險｜題材驅動追價型</div>
+        <div style="font-size:13px;color:var(--muted)">加權計算：8.5×30% + 6.5×25% + 1.0×10% + 7.0×15% + 5.5×10% + 8.0×10% ≈ <strong>6.7</strong>，考量「漲停追價＋題材未證實」的雙重風險後<strong>上調至 7.0</strong>。<br>
+        <strong>本系列目前風險最高的一檔。</strong>風險不在公司體質（轉型真實），而在<strong>進場價格與消息不確定性</strong>。建議：現價不新增部位；若已持有，分批停利；欲布局者等回測 49–52.5 元。</div>
+      </div>
+      <div style="flex-shrink:0"><span class="tag tag-red" style="font-size:13px;padding:6px 14px">高風險</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12 三段式策略 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">12</span> 台股三段式策略</div>
+  <div class="strategy-grid">
+    <div class="strat-card attack">
+      <h3>🔴 進攻策略（不推薦）</h3>
+      <div class="strat-item"><span>目標：</span><span>65–72.6元（+8.5%–+21%）</span></div>
+      <div class="strat-item"><span>前提：</span><span><strong>台積電合作獲公司正式證實</strong></span></div>
+      <div class="strat-item"><span>入場：</span><span>證實後回測不破 54.7 再進，<strong>勿追漲停</strong></span></div>
+      <div class="strat-item"><span>倉位：</span><span>10%以下（題材股上限）</span></div>
+      <div class="strat-item"><span>停損：</span><span>52.4元（布林上軌，跌破即題材失效）</span></div>
+      <div style="margin-top:10px;font-size:12px;background:rgba(255,255,255,0.18);border-radius:8px;padding:8px">⚠️ <strong>本報告明確不建議此策略</strong>：上檔僅剩 8.5% 至法人最高目標，下方卻有近 15% 真空帶，風險報酬比不佳</div>
+    </div>
+    <div class="strat-card balance">
+      <h3>🟡 均衡策略</h3>
+      <div class="strat-item"><span>目標：</span><span>58–65元</span></div>
+      <div class="strat-item"><span>入場：</span><span>回測 <strong>49–52.5元</strong>（均線群＋法人中位目標）分3批</span></div>
+      <div class="strat-item"><span>倉位：</span><span>10–15%</span></div>
+      <div class="strat-item"><span>確認訊號：</span><span>本業月營收 YoY 回到正成長</span></div>
+      <div class="strat-item"><span>停損：</span><span>46.12元（布林下軌）</span></div>
+      <div style="margin-top:10px;font-size:12px;background:rgba(255,255,255,0.18);border-radius:8px;padding:8px">⚖️ 適合認同轉型故事、但不願在題材高點付溢價的投資者。<strong>關鍵是耐心等回測</strong></div>
+    </div>
+    <div class="strat-card defend">
+      <h3>🔵 防守策略（推薦）</h3>
+      <div class="strat-item"><span>現階段：</span><span><strong>觀望／不新增部位</strong></span></div>
+      <div class="strat-item"><span>已持有：</span><span>分批獲利了結，停利參考 65 元</span></div>
+      <div class="strat-item"><span>倉位：</span><span>0% 或既有部位減碼</span></div>
+      <div class="strat-item"><span>再進場條件：</span><span>①台積電合作證實 <strong>且</strong> ②回測至 52.5 元以下</span></div>
+      <div class="strat-item"><span>觀察重點：</span><span>9月營收 YoY 能否回正；Q3 財報本業表現</span></div>
+      <div style="margin-top:10px;font-size:12px;background:rgba(255,255,255,0.18);border-radius:8px;padding:8px">🛡️ <strong>本報告首選：</strong>現價已超越法人共識目標，等待是成本最低的選擇</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">🗓️ 催化劑時程表</h4>
+    <table>
+      <thead><tr><th>時間</th><th>事件</th><th>方向</th></tr></thead>
+      <tbody>
+        <tr><td>隨時</td><td><strong>台積電合作是否獲公司正式證實或否認</strong>——本波行情成敗關鍵</td><td><span class="tag tag-red">最大變數</span></td></tr>
+        <tr><td>2026/10月初</td><td>9月（實際）月營收公告 → YoY 能否擺脫停滯</td><td><span class="tag tag-blue">關鍵觀察</span></td></tr>
+        <tr><td>2026 Q3</td><td>SpaceX RF 封裝專案小量量產啟動</td><td><span class="tag tag-green">題材實質化</span></td></tr>
+        <tr><td>2026/10–11月</td><td><strong>Q3'26 財報</strong>：關鍵看<strong>本業 OPM 能否維持正值</strong>，以及業外佔比</td><td><span class="tag tag-green">品質檢驗</span></td></tr>
+        <tr><td>2026 Q4</td><td>電視面板價格走勢（公司預估轉弱）、消費性顯示器出貨季減幅度</td><td><span class="tag tag-red">下行風險</span></td></tr>
+        <tr><td>2027年</td><td><strong>賣廠收益消失後的獲利基期</strong>——公司已表示暫不再處分資產</td><td><span class="tag tag-red">結構性風險</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 13 名詞小教室 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">13</span> 名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">FOPLP（扇出型面板級封裝）</div>
+      <div class="glossary-def">把半導體封裝從「圓形晶圓」搬到「方形大面板」上做。面板廠做了二十年大尺寸方形基板，正好是這門技術的天然強項——這就是群創從面板跨進半導體封裝的邏輯。方形面積利用率比圓形高，理論上成本更低。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">業外收益 / 一次性利得</div>
+      <div class="glossary-def">不是靠本業賺的錢，例如賣廠房、賣土地、匯兌利益。<strong>特性是「只會發生一次」</strong>。群創今年賣廠進帳 197.59 億，讓 EPS 看起來很漂亮，但明年沒有這筆，獲利基期就會掉下來。看財報時要把本業和業外分開看。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">營業利益率（OPM）</div>
+      <div class="glossary-def">本業賺錢效率 = 營業利益 ÷ 營收，<strong>不含業外</strong>。這是判斷「本業到底有沒有在賺錢」最乾淨的指標。群創 OPM 連 6 季為負（本業虧損），Q1'26 才轉正到 +2.25%——這是本報告認為轉型是真的最主要依據。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">法人共識目標價</div>
+      <div class="glossary-def">多家券商分析師目標價的統計。「中位數」比「平均」更能代表共識（不被極端值拉偏）。群創中位 52.5 元、最高 65、最低 26——<strong>落差極大代表分歧嚴重</strong>。當股價超過中位目標價，表示你比多數專業機構更樂觀。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">試撮價</div>
+      <div class="glossary-def">台股開盤前（08:30–09:00）的模擬撮合參考價，<strong>還沒有實際成交</strong>，開盤後可能完全不同。本報告封面的 59.9 元即為試撮價（成交量 0），真正成交的最後價格是 9/30 的 54.70 元。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">上影線</div>
+      <div class="glossary-def">K 棒上方那條細線，代表「盤中衝上去但被打下來」。群創 9/03、9/22 兩度衝到 52.2–52.4 後收黑留長上影線，<strong>代表該價位有明確賣壓</strong>。這種地方日後回測時往往會再度遇到阻力。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">島狀反轉</div>
+      <div class="glossary-def">股價跳空大漲後，隔幾天又跳空大跌，K 線圖上形成一座「孤島」。常見於消息行情——利多引爆跳空、消息未落實後又跳空跌回。<strong>在孤島上買進的人全部套牢</strong>，是追價最危險的型態之一。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">chip-first 製程</div>
+      <div class="glossary-def">FOPLP 的一種做法：先把晶片擺到載板上，再做重佈線路。群創此製程月產量已從初期 400 萬顆提升到逾 4,000 萬顆（10 倍），是其 FOPLP 進度最具體的量化證據。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 14 免責聲明 ===== -->
+<div class="disclaimer">
+  <strong>⚠️ 免責聲明</strong>　本報告由 AI 分析系統於 2026 年 10 月 1 日自動生成，純供學術研究與資訊參考，<strong>不構成任何投資建議或勸誘買賣證券之行為</strong>。股票投資涉及風險，過去績效不代表未來表現。投資人應自行研判並承擔投資盈虧責任。<br><br>
+  <strong>🔴 重要數據性質說明：</strong>①封面 59.9 元為 10/01 08:50 <strong>開盤前試撮參考價</strong>（成交量 0），最後實際成交價為 09/30 收盤 54.70 元；②「與台積電龍潭廠合作」為<strong>市場傳聞，公司表示不予評論</strong>，本報告未將其視為既成事實；③本業 EPS 約 0.76 元、本業 P/E 78.8x 為<strong>推算值</strong>（以 FY2026E EPS 中值 3.23 元減去市場推估之賣廠貢獻 2.47 元求得），非公司財測；④面板同業 P/E 約 15x、大盤約 20x 為產業推算值；⑤法人共識目標價與評等分布資料截至 2026/09/15，尚未反映 9/30 漲停與相關傳聞。<br><br>
+  <strong>資料來源：</strong>即時報價 富果 Fugle API ｜ 歷史K線・技術指標・月營收・季度財報 FinMind ｜ 法人評等與產業資訊 WebSearch（財報狗、MoneyDJ 理財網、鉅亨網、經濟日報、工商時報／時報資訊、CMoney 投資網誌、口袋學堂、TechNews 科技新報、Yahoo 財經）｜ 報告日期：2026-10-01（首次報告）<br>
+  <strong>月營收月份對應說明：</strong>資料庫申報月份減 1 為實際賺取月份，本報告已統一換算為實際月份呈現。<br>
+  <strong>資料缺漏說明：</strong>本次擷取三大法人與融資融券欄位回傳空值（資料庫未收錄），第 7、9 節已改採量能結構與公開評等雙軌判讀，並標明官方查詢管道，未以「0」作為實際數值呈現。
+</div>
+
+</div><!-- /container -->
+
+<script>
+/* 支援負值的長條圖：以零軸為基準向上/向下繪製 */
+function drawBarChart(id,labels,data,barColor,accentColor,negColor){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=46,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.20||0.5;
+  var lo=(min<0)?(min-pad):Math.max(0,min-pad);
+  var hi=max+pad,range=hi-lo;
+  var n=data.length;
+  var barW=chartW/n*0.58,gap=chartW/n;
+  // 格線
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(2),PL-4,gy+3);
+  }
+  // 零軸
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0){
+    ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);
+    ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();
+  }
+  for(var i=0;i<n;i++){
+    var x=PL+i*gap+(gap-barW)/2;
+    var vy=PT+chartH-((data[i]-lo)/range*chartH);
+    var top=Math.min(vy,zeroY),bh=Math.abs(vy-zeroY);
+    if(bh<1.5)bh=1.5;
+    var isLast=(i===n-1);
+    var color=(data[i]<0)?(negColor||'#dc2626'):(isLast?accentColor:barColor);
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,top,barW,bh,3);ctx.fillStyle=color;ctx.fill();}
+    else{ctx.fillStyle=color;ctx.fillRect(x,top,barW,bh);}
+    ctx.fillStyle=(data[i]<0)?'#dc2626':(isLast?accentColor:'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(2),x+barW/2,(data[i]<0)?(top+bh+11):(top-4));
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    var lx=PL+i*gap+gap/2,ly=PT+chartH+14;
+    if(labels[i].length>4){ctx.save();ctx.translate(lx,ly);ctx.rotate(-Math.PI/6);ctx.fillText(labels[i],0,0);ctx.restore();}
+    else ctx.fillText(labels[i],lx,ly);
+  }
+}
+function drawLineChart(id,labels,data,color,negColor){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=46,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.20||1;
+  var lo=min-pad,hi=max+pad,range=hi-lo;
+  var n=data.length;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0&&hi>0){
+    ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);
+    ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();
+  }
+  var pts=[];
+  for(var i=0;i<n;i++){
+    pts.push({x:PL+i*chartW/(n-1),y:PT+chartH-(data[i]-lo)/range*chartH});
+  }
+  var base=(lo<0&&hi>0)?zeroY:(PT+chartH);
+  ctx.beginPath();ctx.moveTo(pts[0].x,base);
+  for(var i=0;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.lineTo(pts[n-1].x,base);ctx.closePath();
+  var grad=ctx.createLinearGradient(0,PT,0,PT+chartH);
+  var hex=color.slice(1);
+  var r=parseInt(hex.slice(0,2),16),g2=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  grad.addColorStop(0,'rgba('+r+','+g2+','+b+',0.25)');
+  grad.addColorStop(1,'rgba('+r+','+g2+','+b+',0.02)');
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+  for(var i=1;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+  for(var i=0;i<n;i++){
+    var isLast=(i===n-1);
+    var dotCol=(data[i]<0&&negColor)?negColor:color;
+    ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,isLast?5:3,0,Math.PI*2);
+    ctx.fillStyle=isLast?dotCol:'#fff';ctx.fill();
+    ctx.strokeStyle=dotCol;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=isLast?dotCol:((data[i]<0)?'#dc2626':'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(data[i]>=100?0:2),pts[i].x,pts[i].y+(isLast?-10:-8));
+  }
+  for(var i=0;i<n;i++){
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    ctx.fillText(labels[i],pts[i].x,PT+chartH+14);
+  }
+}
+function drawHBarChart(id,labels,data,colors){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var max=Math.max.apply(null,data)*1.32;
+  var n=labels.length;
+  var rowH=H/(n+0.6);
+  var PL=166,PR=56;
+  for(var i=0;i<n;i++){
+    var y=rowH*(i+0.3)+rowH*0.12;
+    var bh=rowH*0.66;
+    ctx.fillStyle='#f1f5f9';ctx.fillRect(PL,y,(W-PL-PR),bh);
+    var bw=(data[i]/max)*(W-PL-PR);
+    var col=colors?colors[i]:'#be123c';
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(PL,y,bw,bh,4);ctx.fillStyle=col;ctx.fill();}
+    else{ctx.fillStyle=col;ctx.fillRect(PL,y,bw,bh);}
+    ctx.fillStyle='#1e293b';ctx.font='11.5px Arial';ctx.textAlign='right';
+    ctx.fillText(labels[i],PL-8,y+bh/2+4);
+    ctx.fillStyle='#1e293b';ctx.font='bold 12px Arial';ctx.textAlign='left';
+    ctx.fillText(data[i]+'x',PL+bw+6,y+bh/2+4);
+  }
+}
+window.addEventListener('DOMContentLoaded',function(){
+  drawBarChart('epsChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [0.05,1.05,0.12,-0.10,0.01,0.00,0.20,0.57],
+    '#fda4af','#be123c','#dc2626');
+  drawLineChart('revChart',
+    ['3月','4月','5月','6月','7月','8月'],
+    [249.77,212.37,206.48,217.03,188.90,186.97],
+    '#be123c');
+  drawLineChart('opmChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [-1.42,-8.05,-2.22,-1.38,-1.69,-2.06,2.25,2.56],
+    '#16a34a','#dc2626');
+  drawHBarChart('peChart',
+    ['群創 TTM','FY26E 含賣廠','FY26E 扣除賣廠(推算)','面板同業','台股大盤'],
+    [76.8,18.5,78.8,15,20],
+    ['#dc2626','#16a34a','#dc2626','#be123c','#2563eb']);
+});
+</script>
+</body>
+</html>
