@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>金像電(2368) 深度研究報告 第2次 | 2026-10-05</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+    --accent:#b45309;--accent2:#d97706;--accent3:#fbbf24;
+    --green:#16a34a;--red:#dc2626;--yellow:#d97706;--blue:#2563eb;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.6}
+  a{color:var(--accent)}
+  time,.code{font-variant-numeric:tabular-nums}
+
+  /* COVER */
+  .cover{background:linear-gradient(135deg,#451a03 0%,#78350f 32%,#b45309 68%,#f59e0b 100%);color:#fff;padding:56px 40px 48px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-70px;right:-50px;width:310px;height:310px;border-radius:50%;background:rgba(255,255,255,0.07)}
+  .cover::after{content:'';position:absolute;bottom:-90px;left:-50px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.045)}
+  .cover-ticker{font-size:13px;opacity:.72;margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+  .cover-name{font-size:36px;font-weight:800;line-height:1.1;margin-bottom:6px}
+  .cover-subtitle{font-size:15px;opacity:.83;margin-bottom:24px}
+  .cover-price-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:10px}
+  .cover-price{font-size:56px;font-weight:900;line-height:1}
+  .cover-chg{font-size:21px;padding:4px 14px;border-radius:8px;background:rgba(22,163,74,0.35);border:1px solid rgba(134,239,172,0.6)}
+  .limit-badge{display:inline-block;font-size:12px;background:rgba(220,38,38,0.35);border:1px solid rgba(252,165,165,0.6);border-radius:8px;padding:5px 12px;margin-bottom:22px}
+  .cover-meta{display:flex;gap:24px;flex-wrap:wrap}
+  .cover-meta-item{font-size:13px;opacity:.78}
+  .cover-meta-item strong{opacity:1;font-weight:700}
+  .risk-badge{position:absolute;top:32px;right:40px;background:rgba(217,119,6,0.3);border:1.5px solid rgba(251,191,36,0.65);border-radius:12px;padding:10px 18px;text-align:center}
+  .risk-badge .num{font-size:28px;font-weight:900;color:#fde68a}
+  .risk-badge .lbl{font-size:11px;opacity:.85;letter-spacing:1px}
+  .report-no-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(251,191,36,0.22);border:1px solid rgba(251,191,36,0.5);border-radius:8px;padding:3px 12px;font-size:12px;margin-bottom:12px}
+
+  /* LAYOUT */
+  .container{max-width:960px;margin:0 auto;padding:0 20px 60px}
+  section{margin-top:32px}
+  .section-title{font-size:18px;font-weight:800;color:var(--accent);border-left:4px solid var(--accent);padding-left:12px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .section-num{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+  .card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07),0 0 0 1px var(--border)}
+  .card + .card{margin-top:12px}
+
+  /* HEADLINE NEWS BOX */
+  .news-box{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:2px solid #b45309;border-radius:14px;padding:20px 24px;margin-bottom:14px}
+  .news-box h4{font-size:15px;font-weight:800;color:#78350f;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .news-box p{font-size:13.5px;line-height:1.75;color:#78350f}
+  .news-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  @media(max-width:700px){.news-grid{grid-template-columns:repeat(2,1fr)}}
+  .news-tile{background:#fff;border:1px solid #fcd34d;border-radius:10px;padding:12px;text-align:center}
+  .news-tile .nt-val{font-size:18px;font-weight:800;color:#b45309}
+  .news-tile .nt-lbl{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
+
+  /* UPDATE TABLE */
+  .update-box{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+  .update-box h4{font-size:14px;font-weight:800;color:var(--accent);margin-bottom:10px}
+  .update-table{width:100%;font-size:13px;border-collapse:collapse}
+  .update-table th{background:#fef3c7;color:#78350f;padding:6px 10px;font-size:11.5px}
+  .update-table td{padding:6px 10px;border-bottom:1px solid #fde68a}
+  .update-table tr:last-child td{border-bottom:none}
+
+  /* CONCLUSION */
+  .conclusion-card{background:linear-gradient(135deg,#451a03 0%,#92400e 55%,#d97706 100%);color:#fff;border-radius:16px;padding:28px 32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+  .conc-item .label{font-size:11px;opacity:.68;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+  .conc-item .val{font-size:21px;font-weight:800;line-height:1.15}
+  .conc-item .sub{font-size:12px;opacity:.75;margin-top:4px}
+  @media(max-width:640px){.conclusion-card{grid-template-columns:1fr 1fr}}
+
+  /* KPI */
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+  .kpi-card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border);text-align:center}
+  .kpi-label{font-size:11px;color:var(--muted);margin-bottom:4px;letter-spacing:.5px}
+  .kpi-val{font-size:21px;font-weight:800;color:var(--accent)}
+  .kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+  /* CHARTS */
+  .charts-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  @media(max-width:760px){.charts-grid{grid-template-columns:1fr}}
+  .chart-box{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border)}
+  .chart-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px}
+  .chart-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center}
+
+  /* TABLE */
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{background:var(--bg);padding:8px 12px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+  .tag-green{background:#dcfce7;color:#16a34a}
+  .tag-red{background:#fee2e2;color:#dc2626}
+  .tag-yellow{background:#fef9c3;color:#d97706}
+  .tag-blue{background:#dbeafe;color:#2563eb}
+  .tag-gold{background:#fef3c7;color:#b45309}
+
+  /* ANALYST */
+  .analyst-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.analyst-grid{grid-template-columns:1fr}}
+  .analyst-card{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border)}
+  .analyst-card h4{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .analyst-card ul{list-style:none;padding:0}
+  .analyst-card li{font-size:13px;padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px}
+  .analyst-card li:last-child{border-bottom:none}
+  .bull-icon{color:#16a34a;font-weight:900;flex-shrink:0}
+  .bear-icon{color:#dc2626;font-weight:900;flex-shrink:0}
+
+  /* SCORE */
+  .score-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+  .score-label{width:90px;font-size:13px;flex-shrink:0}
+  .score-bar-bg{flex:1;height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+  .score-bar-fill{height:100%;border-radius:5px}
+  .score-num{width:32px;font-size:13px;font-weight:700;text-align:right;flex-shrink:0}
+  .score-delta{font-size:10px;margin-left:4px}
+
+  /* STRATEGY */
+  .strategy-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:640px){.strategy-grid{grid-template-columns:1fr}}
+  .strat-card{border-radius:14px;padding:20px;color:#fff}
+  .strat-card.attack{background:linear-gradient(135deg,#dc2626,#ef4444)}
+  .strat-card.balance{background:linear-gradient(135deg,#b45309,#f59e0b)}
+  .strat-card.defend{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
+  .strat-card h3{font-size:15px;font-weight:800;margin-bottom:12px}
+  .strat-item{font-size:13px;margin:6px 0;display:flex;gap:8px}
+  .strat-item span:first-child{opacity:.72;flex-shrink:0}
+
+  .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.tech-grid{grid-template-columns:1fr}}
+
+  /* ALERT */
+  .alert{border-radius:10px;padding:14px 18px;margin-bottom:12px;font-size:13px;display:flex;gap:12px;align-items:flex-start}
+  .alert-red{background:#fee2e2;border-left:4px solid #dc2626;color:#7f1d1d}
+  .alert-green{background:#dcfce7;border-left:4px solid #16a34a;color:#14532d}
+  .alert-yellow{background:#fef9c3;border-left:4px solid #d97706;color:#713f12}
+  .alert-gold{background:#fef3c7;border-left:4px solid #b45309;color:#78350f}
+
+  .disclaimer{background:#fef9c3;border:1px solid #d97706;border-radius:10px;padding:16px 20px;font-size:12px;color:#713f12;margin-top:32px}
+
+  .glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:540px){.glossary-grid{grid-template-columns:1fr}}
+  .glossary-item{background:var(--card);border-radius:10px;padding:12px 14px;border:1px solid var(--border)}
+  .glossary-term{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:4px}
+  .glossary-def{font-size:12px;color:var(--muted);line-height:1.5}
+
+  .csp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  @media(max-width:700px){.csp-grid{grid-template-columns:repeat(2,1fr)}}
+  .csp-tile{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px;text-align:center}
+  .csp-tile.hl{background:#fef3c7;border:2px solid #b45309}
+  .csp-tile .ct-name{font-size:13px;font-weight:800;color:#b45309}
+  .csp-tile .ct-desc{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4}
+</style>
+</head>
+<body>
+
+<!-- ===== 01 COVER ===== -->
+<div class="cover">
+  <div class="risk-badge">
+    <div class="num">5.0</div>
+    <div class="lbl">風險指數</div>
+  </div>
+  <div class="report-no-badge">▲ 第2次報告・重大更新（前次 2026-09-30）</div>
+  <div class="cover-ticker">TWSE: 2368</div>
+  <div class="cover-name">金像電</div>
+  <div class="cover-subtitle">Gold Circuit Electronics｜AI 伺服器 PCB 核心供應商・<strong>亞馬遜（Amazon）入股成為策略性投資人</strong></div>
+  <div class="cover-price-row">
+    <div class="cover-price">NT$1,215</div>
+    <div class="cover-chg">▲ 110元 (+9.95%)</div>
+  </div>
+  <div class="limit-badge">🔴 今日（10/05）<strong>鎖漲停</strong>　開 1,160 ／ 高 1,215 ／ 低 1,160　｜　昨收 1,105 元</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">📅 報告日期 <strong>2026-10-05</strong></div>
+    <div class="cover-meta-item">52W高低 <strong>1,580 / 388.5</strong></div>
+    <div class="cover-meta-item">距52W高 <strong style="color:#fde68a">-23.1%</strong></div>
+    <div class="cover-meta-item">市值 <strong>6,242億元</strong></div>
+    <div class="cover-meta-item">FY2026E P/E <strong style="color:#bbf7d0">30.2x</strong></div>
+    <div class="cover-meta-item">法人目標 <strong style="color:#fde68a">1,630–1,955元</strong></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===== 02 核心結論 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">2</span> 核心結論與投資建議</div>
+
+  <div class="news-box">
+    <h4>🚨 重大更新：亞馬遜（Amazon）入股，客戶變股東</h4>
+    <p><strong>金像電 9/29 董事會拍板、9/30 公告 2026 年度第 1 次私募，由美國亞馬遜（Amazon.com, Inc.）以每股 856 元認購 1,856,308 股，投資金額約 15.89 億元，取得約 0.3% 股權。</strong>亞馬遜截至今年 8 月底原未持有金像電任何股份，此次完成後，雙方關係<strong>從既有業務合作正式延伸至股權層面</strong>，成為策略性投資人。<br><br>
+    同日並核准 <strong>79 億元</strong>投資案（土地約 38 億、建廠與設備約 41 億），資金來源規劃透過<strong>無擔保可轉換公司債</strong>支應。</p>
+    <div class="news-grid">
+      <div class="news-tile"><div class="nt-val">856元</div><div class="nt-lbl">私募認購價<br>參考價1,070元的<strong>8折</strong></div></div>
+      <div class="news-tile"><div class="nt-val">15.89億</div><div class="nt-lbl">投資金額<br>185.6萬股／約0.3%</div></div>
+      <div class="news-tile"><div class="nt-val">79億</div><div class="nt-lbl">同步核准擴產<br>土地38億+設備41億</div></div>
+      <div class="news-tile"><div class="nt-val">40.29→71.26</div><div class="nt-lbl">法人上修EPS<br>FY2026E→FY2027E</div></div>
+    </div>
+  </div>
+
+  <div class="update-box">
+    <h4>📋 距首次報告（2026-09-30）僅 5 天，但關鍵變數全面改寫</h4>
+    <table class="update-table">
+      <thead><tr><th>項目</th><th>首次報告 09/30</th><th>本次 10/05</th><th>變化</th></tr></thead>
+      <tbody>
+        <tr><td>股價</td><td>1,105元（盤中）</td><td><strong>1,215元（漲停）</strong></td><td><span class="tag tag-green">+9.95%</span></td></tr>
+        <tr style="background:#fffbeb"><td><strong>亞馬遜入股</strong></td><td style="color:#dc2626">未納入（消息當日發布）</td><td><strong style="color:#16a34a">已確認・策略性投資人</strong></td><td><span class="tag tag-green">全新重大利多</span></td></tr>
+        <tr style="background:#fffbeb"><td><strong>FY2026E EPS</strong></td><td>31–39.4元</td><td><strong style="color:#16a34a">40.29元</strong></td><td><span class="tag tag-green">法人上修</span></td></tr>
+        <tr style="background:#fffbeb"><td><strong>FY2027E EPS</strong></td><td>65.64元</td><td><strong style="color:#16a34a">71.26元</strong></td><td><span class="tag tag-green">+8.6%</span></td></tr>
+        <tr><td>法人目標價</td><td>1,380–1,700元</td><td><strong>1,630–1,955元</strong></td><td><span class="tag tag-green">區間整體上移</span></td></tr>
+        <tr><td>資本支出</td><td>未公告</td><td><strong>核准79億元擴產</strong></td><td><span class="tag tag-blue">產能加碼</span></td></tr>
+        <tr><td>均線型態</td><td style="color:#d97706">均線糾結（方向不明）</td><td><strong style="color:#16a34a">完全多頭排列（強勢）</strong></td><td><span class="tag tag-green">趨勢確立</span></td></tr>
+        <tr><td>月營收／季報</td><td>最新至實際8月／Q2'26</td><td>同前（未更新）</td><td><span class="tag tag-yellow">無新財報</span></td></tr>
+      </tbody>
+    </table>
+    <div class="alert alert-yellow" style="margin-top:12px;margin-bottom:0">
+      <span style="font-size:18px">📌</span>
+      <div><strong>必須誠實說明：</strong>亞馬遜入股案於 9/29 晚間至 9/30 間發布，而首次報告的資料擷取與搜尋在 9/30 上午完成，<strong>當時並未撈到這則消息，因此首次報告完全未提及此事</strong>。本次報告補上這個關鍵缺口——這也是五天內股價上漲 9.95% 並鎖上漲停的根本原因。</div>
+    </div>
+  </div>
+
+  <div class="conclusion-card">
+    <div class="conc-item">
+      <div class="label">投資評級</div>
+      <div class="val">偏多・不追漲停</div>
+      <div class="sub">邏輯強化但短線過熱</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">12個月目標價</div>
+      <div class="val">1,630–1,955元</div>
+      <div class="sub">美系1,630／統一1,700／里昂1,955</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">最大風險</div>
+      <div class="val">漲停追價</div>
+      <div class="sub">已突破布林上軌 +4.1%</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">核心邏輯升級</div>
+      <div class="val">客戶 → 股東</div>
+      <div class="sub">AWS 綁定從訂單變股權</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">建議布局區</div>
+      <div class="val">1,062–1,167元</div>
+      <div class="sub">MA20–布林上軌回測區</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">停損設定</div>
+      <div class="val">1,008元</div>
+      <div class="sub">MA60（-17.0%）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 KPI ===== -->
+<section>
+  <div class="section-title"><span class="section-num">3</span> 關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">今日收盤（漲停）</div>
+      <div class="kpi-val" style="color:#16a34a">1,215元</div>
+      <div class="kpi-sub">+9.95%｜昨收1,105元</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">亞馬遜私募價</div>
+      <div class="kpi-val">856元</div>
+      <div class="kpi-sub">現價已較私募價 <strong style="color:#16a34a">+41.9%</strong></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">FY2026E EPS（法人）</div>
+      <div class="kpi-val">40.29元</div>
+      <div class="kpi-sub">P/E <strong style="color:#16a34a">30.2x</strong>（上修後）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">FY2027E EPS（法人）</div>
+      <div class="kpi-val" style="color:#16a34a">71.26元</div>
+      <div class="kpi-sub">P/E <strong style="color:#16a34a">17.0x</strong>｜YoY +76.9%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q2'26 EPS</div>
+      <div class="kpi-val">9.28元</div>
+      <div class="kpi-sub">史上最高（本次無新財報）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">8月月營收</div>
+      <div class="kpi-val">103.8億</div>
+      <div class="kpi-sub">YoY +76.4%｜連兩月破百億</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">1–8月累計營收</div>
+      <div class="kpi-val">640.6億</div>
+      <div class="kpi-sub">已超越2025全年597.3億</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TTM EPS</div>
+      <div class="kpi-val">28.50元</div>
+      <div class="kpi-sub">TTM P/E 42.6x｜P/B 14.74x</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 04 圖表 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">4</span> 財務趨勢圖</div>
+  <div class="charts-grid">
+    <div class="chart-box">
+      <div class="chart-title">EPS 季度趨勢（元）</div>
+      <canvas id="epsChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">Q2'26: 9.28元 ★ 史上最高（本次未更新）</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">月營收走勢（億元，實際月份）</div>
+      <canvas id="revChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">8月 103.8億 ★ 連兩月破百億</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">毛利率趨勢（%）</div>
+      <canvas id="gmChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">近4季穩定在 33–36% 高檔</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05 公司概覽 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">5</span> 公司概覽與亞馬遜入股解析</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:var(--accent)">🏢 公司基本資訊</h4>
+        <table>
+          <tr><td style="color:var(--muted);font-size:13px">公司名稱</td><td style="font-weight:700;font-size:13px">金像電子股份有限公司</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">英文名稱</td><td style="font-size:13px">Gold Circuit Electronics (GCE)</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">主要業務</td><td style="font-size:13px">高多層印刷電路板（PCB）製造</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">產品結構</td><td style="font-size:13px"><strong style="color:var(--accent)">AI 高階專案占營收逾 50%</strong></td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">市值</td><td style="font-size:13px">6,242億元｜P/B 14.74x</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">FY2025營收</td><td style="font-size:13px">597.28億元（YoY +54%）</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">H1'26營收</td><td style="font-size:13px">436.60億元（YoY <strong>+68.74%</strong>）</td></tr>
+        </table>
+      </div>
+      <div>
+        <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:var(--accent)">🤝 亞馬遜入股的三層意義</h4>
+        <ul style="list-style:none;padding:0">
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">①</span><strong>供應鏈綁定升級：</strong>從「下訂單」變成「當股東」，AWS 把自身利益與金像電產能直接掛鉤</li>
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">②</span><strong>背書效應：</strong>全球最大雲端業者親自投資，等同對其 AI PCB 技術與產能的公開認證</li>
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">③</span><strong>訂單能見度隱含提升：</strong>股東身分通常伴隨長期供應協議，降低轉單風險</li>
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#d97706;font-weight:700">⚠</span><strong>但持股僅 0.3%：</strong>象徵意義遠大於資金意義，15.89 億對 6,242 億市值公司而言很小</li>
+          <li style="font-size:13px;padding:6px 0;display:flex;gap:8px"><span style="color:#dc2626;font-weight:700">⚠</span><strong>8 折定價引發爭議：</strong>以參考價 1,070 元的 80% 認購，市場曾質疑對原股東是否公平</li>
+        </ul>
+      </div>
+    </div>
+
+    <h4 style="font-size:14px;font-weight:800;margin:18px 0 0;color:var(--accent)">🔗 四大 CSP 自研 ASIC 客戶（亞馬遜已升級為股東）</h4>
+    <div class="csp-grid">
+      <div class="csp-tile hl"><div class="ct-name">AWS ★股東</div><div class="ct-desc">Trainium<br><strong>已入股 0.3%</strong></div></div>
+      <div class="csp-tile"><div class="ct-name">Google</div><div class="ct-desc">TPU<br>張量處理器</div></div>
+      <div class="csp-tile"><div class="ct-name">Meta</div><div class="ct-desc">MTIA<br>推論加速器</div></div>
+      <div class="csp-tile"><div class="ct-name">Microsoft</div><div class="ct-desc">Maia<br>AI 加速器</div></div>
+    </div>
+
+    <div class="alert alert-gold" style="margin-top:16px">
+      <span style="font-size:18px">🏗️</span>
+      <div><strong>79 億元擴產案：產能才是 AI PCB 的真瓶頸</strong><br>
+      同日核准的 79 億元投資中，<strong>土地約 38 億、建廠與設備資本支出約 41 億</strong>，資金來源規劃以<strong>無擔保可轉換公司債</strong>支應。在 AI 高階 PCB 供不應求的環境下，先擴產者先吃單——這與亞馬遜入股形成「<strong>客戶出錢背書 + 公司加碼產能</strong>」的配套動作，邏輯一致。<br><br>
+      <span style="color:#7f1d1d">⚠️ <strong>但要注意兩個代價：</strong>① 可轉債未來轉換會造成<strong>股權稀釋</strong>；② 38 億買地屬長周期投入，短期不貢獻營收卻先增加折舊與利息壓力。這是目前市場較少討論、但實質存在的成本。</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 06 基本面 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">6</span> 基本面分析</div>
+  <div class="alert alert-yellow">
+    <span style="font-size:18px">ℹ️</span>
+    <div><strong>本次無新財報：</strong>距首次報告僅 5 個交易日，季度財報（最新 Q2'26）與月營收（最新至實際 8 月）<strong>均未更新</strong>。以下數據與首次報告一致，保留供完整參照；本次報告的增量價值集中在<strong>亞馬遜入股、法人預估上修與技術型態轉變</strong>三項。</div>
+  </div>
+  <div class="analyst-grid">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">📊 季度財報趨勢</h4>
+      <table>
+        <thead><tr><th>季度</th><th>EPS(元)</th><th>毛利率</th><th>OPM</th></tr></thead>
+        <tbody>
+          <tr><td>Q3'24</td><td>3.28</td><td>32.29%</td><td>23.95%</td></tr>
+          <tr style="background:#fef2f2"><td>Q4'24</td><td style="color:#dc2626">2.64</td><td style="color:#dc2626">25.94%</td><td style="color:#dc2626">16.60%</td></tr>
+          <tr><td>Q1'25</td><td>3.60</td><td>31.30%</td><td>21.08%</td></tr>
+          <tr><td>Q2'25</td><td>3.48</td><td>29.56%</td><td>20.70%</td></tr>
+          <tr><td>Q3'25</td><td>6.49</td><td>35.56%</td><td>26.28%</td></tr>
+          <tr><td>Q4'25</td><td>5.86</td><td>33.66%</td><td>24.30%</td></tr>
+          <tr><td>Q1'26</td><td>6.87</td><td>34.81%</td><td>26.85%</td></tr>
+          <tr style="background:#fef3c7"><td><strong>Q2'26 ★</strong></td><td><strong style="color:var(--accent)">9.28</strong></td><td><strong>34.65%</strong></td><td><strong style="color:#16a34a">26.43%</strong></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">H1'26 EPS 16.15元 YoY +128% ｜ TTM 28.50元 ｜ FY2025 19.43元<br><strong>轉折點在 Q3'25</strong>：毛利率自 29.56% 跳至 35.56%，之後 4 季穩守 33–36% 高檔</div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">💰 月營收（實際月份）</h4>
+      <table>
+        <thead><tr><th>月份</th><th>月收(億)</th><th>YoY</th><th>MoM</th></tr></thead>
+        <tbody>
+          <tr><td>3月</td><td>73.85</td><td>+63.1%</td><td>+24.3%</td></tr>
+          <tr><td>4月</td><td>72.90</td><td>+58.4%</td><td>-1.3%</td></tr>
+          <tr><td>5月</td><td>87.73</td><td>+87.3%</td><td>+20.4%</td></tr>
+          <tr><td>6月</td><td>82.55</td><td>+78.2%</td><td>-5.9%</td></tr>
+          <tr><td>7月</td><td>100.15</td><td>+77.4%</td><td>+21.3%</td></tr>
+          <tr style="background:#fef3c7"><td><strong>8月★</strong></td><td><strong style="color:var(--accent)">103.84</strong></td><td><strong style="color:#16a34a">+76.4%</strong></td><td>+3.7%</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">
+        1–8月累計 <strong>640.59億元</strong>（YoY +71.3%）｜H1'26 營收 436.60億（YoY +68.74%，與公告一致）<br>
+        🎯 <strong>年營收千億關卡：</strong>1–8 月已達 640.6 億，若後四個月維持百億水準，全年可望挑戰 <strong>1,000 億元</strong>大關。
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">📐 估值分析｜法人上修後的新框架</h4>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;text-align:center">
+      <div style="padding:12px;background:var(--bg);border-radius:10px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">今日收盤</div>
+        <div style="font-size:20px;font-weight:800;color:#16a34a">1,215元</div>
+        <div style="font-size:11px;color:var(--muted)">漲停｜距52W高 -23.1%</div>
+      </div>
+      <div style="padding:12px;background:#fee2e2;border-radius:10px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">TTM P/E</div>
+        <div style="font-size:20px;font-weight:800;color:#dc2626">42.6x</div>
+        <div style="font-size:11px;color:var(--muted)">TTM EPS 28.50元</div>
+      </div>
+      <div style="padding:12px;background:#dcfce7;border-radius:10px;border:1.5px solid #86efac">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">FY2026E P/E</div>
+        <div style="font-size:20px;font-weight:800;color:#16a34a">30.2x</div>
+        <div style="font-size:11px;color:var(--muted)">EPS 40.29元（上修後）</div>
+      </div>
+      <div style="padding:12px;background:#dcfce7;border-radius:10px;border:1.5px solid #86efac">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">FY2027E P/E</div>
+        <div style="font-size:20px;font-weight:800;color:#16a34a">17.0x</div>
+        <div style="font-size:11px;color:var(--muted)">EPS 71.26元（YoY +76.9%）</div>
+      </div>
+    </div>
+    <div class="alert alert-green" style="margin-top:12px">
+      <span style="font-size:18px">🔑</span>
+      <div><strong>估值核心論點：價格漲了 10%，但獲利預估漲得更多，估值反而沒變貴。</strong><br>
+      首次報告時 FY2026E EPS 預估為 31–39.4 元、對應 P/E 28–36x；<strong>亞馬遜入股後法人將 FY2026E 上修至 40.29 元</strong>，即使股價已漲到 1,215 元，P/E 仍為 <strong>30.2x</strong>——落在原區間內。<br><br>
+      <strong>真正的重點在 FY2027：</strong>法人估 71.26 元（YoY +76.9%），對應 P/E 僅 <strong>17.0x</strong>。若此預估兌現，現價其實是在用 17 倍買一家營收破千億、獲利年增 77% 的 AI PCB 龍頭。<br><br>
+      <strong>但必須提醒：</strong>TTM P/E 已達 42.6x、P/B 14.74x，<strong>這些倍數建立在「FY2027 一定會到」的假設上</strong>。而法人預估本身在短短數日內就從 65.64 元跳到 71.26 元，波動不小——預估愈樂觀，落空時的回檔也愈劇烈。</div>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:var(--muted)">📌 FY2026E 40.29 元、FY2027E 71.26 元為亞馬遜入股後法人上修之預估值，非公司財測；首次報告採用之 31–39.4 元／65.64 元為入股前版本。TTM EPS 28.50 元係 Q3'25～Q2'26 四季加總（Fugle 回報 TTM P/E 43.4x，差異來自 TTM 口徑）。PCB 同業 P/E 約 25x、大盤約 20x 為產業推算值。</div>
+  </div>
+</section>
+
+<!-- ===== 07 籌碼面 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">7</span> 籌碼面分析</div>
+  <div class="alert alert-yellow">
+    <span style="font-size:18px">🔍</span>
+    <div><strong>資料揭露說明：</strong>本次擷取時公開資料庫（FinMind，2026/10/02）回傳之三大法人買賣超與融資融券欄位<strong>均為空值（顯示 0）</strong>，屬資料庫當次未收錄，<strong>並非「法人持平」或「餘額為零」</strong>。本節改以量能結構、私募案與公開法人評等三軌判讀。</div>
+  </div>
+  <div class="analyst-grid">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">📊 量能與價格結構（可驗證數據）</h4>
+      <table>
+        <thead><tr><th>日期</th><th>收盤／量</th><th>判讀</th></tr></thead>
+        <tbody>
+          <tr style="background:#fef3c7"><td style="font-size:13px"><strong>09/30</strong></td><td style="font-weight:700">1,120｜<strong>1,936萬股</strong></td><td><span class="tag tag-gold">亞馬遜消息日爆量</span></td></tr>
+          <tr><td style="font-size:13px">10/01</td><td>1,095｜908萬股</td><td style="font-size:12px;color:#d97706">消化整理</td></tr>
+          <tr><td style="font-size:13px">10/02</td><td>1,105｜717萬股</td><td style="font-size:12px;color:#16a34a">量縮止穩</td></tr>
+          <tr style="background:#dcfce7"><td style="font-size:13px"><strong>10/05</strong></td><td style="font-weight:700;color:#16a34a">1,215｜<strong>鎖漲停</strong></td><td><span class="tag tag-green">整理後發動</span></td></tr>
+          <tr><td style="font-size:13px">5日均量</td><td>12,036,669股</td><td style="font-size:12px;color:var(--muted)">高於10日均量</td></tr>
+          <tr><td style="font-size:13px">10日均量</td><td>11,477,798股</td><td style="font-size:12px;color:var(--muted)">基準量</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px;font-size:12px;background:#dcfce7;padding:10px;border-radius:8px;color:#14532d">
+        <strong>這是本系列觀察到最健康的消息行情結構。</strong>對比群創（3481）的「消息日直接鎖漲停、追價者套在最高點」，金像電走的是：<strong>消息日爆量但未鎖死（09/30 收 1,120）→ 兩天量縮整理（1,095–1,105）→ 第三個交易日才鎖漲停</strong>。<br><br>
+        這代表市場有充分時間消化資訊、籌碼經過換手，<strong>不是單日情緒衝動</strong>。今日漲停前的整理量縮（717 萬股，僅 5 日均量 0.6 倍）也顯示賣壓確實枯竭。
+      </div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">🌍 法人目標價（入股後全面上修）</h4>
+      <table>
+        <thead><tr><th>機構</th><th>目標價</th><th>vs 現價1,215</th></tr></thead>
+        <tbody>
+          <tr style="background:#dcfce7"><td style="font-size:13px"><strong>里昂證券</strong></td><td style="font-weight:700;color:#16a34a">1,955元</td><td><span class="tag tag-green">+60.9%</span></td></tr>
+          <tr><td style="font-size:13px">統一投顧</td><td style="font-weight:700;color:#16a34a">1,700元</td><td style="font-size:12px;color:#16a34a">+39.9%</td></tr>
+          <tr><td style="font-size:13px">美系外資</td><td style="font-weight:700">1,630元（買進）</td><td style="font-size:12px;color:#16a34a">+34.2%</td></tr>
+          <tr><td style="font-size:13px">FY2026E EPS</td><td style="font-weight:700">40.29元</td><td style="font-size:12px;color:var(--muted)">上修</td></tr>
+          <tr><td style="font-size:13px">FY2027E EPS</td><td style="font-weight:700;color:#16a34a">71.26元</td><td style="font-size:12px;color:#16a34a">YoY +76.9%</td></tr>
+          <tr style="background:#fef3c7"><td style="font-size:13px"><strong>亞馬遜成本價</strong></td><td style="font-weight:700;color:var(--accent)">856元</td><td><span class="tag tag-gold">帳面 +41.9%</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px;font-size:12px;background:#fef3c7;padding:10px;border-radius:8px;color:#78350f">
+        <strong>一個值得玩味的籌碼細節：</strong>亞馬遜以 856 元入股，現價 1,215 元代表其帳面已獲利 <strong>41.9%</strong>。市場曾質疑「8 折定價是否對原股東不公」（今周刊），但換個角度看——<strong>一個願意用真金白銀買進並鎖住的股東，本身就是極強的籌碼安定力量</strong>。私募股份通常有閉鎖期限制，短期不會成為賣壓。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 08 技術面 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">8</span> 技術分析</div>
+
+  <div class="alert alert-green" style="margin-bottom:12px">
+    <span style="font-size:18px">📈</span>
+    <div><strong>技術面評估：型態已從「糾結」升級為「完全多頭排列」——這是本次最重要的技術變化</strong><br>
+    首次報告時 MA5／MA10／MA20／MA60 交錯纏繞、方向不明；五天後已轉為 <strong>MA5(1,109) &gt; MA10(1,074) &gt; MA20(1,062) &gt; MA60(1,008)</strong> 的標準多頭排列，系統判定為「<strong>強勢</strong>」。MACD 金叉且本體為正（17.88），RSI 54.6（計算至 10/02，今日漲停後將大幅攀升）。<br><br>
+    <strong>但短線警訊明確：現價 1,215 已突破布林上軌 1,167.28 達 +4.1%</strong>，且為漲停鎖死狀態。布林帶寬 19.8% 屬高波動。<strong>趨勢站在多方，位置卻是最不利新進場者的時點。</strong></div>
+  </div>
+
+  <div class="tech-grid">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">📈 均線系統（完全多頭排列 ★新）</h4>
+      <table>
+        <tbody>
+          <tr><td style="font-size:13px;color:var(--muted)">現價</td><td style="font-weight:700;color:#16a34a;font-size:14px">1,215元</td><td><span class="tag tag-green">站上全部均線</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA5</td><td style="font-weight:700">1,109.00元</td><td style="font-size:12px;color:#16a34a">支撐 -8.7%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA10</td><td style="font-weight:700">1,074.00元</td><td style="font-size:12px;color:#16a34a">支撐 -11.6%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA20</td><td style="font-weight:700">1,061.95元</td><td style="font-size:12px;color:#16a34a">支撐 -12.6%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA60</td><td style="font-weight:700">1,008.37元</td><td style="font-size:12px;color:#16a34a">強支撐 -17.0%</td></tr>
+          <tr style="background:#dcfce7"><td style="font-size:13px;color:var(--muted)">排列</td><td colspan="2"><span class="tag tag-green"><strong>完全多頭排列（強勢）</strong></span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:#d97706">⚠️ 現價距最近支撐 MA5 仍有 8.7% 空間，<strong>追價者下方無緩衝</strong></div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">📊 動能指標（計算至 10/02）</h4>
+      <table>
+        <tbody>
+          <tr><td style="font-size:13px;color:var(--muted)">MACD</td><td style="font-weight:700;color:#16a34a">+17.88</td><td><span class="tag tag-green">金叉・本體為正</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">訊號線</td><td>+11.45</td><td style="font-size:12px;color:#16a34a">買入訊號</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">OSC柱</td><td style="font-weight:700;color:#16a34a">+6.43</td><td style="font-size:12px;color:#16a34a">動能正向</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">RSI</td><td style="font-weight:700">54.63</td><td><span class="tag tag-blue">今日漲停後將大升</span></td></tr>
+          <tr style="background:#fee2e2"><td style="font-size:13px;color:var(--muted)">布林上軌</td><td style="font-weight:700;color:#dc2626">1,167.28元</td><td><span class="tag tag-red">已突破 +4.1%</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">布林中軌</td><td>1,061.95元</td><td style="font-size:12px;color:var(--muted)">= MA20</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">布林下軌</td><td>956.62元</td><td style="font-size:12px;color:#16a34a">極限支撐</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">布林帶寬 <strong>19.8%</strong>（波動大）｜技術指標均計算至 10/02 收盤，未含今日漲停</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">🗺️ 關鍵價位表</h4>
+    <table>
+      <thead><tr><th>價位</th><th>意義</th><th>方向</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:700">1,955元</td><td><strong>里昂證券目標價</strong>（+60.9%）</td><td><span class="tag tag-green">最高目標</span></td></tr>
+        <tr><td style="font-weight:700">1,700元</td><td>統一投顧目標價（+39.9%）</td><td><span class="tag tag-green">上檔目標</span></td></tr>
+        <tr><td style="font-weight:700">1,630元</td><td>美系外資目標價（+34.2%）</td><td><span class="tag tag-green">基本目標</span></td></tr>
+        <tr><td style="font-weight:700">1,580元</td><td><strong>52週高點</strong></td><td><span class="tag tag-yellow">前高壓力</span></td></tr>
+        <tr><td style="font-weight:700">1,336元</td><td>明日漲停參考價（1,215×1.1）</td><td><span class="tag tag-blue">日內上限</span></td></tr>
+        <tr style="background:#fef3c7"><td style="font-weight:700">1,215元</td><td><strong>今日漲停收盤</strong></td><td><span class="tag tag-gold">關鍵位</span></td></tr>
+        <tr style="background:#fee2e2"><td style="font-weight:700">1,167元</td><td>布林上軌（已突破，回測即支撐）</td><td><span class="tag tag-red">多空分界</span></td></tr>
+        <tr><td style="font-weight:700">1,109元</td><td>MA5 支撐</td><td><span class="tag tag-gold">短支撐</span></td></tr>
+        <tr style="background:#dcfce7"><td style="font-weight:700">1,062–1,167元</td><td><strong>MA20～布林上軌 布局區</strong></td><td><span class="tag tag-green">建議進場</span></td></tr>
+        <tr><td style="font-weight:700">1,008元</td><td><strong>MA60（停損線）</strong></td><td><span class="tag tag-red">停損</span></td></tr>
+        <tr><td style="font-weight:700">950元</td><td>9/17 波段低點</td><td><span class="tag tag-red">重大支撐</span></td></tr>
+        <tr><td style="font-weight:700">856元</td><td>亞馬遜私募認購價</td><td><span class="tag tag-gold">心理支撐</span></td></tr>
+      </tbody>
+    </table>
+    <canvas id="peChart" width="560" height="180" style="width:100%;height:auto;margin-top:16px;"></canvas>
+    <div class="chart-note">P/E 比較：FY2026E 30.2x、FY2027E 僅 17.0x；TTM 42.6x 偏高（同業與大盤為產業推算值）</div>
+  </div>
+</section>
+
+<!-- ===== 09 融資融券 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">9</span> 融資融券</div>
+  <div class="card">
+    <div class="alert alert-yellow">
+      <span style="font-size:18px">ℹ️</span>
+      <div>公開資料庫（FinMind，2026/10/02）本次回傳之融資融券欄位為空值。本節<strong>不以「餘額為 0」作結論</strong>，改採間接訊號趨勢判讀，並說明官方查詢管道。</div>
+    </div>
+    <div style="margin-top:10px">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">📉 間接訊號趨勢判讀</h4>
+      <table>
+        <thead><tr><th>觀察角度</th><th>實際數據</th><th>對信用交易的推論</th></tr></thead>
+        <tbody>
+          <tr><td style="font-size:13px">消息日未鎖漲停</td><td style="font-size:13px">09/30 爆量1,936萬股但收1,120（非漲停）</td><td style="font-size:13px"><strong>融資追價單有機會成交並換手</strong>，未堆積成隔日浮額</td></tr>
+          <tr><td style="font-size:13px">兩日量縮整理</td><td style="font-size:13px">10/01–10/02 量降至908萬、717萬股</td><td style="font-size:13px">浮額在此階段自然淘汰，<strong>籌碼趨於安定</strong></td></tr>
+          <tr><td style="font-size:13px">今日鎖漲停</td><td style="font-size:13px">10/05 開1,160高1,215鎖死</td><td style="font-size:13px"><strong>隔日融資追價單將大增</strong>，需留意打開後的回測力道</td></tr>
+          <tr><td style="font-size:13px">私募閉鎖</td><td style="font-size:13px">亞馬遜185.6萬股，成本856元</td><td style="font-size:13px">私募股通常有閉鎖期，<strong>短期不構成賣壓</strong>，為籌碼安定因子</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;font-size:13px;color:var(--muted)">
+        📝 <strong>綜合研判：</strong>本波結構優於典型題材股——消息日有充分換手、中間經過兩日量縮整理，<strong>融資浮額未在高點一次性堆積</strong>。但今日鎖漲停會把大量追價單推到明日，若明日開高走低，高槓桿部位的連鎖停損仍可能放大回檔。<strong>建議明日觀察漲停打開後的承接力道再決定。</strong><br>
+        🔎 <strong>精確查詢管道：</strong>台灣證券交易所官網「融資融券餘額」每日盤後公告，或 Goodinfo!、玩股網之個股信用交易頁面，輸入代號 2368 可查得逐日餘額與資券比。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 研究員辯論 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">10</span> 研究員辯論｜看多 vs 看空</div>
+
+  <div class="alert alert-gold" style="margin-bottom:12px">
+    <span style="font-size:18px">⚖️</span>
+    <div><strong>多空辯論量化權重：看多 72% vs 看空 28%</strong>（首次報告 68% vs 32%）<br>
+    多方權重進一步上升，關鍵在於<strong>亞馬遜入股把「客戶集中風險」這個原本最大的空方論點，直接轉化成了多方論點</strong>——當最大客戶變成股東，轉單風險實質下降。空方論點已集中到<strong>單一面向：短線位置</strong>（漲停、突破布林上軌、TTM P/E 42.6x）。</div>
+  </div>
+
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <h4><span style="background:#dcfce7;color:#16a34a;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:14px">🐂</span> 看多研究員（7點）</h4>
+      <ul>
+        <li><span class="bull-icon">▲</span><div><strong>亞馬遜從客戶升級為股東（本次新增，最強論點）：</strong>以每股 856 元投入 15.89 億元取得 0.3% 股權，成為策略性投資人。<strong>全球最大雲端業者用真金白銀背書</strong>，供應鏈關係從訂單層級提升到股權層級。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>法人獲利預估大幅上修：</strong>FY2026E EPS 自 31–39.4 元上修至 <strong>40.29 元</strong>、FY2027E 自 65.64 元升至 <strong>71.26 元</strong>（YoY +76.9%）。目標價區間整體上移至 1,630–1,955 元。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>FY2027E P/E 僅 17.0x：</strong>以法人估 71.26 元計，現價 1,215 元對應本益比僅 17 倍——用 17 倍買一家營收挑戰千億、獲利年增 77% 的 AI PCB 龍頭。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>同步核准 79 億元擴產：</strong>土地 38 億、建廠設備 41 億。在 AI 高階 PCB 供不應求環境下，<strong>產能即訂單</strong>，與亞馬遜入股形成「客戶背書＋產能加碼」的完整配套。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>成長是既成事實：</strong>H1'26 營收 436.60 億 YoY <strong>+68.74%</strong>、1–8 月累計 640.59 億已超越 2025 全年；Q2'26 EPS 9.28 元創史高，毛利率連 4 季穩守 33–36%。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>技術型態確立轉強：</strong>均線自「糾結」轉為<strong>完全多頭排列（強勢）</strong>，MACD 金叉且本體為正（+17.88）。五天內完成型態升級。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>籌碼結構健康：</strong>消息日（09/30）爆量 1,936 萬股但未鎖漲停、經兩日量縮整理後才於 10/05 發動——<strong>有充分換手，非單日情緒衝動</strong>。私募股另有閉鎖期保護。</div></li>
+      </ul>
+    </div>
+    <div class="analyst-card">
+      <h4><span style="background:#fee2e2;color:#dc2626;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:14px">🐻</span> 看空研究員（5點）</h4>
+      <ul>
+        <li><span class="bear-icon">▼</span><div><strong>漲停追價風險（最強論點）：</strong>今日鎖漲停 1,215 元，<strong>已突破布林上軌 1,167 達 +4.1%</strong>，距最近支撐 MA5(1,109) 仍有 8.7% 空間。<strong>此時進場下方毫無緩衝</strong>，明日若開高走低即直接套在最高點。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>TTM 估值已不便宜：</strong>TTM P/E <strong>42.6x</strong>、P/B <strong>14.74x</strong>。低本益比（30.2x／17.0x）完全建立在「FY2026 與 FY2027 預估一定會兌現」的假設上，缺乏安全邊際。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>法人預估波動過快：</strong>FY2027E EPS 在數日內自 65.64 元跳到 71.26 元（+8.6%）。<strong>預估上修得愈急，落空時的估值修正也愈劇烈</strong>——這種「追著股價調預估」的現象本身就是警訊。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>亞馬遜持股僅 0.3%，象徵大於實質：</strong>15.89 億元對市值 6,242 億的公司而言比重極小，且以參考價 8 折認購（今周刊曾質疑對原股東公平性）。<strong>股權綁定的實際約束力有限</strong>，不等於長期包銷協議。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>79 億擴產的隱藏成本：</strong>資金來源為<strong>無擔保可轉換公司債</strong>，未來轉換將造成股權稀釋；38 億買地屬長周期投入，短期不貢獻營收卻先增加折舊與利息負擔。<strong>這是目前市場幾乎未討論的成本。</strong></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">💬 給一般投資人的話</h4>
+    <p style="font-size:13px;line-height:1.75;color:var(--text)">
+    五天前我寫第一份金像電報告時，漏掉了一件大事——<strong>亞馬遜要入股</strong>。那則消息在 9/29 晚間到 9/30 之間發布，而我當天上午抓資料時沒撈到。這次補上，而且它確實是這五天股價漲 9.95%、今天鎖上漲停的根本原因。<br><br>
+    <strong>這件事為什麼重要？</strong>亞馬遜（AWS）本來就是金像電的客戶——金像電幫它做 Trainium AI 晶片的電路板。現在亞馬遜花 15.89 億元，用每股 856 元買下 0.3% 的股份，<strong>從「客戶」變成「股東」</strong>。白話說：你的大客戶不只跟你下單，還把錢投進你公司。這種事在供應鏈裡是很強的信任訊號，代表它打算跟你長期綁在一起。公司同一天還宣布要花 79 億元蓋新廠——客戶背書、自己加碼產能，兩件事是配套的。<br><br>
+    <strong>法人馬上把獲利預估調高了：</strong>今年每股賺 40.29 元、明年 71.26 元。用明年的數字算，現在 1,215 元只有 <strong>17 倍本益比</strong>——以一家營收要破千億、獲利年增 77% 的公司來說，這不貴。三家法人的目標價是 1,630、1,700、1,955 元。<br><br>
+    <strong>但今天不是進場的日子。</strong>股價鎖在漲停 1,215 元，已經衝過布林上軌 4.1%，而最近的支撐（五日線）在 1,109 元——<strong>中間 8.7% 是真空的</strong>。今天追進去，明天只要開高走低，立刻就是套在最高點。<br><br>
+    <strong>實務建議三句話：</strong>① <strong>不要追漲停</strong>，明天先看漲停打開後有沒有人接；② 想參與就等回測 <strong>1,062–1,167 元</strong>（月線到布林上軌之間）分批進場，那裡才有支撐；③ 停損設在 <strong>1,008 元</strong>（季線），跌破代表這波多頭結構壞掉。另外提醒一點：<strong>79 億擴產是用可轉債籌錢的，以後轉換會稀釋股權</strong>，這件事現在沒什麼人提，但它是真實的成本。
+    </p>
+  </div>
+</section>
+
+<!-- ===== 11 風控 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">11</span> 風控評估｜六維評分</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <div class="score-row"><span class="score-label">估值風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:55%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div></div><span class="score-num" style="color:#d97706">5.5</span><span class="score-delta" style="color:var(--muted)">－</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">TTM P/E 42.6x／P/B 14.74x 偏高；惟 FY26E 30.2x、FY27E 17.0x 仍合理（權重30%）</div>
+
+        <div class="score-row"><span class="score-label">財務風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:25%;background:linear-gradient(90deg,#16a34a,#22c55e)"></div></div><span class="score-num" style="color:#16a34a">2.5</span><span class="score-delta" style="color:#dc2626">▲0.5</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">獲利體質優異；惟新增79億資本支出與<strong>可轉債稀釋</strong>風險（權重25%）</div>
+
+        <div class="score-row"><span class="score-label">流動性風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:15%;background:linear-gradient(90deg,#16a34a,#22c55e)"></div></div><span class="score-num" style="color:#16a34a">1.5</span><span class="score-delta" style="color:var(--muted)">－</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">市值6,242億、日均量逾1,100萬股，流動性極佳（權重10%）</div>
+      </div>
+      <div>
+        <div class="score-row"><span class="score-label">產業風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:35%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div></div><span class="score-num" style="color:#d97706">3.5</span><span class="score-delta" style="color:#16a34a">▼0.5</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px"><strong>亞馬遜入股降低最大客戶轉單風險</strong>，客戶集中度風險實質下降（權重15%）</div>
+
+        <div class="score-row"><span class="score-label">總經風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:40%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div></div><span class="score-num" style="color:#d97706">4.0</span><span class="score-delta" style="color:var(--muted)">－</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">高度連動雲端巨頭資本支出循環與AI景氣轉折（權重10%）</div>
+
+        <div class="score-row"><span class="score-label">籌碼風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:linear-gradient(90deg,#dc2626,#ef4444)"></div></div><span class="score-num" style="color:#dc2626">6.0</span><span class="score-delta" style="color:var(--muted)">－</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">今日鎖漲停、突破布林上軌+4.1%、追價風險高；惟消息日已充分換手（權重10%）</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;margin-top:16px;padding:16px;background:var(--bg);border-radius:10px;flex-wrap:wrap">
+      <div style="text-align:center;flex-shrink:0">
+        <div style="font-size:40px;font-weight:900;color:#d97706">5.0</div>
+        <div style="font-size:11px;color:var(--muted)">加權綜合風險（持平）</div>
+      </div>
+      <div style="flex:1;min-width:240px">
+        <div style="font-size:14px;font-weight:800;color:#d97706;margin-bottom:4px">中等風險｜高波動成長型（評分與首次報告持平）</div>
+        <div style="font-size:13px;color:var(--muted)">加權計算：5.5×30% + 2.5×25% + 1.5×10% + 3.5×15% + 4.0×10% + 6.0×10% ≈ <strong>4.0</strong>，考量 52 週波幅 307%、布林帶寬 19.8% 之極端波動後<strong>上調至 5.0</strong>。<br>
+        <strong>為什麼股價漲了 10%，風險評分卻沒上升？</strong>因為兩股力量互相抵銷：<strong>亞馬遜入股使產業／客戶集中風險下降（4.0→3.5）</strong>，而可轉債稀釋使財務風險微升（2.0→2.5）；估值與籌碼風險則維持不變（EPS 同步上修抵銷了股價漲幅）。建議：現價不新增部位、等回測布局、部位 15–20%、停損 1,008 元。</div>
+      </div>
+      <div style="flex-shrink:0"><span class="tag tag-yellow" style="font-size:13px;padding:6px 14px">中等風險</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12 三段式策略 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">12</span> 台股三段式策略</div>
+  <div class="strategy-grid">
+    <div class="strat-card attack">
+      <h3>🔴 進攻策略</h3>
+      <div class="strat-item"><span>目標：</span><span>1,700–1,955元（+40%–+61%）</span></div>
+      <div class="strat-item"><span>入場：</span><span><strong>不追漲停</strong>；明日漲停打開後若站穩1,167（布林上軌）再進1/2倉</span></div>
+      <div class="strat-item"><span>加碼：</span><span>突破1,336（明日漲停價）且量能延續</span></div>
+      <div class="strat-item"><span>倉位：</span><span>20%（上限）</span></div>
+      <div class="strat-item"><span>停損：</span><span>1,109元（MA5，-8.7%）</span></div>
+      <div style="margin-top:10px;font-size:12px;background:rgba(255,255,255,0.18);border-radius:8px;padding:8px">⚠️ 即使看多也<strong>不建議今日追漲停</strong>：下方至MA5有8.7%真空帶，風險報酬比不佳</div>
+    </div>
+    <div class="strat-card balance">
+      <h3>🟡 均衡策略（推薦）</h3>
+      <div class="strat-item"><span>目標：</span><span>1,630–1,700元（+34%–+40%）</span></div>
+      <div class="strat-item"><span>入場：</span><span>回測 <strong>1,062–1,167元</strong>（MA20～布林上軌）分3批</span></div>
+      <div class="strat-item"><span>倉位：</span><span>15–20%</span></div>
+      <div class="strat-item"><span>催化劑：</span><span>9月月營收公告；Q3'26 財報</span></div>
+      <div class="strat-item"><span>停損：</span><span>1,008元（MA60，-5%～-13%）</span></div>
+      <div style="margin-top:10px;font-size:12px;background:rgba(255,255,255,0.18);border-radius:8px;padding:8px">⚖️ <strong>本報告首選：</strong>基本面邏輯已強化，耐心等回測均線區進場，風險報酬比最佳</div>
+    </div>
+    <div class="strat-card defend">
+      <h3>🔵 防守策略</h3>
+      <div class="strat-item"><span>現階段：</span><span>觀望，先看明日漲停打開後承接力道</span></div>
+      <div class="strat-item"><span>進場條件：</span><span>回測MA60(1,008) 或 Q3'26 財報確認EPS軌跡</span></div>
+      <div class="strat-item"><span>倉位：</span><span>0–10%</span></div>
+      <div class="strat-item"><span>觀察重點：</span><span>FY2027E 71.26元 是否持續獲法人支持</span></div>
+      <div class="strat-item"><span>關鍵防線：</span><span>950元（9/17低點）不破則多頭結構完整</span></div>
+      <div style="margin-top:10px;font-size:12px;background:rgba(255,255,255,0.18);border-radius:8px;padding:8px">🛡️ 適合不耐受漲停後劇烈震盪者；10–11 月 Q3 財報為最佳觀察點</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">🗓️ 催化劑時程表</h4>
+    <table>
+      <thead><tr><th>時間</th><th>事件</th><th>方向</th></tr></thead>
+      <tbody>
+        <tr><td>明日（10/06）</td><td><strong>漲停打開後的承接力道</strong>——最立即的觀察點</td><td><span class="tag tag-red">關鍵驗證</span></td></tr>
+        <tr><td>2026/10月初</td><td>9月（實際）月營收公告 → 能否連三月站上百億、挑戰千億年營收</td><td><span class="tag tag-blue">關鍵觀察</span></td></tr>
+        <tr><td>2026/10–11月</td><td><strong>Q3'26 財報</strong>：EPS 若突破 Q2 的 9.28 元，FY2026E 40.29 元達標機率大增</td><td><span class="tag tag-green">最強催化劑</span></td></tr>
+        <tr><td>2026 Q4</td><td>私募增資案完成交割；79 億擴產案可轉債發行細節</td><td><span class="tag tag-gold">條件確認</span></td></tr>
+        <tr><td>2027年</td><td><strong>FY2027E EPS 71.26 元</strong>能否兌現——決定現價 17x 本益比是否成立</td><td><span class="tag tag-green">長線關鍵</span></td></tr>
+        <tr><td>隨時</td><td>技術面：跌破 MA20(1,062) 多頭轉弱；跌破 MA60(1,008) 出場</td><td><span class="tag tag-red">風控觸發</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 13 名詞小教室 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">13</span> 名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">私募（Private Placement）</div>
+      <div class="glossary-def">公司不公開發行，直接對特定人（如策略投資人）發行新股。好處是快速、對象可選；代價是<strong>通常以折價發行</strong>（金像電為參考價 8 折），且會稀釋原股東持股。私募股份依法有<strong>閉鎖期</strong>，短期內不能賣出。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">策略性投資人</div>
+      <div class="glossary-def">不是為了賺價差而投資，而是為了<strong>business 上的長期合作</strong>而持股。亞馬遜入股金像電即屬此類——它要的不是股票獲利，是確保自己的 AI 晶片有穩定的電路板供應。這類股東通常不會短線賣出。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">可轉換公司債（CB）</div>
+      <div class="glossary-def">一種債券，持有人可在約定條件下<strong>轉換成公司股票</strong>。對公司好處是利率低（甚至零息）；代價是<strong>未來轉換時會稀釋股權</strong>。金像電 79 億擴產案規劃以此籌資，這筆潛在稀釋是目前市場較少討論的成本。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">客戶集中度風險</div>
+      <div class="glossary-def">營收高度依賴少數客戶的風險。金像電 AI 專案占營收逾 50%、客戶集中四大 CSP，原本是最大隱憂。<strong>但亞馬遜入股後，最大客戶變成股東，轉單動機大幅下降</strong>——這是本次風險評分中產業風險由 4.0 降至 3.5 的原因。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">完全多頭排列</div>
+      <div class="glossary-def">短期均線 &gt; 中期 &gt; 長期（MA5&gt;MA10&gt;MA20&gt;MA60），且股價在全部均線之上，是技術面最強的型態。金像電五天內從「均線糾結」升級為此型態，代表<strong>趨勢方向已確立</strong>。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">布林上軌與真空帶</div>
+      <div class="glossary-def">布林上軌是股價正常波動的上緣。金像電現價 1,215 已超過上軌 1,167 達 4.1%，而最近支撐（MA5）在 1,109——<strong>中間 8.7% 沒有任何技術支撐，稱為「真空帶」</strong>。在此買進，一旦回檔就直接下殺到均線才有承接。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">TTM P/E vs 預估 P/E</div>
+      <div class="glossary-def"><strong>TTM</strong>＝過去 12 個月已實現的獲利，是「事實」；<strong>預估 P/E</strong>＝用分析師預測的未來獲利計算，是「期待」。金像電 TTM 42.6x 但 FY2027E 只有 17.0x——<strong>差距愈大，代表股價愈依賴預估兌現</strong>，風險也愈集中在「預估會不會落空」。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">ASIC（特殊應用積體電路）</div>
+      <div class="glossary-def">為單一任務量身打造的晶片，如 AWS Trainium、Google TPU。相較通用 GPU 更省電便宜，所以四大雲端業者都在自研——而這些晶片都需要高層數 PCB，正是金像電的主場。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 14 免責聲明 ===== -->
+<div class="disclaimer">
+  <strong>⚠️ 免責聲明</strong>　本報告由 AI 分析系統於 2026 年 10 月 5 日自動生成，純供學術研究與資訊參考，<strong>不構成任何投資建議或勸誘買賣證券之行為</strong>。股票投資涉及風險，過去績效不代表未來表現。投資人應自行研判並承擔投資盈虧責任。<br><br>
+  <strong>🔴 數據性質說明：</strong>①封面 1,215 元為 10/05 漲停價（開 1,160／高 1,215／低 1,160），昨收 1,105 元；②技術指標（均線、MACD、RSI、布林通道）係<strong>計算至 10/02 收盤</strong>，未含今日漲停，實際 RSI 今日將顯著高於所列之 54.63；③FY2026E EPS 40.29 元、FY2027E 71.26 元為亞馬遜入股後法人上修之預估值，<strong>非公司財測</strong>，首次報告採用之 31–39.4 元／65.64 元為入股前版本；④TTM EPS 28.50 元係 Q3'25～Q2'26 四季加總（Fugle 回報 TTM P/E 43.4x，差異來自 TTM 口徑）；⑤PCB 同業 P/E 約 25x、大盤約 20x 為產業推算值。<br><br>
+  <strong>🔴 首次報告缺漏之補正：</strong>亞馬遜入股案於 2026/09/29 董事會通過、9/30 公告，而首次報告（2026-09-30）之資料擷取與網路搜尋於當日上午完成，未取得該則訊息，<strong>致首次報告完全未提及此事</strong>。本次報告已完整補正，並據此重新評估投資邏輯與風險結構。<br><br>
+  <strong>資料來源：</strong>即時報價 富果 Fugle API ｜ 歷史K線・技術指標・月營收・季度財報 FinMind ｜ 亞馬遜入股案與法人評等 WebSearch（工商時報、經濟日報／聯合新聞網、時報資訊、今周刊、風傳媒、數位時代、旺得富理財網、鉅亨網、新頭殼、三立新聞網、Yahoo 財經）｜ 報告日期：2026-10-05（第 2 次報告）｜ 前次報告：2026-09-30（首次）<br>
+  <strong>月營收月份對應說明：</strong>資料庫申報月份減 1 為實際賺取月份，本報告已統一換算為實際月份呈現。換算後 H1'26（實際 1–6 月）營收 436.60 億元與公司公告完全一致，已交叉驗證。<br>
+  <strong>資料缺漏說明：</strong>本次擷取三大法人與融資融券欄位回傳空值（資料庫未收錄），第 7、9 節已改採量能結構、私募案與公開評等多軌判讀，並標明官方查詢管道，未以「0」作為實際數值呈現。
+</div>
+
+</div><!-- /container -->
+
+<script>
+function drawBarChart(id,labels,data,barColor,accentColor){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=46,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.20||0.5;
+  var lo=(min<0)?(min-pad):Math.max(0,min-pad);
+  var hi=max+pad,range=hi-lo;
+  var n=data.length;
+  var barW=chartW/n*0.58,gap=chartW/n;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0){ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();}
+  for(var i=0;i<n;i++){
+    var x=PL+i*gap+(gap-barW)/2;
+    var vy=PT+chartH-((data[i]-lo)/range*chartH);
+    var top=Math.min(vy,zeroY),bh=Math.abs(vy-zeroY);
+    if(bh<1.5)bh=1.5;
+    var isLast=(i===n-1);
+    var color=isLast?accentColor:barColor;
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,top,barW,bh,3);ctx.fillStyle=color;ctx.fill();}
+    else{ctx.fillStyle=color;ctx.fillRect(x,top,barW,bh);}
+    ctx.fillStyle=isLast?accentColor:'#475569';
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(2),x+barW/2,top-4);
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    var lx=PL+i*gap+gap/2,ly=PT+chartH+14;
+    if(labels[i].length>4){ctx.save();ctx.translate(lx,ly);ctx.rotate(-Math.PI/6);ctx.fillText(labels[i],0,0);ctx.restore();}
+    else ctx.fillText(labels[i],lx,ly);
+  }
+}
+function drawLineChart(id,labels,data,color){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=46,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.20||1;
+  var lo=min-pad,hi=max+pad,range=hi-lo;
+  var n=data.length;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(1),PL-4,gy+3);
+  }
+  var pts=[];
+  for(var i=0;i<n;i++)pts.push({x:PL+i*chartW/(n-1),y:PT+chartH-(data[i]-lo)/range*chartH});
+  ctx.beginPath();ctx.moveTo(pts[0].x,PT+chartH);
+  for(var i=0;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.lineTo(pts[n-1].x,PT+chartH);ctx.closePath();
+  var grad=ctx.createLinearGradient(0,PT,0,PT+chartH);
+  var hex=color.slice(1);
+  var r=parseInt(hex.slice(0,2),16),g2=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  grad.addColorStop(0,'rgba('+r+','+g2+','+b+',0.25)');
+  grad.addColorStop(1,'rgba('+r+','+g2+','+b+',0.02)');
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+  for(var i=1;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+  for(var i=0;i<n;i++){
+    var isLast=(i===n-1);
+    ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,isLast?5:3,0,Math.PI*2);
+    ctx.fillStyle=isLast?color:'#fff';ctx.fill();
+    ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=isLast?color:'#475569';ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(1),pts[i].x,pts[i].y+(isLast?-10:-8));
+  }
+  for(var i=0;i<n;i++){
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    ctx.fillText(labels[i],pts[i].x,PT+chartH+14);
+  }
+}
+function drawHBarChart(id,labels,data,colors){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var max=Math.max.apply(null,data)*1.32;
+  var n=labels.length;
+  var rowH=H/(n+0.6);
+  var PL=150,PR=56;
+  for(var i=0;i<n;i++){
+    var y=rowH*(i+0.3)+rowH*0.12;
+    var bh=rowH*0.66;
+    ctx.fillStyle='#f1f5f9';ctx.fillRect(PL,y,(W-PL-PR),bh);
+    var bw=(data[i]/max)*(W-PL-PR);
+    var col=colors?colors[i]:'#b45309';
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(PL,y,bw,bh,4);ctx.fillStyle=col;ctx.fill();}
+    else{ctx.fillStyle=col;ctx.fillRect(PL,y,bw,bh);}
+    ctx.fillStyle='#1e293b';ctx.font='11.5px Arial';ctx.textAlign='right';
+    ctx.fillText(labels[i],PL-8,y+bh/2+4);
+    ctx.fillStyle='#1e293b';ctx.font='bold 12px Arial';ctx.textAlign='left';
+    ctx.fillText(data[i]+'x',PL+bw+6,y+bh/2+4);
+  }
+}
+window.addEventListener('DOMContentLoaded',function(){
+  drawBarChart('epsChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [3.28,2.64,3.60,3.48,6.49,5.86,6.87,9.28],
+    '#fcd34d','#b45309');
+  drawLineChart('revChart',
+    ['3月','4月','5月','6月','7月','8月'],
+    [73.85,72.90,87.73,82.55,100.15,103.84],
+    '#b45309');
+  drawLineChart('gmChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [32.29,25.94,31.30,29.56,35.56,33.66,34.81,34.65],
+    '#d97706');
+  drawHBarChart('peChart',
+    ['金像電 TTM','金像電 FY2026E','金像電 FY2027E','PCB 同業','台股大盤'],
+    [42.6,30.2,17.0,25,20],
+    ['#dc2626','#16a34a','#16a34a','#b45309','#2563eb']);
+});
+</script>
+</body>
+</html>
