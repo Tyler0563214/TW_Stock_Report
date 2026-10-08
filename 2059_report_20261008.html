@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>川湖(2059) 深度研究報告 首次 | 2026-10-08</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+    --accent:#0f766e;--accent2:#14b8a6;--accent3:#5eead4;
+    --green:#16a34a;--red:#dc2626;--yellow:#d97706;--blue:#2563eb;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.6}
+  a{color:var(--accent)}
+  time,.code{font-variant-numeric:tabular-nums}
+
+  /* COVER */
+  .cover{background:linear-gradient(135deg,#042f2e 0%,#134e4a 32%,#0f766e 68%,#2dd4bf 100%);color:#fff;padding:56px 40px 48px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-70px;right:-50px;width:310px;height:310px;border-radius:50%;background:rgba(255,255,255,0.07)}
+  .cover::after{content:'';position:absolute;bottom:-90px;left:-50px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.045)}
+  .cover-ticker{font-size:13px;opacity:.72;margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+  .cover-name{font-size:36px;font-weight:800;line-height:1.1;margin-bottom:6px}
+  .cover-subtitle{font-size:15px;opacity:.85;margin-bottom:24px}
+  .cover-price-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:10px}
+  .cover-price{font-size:54px;font-weight:900;line-height:1}
+  .cover-chg{font-size:21px;padding:4px 14px;border-radius:8px;background:rgba(220,38,38,0.4);border:1px solid rgba(252,165,165,0.65)}
+  .limit-badge{display:inline-block;font-size:12.5px;background:rgba(220,38,38,0.35);border:1px solid rgba(252,165,165,0.6);border-radius:8px;padding:6px 13px;margin-bottom:22px}
+  .cover-meta{display:flex;gap:24px;flex-wrap:wrap}
+  .cover-meta-item{font-size:13px;opacity:.8}
+  .cover-meta-item strong{opacity:1;font-weight:700}
+  .risk-badge{position:absolute;top:32px;right:40px;background:rgba(217,119,6,0.32);border:1.5px solid rgba(251,191,36,0.65);border-radius:12px;padding:10px 18px;text-align:center}
+  .risk-badge .num{font-size:28px;font-weight:900;color:#fde68a}
+  .risk-badge .lbl{font-size:11px;opacity:.88;letter-spacing:1px}
+  .report-no-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(94,234,212,0.25);border:1px solid rgba(94,234,212,0.5);border-radius:8px;padding:3px 12px;font-size:12px;margin-bottom:12px}
+
+  /* LAYOUT */
+  .container{max-width:960px;margin:0 auto;padding:0 20px 60px}
+  section{margin-top:32px}
+  .section-title{font-size:18px;font-weight:800;color:var(--accent);border-left:4px solid var(--accent);padding-left:12px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .section-num{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+  .card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07),0 0 0 1px var(--border)}
+  .card + .card{margin-top:12px}
+
+  /* VERDICT */
+  .verdict-box{background:linear-gradient(135deg,#f0fdfa,#ccfbf1);border:2px solid #0f766e;border-radius:14px;padding:20px 24px;margin-bottom:14px}
+  .verdict-box h4{font-size:15px;font-weight:800;color:#134e4a;margin-bottom:10px}
+  .verdict-box p{font-size:13.5px;line-height:1.75;color:#134e4a}
+  .split-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  @media(max-width:640px){.split-grid{grid-template-columns:1fr}}
+  .split-panel{border-radius:10px;padding:14px}
+  .split-panel.bad{background:#fee2e2;border:1px solid #fca5a5}
+  .split-panel.good{background:#dcfce7;border:1px solid #86efac}
+  .split-panel h5{font-size:13px;font-weight:800;margin-bottom:8px}
+  .split-panel.bad h5{color:#7f1d1d}
+  .split-panel.good h5{color:#14532d}
+  .split-panel ul{list-style:none;padding:0;font-size:12.5px;line-height:1.6}
+  .split-panel li{padding:3px 0;display:flex;gap:6px}
+  .split-panel.bad li{color:#7f1d1d}
+  .split-panel.good li{color:#14532d}
+
+  /* CONCLUSION */
+  .conclusion-card{background:linear-gradient(135deg,#042f2e 0%,#115e59 55%,#14b8a6 100%);color:#fff;border-radius:16px;padding:28px 32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+  .conc-item .label{font-size:11px;opacity:.68;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+  .conc-item .val{font-size:21px;font-weight:800;line-height:1.15}
+  .conc-item .sub{font-size:12px;opacity:.78;margin-top:4px}
+  @media(max-width:640px){.conclusion-card{grid-template-columns:1fr 1fr}}
+
+  /* KPI */
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+  .kpi-card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border);text-align:center}
+  .kpi-label{font-size:11px;color:var(--muted);margin-bottom:4px;letter-spacing:.5px}
+  .kpi-val{font-size:20px;font-weight:800;color:var(--accent)}
+  .kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+  /* CHARTS */
+  .charts-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  @media(max-width:760px){.charts-grid{grid-template-columns:1fr}}
+  .chart-box{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border)}
+  .chart-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px}
+  .chart-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center}
+
+  /* TABLE */
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{background:var(--bg);padding:8px 12px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+  .tag-green{background:#dcfce7;color:#16a34a}
+  .tag-red{background:#fee2e2;color:#dc2626}
+  .tag-yellow{background:#fef9c3;color:#d97706}
+  .tag-blue{background:#dbeafe;color:#2563eb}
+  .tag-teal{background:#ccfbf1;color:#0f766e}
+
+  /* ANALYST */
+  .analyst-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.analyst-grid{grid-template-columns:1fr}}
+  .analyst-card{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border)}
+  .analyst-card h4{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .analyst-card ul{list-style:none;padding:0}
+  .analyst-card li{font-size:13px;padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px}
+  .analyst-card li:last-child{border-bottom:none}
+  .bull-icon{color:#16a34a;font-weight:900;flex-shrink:0}
+  .bear-icon{color:#dc2626;font-weight:900;flex-shrink:0}
+
+  /* SCORE */
+  .score-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+  .score-label{width:90px;font-size:13px;flex-shrink:0}
+  .score-bar-bg{flex:1;height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+  .score-bar-fill{height:100%;border-radius:5px}
+  .score-num{width:32px;font-size:13px;font-weight:700;text-align:right;flex-shrink:0}
+
+  /* STRATEGY */
+  .strategy-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:640px){.strategy-grid{grid-template-columns:1fr}}
+  .strat-card{border-radius:14px;padding:20px;color:#fff}
+  .strat-card.attack{background:linear-gradient(135deg,#dc2626,#ef4444)}
+  .strat-card.balance{background:linear-gradient(135deg,#0f766e,#2dd4bf)}
+  .strat-card.defend{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
+  .strat-card h3{font-size:15px;font-weight:800;margin-bottom:12px}
+  .strat-item{font-size:13px;margin:6px 0;display:flex;gap:8px}
+  .strat-item span:first-child{opacity:.75;flex-shrink:0}
+
+  .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.tech-grid{grid-template-columns:1fr}}
+
+  /* ALERT */
+  .alert{border-radius:10px;padding:14px 18px;margin-bottom:12px;font-size:13px;display:flex;gap:12px;align-items:flex-start}
+  .alert-red{background:#fee2e2;border-left:4px solid #dc2626;color:#7f1d1d}
+  .alert-green{background:#dcfce7;border-left:4px solid #16a34a;color:#14532d}
+  .alert-yellow{background:#fef9c3;border-left:4px solid #d97706;color:#713f12}
+  .alert-teal{background:#ccfbf1;border-left:4px solid #0f766e;color:#134e4a}
+
+  .disclaimer{background:#fef9c3;border:1px solid #d97706;border-radius:10px;padding:16px 20px;font-size:12px;color:#713f12;margin-top:32px}
+
+  .glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:540px){.glossary-grid{grid-template-columns:1fr}}
+  .glossary-item{background:var(--card);border-radius:10px;padding:12px 14px;border:1px solid var(--border)}
+  .glossary-term{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:4px}
+  .glossary-def{font-size:12px;color:var(--muted);line-height:1.5}
+
+  .q-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+  @media(max-width:700px){.q-grid{grid-template-columns:1fr}}
+  .q-tile{background:#f0fdfa;border:1px solid #99f6e4;border-radius:10px;padding:13px;text-align:center}
+  .q-tile.hl{background:#ccfbf1;border:2px solid #0f766e}
+  .q-tile .qt-val{font-size:19px;font-weight:800;color:#0f766e}
+  .q-tile .qt-name{font-size:12px;font-weight:700;color:var(--text);margin-top:3px}
+  .q-tile .qt-desc{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
+</style>
+</head>
+<body>
+
+<!-- ===== 01 COVER ===== -->
+<div class="cover">
+  <div class="risk-badge">
+    <div class="num">5.5</div>
+    <div class="lbl">風險指數</div>
+  </div>
+  <div class="report-no-badge">★ 首次深度報告</div>
+  <div class="cover-ticker">TWSE: 2059</div>
+  <div class="cover-name">川湖科技</div>
+  <div class="cover-subtitle">King Slide Works｜亞洲第一大伺服器導軌製造商・導軌占營收 97.87%・毛利率 87.42% 全市場罕見</div>
+  <div class="cover-price-row">
+    <div class="cover-price">NT$10,615</div>
+    <div class="cover-chg">▼ 1,175元 (-9.97%)</div>
+  </div>
+  <div class="limit-badge">🔴 <strong>連續第 2 天跌停</strong>　10/07 一字跌停 11,790 → 10/08 再跌停 10,615｜兩日累計 <strong>-19.0%</strong>（昨收 11,790）</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">📅 報告日期 <strong>2026-10-08</strong></div>
+    <div class="cover-meta-item">52W高低 <strong>15,085 / 2,875</strong></div>
+    <div class="cover-meta-item">距52W高 <strong style="color:#fecaca">-29.6%</strong></div>
+    <div class="cover-meta-item">市值 <strong>約10,115億元</strong></div>
+    <div class="cover-meta-item">TTM P/E <strong style="color:#fecaca">58.5x</strong></div>
+    <div class="cover-meta-item">美系外資目標 <strong style="color:#5eead4">14,888–15,000元</strong></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===== 02 核心結論 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">2</span> 核心結論與投資建議</div>
+
+  <div class="verdict-box">
+    <h4>🎯 本報告核心判斷：市場殺的是「單月月增率」，但同一份公告裡 Q3 整季營收創下歷史新高</h4>
+    <p>川湖 10/06 公告 9 月營收 44.64 億元、<strong>月減 30.96%</strong>，終止連續六個月改寫單月新高的紀錄，市場次日（10/07）開盤即一字跌停，逾 900 張排隊等賣；今日（10/08）再度鎖跌停，兩日累計下跌 <strong>19.0%</strong>。<br><br>
+    <strong>但如果把同一份公告的其他數字一起看，結論會完全不同——</strong></p>
+    <div class="split-grid">
+      <div class="split-panel bad">
+        <h5>😱 市場看到的（恐慌面）</h5>
+        <ul>
+          <li><span>▼</span>9月營收 44.64億，<strong>月減 30.96%</strong></li>
+          <li><span>▼</span>終止<strong>連6個月</strong>創單月新高</li>
+          <li><span>▼</span>自 8月高點 64.66億掉了 20億</li>
+          <li><span>▼</span>10/06 搶進一張，一天賠 131 萬</li>
+        </ul>
+      </div>
+      <div class="split-panel good">
+        <h5>📊 同一份公告的另一半（事實面）</h5>
+        <ul>
+          <li><span>▲</span>9月 YoY 仍 <strong>+196.22%</strong>，創歷年同期新高</li>
+          <li><span>▲</span>Q3 營收 <strong>173.38億</strong>，季增約 <strong>+60%</strong></li>
+          <li><span>▲</span>Q3 年增近 <strong>3 倍</strong>，<strong>續創單季歷史新高</strong></li>
+          <li><span>▲</span>前9月累計 <strong>336.18億</strong>，年增 <strong>+167.8%</strong></li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:14px"><strong>公司的解釋也很具體：</strong>7、8 兩月受大型雲端服務商（CSP）與 AI 新創業者<strong>集中拉貨的急單效應</strong>，單月營收衝上約 65 億元；9 月急單退潮後，營收回到約 44 億元的<strong>正常水準</strong>。<br><br>
+    換句話說——<strong>不是需求消失，是前兩個月提前出貨了。</strong>兩家美系外資在股價跌停後仍維持正向看待，目標價分別為 <strong>14,888 元與 15,000 元</strong>。</p>
+  </div>
+
+  <div class="alert alert-yellow">
+    <span style="font-size:18px">⚠️</span>
+    <div><strong>但本報告不會因此叫你現在進場，理由有三：</strong>① <strong>跌停中無法確認賣壓是否出盡</strong>——今日仍鎖死，排隊賣單未消化完；② 股價已跌破<strong>全部均線與布林下軌</strong>（下軌 11,505.92，現價低 7.7%），技術結構已破壞；③ TTM P/E 仍達 <strong>58.5x</strong>、P/B 約 <strong>30x</strong>，即使跌了 19% 也稱不上便宜。<strong>正確做法是等跌停打開、確認承接力道後再評估。</strong></div>
+  </div>
+
+  <div class="conclusion-card">
+    <div class="conc-item">
+      <div class="label">投資評級</div>
+      <div class="val">觀望待止跌</div>
+      <div class="sub">基本面未壞・但不接刀</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">12個月目標價</div>
+      <div class="val">14,888–15,000元</div>
+      <div class="sub">兩家美系外資（+40%～+41%）</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">最大風險</div>
+      <div class="val">連續跌停未止</div>
+      <div class="sub">賣壓尚未出盡・技術結構破壞</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">核心矛盾</div>
+      <div class="val">單月 vs 單季</div>
+      <div class="sub">月減31% ↔ 季增60%創新高</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">觀察進場區</div>
+      <div class="val">11,506–11,534元</div>
+      <div class="sub">布林下軌／MA60 能否收復</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">關鍵檢核</div>
+      <div class="val">Q3'26 財報毛利率</div>
+      <div class="sub">營收173.38億已知・看獲利品質</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 KPI ===== -->
+<section>
+  <div class="section-title"><span class="section-num">3</span> 關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">現價（跌停）</div>
+      <div class="kpi-val" style="color:#dc2626">10,615元</div>
+      <div class="kpi-sub">-9.97%｜連2日跌停共-19.0%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q2'26 EPS</div>
+      <div class="kpi-val">74.38元</div>
+      <div class="kpi-sub">QoQ <strong style="color:#16a34a">+103.3%</strong>｜史上最高</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q2'26 毛利率</div>
+      <div class="kpi-val" style="color:#16a34a">87.42%</div>
+      <div class="kpi-sub"><strong>全市場罕見</strong>（OPM 82.08%）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q3'26 營收</div>
+      <div class="kpi-val" style="color:#16a34a">173.38億</div>
+      <div class="kpi-sub">季增 <strong>+60%</strong>｜創單季歷史新高</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">9月月營收</div>
+      <div class="kpi-val" style="color:#dc2626">44.64億</div>
+      <div class="kpi-sub">MoM <strong style="color:#dc2626">-30.96%</strong>｜YoY +196.2%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">前9月累計營收</div>
+      <div class="kpi-val">336.18億</div>
+      <div class="kpi-sub">YoY <strong style="color:#16a34a">+167.8%</strong></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">導軌占營收</div>
+      <div class="kpi-val">97.87%</div>
+      <div class="kpi-sub">極度單一產品（雙面刃）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TTM EPS</div>
+      <div class="kpi-val">181.39元</div>
+      <div class="kpi-sub">TTM P/E <strong style="color:#dc2626">58.5x</strong>｜P/B 約30x</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 04 圖表 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">4</span> 財務趨勢圖</div>
+  <div class="charts-grid">
+    <div class="chart-box">
+      <div class="chart-title">EPS 季度趨勢（元）</div>
+      <canvas id="epsChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ Q2'26: 74.38元｜Q2'25 的6.45元為業外異常</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">月營收走勢（億元，實際月份）</div>
+      <canvas id="revChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">7–8月為急單高峰，9月回落至正常水準</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">毛利率趨勢（%）</div>
+      <canvas id="gmChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ Q2'26 87.42%，長期維持 70% 以上</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05 公司概覽 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">5</span> 公司概覽</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:var(--accent)">🏢 公司基本資訊</h4>
+        <table>
+          <tr><td style="color:var(--muted);font-size:13px">公司名稱</td><td style="font-weight:700;font-size:13px">川湖科技股份有限公司</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">英文名稱</td><td style="font-size:13px">King Slide Works</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">成立／總部</td><td style="font-size:13px">1986年／高雄</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">市場地位</td><td style="font-size:13px"><strong style="color:var(--accent)">亞洲第一大伺服器導軌製造商</strong></td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">產品集中度</td><td style="font-size:13px">導軌占總營收 <strong>97.87%</strong></td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">股數／市值</td><td style="font-size:13px">約 9,530萬股／約 10,115億元</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">FY2025 EPS</td><td style="font-size:13px">103.23元</td></tr>
+        </table>
+      </div>
+      <div>
+        <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:var(--accent)">🏰 護城河與風險並存</h4>
+        <ul style="list-style:none;padding:0">
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">✓</span><strong>毛利率 87.42%：</strong>這個數字在製造業幾乎不存在——代表<strong>極強的定價權與不可替代性</strong></li>
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">✓</span><strong>營業利益率 82.08%：</strong>每 100 元營收有 82 元是本業利潤，費用結構極輕</li>
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">✓</span><strong>AI 機櫃必需品：</strong>伺服器上架、維修都要靠導軌；AI 機櫃愈重、密度愈高，導軌規格要求愈嚴</li>
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">✓</span><strong>長期研發累積：</strong>1986 年起深耕精密滑軌，專利與模具門檻高</li>
+          <li style="font-size:13px;padding:6px 0;display:flex;gap:8px"><span style="color:#dc2626;font-weight:700">✗</span><strong>但產品極度單一：</strong>導軌占 97.87%，<strong>完全沒有其他業務可緩衝</strong>——這正是急單退潮時股價反應如此劇烈的結構性原因</li>
+        </ul>
+      </div>
+    </div>
+
+    <h4 style="font-size:14px;font-weight:800;margin:18px 0 0;color:var(--accent)">📅 2026 各季營收走勢（實際季度）</h4>
+    <div class="q-grid">
+      <div class="q-tile"><div class="qt-val">54.50億</div><div class="qt-name">Q1'26</div><div class="qt-desc">EPS 36.58元<br>公告54.49億，換算吻合</div></div>
+      <div class="q-tile"><div class="qt-val">108.30億</div><div class="qt-name">Q2'26</div><div class="qt-desc">EPS 74.38元<br>公告108.3億，換算吻合</div></div>
+      <div class="q-tile hl"><div class="qt-val">173.38億</div><div class="qt-name">Q3'26 ★創新高</div><div class="qt-desc"><strong>季增 +60%、年增近3倍</strong><br>EPS 待10–11月公布</div></div>
+    </div>
+
+    <div class="alert alert-teal" style="margin-top:16px">
+      <span style="font-size:18px">🔍</span>
+      <div><strong>把急單效應拆開來看，會更清楚發生了什麼事</strong><br>
+      實際 7 月營收 64.07 億、8 月 64.66 億——這兩個月是 CSP 與 AI 新創<strong>集中拉貨的急單高峰</strong>。9 月回落至 44.64 億，公司明確定義這是「<strong>正常水準</strong>」。<br><br>
+      <strong>但請注意對照基期：</strong>實際 4 月營收還只有 25.96 億、5 月 37.91 億、6 月 44.43 億。也就是說，<strong>9 月所謂「回到正常」的 44.64 億，其實與 6 月持平，而且比 4 月高出 72%</strong>。<br><br>
+      <span style="color:#14532d"><strong>真正的問題不是「9 月掉了多少」，而是「44 億這個水準能不能維持住」。</strong>如果能，Q4 營收仍有 130 億以上的量級，全年依然是爆發性的一年；如果不能，才是真的需求轉弱。<strong>這個答案要等 10 月營收（11 月初公布）才會揭曉。</strong></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 06 基本面 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">6</span> 基本面分析</div>
+  <div class="analyst-grid">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">📊 季度財報趨勢</h4>
+      <table>
+        <thead><tr><th>季度</th><th>EPS(元)</th><th>毛利率</th><th>OPM</th></tr></thead>
+        <tbody>
+          <tr><td>Q3'24</td><td>12.12</td><td>70.54%</td><td>62.57%</td></tr>
+          <tr><td>Q4'24</td><td>22.63</td><td>71.81%</td><td>62.69%</td></tr>
+          <tr><td>Q1'25</td><td>26.35</td><td>76.05%</td><td>68.87%</td></tr>
+          <tr style="background:#fef9c3"><td>Q2'25 <span style="font-size:10px">(業外異常)</span></td><td style="color:#d97706">6.45</td><td>77.50%</td><td>70.14%</td></tr>
+          <tr><td>Q3'25</td><td>33.55</td><td>74.58%</td><td>68.10%</td></tr>
+          <tr><td>Q4'25</td><td>36.88</td><td>76.10%</td><td>69.19%</td></tr>
+          <tr><td>Q1'26</td><td>36.58</td><td>77.74%</td><td>67.06%</td></tr>
+          <tr style="background:#ccfbf1"><td><strong>Q2'26 ★</strong></td><td><strong style="color:var(--accent)">74.38</strong></td><td><strong style="color:#16a34a">87.42%</strong></td><td><strong style="color:#16a34a">82.08%</strong></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">
+        H1'26 EPS <strong>110.96元</strong>（H1'25 僅 32.80元，YoY <strong>+238.3%</strong>）｜TTM 181.39元｜FY2025 103.23元<br>
+        ℹ️ <strong>Q2'25 的 6.45 元請勿誤讀：</strong>當季毛利率 77.50%、OPM 70.14% 均屬正常，EPS 低落源自業外因素，屬<strong>一次性異常</strong>，不宜作為同期比較基準。
+      </div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">💰 月營收（實際月份）</h4>
+      <table>
+        <thead><tr><th>月份</th><th>月收(億)</th><th>YoY</th><th>MoM</th></tr></thead>
+        <tbody>
+          <tr><td>4月</td><td>25.96</td><td style="color:#16a34a">+79.1%</td><td>+35.3%</td></tr>
+          <tr><td>5月</td><td>37.91</td><td style="color:#16a34a">+172.1%</td><td>+46.1%</td></tr>
+          <tr><td>6月</td><td>44.43</td><td style="color:#16a34a">+220.5%</td><td>+17.2%</td></tr>
+          <tr style="background:#f0fdfa"><td>7月 <span style="font-size:10px">急單</span></td><td><strong>64.07</strong></td><td style="color:#16a34a">+355.5%</td><td>+44.2%</td></tr>
+          <tr style="background:#f0fdfa"><td>8月 <span style="font-size:10px">急單</span></td><td><strong>64.66</strong></td><td style="color:#16a34a">+344.4%</td><td>+0.9%</td></tr>
+          <tr style="background:#fee2e2"><td><strong>9月★</strong></td><td><strong style="color:#dc2626">44.64</strong></td><td style="color:#16a34a">+196.2%</td><td style="color:#dc2626"><strong>-31.0%</strong></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">
+        前9月累計 <strong>336.18億元</strong>（YoY +167.8%）<br>
+        ⚖️ <strong>關鍵對照：</strong>9 月的 44.64 億<strong>與 6 月的 44.43 億幾乎相同</strong>，且比 4 月的 25.96 億高出 72%。市場把它當成崩跌，但它其實只是回到<strong>急單發生前的軌道上</strong>——而那條軌道本身還在往上走。
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">📐 估值分析｜跌了 19%，但仍不便宜</h4>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;text-align:center">
+      <div style="padding:12px;background:#fee2e2;border-radius:10px;border:1.5px solid #f87171">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">TTM P/E</div>
+        <div style="font-size:20px;font-weight:800;color:#dc2626">58.5x</div>
+        <div style="font-size:11px;color:var(--muted)">TTM EPS 181.39元</div>
+      </div>
+      <div style="padding:12px;background:#fef9c3;border-radius:10px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">FY26E P/E（FactSet）</div>
+        <div style="font-size:20px;font-weight:800;color:#d97706">43.2x</div>
+        <div style="font-size:11px;color:var(--muted)">EPS 245.49元（調查較早）</div>
+      </div>
+      <div style="padding:12px;background:#ccfbf1;border-radius:10px;border:1.5px solid #5eead4">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">FY26E P/E（本報告推算）</div>
+        <div style="font-size:20px;font-weight:800;color:var(--accent)">約36x</div>
+        <div style="font-size:11px;color:var(--muted)">EPS 約296元（推算值）</div>
+      </div>
+      <div style="padding:12px;background:#dcfce7;border-radius:10px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">FY27E P/E</div>
+        <div style="font-size:20px;font-weight:800;color:#16a34a">19–32x</div>
+        <div style="font-size:11px;color:var(--muted)">EPS 331–559元（FactSet區間）</div>
+      </div>
+    </div>
+
+    <div class="alert alert-teal" style="margin-top:12px">
+      <span style="font-size:18px">🧮</span>
+      <div><strong>為什麼本報告認為 FactSet 的 245.49 元可能已經低估？</strong><br>
+      FactSet 該份調查距今約兩個月（約 2026 年 8 月初），而<strong>當時 Q3 營收尚未公布</strong>。現在我們已經知道 Q3 營收是 <strong>173.38 億元</strong>（季增 60%）。<br><br>
+      <strong>推算方法：</strong>Q2'26 營收 108.30 億、EPS 74.38 元，以約 9,530 萬股計，淨利約 70.9 億元，<strong>淨利率約 65.4%</strong>。若 Q3 淨利率維持同水準，Q3 EPS 約 <strong>119 元</strong>；保守取淨利率 55–60%，Q3 EPS 約 <strong>100–109 元</strong>。<br>
+      如此 Q1–Q3 累計已達 <strong>211–230 元</strong>，再加上 Q4（假設營收回到約 135 億、淨利率 60%，EPS 約 85 元），<strong>FY2026 全年 EPS 推估約 296 元</strong>，對應本益比約 <strong>36 倍</strong>。<br><br>
+      <span style="color:#7f1d1d">⚠️ <strong>但這是推算，不是事實。</strong>Q2 的 87.42% 毛利率本身就是歷史極值（長期區間 70–78%），急單是否帶來更好的售價組合、Q3 能否維持，<strong>必須等 10–11 月財報才知道</strong>。若毛利率回落至 76% 的常態水準，推算值會明顯下修。</span></div>
+    </div>
+
+    <div class="alert alert-red" style="margin-top:12px">
+      <span style="font-size:18px">💰</span>
+      <div><strong>無論用哪個數字，這檔都不便宜。</strong>TTM P/E <strong>58.5x</strong>、<strong>股價淨值比約 30 倍</strong>——即使連跌兩根停板、股價較 52 週高點回落 29.6%，估值仍遠高於一般製造業。<br><br>
+      而目標價的分歧也極大：<strong>FactSet 中位目標價 9,970 元，已低於現價 10,615 元</strong>（該調查同樣是兩個月前）；但兩家美系外資在跌停當日仍維持 <strong>14,888 元與 15,000 元</strong>，另有看高至 17,500 元。<strong>這種分歧本身就是警訊——它代表市場對「急單退潮後的常態水準」沒有共識。</strong></div>
+    </div>
+
+    <div style="margin-top:10px;font-size:12px;color:var(--muted)">📌 FactSet FY2026E EPS 245.49 元（最高 378.15／最低 236.01）、目標價 9,970 元，及 FY2027E 區間 331.24–559.06 元、FY2028E 469.25–576.61 元，調查時點約為 2026 年 8 月初，<strong>均非公司財測</strong>。本報告 FY2026E 約 296 元為<strong>自行推算值</strong>，方法已於上方完整揭露。TTM EPS 181.39 元係 Q3'25～Q2'26 四季加總（Fugle 回報 TTM P/E 74.1x，差異來自 TTM 口徑）。市值約 10,115 億元係依昨收市值 11,235.5 億元回推股數約 9,530 萬股後按現價換算。</div>
+  </div>
+</section>
+
+<!-- ===== 07 籌碼面 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">7</span> 籌碼面分析</div>
+  <div class="alert alert-yellow">
+    <span style="font-size:18px">🔍</span>
+    <div><strong>資料揭露說明：</strong>本次擷取時公開資料庫（FinMind，2026/10/07）回傳之三大法人買賣超與融資融券欄位<strong>均為空值（顯示 0）</strong>，屬資料庫當次未收錄，<strong>並非「法人持平」或「餘額為零」</strong>。本節改以量價結構與公開法人評等雙軌判讀。</div>
+  </div>
+  <div class="analyst-grid">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">📊 量價結構（劇烈反轉）</h4>
+      <table>
+        <thead><tr><th>日期</th><th>收盤／量</th><th>判讀</th></tr></thead>
+        <tbody>
+          <tr style="background:#dcfce7"><td style="font-size:13px"><strong>10/05</strong></td><td style="font-weight:700;color:#16a34a">13,355｜56.0萬股</td><td><span class="tag tag-green">+9.96% 近漲停</span></td></tr>
+          <tr><td style="font-size:13px">10/06</td><td style="font-weight:700">13,100｜74.9萬股</td><td style="font-size:12px;color:#d97706">高13,500後收黑（公告9月營收）</td></tr>
+          <tr style="background:#fee2e2"><td style="font-size:13px"><strong>10/07</strong></td><td style="font-weight:700;color:#dc2626">11,790｜41.4萬股</td><td><span class="tag tag-red">一字跌停・逾900張排隊賣</span></td></tr>
+          <tr style="background:#fee2e2"><td style="font-size:13px"><strong>10/08 盤中</strong></td><td style="font-weight:700;color:#dc2626">10,615（鎖跌停）</td><td><span class="tag tag-red">連2日跌停</span></td></tr>
+          <tr><td style="font-size:13px">5日均量</td><td>51.3萬股</td><td style="font-size:12px;color:var(--muted)">10日均量 45.8萬股</td></tr>
+          <tr><td style="font-size:13px">9/08 前次重挫</td><td style="font-weight:700">12,520｜<strong>128.5萬股</strong></td><td style="font-size:12px;color:#dc2626">高14,200殺至低12,515</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px;font-size:12px;background:#fee2e2;padding:10px;border-radius:8px;color:#7f1d1d">
+        <strong>三天之內從近漲停到連兩根跌停。</strong>10/05 才以 +9.96% 近漲停收 13,355 元，10/06 公告 9 月營收後收黑，10/07 開盤即一字鎖死 11,790 元，<strong>逾 900 張排隊等賣、無量下跌</strong>；今日再度鎖跌停 10,615 元。<br><br>
+        <strong>一字跌停的量能（41.4 萬股）低於均量，代表賣單根本成交不了。</strong>這是最危險的籌碼狀態——<strong>在跌停打開前，無法判斷賣壓究竟還有多少</strong>。歷史上 9/08 也曾單日自 14,200 殺至 12,515（量 128.5 萬股），顯示這檔在高檔的下殺可以非常猛烈。
+      </div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">🌍 法人評等（分歧極大）</h4>
+      <table>
+        <thead><tr><th>來源</th><th>目標價</th><th>vs 現價10,615</th></tr></thead>
+        <tbody>
+          <tr><td style="font-size:13px">市場最高估</td><td style="font-weight:700;color:#16a34a">17,500元</td><td><span class="tag tag-green">+64.9%</span></td></tr>
+          <tr style="background:#dcfce7"><td style="font-size:13px"><strong>美系外資 A</strong></td><td style="font-weight:700;color:#16a34a">15,000元</td><td><span class="tag tag-green">+41.3%</span></td></tr>
+          <tr style="background:#dcfce7"><td style="font-size:13px"><strong>美系外資 B</strong></td><td style="font-weight:700;color:#16a34a">14,888元</td><td><span class="tag tag-green">+40.3%</span></td></tr>
+          <tr style="background:#fee2e2"><td style="font-size:13px">FactSet 中位（8月初）</td><td style="font-weight:700;color:#dc2626">9,970元</td><td><span class="tag tag-red">低於現價 -6.1%</span></td></tr>
+          <tr><td style="font-size:13px">FY2026E EPS</td><td style="font-weight:700">245.49元</td><td style="font-size:12px;color:var(--muted)">最高378／最低236</td></tr>
+          <tr><td style="font-size:13px">FY2027E EPS</td><td style="font-weight:700;color:#16a34a">331–559元</td><td style="font-size:12px;color:#16a34a">區間極寬</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px;font-size:12px;background:#fef9c3;padding:10px;border-radius:8px;color:#713f12">
+        <strong>這是本系列觀察過法人分歧最大的一檔。</strong>最高目標價 17,500 元與 FactSet 中位 9,970 元<strong>相差 76%</strong>；FY2027E EPS 預估區間 331–559 元，<strong>高低差距達 69%</strong>。<br><br>
+        <strong>關鍵在於兩家美系外資的時點：</strong>它們是<strong>在 10/07 股價跌停當天</strong>仍維持正向、目標價 14,888／15,000 元——這是看過壞消息後的表態，參考價值高於兩個月前的 FactSet 數字。報導明言法人認為「<strong>只是過渡期</strong>」。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 08 技術面 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">8</span> 技術分析</div>
+
+  <div class="alert alert-red" style="margin-bottom:12px">
+    <span style="font-size:18px">🚨</span>
+    <div><strong>技術面評估：均線尚未轉空，但股價已急殺脫離通道——典型「利空重挫」而非「趨勢轉空」</strong><br>
+    均線本身仍呈 MA5(12,445) &gt; MA10(12,380) &gt; MA20(12,337) &gt; MA60(11,534) 的多頭排列，<strong>但股價 10,615 已跌破全部四條均線</strong>，且<strong>跌破布林下軌 11,505.92 達 -7.7%</strong>。MACD 死叉（OSC <strong>-42.68</strong>），RSI 43.99 轉弱但尚未進入超賣區（&lt;30）。<br><br>
+    <strong>這個組合的意義是：</strong>中期趨勢（均線排列）還沒壞，但短期發生了超出正常波動的急殺。<strong>股價跌出布林通道外，統計上代表極端狀態——可能醞釀技術性反彈，但也可能是趨勢反轉的起點，必須等跌停打開才能判斷。</strong></div>
+  </div>
+
+  <div class="tech-grid">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">📈 均線系統（排列仍多頭，股價已破底）</h4>
+      <table>
+        <tbody>
+          <tr><td style="font-size:13px;color:var(--muted)">現價</td><td style="font-weight:700;color:#dc2626;font-size:14px">10,615元</td><td><span class="tag tag-red">跌破全部均線</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA5</td><td style="font-weight:700">12,445.00元</td><td style="font-size:12px;color:#dc2626">上方 +17.2%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA10</td><td style="font-weight:700">12,380.50元</td><td style="font-size:12px;color:#dc2626">上方 +16.6%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA20</td><td style="font-weight:700">12,337.25元</td><td style="font-size:12px;color:#dc2626">上方 +16.2%</td></tr>
+          <tr style="background:#fef9c3"><td style="font-size:13px;color:var(--muted)">MA60</td><td style="font-weight:700;color:#d97706">11,533.67元</td><td><span class="tag tag-yellow">首要收復目標 +8.7%</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">排列</td><td colspan="2"><span class="tag tag-teal">均線仍多頭排列（尚未轉空）</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:#d97706">⚠️ 股價距最近均線 MA60 仍有 8.7% 距離，<strong>反彈需有力道才能收復</strong></div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">📊 動能指標（計算至 10/07）</h4>
+      <table>
+        <tbody>
+          <tr><td style="font-size:13px;color:var(--muted)">MACD</td><td style="font-weight:700;color:#dc2626">-0.30</td><td><span class="tag tag-red">死叉</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">訊號線</td><td>+42.38</td><td style="font-size:12px;color:#dc2626">快線急速下穿</td></tr>
+          <tr style="background:#fee2e2"><td style="font-size:13px;color:var(--muted)">OSC柱</td><td style="font-weight:700;color:#dc2626">-42.68</td><td style="font-size:12px;color:#dc2626">動能急轉直下</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">RSI</td><td style="font-weight:700;color:#d97706">43.99</td><td><span class="tag tag-yellow">偏弱・未超賣</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">布林上軌</td><td>13,168.58元</td><td style="font-size:12px;color:var(--muted)">遠離</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">布林中軌</td><td>12,337.25元</td><td style="font-size:12px;color:var(--muted)">= MA20</td></tr>
+          <tr style="background:#fee2e2"><td style="font-size:13px;color:var(--muted)">布林下軌</td><td style="font-weight:700;color:#dc2626">11,505.92元</td><td><span class="tag tag-red">已跌破 -7.7%</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">布林帶寬 13.5%（正常）｜<strong>RSI 43.99 尚未進入超賣區（&lt;30），意味技術性殺盤可能尚未完成</strong></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">🗺️ 關鍵價位表</h4>
+    <table>
+      <thead><tr><th>價位</th><th>意義</th><th>方向</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:700">17,500元</td><td>市場最高目標價（+64.9%）</td><td><span class="tag tag-green">樂觀目標</span></td></tr>
+        <tr><td style="font-weight:700">15,085元</td><td><strong>52週高點</strong></td><td><span class="tag tag-yellow">長線壓力</span></td></tr>
+        <tr><td style="font-weight:700">15,000／14,888元</td><td><strong>兩家美系外資目標價</strong>（跌停當日維持）</td><td><span class="tag tag-green">主要目標</span></td></tr>
+        <tr><td style="font-weight:700">13,355元</td><td>10/05 波段高點（起跌點）</td><td><span class="tag tag-yellow">解套壓力</span></td></tr>
+        <tr><td style="font-weight:700">12,337元</td><td>MA20／布林中軌</td><td><span class="tag tag-yellow">中期壓力</span></td></tr>
+        <tr><td style="font-weight:700">11,790元</td><td>10/07 跌停收盤</td><td><span class="tag tag-red">昨收</span></td></tr>
+        <tr style="background:#fef9c3"><td style="font-weight:700">11,506–11,534元</td><td><strong>布林下軌／MA60 — 首要收復目標</strong></td><td><span class="tag tag-yellow">多空關鍵</span></td></tr>
+        <tr style="background:#fee2e2"><td style="font-weight:700">10,615元</td><td><strong>現價（今日跌停）</strong></td><td><span class="tag tag-red">關鍵位</span></td></tr>
+        <tr><td style="font-weight:700">9,970元</td><td>FactSet 中位目標價（8月初）</td><td><span class="tag tag-red">估值參考下緣</span></td></tr>
+        <tr><td style="font-weight:700">9,554元</td><td>明日跌停參考價（10,615×0.9）</td><td><span class="tag tag-red">日內下限</span></td></tr>
+      </tbody>
+    </table>
+    <canvas id="peChart" width="560" height="180" style="width:100%;height:auto;margin-top:16px;"></canvas>
+    <div class="chart-note">P/E 比較：TTM 58.5x 仍高；FY2026E 以 FactSet 245.49 元計為 43.2x、以本報告推算 296 元計約 36x（大盤為產業推算值）</div>
+  </div>
+</section>
+
+<!-- ===== 09 融資融券 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">9</span> 融資融券</div>
+  <div class="card">
+    <div class="alert alert-yellow">
+      <span style="font-size:18px">ℹ️</span>
+      <div>公開資料庫（FinMind，2026/10/07）本次回傳之融資融券欄位為空值。本節<strong>不以「餘額為 0」作結論</strong>，改採間接訊號趨勢判讀，並說明官方查詢管道。</div>
+    </div>
+    <div style="margin-top:10px">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">📉 間接訊號趨勢判讀</h4>
+      <table>
+        <thead><tr><th>觀察角度</th><th>實際數據</th><th>對信用交易的推論</th></tr></thead>
+        <tbody>
+          <tr><td style="font-size:13px">股價門檻極高</td><td style="font-size:13px">一張（1,000股）約 1,062 萬元</td><td style="font-size:13px"><strong>散戶與融資參與度天生偏低</strong>，籌碼多在法人與大戶手中</td></tr>
+          <tr><td style="font-size:13px">10/06 追價者損失</td><td style="font-size:13px">13,100 → 11,790，<strong>一張一天賠 131 萬</strong></td><td style="font-size:13px">高價股的槓桿部位損失絕對金額巨大，<strong>斷頭壓力集中且猛烈</strong></td></tr>
+          <tr><td style="font-size:13px">一字跌停無量</td><td style="font-size:13px">10/07 僅 41.4 萬股（低於均量）</td><td style="font-size:13px">賣單無法成交，<strong>槓桿部位被迫持有至隔日</strong>，壓力遞延累積</td></tr>
+          <tr><td style="font-size:13px">連續第2天跌停</td><td style="font-size:13px">10/08 再鎖 10,615</td><td style="font-size:13px"><strong>若有融資部位，第二天跌停將觸發大量追繳</strong>，恐形成連鎖賣壓</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;font-size:13px;color:var(--muted)">
+        📝 <strong>綜合研判：</strong>川湖因股價極高（一張逾 1,000 萬元），散戶與融資的結構性參與度本就低於一般個股，這是相對有利的一點。<strong>但連續兩天跌停且無法成交，意味著任何槓桿部位都無法停損出場</strong>——壓力只會遞延到跌停打開那一刻才一次釋放。<strong>這正是本報告強烈建議「等跌停打開再評估」的核心理由。</strong><br>
+        🔎 <strong>精確查詢管道：</strong>台灣證券交易所官網「融資融券餘額」每日盤後公告，或 Goodinfo!、玩股網之個股信用交易頁面，輸入代號 2059 可查得逐日餘額與資券比。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 研究員辯論 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">10</span> 研究員辯論｜看多 vs 看空</div>
+
+  <div class="alert alert-teal" style="margin-bottom:12px">
+    <span style="font-size:18px">⚖️</span>
+    <div><strong>多空辯論量化權重：看多 58% vs 看空 42%</strong><br>
+    多方的核心是「<strong>市場誤讀了一個數字</strong>」——9 月月減 31% 是急單退潮的正常回歸，而同期 Q3 整季營收創下歷史新高、季增 60%。空方的核心是「<strong>時機與估值</strong>」——連續兩天跌停、賣壓未出盡、TTM P/E 仍 58.5x。<strong>多方贏在基本面論述，空方贏在當下不該進場。兩者其實不衝突。</strong></div>
+  </div>
+
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <h4><span style="background:#dcfce7;color:#16a34a;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:14px">🐂</span> 看多研究員（7點）</h4>
+      <ul>
+        <li><span class="bull-icon">▲</span><div><strong>Q3 整季營收創歷史新高（最被忽略的事實）：</strong>Q3'26 營收 <strong>173.38 億元</strong>，季增約 <strong>+60%</strong>、年增近 <strong>3 倍</strong>。市場只盯單月月減，卻忽略整季是歷史最強。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>9 月營收並非衰退：</strong>44.64 億元 YoY 仍 <strong>+196.22%</strong>，且為<strong>歷年同期新高</strong>；與實際 6 月的 44.43 億幾乎相同、比 4 月的 25.96 億高 72%——<strong>只是回到急單前的上升軌道</strong>。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>公司給出具體且可驗證的解釋：</strong>7、8 月為 CSP 與 AI 新創<strong>集中拉貨的急單</strong>，衝上約 65 億；9 月急單退潮回到約 44 億的正常水準。<strong>是提前出貨，不是需求消失。</strong></div></li>
+        <li><span class="bull-icon">▲</span><div><strong>獲利能力全市場罕見：</strong>Q2'26 毛利率 <strong>87.42%</strong>、營業利益率 <strong>82.08%</strong>——每 100 元營收有 82 元是本業利潤。這種定價權反映極高的不可替代性。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>H1'26 獲利爆發：</strong>EPS 110.96 元，較 H1'25 的 32.80 元成長 <strong>+238.3%</strong>；Q2'26 單季 74.38 元 QoQ +103.3%，創史上最高。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>兩家美系外資在跌停當天仍維持正向：</strong>目標價 <strong>14,888 元與 15,000 元</strong>（較現價 +40%～+41%），明言「<strong>只是過渡期</strong>」。這是看過壞消息後的表態。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>前9月累計營收 336.18 億、年增 167.8%：</strong>整體 AI 成長趨勢<strong>尚未出現明確逆轉</strong>，導軌仍是 AI 機櫃的必需品。</div></li>
+      </ul>
+    </div>
+    <div class="analyst-card">
+      <h4><span style="background:#fee2e2;color:#dc2626;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:14px">🐻</span> 看空研究員（6點）</h4>
+      <ul>
+        <li><span class="bear-icon">▼</span><div><strong>連續兩天跌停，賣壓未出盡（最強論點）：</strong>10/07 一字跌停且<strong>逾 900 張排隊等賣、量能低於均量</strong>（賣單成交不了）；10/08 再度鎖死。<strong>在跌停打開前，無人知道還有多少賣單。</strong></div></li>
+        <li><span class="bear-icon">▼</span><div><strong>估值仍然昂貴：</strong>即使連跌兩停板，TTM P/E 仍達 <strong>58.5x</strong>、<strong>股價淨值比約 30 倍</strong>。<strong>FactSet 中位目標價 9,970 元甚至低於現價</strong>，代表部分法人認為還有下修空間。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>技術結構已實質破壞：</strong>股價跌破<strong>全部四條均線</strong>，並跌穿布林下軌 11,505.92 達 -7.7%。且 RSI 43.99 <strong>尚未進入超賣區（&lt;30）</strong>，意味技術性殺盤可能尚未完成。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>產品極度單一：</strong>導軌占營收 <strong>97.87%</strong>，完全沒有其他業務緩衝。<strong>任何單一產品線的需求波動都會被放大成股價的劇烈反應</strong>——這次就是示範。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>Q2 的 87.42% 毛利率可能是極值：</strong>公司長期毛利率區間為 70–78%，Q2 的 87.42% 顯著高於常態。<strong>若其中含急單帶來的優惠售價組合，Q3 毛利率回落的風險不低</strong>，而市場目前的估值假設是它會維持。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>法人預估分歧極大：</strong>目標價從 9,970 元到 17,500 元<strong>相差 76%</strong>；FY2027E EPS 預估 331–559 元<strong>相差 69%</strong>。<strong>共識如此鬆散，代表「急單退潮後的常態水準」根本沒有定論。</strong></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">💬 給一般投資人的話</h4>
+    <p style="font-size:13px;line-height:1.75;color:var(--text)">
+    川湖做的東西很單純：<strong>伺服器的「抽屜滑軌」</strong>——讓機櫃裡的伺服器可以像抽屜一樣拉出來維修的那兩根金屬軌。聽起來不起眼，但它的毛利率是 <strong>87.42%</strong>。你沒看錯——賣 100 元，成本只有 12.58 元。這種數字在製造業幾乎不存在，代表這東西別人做不來、客戶也換不掉。<br><br>
+    <strong>那為什麼連跌兩根停板？</strong>因為 10/06 公告的 9 月營收是 44.64 億，比 8 月的 64.66 億<strong>少了 31%</strong>，而且終止了連續六個月創新高。市場嚇壞了，隔天開盤直接鎖死跌停，900 多張排隊等著賣都賣不掉。10/06 那天買進一張的人，一天就賠了 131 萬。<br><br>
+    <strong>但這裡有個很多人沒注意到的事。</strong>同一份公告裡還寫著：<strong>第三季整季營收 173.38 億，比第二季多了 60%，是歷史上最高的一季</strong>。公司也講得很清楚：7、8 兩個月是雲端大廠和 AI 新創<strong>集中趕著下單</strong>，衝到 65 億；9 月那批急單出完了，回到 44 億的正常水準。<br><br>
+    <strong>而且 44.64 億這個「正常水準」，跟 6 月的 44.43 億幾乎一樣，比 4 月的 25.96 億還高出 72%。</strong>換句話說——不是生意變差了，是前兩個月提前做掉了。兩家美系外資在跌停當天還是維持看好，目標價 14,888 和 15,000 元。<br><br>
+    <strong>所以可以撿便宜了嗎？不行，至少現在不行。</strong>三個理由：① <strong>跌停還鎖著</strong>，賣單根本沒消化完，沒人知道打開後還會跌多少；② 就算跌了 19%，本益比還有 <strong>58.5 倍</strong>、股價淨值比 <strong>30 倍</strong>，一點都不便宜；③ 股價已經跌破所有均線和布林下軌，但 RSI 才 43.99，<strong>連超賣都還沒到</strong>——殺盤可能還沒結束。<br><br>
+    <strong>實務建議三句話：</strong>① <strong>不要接跌停的刀</strong>，等跌停打開、看有沒有人接；② 真的要參與，先看能不能站回 <strong>11,506–11,534 元</strong>（布林下軌與季線），那是多空的第一道關卡；③ <strong>最關鍵的兩個檢核點</strong>——11 月初公布的 10 月營收（44 億這個水準守不守得住），以及 10–11 月的 Q3 財報（營收 173.38 億已經知道了，要看<strong>毛利率還撐不撐得住 87%</strong>）。這兩個數字出來，才知道這次到底是虛驚還是轉折。
+    </p>
+  </div>
+</section>
+
+<!-- ===== 11 風控 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">11</span> 風控評估｜六維評分</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <div class="score-row"><span class="score-label">估值風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:linear-gradient(90deg,#dc2626,#ef4444)"></div></div><span class="score-num" style="color:#dc2626">6.0</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">TTM P/E 58.5x、P/B 約30x；FactSet 中位目標價 9,970 元低於現價（權重30%）</div>
+
+        <div class="score-row"><span class="score-label">財務風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:15%;background:linear-gradient(90deg,#16a34a,#22c55e)"></div></div><span class="score-num" style="color:#16a34a">1.5</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">毛利率87.42%／OPM 82.08%，獲利體質為本系列最強（權重25%）</div>
+
+        <div class="score-row"><span class="score-label">流動性風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:45%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div></div><span class="score-num" style="color:#d97706">4.5</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">股本僅約9,530萬股、日均量約45–51萬股；<strong>一張逾1,000萬元，實質流動性偏低</strong>（權重10%）</div>
+      </div>
+      <div>
+        <div class="score-row"><span class="score-label">產業風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:55%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div></div><span class="score-num" style="color:#d97706">5.5</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px"><strong>導軌占營收97.87%</strong>，無其他業務緩衝；急單效應證明出貨節奏波動極大（權重15%）</div>
+
+        <div class="score-row"><span class="score-label">總經風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:40%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div></div><span class="score-num" style="color:#d97706">4.0</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">高度連動 CSP 與 AI 新創之資本支出與拉貨節奏（權重10%）</div>
+
+        <div class="score-row"><span class="score-label">籌碼風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:75%;background:linear-gradient(90deg,#dc2626,#ef4444)"></div></div><span class="score-num" style="color:#dc2626">7.5</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px"><strong>連2日跌停、逾900張排隊賣、一字無量</strong>，賣壓未出盡（權重10%）</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;margin-top:16px;padding:16px;background:var(--bg);border-radius:10px;flex-wrap:wrap">
+      <div style="text-align:center;flex-shrink:0">
+        <div style="font-size:40px;font-weight:900;color:#d97706">5.5</div>
+        <div style="font-size:11px;color:var(--muted)">加權綜合風險</div>
+      </div>
+      <div style="flex:1;min-width:240px">
+        <div style="font-size:14px;font-weight:800;color:#d97706;margin-bottom:4px">中高風險｜極強獲利體質 × 極差進場時點</div>
+        <div style="font-size:13px;color:var(--muted)">加權計算：6.0×30% + 1.5×25% + 4.5×10% + 5.5×15% + 4.0×10% + 7.5×10% ≈ <strong>4.6</strong>，考量<strong>連續兩日鎖跌停、賣壓尚未釋放</strong>之即時風險後<strong>上調至 5.5</strong>。<br>
+        <strong>風險結構極度分化：財務面是本系列最健康的一檔（1.5），籌碼面則是最危險（7.5）。</strong>這代表<strong>公司本身沒問題，問題在於現在這個時點完全不該進場</strong>。建議：等跌停打開並確認承接力道、觀察能否站回 11,506–11,534 元後再評估；首次建倉部位不超過 10–15%。</div>
+      </div>
+      <div style="flex-shrink:0"><span class="tag tag-yellow" style="font-size:13px;padding:6px 14px">中高風險</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12 三段式策略 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">12</span> 台股三段式策略</div>
+  <div class="strategy-grid">
+    <div class="strat-card attack">
+      <h3>🔴 進攻策略（高風險）</h3>
+      <div class="strat-item"><span>目標：</span><span>14,888–15,000元（+40%–+41%）</span></div>
+      <div class="strat-item"><span>前提：</span><span><strong>跌停打開且當日收紅</strong>，確認有承接盤</span></div>
+      <div class="strat-item"><span>入場：</span><span>站回 11,506（布林下軌）後進 1/3 倉</span></div>
+      <div class="strat-item"><span>加碼：</span><span>站穩 MA60(11,534) 且 10月營收守住44億</span></div>
+      <div class="strat-item"><span>停損：</span><span>10,615元（今日跌停價）</span></div>
+      <div style="margin-top:10px;font-size:12px;background:rgba(255,255,255,0.18);border-radius:8px;padding:8px">⚠️ <strong>絕對不要接跌停的刀</strong>。即使看好基本面，也要等賣壓釋放完畢的證據</div>
+    </div>
+    <div class="strat-card balance">
+      <h3>🟢 均衡策略</h3>
+      <div class="strat-item"><span>目標：</span><span>12,337–14,888元（+16%–+40%）</span></div>
+      <div class="strat-item"><span>入場：</span><span>等 <strong>Q3 財報確認毛利率</strong>後再分批</span></div>
+      <div class="strat-item"><span>倉位：</span><span>10–15%（因單一產品風險）</span></div>
+      <div class="strat-item"><span>確認訊號：</span><span>10月營收守住44億 + Q3毛利率維持80%以上</span></div>
+      <div class="strat-item"><span>停損：</span><span>9,970元（FactSet 中位目標價）</span></div>
+      <div style="margin-top:10px;font-size:12px;background:rgba(255,255,255,0.18);border-radius:8px;padding:8px">⚖️ 以「數據確認」取代「價格猜測」——10–11 月兩個數字會給出答案</div>
+    </div>
+    <div class="strat-card defend">
+      <h3>🔵 防守策略（推薦）</h3>
+      <div class="strat-item"><span>現階段：</span><span><strong>完全觀望</strong>，不新增任何部位</span></div>
+      <div class="strat-item"><span>已持有：</span><span>跌停無法賣出，待打開後評估減碼</span></div>
+      <div class="strat-item"><span>倉位：</span><span>0%</span></div>
+      <div class="strat-item"><span>再評估條件：</span><span>①跌停打開且止穩 <strong>且</strong> ②Q3財報毛利率達標</span></div>
+      <div class="strat-item"><span>觀察重點：</span><span>11月初 10月營收能否守住 44 億水準</span></div>
+      <div style="margin-top:10px;font-size:12px;background:rgba(255,255,255,0.18);border-radius:8px;padding:8px">🛡️ <strong>本報告首選：</strong>基本面論述再好，也不該在連續跌停、賣壓未出盡時進場</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">🗓️ 催化劑時程表</h4>
+    <table>
+      <thead><tr><th>時間</th><th>事件</th><th>方向</th></tr></thead>
+      <tbody>
+        <tr><td>明日起</td><td><strong>跌停能否打開、打開後的承接力道</strong>——最立即的觀察點</td><td><span class="tag tag-red">關鍵驗證</span></td></tr>
+        <tr><td>2026/11月初</td><td><strong>10月（實際）月營收</strong>：能否守住 44 億水準——<strong>決定「正常水準」定義是否成立</strong></td><td><span class="tag tag-red">最關鍵</span></td></tr>
+        <tr><td>2026/10–11月</td><td><strong>Q3'26 財報</strong>：營收 173.38 億已知，<strong>看毛利率能否維持 80% 以上</strong>（Q2 為 87.42%）</td><td><span class="tag tag-green">品質檢驗</span></td></tr>
+        <tr><td>2026 Q4</td><td>CSP 與 AI 新創的 Q4 拉貨節奏；是否再現急單</td><td><span class="tag tag-blue">需求驗證</span></td></tr>
+        <tr><td>2027年</td><td>FactSet FY2027E EPS 331–559 元之收斂方向</td><td><span class="tag tag-yellow">長線關鍵</span></td></tr>
+        <tr><td>隨時</td><td>技術面：站回 11,506–11,534 為止穩訊號；續破則下看 9,970</td><td><span class="tag tag-red">風控觸發</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 13 名詞小教室 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">13</span> 名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">伺服器導軌（Server Rail／Slide）</div>
+      <div class="glossary-def">機櫃裡讓伺服器能像抽屜一樣拉出來維修的精密滑軌。AI 機櫃愈重（液冷、高密度），導軌的承重、精度與耐用度要求愈高。<strong>川湖是亞洲第一大供應商，導軌占其營收 97.87%。</strong></div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">急單效應</div>
+      <div class="glossary-def">客戶因專案時程或備貨需求，在短期內集中下單並要求趕出貨。<strong>特徵是「把未來的訂單提前到現在」</strong>——所以急單月份營收暴衝，之後必然回落。川湖 7、8 月衝到 65 億、9 月回到 44 億，即為典型案例。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">月增率（MoM）vs 年增率（YoY）</div>
+      <div class="glossary-def"><strong>MoM</strong> 比上個月，容易受急單、工作天數、出貨排程干擾；<strong>YoY</strong> 比去年同月，排除季節性，更能看出真實趨勢。川湖 9 月 MoM -31%（嚇人），但 YoY +196%（創同期新高）——<strong>兩個數字講的是不同的事。</strong></div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">一字跌停</div>
+      <div class="glossary-def">開盤、最高、最低、收盤<strong>四個價格完全相同</strong>且都在跌停板，代表買單極少、賣單排隊卻成交不了。川湖 10/07 即為此型態（皆 11,790 元，逾 900 張排隊等賣）。<strong>最危險之處在於：持有者想停損也賣不掉。</strong></div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">跌破布林下軌</div>
+      <div class="glossary-def">布林下軌是股價正常波動的下緣（均線−2個標準差）。跌破代表發生了<strong>超出統計常態的急殺</strong>。這既可能醞釀技術性反彈，也可能是趨勢反轉起點——<strong>必須配合量能與後續走勢判斷，不能單獨當買進訊號。</strong></div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">RSI 未超賣</div>
+      <div class="glossary-def">RSI 低於 30 才算超賣。川湖目前 43.99，雖然已經連跌兩停板，但<strong>技術上還沒到「跌過頭」的程度</strong>。這是本報告認為殺盤可能尚未完成的依據之一。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">毛利率 87.42% 代表什麼</div>
+      <div class="glossary-def">賣 100 元，製造成本只有 12.58 元。<strong>這在製造業幾乎是不存在的數字</strong>（一般 20–30%、高階材料 40–50%）。它代表產品具有極強的不可替代性與定價權——但也意味著<strong>這個水準一旦開始鬆動，股價反應會非常劇烈</strong>。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">單一產品風險</div>
+      <div class="glossary-def">川湖導軌占營收 97.87%，<strong>幾乎沒有第二條腿</strong>。好處是專注、毛利高；壞處是任何單一產品線的需求波動都會 100% 反映在業績上，沒有其他業務可以緩衝。<strong>這次單月營收波動就引發連續跌停，正是這個結構的代價。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 14 免責聲明 ===== -->
+<div class="disclaimer">
+  <strong>⚠️ 免責聲明</strong>　本報告由 AI 分析系統於 2026 年 10 月 8 日自動生成，純供學術研究與資訊參考，<strong>不構成任何投資建議或勸誘買賣證券之行為</strong>。股票投資涉及風險，過去績效不代表未來表現。投資人應自行研判並承擔投資盈虧責任。<br><br>
+  <strong>🔴 數據性質說明：</strong>①封面 10,615 元為 10/08 盤中跌停價（開 10,935／高 10,965／低 10,615），昨收 11,790 元（10/07 一字跌停）；②技術指標係<strong>計算至 10/07 收盤</strong>；③FactSet FY2026E EPS 245.49 元（最高 378.15／最低 236.01）、目標價 9,970 元，及 FY2027E 331.24–559.06 元、FY2028E 469.25–576.61 元，<strong>調查時點約為 2026 年 8 月初（Q3 營收公布前），非公司財測</strong>；④本報告 FY2026E 約 296 元、Q3 EPS 約 100–119 元均為<strong>自行推算值</strong>，推算方法（以 Q2 淨利率 65.4% 與保守情境 55–60% 套用於已公告之 Q3 營收 173.38 億元）已於第 6 節完整揭露；⑤TTM EPS 181.39 元係 Q3'25～Q2'26 四季加總（Fugle 回報 TTM P/E 74.1x，差異來自 TTM 口徑）；⑥市值約 10,115 億元係依昨收市值 11,235.5 億元回推股數約 9,530 萬股後按現價換算之<strong>推算值</strong>；⑦大盤 P/E 約 20x 為產業推算值。<br><br>
+  <strong>資料來源：</strong>即時報價 富果 Fugle API ｜ 歷史K線・技術指標・月營收・季度財報 FinMind ｜ 9月營收事件、法說會與法人評等 WebSearch（時報資訊／工商時報、經濟日報、鉅亨網、新頭殼、壹蘋新聞網、旺得富理財網、鏡週刊、永豐金證券豐雲學堂、富果直送法說會備忘錄、uAnalyze）｜ 報告日期：2026-10-08（首次報告）<br>
+  <strong>月營收月份對應說明：</strong>資料庫申報月份減 1 為實際賺取月份，本報告已統一換算為實際月份呈現。換算後 Q1'26 營收 54.50 億（公告 54.49 億）、Q2'26 營收 108.30 億（公告 108.3 億）、Q3'26 營收 173.37 億（公告 173.38 億）、前 9 月累計 336.17 億（公告 336.18 億），<strong>四項數字全數吻合，換算已完整交叉驗證</strong>。<br>
+  <strong>資料缺漏說明：</strong>本次擷取三大法人與融資融券欄位回傳空值（資料庫未收錄），第 7、9 節已改採量價結構與公開評等雙軌判讀，並標明官方查詢管道，未以「0」作為實際數值呈現。
+</div>
+
+</div><!-- /container -->
+
+<script>
+function drawBarChart(id,labels,data,barColor,accentColor,warnIdx){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=46,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.20||0.5;
+  var lo=(min<0)?(min-pad):Math.max(0,min-pad);
+  var hi=max+pad,range=hi-lo;
+  var n=data.length;
+  var barW=chartW/n*0.58,gap=chartW/n;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(0),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0){ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();}
+  for(var i=0;i<n;i++){
+    var x=PL+i*gap+(gap-barW)/2;
+    var vy=PT+chartH-((data[i]-lo)/range*chartH);
+    var top=Math.min(vy,zeroY),bh=Math.abs(vy-zeroY);
+    if(bh<1.5)bh=1.5;
+    var isLast=(i===n-1),isWarn=(warnIdx!==undefined&&i===warnIdx);
+    var color=isLast?accentColor:(isWarn?'#fbbf24':barColor);
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,top,barW,bh,3);ctx.fillStyle=color;ctx.fill();}
+    else{ctx.fillStyle=color;ctx.fillRect(x,top,barW,bh);}
+    ctx.fillStyle=isLast?accentColor:(isWarn?'#d97706':'#475569');
+    ctx.font=((isLast||isWarn)?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(2),x+barW/2,top-4);
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    var lx=PL+i*gap+gap/2,ly=PT+chartH+14;
+    if(labels[i].length>4){ctx.save();ctx.translate(lx,ly);ctx.rotate(-Math.PI/6);ctx.fillText(labels[i],0,0);ctx.restore();}
+    else ctx.fillText(labels[i],lx,ly);
+  }
+}
+function drawLineChart(id,labels,data,color){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=46,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.20||1;
+  var lo=min-pad,hi=max+pad,range=hi-lo;
+  var n=data.length;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(1),PL-4,gy+3);
+  }
+  var pts=[];
+  for(var i=0;i<n;i++)pts.push({x:PL+i*chartW/(n-1),y:PT+chartH-(data[i]-lo)/range*chartH});
+  ctx.beginPath();ctx.moveTo(pts[0].x,PT+chartH);
+  for(var i=0;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.lineTo(pts[n-1].x,PT+chartH);ctx.closePath();
+  var grad=ctx.createLinearGradient(0,PT,0,PT+chartH);
+  var hex=color.slice(1);
+  var r=parseInt(hex.slice(0,2),16),g2=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  grad.addColorStop(0,'rgba('+r+','+g2+','+b+',0.25)');
+  grad.addColorStop(1,'rgba('+r+','+g2+','+b+',0.02)');
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+  for(var i=1;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+  for(var i=0;i<n;i++){
+    var isLast=(i===n-1);
+    ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,isLast?5:3,0,Math.PI*2);
+    ctx.fillStyle=isLast?color:'#fff';ctx.fill();
+    ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=isLast?color:'#475569';ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(1),pts[i].x,pts[i].y+(isLast?-10:-8));
+  }
+  for(var i=0;i<n;i++){
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    ctx.fillText(labels[i],pts[i].x,PT+chartH+14);
+  }
+}
+function drawHBarChart(id,labels,data,colors){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var max=Math.max.apply(null,data)*1.32;
+  var n=labels.length;
+  var rowH=H/(n+0.6);
+  var PL=186,PR=56;
+  for(var i=0;i<n;i++){
+    var y=rowH*(i+0.3)+rowH*0.12;
+    var bh=rowH*0.66;
+    ctx.fillStyle='#f1f5f9';ctx.fillRect(PL,y,(W-PL-PR),bh);
+    var bw=(data[i]/max)*(W-PL-PR);
+    var col=colors?colors[i]:'#0f766e';
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(PL,y,bw,bh,4);ctx.fillStyle=col;ctx.fill();}
+    else{ctx.fillStyle=col;ctx.fillRect(PL,y,bw,bh);}
+    ctx.fillStyle='#1e293b';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(labels[i],PL-8,y+bh/2+4);
+    ctx.fillStyle='#1e293b';ctx.font='bold 12px Arial';ctx.textAlign='left';
+    ctx.fillText(data[i]+'x',PL+bw+6,y+bh/2+4);
+  }
+}
+window.addEventListener('DOMContentLoaded',function(){
+  drawBarChart('epsChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [12.12,22.63,26.35,6.45,33.55,36.88,36.58,74.38],
+    '#5eead4','#0f766e',3);
+  drawLineChart('revChart',
+    ['4月','5月','6月','7月','8月','9月'],
+    [25.96,37.91,44.43,64.07,64.66,44.64],
+    '#0f766e');
+  drawLineChart('gmChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [70.54,71.81,76.05,77.50,74.58,76.10,77.74,87.42],
+    '#14b8a6');
+  drawHBarChart('peChart',
+    ['川湖 TTM','川湖 FY26E(FactSet)','川湖 FY26E(本報告推算)','川湖 FY27E(低估)','川湖 FY27E(高估)','台股大盤'],
+    [58.5,43.2,35.9,32.0,19.0,20],
+    ['#dc2626','#d97706','#0f766e','#16a34a','#16a34a','#2563eb']);
+});
+</script>
+</body>
+</html>
