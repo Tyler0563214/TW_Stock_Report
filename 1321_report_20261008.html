@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大洋(1321) 深度研究報告 首次 | 2026-10-08</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+    --accent:#9a3412;--accent2:#ea580c;--accent3:#fdba74;
+    --green:#16a34a;--red:#dc2626;--yellow:#d97706;--blue:#2563eb;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.6}
+  a{color:var(--accent)}
+  time,.code{font-variant-numeric:tabular-nums}
+
+  /* COVER */
+  .cover{background:linear-gradient(135deg,#1c1917 0%,#431407 30%,#9a3412 68%,#f97316 100%);color:#fff;padding:56px 40px 48px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-70px;right:-50px;width:310px;height:310px;border-radius:50%;background:rgba(255,255,255,0.06)}
+  .cover::after{content:'';position:absolute;bottom:-90px;left:-50px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.04)}
+  .cover-ticker{font-size:13px;opacity:.72;margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+  .cover-name{font-size:36px;font-weight:800;line-height:1.1;margin-bottom:6px}
+  .cover-subtitle{font-size:15px;opacity:.85;margin-bottom:24px}
+  .cover-price-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:10px}
+  .cover-price{font-size:54px;font-weight:900;line-height:1}
+  .cover-chg{font-size:21px;padding:4px 14px;border-radius:8px;background:rgba(22,163,74,0.35);border:1px solid rgba(134,239,172,0.6)}
+  .price-note{display:inline-block;font-size:12.5px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 13px;margin-bottom:22px}
+  .cover-meta{display:flex;gap:24px;flex-wrap:wrap}
+  .cover-meta-item{font-size:13px;opacity:.8}
+  .cover-meta-item strong{opacity:1;font-weight:700}
+  .risk-badge{position:absolute;top:32px;right:40px;background:rgba(217,119,6,0.32);border:1.5px solid rgba(251,191,36,0.65);border-radius:12px;padding:10px 18px;text-align:center}
+  .risk-badge .num{font-size:28px;font-weight:900;color:#fde68a}
+  .risk-badge .lbl{font-size:11px;opacity:.88;letter-spacing:1px}
+  .report-no-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(253,186,116,0.25);border:1px solid rgba(253,186,116,0.5);border-radius:8px;padding:3px 12px;font-size:12px;margin-bottom:12px}
+
+  /* LAYOUT */
+  .container{max-width:960px;margin:0 auto;padding:0 20px 60px}
+  section{margin-top:32px}
+  .section-title{font-size:18px;font-weight:800;color:var(--accent);border-left:4px solid var(--accent);padding-left:12px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .section-num{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+  .card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07),0 0 0 1px var(--border)}
+  .card + .card{margin-top:12px}
+
+  /* VERDICT */
+  .verdict-box{background:linear-gradient(135deg,#fff7ed,#ffedd5);border:2px solid #9a3412;border-radius:14px;padding:20px 24px;margin-bottom:14px}
+  .verdict-box h4{font-size:15px;font-weight:800;color:#7c2d12;margin-bottom:10px}
+  .verdict-box p{font-size:13.5px;line-height:1.75;color:#7c2d12}
+
+  /* CONCLUSION */
+  .conclusion-card{background:linear-gradient(135deg,#1c1917 0%,#7c2d12 55%,#ea580c 100%);color:#fff;border-radius:16px;padding:28px 32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+  .conc-item .label{font-size:11px;opacity:.68;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+  .conc-item .val{font-size:21px;font-weight:800;line-height:1.15}
+  .conc-item .sub{font-size:12px;opacity:.78;margin-top:4px}
+  @media(max-width:640px){.conclusion-card{grid-template-columns:1fr 1fr}}
+
+  /* KPI */
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+  .kpi-card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border);text-align:center}
+  .kpi-label{font-size:11px;color:var(--muted);margin-bottom:4px;letter-spacing:.5px}
+  .kpi-val{font-size:20px;font-weight:800;color:var(--accent)}
+  .kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+  /* CHARTS */
+  .charts-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  @media(max-width:760px){.charts-grid{grid-template-columns:1fr}}
+  .chart-box{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border)}
+  .chart-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px}
+  .chart-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center}
+
+  /* TABLE */
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{background:var(--bg);padding:8px 12px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+  .tag-green{background:#dcfce7;color:#16a34a}
+  .tag-red{background:#fee2e2;color:#dc2626}
+  .tag-yellow{background:#fef9c3;color:#d97706}
+  .tag-blue{background:#dbeafe;color:#2563eb}
+  .tag-rust{background:#ffedd5;color:#9a3412}
+
+  /* ANALYST */
+  .analyst-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.analyst-grid{grid-template-columns:1fr}}
+  .analyst-card{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border)}
+  .analyst-card h4{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .analyst-card ul{list-style:none;padding:0}
+  .analyst-card li{font-size:13px;padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px}
+  .analyst-card li:last-child{border-bottom:none}
+  .bull-icon{color:#16a34a;font-weight:900;flex-shrink:0}
+  .bear-icon{color:#dc2626;font-weight:900;flex-shrink:0}
+
+  /* SCORE */
+  .score-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+  .score-label{width:90px;font-size:13px;flex-shrink:0}
+  .score-bar-bg{flex:1;height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+  .score-bar-fill{height:100%;border-radius:5px}
+  .score-num{width:32px;font-size:13px;font-weight:700;text-align:right;flex-shrink:0}
+
+  /* STRATEGY */
+  .strategy-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:640px){.strategy-grid{grid-template-columns:1fr}}
+  .strat-card{border-radius:14px;padding:20px;color:#fff}
+  .strat-card.attack{background:linear-gradient(135deg,#dc2626,#ef4444)}
+  .strat-card.balance{background:linear-gradient(135deg,#9a3412,#f97316)}
+  .strat-card.defend{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
+  .strat-card h3{font-size:15px;font-weight:800;margin-bottom:12px}
+  .strat-item{font-size:13px;margin:6px 0;display:flex;gap:8px}
+  .strat-item span:first-child{opacity:.75;flex-shrink:0}
+
+  .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.tech-grid{grid-template-columns:1fr}}
+
+  /* ALERT */
+  .alert{border-radius:10px;padding:14px 18px;margin-bottom:12px;font-size:13px;display:flex;gap:12px;align-items:flex-start}
+  .alert-red{background:#fee2e2;border-left:4px solid #dc2626;color:#7f1d1d}
+  .alert-green{background:#dcfce7;border-left:4px solid #16a34a;color:#14532d}
+  .alert-yellow{background:#fef9c3;border-left:4px solid #d97706;color:#713f12}
+  .alert-rust{background:#ffedd5;border-left:4px solid #9a3412;color:#7c2d12}
+
+  .disclaimer{background:#fef9c3;border:1px solid #d97706;border-radius:10px;padding:16px 20px;font-size:12px;color:#713f12;margin-top:32px}
+
+  .glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:540px){.glossary-grid{grid-template-columns:1fr}}
+  .glossary-item{background:var(--card);border-radius:10px;padding:12px 14px;border:1px solid var(--border)}
+  .glossary-term{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:4px}
+  .glossary-def{font-size:12px;color:var(--muted);line-height:1.5}
+
+  .land-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  @media(max-width:640px){.land-grid{grid-template-columns:1fr}}
+  .land-card{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:16px}
+  .land-card.hl{background:#ffedd5;border:2px solid #9a3412}
+  .land-card h5{font-size:14px;font-weight:800;color:#9a3412;margin-bottom:8px}
+  .land-card table{font-size:12.5px}
+  .land-card td{padding:5px 6px;border-bottom:1px solid #fed7aa}
+
+  .calc-box{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:12px;font-size:12.5px;line-height:1.7}
+  .calc-box .row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed #cbd5e1}
+  .calc-box .row:last-child{border-bottom:none;font-weight:800;color:var(--accent);padding-top:7px}
+
+  .earn-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  @media(max-width:640px){.earn-split{grid-template-columns:1fr}}
+  .earn-tile{border-radius:10px;padding:14px;text-align:center}
+  .earn-tile.core{background:#fee2e2;border:1px solid #fca5a5}
+  .earn-tile.nonop{background:#fef9c3;border:1px solid #fcd34d}
+  .earn-tile .et-val{font-size:22px;font-weight:800}
+  .earn-tile.core .et-val{color:#dc2626}
+  .earn-tile.nonop .et-val{color:#d97706}
+  .earn-tile .et-name{font-size:12px;font-weight:700;margin-top:3px}
+  .earn-tile .et-desc{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.45}
+</style>
+</head>
+<body>
+
+<!-- ===== 01 COVER ===== -->
+<div class="cover">
+  <div class="risk-badge">
+    <div class="num">5.5</div>
+    <div class="lbl">風險指數</div>
+  </div>
+  <div class="report-no-badge">★ 首次深度報告</div>
+  <div class="cover-ticker">TWSE: 1321</div>
+  <div class="cover-name">大洋塑膠</div>
+  <div class="cover-subtitle">Ocean Plastics｜1965年成立的傳產塑膠廠・<strong>真正的故事在土地，不在塑膠</strong></div>
+  <div class="cover-price-row">
+    <div class="cover-price">NT$32.85</div>
+    <div class="cover-chg">▲ 0.40元 (+1.23%)</div>
+  </div>
+  <div class="price-note">📍 10/08 盤中（開 32.50／高 32.85／低 32.50）｜昨收 32.45 元｜<strong>布林帶寬僅 1.9%</strong>，近一個月在 31.75–33.05 極窄幅盤整</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">📅 報告日期 <strong>2026-10-08</strong></div>
+    <div class="cover-meta-item">52W高低 <strong>36.6 / 28.05</strong></div>
+    <div class="cover-meta-item">市值 <strong>72.4億元</strong>（小型股）</div>
+    <div class="cover-meta-item">每股淨值 <strong>27.55元</strong></div>
+    <div class="cover-meta-item">P/B <strong style="color:#bbf7d0">1.19x</strong></div>
+    <div class="cover-meta-item">TTM P/E <strong style="color:#fecaca">252x（無參考意義）</strong></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===== 02 核心結論 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">2</span> 核心結論與投資建議</div>
+
+  <div class="verdict-box">
+    <h4>🧭 這檔股票不能用前面幾份報告的框架看——它的本益比 252 倍是個沒有意義的數字</h4>
+    <p><strong>大洋的 TTM 每股盈餘只有 0.13 元</strong>，所以 32.85 元的股價除下去就得到 252 倍本益比。但這不代表它貴——<strong>它代表這家公司的本業幾乎不賺錢</strong>。真正該看的數字是另一個：<strong>股價淨值比僅 1.19 倍，每股淨值 27.55 元。</strong><br><br>
+    市場不是用「獲利」在評價大洋，是用「<strong>資產</strong>」。而這些資產的核心，是兩塊正在開發的土地：<strong>新北中和舊廠區（9,912 坪，都審已通過）</strong>與<strong>台北文山興隆段都更案</strong>。<br><br>
+    <strong>換句話說：這是一檔披著塑膠股外衣的土地開發股。</strong>買它的人，買的不是塑膠布和 PVC 管，是中和那塊地。</p>
+  </div>
+
+  <div class="alert alert-red">
+    <span style="font-size:18px">🔴</span>
+    <div><strong>但在談土地之前，必須先拆穿一件事：H1'26 的獲利有九成以上不是賺來的。</strong><br>
+    大洋 2026 上半年 EPS 0.77 元（Q1 0.16 + Q2 0.61），看起來成功從 2025 年的全年虧損 1.25 元翻身。<strong>但 H1 業外收支淨增加 3.22 億元</strong>，其中：<br>
+    ① 兌換利益 <strong>3,200 萬元</strong>；② <strong>轉投資富致科技（6642）股價上漲帶來的評價利益約 1.68 億元</strong>。<br><br>
+    <strong>這 1.68 億是「未實現評價利益」——它會隨著富致股價波動，股價跌回去就會變成損失。</strong>換句話說，你買大洋，有一部分等於間接持有一個會上下跳動的股票部位。</div>
+  </div>
+
+  <div class="conclusion-card">
+    <div class="conc-item">
+      <div class="label">投資評級</div>
+      <div class="val">資產題材・長線觀察</div>
+      <div class="sub">非成長股・需耐心</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">合理區間（P/B法）</div>
+      <div class="val">27.6–41.3元</div>
+      <div class="sub">P/B 1.0–1.5x（本報告推算）</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">最大風險</div>
+      <div class="val">獲利品質 + 時程</div>
+      <div class="sub">92%業外・題材2027–2028才兌現</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">核心題材</div>
+      <div class="val">中和9,912坪都審通過</div>
+      <div class="sub">2026下半取得建照・2027Q1公開銷售</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">技術面狀態</div>
+      <div class="val">布林帶寬1.9%</div>
+      <div class="sub">本系列最窄・變盤在即但方向未定</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">流動性提醒</div>
+      <div class="val">日均量約100張</div>
+      <div class="sub">小型股・進出需留意滑價</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 KPI ===== -->
+<section>
+  <div class="section-title"><span class="section-num">3</span> 關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">現價（盤中）</div>
+      <div class="kpi-val" style="color:#16a34a">32.85元</div>
+      <div class="kpi-sub">+1.23%｜突破布林上軌32.70</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">每股淨值</div>
+      <div class="kpi-val">27.55元</div>
+      <div class="kpi-sub">P/B <strong>1.19x</strong>（關鍵估值指標）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q2'26 EPS</div>
+      <div class="kpi-val">0.61元</div>
+      <div class="kpi-sub"><strong style="color:#dc2626">其中約92%來自業外</strong></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q2'26 營業利益率</div>
+      <div class="kpi-val" style="color:#d97706">+1.02%</div>
+      <div class="kpi-sub">本業連6季虧損後轉正（Q1 +2.37%）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">H1'26 EPS</div>
+      <div class="kpi-val">0.77元</div>
+      <div class="kpi-sub">H1'25 為 <strong style="color:#dc2626">-0.61元</strong>（轉虧為盈）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">H1 業外淨增</div>
+      <div class="kpi-val" style="color:#d97706">3.22億</div>
+      <div class="kpi-sub">含富致評價利益 <strong>1.68億（未實現）</strong></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">中和案土地面積</div>
+      <div class="kpi-val" style="color:#16a34a">9,912坪</div>
+      <div class="kpi-sub">容積288%（高於住三225%）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TTM EPS</div>
+      <div class="kpi-val" style="color:#dc2626">0.13元</div>
+      <div class="kpi-sub">P/E 252x — <strong>分母太小，無意義</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 04 圖表 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">4</span> 財務趨勢圖</div>
+  <div class="charts-grid">
+    <div class="chart-box">
+      <div class="chart-title">EPS 季度趨勢（元）</div>
+      <canvas id="epsChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ Q1'26 由負轉正，但主要靠業外</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">月營收走勢（億元，實際月份）</div>
+      <canvas id="revChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">本業營收無成長，8月2.71億為近期低點</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">營業利益率 OPM（%）</div>
+      <canvas id="opmChart" width="280" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 連6季為負後轉正，但僅 1–2%</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05 公司概覽與土地題材 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">5</span> 公司概覽｜塑膠本業 vs 土地題材</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:var(--accent)">🏢 公司基本資訊</h4>
+        <table>
+          <tr><td style="color:var(--muted);font-size:13px">公司名稱</td><td style="font-weight:700;font-size:13px">大洋塑膠工業股份有限公司</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">英文名稱</td><td style="font-size:13px">Ocean Plastics Co., Ltd.</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">成立／上市</td><td style="font-size:13px">1965/06/07 成立｜1999/01/26 上市</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">四大事業部</td><td style="font-size:13px">加工部、建材部、合成皮部、原料部</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">主要產品</td><td style="font-size:13px">塑膠布、PVC塑膠管、PU合成皮、塑膠粉粒</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">廠區</td><td style="font-size:13px">桃園（蘆竹、中壢等）、中國惠州／東莞</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">實收資本額</td><td style="font-size:13px">22.72億元（股數約2.2–2.27億股）</td></tr>
+          <tr><td style="color:var(--muted);font-size:13px">土地開發子公司</td><td style="font-size:13px"><strong style="color:var(--accent)">常新欣業</strong>（2015/12/28 設立）</td></tr>
+        </table>
+      </div>
+      <div>
+        <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:var(--accent)">⚖️ 兩條完全不同的線</h4>
+        <ul style="list-style:none;padding:0">
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#dc2626;font-weight:700">①</span><strong>塑膠本業：成熟衰退中。</strong>月營收在 2.7–3.7 億區間震盪、無成長；毛利率長年僅 3–12%；<strong>OPM 曾連 6 季為負</strong></li>
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">②</span><strong>土地開發：真正的價值所在。</strong>公司明確將「<strong>活化資產</strong>」列為主要發展重點</li>
+          <li style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#16a34a;font-weight:700">✓</span>本業並非完全沒改善：H1'26 營業毛利增加 <strong>5,700 萬元</strong>、營業淨利增加約 <strong>5,000 萬元</strong>，<strong>而營收還微減 3,985 萬元</strong>——是靠成本與產品組合改善，不是靠衝量</li>
+          <li style="font-size:13px;padding:6px 0;display:flex;gap:8px"><span style="color:#d97706;font-weight:700">⚠</span>但 OPM 僅 1–2%，<strong>本業的絕對獲利能力仍然很弱</strong>，撐不起股價</li>
+        </ul>
+      </div>
+    </div>
+
+    <h4 style="font-size:14px;font-weight:800;margin:20px 0 0;color:var(--accent)">🏗️ 兩個土地開發案（這才是重點）</h4>
+    <div class="land-grid">
+      <div class="land-card hl">
+        <h5>🥇 新北中和舊廠區合建案（主力）</h5>
+        <table>
+          <tr><td style="color:var(--muted)">開發面積</td><td style="font-weight:700">三區總和 <strong>9,912 坪</strong></td></tr>
+          <tr><td style="color:var(--muted)">核定容積</td><td style="font-weight:700">288%（高於住三的 225%）</td></tr>
+          <tr><td style="color:var(--muted)">合建對象</td><td>馥華集團－馥羽建設（2025/12簽約）</td></tr>
+          <tr><td style="color:var(--muted)">進度</td><td><strong style="color:#16a34a">都審會議已通過</strong>；2026/5 建照掛件</td></tr>
+          <tr><td style="color:var(--muted)">時程</td><td><strong>2026下半年取得建照<br>2027 Q1 公開銷售第一期</strong></td></tr>
+          <tr><td style="color:var(--muted)">延伸想像</td><td>馥華隔壁另有 6,800 坪，合併開發後總面積可望突破 1.6 萬坪</td></tr>
+        </table>
+      </div>
+      <div class="land-card">
+        <h5>🥈 台北文山興隆段都更案</h5>
+        <table>
+          <tr><td style="color:var(--muted)">位置</td><td style="font-weight:700">台北市文山區興隆路／興順街口</td></tr>
+          <tr><td style="color:var(--muted)">都更案面積</td><td style="font-weight:700">約 1,125.60 坪（扣除37%捐地後）</td></tr>
+          <tr><td style="color:var(--muted)">大洋持分</td><td><strong>二分之一</strong></td></tr>
+          <tr><td style="color:var(--muted)">合建對象</td><td>甘霖建設（2025/5 簽約）</td></tr>
+          <tr><td style="color:var(--muted)">進度</td><td>2026/3 都更掛件，<strong>目前都審中</strong></td></tr>
+          <tr><td style="color:var(--muted)">時程</td><td><strong>預計 2028 年公開銷售</strong></td></tr>
+          <tr><td style="color:var(--muted)">規模</td><td style="color:#d97706">明顯小於中和案，影響較次要</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="alert alert-rust" style="margin-top:16px">
+      <span style="font-size:18px">📜</span>
+      <div><strong>一段值得知道的背景：</strong>中和案並非一帆風順——大洋原與<strong>冠德</strong>合作，分手 7 個月後才於 2025 年 12 月改與<strong>馥華集團</strong>重啟萬坪都更案。合建對象更換在都更案中並不罕見，但也說明<strong>這類案子的推進充滿變數、時程容易延宕</strong>。目前都審已過、建照掛件中，是整個案子風險最低的一段，但距離「真正入帳」還有數年。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 06 基本面 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">6</span> 基本面分析</div>
+  <div class="analyst-grid">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">📊 季度財報趨勢</h4>
+      <table>
+        <thead><tr><th>季度</th><th>EPS(元)</th><th>毛利率</th><th>OPM</th></tr></thead>
+        <tbody>
+          <tr style="background:#fef2f2"><td>Q3'24</td><td style="color:#dc2626">-0.11</td><td style="color:#dc2626">3.48%</td><td style="color:#dc2626">-6.21%</td></tr>
+          <tr><td>Q4'24</td><td>0.02</td><td>10.08%</td><td style="color:#dc2626">-2.68%</td></tr>
+          <tr style="background:#fef2f2"><td>Q1'25</td><td style="color:#dc2626">-0.21</td><td>8.73%</td><td style="color:#dc2626">-0.72%</td></tr>
+          <tr style="background:#fef2f2"><td>Q2'25</td><td style="color:#dc2626">-0.40</td><td>8.59%</td><td style="color:#dc2626">-1.22%</td></tr>
+          <tr style="background:#fef2f2"><td>Q3'25</td><td style="color:#dc2626">-0.13</td><td style="color:#dc2626">3.96%</td><td style="color:#dc2626">-6.19%</td></tr>
+          <tr style="background:#fef2f2"><td>Q4'25</td><td style="color:#dc2626">-0.51</td><td>6.96%</td><td style="color:#dc2626">-7.61%</td></tr>
+          <tr style="background:#dcfce7"><td><strong>Q1'26</strong></td><td><strong>0.16</strong></td><td><strong>11.97%</strong></td><td><strong style="color:#16a34a">+2.37%</strong></td></tr>
+          <tr style="background:#ffedd5"><td><strong>Q2'26 ★</strong></td><td><strong style="color:var(--accent)">0.61</strong></td><td><strong>11.74%</strong></td><td><strong style="color:#16a34a">+1.02%</strong></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">
+        H1'26 EPS <strong>0.77元</strong>（H1'25 為 -0.61元）｜TTM 0.13元｜FY2025 <strong>-1.25元</strong>（全年虧損）<br>
+        📈 <strong>本業確實有改善：</strong>毛利率自 3.48–8.7% 的低谷升至 11.7–12.0%，OPM 在連 6 季為負後於 Q1'26 轉正。<strong>這是真的，不是會計花招。</strong><br>
+        ⚠️ <strong>但改善幅度有限：</strong>OPM 僅 1–2%，以 Q2 營收 10.2 億計，營業利益僅約 1,040 萬元。
+      </div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">💰 月營收（實際月份）</h4>
+      <table>
+        <thead><tr><th>月份</th><th>月收(億)</th><th>YoY</th><th>MoM</th></tr></thead>
+        <tbody>
+          <tr><td>3月</td><td>3.73</td><td style="color:#16a34a">+1.5%</td><td>+92.0%</td></tr>
+          <tr><td>4月</td><td>3.52</td><td style="color:#16a34a">+11.0%</td><td style="color:#dc2626">-5.5%</td></tr>
+          <tr><td>5月</td><td>3.62</td><td style="color:#16a34a">+13.4%</td><td>+2.8%</td></tr>
+          <tr><td>6月</td><td>3.06</td><td style="color:#dc2626">-3.7%</td><td style="color:#dc2626">-15.4%</td></tr>
+          <tr><td>7月</td><td>2.97</td><td style="color:#16a34a">+1.4%</td><td style="color:#dc2626">-2.9%</td></tr>
+          <tr style="background:#ffedd5"><td><strong>8月★</strong></td><td><strong>2.71</strong></td><td style="color:#16a34a">+5.6%</td><td style="color:#dc2626">-8.9%</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">
+        Q1'26 營收 8.97億｜Q2'26 營收 10.20億<br>
+        ⚠️ <strong>本業沒有成長故事：</strong>月營收在 2.7–3.7 億間震盪，YoY 在 -3.7% 到 +13.4% 擺盪，<strong>且 6 月起連三個月月減</strong>。公司自己也說 H1 營收微減 3,985 萬元。<strong>不要把大洋當成長股看。</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">🔬 拆解 Q2'26 的 0.61 元 EPS：本業賺多少、業外賺多少</h4>
+    <div class="earn-split">
+      <div class="earn-tile core">
+        <div class="et-val">約 8%</div>
+        <div class="et-name">本業貢獻</div>
+        <div class="et-desc">Q2 營收 10.20億 × OPM 1.02%<br>＝營業利益約 <strong>1,040 萬元</strong></div>
+      </div>
+      <div class="earn-tile nonop">
+        <div class="et-val">約 92%</div>
+        <div class="et-name">業外貢獻</div>
+        <div class="et-desc">含富致(6642)評價利益、兌換利益<br>＝約 <strong>1.24 億元</strong></div>
+      </div>
+    </div>
+    <div class="alert alert-red" style="margin-top:12px">
+      <span style="font-size:18px">⚠️</span>
+      <div><strong>這張拆解圖是本報告最重要的一張。</strong>Q2'26 稅後淨利約 1.34 億元（EPS 0.61 元 × 約 2.2 億股），但營業利益只有約 1,040 萬元——<strong>意味著九成以上的獲利來自本業以外</strong>。<br><br>
+      而公司揭露的 H1 業外明細中，最大一筆是<strong>轉投資富致科技（6642）股價上漲帶來的評價利益約 1.68 億元</strong>。這是<strong>按市價評估的未實現利益</strong>：<br>
+      ✅ 富致股價漲 → 大洋帳上多賺<br>
+      ❌ <strong>富致股價跌 → 大洋帳上直接虧損</strong><br><br>
+      <strong>所以「大洋 2026 轉虧為盈」這個標題是真的，但它的品質很脆弱。</strong>若富致股價回檔，大洋的 EPS 可能毫無預警地再度轉負——而這與大洋自己的營運完全無關。</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">📐 估值分析｜用 P/B 看，不要用 P/E 看</h4>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;text-align:center">
+      <div style="padding:12px;background:var(--bg);border-radius:10px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">現價</div>
+        <div style="font-size:20px;font-weight:800;color:var(--accent)">32.85元</div>
+        <div style="font-size:11px;color:var(--muted)">距52W高 -10.2%</div>
+      </div>
+      <div style="padding:12px;background:#dcfce7;border-radius:10px;border:1.5px solid #86efac">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">股價淨值比 P/B</div>
+        <div style="font-size:20px;font-weight:800;color:#16a34a">1.19x</div>
+        <div style="font-size:11px;color:var(--muted)">每股淨值 27.55元</div>
+      </div>
+      <div style="padding:12px;background:#fee2e2;border-radius:10px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">TTM P/E</div>
+        <div style="font-size:20px;font-weight:800;color:#dc2626">252x</div>
+        <div style="font-size:11px;color:var(--muted)"><strong>分母僅0.13元，無意義</strong></div>
+      </div>
+      <div style="padding:12px;background:#ffedd5;border-radius:10px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px">市值</div>
+        <div style="font-size:20px;font-weight:800;color:var(--accent)">72.4億</div>
+        <div style="font-size:11px;color:var(--muted)">小型股</div>
+      </div>
+    </div>
+
+    <div class="alert alert-yellow" style="margin-top:12px">
+      <span style="font-size:18px">🧮</span>
+      <div><strong>網路流傳「中和案 EPS 貢獻 90 元」——本報告認為明顯高估，自行推算如下</strong><br>
+      搜尋可見有部落格估算「中和合建案總銷 600 億元、大洋分回約 300 億元、稅後淨利約 204 億元、<strong>EPS 約 90 元</strong>」。該數字為<strong>網路個人研究估算，非公司財測、亦非法人預估</strong>。以現價 32.85 元對照，若 EPS 真有 90 元，本益比將不到 0.4 倍——這本身就不合理。本報告以公開資訊自行推算：</div>
+    </div>
+
+    <div class="calc-box">
+      <div class="row"><span>土地面積（中和三區總和）</span><span><strong>9,912 坪</strong></span></div>
+      <div class="row"><span>核定容積 288% → 法定樓地板</span><span>約 28,547 坪</span></div>
+      <div class="row"><span>含免計容積、公設等，估可售坪數（×1.5）</span><span>約 42,800 坪</span></div>
+      <div class="row"><span>合建分回比例（估 50%）</span><span>大洋分回約 21,400 坪</span></div>
+      <div class="row"><span>中和南勢角新成屋單價（估 60–70 萬／坪）</span><span>→ 分回貨值約 <strong>128–150 億元</strong></span></div>
+      <div class="row"><span>扣除土地帳面成本、土地增值稅、銷售費用、所得稅</span><span>估稅後約 <strong>75–90 億元</strong></span></div>
+      <div class="row"><span>÷ 股數約 2.27 億股</span><span>EPS 潛在貢獻約 <strong>33–40 元</strong>（分年認列）</span></div>
+    </div>
+
+    <div class="alert alert-rust" style="margin-top:12px">
+      <span style="font-size:18px">📌</span>
+      <div><strong>兩個關鍵提醒：</strong><br>
+      ① <strong>本報告推算約 33–40 元，不到網路流傳 90 元的一半。</strong>差異主因是「總銷 600 億」疑似把整個開發案（含建商分回、甚至含馥華鄰地 6,800 坪）都算成大洋的。另有媒體報導中和廠地目變更的「<strong>增值利益超過 120 億元</strong>」，與本報告推算的分回貨值 128–150 億元數量級相近，可互相印證。<br>
+      ② <strong>更重要的是：這筆錢不會一次入帳。</strong>預售屋需完工交屋才認列收入，2027 Q1 公開銷售 → 實際認列可能落在 <strong>2029–2030 年</strong>，且分期分批。<strong>以現在的股價買進，等於要抱 3–4 年。</strong><br><br>
+      <strong>以 P/B 法看合理區間：</strong>每股淨值 27.55 元。傳產資產股常見 P/B 區間約 0.8–1.5 倍；現價 1.19 倍落在中間。<strong>若土地開發實現並重估淨值，P/B 的分母本身會上修</strong>——這才是這檔股票真正的上檔來源，而非本業獲利。</div>
+    </div>
+
+    <div style="margin-top:10px;font-size:12px;color:var(--muted)">📌 上述開發案推算之可售坪數倍數、分回比例、房價單價、稅負比例<strong>均為本報告自行假設之推估值</strong>，公司並未公告任何開發利益預估數字；實際結果可能顯著高於或低於本推算。「總銷 600 億、EPS 90 元」為網路個人估算，本報告引用僅為對照說明，<strong>不代表認同其合理性</strong>。每股淨值 27.55 元係由現價 32.85 元 ÷ 股價淨值比 1.1923 回推。</div>
+  </div>
+</section>
+
+<!-- ===== 07 籌碼面 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">7</span> 籌碼面分析</div>
+  <div class="alert alert-yellow">
+    <span style="font-size:18px">🔍</span>
+    <div><strong>資料揭露說明：</strong>本次擷取時公開資料庫（FinMind，2026/10/07）回傳之三大法人買賣超與融資融券欄位<strong>均為空值（顯示 0）</strong>，屬資料庫當次未收錄，<strong>並非「法人持平」或「餘額為零」</strong>。另本檔為市值 72.4 億元之小型傳產股，<strong>未見外資或主要券商出具研究報告與目標價</strong>，故本節無法人評等可引用——這點本身就是重要資訊。</div>
+  </div>
+  <div class="analyst-grid">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">📊 量能結構（極度清淡）</h4>
+      <table>
+        <thead><tr><th>指標</th><th>數值</th><th>判讀</th></tr></thead>
+        <tbody>
+          <tr><td style="font-size:13px">最新日成交量</td><td style="font-weight:700">132,030股（約132張）</td><td><span class="tag tag-yellow">量能極小</span></td></tr>
+          <tr><td style="font-size:13px">5日均量</td><td style="font-weight:700">101,619股（約102張）</td><td style="font-size:12px;color:var(--muted)">約 334 萬元／日</td></tr>
+          <tr><td style="font-size:13px">10日均量</td><td>94,310股（約94張）</td><td style="font-size:12px;color:var(--muted)">基準量</td></tr>
+          <tr><td style="font-size:13px">近期最低量</td><td style="font-weight:700">09/02 僅 32,000股</td><td style="font-size:12px;color:#dc2626">約 32 張</td></tr>
+          <tr><td style="font-size:13px">08/26 爆量</td><td style="font-weight:700">507,831股</td><td style="font-size:12px;color:#16a34a">當日收33.75（近期高點）</td></tr>
+          <tr><td style="font-size:13px">52週區間</td><td style="font-weight:700">28.05–36.60元</td><td style="font-size:12px;color:#16a34a">全年波幅僅約 ±15%</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px;font-size:12px;background:#fef9c3;padding:10px;border-radius:8px;color:#713f12">
+        <strong>流動性是這檔的實質風險。</strong>5 日均量約 102 張、金額約 334 萬元／日，<strong>單日成交金額不到前面幾檔 AI 股的千分之一</strong>。這代表：① 大額進出會造成明顯滑價；② 若遇利空想出場，可能找不到買方。<br><br>
+        <strong>但另一面：波動也極低。</strong>52 週區間僅 28.05–36.60 元（約 ±15%），對照台燿 52 週波幅逾 500%、川湖逾 400%。<strong>這是一檔「不會讓你一夜暴富、也不會一夜腰斬」的股票</strong>——風險性質與前面幾檔完全不同。
+      </div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:12px">🏷️ 沒有法人覆蓋，代表什麼？</h4>
+      <table>
+        <thead><tr><th>項目</th><th>狀況</th></tr></thead>
+        <tbody>
+          <tr><td style="font-size:13px">外資研究報告</td><td><span class="tag tag-red">未見</span></td></tr>
+          <tr><td style="font-size:13px">券商目標價</td><td><span class="tag tag-red">未見</span></td></tr>
+          <tr><td style="font-size:13px">FactSet 共識</td><td><span class="tag tag-red">未見</span></td></tr>
+          <tr><td style="font-size:13px">公司法說會</td><td><span class="tag tag-green">有（2026/08/12）</span></td></tr>
+          <tr><td style="font-size:13px">主要資訊來源</td><td style="font-size:12px">公司法說會、新聞報導、<strong>個人投資部落格</strong></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:10px;font-size:12px;background:#ffedd5;padding:10px;border-radius:8px;color:#7c2d12">
+        <strong>這是雙面刃，兩面都要知道。</strong><br><br>
+        <strong>🔻 壞處：</strong>沒有專業機構持續追蹤與驗證，市場上流通的估算多來自個人部落格（例如本報告質疑的「EPS 90 元」）。<strong>資訊品質參差，容易被過度樂觀的數字誤導。</strong><br><br>
+        <strong>🔺 好處：</strong>這也正是「資產股」有機會被低估的原因——<strong>法人不覆蓋、散戶算不清土地價值，價格就可能長期偏離內在價值</strong>。但要靠這個賺錢，前提是你自己願意做功課、並且抱得夠久。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 08 技術面 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">8</span> 技術分析</div>
+
+  <div class="alert alert-rust" style="margin-bottom:12px">
+    <span style="font-size:18px">📏</span>
+    <div><strong>技術面評估：布林帶寬僅 1.9%——本系列觀察過最極端的收斂</strong><br>
+    四條均線 MA5(32.39)／MA10(32.41)／MA20(32.39)／MA60(32.28) <strong>彼此相差僅 0.13 元（0.4%）</strong>，幾乎完全重疊；布林通道上軌 32.70、下軌 32.08，<strong>帶寬僅 1.9%</strong>（對照：台燿 29.8%、嘉澤 20.9%、信驊 18.0%、川湖 13.5%）。系統已標示「<strong>即將突破</strong>」。<br><br>
+    <strong>意義：</strong>股價已在極窄區間盤整超過一個月，能量高度壓縮。<strong>這類型態通常預示變盤，但不告訴你方向</strong>——向上或向下都有可能。今日股價 32.85 已站上布林上軌 32.70，是偏多的初步跡象，但<strong>需要量能配合才算有效突破</strong>（今日量能尚未放大）。</div>
+  </div>
+
+  <div class="tech-grid">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">📈 均線系統（四線幾乎重疊）</h4>
+      <table>
+        <tbody>
+          <tr><td style="font-size:13px;color:var(--muted)">現價</td><td style="font-weight:700;color:#16a34a;font-size:14px">32.85元</td><td><span class="tag tag-green">站上全部均線</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA10</td><td style="font-weight:700">32.41元</td><td style="font-size:12px;color:#16a34a">支撐 -1.3%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA5</td><td style="font-weight:700">32.39元</td><td style="font-size:12px;color:#16a34a">支撐 -1.4%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA20</td><td style="font-weight:700">32.39元</td><td style="font-size:12px;color:#16a34a">支撐 -1.4%</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">MA60</td><td style="font-weight:700">32.28元</td><td style="font-size:12px;color:#16a34a">支撐 -1.7%</td></tr>
+          <tr style="background:#ffedd5"><td style="font-size:13px;color:var(--muted)">四線最大差距</td><td colspan="2"><strong style="color:var(--accent)">僅 0.13 元（0.4%）— 極度糾結</strong></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:var(--muted)">均線完全纏繞，<strong>任何方向的突破都可能帶出一段趨勢</strong></div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">📊 動能指標</h4>
+      <table>
+        <tbody>
+          <tr><td style="font-size:13px;color:var(--muted)">MACD</td><td style="font-weight:700">+0.01</td><td><span class="tag tag-yellow">數值趨近於0</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">訊號線</td><td>+0.02</td><td style="font-size:12px;color:var(--muted)">死叉但幅度極微</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">OSC柱</td><td>-0.02</td><td style="font-size:12px;color:var(--muted)"><strong>幾無訊號意義</strong></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">RSI</td><td style="font-weight:700">51.23</td><td><span class="tag tag-blue">中性</span></td></tr>
+          <tr style="background:#ffedd5"><td style="font-size:13px;color:var(--muted)">布林上軌</td><td style="font-weight:700;color:var(--accent)">32.70元</td><td><span class="tag tag-rust">已站上</span></td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">布林中軌</td><td>32.39元</td><td style="font-size:12px;color:var(--muted)">= MA20</td></tr>
+          <tr><td style="font-size:13px;color:var(--muted)">布林下軌</td><td>32.08元</td><td style="font-size:12px;color:#16a34a">支撐</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:12px;color:#d97706">⚠️ MACD 絕對值僅 0.01–0.02，<strong>在這種盤整格局下訊號不具參考價值</strong></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">🗺️ 關鍵價位表</h4>
+    <table>
+      <thead><tr><th>價位</th><th>意義</th><th>方向</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:700">41.3元</td><td>P/B 1.5x（傳產資產股常見上緣，本報告推算）</td><td><span class="tag tag-green">長線目標</span></td></tr>
+        <tr><td style="font-weight:700">36.6元</td><td><strong>52週高點</strong></td><td><span class="tag tag-yellow">首要壓力</span></td></tr>
+        <tr><td style="font-weight:700">34.1元</td><td>08/26 波段高點（當日爆量 50.8 萬股）</td><td><span class="tag tag-yellow">近壓</span></td></tr>
+        <tr><td style="font-weight:700">33.05–33.75元</td><td>8月下旬套牢區</td><td><span class="tag tag-yellow">解套賣壓</span></td></tr>
+        <tr style="background:#ffedd5"><td style="font-weight:700">32.85元</td><td><strong>現價（盤中）</strong>｜已站上布林上軌</td><td><span class="tag tag-rust">關鍵位</span></td></tr>
+        <tr><td style="font-weight:700">32.70元</td><td>布林上軌（突破需量能確認）</td><td><span class="tag tag-rust">多空分界</span></td></tr>
+        <tr style="background:#dcfce7"><td style="font-weight:700">32.28–32.41元</td><td><strong>四條均線密集帶（極強支撐）</strong></td><td><span class="tag tag-green">支撐</span></td></tr>
+        <tr><td style="font-weight:700">32.08元</td><td>布林下軌</td><td><span class="tag tag-green">支撐</span></td></tr>
+        <tr><td style="font-weight:700">31.75元</td><td>近一個月低點</td><td><span class="tag tag-red">短線防線</span></td></tr>
+        <tr><td style="font-weight:700">28.05元</td><td>52週低點</td><td><span class="tag tag-red">重大支撐</span></td></tr>
+        <tr><td style="font-weight:700">27.55元</td><td><strong>每股淨值（P/B = 1.0x）</strong></td><td><span class="tag tag-red">價值底線</span></td></tr>
+      </tbody>
+    </table>
+    <canvas id="pbChart" width="560" height="160" style="width:100%;height:auto;margin-top:16px;"></canvas>
+    <div class="chart-note">本檔以 P/B 評價（而非 P/E）：現價 1.19x，介於淨值（1.0x）與傳產資產股常見上緣（1.5x）之間</div>
+  </div>
+</section>
+
+<!-- ===== 09 融資融券 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">9</span> 融資融券</div>
+  <div class="card">
+    <div class="alert alert-yellow">
+      <span style="font-size:18px">ℹ️</span>
+      <div>公開資料庫（FinMind，2026/10/07）本次回傳之融資融券欄位為空值。本節<strong>不以「餘額為 0」作結論</strong>，改採間接訊號趨勢判讀，並說明官方查詢管道。</div>
+    </div>
+    <div style="margin-top:10px">
+      <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">📉 間接訊號趨勢判讀</h4>
+      <table>
+        <thead><tr><th>觀察角度</th><th>實際數據</th><th>對信用交易的推論</th></tr></thead>
+        <tbody>
+          <tr><td style="font-size:13px">極窄幅盤整</td><td style="font-size:13px">近一個月 31.75–33.05（區間僅 4.1%）</td><td style="font-size:13px"><strong>無價差可做，融資追價誘因極低</strong></td></tr>
+          <tr><td style="font-size:13px">量能極小</td><td style="font-size:13px">5日均量約 102 張、金額約 334 萬元</td><td style="font-size:13px">信用交易總量必然也很小，<strong>斷頭風險低</strong></td></tr>
+          <tr><td style="font-size:13px">低股價特性</td><td style="font-size:13px">一張僅約 3.3 萬元</td><td style="font-size:13px">門檻低、散戶可直接現股買進，<strong>不需動用融資</strong></td></tr>
+          <tr><td style="font-size:13px">題材時程長</td><td style="font-size:13px">核心催化劑在 2027–2028</td><td style="font-size:13px">融資有利息成本，<strong>不適合長抱型題材</strong>，自然壓抑融資需求</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;font-size:13px;color:var(--muted)">
+        📝 <strong>綜合研判：</strong>與前面幾檔 AI 高價股完全相反——大洋的信用交易風險應屬<strong>本系列最低</strong>。股價低、波動小、題材長線，都不利於融資操作。<strong>這檔的真正風險不在槓桿，而在「流動性」與「等待時間」。</strong><br>
+        🔎 <strong>精確查詢管道：</strong>台灣證券交易所官網「融資融券餘額」每日盤後公告，或 Goodinfo!、玩股網之個股信用交易頁面，輸入代號 1321 可查得逐日餘額與資券比。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10 研究員辯論 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">10</span> 研究員辯論｜看多 vs 看空</div>
+
+  <div class="alert alert-rust" style="margin-bottom:12px">
+    <span style="font-size:18px">⚖️</span>
+    <div><strong>多空辯論量化權重：看多 50% vs 看空 50%</strong>——<strong>本系列首次出現完全平手</strong>。<br>
+    原因是這檔的多空論點<strong>不在同一個時間維度上</strong>：多方講的是 2027–2030 年的土地開發利益（可能上看 EPS 30–40 元）；空方講的是現在的獲利品質（九成業外、其中 1.68 億是別家公司股價帶來的未實現利益）與流動性。<strong>兩邊都對，差別只在你能不能等。</strong></div>
+  </div>
+
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <h4><span style="background:#dcfce7;color:#16a34a;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:14px">🐂</span> 看多研究員（6點）</h4>
+      <ul>
+        <li><span class="bull-icon">▲</span><div><strong>中和案已過最難的關卡（最強論點）：</strong>9,912 坪土地<strong>都審會議已通過</strong>、2026/5 建照掛件、已完成市地重劃，預計 <strong>2026 下半年取得建照、2027 Q1 公開銷售</strong>。核定容積 <strong>288%</strong>（高於住三 225%）。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>潛在利益相當於現在整個市值：</strong>本報告推算中和案稅後利益約 <strong>75–90 億元</strong>、EPS 貢獻約 33–40 元；而大洋目前市值僅 <strong>72.4 億元</strong>。媒體亦報導地目變更「增值利益超過 120 億元」，數量級可互相印證。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>估值未反映土地價值：</strong>P/B 僅 <strong>1.19 倍</strong>、每股淨值 27.55 元。而土地多為 1965 年以來取得的工業用地，<strong>帳面成本遠低於市價</strong>——真實淨值應顯著高於帳面。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>本業確實在改善（非假象）：</strong>H1'26 營收<strong>微減</strong> 3,985 萬元，但營業毛利<strong>增加 5,700 萬元</strong>、營業淨利<strong>增加約 5,000 萬元</strong>；OPM 在連 6 季為負後轉正。<strong>是靠成本與產品組合改善，不是衝量。</strong></div></li>
+        <li><span class="bull-icon">▲</span><div><strong>第二個案子接棒：</strong>台北文山興隆段都更案已於 2026/3 掛件、都審中，預計 <strong>2028 年公開銷售</strong>，形成 2027→2028 的連續題材。</div></li>
+        <li><span class="bull-icon">▲</span><div><strong>法人未覆蓋＝可能被低估：</strong>市值僅 72.4 億、無外資與券商追蹤，<strong>價格有機會長期偏離內在價值</strong>。且股價波動極低（52 週僅 ±15%），下檔有淨值 27.55 元作為心理支撐。</div></li>
+      </ul>
+    </div>
+    <div class="analyst-card">
+      <h4><span style="background:#fee2e2;color:#dc2626;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:14px">🐻</span> 看空研究員（6點）</h4>
+      <ul>
+        <li><span class="bear-icon">▼</span><div><strong>獲利品質極差（最強論點）：</strong>Q2'26 EPS 0.61 元中，<strong>約 92% 來自業外</strong>，營業利益僅約 1,040 萬元。而 H1 業外最大一筆是<strong>富致科技（6642）股價上漲的評價利益 1.68 億元——未實現，且會隨該股價反轉成虧損</strong>。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>本業幾乎不賺錢：</strong>OPM 僅 1–2%、毛利率 11.7%。FY2025 全年<strong>虧損 1.25 元</strong>，TTM EPS 僅 <strong>0.13 元</strong>。月營收 2.7–3.7 億區間震盪、<strong>6 月起連三個月月減</strong>，本業沒有任何成長故事。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>題材兌現時程極長：</strong>中和案 2027 Q1 才公開銷售，<strong>預售屋需完工交屋才認列收入，實際入帳可能落在 2029–2030 年</strong>，且分期分批。<strong>現在買進等於要抱 3–4 年</strong>，期間資金完全無效率。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>市場流傳的數字嚴重高估：</strong>網路估算「EPS 90 元」經本報告推算應為 <strong>33–40 元</strong>，<strong>差距逾一倍</strong>。小型股缺乏法人驗證，投資人極易被過度樂觀的部落格數字誤導而追高。</div></li>
+        <li><span class="bear-icon">▼</span><div><strong>流動性風險實質存在：</strong>5 日均量僅約 <strong>102 張、金額約 334 萬元／日</strong>，9/02 甚至只有 32 張。<strong>大額進出必然滑價；遇利空時可能找不到買方。</strong></div></li>
+        <li><span class="bear-icon">▼</span><div><strong>房地產政策是最大外部變數：</strong>核心價值來自土地開發，<strong>央行信用管制、打房政策、預售屋新制都可能直接衝擊銷售與獲利</strong>。且中和案曾與冠德分手、7 個月後才改與馥華合作，<strong>說明這類案子變數不小、時程容易延宕</strong>。</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">💬 給一般投資人的話</h4>
+    <p style="font-size:13px;line-height:1.75;color:var(--text)">
+    大洋塑膠 1965 年就成立了，做的是塑膠布、PVC 水管、PU 合成皮這些東西。<strong>但如果你是看了「它要蓋房子」才來的，那你的方向是對的——這檔股票的重點真的不在塑膠。</strong><br><br>
+    <strong>先講最容易誤解的地方。</strong>你如果去查，會看到大洋的本益比是 <strong>252 倍</strong>，嚇一跳以為超級貴。但那是因為它過去一年每股只賺 0.13 元，分母太小，數字就被放大了。<strong>這檔要看的不是本益比，是「股價淨值比」——現在 1.19 倍，每股淨值 27.55 元。</strong>意思是：市場現在付的價格，只比它的帳面資產多了 19%。<br><br>
+    <strong>第二件事，也是我最想提醒的。</strong>大洋今年上半年「轉虧為盈」賺了 0.77 元，聽起來很棒。但拆開來看——<strong>第二季賺的錢裡，大概九成不是本業賺的</strong>。本業（賣塑膠）只賺了一千多萬，其他一億多是「業外」，其中最大一筆是<strong>它持有的另一家公司「富致科技」股價上漲，帳上多出來的 1.68 億評價利益</strong>。<br><br>
+    <strong>這筆錢還沒變成現金，而且富致股價跌回去，大洋帳上就會變成虧損。</strong>所以「大洋轉虧為盈」是真的，但這個「盈」很脆弱，跟它自己做得好不好關係不大。<br><br>
+    <strong>那真正的故事是什麼？是中和那塊地。</strong>9,912 坪的舊廠區要改建住宅，都審已經通過了，預計 2026 下半年拿到建照、<strong>2027 年第一季開始賣房子</strong>。這塊地的開發利益，我自己粗算下來稅後大概 75–90 億元，換成每股約 <strong>33–40 元</strong>——<strong>而大洋現在整間公司的市值才 72.4 億。</strong><br><br>
+    <strong>但網路上流傳的「EPS 90 元」我認為太樂觀了</strong>，那個數字八成是把整個開發案（包括建商分到的那一半）都算成大洋的。而且更關鍵的是：<strong>賣預售屋的錢要等房子蓋好交屋才能認列</strong>，2027 年開始賣，真正入帳可能要到 2029–2030 年。<strong>你現在買，是要抱三四年的。</strong><br><br>
+    <strong>實務建議三句話：</strong>① <strong>這是長線資產題材，不是波段股</strong>——如果你三個月內要用到這筆錢，不適合；② 技術上現在很特別，<strong>四條均線幾乎疊在一起、布林帶寬只有 1.9%</strong>（我做過最窄的），這種「極度壓縮」通常會變盤，<strong>但往上往下都有可能</strong>，可以等它表態再動；③ <strong>一張才 3.3 萬元，門檻低，但日均量只有約 100 張</strong>——買太多會推高自己的成本，想賣時也可能賣不掉，<strong>部位要抓小</strong>。下檔大致可以用每股淨值 27.55 元當心理防線。
+    </p>
+  </div>
+</section>
+
+<!-- ===== 11 風控 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">11</span> 風控評估｜六維評分</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div>
+        <div class="score-row"><span class="score-label">估值風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:45%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div></div><span class="score-num" style="color:#d97706">4.5</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">P/B 1.19x 不貴、下檔有淨值27.55元；惟土地價值未實現，P/E 252x 反映本業幾乎不賺錢（權重30%）</div>
+
+        <div class="score-row"><span class="score-label">財務風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:linear-gradient(90deg,#dc2626,#ef4444)"></div></div><span class="score-num" style="color:#dc2626">7.0</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px"><strong>Q2 獲利92%來自業外，其中1.68億為富致股價未實現評價利益</strong>；本業OPM僅1–2%（權重25%）</div>
+
+        <div class="score-row"><span class="score-label">流動性風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:linear-gradient(90deg,#dc2626,#ef4444)"></div></div><span class="score-num" style="color:#dc2626">6.0</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">市值72.4億、5日均量僅約102張／334萬元；<strong>大額進出必然滑價</strong>（權重10%）</div>
+      </div>
+      <div>
+        <div class="score-row"><span class="score-label">產業風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:55%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div></div><span class="score-num" style="color:#d97706">5.5</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">傳統塑膠業成長停滯；土地題材<strong>兌現時程長達3–4年</strong>且曾更換合建對象（權重15%）</div>
+
+        <div class="score-row"><span class="score-label">總經風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:65%;background:linear-gradient(90deg,#dc2626,#ef4444)"></div></div><span class="score-num" style="color:#dc2626">6.5</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px"><strong>房地產政策直接衝擊核心題材</strong>——央行信用管制、打房、預售屋新制（權重10%）</div>
+
+        <div class="score-row"><span class="score-label">籌碼風險</span><div class="score-bar-bg"><div class="score-bar-fill" style="width:50%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div></div><span class="score-num" style="color:#d97706">5.0</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;padding-left:102px">布林帶寬1.9%極度收斂、變盤方向未定；量能小、無法人覆蓋（權重10%）</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;margin-top:16px;padding:16px;background:var(--bg);border-radius:10px;flex-wrap:wrap">
+      <div style="text-align:center;flex-shrink:0">
+        <div style="font-size:40px;font-weight:900;color:#d97706">5.5</div>
+        <div style="font-size:11px;color:var(--muted)">加權綜合風險</div>
+      </div>
+      <div style="flex:1;min-width:240px">
+        <div style="font-size:14px;font-weight:800;color:#d97706;margin-bottom:4px">中等風險｜低波動・低流動性・長時程的資產題材股</div>
+        <div style="font-size:13px;color:var(--muted)">加權計算：4.5×30% + 7.0×25% + 6.0×10% + 5.5×15% + 6.5×10% + 5.0×10% ≈ <strong>5.7</strong>，考量 52 週波幅僅 ±15%、布林帶寬 1.9% 之<strong>極低波動特性</strong>後<strong>微調至 5.5</strong>。<br>
+        <strong>⚠️ 這個 5.5 與前面幾檔的 5.5 性質完全不同。</strong>川湖、信驊的風險是「<strong>兩天跌 15–19%</strong>」；大洋的風險是「<strong>買了之後三年不動、想賣時沒人買、而帳面獲利還會隨另一檔股票波動</strong>」。建議：以長線資產配置心態持有、部位不超過 5–10%、分批買進避免滑價、以每股淨值 27.55 元為心理防線。</div>
+      </div>
+      <div style="flex-shrink:0"><span class="tag tag-yellow" style="font-size:13px;padding:6px 14px">中等風險</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 12 三段式策略 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">12</span> 台股三段式策略</div>
+  <div class="strategy-grid">
+    <div class="strat-card attack">
+      <h3>🔴 進攻策略</h3>
+      <div class="strat-item"><span>目標：</span><span>36.6–41.3元（+11%–+26%）</span></div>
+      <div class="strat-item"><span>前提：</span><span><strong>帶量突破 32.70（布林上軌）</strong>且站穩</span></div>
+      <div class="strat-item"><span>入場：</span><span>量能放大至 5 日均量 2 倍以上再進</span></div>
+      <div class="strat-item"><span>倉位：</span><span>5–8%（小型股上限）</span></div>
+      <div class="strat-item"><span>停損：</span><span>32.08元（布林下軌，-2.3%）</span></div>
+      <div style="margin-top:10px;font-size:12px;background:rgba(255,255,255,0.18);border-radius:8px;padding:8px">⚡ 極窄盤整後的突破可能帶出一段，<strong>但必須有量</strong>——無量突破在小型股常是假突破</div>
+    </div>
+    <div class="strat-card balance">
+      <h3>🟠 均衡策略（推薦）</h3>
+      <div class="strat-item"><span>定位：</span><span><strong>長線資產配置</strong>，非波段操作</span></div>
+      <div class="strat-item"><span>入場：</span><span>回測 <strong>32.08–32.41</strong>（均線密集帶）分批</span></div>
+      <div class="strat-item"><span>倉位：</span><span>5–10%，分 3–4 批避免滑價</span></div>
+      <div class="strat-item"><span>持有期：</span><span><strong>3–4 年</strong>（至中和案認列）</span></div>
+      <div class="strat-item"><span>心理防線：</span><span>27.55元（每股淨值）</span></div>
+      <div style="margin-top:10px;font-size:12px;background:rgba(255,255,255,0.18);border-radius:8px;padding:8px">⚖️ <strong>本報告首選：</strong>把它當「買一塊中和的地」，而不是買一檔股票</div>
+    </div>
+    <div class="strat-card defend">
+      <h3>🔵 防守策略</h3>
+      <div class="strat-item"><span>現階段：</span><span>觀望，等變盤方向確認</span></div>
+      <div class="strat-item"><span>進場條件：</span><span>①建照取得公告 <strong>或</strong> ②2027 Q1 開案銷售率佳</span></div>
+      <div class="strat-item"><span>倉位：</span><span>0–5%</span></div>
+      <div class="strat-item"><span>觀察重點：</span><span>富致(6642)股價（直接影響大洋帳面獲利）</span></div>
+      <div class="strat-item"><span>關鍵防線：</span><span>28.05元（52週低點）不破則結構完整</span></div>
+      <div style="margin-top:10px;font-size:12px;background:rgba(255,255,255,0.18);border-radius:8px;padding:8px">🛡️ 適合不願承擔 3–4 年等待期者；建照取得是風險大幅下降的分水嶺</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px">🗓️ 催化劑時程表</h4>
+    <table>
+      <thead><tr><th>時間</th><th>事件</th><th>方向</th></tr></thead>
+      <tbody>
+        <tr><td>隨時</td><td><strong>極窄盤整的變盤方向</strong>——帶寬僅 1.9%，突破需量能確認</td><td><span class="tag tag-yellow">技術觸發</span></td></tr>
+        <tr><td>2026 下半年</td><td><strong>中和案取得建照</strong>——風險大幅下降的分水嶺</td><td><span class="tag tag-green">最關鍵里程碑</span></td></tr>
+        <tr><td>持續</td><td>富致科技（6642）股價走勢——<strong>直接影響大洋每季帳面獲利</strong></td><td><span class="tag tag-red">雙向變數</span></td></tr>
+        <tr><td>2027 Q1</td><td><strong>中和案第一期公開銷售</strong>——銷售率將決定市場對開發利益的定價</td><td><span class="tag tag-green">核心催化劑</span></td></tr>
+        <tr><td>2028年</td><td>台北興隆段都更案公開銷售（規模較小）</td><td><span class="tag tag-green">第二棒</span></td></tr>
+        <tr><td>2029–2030</td><td><strong>中和案完工交屋、收入實際認列</strong>——真正入帳的時點</td><td><span class="tag tag-rust">終局兌現</span></td></tr>
+        <tr><td>隨時</td><td>央行信用管制／打房政策變動；本業月營收能否止跌</td><td><span class="tag tag-red">下行風險</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 13 名詞小教室 ===== -->
+<section>
+  <div class="section-title"><span class="section-num">13</span> 名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">股價淨值比（P/B）</div>
+      <div class="glossary-def">股價 ÷ 每股淨值。<strong>當公司幾乎不賺錢時，本益比會失真，這時要改看 P/B。</strong>大洋 P/B 1.19 倍、每股淨值 27.55 元，意思是你付的價格只比帳面資產多 19%。資產股的常見區間約 0.8–1.5 倍。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">為什麼本益比 252 倍沒有意義</div>
+      <div class="glossary-def">本益比 = 股價 ÷ 每股盈餘。大洋過去一年每股只賺 0.13 元，<strong>分母太小，除出來的數字就會爆炸</strong>。這不代表股票貴，而是代表<strong>公司現在幾乎不靠本業賺錢</strong>——評價基礎要換成資產，不是獲利。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">業外評價利益（未實現）</div>
+      <div class="glossary-def">公司持有的其他公司股票，<strong>依市價評估產生的帳面損益</strong>。大洋 H1 有 1.68 億來自持有富致科技（6642）股價上漲。關鍵是：<strong>這筆錢還沒賣出、沒變成現金，股價跌回去就會變成虧損</strong>。看財報時要把它和本業分開。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">合建分回</div>
+      <div class="glossary-def">地主出土地、建商出資金與營建，蓋好後<strong>按約定比例分配房屋</strong>（常見 50:50 上下）。地主好處是不用出錢、風險低；代價是只能拿到一半左右的成果。大洋中和案即採此模式。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">容積率</div>
+      <div class="glossary-def">土地上可蓋的總樓地板面積 ÷ 土地面積。<strong>容積愈高，同一塊地能蓋愈多、賣愈多。</strong>大洋中和廠核定容積 288%，高於一般住三的 225%——這是這塊地價值的關鍵。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">預售屋收入認列時點</div>
+      <div class="glossary-def">台灣會計準則下，<strong>預售屋通常要等完工交屋才能認列收入與獲利</strong>。所以「2027 年開始賣」不等於「2027 年賺到錢」——實際入帳可能延後 2–3 年。<strong>這是資產股投資最常被低估的時間成本。</strong></div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">布林帶寬極度收斂</div>
+      <div class="glossary-def">布林通道上下軌距離占中軌的百分比。一般 10–15%，大洋目前<strong>僅 1.9%</strong>——代表股價已在極窄區間盤整很久、能量高度壓縮。<strong>這種型態通常預示變盤，但不會告訴你方向</strong>，要等突破配合量能才能判斷。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">法人不覆蓋的雙面刃</div>
+      <div class="glossary-def">小型股常無外資與券商研究報告。<strong>壞處</strong>：缺乏專業驗證，市場流通的估算可能來自個人部落格、品質參差（例如本報告質疑的「EPS 90 元」）。<strong>好處</strong>：正因無人追蹤，價格才可能長期低於內在價值——但要靠這個賺錢，你得自己算得出來，而且抱得住。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 14 免責聲明 ===== -->
+<div class="disclaimer">
+  <strong>⚠️ 免責聲明</strong>　本報告由 AI 分析系統於 2026 年 10 月 8 日自動生成，純供學術研究與資訊參考，<strong>不構成任何投資建議或勸誘買賣證券之行為</strong>。股票投資涉及風險，過去績效不代表未來表現。投資人應自行研判並承擔投資盈虧責任。<br><br>
+  <strong>🔴 數據性質說明：</strong>①封面 32.85 元為 10/08 盤中價（開 32.50／高 32.85／低 32.50），昨收 32.45 元；②技術指標係<strong>計算至 10/07 收盤</strong>；③每股淨值 27.55 元係由現價 32.85 元 ÷ 股價淨值比 1.1923 <strong>回推之推算值</strong>；④<strong>中和開發案之可售坪數倍數（×1.5）、合建分回比例（50%）、房價單價（60–70 萬／坪）、稅負比例均為本報告自行假設</strong>，所得「分回貨值 128–150 億元、稅後 75–90 億元、EPS 貢獻 33–40 元」為<strong>推算值，公司並未公告任何開發利益預估數字</strong>，實際結果可能顯著高於或低於本推算；⑤文中提及之「總銷 600 億元、大洋分回 300 億元、EPS 約 90 元」係<strong>網路個人研究估算</strong>，本報告引用僅為對照與質疑說明，<strong>不代表認同其合理性</strong>；⑥「中和廠地目變更增值利益超過 120 億元」為媒體報導內容；⑦TTM EPS 0.13 元係 Q3'25～Q2'26 四季加總；⑧本業／業外貢獻拆解（約 8% ／ 92%）係以 Q2'26 營收 10.20 億元 × OPM 1.02% 推估營業利益，與 EPS 推估淨利相比所得之<strong>推算值</strong>；⑨<strong>本檔未見外資或主要券商出具研究報告與目標價</strong>，故本報告無法人目標價可引用，所列「合理區間 27.6–41.3 元」係本報告依 P/B 1.0–1.5 倍推算。<br><br>
+  <strong>資料來源：</strong>即時報價 富果 Fugle API ｜ 歷史K線・技術指標・月營收・季度財報 FinMind ｜ 法說會、業外明細與土地開發案進度 WebSearch（富果直送法說會備忘錄、經濟日報／聯合新聞網、自由財經、ETtoday 房產雲、樂屋網、Goodinfo!、nStock、CMoney）｜ 報告日期：2026-10-08（首次報告）<br>
+  <strong>月營收月份對應說明：</strong>資料庫申報月份減 1 為實際賺取月份，本報告已統一換算為實際月份呈現。<br>
+  <strong>資料缺漏說明：</strong>本次擷取三大法人與融資融券欄位回傳空值（資料庫未收錄），第 7、9 節已改採量能結構與間接訊號判讀，並標明官方查詢管道，未以「0」作為實際數值呈現。
+</div>
+
+</div><!-- /container -->
+
+<script>
+function drawBarChart(id,labels,data,barColor,accentColor,negColor){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=46,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||0.5;
+  var lo=(min<0)?(min-pad):Math.max(0,min-pad);
+  var hi=max+pad,range=hi-lo;
+  var n=data.length;
+  var barW=chartW/n*0.58,gap=chartW/n;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(2),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0){ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();}
+  for(var i=0;i<n;i++){
+    var x=PL+i*gap+(gap-barW)/2;
+    var vy=PT+chartH-((data[i]-lo)/range*chartH);
+    var top=Math.min(vy,zeroY),bh=Math.abs(vy-zeroY);
+    if(bh<1.5)bh=1.5;
+    var isLast=(i===n-1);
+    var color=(data[i]<0)?(negColor||'#dc2626'):(isLast?accentColor:barColor);
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,top,barW,bh,3);ctx.fillStyle=color;ctx.fill();}
+    else{ctx.fillStyle=color;ctx.fillRect(x,top,barW,bh);}
+    ctx.fillStyle=(data[i]<0)?'#dc2626':(isLast?accentColor:'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(2),x+barW/2,(data[i]<0)?(top+bh+11):(top-4));
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    var lx=PL+i*gap+gap/2,ly=PT+chartH+14;
+    if(labels[i].length>4){ctx.save();ctx.translate(lx,ly);ctx.rotate(-Math.PI/6);ctx.fillText(labels[i],0,0);ctx.restore();}
+    else ctx.fillText(labels[i],lx,ly);
+  }
+}
+function drawLineChart(id,labels,data,color,negColor){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=46,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||1;
+  var lo=min-pad,hi=max+pad,range=hi-lo;
+  var n=data.length;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0&&hi>0){
+    ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);
+    ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();
+  }
+  var pts=[];
+  for(var i=0;i<n;i++)pts.push({x:PL+i*chartW/(n-1),y:PT+chartH-(data[i]-lo)/range*chartH});
+  var base=(lo<0&&hi>0)?zeroY:(PT+chartH);
+  ctx.beginPath();ctx.moveTo(pts[0].x,base);
+  for(var i=0;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.lineTo(pts[n-1].x,base);ctx.closePath();
+  var grad=ctx.createLinearGradient(0,PT,0,PT+chartH);
+  var hex=color.slice(1);
+  var r=parseInt(hex.slice(0,2),16),g2=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  grad.addColorStop(0,'rgba('+r+','+g2+','+b+',0.25)');
+  grad.addColorStop(1,'rgba('+r+','+g2+','+b+',0.02)');
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+  for(var i=1;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+  for(var i=0;i<n;i++){
+    var isLast=(i===n-1);
+    var dotCol=(data[i]<0&&negColor)?negColor:color;
+    ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,isLast?5:3,0,Math.PI*2);
+    ctx.fillStyle=isLast?dotCol:'#fff';ctx.fill();
+    ctx.strokeStyle=dotCol;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=isLast?dotCol:((data[i]<0)?'#dc2626':'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(2),pts[i].x,pts[i].y+(isLast?-10:-8));
+  }
+  for(var i=0;i<n;i++){
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    ctx.fillText(labels[i],pts[i].x,PT+chartH+14);
+  }
+}
+function drawHBarChart(id,labels,data,colors,suffix){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var max=Math.max.apply(null,data)*1.34;
+  var n=labels.length;
+  var rowH=H/(n+0.6);
+  var PL=196,PR=56;
+  for(var i=0;i<n;i++){
+    var y=rowH*(i+0.3)+rowH*0.12;
+    var bh=rowH*0.66;
+    ctx.fillStyle='#f1f5f9';ctx.fillRect(PL,y,(W-PL-PR),bh);
+    var bw=(data[i]/max)*(W-PL-PR);
+    var col=colors?colors[i]:'#9a3412';
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(PL,y,bw,bh,4);ctx.fillStyle=col;ctx.fill();}
+    else{ctx.fillStyle=col;ctx.fillRect(PL,y,bw,bh);}
+    ctx.fillStyle='#1e293b';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(labels[i],PL-8,y+bh/2+4);
+    ctx.fillStyle='#1e293b';ctx.font='bold 12px Arial';ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(2)+(suffix||'x'),PL+bw+6,y+bh/2+4);
+  }
+}
+window.addEventListener('DOMContentLoaded',function(){
+  drawBarChart('epsChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [-0.11,0.02,-0.21,-0.40,-0.13,-0.51,0.16,0.61],
+    '#fdba74','#9a3412','#dc2626');
+  drawLineChart('revChart',
+    ['3月','4月','5月','6月','7月','8月'],
+    [3.73,3.52,3.62,3.06,2.97,2.71],
+    '#9a3412');
+  drawLineChart('opmChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [-6.21,-2.68,-0.72,-1.22,-6.19,-7.61,2.37,1.02],
+    '#16a34a','#dc2626');
+  drawHBarChart('pbChart',
+    ['大洋 現價 P/B','每股淨值（P/B 1.0x）','資產股常見上緣（1.5x）','台股大盤 P/B（推算）'],
+    [1.19,1.00,1.50,2.20],
+    ['#9a3412','#64748b','#16a34a','#2563eb']);
+});
+</script>
+</body>
+</html>
