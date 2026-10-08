@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股整體盤勢結構分析 2026/10/08</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d1117; color: #e6edf3; font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif; font-size: 14px; line-height: 1.6; }
+  .header { background: linear-gradient(135deg, #0d1f38 0%, #0d1117 65%); border-bottom: 2px solid #388bfd; padding: 20px 24px; }
+  .header h1 { font-size: 23px; font-weight: 700; }
+  .header .sub { font-size: 12px; color: #8b949e; margin-top: 5px; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin: 3px 4px 0 0; }
+  .badge-ok { background: #0f2d1a; color: #3fb950; border: 1px solid #3fb950; }
+  .badge-warn { background: #2d2008; color: #e3b341; border: 1px solid #e3b341; }
+  .badge-danger { background: #3d1a1a; color: #f85149; border: 1px solid #f85149; }
+  .badge-info { background: #1a2540; color: #79c0ff; border: 1px solid #388bfd; }
+  .ticker-bar { background: #161b22; border-bottom: 1px solid #21262d; padding: 11px 24px; display: flex; gap: 20px; flex-wrap: wrap; }
+  .ticker-item { display: flex; flex-direction: column; align-items: center; min-width: 96px; }
+  .ticker-label { font-size: 10px; color: #8b949e; text-align: center; }
+  .ticker-val { font-size: 16px; font-weight: 700; }
+  .up { color: #3fb950; } .dn { color: #f85149; } .neu { color: #e6edf3; }
+  .container { max-width: 1300px; margin: 0 auto; padding: 20px 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  @media (max-width: 950px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  .card { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 17px; margin-bottom: 16px; }
+  .card-title { font-size: 13px; font-weight: 700; color: #8b949e; letter-spacing: 0.5px; margin-bottom: 13px; padding-bottom: 8px; border-bottom: 1px solid #21262d; }
+  .stat-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #21262d; }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-label { color: #8b949e; font-size: 13px; }
+  .stat-val { font-weight: 700; font-size: 13px; text-align: right; }
+  .alert-box { border-radius: 8px; padding: 15px 19px; margin-bottom: 16px; }
+  .alert-red { background: #2d1010; border: 1px solid #f85149; }
+  .alert-yellow { background: #2d2008; border: 1px solid #e3b341; }
+  .alert-green { background: #0f2d1a; border: 1px solid #3fb950; }
+  .alert-blue { background: #0d1f38; border: 1px solid #388bfd; }
+  .alert-title { font-weight: 700; font-size: 15px; margin-bottom: 9px; }
+  .alert-box p { font-size: 13px; color: #c9d1d9; line-height: 1.9; }
+  .section-title { font-size: 17px; font-weight: 700; color: #e6edf3; margin: 28px 0 13px; padding-left: 11px; border-left: 4px solid #388bfd; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #0d1117; color: #8b949e; font-weight: 600; padding: 9px 10px; text-align: left; border-bottom: 1px solid #21262d; white-space: nowrap; }
+  td { padding: 8px 10px; border-bottom: 1px solid #21262d; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+  .highlight { color: #e3b341; font-weight: 700; }
+  .red { color: #f85149; font-weight: 700; }
+  .green { color: #3fb950; font-weight: 700; }
+  .blue { color: #79c0ff; font-weight: 700; }
+  .bar-row { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; font-size: 12px; }
+  .bar-label { width: 108px; color: #c9d1d9; text-align: right; flex-shrink: 0; }
+  .bar-bg { flex: 1; background: #21262d; border-radius: 3px; height: 17px; min-width: 40px; position: relative; }
+  .bar-fill { height: 100%; border-radius: 3px; }
+  .bar-val { width: 118px; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+  .conflict { background: #2d1010; border-left: 4px solid #f85149; border-radius: 6px; padding: 13px 16px; margin-bottom: 11px; }
+  .conflict-t { font-weight: 700; color: #f85149; font-size: 13.5px; margin-bottom: 6px; }
+  .conflict-b { font-size: 13px; color: #c9d1d9; line-height: 1.8; }
+  .debate-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width:760px) { .debate-col { grid-template-columns:1fr; } }
+  .bull-card { background: #0f2d1a; border: 1px solid #3fb950; border-radius: 8px; padding: 15px; }
+  .bear-card { background: #2d1010; border: 1px solid #f85149; border-radius: 8px; padding: 15px; }
+  .debate-head { font-weight: 700; font-size: 14px; margin-bottom: 11px; }
+  .debate-item { display: flex; gap: 8px; margin-bottom: 9px; font-size: 13px; color: #c9d1d9; line-height: 1.7; }
+  .verdict { background: #1c2128; border: 1px solid #388bfd; border-radius: 8px; padding: 16px; margin-top: 13px; }
+  .ratio-bar { display: flex; height: 27px; border-radius: 6px; overflow: hidden; margin: 11px 0; font-size: 12px; font-weight: 700; }
+  .ratio-bear { background: #f85149; color: #0d1117; display: flex; align-items: center; justify-content: center; }
+  .ratio-bull { background: #3fb950; color: #0d1117; display: flex; align-items: center; justify-content: center; }
+  .level-block { background: #0d1117; border-radius: 8px; padding: 11px 15px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .level-left { font-size: 12px; color: #8b949e; }
+  .level-val { font-size: 18px; font-weight: 800; }
+  .note { font-size: 11.5px; color: #6e7681; margin-top: 9px; line-height: 1.7; }
+  .strat-card { border-radius: 8px; padding: 17px; margin-bottom: 12px; }
+  .strat-a { background: #0d1f38; border: 1px solid #388bfd; }
+  .strat-b { background: #1a1a0d; border: 1px solid #e3b341; }
+  .strat-c { background: #1a0d0d; border: 1px solid #6e4040; }
+  .strat-title { font-weight: 700; font-size: 15px; margin-bottom: 9px; }
+  .strat-body { font-size: 13px; color: #c9d1d9; line-height: 1.9; }
+  .mono-big { font-size: 30px; font-weight: 900; line-height: 1.1; }
+  .converge-row { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+  .converge-month { width: 72px; font-size: 12px; color: #8b949e; flex-shrink: 0; }
+  .converge-bar { background: #21262d; border-radius: 3px; height: 20px; flex: 1; }
+  .converge-fill { height: 100%; border-radius: 3px; }
+  .converge-val { width: 128px; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .trigger-item { display: flex; gap: 11px; margin-bottom: 11px; align-items: flex-start; }
+  .trigger-num { width: 24px; height: 24px; border-radius: 50%; background: #f85149; color: #0d1117; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .trigger-body { font-size: 13px; color: #c9d1d9; line-height: 1.75; }
+  .footer { background: #161b22; border-top: 1px solid #21262d; padding: 17px 24px; margin-top: 34px; }
+  .footer p { font-size: 11px; color: #6e7681; line-height: 1.8; }
+  .verdict-box { background: linear-gradient(135deg,#1a1508,#0d1117); border: 2px solid #e3b341; border-radius: 10px; padding: 19px; margin-bottom: 18px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📐 台股整體盤勢結構分析</h1>
+  <div class="sub">2026年10月08日（週四）｜資料擷取 10:28｜距歷史高點 -0.69%，波動與量能雙重收斂</div>
+  <div style="margin-top:9px;">
+    <span class="badge badge-ok">多頭趨勢未破</span>
+    <span class="badge badge-warn">高檔 · 低波動 · 量縮</span>
+    <span class="badge badge-danger">美債 5.28% 一年高</span>
+    <span class="badge badge-danger">美元 102.14 一年高</span>
+    <span class="badge badge-warn">VIX 15.08 極度自滿</span>
+    <span class="badge badge-info">籌碼大輪動：科技 → 傳產</span>
+  </div>
+</div>
+
+<div class="ticker-bar">
+  <div class="ticker-item">
+    <span class="ticker-label">台股加權（10/08 盤中）</span>
+    <span class="ticker-val up">49,477</span>
+    <span class="ticker-label up">近5日 +2.32%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">歷史高（10/06）</span>
+    <span class="ticker-val highlight">49,823</span>
+    <span class="ticker-label dn">距高 -0.69%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">自一年低點</span>
+    <span class="ticker-val up">+87.2%</span>
+    <span class="ticker-label">低點 26,435（25/11/21）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">費半 SOX</span>
+    <span class="ticker-val up">13,066</span>
+    <span class="ticker-label dn">距高 -10.72%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">美債10Y ⚠️</span>
+    <span class="ticker-val dn">5.28%</span>
+    <span class="ticker-label dn">近60日 +15.1%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">美元指數 ⚠️</span>
+    <span class="ticker-val dn">102.14</span>
+    <span class="ticker-label dn">距一年高 -0.03%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">VIX 恐慌</span>
+    <span class="ticker-val up">15.08</span>
+    <span class="ticker-label up">距高 -51.4%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">布蘭特油</span>
+    <span class="ticker-val dn">$101.95</span>
+    <span class="ticker-label dn">近60日 +20.3%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">USD/TWD</span>
+    <span class="ticker-val neu">31.86</span>
+    <span class="ticker-label">區間中性</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 總結論 -->
+<div class="verdict-box">
+  <div class="alert-title" style="color:#e3b341;font-size:17px;">🎯 一句話總結</div>
+  <p style="font-size:14px;color:#e6edf3;line-height:1.95;">
+    <strong>趨勢未破，結構轉脆。</strong>台股多頭排列完整（MA5＞MA10＞MA20＞MA60＞MA120），自 2025/11 低點已漲 <span class="green">+87.2%</span>，但三個獨立訊號同時指向「上漲品質下降」：<br>
+    ① <strong>月振幅連續四個月收斂</strong>：17.74%（7月）→ 6.85%（8月）→ 5.81%（9月）→ 3.04%（10月）<br>
+    ② <strong>量能持續萎縮</strong>：5 日均量為 60 日均量的 <span class="red">0.83 倍</span>，指數創高而成交遞減<br>
+    ③ <strong>領漲面收窄</strong>：NASDAQ 距高僅 -0.22%，但費半距高 <span class="red">-10.72%</span>，漲勢集中在 AMD／NVDA 兩檔<br>
+    加上美債 10Y 5.28% 與美元 102.14 <strong>雙雙站在一年最高</strong>，而 VIX 僅 15.08（距一年高 -51%）—— 這是「無人持有保護的高檔市場」。<br>
+    <strong>結論：不是看空指數的時候，而是降低風險暴露、調整持股結構的時候。</strong>籌碼已明確告訴我們方向：外資同步棄科技、買傳產塑化。
+  </p>
+</div>
+
+<!-- 核心發現一：收斂 -->
+<div class="section-title">📉 核心發現一：月振幅連續四個月收斂（最重要的結構訊號）</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">月振幅收斂軌跡（高低點差 ÷ 低點）</div>
+    <div class="converge-row">
+      <div class="converge-month">2026-04</div>
+      <div class="converge-bar"><div class="converge-fill" style="width:79%;background:#3fb950;"></div></div>
+      <div class="converge-val up">13.97%｜+11.98%</div>
+    </div>
+    <div class="converge-row">
+      <div class="converge-month">2026-05</div>
+      <div class="converge-bar"><div class="converge-fill" style="width:66%;background:#3fb950;"></div></div>
+      <div class="converge-val up">11.77%｜+9.90%</div>
+    </div>
+    <div class="converge-row">
+      <div class="converge-month">2026-06</div>
+      <div class="converge-bar"><div class="converge-fill" style="width:60%;background:#e3b341;"></div></div>
+      <div class="converge-val highlight">10.64%｜+1.74%</div>
+    </div>
+    <div class="converge-row">
+      <div class="converge-month">2026-07</div>
+      <div class="converge-bar"><div class="converge-fill" style="width:100%;background:#f85149;"></div></div>
+      <div class="converge-val dn">17.74%｜-8.29%</div>
+    </div>
+    <div class="converge-row">
+      <div class="converge-month">2026-08</div>
+      <div class="converge-bar"><div class="converge-fill" style="width:39%;background:#3fb950;"></div></div>
+      <div class="converge-val up">6.85%｜+6.32%</div>
+    </div>
+    <div class="converge-row">
+      <div class="converge-month">2026-09</div>
+      <div class="converge-bar"><div class="converge-fill" style="width:33%;background:#3fb950;"></div></div>
+      <div class="converge-val up">5.81%｜+2.11%</div>
+    </div>
+    <div class="converge-row">
+      <div class="converge-month" style="color:#79c0ff;font-weight:700;">2026-10</div>
+      <div class="converge-bar"><div class="converge-fill" style="width:17%;background:#79c0ff;"></div></div>
+      <div class="converge-val blue">3.04%｜+2.32%</div>
+    </div>
+    <div class="note">長條長度 = 月振幅（以 7 月 17.74% 為 100%）；數值欄為「月振幅｜月漲跌」。10 月僅 6 個交易日，振幅會隨月份進行而擴大，但目前的收斂趨勢已延續三個月。</div>
+  </div>
+  <div class="card">
+    <div class="card-title">波動度與量能雙重收縮</div>
+    <div class="stat-row"><span class="stat-label">近 60 日年化波動度</span><span class="stat-val">30.97%</span></div>
+    <div class="stat-row"><span class="stat-label">近 20 日年化波動度</span><span class="stat-val up">15.77%（腰斬）</span></div>
+    <div class="stat-row"><span class="stat-label">近 20 日單日最大跌幅</span><span class="stat-val">-1.61%</span></div>
+    <div class="stat-row"><span class="stat-label">近 20 日單日最大漲幅</span><span class="stat-val">+2.55%</span></div>
+    <div class="stat-row"><span class="stat-label">60 日均量</span><span class="stat-val">469.6 萬張</span></div>
+    <div class="stat-row"><span class="stat-label">20 日均量</span><span class="stat-val highlight">423.4 萬張</span></div>
+    <div class="stat-row"><span class="stat-label">5 日均量</span><span class="stat-val dn">391.6 萬張</span></div>
+    <div class="stat-row"><span class="stat-label">5 日均量 ÷ 60 日均量</span><span class="stat-val dn">0.83（量能遞減）</span></div>
+    <div class="stat-row"><span class="stat-label">VIX（10/07）</span><span class="stat-val up">15.08（近20日 -8.38%）</span></div>
+    <div class="note">
+      <strong>如何解讀：</strong>波動度從 30.97% 降至 15.77%、量能降至 60 日均量的 0.83 倍、VIX 降至距一年高 -51%，三者同向。<br>
+      這代表市場進入「低波動、低參與度的緩步推升」—— 上漲本身不假，但<strong>缺乏成交量支撐的新高，在外部衝擊下回落速度會很快</strong>，因為沒有買盤承接，也沒有人持有避險部位。7 月的 -16.36% 回撤就是在類似的自滿狀態後發生的。
+    </div>
+  </div>
+</div>
+
+<!-- 核心發現二：跨資產體制 -->
+<div class="section-title">🌐 核心發現二：跨資產體制 — 高利率、強美元，卻股市創高</div>
+<div class="alert-box alert-red">
+  <div class="alert-title" style="color:#f85149;">⚠️ 美債 10Y 與美元指數「同步站在一年最高」，歷史上這對風險資產是毒藥</div>
+  <p>
+    <strong>美債 10Y 5.28%</strong>：一年區間 3.95%–5.31%，10/05 才創下 5.31% 高點，目前距高僅 -0.64%。近 20 日 <span class="red">+9.1%</span>、近 60 日 <span class="red">+15.09%</span> —— 殖利率是<strong>持續性上升趨勢</strong>，不是單日跳動。<br>
+    <strong>美元指數 102.14</strong>：一年區間 96.22–102.17，距一年最高僅 <span class="red">-0.03%</span>，實質上就在高點。近 20 日 +3.41%。<br>
+    <strong>為何這很危險：</strong>殖利率上升壓縮股票評價（折現率提高），強美元抽走新興市場資金。兩者同時在一年高點，而 NASDAQ／標普／台股卻都在歷史高點附近（距高 -0.22%／-0.22%／-0.69%）。<br>
+    <strong>這種分歧的解釋：</strong>AI 資本支出敘事與充裕流動性，暫時壓過了利率的評價壓力。但這是「暫時壓過」，不是「免疫」。歷史上這類分歧的收斂方式有兩種 —— 殖利率回落（良性），或股市補跌（惡性）。<strong>目前沒有任何證據顯示殖利率即將回落</strong>（近 60 日仍 +15%）。
+  </p>
+</div>
+
+<div class="card">
+  <div class="card-title">跨資產一年區間定位（資料日期 10/07，台股與台幣為 10/08）</div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>資產</th><th>最新</th><th>近5日</th><th>近20日</th><th>近60日</th><th>距一年高</th><th>一年區間</th><th>定位</th></tr>
+      <tr><td><strong>台股加權</strong></td><td class="up">49,477</td><td class="up">+2.32%</td><td class="up">+5.03%</td><td class="up">+10.59%</td><td class="highlight">-0.69%</td><td>26,435 – 49,823</td><td class="highlight">極高檔</td></tr>
+      <tr><td>納斯達克</td><td class="up">27,539</td><td class="up">+2.52%</td><td class="up">+4.90%</td><td class="up">+5.48%</td><td class="highlight">-0.22%</td><td>20,795 – 27,600</td><td class="highlight">歷史高</td></tr>
+      <tr><td>標普500</td><td class="up">7,802</td><td class="up">+1.96%</td><td class="up">+2.17%</td><td class="up">+3.42%</td><td class="highlight">-0.22%</td><td>6,344 – 7,819</td><td class="highlight">歷史高</td></tr>
+      <tr><td><strong>費城半導體</strong></td><td class="up">13,066</td><td class="up">+3.46%</td><td class="up">+9.51%</td><td class="up">+3.19%</td><td class="red">-10.72%</td><td>6,352 – 14,635</td><td class="dn">落後大盤</td></tr>
+      <tr><td><strong>美債10Y</strong></td><td class="dn">5.28%</td><td class="up">-0.30%</td><td class="dn">+9.10%</td><td class="dn">+15.09%</td><td class="red">-0.64%</td><td>3.95 – 5.31%</td><td class="dn">⚠️一年高</td></tr>
+      <tr><td><strong>美元指數</strong></td><td class="dn">102.14</td><td class="dn">+0.68%</td><td class="dn">+3.41%</td><td class="dn">+1.19%</td><td class="red">-0.03%</td><td>96.22 – 102.17</td><td class="dn">⚠️一年高</td></tr>
+      <tr><td>USD/TWD</td><td class="neu">31.86</td><td class="up">-0.03%</td><td class="dn">+1.25%</td><td class="up">-1.10%</td><td>-1.66%</td><td>30.52 – 32.40</td><td class="neu">中性</td></tr>
+      <tr><td>布蘭特原油</td><td class="dn">$101.95</td><td class="up">-1.53%</td><td class="dn">+0.73%</td><td class="dn">+20.32%</td><td>-13.86%</td><td>58.92 – 118.35</td><td class="dn">60日大漲</td></tr>
+      <tr><td>黃金</td><td class="dn">$4,162</td><td class="dn">-0.59%</td><td class="dn">-6.70%</td><td class="up">+2.27%</td><td class="red">-21.75%</td><td>3,961 – 5,318</td><td class="dn">深度回檔</td></tr>
+      <tr><td>VIX</td><td class="up">15.08</td><td class="up">-7.71%</td><td class="up">-8.38%</td><td class="up">-3.77%</td><td class="up">-51.43%</td><td>13.47 – 31.05</td><td class="highlight">⚠️極度自滿</td></tr>
+    </table>
+  </div>
+  <div class="note">
+    <strong>三個值得注意的組合：</strong>①油價近 60 日 +20.32% 而黃金近 20 日 -6.70% —— 通膨來自供給端（原物料）而非貨幣端，這正好解釋為何外資大買石化傳產（見籌碼章節）；②VIX 15.08 搭配美債一年新高，是罕見的「高利率 + 零恐慌」組合；③費半近 60 日僅 +3.19%，明顯落後台股的 +10.59% —— 台股這一段並非由半導體指數帶動。
+  </div>
+</div>
+
+<!-- 核心發現三：AI內部分化 -->
+<div class="section-title">🔬 核心發現三：AI 領漲面收窄 — 只剩兩檔在創高</div>
+<div class="card">
+  <div class="card-title">AI／半導體核心標的：距一年高點距離（愈短＝愈強）</div>
+  <div class="bar-row"><div class="bar-label">AMD $645.86</div><div class="bar-bg"><div class="bar-fill" style="width:2%;background:#3fb950;"></div></div><div class="bar-val up">-0.55%｜120日+132%</div></div>
+  <div class="bar-row"><div class="bar-label">NVIDIA $237.47</div><div class="bar-bg"><div class="bar-fill" style="width:3%;background:#3fb950;"></div></div><div class="bar-val up">-0.74%｜120日+20%</div></div>
+  <div class="bar-row"><div class="bar-label">台積電ADR $472.2</div><div class="bar-bg"><div class="bar-fill" style="width:13%;background:#3fb950;"></div></div><div class="bar-val up">-2.80%｜120日+30%</div></div>
+  <div class="bar-row"><div class="bar-label">ASML $1,805</div><div class="bar-bg"><div class="bar-fill" style="width:42%;background:#e3b341;"></div></div><div class="bar-val highlight">-9.27%｜120日+28%</div></div>
+  <div class="bar-row"><div class="bar-label">美光 $1,088</div><div class="bar-bg"><div class="bar-fill" style="width:47%;background:#e3b341;"></div></div><div class="bar-val highlight">-10.35%｜120日+138%</div></div>
+  <div class="bar-row"><div class="bar-label">費半指數 13,066</div><div class="bar-bg"><div class="bar-fill" style="width:49%;background:#e3b341;"></div></div><div class="bar-val highlight">-10.72%｜120日+40%</div></div>
+  <div class="bar-row"><div class="bar-label">博通 $376.51</div><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#f85149;"></div></div><div class="bar-val dn">-21.82%｜120日-5.5%</div></div>
+  <div class="note">
+    長條長度 = 距一年高點的跌幅（以博通 -21.82% 為 100%）。<br>
+    <strong>關鍵觀察：</strong>NASDAQ 距高僅 -0.22%，但費半距高 -10.72% —— 美股創高的動能並非來自半導體全體，而是集中在 <strong>AMD（-0.55%）與 NVIDIA（-0.74%）兩檔</strong>。博通近 120 日甚至是 <span class="red">-5.51%</span> 的負報酬，與同期美光 +137.95%、AMD +132.11% 形成極端分化。<br>
+    <strong>為何重要：</strong>領漲面（breadth）收窄是成熟漲勢的典型特徵。台股權值股與費半高度連動，若 AMD 或 NVDA 任一轉弱，目前<strong>找不到明確的接棒者</strong> —— 博通、ASML、美光都還在修復自己的跌幅。這是結構脆弱性的來源之一。
+  </div>
+</div>
+
+<!-- 核心發現四：籌碼大輪動 -->
+<div class="section-title">💼 核心發現四：籌碼大輪動確立 — 外資同步棄科技、買傳產塑化（T86 10/07）</div>
+<div class="alert-box alert-yellow">
+  <div class="alert-title" style="color:#e3b341;">🔄 這是本輪最清楚、也最可操作的結構訊號</div>
+  <p>
+    10/07 外資買超前段<strong>幾乎全是石化／塑膠／傳產</strong>：台塑 <span class="green">+35,668</span>（投信同向 +10,282）、華新 <span class="green">+22,628</span>（投信 +2,593）、台玻 <span class="green">+17,210</span>、台化 <span class="green">+15,752</span>、中石化 <span class="green">+12,600</span>、南亞 <span class="green">+11,921</span>（投信 +1,213）、統一 <span class="green">+8,871</span>、國喬 <span class="green">+8,689</span>。<br>
+    同時<strong>半導體與電子全面遭賣</strong>：力積電 <span class="red">-36,306</span>、聯電 <span class="red">-15,335</span>（投信同向賣 <span class="red">-19,780</span>，為投信賣超第一名）、鴻海 <span class="red">-11,743</span>、緯創 <span class="red">-9,226</span>（投信 -1,755）、南亞科 <span class="red">-7,465</span>（投信 -1,497）、華通 <span class="red">-6,956</span>。<br>
+    <strong>這完全符合總經邏輯：</strong>美債 5.28%（一年高）壓縮高本益比成長股評價，油價近 60 日 +20.32% 推升石化報價與傳產獲利 —— 這是教科書上的「價值股優於成長股」風格輪動（value over growth）。<br>
+    <strong>最值得警惕的是：台塑、華新、南亞、統一等標的是「外資＋投信同向買進」，而聯電、緯創、南亞科是「外資＋投信同向賣出」。</strong>內外資法人意見一致時，方向的可信度最高。
+  </p>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">🟢 外資買超前 15（10/07，單位：張）</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>代碼</th><th>名稱</th><th>外資</th><th>投信</th><th>族群</th></tr>
+        <tr><td>1301</td><td>台塑</td><td class="up">+35,668</td><td class="up">+10,282</td><td class="green">★石化（雙買）</td></tr>
+        <tr><td>1605</td><td>華新</td><td class="up">+22,628</td><td class="up">+2,593</td><td class="green">★電線電纜（雙買）</td></tr>
+        <tr><td>2344</td><td>華邦電</td><td class="up">+20,530</td><td class="dn">-7,283</td><td class="highlight">記憶體（內外資對立）</td></tr>
+        <tr><td>9105</td><td>泰金寶-DR</td><td class="up">+20,323</td><td>0</td><td style="color:#8b949e;">DR（流動性低）</td></tr>
+        <tr><td>1802</td><td>台玻</td><td class="up">+17,210</td><td>0</td><td class="up">玻璃／傳產</td></tr>
+        <tr><td>1326</td><td>台化</td><td class="up">+15,752</td><td>0</td><td class="up">石化</td></tr>
+        <tr><td>00403A</td><td>主動統一升級50</td><td class="up">+14,658</td><td>0</td><td style="color:#8b949e;">ETF建倉</td></tr>
+        <tr><td>1314</td><td>中石化</td><td class="up">+12,600</td><td>0</td><td class="up">石化</td></tr>
+        <tr><td>2883</td><td>凱基金</td><td class="up">+12,143</td><td>-59</td><td class="neu">金控</td></tr>
+        <tr><td>1303</td><td>南亞</td><td class="up">+11,921</td><td class="up">+1,213</td><td class="green">★石化（雙買）</td></tr>
+        <tr><td>2492</td><td>華新科</td><td class="up">+9,934</td><td class="up">+2,669</td><td class="green">★被動元件（雙買）</td></tr>
+        <tr><td>3481</td><td>群創</td><td class="up">+9,504</td><td>-25</td><td class="highlight">面板（連砍後首見回補）</td></tr>
+        <tr><td>2882</td><td>國泰金</td><td class="up">+9,200</td><td>+95</td><td class="neu">金控</td></tr>
+        <tr><td>1216</td><td>統一</td><td class="up">+8,871</td><td class="up">+1,186</td><td class="green">★食品（雙買、防禦）</td></tr>
+        <tr><td>1312</td><td>國喬</td><td class="up">+8,689</td><td>0</td><td class="up">石化</td></tr>
+      </table>
+    </div>
+    <div class="note">★＝外資與投信同向買進，可信度最高。買超前 15 名中，<strong>石化／傳產族群佔 7 檔</strong>（台塑、台化、南亞、中石化、國喬、台玻、華新），這不是個別事件而是族群性配置。</div>
+  </div>
+  <div class="card">
+    <div class="card-title">🔴 外資賣超前 15（10/07，單位：張）</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>代碼</th><th>名稱</th><th>外資</th><th>投信</th><th>族群</th></tr>
+        <tr><td>00406A</td><td>主動中信台灣收益</td><td class="dn">-82,036</td><td>0</td><td style="color:#8b949e;">ETF贖回</td></tr>
+        <tr><td>2409</td><td>友達</td><td class="dn">-76,193</td><td>-22</td><td class="red">面板（兩週累計逾23萬張）</td></tr>
+        <tr><td>6770</td><td>力積電</td><td class="dn">-36,306</td><td>-136</td><td class="red">🔄記憶體（9/23還是+24,015）</td></tr>
+        <tr><td>009828</td><td>中信台日韓PCB</td><td class="dn">-25,618</td><td>+82</td><td style="color:#8b949e;">ETF贖回（9/23曾+49,310）</td></tr>
+        <tr><td>0050</td><td>元大台灣50</td><td class="dn">-24,148</td><td>0</td><td style="color:#8b949e;">ETF贖回</td></tr>
+        <tr><td>00400A</td><td>主動國泰動能高息</td><td class="dn">-19,646</td><td>0</td><td style="color:#8b949e;">ETF贖回</td></tr>
+        <tr><td>00712</td><td>復華富時不動產</td><td class="dn">-15,757</td><td>0</td><td style="color:#8b949e;">ETF贖回</td></tr>
+        <tr><td>2303</td><td>聯電</td><td class="dn">-15,335</td><td class="dn">-19,780</td><td class="red">★成熟製程（雙賣）</td></tr>
+        <tr><td>00992A</td><td>主動群益科技創新</td><td class="dn">-14,845</td><td>0</td><td style="color:#8b949e;">ETF贖回</td></tr>
+        <tr><td>2317</td><td>鴻海</td><td class="dn">-11,743</td><td>-626</td><td class="red">★電子代工（雙賣）</td></tr>
+        <tr><td>2890</td><td>永豐金</td><td class="dn">-11,526</td><td class="up">+1,896</td><td class="neu">金融（對立）</td></tr>
+        <tr><td>3231</td><td>緯創</td><td class="dn">-9,226</td><td class="dn">-1,755</td><td class="red">★AI伺服器（雙賣）</td></tr>
+        <tr><td>00929</td><td>復華台灣科技優息</td><td class="dn">-8,105</td><td>0</td><td style="color:#8b949e;">ETF贖回</td></tr>
+        <tr><td>2408</td><td>南亞科</td><td class="dn">-7,465</td><td class="dn">-1,497</td><td class="red">★記憶體（雙賣）</td></tr>
+        <tr><td>2313</td><td>華通</td><td class="dn">-6,956</td><td>+111</td><td class="dn">PCB</td></tr>
+      </table>
+    </div>
+    <div class="note">★＝外資與投信同向賣出。<strong>主動 ETF 由建倉轉為贖回：</strong>9/23 時七檔主動 ETF 合計建倉約 +27.5 萬張，10/07 則有 00406A、00400A、00992A、009828、00929、0050、00712 合計贖回約 <span class="red">-19 萬張</span> —— ETF 資金流向已從流入轉為流出。</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">權值股與重點個股籌碼速查（10/07，單位：張）</div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>代碼</th><th>名稱</th><th>外資</th><th>投信</th><th>三大合計</th><th>研判</th></tr>
+      <tr><td>2330</td><td>台積電</td><td class="dn">-1,164</td><td>+66</td><td class="dn">-650</td><td class="neu">中性微賣，權值仍穩</td></tr>
+      <tr><td>2454</td><td>聯發科</td><td class="dn">-2,770</td><td>-286</td><td class="dn">-3,186</td><td class="dn">小幅賣超</td></tr>
+      <tr><td>2308</td><td>台達電</td><td class="dn">-2,068</td><td>+196</td><td class="dn">-1,981</td><td class="neu">外資賣、投信微買</td></tr>
+      <tr><td>2317</td><td>鴻海</td><td class="dn">-11,743</td><td>-626</td><td class="dn">-12,639</td><td class="red">雙賣，明顯減碼</td></tr>
+      <tr><td>3231</td><td>緯創</td><td class="dn">-9,226</td><td class="dn">-1,755</td><td class="dn">-10,887</td><td class="red">雙賣，AI組裝持續降溫</td></tr>
+      <tr><td>2382</td><td>廣達</td><td class="up">+1,441</td><td>-18</td><td class="up">+1,464</td><td class="neu">持平，與緯創分化</td></tr>
+      <tr><td>2303</td><td>聯電</td><td class="dn">-15,335</td><td class="dn">-19,780</td><td class="dn">-35,465</td><td class="red">雙賣最重，投信賣超第1</td></tr>
+      <tr><td>6770</td><td>力積電</td><td class="dn">-36,306</td><td>-136</td><td class="dn">-39,660</td><td class="red">🔄從9/23大買反轉</td></tr>
+      <tr><td>2408</td><td>南亞科</td><td class="dn">-7,465</td><td class="dn">-1,497</td><td class="dn">-9,613</td><td class="red">記憶體題材降溫</td></tr>
+      <tr><td>2344</td><td>華邦電</td><td class="up">+20,530</td><td class="dn">-7,283</td><td class="up">+12,918</td><td class="highlight">內外資嚴重對立</td></tr>
+      <tr><td>2409</td><td>友達</td><td class="dn">-76,193</td><td>-22</td><td class="dn">-80,108</td><td class="red">面板持續傾倒</td></tr>
+      <tr><td>3481</td><td>群創</td><td class="up">+9,504</td><td>-25</td><td class="up">+8,624</td><td class="highlight">連砍後首見回補，待確認</td></tr>
+      <tr><td>2610</td><td>華航</td><td class="up">+1,060</td><td class="up">+2,536</td><td class="up">+3,528</td><td class="up">航空仍雙買但力道轉小</td></tr>
+      <tr><td>2618</td><td>長榮航</td><td class="up">+349</td><td>-53</td><td class="up">+449</td><td class="neu">力道已大幅衰退</td></tr>
+      <tr><td>1101</td><td>台泥</td><td class="up">+3,877</td><td class="up">+4,731</td><td class="up">+8,551</td><td class="green">傳產雙買</td></tr>
+    </table>
+  </div>
+  <div class="note">
+    <strong>全市場合計：</strong>外資 <span class="up">+18,315 張</span>（小買）、投信 <span class="dn">-13,663 張（轉為賣超）</span>、自營 -296,348 張（主要為 ETF 造市與贖回）。<br>
+    <strong>投信轉賣是重要變化</strong> —— 過去數月投信是最穩定的多方力量（曾單日買超逾 12 萬張），如今轉為淨賣超，且賣超第一名為聯電 -19,780 張。內資法人的態度已改變。
+  </div>
+</div>
+
+<!-- 四大矛盾 -->
+<div class="section-title">⚡ 四大結構矛盾（風險的真正來源）</div>
+<div class="conflict">
+  <div class="conflict-t">⚡ 矛盾一：指數創高，但量能與波動雙雙萎縮</div>
+  <div class="conflict-b">
+    台股距歷史高僅 -0.69%，近 5 日仍 +2.32%；但 5 日均量（391.6 萬張）只有 60 日均量（469.6 萬張）的 <strong>0.83 倍</strong>，近 20 日年化波動度從 60 日的 30.97% 腰斬至 <strong>15.77%</strong>，VIX 15.08 距一年高 -51.43%。<br>
+    <strong>解讀：</strong>上漲是真的，但參與度在下降。這種「縮量創高」本身不預測頂部 —— 它可以持續數週甚至數月 —— 但它改變了<strong>下跌時的速度</strong>：量能萎縮代表承接盤薄，VIX 低代表幾乎無人持有避險部位。7 月那次 -16.36% 的回撤，就是在類似的低波動自滿狀態後發生的。
+  </div>
+</div>
+<div class="conflict">
+  <div class="conflict-t">⚡ 矛盾二：美債 5.28% 與美元 102.14 同在一年高點，股市卻在歷史高點</div>
+  <div class="conflict-b">
+    美債 10Y 近 60 日 <strong>+15.09%</strong>、美元指數距一年最高僅 <strong>-0.03%</strong>，兩者都是風險資產的壓力來源；但 NASDAQ、標普、台股距歷史高分別僅 -0.22%、-0.22%、-0.69%。<br>
+    <strong>解讀：</strong>AI 資本支出敘事與充裕流動性暫時壓過利率壓力。但這個分歧必須收斂 —— 要麼殖利率回落（良性），要麼股市補跌（惡性）。<strong>目前沒有殖利率回落的跡象</strong>（近 60 日仍 +15%，且 10/05 才創一年新高 5.31%）。這是本報告中唯一「方向已明確、只是時間未定」的風險。
+  </div>
+</div>
+<div class="conflict">
+  <div class="conflict-t">⚡ 矛盾三：NASDAQ 距高 -0.22%，費半卻距高 -10.72%</div>
+  <div class="conflict-b">
+    費半近 60 日僅 +3.19%，遠落後台股的 +10.59%；博通近 120 日甚至 <strong>-5.51%</strong>，ASML 距高 -9.27%、美光距高 -10.35%。真正在創高的只有 AMD（距高 -0.55%）與 NVIDIA（距高 -0.74%）。<br>
+    <strong>解讀：</strong>領漲面（breadth）已收窄到兩檔個股。台股權值與費半高度連動，意味著<strong>整個台股的方向，實質上押注在 AMD 與 NVIDIA 兩檔股票上</strong>。若任一轉弱，博通、ASML、美光都還在修復自己的跌幅，找不到接棒者。這是最被忽略、但最具殺傷力的脆弱點。
+  </div>
+</div>
+<div class="conflict">
+  <div class="conflict-t">⚡ 矛盾四：外資小買 +18,315 張，但投信已轉為賣超 -13,663 張</div>
+  <div class="conflict-b">
+    外資 10/07 淨買 +18,315 張（偏中性），但<strong>投信轉為淨賣 -13,663 張</strong> —— 這是數月來的首次方向改變。過去投信是台股最穩定的多方（曾單日買超逾 12 萬張，連續買超數十日）。<br>
+    同時主動 ETF 由建倉轉為贖回：9/23 七檔合計建倉約 +27.5 萬張，10/07 則合計贖回約 <strong>-19 萬張</strong>。<br>
+    <strong>解讀：</strong>推動 8–9 月那段漲勢的兩股主力資金（投信買盤 + 主動 ETF 募集建倉）<strong>都在退場</strong>。指數仍在高檔，是因為權值股（台積電外資僅 -1,164 張）尚未被大量拋售 —— 但支撐指數的資金結構已經改變。
+  </div>
+</div>
+
+<!-- 風險尺度 -->
+<div class="section-title">📏 風險尺度：若回撤重演，幅度參考</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">近 6 個月實際回撤紀錄</div>
+    <div class="level-block" style="border:1px solid #f85149;">
+      <div><div class="level-left">近 6 月最大回撤</div><div class="level-val dn">-16.36%</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:160px;">2026/07/30 谷底 39,933，波段前高 47,742</div>
+    </div>
+    <div class="stat-row"><span class="stat-label">回撤期間</span><span class="stat-val">2026/07（DUV 恐慌 + 油崩雙黑天鵝）</span></div>
+    <div class="stat-row"><span class="stat-label">7 月單月跌幅</span><span class="stat-val dn">-8.29%（月振幅 17.74%）</span></div>
+    <div class="stat-row"><span class="stat-label">谷底至今漲幅</span><span class="stat-val up">39,933 → 49,823，+24.8%（約 70 日）</span></div>
+    <div class="stat-row"><span class="stat-label">目前距歷史高</span><span class="stat-val highlight">-0.69%</span></div>
+    <div class="note">
+      <strong>尺度換算（非預測，純風險參考）：</strong>以歷史高 49,823 為基準 —— 回撤 5% ≈ <strong>47,330</strong>；回撤 10% ≈ <strong>44,840</strong>；若重演 7 月的 -16.36% ≈ <strong>41,670</strong>。<br>
+      列出這些數字的目的不是預測下跌，而是讓部位規模與停損距離建立在實際的歷史波動尺度上，而非「感覺」。
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">均線結構與乖離（支撐層次）</div>
+    <div class="stat-row"><span class="stat-label">現價（10/08 盤中）</span><span class="stat-val up">49,477</span></div>
+    <div class="stat-row"><span class="stat-label">MA5</span><span class="stat-val up">49,459（+0.0%）</span></div>
+    <div class="stat-row"><span class="stat-label">MA10</span><span class="stat-val up">48,740（-1.5%）</span></div>
+    <div class="stat-row"><span class="stat-label">MA20</span><span class="stat-val highlight">47,696（-3.6%）</span></div>
+    <div class="stat-row"><span class="stat-label">MA60（季線）</span><span class="stat-val">45,730（-7.6%）</span></div>
+    <div class="stat-row"><span class="stat-label">MA120（半年線）</span><span class="stat-val">44,439（-10.2%）</span></div>
+    <div class="stat-row"><span class="stat-label">排列狀態</span><span class="stat-val up">MA5＞MA10＞MA20＞MA60＞MA120（完美多頭）</span></div>
+    <div class="note">
+      <strong>均線排列是本報告中最強的多方證據</strong> —— 五條均線完整多頭排列，趨勢結構毫無破壞。<br>
+      但乖離率需注意：現價已高於 MA120 達 <strong>+11.3%</strong>，高於季線 +8.2%。歷史上乖離過大時，回歸均線的拉力會增強。<br>
+      <strong>關鍵分水嶺是 MA20 的 47,696</strong>（距現價 -3.6%）：跌破且伴隨量增，才是結構性轉弱的第一個確認。
+    </div>
+  </div>
+</div>
+
+<!-- 多空辯論 -->
+<div class="section-title">⚖️ 整體盤勢多空辯論</div>
+<div class="debate-col">
+  <div class="bull-card">
+    <div class="debate-head" style="color:#3fb950;">🐂 看多方（趨勢未破）</div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">1.</span><span><strong>均線完美多頭排列</strong>：MA5 49,459 ＞ MA10 48,740 ＞ MA20 47,696 ＞ MA60 45,730 ＞ MA120 44,439，五條均線無一破壞，這是趨勢分析中最乾淨的多頭型態</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">2.</span><span><strong>中長期動能強勁</strong>：近 60 日 +10.59%、近 120 日 <strong>+33.25%</strong>，自 2025/11 低點 26,435 已漲 <strong>+87.2%</strong>，趨勢慣性仍在</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">3.</span><span><strong>美股同步創高</strong>：NASDAQ 與標普距歷史高均僅 -0.22%（10/06 創高），全球風險情緒並未轉向，台股不是孤軍</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">4.</span><span><strong>費半正在修復</strong>：近 5 日 +3.46%、近 20 日 <strong>+9.51%</strong>，雖距高 -10.72% 但方向向上；台積電 ADR 近 20 日 +8.46%，距高僅 -2.80%</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">5.</span><span><strong>輪動＝健康而非出場</strong>：資金從科技轉向石化傳產（台塑 +35,668、華新 +22,628 等外資投信雙買），是風格切換而非全面撤離，指數因此得以在高檔整理而非崩跌</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">6.</span><span><strong>波動收斂也可能是良性</strong>：近 20 日年化波動 15.77%、單日最大跌幅僅 -1.61%，低波動的緩步推升可持續數月，不必然預示反轉</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">7.</span><span><strong>權值股未見棄守</strong>：台積電外資僅賣 -1,164 張、投信微買 +66 張，核心權值籌碼穩定，缺乏崩跌的必要條件</span></div>
+  </div>
+  <div class="bear-card">
+    <div class="debate-head" style="color:#f85149;">🐻 看空方（結構轉脆）</div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">1.</span><span><strong>美債 10Y 5.28% ＋ 美元 102.14 同在一年最高</strong>（距高 -0.64%／-0.03%），近 60 日分別 +15.09%／+1.19%，評價壓縮與資金外流壓力是持續性、非一次性</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">2.</span><span><strong>月振幅連續收斂</strong>：17.74%→6.85%→5.81%→3.04%，動能遞減；月漲幅同步縮小（+6.32%→+2.11%→+2.32%），推升力道在衰退</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">3.</span><span><strong>縮量創高</strong>：5 日均量僅 60 日均量的 <strong>0.83 倍</strong>，承接盤薄；一旦轉跌，缺乏買盤緩衝，下跌速度會放大</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">4.</span><span><strong>VIX 15.08（距一年高 -51.43%）</strong>：市場幾乎無人持有避險部位，這是「脆弱的平靜」—— 外部衝擊來臨時無保護可言</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">5.</span><span><strong>領漲面收窄至兩檔</strong>：僅 AMD（-0.55%）與 NVDA（-0.74%）在創高；博通近 120 日 -5.51%、ASML -9.27%、美光 -10.35%，若兩大龍頭轉弱無接棒者</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">6.</span><span><strong>主力資金退場</strong>：投信由連續買超轉為淨賣 <strong>-13,663 張</strong>（賣超第一名聯電 -19,780）；主動 ETF 由 9/23 建倉 +27.5 萬張轉為 10/07 贖回約 -19 萬張</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">7.</span><span><strong>乖離偏大</strong>：現價高於 MA120 達 <strong>+11.3%</strong>、高於季線 +8.2%，回歸均線的拉力增強</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">8.</span><span><strong>前例在眼前</strong>：7 月那次 -16.36% 回撤（47,742→39,933）同樣發生在低波動自滿之後，且當時均線亦為多頭排列</span></div>
+  </div>
+</div>
+<div class="verdict">
+  <div style="font-size:15px;font-weight:800;margin-bottom:5px;">裁決：趨勢偏多但品質下降 —— 持有可以，加碼不宜</div>
+  <div class="ratio-bar">
+    <div class="ratio-bull" style="width:45%;">看多 45%</div>
+    <div class="ratio-bear" style="width:55%;">看空 55%</div>
+  </div>
+  <p style="font-size:13px;color:#c9d1d9;line-height:1.9;">
+    <strong>這不是一個「該看空」的盤，而是一個「該降低風險暴露」的盤。</strong>多方論點（均線多頭排列、美股同步創高、權值籌碼穩定）都是真的，趨勢確實未破 —— 任何現在做空指數的操作，都在對抗一個完整的多頭結構。<br>
+    但空方論點指出的是<strong>品質問題而非方向問題</strong>：量能萎縮、波動收斂、領漲面收窄至兩檔、主力資金退場、債息與美元雙在一年高點。這些不會告訴你「何時跌」，但會告訴你「跌起來會很快，而且你不會有時間反應」。<br>
+    <strong>最務實的結論：繼續參與趨勢，但把風險預算降下來 —— 減少部位、上移停損、把持股從科技換到籌碼明確支持的傳產。方向跟著趨勢走，規模跟著風險走。</strong>
+  </p>
+</div>
+
+<!-- 策略 -->
+<div class="section-title">⚔️ 三段式策略（依風險承受度）</div>
+<div class="strat-card strat-a">
+  <div class="strat-title">⚔️ 趨勢跟隨型（部位 55-70%，順勢但收緊紀律）</div>
+  <div class="strat-body">
+    <strong>核心原則：方向跟著多頭走，但把停損從「感覺」換成「均線」。</strong><br>
+    ✅ <strong>停損位設在 MA20 的 47,696</strong>（距現價 -3.6%）—— 這是結構性分水嶺，收盤跌破且量增即機械式減碼，不猶豫、不找理由<br>
+    ✅ <strong>持股結構調整</strong>：把部位從「外資投信雙賣」的族群，換到「外資投信雙買」的族群<br>
+    　・<span class="green">增持</span>：台塑 1301（外資 +35,668／投信 +10,282）、華新 1605（+22,628／+2,593）、南亞 1303（+11,921／+1,213）、華新科 2492（+9,934／+2,669）、統一 1216（+8,871／+1,186）、台泥 1101（+3,877／+4,731）<br>
+    　・<span class="red">減持</span>：聯電 2303（-15,335／-19,780）、緯創 3231（-9,226／-1,755）、南亞科 2408（-7,465／-1,497）、鴻海 2317（-11,743／-626）<br>
+    ⛔ <strong>不加槓桿、不在 49,800 以上追價</strong>：距歷史高僅 0.69%，風險報酬比不佳
+  </div>
+</div>
+<div class="strat-card strat-b">
+  <div class="strat-title">⚖️ 均衡型（現金 40-50%，只做結構不做方向）</div>
+  <div class="strat-body">
+    <strong>核心原則：不預測頂部，但也不假裝風險不存在。</strong><br>
+    ✅ <strong>部位減至五至六成</strong>，保留現金等待回測 MA20（47,696）或季線（45,730）的加碼機會<br>
+    ✅ <strong>持股集中在「總經邏輯 + 籌碼」雙支撐的方向</strong>：油價近 60 日 +20.32% 直接推升石化報價，而外資投信同步買進石化傳產 —— 這是本報告中唯一「基本面與籌碼同向」的配置<br>
+    ⏸️ <strong>台積電（2330）持股續抱、空手者不追</strong>：籌碼中性（外資 -1,164／投信 +66），ADR $472.2 距高 -2.80% 無折價；但美債 5.28% 持續壓制評價。<strong>加碼條件：美債 10Y 回落至 5.0% 以下且費半站回 13,500</strong><br>
+    🔴 <strong>繼續迴避</strong>：友達 2409（外資兩週累計砍逾 23 萬張）、力積電 6770（從 9/23 的 +24,015 反轉為 -36,306）、華邦電 2344（外資 +20,530 但投信 -7,283，內外資嚴重對立，風險不對稱）
+  </div>
+</div>
+<div class="strat-card strat-c">
+  <div class="strat-title">🛡️ 防守型（現金 70%+，等風險定價）</div>
+  <div class="strat-body">
+    <strong>核心原則：VIX 15.08 不是進場點，是等待點。</strong><br>
+    在距歷史高 -0.69%、VIX 距一年高 -51%、量能為 60 日均量 0.83 倍的位置，防守型投資人沒有必須進場的理由 —— <strong>風險尚未被定價，等待的成本低於承擔的代價。</strong><br><br>
+    🟢 <strong>重新進場訊號（需三選二同時成立）：</strong><br>
+    ① 大盤回測 <strong>MA20 47,696 或季線 45,730</strong> 且出現<strong>量縮止穩</strong>（而非量增破底）<br>
+    ② 美債 10Y 回落至 <strong>5.0% 以下</strong>，評價壓力解除<br>
+    ③ 費半站回 <strong>13,500 以上</strong>，且領漲面擴散（博通／ASML／美光至少一檔收復距高 -5% 以內）<br><br>
+    🟡 <strong>若必須持有部位</strong>：選擇外資投信雙買的傳產防禦股（統一 1216、台泥 1101），兼具籌碼支撐與較低的波動敏感度。
+  </div>
+</div>
+
+<!-- 轉折觸發條件 -->
+<div class="section-title">🚨 轉空確認清單（這些訊號出現才是真的轉折）</div>
+<div class="card">
+  <div class="card-title">目前全部未觸發 —— 所以本報告判定「趨勢未破」而非「已轉空」</div>
+  <div class="trigger-item">
+    <div class="trigger-num">1</div>
+    <div class="trigger-body"><strong>大盤收盤跌破 MA20 的 47,696，且成交量放大至 500 萬張以上</strong><br><span style="color:#8b949e;font-size:12px;">量增破線＝真實賣壓；量縮破線＝可能只是修正。這是最重要的單一技術訊號。</span></div>
+  </div>
+  <div class="trigger-item">
+    <div class="trigger-num">2</div>
+    <div class="trigger-body"><strong>VIX 突破 20</strong>（目前 15.08，需上升約 33%）<br><span style="color:#8b949e;font-size:12px;">代表市場開始實際購買保護，自滿結構瓦解。VIX 從 15 到 20 通常伴隨指數 5-8% 的回落。</span></div>
+  </div>
+  <div class="trigger-item">
+    <div class="trigger-num">3</div>
+    <div class="trigger-body"><strong>美債 10Y 突破一年高 5.31%</strong>（目前 5.28%，僅差 3bp）<br><span style="color:#8b949e;font-size:12px;">突破後上方無套牢賣壓，技術上開啟續攻空間，將觸發全球高估值股票的第二輪評價壓縮。<strong>這是距離觸發最近的一項。</strong></span></div>
+  </div>
+  <div class="trigger-item">
+    <div class="trigger-num">4</div>
+    <div class="trigger-body"><strong>AMD 或 NVIDIA 跌破前波低點</strong>（目前距高分別 -0.55%／-0.74%）<br><span style="color:#8b949e;font-size:12px;">目前整個 AI 漲勢押注在這兩檔。任一轉弱，博通（距高 -21.82%）、ASML（-9.27%）、美光（-10.35%）都無力接棒。</span></div>
+  </div>
+  <div class="trigger-item">
+    <div class="trigger-num">5</div>
+    <div class="trigger-body"><strong>外資連續三日以上賣超台積電超過 1 萬張／日</strong>（目前僅 -1,164 張）<br><span style="color:#8b949e;font-size:12px;">權值股是指數最後的支撐。目前外資對台積電態度中性，一旦轉為持續性拋售，指數將失去最後的緩衝。</span></div>
+  </div>
+</div>
+
+<!-- 觀察指標 -->
+<div class="section-title">📋 未來兩週關鍵觀察指標（依重要性）</div>
+<div class="card">
+  <div class="stat-row"><span class="stat-label red">① 美債 10Y vs 5.31%（一年高）</span><span class="stat-val dn">最關鍵。目前 5.28%，僅差 3bp。突破＝全球高估值股票再受壓</span></div>
+  <div class="stat-row"><span class="stat-label">② 大盤 vs MA20 47,696</span><span class="stat-val highlight">結構性分水嶺。守住＝高檔整理；量增跌破＝趨勢轉弱第一確認</span></div>
+  <div class="stat-row"><span class="stat-label">③ 50,000 整數大關</span><span class="stat-val">距現價 +1.1%。帶量突破＝多頭延續；反覆觸頂不過＝雙頭風險</span></div>
+  <div class="stat-row"><span class="stat-label">④ AMD／NVIDIA 能否持續創高</span><span class="stat-val">整段 AI 漲勢的唯一支柱，須每日追蹤</span></div>
+  <div class="stat-row"><span class="stat-label">⑤ 投信是否持續賣超</span><span class="stat-val dn">10/07 已轉為 -13,663 張。若連續賣超，8-9 月主力多方確認退場</span></div>
+  <div class="stat-row"><span class="stat-label">⑥ 石化傳產買盤延續性</span><span class="stat-val up">台塑／華新／南亞外資投信雙買是否延續，決定輪動的可操作性</span></div>
+  <div class="stat-row"><span class="stat-label">⑦ 台廠 9 月／Q3 營收</span><span class="stat-val">10 月中旬陸續公布，將驗證 AI 與記憶體題材的基本面支撐</span></div>
+  <div class="stat-row"><span class="stat-label">⑧ 費半能否站回 13,500</span><span class="stat-val">目前 13,066。站回代表領漲面擴散，是多方延續的必要條件</span></div>
+</div>
+
+</div>
+
+<div class="footer">
+  <p>
+    ⚠️ <strong>免責聲明：</strong>本報告由 AI 自動生成，僅供研究參考，<strong>不構成任何投資建議</strong>。報告中所有價位、比例與情境推演均為風險尺度參考，非價格預測。股市投資有風險，過去績效不代表未來結果，任何操作請自行評估並承擔風險。<br>
+    <strong>資料來源與日期：</strong>台股加權指數即時點位、月度結構、均線、波動度、量能、最大回撤 — Yahoo Finance（yfinance），最新為 2026/10/08 盤中（10:28 擷取）｜費半、美債 10Y、美元指數、黃金、布蘭特原油、VIX、NASDAQ、標普 500、台積電 ADR、NVDA、AMD、美光、ASML、博通 — yfinance，2026/10/07 收盤｜USD/TWD — yfinance，2026/10/08｜三大法人買賣超 — 台灣證券交易所 T86 官方 API，資料日期 2026/10/07（共 1,339 檔）。<br>
+    <strong>資料限制說明：</strong>①台股當日盤中成交量尚未結算，量能分析採用 5 日／20 日／60 日均量，不使用當日值；②美股個股與指數為 10/07 收盤，與台股 10/08 盤中存在一個交易日落差；③台指期外資未平倉因資料來源回傳異常值已排除；④櫃買指數（^TWOII）資料無法取得，本報告未納入上櫃市場分析。<br>
+    報告產生時間：2026-10-08 10:28（台北時間）
+  </p>
+</div>
+
+</body>
+</html>
