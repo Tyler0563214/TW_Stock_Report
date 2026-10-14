@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股盤後分析 2026/10/14｜反彈觸及MA5被壓回</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d1117; color: #e6edf3; font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif; font-size: 14px; line-height: 1.6; }
+  .header { background: linear-gradient(135deg, #1a1508 0%, #0d1117 62%); border-bottom: 2px solid #e3b341; padding: 20px 24px; }
+  .header h1 { font-size: 23px; font-weight: 700; }
+  .header .sub { font-size: 12px; color: #8b949e; margin-top: 5px; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin: 3px 4px 0 0; }
+  .badge-ok { background: #0f2d1a; color: #3fb950; border: 1px solid #3fb950; }
+  .badge-warn { background: #2d2008; color: #e3b341; border: 1px solid #e3b341; }
+  .badge-danger { background: #3d1a1a; color: #f85149; border: 1px solid #f85149; }
+  .badge-info { background: #1a2540; color: #79c0ff; border: 1px solid #388bfd; }
+  .ticker-bar { background: #161b22; border-bottom: 1px solid #21262d; padding: 11px 24px; display: flex; gap: 20px; flex-wrap: wrap; }
+  .ticker-item { display: flex; flex-direction: column; align-items: center; min-width: 96px; }
+  .ticker-label { font-size: 10px; color: #8b949e; text-align: center; }
+  .ticker-val { font-size: 16px; font-weight: 700; }
+  .up { color: #3fb950; } .dn { color: #f85149; } .neu { color: #e6edf3; }
+  .container { max-width: 1300px; margin: 0 auto; padding: 20px 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  @media (max-width: 950px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  .card { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 17px; margin-bottom: 16px; }
+  .card-title { font-size: 13px; font-weight: 700; color: #8b949e; letter-spacing: 0.5px; margin-bottom: 13px; padding-bottom: 8px; border-bottom: 1px solid #21262d; }
+  .stat-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #21262d; }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-label { color: #8b949e; font-size: 13px; }
+  .stat-val { font-weight: 700; font-size: 13px; text-align: right; }
+  .alert-box { border-radius: 8px; padding: 15px 19px; margin-bottom: 16px; }
+  .alert-red { background: #2d1010; border: 1px solid #f85149; }
+  .alert-yellow { background: #2d2008; border: 1px solid #e3b341; }
+  .alert-green { background: #0f2d1a; border: 1px solid #3fb950; }
+  .alert-blue { background: #0d1f38; border: 1px solid #388bfd; }
+  .alert-title { font-weight: 700; font-size: 15px; margin-bottom: 9px; }
+  .alert-box p { font-size: 13px; color: #c9d1d9; line-height: 1.9; }
+  .section-title { font-size: 17px; font-weight: 700; color: #e6edf3; margin: 28px 0 13px; padding-left: 11px; border-left: 4px solid #e3b341; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #0d1117; color: #8b949e; font-weight: 600; padding: 9px 10px; text-align: left; border-bottom: 1px solid #21262d; white-space: nowrap; }
+  td { padding: 8px 10px; border-bottom: 1px solid #21262d; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+  .highlight { color: #e3b341; font-weight: 700; }
+  .red { color: #f85149; font-weight: 700; }
+  .green { color: #3fb950; font-weight: 700; }
+  .blue { color: #79c0ff; font-weight: 700; }
+  .candle-wrap { background:#0d1117; border-radius:8px; padding:16px; }
+  .candle-row { display:flex; align-items:center; gap:10px; margin-bottom:5px; font-size:12px; }
+  .candle-date { width:52px; color:#8b949e; flex-shrink:0; }
+  .candle-track { flex:1; height:22px; position:relative; background:#161b22; border-radius:3px; }
+  .candle-body { position:absolute; height:14px; top:4px; border-radius:2px; }
+  .candle-wick { position:absolute; height:2px; top:10px; }
+  .candle-val { width:108px; font-weight:700; flex-shrink:0; font-size:11.5px; }
+  .candle-vol { width:62px; color:#8b949e; flex-shrink:0; font-size:11px; text-align:right; }
+  .bar-row { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; font-size: 12px; }
+  .bar-label { width: 112px; color: #c9d1d9; text-align: right; flex-shrink: 0; }
+  .bar-bg { flex: 1; background: #21262d; border-radius: 3px; height: 17px; min-width: 40px; }
+  .bar-fill { height: 100%; border-radius: 3px; }
+  .bar-val { width: 124px; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+  .conflict { background: #2d1010; border-left: 4px solid #f85149; border-radius: 6px; padding: 13px 16px; margin-bottom: 11px; }
+  .conflict-t { font-weight: 700; color: #f85149; font-size: 13.5px; margin-bottom: 6px; }
+  .conflict-b { font-size: 13px; color: #c9d1d9; line-height: 1.8; }
+  .debate-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width:760px) { .debate-col { grid-template-columns:1fr; } }
+  .bull-card { background: #0f2d1a; border: 1px solid #3fb950; border-radius: 8px; padding: 15px; }
+  .bear-card { background: #2d1010; border: 1px solid #f85149; border-radius: 8px; padding: 15px; }
+  .debate-head { font-weight: 700; font-size: 14px; margin-bottom: 11px; }
+  .debate-item { display: flex; gap: 8px; margin-bottom: 9px; font-size: 13px; color: #c9d1d9; line-height: 1.7; }
+  .verdict { background: #1c2128; border: 1px solid #388bfd; border-radius: 8px; padding: 16px; margin-top: 13px; }
+  .ratio-bar { display: flex; height: 27px; border-radius: 6px; overflow: hidden; margin: 11px 0; font-size: 12px; font-weight: 700; }
+  .ratio-bear { background: #f85149; color: #0d1117; display: flex; align-items: center; justify-content: center; }
+  .ratio-bull { background: #3fb950; color: #0d1117; display: flex; align-items: center; justify-content: center; }
+  .level-block { background: #0d1117; border-radius: 8px; padding: 11px 15px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .level-left { font-size: 12px; color: #8b949e; }
+  .level-val { font-size: 18px; font-weight: 800; }
+  .note { font-size: 11.5px; color: #6e7681; margin-top: 9px; line-height: 1.7; }
+  .strat-card { border-radius: 8px; padding: 17px; margin-bottom: 12px; }
+  .strat-a { background: #0d1f38; border: 1px solid #388bfd; }
+  .strat-b { background: #1a1a0d; border: 1px solid #e3b341; }
+  .strat-c { background: #1a0d0d; border: 1px solid #6e4040; }
+  .strat-title { font-weight: 700; font-size: 15px; margin-bottom: 9px; }
+  .strat-body { font-size: 13px; color: #c9d1d9; line-height: 1.9; }
+  .trigger-item { display: flex; gap: 11px; margin-bottom: 12px; align-items: flex-start; }
+  .trigger-num { width: 26px; height: 26px; border-radius: 50%; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .tn-hit { background: #f85149; color: #0d1117; }
+  .tn-near { background: #e3b341; color: #0d1117; }
+  .tn-safe { background: #30363d; color: #8b949e; }
+  .trigger-body { font-size: 13px; color: #c9d1d9; line-height: 1.75; }
+  .verdict-box { background: linear-gradient(135deg,#1a1508,#0d1117); border: 2px solid #e3b341; border-radius: 10px; padding: 19px; margin-bottom: 18px; }
+  .footer { background: #161b22; border-top: 1px solid #21262d; padding: 17px 24px; margin-top: 34px; }
+  .footer p { font-size: 11px; color: #6e7681; line-height: 1.8; }
+  .daybar { background:#0d1117; border-radius:8px; padding:16px; margin-bottom:14px; }
+  .daybar-track { position:relative; height:34px; background:#21262d; border-radius:5px; margin:14px 0 8px; }
+  .daybar-fill { position:absolute; height:100%; border-radius:5px; }
+  .daybar-marker { position:absolute; width:3px; height:46px; top:-6px; }
+  .daybar-labels { display:flex; justify-content:space-between; font-size:11px; color:#8b949e; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 台股盤後分析 — 反彈觸及 MA5 被壓回</h1>
+  <div class="sub">2026年10月14日（週三）收盤｜資料擷取 14:25｜收 48,625.83（+284.52，+0.59%）</div>
+  <div style="margin-top:9px;">
+    <span class="badge badge-warn">反彈但收上影線</span>
+    <span class="badge badge-danger">跌破 MA5／MA10</span>
+    <span class="badge badge-ok">仍守 MA20 47,986</span>
+    <span class="badge badge-danger">外資 10/13 賣超 61.1 萬張</span>
+    <span class="badge badge-danger">費半距高 -16.58%</span>
+    <span class="badge badge-warn">台幣急貶 32.18</span>
+  </div>
+</div>
+
+<div class="ticker-bar">
+  <div class="ticker-item">
+    <span class="ticker-label">加權指數（收盤）</span>
+    <span class="ticker-val up">48,625.83</span>
+    <span class="ticker-label up">+284.52（+0.59%）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">今日高／低</span>
+    <span class="ticker-val neu">49,059 / 48,383</span>
+    <span class="ticker-label dn">高點回吐 433 點</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">收盤位置 ⚠️</span>
+    <span class="ticker-val dn">35.9%</span>
+    <span class="ticker-label dn">收在下三分之一</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">距歷史高（10/06）</span>
+    <span class="ticker-val dn">-2.40%</span>
+    <span class="ticker-label">高點 49,822.55</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">費半（10/13）</span>
+    <span class="ticker-val dn">12,209</span>
+    <span class="ticker-label dn">距高 -16.58%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">美債10Y</span>
+    <span class="ticker-val up">5.22%</span>
+    <span class="ticker-label up">-0.44%（略舒緩）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">USD/TWD ⚠️</span>
+    <span class="ticker-val dn">32.18</span>
+    <span class="ticker-label dn">+0.78%（台幣急貶）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">布蘭特油</span>
+    <span class="ticker-val dn">$106.18</span>
+    <span class="ticker-label dn">6日 +4.1%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">VIX</span>
+    <span class="ticker-val neu">15.27</span>
+    <span class="ticker-label">仍在低位</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 總結 -->
+<div class="verdict-box">
+  <div class="alert-title" style="color:#e3b341;font-size:17px;">🎯 今日定性：技術性反彈，但反彈失敗</div>
+  <p style="font-size:14px;color:#e6edf3;line-height:1.95;">
+    指數收 <strong>48,625.83（+284.52，+0.59%）</strong>，表面收紅，但三個細節顯示這是<strong>失敗的反彈</strong>：<br>
+    ① <strong>開盤即最低</strong>（48,382.64 = 當日最低），盤中衝高至 49,059.12（+676 點），收盤卻只保住 +243 點 —— <span class="red">回吐 433 點，吐掉盤中漲幅的 64%</span><br>
+    ② <strong>收盤位置僅 35.9%</strong>，收在當日高低區間的下三分之一，留下明顯上影線<br>
+    ③ <strong>今日最高 49,059.12 幾乎精準觸及 MA5 的 49,077.78（差 18.66 點）後被壓回</strong> —— <span class="red">MA5 已由支撐轉為反壓</span><br>
+    更重要的是結構變化：收盤價 48,625.83 已<strong>同時跌破 MA5（49,078）與 MA10（48,969）</strong>，這是 10 月以來首次。但仍站上 MA20 的 47,986（+1.33%），<strong>多頭結構尚未破壞</strong>。<br>
+    <strong>而本報告 10/08 預警的核心風險，已有三項實現：</strong>領漲面崩解（AMD／NVDA 雙雙回落）、量增下跌出現（10/13 量 516.6 萬張 + 跌 1.95%）、外資轉為大規模賣超（10/13 單日 -611,265 張，台積電被砍 -25,642 張）。
+  </p>
+</div>
+
+<!-- 今日盤中結構 -->
+<div class="section-title">🕯️ 今日盤中結構：高點觸及 MA5 即被壓回</div>
+<div class="daybar">
+  <div style="font-size:13px;color:#c9d1d9;margin-bottom:4px;"><strong>10/14 當日價格區間與收盤位置</strong></div>
+  <div class="daybar-track">
+    <div class="daybar-fill" style="left:0%;width:35.9%;background:linear-gradient(90deg,#1f4d2e,#3fb950);"></div>
+    <div class="daybar-marker" style="left:35.9%;background:#e3b341;"></div>
+    <div style="position:absolute;left:36.8%;top:-26px;font-size:11px;color:#e3b341;font-weight:700;white-space:nowrap;">收盤 48,625.83（35.9%）</div>
+    <div style="position:absolute;right:4px;top:9px;font-size:11px;color:#f85149;font-weight:700;">⬅ 上影線 433 點</div>
+  </div>
+  <div class="daybar-labels">
+    <span>最低＝開盤 48,382.64</span>
+    <span>最高 49,059.12</span>
+  </div>
+  <div class="note">
+    當日振幅 1.40%。綠色區塊＝收盤相對當日區間的位置（35.9%）；右側空白＝從高點回吐的 433.29 點上影線。<br>
+    <strong>關鍵：</strong>最高點 49,059.12 與 MA5（49,077.78）僅差 18.66 點 —— 多方上攻在觸及 5 日線的瞬間失敗。這種「精準觸及均線被壓回」是短線反壓確立的典型型態。
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">今日收盤數據</div>
+    <div class="stat-row"><span class="stat-label">開盤</span><span class="stat-val">48,382.64（＝當日最低）</span></div>
+    <div class="stat-row"><span class="stat-label">最高</span><span class="stat-val dn">49,059.12（觸及 MA5 被壓回）</span></div>
+    <div class="stat-row"><span class="stat-label">最低</span><span class="stat-val">48,382.64</span></div>
+    <div class="stat-row"><span class="stat-label">收盤</span><span class="stat-val up">48,625.83</span></div>
+    <div class="stat-row"><span class="stat-label">漲跌</span><span class="stat-val up">+284.52（+0.59%）</span></div>
+    <div class="stat-row"><span class="stat-label">當日振幅</span><span class="stat-val">1.40%</span></div>
+    <div class="stat-row"><span class="stat-label">自低點最大彈幅</span><span class="stat-val up">+676.48 點</span></div>
+    <div class="stat-row"><span class="stat-label">高點回吐</span><span class="stat-val dn">-433.29 點（吐掉 64%）</span></div>
+    <div class="stat-row"><span class="stat-label">收盤位置</span><span class="stat-val dn">35.9%（下三分之一）</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">均線位置：首次跌破 MA5 與 MA10</div>
+    <div class="stat-row"><span class="stat-label">收盤 48,625.83 vs MA5</span><span class="stat-val dn">MA5 49,077.78 → 跌破 -0.92%</span></div>
+    <div class="stat-row"><span class="stat-label">收盤 vs MA10</span><span class="stat-val dn">MA10 48,969.29 → 跌破 -0.70%</span></div>
+    <div class="stat-row"><span class="stat-label">收盤 vs MA20</span><span class="stat-val up">MA20 47,985.87 → 站上 +1.33%</span></div>
+    <div class="stat-row"><span class="stat-label">收盤 vs MA60（季線）</span><span class="stat-val up">MA60 45,932.47 → 站上 +5.86%</span></div>
+    <div class="stat-row"><span class="stat-label">收盤 vs MA120（半年線）</span><span class="stat-val up">MA120 44,728.80 → 站上 +8.71%</span></div>
+    <div class="stat-row"><span class="stat-label">均線本身排列</span><span class="stat-val up">MA5＞MA10＞MA20＞MA60＞MA120（仍多頭）</span></div>
+    <div class="stat-row"><span class="stat-label">RSI14</span><span class="stat-val">59.22（由強轉中性）</span></div>
+    <div class="note">
+      <strong>如何解讀這個狀態：</strong>均線的<strong>排列順序</strong>仍是完整多頭，但<strong>股價本身</strong>已掉到最短的兩條均線（MA5、MA10）之下。這是「趨勢結構未破，但短線動能已轉弱」的標準型態。<br>
+      真正的分水嶺是 MA20 的 <strong>47,985.87</strong>，距今日收盤僅 <span class="highlight">-1.32%（640 點）</span>。10/08 時這個緩衝還有 -3.6%，一週內已收斂近三分之二。
+    </div>
+  </div>
+</div>
+
+<!-- 近12日K線 -->
+<div class="section-title">📅 近 12 個交易日：從歷史高 49,823 到今日 48,626</div>
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <tr><th>日期</th><th>開盤</th><th>最高</th><th>最低</th><th>收盤</th><th>漲跌</th><th>漲跌%</th><th>量(萬張)</th><th>註記</th></tr>
+      <tr><td>09/24</td><td>48,075</td><td>48,118</td><td>47,755</td><td class="dn">48,025</td><td class="dn">-132.69</td><td class="dn">-0.28%</td><td>354.1</td><td>高檔縮量</td></tr>
+      <tr><td>09/29</td><td>47,874</td><td>48,045</td><td>47,573</td><td class="dn">47,632</td><td class="dn">-392.64</td><td class="dn">-0.82%</td><td>378.1</td><td>回測</td></tr>
+      <tr><td>09/30</td><td>47,767</td><td>48,380</td><td>47,767</td><td class="up">47,940</td><td class="up">+308.17</td><td class="up">+0.65%</td><td>511.1</td><td>月底作帳，量增</td></tr>
+      <tr><td>10/01</td><td>47,962</td><td>48,353</td><td>47,893</td><td class="up">48,353</td><td class="up">+413.36</td><td class="up">+0.86%</td><td>520.2</td><td>收最高</td></tr>
+      <tr><td>10/02</td><td>48,391</td><td>48,492</td><td>48,206</td><td class="up">48,476</td><td class="up">+122.25</td><td class="up">+0.25%</td><td>471.4</td><td>續攻</td></tr>
+      <tr style="background:#0f2d1a;"><td><strong>10/05</strong></td><td>48,575</td><td>49,771</td><td>48,575</td><td class="up"><strong>49,712</strong></td><td class="up"><strong>+1,236.30</strong></td><td class="up"><strong>+2.55%</strong></td><td><strong>584.0</strong></td><td>🟢 本波最大單日漲幅，量最大</td></tr>
+      <tr style="background:#2d2008;"><td><strong>10/06</strong></td><td>49,736</td><td class="highlight">49,969</td><td>49,480</td><td class="up"><strong>49,822.55</strong></td><td class="up">+110.51</td><td class="up">+0.22%</td><td>458.3</td><td>⭐ <strong>歷史收盤高點</strong>，量已縮</td></tr>
+      <tr><td>10/07</td><td>49,857</td><td>49,967</td><td>49,568</td><td class="dn">49,806</td><td class="dn">-16.18</td><td class="dn">-0.03%</td><td>444.1</td><td>高檔停滯</td></tr>
+      <tr><td>10/08</td><td>49,783</td><td>49,783</td><td>49,190</td><td class="dn">49,313</td><td class="dn">-492.93</td><td class="dn">-0.99%</td><td>426.5</td><td>開盤即最高，轉弱第一棒</td></tr>
+      <tr><td>10/12</td><td>49,272</td><td>49,413</td><td>48,769</td><td class="dn">49,302</td><td class="dn">-11.48</td><td class="dn">-0.02%</td><td>450.1</td><td>盤中探低後拉回</td></tr>
+      <tr style="background:#2d1010;"><td><strong>10/13</strong></td><td>49,126</td><td>49,126</td><td class="red">48,066</td><td class="dn"><strong>48,341</strong></td><td class="dn"><strong>-960.65</strong></td><td class="dn"><strong>-1.95%</strong></td><td class="red"><strong>516.6</strong></td><td>🔴 <strong>量增下跌</strong>（20日均量1.20倍），開盤即最高</td></tr>
+      <tr style="background:#1a2540;"><td><strong>10/14 今日</strong></td><td>48,383</td><td>49,059</td><td>48,383</td><td class="up"><strong>48,626</strong></td><td class="up"><strong>+284.52</strong></td><td class="up"><strong>+0.59%</strong></td><td>盤後結算中</td><td>🔵 反彈觸 MA5 被壓回，收 35.9% 位置</td></tr>
+    </table>
+  </div>
+  <div class="note">
+    <strong>整段結構：</strong>10/05 以本波最大量（584.0 萬張）大漲 +2.55% 完成最後一攻 → 10/06 創歷史收盤高 49,822.55 但量已縮至 458.3 萬張（<strong>價創高、量不創高</strong>）→ 10/08、10/13 兩度「開盤即最高」收長黑 → 10/13 以放大量（516.6 萬張，20 日均量 1.20 倍）跌 1.95% → 今日反彈失敗。<br>
+    <strong>10/06 高點 49,822.55 至 10/13 盤中低 48,066.36：下跌 1,756.19 點（-3.53%）。</strong>今日收 48,625.83，自低點回升 559.47 點，但距高點仍有 -2.40%。
+  </div>
+</div>
+
+<!-- 量能 -->
+<div class="card">
+  <div class="card-title">量能結構：10/13 是唯一的量增下跌日</div>
+  <div class="bar-row"><div class="bar-label">10/05（+2.55%）</div><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#3fb950;"></div></div><div class="bar-val up">584.0 萬｜1.35×</div></div>
+  <div class="bar-row"><div class="bar-label">10/01（+0.86%）</div><div class="bar-bg"><div class="bar-fill" style="width:89%;background:#3fb950;"></div></div><div class="bar-val up">520.2 萬｜1.20×</div></div>
+  <div class="bar-row"><div class="bar-label">10/13（-1.95%）</div><div class="bar-bg"><div class="bar-fill" style="width:88%;background:#f85149;"></div></div><div class="bar-val dn">516.6 萬｜1.20×</div></div>
+  <div class="bar-row"><div class="bar-label">09/30（+0.65%）</div><div class="bar-bg"><div class="bar-fill" style="width:88%;background:#3fb950;"></div></div><div class="bar-val up">511.1 萬｜1.18×</div></div>
+  <div class="bar-row"><div class="bar-label">10/02（+0.25%）</div><div class="bar-bg"><div class="bar-fill" style="width:81%;background:#3fb950;"></div></div><div class="bar-val up">471.4 萬｜1.09×</div></div>
+  <div class="bar-row"><div class="bar-label">10/06（創高日）</div><div class="bar-bg"><div class="bar-fill" style="width:78%;background:#e3b341;"></div></div><div class="bar-val highlight">458.3 萬｜1.06×</div></div>
+  <div class="bar-row"><div class="bar-label">10/12（-0.02%）</div><div class="bar-bg"><div class="bar-fill" style="width:77%;background:#8b949e;"></div></div><div class="bar-val" style="color:#8b949e;">450.1 萬｜1.04×</div></div>
+  <div class="bar-row"><div class="bar-label">10/07（-0.03%）</div><div class="bar-bg"><div class="bar-fill" style="width:76%;background:#8b949e;"></div></div><div class="bar-val" style="color:#8b949e;">444.1 萬｜1.03×</div></div>
+  <div class="bar-row"><div class="bar-label">10/08（-0.99%）</div><div class="bar-bg"><div class="bar-fill" style="width:73%;background:#f85149;"></div></div><div class="bar-val dn">426.5 萬｜0.99×</div></div>
+  <div class="note">
+    倍數＝相對 20 日均量（432.1 萬張）。<br>
+    <strong>關鍵判讀：</strong>10/13 是本波下跌段中<strong>唯一的量增下跌日</strong>（516.6 萬張，1.20 倍），其餘下跌日（10/07、10/08、10/12）都是平量或縮量。<br>
+    單日量增下跌不足以判定趨勢反轉，但它與 10/06 創高時的縮量（458.3 萬張）形成「漲時無量、跌時有量」的不利組合。<br>
+    <strong>5 日均量已降至 367.5 萬張，為 60 日均量（464.5 萬張）的 0.79 倍</strong>（10/08 時為 0.83 倍），量能萎縮趨勢延續。
+  </div>
+</div>
+
+<!-- 10/08 預警驗證 -->
+<div class="section-title">✅ 10/08 報告五項「轉空確認清單」的驗證進度</div>
+<div class="card">
+  <div class="card-title">兩項已觸發、一項逼近、兩項未觸發 —— 因此判定「結構轉弱但趨勢未破」</div>
+  <div class="trigger-item">
+    <div class="trigger-num tn-near">1</div>
+    <div class="trigger-body">
+      <strong>① 跌破 MA20 且量放大至 500 萬張以上 → 尚未觸發，但逼近</strong><br>
+      <span style="color:#8b949e;font-size:12px;">MA20 現為 47,985.87，今日收 48,625.83，仍站上 +1.33%。<strong>但緩衝已從 10/08 的 -3.6% 收斂至 -1.32%（640 點）。</strong>量能條件則已在 10/13 單日出現（516.6 萬張 + 跌 1.95%），只是當日未破 MA20。兩個條件各自出現過，尚未同日成立。</span>
+    </div>
+  </div>
+  <div class="trigger-item">
+    <div class="trigger-num tn-safe">2</div>
+    <div class="trigger-body">
+      <strong>② VIX 突破 20 → 未觸發</strong><br>
+      <span style="color:#8b949e;font-size:12px;">VIX 15.27（+0.39%），距一年高 -50.82%。指數從高點跌 3.5%，VIX 幾乎沒動 —— 市場仍未購買保護。<strong>這同時是「尚未恐慌」的安慰，也是「保護仍然缺席」的警訊。</strong></span>
+    </div>
+  </div>
+  <div class="trigger-item">
+    <div class="trigger-num tn-safe">3</div>
+    <div class="trigger-body">
+      <strong>③ 美債 10Y 突破一年高 5.31% → 未觸發，且已略為舒緩</strong><br>
+      <span style="color:#8b949e;font-size:12px;">10Y 降至 5.22%（-0.44%），距一年高 -1.77%。10/08 時僅差 3bp，如今拉開至 9bp。<strong>這是本報告中唯一改善的宏觀變數</strong> —— 評價壓力略為減輕，但 5.22% 的絕對水位依然偏高。</span>
+    </div>
+  </div>
+  <div class="trigger-item">
+    <div class="trigger-num tn-hit">4</div>
+    <div class="trigger-body">
+      <strong>④ AMD 或 NVIDIA 跌破前波低點 → 已實質觸發（領漲面崩解）</strong><br>
+      <span style="color:#8b949e;font-size:12px;">10/08 時 AMD 距高 -0.55%、NVDA 距高 -0.74%，兩檔獨撐漲勢。<strong>10/13 已惡化為 AMD -6.76%、NVDA -4.48%</strong>，且費半從 -10.72% 擴大至 <strong>-16.58%</strong>、美光從 -10.35% 崩至 <strong>-21.46%</strong>（單日 -3.62%）。10/08 報告指出「若兩大龍頭轉弱，博通、ASML、美光皆無力接棒」—— 此風險已完全實現。</span>
+    </div>
+  </div>
+  <div class="trigger-item">
+    <div class="trigger-num tn-hit">5</div>
+    <div class="trigger-body">
+      <strong>⑤ 外資連續賣超台積電逾 1 萬張／日 → 單日已遠超門檻，待確認連續性</strong><br>
+      <span style="color:#8b949e;font-size:12px;">10/07 外資僅賣台積電 -1,164 張；<strong>10/13 單日砍 -25,642 張，為門檻的 2.6 倍、前次的 22 倍</strong>。全市場外資同日賣超 -611,265 張。目前只有單日數據，是否形成「連續三日」需後續追蹤 —— <strong>這是未來兩日最該盯的指標。</strong></span>
+    </div>
+  </div>
+</div>
+
+<!-- AI/半導體惡化 -->
+<div class="section-title">🔬 領漲面崩解實錄：六日內全面惡化</div>
+<div class="card">
+  <div class="card-title">AI／半導體核心標的「距一年高點」變化（10/08 → 10/13）</div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>標的</th><th>10/13 價格</th><th>當日漲跌</th><th>10/08 距高</th><th>10/13 距高</th><th>惡化幅度</th></tr>
+      <tr style="background:#2d1010;"><td><strong>美光 MU</strong></td><td class="dn">$953.19</td><td class="dn">-3.62%</td><td>-10.35%</td><td class="red">-21.46%</td><td class="red">-11.11pp 🔴最嚴重</td></tr>
+      <tr><td>AMD</td><td class="up">$605.53</td><td class="up">+1.90%</td><td>-0.55%</td><td class="red">-6.76%</td><td class="red">-6.21pp</td></tr>
+      <tr style="background:#2d1010;"><td><strong>費半 SOX</strong></td><td class="dn">12,208.79</td><td class="dn">-0.23%</td><td>-10.72%</td><td class="red">-16.58%</td><td class="red">-5.86pp</td></tr>
+      <tr><td>台積電 ADR</td><td class="up">$445.12</td><td class="up">+0.17%</td><td>-2.80%</td><td class="red">-8.37%</td><td class="red">-5.57pp</td></tr>
+      <tr><td>ASML</td><td class="dn">$1,717.76</td><td class="dn">-1.86%</td><td>-9.27%</td><td class="red">-13.66%</td><td class="red">-4.39pp</td></tr>
+      <tr><td>NVIDIA</td><td class="up">$228.52</td><td class="up">+0.97%</td><td>-0.74%</td><td class="red">-4.48%</td><td class="red">-3.74pp</td></tr>
+      <tr><td>博通 AVGO</td><td class="up">$357.31</td><td class="up">+0.73%</td><td>-21.82%</td><td class="dn">-25.80%</td><td class="dn">-3.98pp</td></tr>
+      <tr style="background:#0f2d1a;"><td>標普500（對照）</td><td class="dn">7,805.45</td><td class="dn">-0.02%</td><td>-0.22%</td><td class="up">-0.17%</td><td class="up">+0.05pp 持平</td></tr>
+      <tr style="background:#0f2d1a;"><td>納斯達克（對照）</td><td class="dn">27,204.38</td><td class="dn">-0.15%</td><td>-0.22%</td><td>-1.43%</td><td>-1.21pp 輕微</td></tr>
+    </table>
+  </div>
+  <div class="note">
+    <strong>最重要的對照：</strong>標普 500 距高仍只有 <strong>-0.17%</strong>、納斯達克 -1.43%，但費半已擴大至 <strong>-16.58%</strong>。<br>
+    這意味著 <strong>美股大盤是靠非半導體族群撐住，半導體正在單獨下殺</strong>。台股權值高度集中於半導體供應鏈，因此台股的相對弱勢（距高 -2.40%）比美股大盤明顯，但又比費半輕 —— 這正是「指數被權值撐著、但撐不久」的結構。<br>
+    <strong>美光六日內從 $1,088 跌至 $953（-12.4%），距高 -21.46%</strong>，記憶體超級循環敘事首次出現實質裂痕，這直接解釋了台廠記憶體族群當日的籌碼崩壞（見下節）。
+  </div>
+</div>
+
+<!-- 籌碼 -->
+<div class="section-title">💼 籌碼：外資 10/13 單日賣超 611,265 張，投信逆向承接</div>
+<div class="alert-box alert-red">
+  <div class="alert-title" style="color:#f85149;">🚨 三大法人結構完全改變：外資大舉撤退、投信獨力承接</div>
+  <p>
+    <strong>全市場（10/13）：</strong>外資 <span class="red">-611,265 張</span>｜投信 <span class="green">+68,572 張</span>｜自營 <span class="red">-2,325,006 張</span><br>
+    對照 10/07（外資 +18,315、投信 -13,663），兩者<strong>方向完全互換</strong>：外資從小買轉為史詩級賣超，投信則從賣超轉為買超承接。<br>
+    <strong>自營商 -232.5 萬張</strong>的極端數字主要來自 ETF 造市與槓桿型 ETF 避險（00406A 自營 -899,487、00631L 元大台灣50正2 自營 -187,221、009816 自營 -177,386），不宜解讀為方向性看空，但<strong>反映 ETF 體系正在大規模去槓桿</strong>。<br>
+    <strong>最具訊號價值的單一數據：台積電（2330）外資賣 -25,642 張、投信買 +3,005 張。</strong>外資對權值龍頭的態度從 10/07 的 -1,164 張（中性）轉為明確減碼，而投信在對面接單 —— 這正是指數今日還能收紅的原因，也是這個結構最脆弱的地方：<strong>投信的資金量級無法長期對抗外資。</strong>
+  </p>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">🔴 外資賣超前 15（10/13，單位：張）</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>代碼</th><th>名稱</th><th>外資</th><th>投信</th><th>研判</th></tr>
+        <tr><td>00406A</td><td>主動中信台灣收益</td><td class="dn">-118,945</td><td>0</td><td style="color:#8b949e;">ETF贖回（自營-89.9萬）</td></tr>
+        <tr><td>0050</td><td>元大台灣50</td><td class="dn">-106,150</td><td>-180</td><td style="color:#8b949e;">核心ETF大贖回</td></tr>
+        <tr style="background:#2d1010;"><td><strong>6770</strong></td><td><strong>力積電</strong></td><td class="dn">-97,829</td><td>-470</td><td class="red">🔴記憶體崩，較10/07再擴大</td></tr>
+        <tr><td>00981A</td><td>主動統一台股增長</td><td class="dn">-86,614</td><td>0</td><td style="color:#8b949e;">ETF贖回</td></tr>
+        <tr><td>00403A</td><td>主動統一升級50</td><td class="dn">-59,673</td><td>0</td><td style="color:#8b949e;">ETF贖回（10/07還+14,658）</td></tr>
+        <tr><td>00991A</td><td>主動復華未來50</td><td class="dn">-46,775</td><td>0</td><td style="color:#8b949e;">ETF贖回</td></tr>
+        <tr><td>2409</td><td>友達</td><td class="dn">-43,176</td><td>+171</td><td class="red">面板連三週遭砍</td></tr>
+        <tr style="background:#2d1010;"><td><strong>2408</strong></td><td><strong>南亞科</strong></td><td class="dn">-41,446</td><td class="dn">-2,008</td><td class="red">🔴記憶體雙賣（10/07僅-7,465）</td></tr>
+        <tr style="background:#2d1010;"><td><strong>2344</strong></td><td><strong>華邦電</strong></td><td class="dn">-37,022</td><td class="dn">-3,290</td><td class="red">🔄完全反轉（10/07還+20,530）</td></tr>
+        <tr><td>00405A</td><td>主動富邦台灣龍耀</td><td class="dn">-26,437</td><td>0</td><td style="color:#8b949e;">ETF贖回</td></tr>
+        <tr style="background:#2d1010;"><td><strong>2330</strong></td><td><strong>台積電</strong></td><td class="dn">-25,642</td><td class="up">+3,005</td><td class="red">⚠️權值遭減碼，投信承接</td></tr>
+        <tr><td>009828</td><td>中信台日韓PCB</td><td class="dn">-23,002</td><td>-329</td><td style="color:#8b949e;">ETF連續贖回</td></tr>
+        <tr><td>009816</td><td>凱基台灣TOP50</td><td class="dn">-22,470</td><td>0</td><td style="color:#8b949e;">ETF贖回</td></tr>
+        <tr><td>2337</td><td>旺宏</td><td class="dn">-19,680</td><td>+417</td><td class="red">記憶體族群同遭棄</td></tr>
+        <tr><td>2317</td><td>鴻海</td><td class="dn">-19,578</td><td class="up">+765</td><td class="dn">連兩期遭賣（10/07 -11,743）</td></tr>
+      </table>
+    </div>
+    <div class="note"><strong>記憶體四檔合計遭砍：</strong>力積電 -97,829、南亞科 -41,446、華邦電 -37,022、旺宏 -19,680 ＝ <span class="red">-195,977 張</span>。對照美光當日 -3.62%、距高 -21.46%，台廠記憶體與美股完全同步崩壞。</div>
+  </div>
+  <div class="card">
+    <div class="card-title">🟢 外資買超前 15（10/13，單位：張）</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>代碼</th><th>名稱</th><th>外資</th><th>投信</th><th>研判</th></tr>
+        <tr><td>00919</td><td>群益台灣精選高息</td><td class="up">+34,488</td><td>0</td><td class="highlight">🛡️高息ETF（防禦）</td></tr>
+        <tr><td>2887</td><td>台新新光金</td><td class="up">+22,310</td><td>-413</td><td class="up">金融</td></tr>
+        <tr style="background:#0f2d1a;"><td><strong>2609</strong></td><td><strong>陽明</strong></td><td class="up">+21,905</td><td class="up">+1,867</td><td class="green">★航運（雙買）</td></tr>
+        <tr><td>2885</td><td>元大金</td><td class="up">+20,170</td><td class="up">+2,338</td><td class="green">★金融（雙買）</td></tr>
+        <tr><td>5880</td><td>合庫金</td><td class="up">+19,885</td><td>+534</td><td class="up">金融</td></tr>
+        <tr style="background:#0f2d1a;"><td><strong>2618</strong></td><td><strong>長榮航</strong></td><td class="up">+18,973</td><td>-59</td><td class="up">航空</td></tr>
+        <tr><td>1312</td><td>國喬</td><td class="up">+18,914</td><td>0</td><td class="up">石化（輪動延續）</td></tr>
+        <tr><td>2886</td><td>兆豐金</td><td class="up">+16,699</td><td class="dn">-5,922</td><td class="highlight">金融（內外資對立）</td></tr>
+        <tr style="background:#0f2d1a;"><td><strong>2891</strong></td><td><strong>中信金</strong></td><td class="up">+16,612</td><td class="up">+11,722</td><td class="green">★金融（雙買最強）</td></tr>
+        <tr style="background:#0f2d1a;"><td><strong>2603</strong></td><td><strong>長榮</strong></td><td class="up">+15,862</td><td class="up">+4,929</td><td class="green">★航運（雙買）</td></tr>
+        <tr><td>4938</td><td>和碩</td><td class="up">+15,486</td><td>+234</td><td class="up">電子代工（逆勢）</td></tr>
+        <tr><td>00953B</td><td>群益優選非投等債</td><td class="up">+13,314</td><td>0</td><td class="highlight">🛡️債券ETF（防禦）</td></tr>
+        <tr><td>1326</td><td>台化</td><td class="up">+13,108</td><td>+54</td><td class="up">石化（輪動延續）</td></tr>
+        <tr><td>2002</td><td>中鋼</td><td class="up">+12,832</td><td>-3</td><td class="up">鋼鐵</td></tr>
+        <tr><td>00712</td><td>復華富時不動產</td><td class="up">+12,640</td><td>0</td><td class="highlight">🛡️REITs（防禦）</td></tr>
+      </table>
+    </div>
+    <div class="note"><strong>配置明顯防禦化：</strong>金融股 5 檔（台新新光金、元大金、合庫金、兆豐金、中信金，合計 +95,676 張）＋ 航運航空 3 檔（陽明、長榮航、長榮，合計 +56,740 張）＋ <strong>高息 ETF／債券 ETF／REITs 三檔合計 +60,442 張</strong>。這是典型的 risk-off 配置。</div>
+  </div>
+</div>
+
+<!-- 籌碼輪動轉向 -->
+<div class="card">
+  <div class="card-title">🔄 籌碼輪動再次轉向：10/07「科技→傳產」已變為 10/13「傳產→金融／航運／防禦ETF」</div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>標的</th><th>10/07 外資</th><th>10/13 外資</th><th>轉變</th><th>10/13 投信</th><th>研判</th></tr>
+      <tr><td>台塑 1301</td><td class="up">+35,668</td><td class="dn">-15,181</td><td class="red">🔄 反轉 -50,849</td><td class="up">+13,026</td><td class="highlight">內外資完全對立</td></tr>
+      <tr><td>台塑化 6505</td><td class="up">+1,249</td><td class="dn">-9,081</td><td class="dn">轉賣</td><td class="up">+15,100</td><td class="highlight">投信買超第1，外資賣</td></tr>
+      <tr><td>華新 1605</td><td class="up">+22,628</td><td class="dn">-6,246</td><td class="red">🔄 反轉 -28,874</td><td>0</td><td class="dn">傳產輪動退潮</td></tr>
+      <tr><td>台泥 1101</td><td class="up">+3,877</td><td class="dn">-11,342</td><td class="red">🔄 反轉</td><td>-5</td><td class="dn">傳產輪動退潮</td></tr>
+      <tr><td>台化 1326</td><td class="up">+15,752</td><td class="up">+13,108</td><td class="up">✅ 延續</td><td>+54</td><td class="up">石化僅此檔延續</td></tr>
+      <tr><td>國喬 1312</td><td class="up">+8,689</td><td class="up">+18,914</td><td class="up">✅ 加碼</td><td>0</td><td class="up">石化加碼</td></tr>
+      <tr><td>南亞 1303</td><td class="up">+11,921</td><td class="up">+7,603</td><td class="up">✅ 延續（力道減）</td><td class="up">+1,694</td><td class="up">雙買</td></tr>
+      <tr><td>華新科 2492</td><td class="up">+9,934</td><td class="up">+2,178</td><td class="highlight">力道大減</td><td>-75</td><td class="highlight">被動元件降溫</td></tr>
+      <tr><td>中信金 2891</td><td class="dn">-5,503</td><td class="up">+16,612</td><td class="up">🔄 翻多</td><td class="up">+11,722</td><td class="green">★金融成為新主軸</td></tr>
+      <tr><td>陽明 2609</td><td class="up">+527</td><td class="up">+21,905</td><td class="up">🔄 大幅加碼</td><td class="up">+1,867</td><td class="green">★航運爆發</td></tr>
+      <tr><td>長榮 2603</td><td class="dn">-677</td><td class="up">+15,862</td><td class="up">🔄 翻多</td><td class="up">+4,929</td><td class="green">★航運爆發</td></tr>
+      <tr><td>長榮航 2618</td><td class="up">+349</td><td class="up">+18,973</td><td class="up">🔄 大幅加碼</td><td>-59</td><td class="up">航空加碼</td></tr>
+    </table>
+  </div>
+  <div class="note">
+    <strong>這是六個交易日內的第二次輪動轉向。</strong>10/07 外資才大舉買進石化傳產（台塑 +35,668、華新 +22,628），10/13 卻反手賣出（台塑 -15,181、華新 -6,246、台泥 -11,342）—— <strong>傳產輪動只維持了不到一週</strong>，僅台化、國喬、南亞延續。<br>
+    新的資金去向是<strong>金融股（五檔合計 +95,676 張）、航運航空（三檔合計 +56,740 張）與防禦型 ETF（高息／債券／REITs 合計 +60,442 張）</strong>。<br>
+    <strong>最值得注意的對立：台塑與台塑化上，外資賣（-15,181／-9,081）而投信買（+13,026／+15,100，為投信買超前兩名）。</strong>內外資在同一族群上完全相反，這種對立通常代表該族群短期方向不明，風險報酬比不佳。
+  </div>
+</div>
+
+<!-- 矛盾 -->
+<div class="section-title">⚡ 今日三大矛盾</div>
+<div class="conflict">
+  <div class="conflict-t">⚡ 矛盾一：外資單日賣超 61.1 萬張，指數卻收紅 +0.59%</div>
+  <div class="conflict-b">
+    外資 10/13 賣超 <strong>-611,265 張</strong>（含台積電 -25,642 張），自營商賣超 -232.5 萬張，但指數今日仍收紅。<br>
+    <strong>解答在投信：+68,572 張買超</strong>，且明確承接權值（台積電 +3,005）與金融航運（中信金 +11,722、台塑化 +15,100、台塑 +13,026、長榮 +4,929、華航 +4,725）。<br>
+    <strong>但這個結構的問題是量級不對等：</strong>投信 6.9 萬張要對抗外資 61.1 萬張，相差近 9 倍。今日能撐住是因為外資賣壓集中在 ETF 與記憶體（力積電 -97,829、南亞科 -41,446、華邦電 -37,022）而非全面性權值拋售。<strong>一旦外資把矛頭轉向台積電等權值股並持續數日，投信將無力獨撐。</strong>
+  </div>
+</div>
+<div class="conflict">
+  <div class="conflict-t">⚡ 矛盾二：美債殖利率下降（利多），但台股仍跌、台幣急貶</div>
+  <div class="conflict-b">
+    美債 10Y 從 10/08 的 5.28% 降至 <strong>5.22%（-0.44%）</strong>，距一年高拉開至 -1.77%，評價壓力理應減輕。但同期台股自高點跌 -2.40%、費半距高從 -10.72% 惡化至 <strong>-16.58%</strong>。<br>
+    <strong>更關鍵的是台幣：USD/TWD 從 31.86 急貶至 32.18（+0.78%）</strong>，距一年高 32.40 僅剩 0.68%。<br>
+    <strong>解讀：</strong>殖利率小幅回落不足以抵銷資金外流。台幣貶值 + 外資賣超 61 萬張是<strong>同一件事的兩面</strong> —— 外資賣股並匯出。同時油價回到 $106.18（六日 +4.1%），台幣貶值又推升進口成本，<strong>形成輸入性通膨壓力</strong>，對電子業毛利與內需消費都不利。債息舒緩的利多，被匯率與油價抵銷。
+  </div>
+</div>
+<div class="conflict">
+  <div class="conflict-t">⚡ 矛盾三：指數自高點跌 3.5%，VIX 幾乎不動（15.27）</div>
+  <div class="conflict-b">
+    10/06 高 49,822.55 → 10/13 盤中低 48,066.36，跌幅 <strong>-3.53%</strong>；同期 VIX 僅從 15.08 微升至 <strong>15.27（+0.39%）</strong>，距一年高仍有 -50.82%。<br>
+    <strong>解讀：</strong>這次下跌被市場視為「正常回檔」，沒有人去買保護。<br>
+    這有兩種讀法 —— 樂觀面：恐慌未起，不是系統性風險；悲觀面：<strong>保護依然缺席，若賣壓擴大，缺乏避險部位的市場會以更快速度下跌。</strong><br>
+    10/08 報告已指出「VIX 15 搭配一年高債息是罕見的高利率＋零恐慌組合」，一週後指數跌了 3.5%，這個組合<strong>依然成立</strong>。風險仍未被定價。
+  </div>
+</div>
+
+<!-- 關鍵價位 -->
+<div class="section-title">📍 明日關鍵價位</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">上方壓力（由近至遠）</div>
+    <div class="level-block" style="border:1px solid #f85149;">
+      <div><div class="level-left">🔴 第一壓力 · MA10</div><div class="level-val dn">48,969</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:160px;">距收盤 +0.71%。站回才算短線止跌</div>
+    </div>
+    <div class="level-block" style="border:1px solid #f85149;">
+      <div><div class="level-left">🔴 第二壓力 · MA5（今日反壓）</div><div class="level-val dn">49,078</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:160px;">今日高 49,059 僅差 19 點被壓回，已確立反壓</div>
+    </div>
+    <div class="level-block" style="border:1px solid #e3b341;">
+      <div><div class="level-left">🟡 第三壓力 · 10/12 收盤</div><div class="level-val highlight">49,302</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:160px;">下跌起點，需帶量突破</div>
+    </div>
+    <div class="level-block" style="border:1px solid #30363d;">
+      <div><div class="level-left">⚪ 終極壓力 · 歷史高（10/06）</div><div class="level-val">49,823</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:160px;">距收盤 +2.46%；布林上軌 50,624</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">下方支撐（由近至遠）</div>
+    <div class="level-block" style="border:1px solid #3fb950;">
+      <div><div class="level-left">🟢 第一支撐 · 今日開盤＝最低</div><div class="level-val up">48,383</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:160px;">距收盤 -0.50%。失守則測 10/13 低點</div>
+    </div>
+    <div class="level-block" style="border:1px solid #3fb950;">
+      <div><div class="level-left">🟢 第二支撐 · 10/13 盤中低</div><div class="level-val up">48,066</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:160px;">本波低點。跌破＝下跌段延續</div>
+    </div>
+    <div class="level-block" style="border:2px solid #e3b341;">
+      <div><div class="level-left">⭐ 關鍵分水嶺 · MA20＝布林中軌</div><div class="level-val highlight">47,986</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:160px;"><strong>距收盤僅 -1.32%（640 點）</strong>。量增跌破＝趨勢轉弱確認</div>
+    </div>
+    <div class="level-block" style="border:1px solid #6e4040;">
+      <div><div class="level-left">🔴 最終防線 · MA60（季線）</div><div class="level-val dn">45,932</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:160px;">距收盤 -5.54%；MA120 為 44,729（-8.01%）</div>
+    </div>
+  </div>
+</div>
+
+<!-- 多空辯論 -->
+<div class="section-title">⚖️ 盤後多空辯論</div>
+<div class="debate-col">
+  <div class="bull-card">
+    <div class="debate-head" style="color:#3fb950;">🐂 看多方（結構未破）</div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">1.</span><span><strong>MA20（47,986）仍穩守</strong>，收盤 48,626 站上 +1.33%；季線 45,932 站上 +5.86%、半年線 44,729 站上 +8.71%，中期結構完整未破</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">2.</span><span><strong>均線排列仍是完整多頭</strong>：MA5 49,078＞MA10 48,969＞MA20 47,986＞MA60 45,932＞MA120 44,729，無任何死亡交叉</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">3.</span><span><strong>美債壓力首次舒緩</strong>：10Y 從 5.28% 降至 5.22%，距一年高拉開至 -1.77%（10/08 僅差 3bp），評價壓縮壓力減輕</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">4.</span><span><strong>投信強力承接 +68,572 張</strong>，且承接權值（台積電 +3,005）與金融航運，內資對台股信心未失</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">5.</span><span><strong>美股大盤毫無鬆動</strong>：標普距高僅 -0.17%、納斯達克 -1.43%，全球風險情緒未轉向，跌勢侷限於半導體族群</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">6.</span><span><strong>VIX 15.27 無恐慌</strong>，距一年高 -50.82%；本次回檔 -3.53% 屬技術性修正，非系統性風險</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">7.</span><span><strong>新主軸明確且雙買</strong>：金融（中信金 +16,612／+11,722）與航運（陽明 +21,905／+1,867、長榮 +15,862／+4,929）外資投信同向，提供輪動承接力</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">8.</span><span><strong>RSI 59.22 回落至中性</strong>，超買壓力已釋放，技術面具備再次上攻的空間</span></div>
+  </div>
+  <div class="bear-card">
+    <div class="debate-head" style="color:#f85149;">🐻 看空方（品質持續惡化）</div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">1.</span><span><strong>今日反彈失敗</strong>：最高 49,059 精準觸及 MA5（49,078）後回吐 433 點，收盤位置僅 <strong>35.9%</strong>，留下明顯上影線，MA5 由支撐轉反壓</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">2.</span><span><strong>首次同時跌破 MA5 與 MA10</strong>，MA20 緩衝從 10/08 的 -3.6% 收斂至 <strong>-1.32%（640 點）</strong>，一週內消耗近三分之二</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">3.</span><span><strong>外資單日賣超 -611,265 張</strong>，台積電遭砍 <strong>-25,642 張</strong>（為 10/07 的 22 倍），已遠超「連續減碼」的門檻規模</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">4.</span><span><strong>領漳面全面崩解</strong>：費半距高 -10.72%→<strong>-16.58%</strong>、台積電ADR -2.80%→<strong>-8.37%</strong>、AMD -0.55%→-6.76%、NVDA -0.74%→-4.48%，10/08 預警的風險完全實現</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">5.</span><span><strong>記憶體敘事出現裂痕</strong>：美光六日跌 -12.4%、距高 <strong>-21.46%</strong>；台廠記憶體四檔遭砍 <strong>-195,977 張</strong>（力積電 -97,829、南亞科 -41,446、華邦電 -37,022、旺宏 -19,680）</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">6.</span><span><strong>台幣急貶 32.18（+0.78%）</strong>，距一年高僅 0.68%，與外資賣超 61 萬張互為因果 —— 資金外流訊號明確</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">7.</span><span><strong>量價組合不利</strong>：10/06 創高時量縮至 458.3 萬張，10/13 下跌卻放量至 516.6 萬張（20 日均量 1.20 倍）；5 日均量降至 60 日均量 <strong>0.79 倍</strong>（10/08 為 0.83）</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">8.</span><span><strong>輪動加速＝不穩定</strong>：10/07 才建立的石化傳產主軸，10/13 已遭反手賣出（台塑 +35,668→-15,181）。<strong>六日內兩度換主軸</strong>，代表資金找不到可持續的方向</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">9.</span><span><strong>油價回升 $106.18</strong>（六日 +4.1%）＋ 台幣貶值 ＝ 輸入性通膨壓力，抵銷債息下降的利多</span></div>
+  </div>
+</div>
+<div class="verdict">
+  <div style="font-size:15px;font-weight:800;margin-bottom:5px;">裁決：結構轉弱，但尚未轉空 —— 反彈宜減碼，不宜加碼</div>
+  <div class="ratio-bar">
+    <div class="ratio-bull" style="width:38%;">看多 38%</div>
+    <div class="ratio-bear" style="width:62%;">看空 62%</div>
+  </div>
+  <p style="font-size:13px;color:#c9d1d9;line-height:1.9;">
+    <strong>看空權重從 10/08 的 55% 上調至 62%</strong>，理由不是指數跌破了什麼關鍵支撐（MA20 仍穩守），而是<strong>10/08 列出的五項轉空條件中已有兩項實現、一項逼近</strong>：領漲面崩解（費半距高 -16.58%）、外資大規模減碼權值（台積電 -25,642 張）、MA20 緩衝收斂至 -1.32%。<br>
+    多方的八個論點都是真的 —— MA20 穩守、均線排列完整、債息舒緩、投信承接、美股大盤未鬆動。<strong>趨勢確實還沒轉空，現在做空指數仍在對抗一個未破壞的多頭結構。</strong><br>
+    但今日的反彈型態（觸 MA5 被壓回、收 35.9% 位置、回吐 64% 盤中漲幅）告訴我們：<strong>這是賣壓中的反彈，不是止跌的反轉。</strong><br>
+    <strong>務實結論：把反彈當成減碼機會而非加碼機會。</strong>持股續抱但停損設在 MA20 的 47,986（-1.32%），這個距離已經很近，意味著接下來幾天就會有明確答案 —— 守住則重新評估，量增跌破則機械式減碼。
+  </p>
+</div>
+
+<!-- 策略 -->
+<div class="section-title">⚔️ 明日操作策略</div>
+<div class="strat-card strat-a">
+  <div class="strat-title">⚔️ 積極型（部位 40-55%，已從 10/08 的 55-70% 調降）</div>
+  <div class="strat-body">
+    <strong>核心原則：反彈減碼，而非反彈加碼。</strong><br>
+    ✅ <strong>若明日反彈至 MA10（48,969）或 MA5（49,078）附近 → 減碼三成</strong>，今日已證明這兩條線是反壓<br>
+    ✅ <strong>持股集中在外資投信雙買的新主軸</strong>：<br>
+    　・金融：中信金 2891（外資 +16,612／投信 +11,722，雙買最強）、元大金 2885（+20,170／+2,338）<br>
+    　・航運：陽明 2609（+21,905／+1,867）、長榮 2603（+15,862／+4,929）、長榮航 2618（+18,973）<br>
+    　・石化延續：台化 1326（+13,108）、國喬 1312（+18,914）、南亞 1303（+7,603／+1,694）<br>
+    ⛔ <strong>機械式停損：收盤跌破 MA20 的 47,986 且量超 500 萬張 → 立即減至三成</strong>（距今日收盤僅 -1.32%，很快會有答案）<br>
+    ⛔ <strong>不碰記憶體</strong>：美光距高 -21.46% 仍在下行，台廠四檔單日遭砍近 20 萬張，趨勢未止
+  </div>
+</div>
+<div class="strat-card strat-b">
+  <div class="strat-title">⚖️ 均衡型（現金 50-60%，等 MA20 給答案）</div>
+  <div class="strat-body">
+    <strong>核心原則：MA20 距今僅 1.32%，幾天內就會有明確結論 —— 等它，不要猜它。</strong><br>
+    ✅ <strong>現階段不新增部位</strong>，保留現金等兩種情境之一出現：<br>
+    　🟢 <strong>情境A（守住）</strong>：指數在 48,000-48,400 量縮止穩，且站回 MA10（48,969）→ 可分批回補金融／航運<br>
+    　🔴 <strong>情境B（跌破）</strong>：量增跌破 47,986 → 下一個觀察點是季線 45,932（-5.54%），期間不接刀<br>
+    ⏸️ <strong>台積電（2330）持股續抱、空手者不追</strong>：外資 10/13 砍 -25,642 張但投信買 +3,005 承接；ADR $445.12 距高已 -8.37%，評價已下修但費半仍在惡化中。<strong>重新加碼需兩條件：費半站回 13,000（目前 12,209）＋ 外資對台積電停止賣超</strong><br>
+    🛡️ <strong>若需留倉的防禦選擇</strong>：外資正在買的高息 ETF（00919 +34,488）、債券 ETF（00953B +13,314）、REITs（00712 +12,640）—— 跟著外資的防禦配置走
+  </div>
+</div>
+<div class="strat-card strat-c">
+  <div class="strat-title">🛡️ 保守型（現金 75%+，風險仍未定價）</div>
+  <div class="strat-body">
+    <strong>核心原則：VIX 15.27 代表風險還沒被定價，等待的成本低於承擔的代價。</strong><br>
+    指數自高點跌 3.53%，VIX 卻只從 15.08 升到 15.27 —— 市場根本沒在害怕。對保守型投資人而言，<strong>這不是進場點，而是等待點</strong>。<br><br>
+    🔴 <strong>明確迴避清單：</strong><br>
+    ・<strong>記憶體全族群</strong>（力積電 6770 -97,829、南亞科 2408 -41,446、華邦電 2344 -37,022、旺宏 2337 -19,680）—— 美光距高 -21.46% 領跌，台廠同步崩壞<br>
+    ・<strong>面板</strong>（友達 2409 -43,176）—— 連三週遭砍<br>
+    ・<strong>台塑／台塑化</strong>—— 外資賣而投信買，內外資完全對立，方向不明<br><br>
+    🟢 <strong>重新進場訊號（需三選二）：</strong><br>
+    ① 指數回測 <strong>MA20 47,986 或季線 45,932</strong> 出現<strong>量縮止穩</strong>（非量增破底）<br>
+    ② <strong>費半站回 13,000 以上</strong>（目前 12,209，需 +6.5%），且台積電 ADR 距高收斂至 -5% 內<br>
+    ③ <strong>外資連續兩日買超</strong>，且台幣由貶轉升（USD/TWD 回到 32.00 以下）
+  </div>
+</div>
+
+<!-- 明日觀察 -->
+<div class="section-title">📋 明日觀察清單（依重要性）</div>
+<div class="card">
+  <div class="stat-row"><span class="stat-label red">① 外資是否連續賣超台積電</span><span class="stat-val dn">10/13 已 -25,642 張。若明日再砍逾 1 萬張 → 10/08 清單第 5 項正式觸發</span></div>
+  <div class="stat-row"><span class="stat-label highlight">② MA20 47,986</span><span class="stat-val highlight">距收盤僅 -1.32%。量增跌破＝趨勢轉弱確認，機械式減碼</span></div>
+  <div class="stat-row"><span class="stat-label">③ MA10 48,969 / MA5 49,078</span><span class="stat-val dn">今日高 49,059 在此被壓回。站回才算短線止跌；反彈至此宜減碼</span></div>
+  <div class="stat-row"><span class="stat-label">④ 48,383（今日開盤＝最低）</span><span class="stat-val">失守則測 10/13 低點 48,066</span></div>
+  <div class="stat-row"><span class="stat-label">⑤ 費半能否站回 13,000</span><span class="stat-val dn">目前 12,209（距高 -16.58%），需 +6.5%。仍在惡化中是台股最大拖累</span></div>
+  <div class="stat-row"><span class="stat-label">⑥ 美光 MU</span><span class="stat-val dn">$953.19（距高 -21.46%）。止跌與否決定台廠記憶體族群能否止血</span></div>
+  <div class="stat-row"><span class="stat-label">⑦ USD/TWD 32.18</span><span class="stat-val dn">距一年高 32.40 僅 0.68%。續貶＝外資持續匯出</span></div>
+  <div class="stat-row"><span class="stat-label">⑧ 金融／航運主軸延續性</span><span class="stat-val up">中信金、陽明、長榮是否持續雙買，決定輪動是否可操作</span></div>
+  <div class="stat-row"><span class="stat-label">⑨ 投信是否續買</span><span class="stat-val">10/13 +68,572 張是今日收紅的主因。若投信轉賣，指數將失去唯一支撐</span></div>
+</div>
+
+</div>
+
+<div class="footer">
+  <p>
+    ⚠️ <strong>免責聲明：</strong>本報告由 AI 自動生成，僅供研究參考，<strong>不構成任何投資建議</strong>。報告中所有價位與情境推演均為風險參考，非價格預測。股市投資有風險，過去績效不代表未來結果，任何操作請自行評估並承擔風險。<br>
+    <strong>資料來源與日期：</strong>台股加權指數開高低收、近 12 日 K 線、均線、RSI、布林通道、量能 — Yahoo Finance（yfinance），2026/10/14 收盤（14:25 擷取）｜費半、美債 10Y、VIX、納斯達克、標普 500、台積電 ADR、NVDA、AMD、美光、博通、ASML — yfinance，2026/10/13 收盤｜美元指數、USD/TWD、黃金、布蘭特原油 — yfinance，2026/10/14｜三大法人買賣超 — 台灣證券交易所 T86 官方 API，資料日期 2026/10/13（共 1,341 檔）。<br>
+    <strong>資料限制說明：</strong>①今日（10/14）成交量於擷取時尚未結算，量能分析採用 10/13 及之前的實際值與 5／20／60 日均量；②三大法人為 T86 官方最新可得日期 10/13，與今日收盤存在一個交易日落差（10/14 籌碼約於 18:00 後更新）；③美股為 10/13 收盤，與台股 10/14 存在一個交易日落差；④台指期外資未平倉因資料來源回傳異常值已排除；⑤櫃買指數（^TWOII）資料無法取得。<br>
+    報告產生時間：2026-10-14 14:25（台北時間）
+  </p>
+</div>
+
+</body>
+</html>
