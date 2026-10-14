@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台光電(2383) 深度研究報告 第4次 | 2026-10-14</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+    --accent:#581c87;--accent2:#7e22ce;--accent3:#d8b4fe;
+    --green:#16a34a;--red:#dc2626;--yellow:#d97706;--blue:#2563eb;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.6}
+  a{color:var(--accent)}
+  td,th{font-variant-numeric:tabular-nums}
+
+  .cover{background:linear-gradient(135deg,#140321 0%,#3b0764 32%,#581c87 68%,#a855f7 100%);color:#fff;padding:56px 40px 48px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-70px;right:-50px;width:310px;height:310px;border-radius:50%;background:rgba(255,255,255,0.06)}
+  .cover::after{content:'';position:absolute;bottom:-90px;left:-50px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.04)}
+  .cover-ticker{font-size:13px;opacity:.72;margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+  .cover-name{font-size:36px;font-weight:800;line-height:1.1;margin-bottom:6px}
+  .cover-subtitle{font-size:15px;opacity:.85;margin-bottom:24px}
+  .cover-price-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:10px}
+  .cover-price{font-size:54px;font-weight:900;line-height:1}
+  .cover-chg{font-size:21px;padding:4px 14px;border-radius:8px;background:rgba(22,163,74,0.32);border:1px solid rgba(134,239,172,0.6)}
+  .price-note{display:inline-block;font-size:12.5px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 13px;margin-bottom:22px;line-height:1.65}
+  .cover-meta{display:flex;gap:24px;flex-wrap:wrap}
+  .cover-meta-item{font-size:13px;opacity:.8}
+  .cover-meta-item strong{opacity:1;font-weight:700}
+  .risk-badge{position:absolute;top:32px;right:40px;background:rgba(217,119,6,0.32);border:1.5px solid rgba(251,191,36,0.7);border-radius:12px;padding:10px 18px;text-align:center}
+  .risk-badge .num{font-size:28px;font-weight:900;color:#fde68a}
+  .risk-badge .lbl{font-size:11px;opacity:.88;letter-spacing:1px}
+  .report-no-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(216,180,254,0.25);border:1px solid rgba(216,180,254,0.5);border-radius:8px;padding:3px 12px;font-size:12px;margin-bottom:12px}
+
+  .container{max-width:960px;margin:0 auto;padding:0 20px 60px}
+  section{margin-top:32px}
+  .section-title{font-size:18px;font-weight:800;color:var(--accent);border-left:4px solid var(--accent);padding-left:12px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .section-num{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+  .card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07),0 0 0 1px var(--border)}
+  .card + .card{margin-top:12px}
+
+  .verdict-box{background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:2px solid #581c87;border-radius:14px;padding:20px 24px;margin-bottom:14px}
+  .verdict-box h4{font-size:15px;font-weight:800;color:#3b0764;margin-bottom:10px}
+  .verdict-box p{font-size:13.5px;line-height:1.75;color:#3b0764}
+  .verdict-box p + p{margin-top:9px}
+
+  .conclusion-card{background:linear-gradient(135deg,#140321 0%,#3b0764 55%,#9333ea 100%);color:#fff;border-radius:16px;padding:28px 32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+  .conc-item .label{font-size:11px;opacity:.68;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+  .conc-item .val{font-size:21px;font-weight:800;line-height:1.15}
+  .conc-item .sub{font-size:12px;opacity:.78;margin-top:4px}
+  @media(max-width:640px){.conclusion-card{grid-template-columns:1fr 1fr}}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+  .kpi-card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border);text-align:center}
+  .kpi-label{font-size:11px;color:var(--muted);margin-bottom:4px;letter-spacing:.5px}
+  .kpi-val{font-size:20px;font-weight:800;color:var(--accent)}
+  .kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+  .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.charts-grid{grid-template-columns:1fr}}
+  .chart-box{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border)}
+  .chart-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px}
+  .chart-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center;line-height:1.55}
+
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{background:var(--bg);padding:8px 12px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px;white-space:nowrap}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+  .tag-green{background:#dcfce7;color:#16a34a}
+  .tag-red{background:#fee2e2;color:#dc2626}
+  .tag-yellow{background:#fef9c3;color:#d97706}
+  .tag-blue{background:#dbeafe;color:#2563eb}
+  .tag-purple{background:#f3e8ff;color:#581c87}
+
+  .analyst-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.analyst-grid{grid-template-columns:1fr}}
+  .analyst-card{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border)}
+  .analyst-card h4{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .analyst-card ul{list-style:none;padding:0}
+  .analyst-card li{font-size:13px;padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px}
+  .analyst-card li:last-child{border-bottom:none}
+  .bull-icon{color:#16a34a;font-weight:900;flex-shrink:0}
+  .bear-icon{color:#dc2626;font-weight:900;flex-shrink:0}
+
+  .score-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+  .score-label{width:104px;font-size:13px;flex-shrink:0}
+  .score-bar-bg{flex:1;height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+  .score-bar-fill{height:100%;border-radius:5px}
+  .score-num{width:36px;font-size:13px;font-weight:700;text-align:right;flex-shrink:0}
+
+  .strategy-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:640px){.strategy-grid{grid-template-columns:1fr}}
+  .strat-card{border-radius:14px;padding:20px;color:#fff}
+  .strat-card.attack{background:linear-gradient(135deg,#dc2626,#ef4444)}
+  .strat-card.balance{background:linear-gradient(135deg,#581c87,#9333ea)}
+  .strat-card.defend{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+  .strat-card h3{font-size:15px;font-weight:800;margin-bottom:12px}
+  .strat-item{font-size:13px;margin:6px 0;display:flex;gap:8px}
+  .strat-item span:first-child{opacity:.75;flex-shrink:0}
+
+  .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.tech-grid{grid-template-columns:1fr}}
+
+  .alert{border-radius:10px;padding:14px 18px;margin-bottom:12px;font-size:13px;display:flex;gap:12px;align-items:flex-start;line-height:1.7}
+  .alert-red{background:#fee2e2;border-left:4px solid #dc2626;color:#7f1d1d}
+  .alert-green{background:#dcfce7;border-left:4px solid #16a34a;color:#14532d}
+  .alert-yellow{background:#fef9c3;border-left:4px solid #d97706;color:#713f12}
+  .alert-purple{background:#f3e8ff;border-left:4px solid #581c87;color:#3b0764}
+
+  .disclaimer{background:#fef9c3;border:1px solid #d97706;border-radius:10px;padding:16px 20px;font-size:12px;color:#713f12;margin-top:32px}
+
+  .glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:540px){.glossary-grid{grid-template-columns:1fr}}
+  .glossary-item{background:var(--card);border-radius:10px;padding:12px 14px;border:1px solid var(--border)}
+  .glossary-term{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:4px}
+  .glossary-def{font-size:12px;color:var(--muted);line-height:1.5}
+
+  .calc-box{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:12px;font-size:12.5px;line-height:1.7}
+  .calc-box .row{display:flex;justify-content:space-between;gap:12px;padding:3px 0;border-bottom:1px dashed #cbd5e1}
+  .calc-box .row:last-child{border-bottom:none;font-weight:800;color:var(--accent);padding-top:7px}
+  .calc-title{font-size:12px;font-weight:800;color:var(--accent);margin-bottom:7px;letter-spacing:.5px}
+
+  .asset-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  @media(max-width:700px){.asset-grid{grid-template-columns:repeat(2,1fr)}}
+  .asset-tile{background:#faf5ff;border:1px solid #e9d5ff;border-radius:10px;padding:13px;text-align:center}
+  .asset-tile.hl{background:#f3e8ff;border:2px solid #581c87}
+  .asset-tile .at-val{font-size:18px;font-weight:800;color:#3b0764}
+  .asset-tile .at-name{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
+
+  .timeline{margin-top:14px;border-left:2px solid var(--accent3);padding-left:18px}
+  .tl-item{position:relative;padding-bottom:14px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{content:'';position:absolute;left:-25px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid #fff}
+  .tl-date{font-size:11.5px;font-weight:800;color:var(--accent);letter-spacing:.5px}
+  .tl-text{font-size:12.5px;color:var(--text);line-height:1.65;margin-top:2px}
+  .tl-item.bad::before{background:#dc2626}
+  .tl-item.bad .tl-date{color:#dc2626}
+  .tl-item.good::before{background:#16a34a}
+  .tl-item.good .tl-date{color:#16a34a}
+
+  .neg{color:#dc2626;font-weight:700}
+  .pos{color:#16a34a;font-weight:700}
+
+  .scorecard{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  @media(max-width:640px){.scorecard{grid-template-columns:1fr}}
+  .sc-item{border-radius:10px;padding:14px 16px}
+  .sc-hit{background:#dcfce7;border:1px solid #86efac}
+  .sc-miss{background:#fee2e2;border:1px solid #fca5a5}
+  .sc-partial{background:#fef9c3;border:1px solid #fcd34d}
+  .sc-head{font-size:12px;font-weight:800;margin-bottom:6px}
+  .sc-hit .sc-head{color:#14532d}
+  .sc-miss .sc-head{color:#7f1d1d}
+  .sc-partial .sc-head{color:#713f12}
+  .sc-body{font-size:12.5px;line-height:1.65;color:#334155}
+</style>
+</head>
+<body>
+
+<!-- ============ 01 封面 ============ -->
+<div class="cover">
+  <div class="risk-badge">
+    <div class="num">5.3</div>
+    <div class="lbl">風險等級</div>
+  </div>
+  <div class="cover-ticker">TWSE 2383 · 上市 · 銅箔基板（CCL）</div>
+  <div class="report-no-badge">第 4 次報告 ｜ 前次 2026-07-20</div>
+  <div class="cover-name">台光電</div>
+  <div class="cover-subtitle">AI 伺服器高階 CCL 龍頭 · Q2 EPS 27.55 元大幅超標 · 近四季業外合計 −0.65 億，獲利 100% 來自本業</div>
+  <div class="cover-price-row">
+    <div class="cover-price">5,520</div>
+    <div class="cover-chg">−25 (−0.45%)</div>
+  </div>
+  <div class="price-note">2026-10-14 收盤（開 5,545 / 高 5,645 / 低 5,510；昨收 5,545）<br>漲停 6,095 · 跌停 4,995（1,000 元以上升降單位為 5 元）</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">52 週區間 <strong>1,085 ~ 6,470</strong></div>
+    <div class="cover-meta-item">市值 <strong>約 1.978 兆</strong></div>
+    <div class="cover-meta-item">近四季本益比 <strong>86.1 倍</strong></div>
+    <div class="cover-meta-item">2026F 本益比 <strong>約 48 倍</strong></div>
+    <div class="cover-meta-item">報告日 <strong>2026-10-14</strong></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ============ 02 前次驗收 ============ -->
+<section>
+  <div class="section-title"><span class="section-num">1</span>🔴 先驗收：前一份報告（2026-07-20）說對了什麼、說錯了什麼</div>
+  <div class="card">
+    <p style="font-size:13.5px;line-height:1.85">這是台光電的第 4 份報告。既然前一份在 7 月 20 日（當時收盤 4,395 元）留下了明確的判斷與停損價，<strong>第一件事就是誠實對帳</strong>。</p>
+    <div class="scorecard">
+      <div class="sc-item sc-hit">
+        <div class="sc-head">✅ 方向判斷：正確</div>
+        <div class="sc-body">前報結論為「<strong>觀望等待，等 7/29 法說會 Q2 業績確認後進場</strong>」。法說會後股價自 4,000～4,400 區間一路走高，<strong>8/18 盤中觸及 6,470 元</strong>。現價 5,520 元較前報的 4,395 元 <strong>上漲 25.6%</strong>。</div>
+      </div>
+      <div class="sc-item sc-partial">
+        <div class="sc-head">⚠️ 停損設定：險過，但不該說成「安全」</div>
+        <div class="sc-body">前報停損設在 <strong>3,800 元</strong>。7/20 之後的最低點是 <strong>3,930 元（2026/07/30）</strong>——<strong>只差 130 元、3.3% 就會被洗出場。</strong>結果是對的，但<strong>安全邊際極薄</strong>，這點必須說清楚，不能事後美化。</div>
+      </div>
+      <div class="sc-item sc-miss">
+        <div class="sc-head">❌ Q2 EPS 預估：嚴重低估</div>
+        <div class="sc-body">前報引述市場預估 Q2'26 EPS <strong>18～22 元</strong>，並說「若 Q2 EPS 超過 18 元，有望成為底部確認信號」。<strong>實際公布 27.55 元</strong>，比預估上限還高出 <strong>25.2%</strong>。<strong>低估了獲利爆發的幅度。</strong></div>
+      </div>
+      <div class="sc-item sc-miss">
+        <div class="sc-head">❌ 全年 EPS 預估：低了 29%</div>
+        <div class="sc-body">前報採用市場預估 FY2026E EPS <strong>88.67 元</strong>。截至目前，FactSet 19 位分析師的中位數已上修至 <strong>114.67 元</strong>——<strong>三個月內上調 29.3%</strong>。前報的 Forward PE 49.6x 因此是用過低的分母算出來的。</div>
+      </div>
+    </div>
+    <div class="alert alert-purple" style="margin-top:14px;margin-bottom:0">
+      <div>📌</div>
+      <div><strong>這次對帳最重要的教訓不是「看對或看錯」，而是：在一個獲利正在非線性加速的公司上，「市場共識」本身就是落後指標。</strong>7 月時市場估全年 88.67 元，現在是 114.67 元；而光是 H1 實際就已經 42.46 元、Q3 營收已知季增 28.8%。<strong>本報告因此不再直接沿用市場預估，而是用已公告的月營收自行推算（見第 5 節）。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 核心結論 ============ -->
+<section>
+  <div class="section-title"><span class="section-num">2</span>核心結論</div>
+
+  <div class="verdict-box">
+    <h4>一句話說完這檔股票</h4>
+    <p><strong>台光電是我在這個系列裡看過獲利品質最純粹的一家：近四季業外損益合計是 −0.65 億元，也就是說獲利不但 100% 來自本業，業外還小幅倒扣。</strong>Q2'26 營收 472.75 億、毛利率 33.85%、營益率 26.94%、EPS 27.55 元，全部創歷史新高，而且是靠賣銅箔基板賺的。</p>
+    <p>而且 <strong>Q3 的營收已經可以精確算出來——608.85 億，季增 28.8%、年增 142.1%</strong>（三個月的月營收都公告了，加總與季報的誤差只有 0.003%）。<strong>我自行推算 Q3 EPS 約 35.6～38.4 元，又是一個新高。</strong></p>
+    <p><strong>但有一個前三份報告都沒提到的新風險：現金流。</strong>2026 上半年營業活動現金流只有 50.45 億，而淨利 152.13 億——<strong>只有 0.33 倍</strong>；加上資本支出 106.79 億，<strong>自由現金流是 −56.34 億</strong>。負債比也從 53.3% 升到 63.2%。<strong>超高速成長正在吃掉現金。</strong></p>
+  </div>
+
+  <div class="conclusion-card">
+    <div class="conc-item">
+      <div class="label">投資建議</div>
+      <div class="val">正面 · 回檔分批</div>
+      <div class="sub">基本面與法人目標價皆支持<br>但勿在 6,000 以上追價</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">法人目標價</div>
+      <div class="val">7,200 元</div>
+      <div class="sub">FactSet 19 位分析師<br><span style="color:#86efac">較現價仍有 +30.4% 空間</span></div>
+    </div>
+    <div class="conc-item">
+      <div class="label">最大風險</div>
+      <div class="val">現金流 + 估值</div>
+      <div class="sub">H1 自由現金流 −56.34 億<br>股價淨值比 33.91 倍</div>
+    </div>
+  </div>
+
+  <div class="alert alert-green" style="margin-top:14px">
+    <div>🟢</div>
+    <div><strong>一個值得和我上一份報告直接對照的事實：</strong>環球晶（6488）現價<strong>高於</strong>法人目標價中位數 <strong>42.3%</strong>；台光電現價<strong>低於</strong>法人目標價 <strong>30.4%</strong>。<strong>兩檔都是 AI 供應鏈的高價股，但一個已經跑在共識前面，一個還落在共識後面。</strong>這個差異在風險報酬比上是決定性的。</div>
+  </div>
+  <div class="alert alert-red">
+    <div>🔴</div>
+    <div><strong>但也請看這組數字：</strong>股價淨值比 <strong>33.91 倍</strong>（每股淨值僅 162.80 元，股價 5,520 元）；近四季本益比 <strong>86.1 倍</strong>；52 週內股價從 1,085 元漲到 6,470 元，<strong>+496%</strong>；年化波動率 <strong>68.0%</strong>。<strong>這是一檔已經走完一大段的股票，不是剛起步的。</strong></div>
+  </div>
+</section>
+
+<!-- ============ 04 KPI ============ -->
+<section>
+  <div class="section-title"><span class="section-num">3</span>關鍵財務 KPI（八格速覽）</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">2026 Q2 每股盈餘</div>
+      <div class="kpi-val">27.55 元</div>
+      <div class="kpi-sub">季增 +84.9%、年增 +175%<br><span style="color:#16a34a">歷史新高</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">2026 Q2 營益率</div>
+      <div class="kpi-val">26.94%</div>
+      <div class="kpi-sub">毛利率 33.85%（季增 4.5pp）<br>兩者皆為十季最高</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">近四季業外損益</div>
+      <div class="kpi-val" style="color:#16a34a">−0.65 億</div>
+      <div class="kpi-sub"><strong>獲利 100% 來自本業</strong><br>Q2 業外僅佔稅前 0.4%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q3 營收（已可算出）</div>
+      <div class="kpi-val">608.85 億</div>
+      <div class="kpi-sub">季增 +28.8%、年增 +142.1%<br>由三個月營收加總</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">近四季本益比</div>
+      <div class="kpi-val">86.1 倍</div>
+      <div class="kpi-sub">TTM EPS 64.08 元<br>2026F 約 48 倍</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">股價淨值比</div>
+      <div class="kpi-val" style="color:#dc2626">33.91 倍</div>
+      <div class="kpi-sub">每股淨值 162.80 元<br>但股東權益報酬率約 42%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">H1 營業現金流 ÷ 淨利</div>
+      <div class="kpi-val" style="color:#dc2626">0.33 倍</div>
+      <div class="kpi-sub">50.45 億 ÷ 152.13 億<br>2025 全年為 0.82 倍</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">外資持股</div>
+      <div class="kpi-val" style="color:#16a34a">45.18%</div>
+      <div class="kpi-sub">10/02 為 43.57% → <strong>仍在增持</strong><br>融資僅佔股本 0.067%</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 圖表 ============ -->
+<section>
+  <div class="section-title"><span class="section-num">4</span>財務趨勢圖（純 Canvas 繪製）</div>
+  <div class="charts-grid">
+    <div class="chart-box">
+      <div class="chart-title">每股盈餘 季度趨勢（近 10 季，元）</div>
+      <canvas id="epsChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">Q2'26 的 <strong>27.55 元</strong>幾乎是 Q1'26（14.90 元）的兩倍、Q2'25（10.02 元）的 2.75 倍</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">月營收趨勢（2026 年實際月份，億元）</div>
+      <canvas id="revChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">九個月幾乎單邊上升：1 月 108.6 億 → 9 月 <strong>215.3 億</strong>，年增 <strong>+168.9%</strong></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">🟢 營業利益率 季度趨勢（近 10 季，%）</div>
+      <canvas id="opmChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">八季在 18.1%～21.0% 窄幅盤整後，Q2'26 跳升至 <strong>26.94%</strong>——<strong>典型的營運槓桿</strong></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">季營收（近 9 季，億元；Q3'26 由月營收加總）</div>
+      <canvas id="qrevChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ Q3'26 的 608.85 億由已公告的三個月營收加總，<strong>非預估</strong>（財報 11 月公布）</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">🔴 應收帳款（近 5 季，億元）</div>
+      <canvas id="arChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">半年內從 360.65 億增至 <strong>652.78 億（+81%）</strong>，已<strong>超過單季營收</strong>。這是現金流的解釋</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">本益比的三個視角（倍）</div>
+      <canvas id="peChart" width="420" height="200" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">同一個價格 5,520 元，用不同年度的每股盈餘計算，<strong>差距非常大</strong></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="calc-title">🟢 把 Q2'26 的 27.55 元拆開：這是我看過最乾淨的一張損益表</div>
+    <div class="calc-box">
+      <div class="row"><span>營收</span><span>472.75 億（季增 43.0%、年增 110.0%）</span></div>
+      <div class="row"><span>－ 營業成本</span><span>−312.72 億</span></div>
+      <div class="row"><span>＝ 毛利（毛利率 <strong>33.85%</strong>，季增 4.43pp）</span><span>160.03 億</span></div>
+      <div class="row"><span>－ 營業費用（僅佔營收 <strong>6.91%</strong>）</span><span>−32.69 億</span></div>
+      <div class="row"><span>＝ <strong>營業利益（營益率 26.94%）</strong></span><span><strong>127.34 億（季增 78.7%）</strong></span></div>
+      <div class="row"><span>＋ 業外（<strong>僅佔稅前淨利 0.4%</strong>）</span><span>+0.52 億</span></div>
+      <div class="row"><span>＝ 稅前 127.85 億 － 稅 29.14 億（22.8%）</span><span>稅後 <strong>98.73 億</strong></span></div>
+      <div class="row"><span>÷ 股數 3.5832 億股</span><span>每股 <strong>27.55 元</strong></span></div>
+    </div>
+    <div class="alert alert-green" style="margin-top:12px;margin-bottom:0">
+      <div>✅</div>
+      <div><strong>和我最近四份報告的對照，差距極端明顯：</strong>眾達-KY Q2 業外佔稅前 <strong>69%</strong>、環球晶 <strong>69%</strong>、大洋約 <strong>92%</strong>、晉泰 <strong>13.9%</strong>——<strong>台光電是 0.4%。</strong>而且把近四季加總，業外是 <strong>−0.65 億</strong>，也就是業外不但沒幫忙，還小幅扣分。<strong>這家公司的每一塊錢獲利，都是賣銅箔基板賺來的。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 Q3 推算 ============ -->
+<section>
+  <div class="section-title"><span class="section-num">5</span>🔴 自行推算 2026 Q3 與全年</div>
+  <div class="card">
+    <div class="alert alert-green">
+      <div>✅</div>
+      <div><strong>先說明這次推算的可靠度為什麼特別高。</strong>以月營收加總對比已公告的季報營收：<strong>2026 Q1 為 330.68 億 vs 財報 330.67 億、Q2 為 472.76 億 vs 財報 472.75 億，誤差皆僅 0.003%。</strong>另以上半年加總 803.44 億對比法說會公告的 <strong>803.42 億</strong>，同樣吻合。<strong>月份換算（資料庫申報月份減 1 ＝ 實際賺取月份）在本檔完全成立。</strong></div>
+    </div>
+    <div class="calc-box">
+      <div class="calc-title">第一步：Q3 營收（已知，非預估）</div>
+      <div class="row"><span>實際 7 月營收（公告）</span><span>192.07 億（年增 +129.4%）</span></div>
+      <div class="row"><span>實際 8 月營收（公告）</span><span>201.46 億（年增 +129.9%）</span></div>
+      <div class="row"><span>實際 9 月營收（公告）</span><span>215.32 億（年增 <strong>+168.9%</strong>）</span></div>
+      <div class="row"><span><strong>Q3'26 營收</strong></span><span><strong>608.85 億（季增 +28.8%、年增 +142.1%）</strong></span></div>
+    </div>
+
+    <div class="table-wrap" style="margin-top:14px">
+    <table>
+      <tr><th>情境（營業費用率沿用 6.7%）</th><th>毛利率</th><th>營業利益</th><th>營益率</th><th>Q3'26 EPS 推估</th></tr>
+      <tr><td>保守：毛利率持平 Q2</td><td>33.85%</td><td>165.30 億</td><td>27.1%</td><td><strong>約 35.6 元</strong></td></tr>
+      <tr style="background:#f3e8ff"><td><strong>基準：小幅續升</strong></td><td><strong>34.5%</strong></td><td><strong>169.26 億</strong></td><td><strong>27.8%</strong></td><td><strong>約 36.5 元</strong></td></tr>
+      <tr><td>樂觀：漲價效益擴大</td><td>36.0%</td><td>178.39 億</td><td>29.3%</td><td><strong>約 38.4 元</strong></td></tr>
+      <tr><td colspan="5" style="font-size:12.5px;color:#64748b;padding-top:10px">對比 Q2'26 的 27.55 元 → <strong>季增 +29% ～ +39%</strong>。稅率沿用 Q2 的 22.8%，業外假設為 0（近四季業外合計僅 −0.65 億）。</td></tr>
+    </table>
+    </div>
+
+    <div class="calc-box" style="margin-top:14px">
+      <div class="calc-title">延伸到 2026 全年</div>
+      <div class="row"><span>Q1'26 實際（公告）</span><span>14.90 元</span></div>
+      <div class="row"><span>Q2'26 實際（公告）</span><span>27.55 元</span></div>
+      <div class="row"><span>Q3'26 推估</span><span>35.6 ~ 38.4 元</span></div>
+      <div class="row"><span>Q4'26 推估（情境一：營收持平 Q3，參照 2025 年 Q4 持平 Q3 的型態）</span><span>約 35.8 元</span></div>
+      <div class="row"><span>Q4'26 推估（情境二：營收續增約 19%）</span><span>約 43.8 元</span></div>
+      <div class="row"><span><strong>2026 全年推估</strong></span><span><strong>約 114.8 ~ 122.8 元 → 本益比 45.0 ~ 48.1 倍</strong></span></div>
+    </div>
+    <div class="alert alert-purple" style="margin-top:12px">
+      <div>📌</div>
+      <div><strong>我的推算區間（114.8～122.8 元）正好把 FactSet 19 位分析師的中位數 114.67 元包在下緣。</strong>這代表兩件事：① 市場共識在經過三個月的連續上修後，<strong>已經追上基本面，不再明顯低估</strong>；② <strong>但也沒有過度樂觀</strong>——共識值落在我用已公告數據推算的保守端。</div>
+    </div>
+    <div class="alert alert-yellow" style="margin-bottom:0">
+      <div>⚠️</div>
+      <div><strong>推算可能失準之處：</strong>① <strong>Q4 是最大變數</strong>——2025 年 Q4 營收（249.27 億）其實與 Q3（251.46 億）持平甚至微降，<strong>旺季並不保證</strong>，兩種情境差了 8 元 EPS；② 毛利率受原料（銅箔、玻纖布）成本與漲價執行度影響；③ 營業費用率在營收暴增時可能偏離我假設的 6.7%；④ 匯率波動會影響業外（雖然歷史上佔比極小）。<strong>以上皆無法從公開資訊預判。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 公司與產業 ============ -->
+<section>
+  <div class="section-title"><span class="section-num">6</span>公司與產業更新</div>
+  <div class="card">
+    <div class="table-wrap">
+    <table>
+      <tr><th style="width:120px">項目</th><th>內容</th></tr>
+      <tr><td><strong>公司</strong></td><td>台光電子材料股份有限公司，代號 2383，<strong>上市</strong>。1989 年成立</td></tr>
+      <tr><td><strong>核心產品</strong></td><td><strong>銅箔基板（CCL, Copper Clad Laminate）</strong>——印刷電路板（PCB）的核心原材料。每台 AI 伺服器、高速交換機都需要大量高品質 CCL</td></tr>
+      <tr><td><strong>市場地位</strong></td><td>全球 CCL 市占約 19%，全球前三強；<strong>AI 伺服器高階 CCL 寡頭</strong>（台光電＋台燿合計市占 2024 年 42% → 2027 年估 85%）</td></tr>
+      <tr><td><strong>🔴 最新進展：M9</strong></td><td><strong>M9 產品預定 2026 年第 3 季開始出貨</strong>，並有漲價計畫。法人認為 M9 滲透率持續擴大，為 2027 年營收添上檔空間</td></tr>
+      <tr><td><strong>🔴 規格升級驅動</strong></td><td>AI 伺服器推進 <strong>Rubin 架構</strong>，高速傳輸自 <strong>Serdes 112G 升至 224G</strong>，使 CCL 規格逐步提高至 <strong>M8.5 甚至更高</strong>。這是結構性、非循環性的升級</td></tr>
+      <tr><td><strong>🔴 產能擴張</strong></td><td>中國<strong>崑山</strong>、台灣<strong>觀音</strong>新廠預計 2027 年完工。<strong>2027 年底基板產能估達 930 萬張/月，較 2026 年底成長 51.22%</strong></td></tr>
+      <tr><td><strong>漲價週期</strong></td><td>供需失衡驅動結構性漲價，M7/M8/M9 等高附加價值產品優先配貨。<strong>法人估漲價可延續至 2027 年底</strong></td></tr>
+      <tr><td><strong>法說會揭露</strong></td><td>2026/07/29 法說會：受惠 AI 產品高階材料強勁需求，<strong>產能滿載</strong></td></tr>
+      <tr><td><strong>主要競爭者</strong></td><td><strong>台燿（6274）</strong>——媒體形容「台光電獲利稱王、台燿成長斜率更陡」。法人認為<strong>台燿 2026、2027 預估本益比都略低於台光電</strong></td></tr>
+    </table>
+    </div>
+    <div class="alert alert-purple" style="margin-top:12px;margin-bottom:0">
+      <div>📌</div>
+      <div><strong>為什麼營益率能從 21.56% 跳到 26.94%——這是理解這家公司的關鍵。</strong>CCL 的售價因供需失衡而結構性調漲，但<strong>營業費用幾乎不隨營收等比增加</strong>（Q2 營業費用率僅 6.91%）。於是營收每增加一塊錢，大部分直接落到營業利益。<strong>這就是「營運槓桿」</strong>：Q2 營收季增 43.0%，營業利益卻季增 78.7%。<strong>只要漲價週期延續，這個槓桿就會繼續放大獲利。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 基本面 ============ -->
+<section>
+  <div class="section-title"><span class="section-num">7</span>基本面分析</div>
+
+  <div class="card">
+    <div class="calc-title">十季財報全貌（單季數；金額單位：億元）</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>季度</th><th>營收</th><th>毛利率</th><th>營益率</th><th>營業利益</th><th>業外</th><th>業外/稅前</th><th>淨利</th><th>EPS</th></tr>
+      <tr><td>2024 Q1</td><td>129.02</td><td>28.97%</td><td>19.65%</td><td>25.36</td><td>+0.78</td><td>3.0%</td><td>19.78</td><td>5.76</td></tr>
+      <tr><td>2024 Q2</td><td>154.49</td><td>27.41%</td><td>18.92%</td><td>29.24</td><td>+0.52</td><td>1.7%</td><td>24.36</td><td>7.08</td></tr>
+      <tr><td>2024 Q3</td><td>174.63</td><td>27.00%</td><td>18.14%</td><td>31.67</td><td>+0.07</td><td>0.2%</td><td>25.16</td><td>7.30</td></tr>
+      <tr><td>2024 Q4</td><td>185.62</td><td>28.45%</td><td>18.99%</td><td>35.25</td><td>−1.55</td><td>−4.6%</td><td>26.48</td><td>7.67</td></tr>
+      <tr><td>2025 Q1</td><td>216.80</td><td>30.40%</td><td>20.94%</td><td>45.40</td><td>+1.28</td><td>2.7%</td><td>34.69</td><td>10.01</td></tr>
+      <tr><td>2025 Q2</td><td>225.08</td><td>30.34%</td><td>20.63%</td><td>46.44</td><td>−1.77</td><td>−4.0%</td><td>34.78</td><td>10.02</td></tr>
+      <tr><td>2025 Q3</td><td>251.46</td><td>30.13%</td><td>19.84%</td><td>49.90</td><td>+1.31</td><td>2.6%</td><td>39.65</td><td>11.19</td></tr>
+      <tr><td>2025 Q4</td><td>249.27</td><td>28.58%</td><td>19.80%</td><td>49.35</td><td>−3.14</td><td>−6.8%</td><td>37.37</td><td>10.44</td></tr>
+      <tr><td>2026 Q1</td><td>330.67</td><td>29.42%</td><td>21.56%</td><td>71.28</td><td>+0.66</td><td>0.9%</td><td>53.40</td><td>14.90</td></tr>
+      <tr style="background:#f3e8ff"><td><strong>2026 Q2</strong></td><td><strong>472.75</strong></td><td><strong>33.85%</strong></td><td><strong>26.94%</strong></td><td><strong>127.34</strong></td><td>+0.52</td><td><strong>0.4%</strong></td><td><strong>98.73</strong></td><td><strong>27.55</strong></td></tr>
+      <tr style="background:#faf5ff"><td>近四季合計</td><td><strong>1,304.15</strong></td><td>—</td><td>22.84%</td><td><strong>297.87</strong></td><td class="pos"><strong>−0.65</strong></td><td><strong>−0.3%</strong></td><td><strong>229.15</strong></td><td><strong>64.08</strong></td></tr>
+    </table>
+    </div>
+    <div class="chart-note" style="text-align:left;margin-top:10px">驗證：法說會公告「Q2 稅後純益 98.7 億、季增 84.9%、年增 1.83 倍、EPS 27.55 元、毛利率 33.9%（季增 4.5pp）」，與上表完全一致；「上半年 EPS 42.46 元」與 14.90＋27.55＝42.45 元吻合（差異為加權股數計算）。</div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">🔴 本報告新增的風險：現金流與營運資金</div>
+    <p style="font-size:13.5px;line-height:1.85">前三份報告都把焦點放在成長與估值。但<strong>隨著營收在一年內翻倍，資產負債表已經出現明顯變化，這是本次必須提出的新觀察。</strong></p>
+    <div class="table-wrap" style="margin-top:12px">
+    <table>
+      <tr><th>期間</th><th>稅後淨利</th><th>營業活動現金流</th><th>倍數</th><th>資本支出</th><th>自由現金流</th></tr>
+      <tr><td>2025 全年</td><td>146.49 億</td><td>119.68 億</td><td>0.82 倍</td><td>−94.90 億</td><td class="pos">+24.78 億</td></tr>
+      <tr style="background:#fee2e2"><td><strong>2026 上半年</strong></td><td><strong>152.13 億</strong></td><td class="neg"><strong>50.45 億</strong></td><td class="neg"><strong>0.33 倍</strong></td><td>−106.79 億</td><td class="neg"><strong>−56.34 億</strong></td></tr>
+    </table>
+    </div>
+    <div class="calc-box">
+      <div class="calc-title">錢跑到哪裡去了</div>
+      <div class="row"><span>應收帳款：2025Q4 的 360.65 億 → 2026Q2</span><span><strong>652.78 億（+292.13 億）</strong></span></div>
+      <div class="row"><span>存貨：2025Q4 的 167.52 億 → 2026Q2</span><span>236.64 億（+69.12 億）</span></div>
+      <div class="row"><span>合計營運資金佔用</span><span>約 +361 億</span></div>
+      <div class="row"><span>同期稅後淨利</span><span>152.13 億</span></div>
+      <div class="row"><span><strong>結論</strong></span><span><strong>營運資金的增加是淨利的 2.4 倍</strong></span></div>
+    </div>
+    <div class="table-wrap" style="margin-top:14px">
+    <table>
+      <tr><th>資產負債表變化</th><th>2025 Q4</th><th>2026 Q2</th><th>變化</th></tr>
+      <tr><td>總資產</td><td>1,079.13 億</td><td>1,585.77 億</td><td class="pos">+47.0%</td></tr>
+      <tr><td><strong>負債比</strong></td><td>53.3%</td><td class="neg"><strong>63.2%</strong></td><td class="neg">+9.9 個百分點</td></tr>
+      <tr><td>總借款（短期＋長期）</td><td>174.99 億</td><td>256.04 億</td><td class="neg">+46.3%</td></tr>
+      <tr><td>應收帳款週轉天數</td><td>131.7 天</td><td>125.7 天</td><td class="pos">略改善 −6.0 天</td></tr>
+      <tr><td>流動比</td><td>160.0%</td><td>135.5%</td><td class="neg">下降</td></tr>
+    </table>
+    </div>
+    <div class="alert alert-yellow" style="margin-top:12px">
+      <div>⚖️</div>
+      <div><strong>怎麼看待這件事，需要兩面並陳：</strong><br>
+      <strong>不必過度恐慌的理由：</strong>① <strong>應收帳款週轉天數其實從 131.7 天略降到 125.7 天</strong>——也就是收款效率沒有惡化，金額增加純粹是因為營收翻倍；② 總借款 256.04 億相對 1.978 兆的市值與 583 億的股東權益，槓桿水準仍屬可控；③ 資本支出是為了崑山、觀音新廠（2027 年產能 +51.22%），<strong>屬於擴產而非填補虧損</strong>；④ 股東權益報酬率仍高達約 <strong>42%</strong>。<br>
+      <strong>必須警覺的理由：</strong>① 自由現金流已由 2025 年的 +24.78 億翻為 H1 的 <strong>−56.34 億</strong>；② 負債比兩季上升 9.9 個百分點；③ <strong>一旦 AI 資本支出放緩、下游拉貨轉弱，652.78 億的應收帳款與 236.64 億的存貨就會成為壓力來源</strong>——這正是循環性材料股最典型的風險形態。</div>
+    </div>
+    <div class="alert alert-red" style="margin-bottom:0">
+      <div>🔴</div>
+      <div><strong>這是本報告與前三份最大的差異，也是我把風險評分從前報的 4.5 調升到 5.3 的主因之一。</strong>獲利品質（業外佔比）是無可挑剔的，但<strong>現金轉換品質正在下降</strong>。這兩件事不一樣，投資人常常混為一談。<strong>11 月 Q3 財報請務必檢查營業現金流是否回升。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 籌碼 ============ -->
+<section>
+  <div class="section-title"><span class="section-num">8</span>籌碼面分析</div>
+
+  <div class="alert alert-yellow">
+    <div>ℹ️</div>
+    <div><strong>資料取得說明：</strong>本次透過 FinMind 查詢 2026-10-13 的三大法人與融資融券，回傳值皆為 0。<strong>這是資料缺口，不代表「持平」或「餘額為零」</strong>。以下改採公開資訊彙整，並標示資料日期與查詢管道。</div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">🟢 股權結構：本系列至今最乾淨的一檔</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>項目</th><th>數值</th><th>解讀</th></tr>
+      <tr style="background:#dcfce7"><td><strong>外資持股比率</strong></td><td class="pos"><strong>45.18%</strong>（2026/10/13）</td><td><span class="tag tag-green">極高且仍在增持</span> 10/02 為 43.57%，<strong>約九個交易日增加 1.61 個百分點</strong></td></tr>
+      <tr><td>董監持股</td><td><strong>8.58%</strong>（2026/08）</td><td><span class="tag tag-green">適中</span> 經營階層與股東利益綁定</td></tr>
+      <tr><td>董監質押比率</td><td><strong>0%</strong></td><td><span class="tag tag-green">正面</span> 無股價下跌引發補保證金的連鎖風險</td></tr>
+      <tr><td>千張大戶持股</td><td>24.65%（2026/10/02）</td><td>籌碼集中</td></tr>
+      <tr><td>籌碼集中度</td><td>68.22%（外資＋大戶）</td><td><span class="tag tag-green">高度集中於機構</span></td></tr>
+      <tr><td><strong>融資餘額</strong></td><td class="pos"><strong>2,414 張</strong>（2026/10/07），使用率 2.7%</td><td><span class="tag tag-green">極低</span> ＝股本的 <strong>0.067%</strong>（對照眾達-KY 的 12.68%）</td></tr>
+    </table>
+    </div>
+    <div class="alert alert-green" style="margin-top:12px;margin-bottom:0">
+      <div>✅</div>
+      <div><strong>這個籌碼結構幾乎是教科書等級：外資 45.18% 且持續增持、董監 8.58% 且零質押、融資只佔股本 0.067%。</strong>意思是這檔股票<strong>幾乎沒有散戶槓桿部位</strong>，下跌時不會有斷頭的連鎖賣壓；而外資的高持股既代表機構認同，<strong>也代表股價對國際資金流向極度敏感</strong>——這是一體兩面。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">量能與流動性</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>指標</th><th>數值</th><th>解讀</th></tr>
+      <tr><td>5 日均量 / 20 日均量</td><td>2,876 張 / 2,578 張</td><td>今日量 2,326 張為 5 日均量的 0.8 倍，量能正常</td></tr>
+      <tr><td><strong>5 日均成交金額</strong></td><td class="pos"><strong>167.6 億元</strong></td><td><span class="tag tag-green">極佳</span> 20 日均 137.2 億</td></tr>
+      <tr><td>日週轉率（5 日均）</td><td>0.80%</td><td>高單價股的典型水準，進出無滑價困擾</td></tr>
+      <tr><td>2026/10/13 成交量</td><td>4,882 張（爆量）</td><td><strong>盤中觸及跌停 5,535 元</strong></td></tr>
+    </table>
+    </div>
+    <div class="alert alert-purple" style="margin-top:12px;margin-bottom:0">
+      <div>📌</div>
+      <div><strong>流動性對照：</strong>台光電日均成交 <strong>167.6 億元</strong>、環球晶 169.6 億、眾達-KY 6.70 億、晉泰 0.69 億、大洋 0.0334 億。<strong>台光電與環球晶同屬本系列流動性最佳的兩檔，任何部位規模都能順利進出。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 技術 ============ -->
+<section>
+  <div class="section-title"><span class="section-num">9</span>技術分析</div>
+
+  <div class="tech-grid">
+    <div class="card">
+      <div class="calc-title">均線系統</div>
+      <div class="table-wrap">
+      <table>
+        <tr><th>均線</th><th>價位</th><th>股價相對位置</th></tr>
+        <tr><td>MA5（週線）</td><td>5,833.00</td><td class="neg">跌破 −5.37%</td></tr>
+        <tr><td>MA10（雙週）</td><td>5,595.50</td><td class="neg">跌破 −1.35%</td></tr>
+        <tr><td>MA20（月線）</td><td>5,291.50</td><td class="pos">站上 +4.32%</td></tr>
+        <tr><td>MA60（季線）</td><td>5,316.17</td><td class="pos">站上 +3.83%</td></tr>
+      </table>
+      </div>
+      <p style="font-size:12.5px;line-height:1.7;margin-top:10px"><strong>均線糾結，方向不明。</strong>注意一個細節：<strong>MA20（5,291.5）略低於 MA60（5,316.2）</strong>——這是 9 月那波下跌造成的，月線仍在季線之下，<strong>中期趨勢尚未完全修復</strong>。股價目前卡在 MA10（5,595.5）與 MA20（5,291.5）之間的區間。</p>
+    </div>
+
+    <div class="card">
+      <div class="calc-title">動能指標</div>
+      <div class="table-wrap">
+      <table>
+        <tr><th>指標</th><th>數值</th><th>訊號</th></tr>
+        <tr><td>MACD</td><td>129.91</td><td rowspan="3"><span class="tag tag-green">金叉</span><br><span style="font-size:11.5px">柱狀值 +68.91 仍為正且幅度不小，<strong>較 7 月的 −140.30 已完全翻轉</strong></span></td></tr>
+        <tr><td>訊號線</td><td>61.00</td></tr>
+        <tr><td>柱狀值</td><td class="pos">+68.91</td></tr>
+        <tr><td>RSI(14)</td><td><strong>51.99</strong></td><td><span class="tag tag-blue">中性</span> 既不超買也不超賣（7/20 時為 35.47 接近超賣）</td></tr>
+        <tr><td>布林帶寬</td><td>33.4%</td><td><span class="tag tag-yellow">偏高</span> 波動仍大</td></tr>
+      </table>
+      </div>
+      <p style="font-size:12.5px;line-height:1.7;margin-top:10px"><strong>與 7/20 的技術面對照極為鮮明：</strong>當時「五線全空、MACD 死叉 −140.30、RSI 35.47、跌破布林下軌」；<strong>現在是 MACD 金叉 +68.91、RSI 51.99 中性、站上月線與季線。</strong>技術面已從極度超賣修復到中性偏多。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">關鍵價位</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>類型</th><th>價位</th><th>來源與意義</th></tr>
+      <tr><td><span class="tag tag-red">壓力五</span></td><td><strong>6,470</strong></td><td><strong>52 週最高（2026/08/18 盤中）</strong></td></tr>
+      <tr><td><span class="tag tag-red">壓力四</span></td><td>6,325</td><td>10 月盤中高點（10/07）</td></tr>
+      <tr><td><span class="tag tag-red">壓力三</span></td><td>6,174</td><td>布林上軌</td></tr>
+      <tr><td><span class="tag tag-red">壓力二</span></td><td>6,150</td><td>10/12 收盤價（本波高點）</td></tr>
+      <tr><td><span class="tag tag-red">壓力一</span></td><td><strong>5,833</strong></td><td><strong>MA5——站回才算短線轉強</strong></td></tr>
+      <tr><td><span class="tag tag-blue">現價</span></td><td><strong>5,520</strong></td><td>位於 MA10 與 MA20 之間</td></tr>
+      <tr><td><span class="tag tag-green">支撐一</span></td><td><strong>5,535 / 5,510</strong></td><td><strong>10/13 跌停價 / 今日盤中低點</strong>——最直接的短線支撐</td></tr>
+      <tr><td><span class="tag tag-green">關鍵支撐</span></td><td><strong>5,291 ~ 5,316</strong></td><td><strong>月線與季線密集帶——本報告建議的分批區</strong></td></tr>
+      <tr><td><span class="tag tag-green">支撐二</span></td><td>4,855 ~ 4,935</td><td>10 月低點 / 9 月月收</td></tr>
+      <tr><td><span class="tag tag-green">支撐三</span></td><td><strong>4,635</strong></td><td>2026 年 9 月盤中低點</td></tr>
+      <tr><td><span class="tag tag-green">布林下軌</span></td><td>4,409</td><td>帶寬 33.4% 下偏離較遠</td></tr>
+      <tr><td><span class="tag tag-purple">價值參考</span></td><td>162.80</td><td>每股淨值（股價淨值比 33.91 倍，<strong>幾乎無參考性</strong>）</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">🔴 2026/10/13：盤中跌停，但原因在盤面不在公司</div>
+    <div class="calc-box">
+      <div class="row"><span>10/12 收盤</span><span>6,150（本波高點）</span></div>
+      <div class="row"><span>10/13 開盤 / 最高</span><span>5,915 / 5,930</span></div>
+      <div class="row"><span>10/13 最低</span><span><strong>5,535（＝跌停價，11:11 觸及）</strong></span></div>
+      <div class="row"><span>10/13 收盤</span><span>5,545（−9.83%），成交 4,882 張</span></div>
+      <div class="row"><span>今日（10/14）</span><span>5,520（−0.45%），高 5,645 / 低 5,510，量縮至 2,326 張</span></div>
+    </div>
+    <div class="alert alert-yellow" style="margin-top:12px">
+      <div>⚠️</div>
+      <div><strong>當日背景：台股大盤重挫逾千點，PCB 材料設備族群重挫 7.42%，台光電與聯茂跌幅逼近 9%（聯茂同樣跌停）。</strong>資深分析師的看法是：<strong>「產業本身並沒有出現問題，反倒是盤面的氣氛導致大漲個股的重挫，目前應暫時觀望，待股價出現止穩再做布局。」</strong><br><br>我同意這個判讀，<strong>並補充一個佐證：同一天環球晶（6488）也盤中跌停</strong>——這是整個高價 AI 股族群的系統性回檔，<strong>而非台光電的公司事件</strong>。今日量縮且守住 5,510，初步有止穩跡象，但尚需確認。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">波動度與完整時間軸</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>指標</th><th>數值</th><th>對照</th></tr>
+      <tr><td>年化波動率</td><td><strong>68.0%</strong></td><td>環球晶 81.3%、眾達-KY 71.1%、晉泰 47.9%</td></tr>
+      <tr><td>單日最大漲 / 跌</td><td class="pos">+9.53%</td><td><span class="neg">−10.48%</span></td></tr>
+      <tr><td>52 週區間</td><td><strong>1,085</strong>（2025/10/17 盤中）~ <strong>6,470</strong>（2026/08/18 盤中）</td><td><strong>5.96 倍</strong></td></tr>
+      <tr><td>距 52 週高 / 低</td><td class="neg">−14.7%</td><td class="pos">+408.8%</td></tr>
+    </table>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">2025-10-17</div>
+        <div class="tl-text">盤中 <strong>1,085 元</strong>（52 週最低）。當時市場尚未完全定價 AI 對高階 CCL 的拉動</div>
+      </div>
+      <div class="tl-item good">
+        <div class="tl-date">2026-01 ~ 04</div>
+        <div class="tl-text">月收 1,745 → 2,440 → 2,600 → <strong>4,545（4 月單月 +74.8%）</strong>。Q1'26 EPS 14.90 元創季度新高</div>
+      </div>
+      <div class="tl-item good">
+        <div class="tl-date">2026-07-06</div>
+        <div class="tl-text">盤中攻上 <strong>6,250 元</strong>（當時的歷史高）</div>
+      </div>
+      <div class="tl-item bad">
+        <div class="tl-date">2026-07-20</div>
+        <div class="tl-text"><strong>本系列前一份報告日</strong>。收 4,395 元，14 個交易日自高點跌 29.7%，技術面五線全空、RSI 35.47。<strong>當時結論：觀望等 7/29 法說會，停損 3,800</strong></div>
+      </div>
+      <div class="tl-item bad">
+        <div class="tl-date">2026-07-30</div>
+        <div class="tl-text">盤中最低 <strong>3,930 元</strong>——<strong>距前報停損 3,800 僅差 3.3%</strong></div>
+      </div>
+      <div class="tl-item good">
+        <div class="tl-date">2026-07-29</div>
+        <div class="tl-text"><strong>Q2 法說會：EPS 27.55 元（市場原估 18～22 元）、毛利率 33.9%、稅後純益 98.7 億季增 84.9%、上半年 EPS 42.46 元，全部創新高</strong></div>
+      </div>
+      <div class="tl-item good">
+        <div class="tl-date">2026-08-17 / 08-18</div>
+        <div class="tl-text">收盤高 <strong>6,350 元</strong>、盤中高 <strong>6,470 元</strong>（52 週最高）。較 7/30 低點反彈 <strong>+64.6%</strong></div>
+      </div>
+      <div class="tl-item bad">
+        <div class="tl-date">2026-09</div>
+        <div class="tl-text">月收 4,935，9/17 單日爆量 5,813 張、盤中最低 4,635。高檔震盪整理</div>
+      </div>
+      <div class="tl-item good">
+        <div class="tl-date">2026-10-05 ~ 10-12</div>
+        <div class="tl-text">9 月營收（215.32 億、年增 168.9%）公告後再度走強：5,185 → 5,700 → 5,995 → 6,150，10/07 盤中達 6,325</div>
+      </div>
+      <div class="tl-item bad">
+        <div class="tl-date">2026-10-13</div>
+        <div class="tl-text"><strong>大盤重挫千點，盤中觸及跌停 5,535 元</strong>，收 5,545（−9.83%）。PCB 材料族群重挫 7.42%</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-10-14（今日）</div>
+        <div class="tl-text">收 <strong>5,520 元（−0.45%）</strong>，量縮至 2,326 張，守住 5,510。<strong>初步止穩，待確認</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11 估值 ============ -->
+<section>
+  <div class="section-title"><span class="section-num">10</span>估值分析</div>
+
+  <div class="card">
+    <div class="calc-title">🔴 法人預估的上修軌跡——這本身就是重要資訊</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>時點</th><th>2026 EPS 預估</th><th>目標價</th><th>備註</th></tr>
+      <tr><td>2026/07 前（前報引用）</td><td>88.67 元</td><td>JPM 4,200 元</td><td>當時股價 4,395 元</td></tr>
+      <tr><td>Q2 法說後</td><td>88.94 元</td><td>5,700 元</td><td rowspan="2">FactSet 調查</td></tr>
+      <tr><td>↓</td><td>90.64 元</td><td>5,850 元</td></tr>
+      <tr><td>↓</td><td>100.23 元</td><td>6,860 元</td><td>大和資本同期由 5,234 上調至 6,022 元（本益比 43x→48x）</td></tr>
+      <tr><td>↓</td><td>108.84 元</td><td>7,200 元</td><td></td></tr>
+      <tr><td>↓</td><td>113.55 元</td><td>7,100 元</td><td></td></tr>
+      <tr style="background:#f3e8ff"><td><strong>最新（2026/08）</strong></td><td><strong>114.67 元</strong></td><td><strong>7,200 元</strong></td><td><strong>19 位分析師中位數</strong>（另有來源為 116.42 元）</td></tr>
+    </table>
+    </div>
+    <div class="alert alert-green" style="margin-top:12px">
+      <div>🟢</div>
+      <div><strong>三個月內，2026 年 EPS 共識從 88.67 元上修到 114.67 元（+29.3%），目標價從 4,200 元上修到 7,200 元（+71.4%）。</strong>而<strong>現價 5,520 元仍比目標價低 30.4%</strong>。<br><br><strong>這和我昨天分析的環球晶（6488）形成強烈對比</strong>——環球晶現價 1,020 元比 FactSet 14 位分析師的目標價 717 元<strong>高出 42.3%</strong>。<strong>同樣是 AI 供應鏈高價股，一檔跑在共識前面、一檔落在共識後面，風險報酬的不對稱性完全相反。</strong></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">本益比的三個視角（同一個價格 5,520 元）</div>
+    <div class="calc-box">
+      <div class="row"><span>近四季本益比（TTM EPS 64.08 元）</span><span><strong>86.1 倍</strong>　<span class="tag tag-red">看起來很貴</span></span></div>
+      <div class="row"><span>2026 年本益比（EPS 114.67 元，FactSet）</span><span><strong>48.1 倍</strong>　<span class="tag tag-yellow">合理偏高</span></span></div>
+      <div class="row"><span>2026 年本益比（本報告推估 114.8～122.8 元）</span><span><strong>45.0 ~ 48.1 倍</strong></span></div>
+      <div class="row"><span>2027 年本益比（市場預估 193.76 元）</span><span><strong>28.5 倍</strong>　<span class="tag tag-green">相對便宜</span></span></div>
+      <div class="row"><span>2027 年本益比（另一市場預估 226 元）</span><span><strong>24.4 倍</strong></span></div>
+    </div>
+    <div class="alert alert-yellow" style="margin-top:12px">
+      <div>⚠️</div>
+      <div><strong>2027 年的數字請謹慎看待。</strong>193.76 元與 226 元都是<strong>單一來源的市場預估</strong>，而且是「2026 年在賺 114 元的基礎上，2027 年再成長 69%～97%」。這需要：① 漲價週期真的延續到 2027 年底；② 崑山、觀音新廠如期完工（產能 +51.22%）；③ M9 滲透率如預期擴大；④ AI 資本支出不轉向。<strong>四個條件都成立才有 2027 的 24～28 倍。本報告不把 2027 年預估當作進場依據，只當作「若一切順利的上檔空間」。</strong></div>
+    </div>
+    <div class="alert alert-red" style="margin-bottom:0">
+      <div>🔴</div>
+      <div><strong>另外必須指出股價淨值比 33.91 倍（每股淨值僅 162.80 元）。</strong>這在台股是極高的水準。合理的解釋是<strong>股東權益報酬率約 42%</strong>——高 ROE 本就對應高 P/B。但它也意味著<strong>這檔股票完全沒有「資產價值」作為下檔保護</strong>，估值 100% 建立在未來獲利上。<strong>一旦成長預期改變，下跌空間不會有淨值撐住。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12 辯論 ============ -->
+<section>
+  <div class="section-title"><span class="section-num">11</span>研究員團隊辯論</div>
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <h4><span style="color:#16a34a">▲</span> 看多研究員（10 點）</h4>
+      <ul>
+        <li><span class="bull-icon">1</span><div><strong>獲利品質無可挑剔：近四季業外合計 −0.65 億，獲利 100% 來自本業。</strong>Q2'26 業外僅佔稅前淨利 0.4%</div></li>
+        <li><span class="bull-icon">2</span><div><strong>Q2'26 全面創新高：</strong>營收 472.75 億（季增 43.0%）、毛利率 33.85%（季增 4.43pp）、營益率 26.94%、EPS 27.55 元（季增 84.9%、年增 175%）</div></li>
+        <li><span class="bull-icon">3</span><div><strong>Q3 營收已確定為 608.85 億（季增 28.8%、年增 142.1%）</strong>，本報告推估 EPS 35.6～38.4 元，又是新高</div></li>
+        <li><span class="bull-icon">4</span><div><strong>營運槓桿顯著：</strong>Q2 營收季增 43.0%，營業利益卻季增 78.7%——營業費用率僅 6.91%，營收增量大部分直接落到獲利</div></li>
+        <li><span class="bull-icon">5</span><div><strong>現價較法人目標價 7,200 元低 30.4%</strong>；2026 EPS 共識三個月內上修 29.3%、目標價上修 71.4%，<strong>上修趨勢仍在進行</strong></div></li>
+        <li><span class="bull-icon">6</span><div><strong>結構性規格升級：</strong>AI 伺服器推進 Rubin 架構，Serdes 自 112G 升至 <strong>224G</strong>，CCL 規格提高至 M8.5 以上。<strong>M9 於 2026 Q3 開始出貨</strong></div></li>
+        <li><span class="bull-icon">7</span><div><strong>寡頭格局：</strong>台光電＋台燿在 AI 伺服器高階 CCL 市占 2024 年 42% → 2027 年估 85%；漲價可延續至 <strong>2027 年底</strong>，高階料優先配貨</div></li>
+        <li><span class="bull-icon">8</span><div><strong>產能擴張明確：</strong>崑山、觀音新廠 2027 年完工，<strong>2027 年底產能較 2026 年底成長 51.22%</strong></div></li>
+        <li><span class="bull-icon">9</span><div><strong>籌碼結構極佳：外資 45.18% 且仍在增持</strong>（10/02 為 43.57%）、董監 8.58% 零質押、<strong>融資僅佔股本 0.067%</strong>，無散戶槓桿</div></li>
+        <li><span class="bull-icon">10</span><div><strong>流動性極佳：</strong>日均成交 167.6 億元、週轉率 0.80%；10/13 的跌停為大盤重挫千點之族群連坐，<strong>分析師確認「產業本身沒有出現問題」</strong></div></li>
+      </ul>
+    </div>
+    <div class="analyst-card">
+      <h4><span style="color:#dc2626">▼</span> 看空研究員（10 點）</h4>
+      <ul>
+        <li><span class="bear-icon">1</span><div><strong>🔴 現金流品質急速下降：2026 上半年營業現金流僅 50.45 億，而淨利 152.13 億——只有 0.33 倍</strong>（2025 全年為 0.82 倍）</div></li>
+        <li><span class="bear-icon">2</span><div><strong>自由現金流由正轉負：</strong>2025 全年 +24.78 億 → <strong>2026 上半年 −56.34 億</strong>（資本支出 106.79 億）</div></li>
+        <li><span class="bear-icon">3</span><div><strong>應收帳款半年增加 292.13 億至 652.78 億，已超過單季營收；</strong>存貨增 69.12 億至 236.64 億。<strong>營運資金佔用是淨利的 2.4 倍</strong></div></li>
+        <li><span class="bear-icon">4</span><div><strong>負債比兩季由 53.3% 升至 63.2%（+9.9pp）</strong>，總借款增 46.3% 至 256.04 億，流動比自 160.0% 降至 135.5%</div></li>
+        <li><span class="bear-icon">5</span><div><strong>股價淨值比 33.91 倍</strong>（每股淨值僅 162.80 元）——<strong>完全沒有資產價值作為下檔保護</strong>，估值 100% 建立在未來獲利</div></li>
+        <li><span class="bear-icon">6</span><div><strong>近四季本益比 86.1 倍。</strong>若 AI 資本支出放緩，高本益比股的本益比壓縮殺傷力最大</div></li>
+        <li><span class="bear-icon">7</span><div><strong>股價 52 週已漲 496%（1,085 → 6,470），年化波動率 68.0%。</strong>7 月曾 14 個交易日跌 29.7%，10/13 再度盤中跌停</div></li>
+        <li><span class="bear-icon">8</span><div><strong>Q4 並非保證旺季：2025 年 Q4 營收 249.27 億其實較 Q3 的 251.46 億微降。</strong>本報告兩種 Q4 情境差距達 8 元 EPS</div></li>
+        <li><span class="bear-icon">9</span><div><strong>台燿競爭與雙供應商策略：</strong>媒體形容「台燿成長斜率更陡」，且<strong>法人認為台燿 2026、2027 預估本益比都略低於台光電</strong></div></li>
+        <li><span class="bear-icon">10</span><div><strong>2027 年 EPS 預估（193.76～226 元）為單一來源、且需四個條件同時成立</strong>（漲價延續、新廠如期、M9 滲透、AI 資本支出不轉向）。外資持股 45.18% 亦意味對國際資金流向極度敏感</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="calc-title">辯論總結與量化權重</div>
+    <div class="score-row">
+      <div class="score-label">看多</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:linear-gradient(90deg,#16a34a,#4ade80)"></div></div>
+      <div class="score-num">60%</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">看空</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:40%;background:linear-gradient(90deg,#dc2626,#f87171)"></div></div>
+      <div class="score-num">40%</div>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>給 60% 看多的理由：</strong>看多方的核心論點幾乎全是<strong>已經發生、可查證的硬數據</strong>——Q2 財報全面創新高且 100% 來自本業、Q3 營收已確定季增 28.8%、法人目標價高於現價 30.4% 且仍在上修、外資持股 45.18% 仍在增持。<strong>而且 7 月那份報告的教訓是：在獲利非線性加速時，低估比高估更容易發生。</strong></p>
+    <p style="font-size:13px;line-height:1.8;margin-top:9px"><strong>但 60% 而不是更高，因為看空方的第 1～4 點是真實且新出現的：</strong>營業現金流只有淨利的三分之一、自由現金流轉負、應收帳款超過單季營收、負債比兩季升近 10 個百分點。<strong>這些不是會計疑慮（獲利品質是乾淨的），而是「成長本身的資金成本」。</strong>在 AI 需求維持的情況下這完全可控；<strong>一旦下游拉貨轉弱，652.78 億的應收與 236.64 億的存貨會瞬間從資產變成壓力。</strong></p>
+    <p style="font-size:13px;line-height:1.8;margin-top:9px"><strong>和本系列其他個股的定位對照：</strong>環球晶（獲利 69% 靠德國持股評價、現價高於共識 42%）、眾達-KY（本業虧損、EPS 靠評價利益）、晉泰（本業乾淨、估值便宜但盤子小）、<strong>台光電（本業乾淨、流動性佳、現價低於共識 30%，但估值高、現金轉換轉差）</strong>。</p>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">給一般投資人的話</div>
+    <p style="font-size:13.5px;line-height:1.85"><strong>先說結論：這是我在這個系列裡看過「生意本身」最紮實的一家公司。</strong>它第二季賺的 98.7 億，有 99.6% 是靠賣銅箔基板賺來的，不是靠投資、不是靠匯兌、不是靠賣廠。把近四季加起來，業外損益甚至是 <strong>−0.65 億</strong>——業外不但沒幫忙，還小扣了一點。<strong>這種純度很少見。</strong></p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:9px"><strong>而且第三季的營收已經知道了：608.85 億，比第二季多 28.8%。</strong>我推算第三季每股可能賺 35～38 元，又是新高。11 月的財報公布時，大概率是好消息。</p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:9px"><strong>但有三件事你必須知道。</strong></p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:9px"><strong>第一，這檔股票一年內從 1,085 元漲到 6,470 元，漲了將近 5 倍。</strong>你現在買的是 5,520 元，不是 1,085 元。中間它也曾經 14 個交易日跌 29.7%，上個月還盤中跌停過一次。<strong>年化波動率 68%，意思是一年內上下 68% 都算正常。</strong></p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:9px"><strong>第二，公司賺的錢，有很大一部分還沒變成現金。</strong>上半年帳上賺 152 億，但實際收到的現金只有 50 億——差額主要卡在「客戶還沒付的貨款」（應收帳款半年增加 292 億，總額 652 億，比一季的營收還多）。<strong>這在高速成長期是正常的，但如果哪天客戶拉貨轉弱，這 652 億就會變成壓力。</strong>這是我這次新增的提醒，前三份報告都沒講。</p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:9px"><strong>第三，這檔股票的「每股淨值」只有 162.80 元，而股價 5,520 元——股價淨值比 33.9 倍。</strong>意思是公司帳上的資產幾乎撐不住股價，<strong>你買的 100% 是對未來獲利的期待</strong>。如果 AI 投資熱潮降溫，跌下來不會有任何「便宜」的支撐點。</p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:10px"><strong>我的建議：不要在 6,000 元以上追，等回到月線與季線附近（5,291～5,316）再分批。</strong>部位控制在 5～8%。如果你已經持有，<strong>11 月財報請特別看「營業活動現金流」這一行有沒有回升</strong>——那比 EPS 更能告訴你這家公司的成長是否健康。</p>
+  </div>
+</section>
+
+<!-- ============ 13 風控 ============ -->
+<section>
+  <div class="section-title"><span class="section-num">12</span>風控評估（六維加權）</div>
+  <div class="card">
+    <div class="score-row">
+      <div class="score-label">估值風險 30%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:linear-gradient(90deg,#dc2626,#fb923c)"></div></div>
+      <div class="score-num">7.0</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">財務風險 25%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:55%;background:linear-gradient(90deg,#d97706,#fbbf24)"></div></div>
+      <div class="score-num">5.5</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">流動性風險 10%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:15%;background:linear-gradient(90deg,#16a34a,#4ade80)"></div></div>
+      <div class="score-num">1.5</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">產業風險 15%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:50%;background:linear-gradient(90deg,#d97706,#fcd34d)"></div></div>
+      <div class="score-num">5.0</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">總經風險 10%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:50%;background:linear-gradient(90deg,#d97706,#fcd34d)"></div></div>
+      <div class="score-num">5.0</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">籌碼風險 10%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:40%;background:linear-gradient(90deg,#16a34a,#86efac)"></div></div>
+      <div class="score-num">4.0</div>
+    </div>
+    <div class="calc-box" style="margin-top:14px">
+      <div class="calc-title">加權計算</div>
+      <div class="row"><span>估值 7.0 × 30%</span><span>2.100</span></div>
+      <div class="row"><span>財務 5.5 × 25%</span><span>1.375</span></div>
+      <div class="row"><span>流動性 1.5 × 10%</span><span>0.150</span></div>
+      <div class="row"><span>產業 5.0 × 15%</span><span>0.750</span></div>
+      <div class="row"><span>總經 5.0 × 10%</span><span>0.500</span></div>
+      <div class="row"><span>籌碼 4.0 × 10%</span><span>0.400</span></div>
+      <div class="row"><span><strong>綜合風險評分</strong></span><span><strong>5.275 → 5.3（中等風險）</strong></span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">各維度評分理由，以及與前報 4.5 分的差異說明</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>維度</th><th>分數</th><th>理由</th></tr>
+      <tr><td>估值</td><td class="neg"><strong>7.0</strong></td><td>近四季本益比 86.1 倍、<strong>股價淨值比 33.91 倍（無資產保護）</strong>；股價 52 週已漲 496%。<strong>減分項：</strong>2026F 約 48 倍、現價低於法人目標價 30.4% 且共識仍在上修，故未給 8.0 以上</td></tr>
+      <tr><td>財務</td><td style="color:#d97706"><strong>5.5</strong></td><td><strong>獲利品質滿分（業外 −0.65 億）</strong>，但<strong>現金轉換轉差</strong>：H1 營業現金流僅淨利 0.33 倍、自由現金流 −56.34 億、負債比 53.3%→63.2%、應收 652.78 億。<strong>減分項：</strong>應收天數反而改善 6 天、ROE 約 42%、capex 為擴產，故未給 6.5 以上</td></tr>
+      <tr><td>流動性</td><td class="pos"><strong>1.5</strong></td><td>日均成交 <strong>167.6 億元</strong>、外資持股 45.18%、週轉率 0.80%。<strong>與環球晶並列本系列最佳</strong></td></tr>
+      <tr><td>產業</td><td style="color:#d97706"><strong>5.0</strong></td><td>AI 資本支出高度集中於少數雲端業者；台燿雙供應商競爭。<strong>減分項：</strong>Rubin／224G 規格升級為結構性而非循環性、寡頭市占 2027 估 85%、漲價可延續至 2027 年底</td></tr>
+      <tr><td>總經</td><td style="color:#d97706"><strong>5.0</strong></td><td>AI 資本支出循環、利率環境、美中關稅；原料（銅箔、玻纖布）成本波動；崑山廠的地緣曝險</td></tr>
+      <tr><td>籌碼</td><td class="pos"><strong>4.0</strong></td><td><strong>外資 45.18% 且增持、董監 8.58% 零質押、融資僅佔股本 0.067%</strong>——結構極佳。<strong>加分項：</strong>年化波動率 68.0%、10/13 盤中跌停、外資高持股使股價對國際資金流敏感，故未給 3.0 以下</td></tr>
+    </table>
+    </div>
+    <div class="alert alert-purple" style="margin-top:12px;margin-bottom:0">
+      <div>📌</div>
+      <div><strong>為什麼從前報的 4.5 分調升到 5.3 分？</strong>基本面其實是<strong>變好了</strong>（Q2 大幅超標、Q3 營收已確定、法人持續上修、技術面由極度超賣修復至中性）。調升的原因有二：<strong>①</strong> 股價自 4,395 漲到 5,520（+25.6%），<strong>估值風險上升</strong>；<strong>②</strong> 本報告新發現的<strong>現金流與營運資金問題</strong>（前報未涵蓋）使財務風險由低轉為中等。<strong>風險評分上升不等於看法轉空——本報告的多空權重是 60:40 偏多，而前報是「觀望」。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14 策略 ============ -->
+<section>
+  <div class="section-title"><span class="section-num">13</span>台股三段式策略</div>
+  <div class="strategy-grid">
+    <div class="strat-card attack">
+      <h3>⚔️ 進攻</h3>
+      <div class="strat-item"><span>觸發</span><span><strong>帶量</strong>站回 5,833（MA5）</span></div>
+      <div class="strat-item"><span>量能門檻</span><span>單日 &gt; 3,500 張</span></div>
+      <div class="strat-item"><span>目標</span><span>6,150 → 6,325 → 6,470（52 週高）</span></div>
+      <div class="strat-item"><span>部位</span><span>5% 以內</span></div>
+      <div class="strat-item"><span>停損</span><span>跌回 5,510（今日低）即出</span></div>
+      <div class="strat-item"><span>⚠️ 注意</span><span>10/13 剛盤中跌停，族群情緒未穩，<strong>追價需嚴設停損</strong></span></div>
+    </div>
+    <div class="strat-card balance">
+      <h3>⚖️ 均衡（本報告建議）</h3>
+      <div class="strat-item"><span>進場區</span><span><strong>5,291 ~ 5,520 分批</strong></span></div>
+      <div class="strat-item"><span>分批方式</span><span>三批：5,520 / 5,400 / 5,300 各 1/3</span></div>
+      <div class="strat-item"><span>部位</span><span><strong>總資產 5～8%</strong></span></div>
+      <div class="strat-item"><span>持有期</span><span>1～2 年（等 2027 年新廠與 M9 放量）</span></div>
+      <div class="strat-item"><span>停損</span><span><strong>跌破 4,935（9 月月收）且三日未收復</strong></span></div>
+      <div class="strat-item"><span>加碼</span><span><strong>Q3 財報營業現金流回升</strong>，或 M9 出貨進度優於預期</span></div>
+    </div>
+    <div class="strat-card defend">
+      <h3>🛡️ 防守</h3>
+      <div class="strat-item"><span>做法</span><span>等 11 月 Q3 財報再決定</span></div>
+      <div class="strat-item"><span>要看什麼</span><span>① <strong>營業活動現金流</strong>是否回升（最重要）<br>② 毛利率能否守住 33.85%<br>③ <strong>應收帳款</strong>是否自 652.78 億回落<br>④ Q4 營收指引<br>⑤ M9 出貨與新廠進度</span></div>
+      <div class="strat-item"><span>理想進場</span><span>若族群情緒續殺至 <strong>4,900～5,100</strong>（9 月低點區），風險報酬比將明顯改善</span></div>
+      <div class="strat-item"><span>代價</span><span>Q3 財報大概率是好消息，等待可能錯過一段</span></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="calc-title">操作建議表</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>情境</th><th>價位</th><th>動作</th></tr>
+      <tr><td>追價突破</td><td>&gt; 5,833（量 &gt; 3,500 張）</td><td>進攻型可小量試單，停損 5,510</td></tr>
+      <tr><td>區間震盪</td><td>5,291 ~ 5,833</td><td><strong>均衡型分批建立部位（5～8% 上限）</strong></td></tr>
+      <tr><td><strong>回測均線密集帶</strong></td><td><strong>5,291 ~ 5,316</strong></td><td><strong>月線與季線交會，本報告認為是最佳分批區</strong></td></tr>
+      <tr><td>深度回檔</td><td>4,900 ~ 5,100</td><td><strong>若因族群情緒而非公司因素跌至此，風險報酬比最佳</strong></td></tr>
+      <tr><td>破 9 月低</td><td>&lt; 4,635 且三日未收復</td><td>停損。代表 AI 資本支出預期出現實質變化，應重新檢視基本面</td></tr>
+      <tr><td>高檔</td><td>&gt; 6,000</td><td><strong>不建議新增部位。</strong>持有者可考慮部分獲利了結，保留核心部位</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">催化劑時程表</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>時間</th><th>事件</th><th>重要性</th></tr>
+      <tr><td><strong>2026/11 中</strong></td><td><strong>🔴 Q3'26 財報與法說會</strong>——營收已知 608.85 億，<strong>關鍵不是 EPS（大概率 35～38 元創新高），而是「營業活動現金流」與「應收帳款」</strong></td><td><span class="tag tag-red">極高</span></td></tr>
+      <tr><td><strong>2026/11/10 前</strong></td><td>10 月營收——觀察 215.32 億的動能能否延續</td><td><span class="tag tag-blue">高</span></td></tr>
+      <tr><td>2026 Q4</td><td><strong>M9 出貨進度與漲價執行度</strong>（M9 預定 2026 Q3 開始出貨）</td><td><span class="tag tag-red">極高</span></td></tr>
+      <tr><td>2027 年</td><td><strong>崑山、觀音新廠完工</strong>，2027 年底產能較 2026 年底 <strong>+51.22%</strong></td><td><span class="tag tag-red">決定性</span></td></tr>
+      <tr><td>持續</td><td>AI 伺服器 Rubin 架構導入進度、Serdes 224G 滲透率、M8.5/M9 規格升級節奏</td><td><span class="tag tag-red">極高</span></td></tr>
+      <tr><td>持續</td><td>雲端業者（AWS／Google／Meta／微軟）資本支出指引；台燿（6274）競爭動態</td><td><span class="tag tag-blue">高</span></td></tr>
+      <tr><td>持續</td><td>銅箔、玻纖布等原料成本；<strong>外資持股比率變化</strong>（目前 45.18% 且增持中）</td><td><span class="tag tag-yellow">中高</span></td></tr>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15 名詞 ============ -->
+<section>
+  <div class="section-title"><span class="section-num">14</span>名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">銅箔基板（CCL）</div>
+      <div class="glossary-def">印刷電路板（PCB）的核心原材料——在絕緣基材上貼覆銅箔製成。<strong>就像蓋房子的鋼筋混凝土</strong>，每台 AI 伺服器、高速交換機都需要大量高品質 CCL。等級越高（M6→M7→M8→M8.5→M9），能承受的訊號速度越快、損耗越低。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">M9 等級材料</div>
+      <div class="glossary-def">目前最高階的 CCL 規格之一，用於最尖端的 AI 運算與高速傳輸。<strong>台光電預定 2026 年第 3 季開始出貨</strong>，單價與毛利率都遠高於標準品。法人認為 M9 滲透率是 2027 年營收的主要上檔來源。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">Serdes 224G 與 Rubin 架構</div>
+      <div class="glossary-def"><strong>Serdes</strong> 是晶片間高速傳輸的介面，速度從 112G 提升到 <strong>224G</strong>。速度翻倍後，訊號在電路板上的損耗要求變嚴格，<strong>必須用更高等級的 CCL</strong>。<strong>Rubin</strong> 是 AI 伺服器的新世代架構。這是<strong>結構性的規格升級，不是景氣循環</strong>。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">🔴 營運槓桿</div>
+      <div class="glossary-def">營業費用（研發、管銷）不太隨營收等比例增加，所以營收每多一塊錢，大部分直接變成獲利。台光電 Q2 營業費用率僅 <strong>6.91%</strong>，所以<strong>營收季增 43.0%，營業利益卻季增 78.7%</strong>。這是獲利加速的核心機制。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">🔴 營業活動現金流 ÷ 淨利</div>
+      <div class="glossary-def">衡量<strong>帳上獲利有沒有變成真的現金</strong>。健康的公司應該大於 1。台光電 2025 年為 0.82 倍、<strong>2026 上半年只有 0.33 倍</strong>——不是因為獲利不實，而是因為營收翻倍導致應收帳款與存貨大增，把現金吃掉了。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">🔴 營運資金佔用</div>
+      <div class="glossary-def">應收帳款＋存貨的增加。公司成長越快，墊的錢越多。台光電上半年營運資金增加約 <strong>361 億</strong>，是同期淨利 152 億的 <strong>2.4 倍</strong>。<strong>這是成長的資金成本，不是虧損</strong>，但需要靠借款或供應商信用支應。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">自由現金流（FCF）</div>
+      <div class="glossary-def">＝營業活動現金流 − 資本支出。台光電 2025 年 <strong>+24.78 億</strong>，2026 上半年轉為 <strong>−56.34 億</strong>。擴產期為負不必然是壞事（新廠 2027 年完工、產能 +51.22%），但代表短期要靠借款支應。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">股價淨值比（P/B）與 ROE</div>
+      <div class="glossary-def">台光電 P/B 高達 <strong>33.91 倍</strong>（每股淨值僅 162.80 元）。高 P/B 的合理解釋是<strong>高股東權益報酬率（ROE 約 42%）</strong>——用很少的資本賺很多錢。但它也意味著<strong>股價完全沒有資產價值的下檔保護</strong>。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">業外損益佔稅前淨利比重</div>
+      <div class="glossary-def">判斷獲利「純不純」的關鍵指標。台光電 Q2'26 僅 <strong>0.4%</strong>、近四季合計 <strong>−0.3%</strong>，代表獲利幾乎全部來自本業。對照本系列：眾達-KY 69%、環球晶 69%、大洋約 92%、晉泰 13.9%。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">法人目標價與共識上修</div>
+      <div class="glossary-def">FactSet 彙整多家券商預估取中位數。台光電 2026 EPS 共識三個月內自 88.67 元上修至 <strong>114.67 元</strong>、目標價自 4,200 元上修至 <strong>7,200 元</strong>。<strong>「共識仍在上修」本身就是一個多方訊號</strong>，但也提醒：共識是落後指標，不是預言。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 16 免責 ============ -->
+<div class="disclaimer">
+  <strong>⚠️ 免責聲明與資料來源說明</strong>
+  <p style="margin-top:9px">本報告為研究性質之資料整理與分析，<strong>不構成任何投資建議、要約或招攬</strong>。本人並非持有證照之投資顧問。所有投資決策應由投資人自行判斷並承擔全部風險。股票投資可能導致本金部分或全部損失。</p>
+
+  <p style="margin-top:11px"><strong>資料來源與取得時間</strong></p>
+  <ul style="margin:6px 0 0 18px;line-height:1.75">
+    <li><strong>即時報價</strong>：富果 Fugle API，2026-10-14 15:33 擷取（當日收盤後，日 K 線已含 10/14）</li>
+    <li><strong>歷史 K 線、技術指標、月營收、季度財報、資產負債表、現金流量表</strong>：FinMind，2026-10-14 擷取</li>
+    <li><strong>Q2'26 法說會數字</strong>（稅後純益 98.7 億、季增 84.9%、年增 1.83 倍、EPS 27.55 元、毛利率 33.9% 季增 4.5pp、上半年營收 803.42 億年增 81.8%、淨利 152.13 億年增 119%、EPS 42.46 元、產能滿載）：2026/07/29 法說會，經媒體報導引述</li>
+    <li><strong>法人目標價與 EPS 共識</strong>：FactSet 調查，經鉅亨網速報、永豐金豐雲學堂引述；大和資本目標價調整經媒體報導</li>
+    <li><strong>股權結構（外資 45.18%，資料日 2026-10-13；董監 8.58%，資料日 2026-08；千張大戶 24.65%、籌碼集中度 68.22%，資料日 2026-10-02）</strong>：公開資訊彙整</li>
+    <li><strong>融資餘額 2,414 張（資料日 2026-10-07）</strong>：公開資訊彙整。官方查詢管道為<strong>臺灣證券交易所</strong>每日盤後「融資融券餘額」公告</li>
+    <li><strong>M9 出貨時程、Rubin／Serdes 224G、崑山與觀音新廠產能 +51.22%、漲價延續至 2027 年底、台燿比較</strong>：經濟日報、理財周刊等媒體報導引述法人觀點</li>
+    <li><strong>2026/10/13 跌停相關</strong>（跌停價 5,535 元、11:11 觸及、PCB 材料設備族群重挫 7.42%、聯茂同步跌停、分析師評論）：鉅亨網盤中速報、Yahoo 股市新聞</li>
+    <li><strong>前次報告比較基準</strong>：本系列 2026-07-20 之台光電深度分析報告（收盤 4,395 元）</li>
+  </ul>
+
+  <p style="margin-top:11px"><strong>🔴 資料限制與本報告的自行推算，請務必注意</strong></p>
+  <ul style="margin:6px 0 0 18px;line-height:1.75">
+    <li><strong>🔴 漲跌停價已修正：</strong>資料腳本輸出「漲停 6,099.5 / 跌停 4,990.5」雖採用了正確的昨收 5,545 元，但<strong>未套用台股 1,000 元以上最小升降單位 5 元的取整規則</strong>。正確值應為<strong>漲停 6,095 元 / 跌停 4,995 元</strong>。本報告封面已採修正值。（佐證：10/13 的跌停價為 5,535 元，即 6,150×0.9＝5,535，為 5 元的整數倍。）</li>
+    <li><strong>市值、本益比、股價淨值比</strong>：本檔為上市股票，自動化資料源可取得（市值 1.978 兆、本益比 86.34 倍、股價淨值比 33.91 倍）。本報告另行以股數 3.5832 億股（股本 35.83 億元 ÷ 面額 10 元，並經各季 EPS 與淨利反推驗證）自行計算，結果一致：市值 19,779 億、每股淨值 162.80 元、近四季本益比 86.1 倍。</li>
+    <li><strong>🔴 月份換算已高度驗證：</strong>資料庫申報月份減 1 ＝實際賺取月份。驗證結果<strong>極為精確</strong>：2026 Q1 月營收加總 330.68 億 vs 財報 330.67 億、Q2 加總 472.76 億 vs 財報 472.75 億，<strong>誤差皆僅 0.003%</strong>；另上半年加總 803.44 億與法說會公告的 803.42 億吻合。<strong>因此 Q3'26 營收 608.85 億的可靠度很高，但仍屬加總推算，正式數字以 11 月財報為準。</strong></li>
+    <li><strong>🔴 Q3'26 EPS 推估 35.6～38.4 元、2026 全年 114.8～122.8 元，均為本報告自行推算</strong>，非公司財測。假設（營業費用率 6.7%、稅率 22.8%、業外為 0）與三種毛利率情境已於第 5 節完整列出。可能失準之處亦已逐項說明。</li>
+    <li><strong>🔴 2027 年 EPS 預估（193.76 元、226 元）為單一來源之市場預估</strong>，本報告僅作為「若一切順利的上檔空間」參考，<strong>不作為進場依據</strong>，且已於第 10 節列出其所需的四項前提條件。</li>
+    <li><strong>EBITDA、ROE 約 42% 為本報告推算值</strong>（近四季淨利 229.15 億 ÷ 平均股東權益約 543.86 億），非公司揭露。</li>
+    <li><strong>三大法人與融資融券經 FinMind 查詢（2026-10-13）回傳值為 0，屬資料缺口</strong>，本報告未將 0 解讀為「持平」或「餘額為零」，改採標明日期之公開資訊來源。<strong>各項籌碼數據的資料日期不同（10/13、10/07、10/02、08 月），不宜直接相互加總比較。</strong></li>
+    <li><strong>2026 EPS 共識存在多個版本</strong>（114.67 元、116.42 元、108.84 元、113.55 元，另有來源稱 99.22 元），反映不同調查時點與樣本。本報告以 FactSet 最新的 114.67 元（19 位分析師中位數）為主要基準，並已列出完整上修軌跡供判讀。</li>
+    <li><strong>前次報告（2026-07-20）之對帳</strong>：前報引用之市場預估 Q2 EPS 18～22 元、FY2026E 88.67 元、法人目標價 2,060～5,900 元，均為<strong>當時的市場資訊</strong>。本報告指出其低估，意在說明「共識是落後指標」，<strong>非指該報告方法有誤</strong>。</li>
+    <li><strong>技術指標</strong>基於 2026-10-14 收盤價 5,520 元計算。10/14 當日已收盤，日 K 線資料完整。</li>
+    <li><strong>「2025 全年淨利 146.49 億、營業現金流 119.68 億、資本支出 94.90 億」為四季 / 累計財報數值推算</strong>；年度經會計師查核之數字可能略有差異。</li>
+  </ul>
+
+  <p style="margin-top:11px"><strong>本報告的立場</strong></p>
+  <p style="margin-top:5px">本報告對台光電的<strong>本業獲利品質給予最高評價</strong>：近四季業外損益合計 −0.65 億，獲利 100% 來自本業（Q2'26 業外僅佔稅前淨利 0.4%），這在本系列分析過的個股中是唯一一檔。Q2'26 營收、毛利率、營益率、EPS 全面創歷史新高，且 Q3 營收已可由已公告月營收確定為 608.85 億（季增 28.8%、年增 142.1%）。<strong>現價 5,520 元仍較 FactSet 19 位分析師目標價 7,200 元低 30.4%，且共識仍在上修。</strong></p>
+  <p style="margin-top:7px">但本報告<strong>新增指出前三份報告未涵蓋的風險</strong>：<strong>①</strong> 2026 上半年營業活動現金流僅 50.45 億（淨利的 0.33 倍），自由現金流 −56.34 億；<strong>②</strong> 應收帳款半年增加 292.13 億至 652.78 億（已超過單季營收），存貨增至 236.64 億，營運資金佔用為淨利的 2.4 倍；<strong>③</strong> 負債比兩季自 53.3% 升至 63.2%；<strong>④</strong> 股價淨值比 33.91 倍，估值完全建立在未來獲利之上，無資產價值保護。<strong>這些不是獲利品質問題，而是高速成長的資金成本——在 AI 需求維持下可控，但一旦下游拉貨轉弱將迅速轉為壓力。</strong></p>
+  <p style="margin-top:7px"><strong>結論為「正面，但建議回檔分批、勿於 6,000 元以上追價」，多空權重 60:40 偏多，風險評分 5.3（較前報 4.5 調升）。</strong>風險評分上升源自股價已漲 25.6% 使估值風險提高，以及新發現的現金流議題，<strong>並非看法轉空</strong>。以上判斷基於本報告列出之公開數據，<strong>讀者應自行驗證並形成自己的結論</strong>。</p>
+</div>
+
+</div><!-- /container -->
+
+<script>
+function drawBarChart(id,labels,data,barColor,accentColor,negColor,dec){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=54,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  var D=(dec===undefined)?2:dec;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||0.5;
+  var lo=(min<0)?(min-pad):Math.max(0,min-pad);
+  var hi=max+pad,range=hi-lo;
+  var n=data.length;
+  var barW=chartW/n*0.58,gap=chartW/n;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(D===0?0:1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0){ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();}
+  for(var i=0;i<n;i++){
+    var x=PL+i*gap+(gap-barW)/2;
+    var vy=PT+chartH-((data[i]-lo)/range*chartH);
+    var top=Math.min(vy,zeroY),bh=Math.abs(vy-zeroY);
+    if(bh<1.5)bh=1.5;
+    var isLast=(i===n-1);
+    var color=(data[i]<0)?(negColor||'#dc2626'):(isLast?accentColor:barColor);
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,top,barW,bh,3);ctx.fillStyle=color;ctx.fill();}
+    else{ctx.fillStyle=color;ctx.fillRect(x,top,barW,bh);}
+    ctx.fillStyle=(data[i]<0)?'#dc2626':(isLast?accentColor:'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(D),x+barW/2,(data[i]<0)?(top+bh+11):(top-4));
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    var lx=PL+i*gap+gap/2,ly=PT+chartH+14;
+    if(labels[i].length>4){ctx.save();ctx.translate(lx,ly);ctx.rotate(-Math.PI/6);ctx.fillText(labels[i],0,0);ctx.restore();}
+    else ctx.fillText(labels[i],lx,ly);
+  }
+}
+function drawLineChart(id,labels,data,color,negColor,dec){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=54,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  var D=(dec===undefined)?1:dec;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||1;
+  var lo=min-pad,hi=max+pad,range=hi-lo;
+  var n=data.length;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0&&hi>0){
+    ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);
+    ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();
+  }
+  var pts=[];
+  for(var i=0;i<n;i++)pts.push({x:PL+i*chartW/(n-1),y:PT+chartH-(data[i]-lo)/range*chartH});
+  var base=(lo<0&&hi>0)?zeroY:(PT+chartH);
+  ctx.beginPath();ctx.moveTo(pts[0].x,base);
+  for(var i=0;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.lineTo(pts[n-1].x,base);ctx.closePath();
+  var grad=ctx.createLinearGradient(0,PT,0,PT+chartH);
+  var hex=color.slice(1);
+  var r=parseInt(hex.slice(0,2),16),g2=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  grad.addColorStop(0,'rgba('+r+','+g2+','+b+',0.25)');
+  grad.addColorStop(1,'rgba('+r+','+g2+','+b+',0.02)');
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+  for(var i=1;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+  for(var i=0;i<n;i++){
+    var isLast=(i===n-1);
+    var dotCol=(data[i]<0&&negColor)?negColor:color;
+    ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,isLast?5:3,0,Math.PI*2);
+    ctx.fillStyle=isLast?dotCol:'#fff';ctx.fill();
+    ctx.strokeStyle=dotCol;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=isLast?dotCol:((data[i]<0)?'#dc2626':'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(D),pts[i].x,pts[i].y+(isLast?-10:-8));
+  }
+  for(var i=0;i<n;i++){
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    ctx.fillText(labels[i],pts[i].x,PT+chartH+14);
+  }
+}
+function drawHBarChart(id,labels,data,colors,suffix){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var max=Math.max.apply(null,data)*1.32;
+  var n=labels.length;
+  var rowH=H/(n+0.6);
+  var PL=196,PR=56;
+  for(var i=0;i<n;i++){
+    var y=rowH*(i+0.3)+rowH*0.12;
+    var bh=rowH*0.66;
+    ctx.fillStyle='#f1f5f9';ctx.fillRect(PL,y,(W-PL-PR),bh);
+    var bw=(data[i]/max)*(W-PL-PR);
+    if(bw<2)bw=2;
+    var col=colors?colors[i]:'#581c87';
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(PL,y,bw,bh,4);ctx.fillStyle=col;ctx.fill();}
+    else{ctx.fillStyle=col;ctx.fillRect(PL,y,bw,bh);}
+    ctx.fillStyle='#1e293b';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(labels[i],PL-8,y+bh/2+4);
+    ctx.fillStyle='#1e293b';ctx.font='bold 12px Arial';ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(1)+(suffix||'x'),PL+bw+6,y+bh/2+4);
+  }
+}
+window.addEventListener('DOMContentLoaded',function(){
+  drawBarChart('epsChart',
+    ["Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [5.76,7.08,7.30,7.67,10.01,10.02,11.19,10.44,14.90,27.55],
+    '#d8b4fe','#581c87','#dc2626',2);
+  drawLineChart('revChart',
+    ['1月','2月','3月','4月','5月','6月','7月','8月','9月'],
+    [108.6,101.9,120.1,139.2,156.2,177.3,192.1,201.5,215.3],
+    '#581c87',null,1);
+  drawLineChart('opmChart',
+    ["Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [19.65,18.92,18.14,18.99,20.94,20.63,19.84,19.80,21.56,26.94],
+    '#7e22ce',null,1);
+  drawBarChart('qrevChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26★"],
+    [174.6,185.6,216.8,225.1,251.5,249.3,330.7,472.8,608.9],
+    '#d8b4fe','#581c87','#dc2626',1);
+  drawBarChart('arChart',
+    ["Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [305.2,361.5,360.7,464.2,652.8],
+    '#fcd34d','#dc2626','#dc2626',1);
+  drawHBarChart('peChart',
+    ['2027F（市場估 193.8 元）','2026F（FactSet 114.7 元）','近四季（TTM 64.08 元）'],
+    [28.5,48.1,86.1],
+    ['#16a34a','#7e22ce','#dc2626']);
+});
+</script>
+</body>
+</html>
