@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股盤後分析 2026/10/15｜暴跌1,656點，MA20貫穿</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d1117; color: #e6edf3; font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif; font-size: 14px; line-height: 1.6; }
+  .header { background: linear-gradient(135deg, #3d1010 0%, #0d1117 65%); border-bottom: 3px solid #f85149; padding: 20px 24px; }
+  .header h1 { font-size: 23px; font-weight: 700; }
+  .header .sub { font-size: 12px; color: #8b949e; margin-top: 5px; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin: 3px 4px 0 0; }
+  .badge-ok { background: #0f2d1a; color: #3fb950; border: 1px solid #3fb950; }
+  .badge-warn { background: #2d2008; color: #e3b341; border: 1px solid #e3b341; }
+  .badge-danger { background: #3d1a1a; color: #f85149; border: 1px solid #f85149; }
+  .badge-info { background: #1a2540; color: #79c0ff; border: 1px solid #388bfd; }
+  .ticker-bar { background: #161b22; border-bottom: 1px solid #21262d; padding: 11px 24px; display: flex; gap: 19px; flex-wrap: wrap; }
+  .ticker-item { display: flex; flex-direction: column; align-items: center; min-width: 96px; }
+  .ticker-label { font-size: 10px; color: #8b949e; text-align: center; }
+  .ticker-val { font-size: 16px; font-weight: 700; }
+  .up { color: #3fb950; } .dn { color: #f85149; } .neu { color: #e6edf3; }
+  .container { max-width: 1300px; margin: 0 auto; padding: 20px 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  @media (max-width: 950px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  .card { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 17px; margin-bottom: 16px; }
+  .card-title { font-size: 13px; font-weight: 700; color: #8b949e; letter-spacing: 0.5px; margin-bottom: 13px; padding-bottom: 8px; border-bottom: 1px solid #21262d; }
+  .stat-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #21262d; }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-label { color: #8b949e; font-size: 13px; }
+  .stat-val { font-weight: 700; font-size: 13px; text-align: right; }
+  .alert-box { border-radius: 8px; padding: 15px 19px; margin-bottom: 16px; }
+  .alert-red { background: #2d1010; border: 1px solid #f85149; }
+  .alert-yellow { background: #2d2008; border: 1px solid #e3b341; }
+  .alert-green { background: #0f2d1a; border: 1px solid #3fb950; }
+  .alert-blue { background: #0d1f38; border: 1px solid #388bfd; }
+  .alert-title { font-weight: 700; font-size: 15px; margin-bottom: 9px; }
+  .alert-box p { font-size: 13px; color: #c9d1d9; line-height: 1.9; }
+  .section-title { font-size: 17px; font-weight: 700; color: #e6edf3; margin: 28px 0 13px; padding-left: 11px; border-left: 4px solid #f85149; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #0d1117; color: #8b949e; font-weight: 600; padding: 9px 10px; text-align: left; border-bottom: 1px solid #21262d; white-space: nowrap; }
+  td { padding: 8px 10px; border-bottom: 1px solid #21262d; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+  .highlight { color: #e3b341; font-weight: 700; }
+  .red { color: #f85149; font-weight: 700; }
+  .green { color: #3fb950; font-weight: 700; }
+  .blue { color: #79c0ff; font-weight: 700; }
+  .bar-row { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; font-size: 12px; }
+  .bar-label { width: 108px; color: #c9d1d9; text-align: right; flex-shrink: 0; }
+  .bar-bg { flex: 1; background: #21262d; border-radius: 3px; height: 17px; min-width: 40px; }
+  .bar-fill { height: 100%; border-radius: 3px; }
+  .bar-val { width: 142px; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+  .conflict { background: #2d1010; border-left: 4px solid #f85149; border-radius: 6px; padding: 13px 16px; margin-bottom: 11px; }
+  .conflict-t { font-weight: 700; color: #f85149; font-size: 13.5px; margin-bottom: 6px; }
+  .conflict-b { font-size: 13px; color: #c9d1d9; line-height: 1.8; }
+  .debate-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width:760px) { .debate-col { grid-template-columns:1fr; } }
+  .bull-card { background: #0f2d1a; border: 1px solid #3fb950; border-radius: 8px; padding: 15px; }
+  .bear-card { background: #2d1010; border: 1px solid #f85149; border-radius: 8px; padding: 15px; }
+  .debate-head { font-weight: 700; font-size: 14px; margin-bottom: 11px; }
+  .debate-item { display: flex; gap: 8px; margin-bottom: 9px; font-size: 13px; color: #c9d1d9; line-height: 1.7; }
+  .verdict { background: #1c2128; border: 1px solid #388bfd; border-radius: 8px; padding: 16px; margin-top: 13px; }
+  .ratio-bar { display: flex; height: 27px; border-radius: 6px; overflow: hidden; margin: 11px 0; font-size: 12px; font-weight: 700; }
+  .ratio-bear { background: #f85149; color: #0d1117; display: flex; align-items: center; justify-content: center; }
+  .ratio-bull { background: #3fb950; color: #0d1117; display: flex; align-items: center; justify-content: center; }
+  .level-block { background: #0d1117; border-radius: 8px; padding: 11px 15px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .level-left { font-size: 12px; color: #8b949e; }
+  .level-val { font-size: 18px; font-weight: 800; }
+  .note { font-size: 11.5px; color: #6e7681; margin-top: 9px; line-height: 1.7; }
+  .strat-card { border-radius: 8px; padding: 17px; margin-bottom: 12px; }
+  .strat-a { background: #0d1f38; border: 1px solid #388bfd; }
+  .strat-b { background: #1a1a0d; border: 1px solid #e3b341; }
+  .strat-c { background: #1a0d0d; border: 1px solid #6e4040; }
+  .strat-title { font-weight: 700; font-size: 15px; margin-bottom: 9px; }
+  .strat-body { font-size: 13px; color: #c9d1d9; line-height: 1.9; }
+  .trigger-item { display: flex; gap: 11px; margin-bottom: 12px; align-items: flex-start; }
+  .trigger-num { width: 26px; height: 26px; border-radius: 50%; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .tn-hit { background: #f85149; color: #0d1117; }
+  .tn-near { background: #e3b341; color: #0d1117; }
+  .tn-safe { background: #30363d; color: #8b949e; }
+  .trigger-body { font-size: 13px; color: #c9d1d9; line-height: 1.75; }
+  .verdict-box { background: linear-gradient(135deg,#3d1010,#0d1117); border: 2px solid #f85149; border-radius: 10px; padding: 19px; margin-bottom: 18px; }
+  .daybar { background:#0d1117; border-radius:8px; padding:17px; margin-bottom:14px; }
+  .daybar-track { position:relative; height:38px; background:#21262d; border-radius:5px; margin:30px 0 10px; }
+  .daybar-fill { position:absolute; height:100%; border-radius:5px; }
+  .daybar-line { position:absolute; width:3px; height:52px; top:-7px; }
+  .daybar-labels { display:flex; justify-content:space-between; font-size:11px; color:#8b949e; }
+  .selfcheck { background: #0d1f38; border-left: 4px solid #388bfd; border-radius: 6px; padding: 14px 17px; margin-bottom: 12px; }
+  .sc-t { font-weight: 700; color: #79c0ff; font-size: 13.5px; margin-bottom: 7px; }
+  .sc-b { font-size: 13px; color: #c9d1d9; line-height: 1.85; }
+  .breadth-wrap { display:flex; height:40px; border-radius:6px; overflow:hidden; margin:12px 0 6px; font-size:12px; font-weight:700; }
+  .breadth-up { background:#3fb950; color:#0d1117; display:flex; align-items:center; justify-content:center; }
+  .breadth-flat { background:#484f58; color:#e6edf3; display:flex; align-items:center; justify-content:center; }
+  .breadth-dn { background:#f85149; color:#0d1117; display:flex; align-items:center; justify-content:center; }
+  .footer { background: #161b22; border-top: 1px solid #21262d; padding: 17px 24px; margin-top: 34px; }
+  .footer p { font-size: 11px; color: #6e7681; line-height: 1.8; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔻 台股盤後分析 — 暴跌 1,656 點，MA20 一日貫穿</h1>
+  <div class="sub">2026年10月15日（週四）收盤｜資料擷取 15:15｜收 46,969.87（-1,655.96，-3.41%）</div>
+  <div style="margin-top:9px;">
+    <span class="badge badge-danger">開盤即最高，全場無反彈</span>
+    <span class="badge badge-danger">收盤位置 11.0%</span>
+    <span class="badge badge-danger">跌破 MA20 達 -2.12%</span>
+    <span class="badge badge-danger">成交 1.43 兆 · 10月最大量</span>
+    <span class="badge badge-danger">跌 805 檔 vs 漲 200 檔</span>
+    <span class="badge badge-danger">台幣 32.39 近一年最貶</span>
+  </div>
+</div>
+
+<div class="ticker-bar">
+  <div class="ticker-item">
+    <span class="ticker-label">加權指數（收盤）</span>
+    <span class="ticker-val dn">46,969.87</span>
+    <span class="ticker-label dn">-1,655.96（-3.41%）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">今日高／低</span>
+    <span class="ticker-val neu">48,383 / 46,795</span>
+    <span class="ticker-label dn">振幅 3.39%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">收盤位置 ⚠️</span>
+    <span class="ticker-val dn">11.0%</span>
+    <span class="ticker-label dn">收在最低附近</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">成交金額</span>
+    <span class="ticker-val dn">1.43 兆</span>
+    <span class="ticker-label dn">昨日 1.46 倍</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">距歷史高（10/06）</span>
+    <span class="ticker-val dn">-5.73%</span>
+    <span class="ticker-label">高點 49,822.55</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">MA20（已跌破）</span>
+    <span class="ticker-val dn">47,986</span>
+    <span class="ticker-label dn">收盤低 1,016 點</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">季線 MA60</span>
+    <span class="ticker-val highlight">45,932</span>
+    <span class="ticker-label">僅差 -2.21%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">USD/TWD ⚠️</span>
+    <span class="ticker-val dn">32.39</span>
+    <span class="ticker-label dn">+0.88%（距最貶0.02%）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">布蘭特油</span>
+    <span class="ticker-val up">$104.53</span>
+    <span class="ticker-label up">-1.44%</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 總結 -->
+<div class="verdict-box">
+  <div class="alert-title" style="color:#f85149;font-size:17px;">🎯 今日定性：本波第一個完整的空方確認日</div>
+  <p style="font-size:14px;color:#e6edf3;line-height:1.95;">
+    指數收 <strong>46,969.87，暴跌 1,655.96 點（-3.41%）</strong>。這不是普通回檔，而是六項空方條件<strong>同日全數成立</strong>：<br>
+    ① <strong>開盤 48,382.75 ＝ 當日最高</strong>，全場沒有任何一刻高於開盤 —— 完全沒有反彈<br>
+    ② <strong>收盤位置僅 11.0%</strong>（最低 46,795.38、最高 48,382.75），收在當日最低附近<br>
+    ③ <strong>跌破 MA20（47,985.87）達 1,016 點（-2.12%）</strong>，一日貫穿，毫無攻防<br>
+    ④ <strong>成交金額 1 兆 4,313 億元，為 10 月最大量</strong>（昨日 9,781 億的 1.46 倍、成交股數 1.64 倍、<strong>成交筆數 2.17 倍</strong>）<br>
+    ⑤ <strong>股票下跌 805 檔 vs 上漲 200 檔（4.03 倍）</strong>，跌停 21 檔對漲停 4 檔 —— 全面性，非族群性<br>
+    ⑥ <strong>台幣急貶至 32.39</strong>，距一年最貶價位 32.40 僅 0.02%，與股市暴跌同步<br>
+    <strong>我在今日早盤報告中列為「今日恐觸發」的第 1 項轉空條件（量增跌破 MA20），已完整觸發，且量能遠超門檻。</strong>自 10/06 歷史高 49,822.55 計算，指數已回落 <span class="red">2,852.68 點（-5.73%）</span>。
+  </p>
+</div>
+
+<!-- 自我檢視 -->
+<div class="selfcheck">
+  <div class="sc-t">📌 檢視今日早盤報告：MA20 判斷正確，但「分化行情」預期錯了</div>
+  <div class="sc-b">
+    <strong>✅ 判斷正確的部分：</strong>把 MA20 的 47,986 定為「今日生死線」是對的 —— 今日確實在此決勝，且被貫穿；「量增跌破 MA20」的觸發條件也如預期成立，量能甚至遠超 500 萬張門檻（成交金額達 10 月最大的 1.43 兆）。<br>
+    <strong>❌ 判斷錯誤的部分：</strong>早盤報告的核心操作建議是<strong>「不要賭指數方向，做指數弱、傳產強的分化行情」</strong>，理由是外資 10/14 大買 +698,967 張、集中傳產原物料。<strong>這個分化劇本沒有實現。</strong>今日股票下跌 805 檔對上漲 200 檔（4.03 倍）、跌停 21 檔，是全面性崩跌，外資前一日的傳產買盤並未形成有效支撐。<br>
+    <strong>錯在哪裡：</strong>我把 10/14 外資單日大買解讀為「資金沒有離開台灣，只是換股」。今日台幣急貶至 32.39（距一年最貶僅 0.02%）加上全面暴跌，顯示 <strong>10/14 的買超更可能只是單日回補或作帳性質，不足以推論資金留在台灣</strong>。<strong>教訓：單日籌碼反轉不應視為趨勢訊號，尤其在族群趨勢（費半已入熊市）與匯率方向都相反時。</strong><br>
+    <strong>另一個小偏差：</strong>早盤預估開盤區間 47,650–48,050，實際開盤 48,382.75，高於預估上限 333 點 —— 開盤跌幅比預期輕，但<strong>開盤即最高</strong>，全日走勢遠比預估更弱。
+  </div>
+</div>
+
+<!-- 今日盤中結構 -->
+<div class="section-title">🕯️ 今日盤中結構：開盤即最高，收在最低附近</div>
+<div class="daybar">
+  <div style="font-size:13px;color:#c9d1d9;margin-bottom:4px;"><strong>10/15 當日價格區間與關鍵均線位置</strong></div>
+  <div class="daybar-track">
+    <div class="daybar-fill" style="left:0%;width:11%;background:linear-gradient(90deg,#4d1f1f,#f85149);"></div>
+    <div class="daybar-line" style="left:11%;background:#e3b341;"></div>
+    <div style="position:absolute;left:12%;top:-27px;font-size:11px;color:#e3b341;font-weight:700;white-space:nowrap;">收盤 46,969.87（11.0%）</div>
+    <div class="daybar-line" style="left:74.9%;background:#79c0ff;"></div>
+    <div style="position:absolute;left:60%;top:13px;font-size:11px;color:#79c0ff;font-weight:700;white-space:nowrap;">MA20 47,986 ⬆ 開盤後即失守</div>
+    <div class="daybar-line" style="left:100%;background:#8b949e;"></div>
+    <div style="position:absolute;right:1%;top:-27px;font-size:11px;color:#8b949e;font-weight:700;white-space:nowrap;">開盤＝最高 48,383</div>
+  </div>
+  <div class="daybar-labels">
+    <span>最低 46,795.38</span>
+    <span style="color:#79c0ff;">MA20 47,985.87</span>
+    <span>最高＝開盤 48,382.75</span>
+  </div>
+  <div class="note">
+    當日振幅 3.39%（1,587.37 點）。<strong>開盤 48,382.75 即為全日最高</strong>，意味開盤後指數一路向下，沒有任何反彈高點超越開盤價 —— 這是最弱的一種日內型態。<br>
+    MA20（47,985.87）位於當日區間的 74.9% 位置，<strong>開盤後很快失守，且全日未曾收復</strong>，收盤距此線下方 1,016 點。
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">今日收盤數據（證交所官方）</div>
+    <div class="stat-row"><span class="stat-label">開盤</span><span class="stat-val dn">48,382.75（＝當日最高）</span></div>
+    <div class="stat-row"><span class="stat-label">最高</span><span class="stat-val dn">48,382.75</span></div>
+    <div class="stat-row"><span class="stat-label">最低</span><span class="stat-val dn">46,795.38</span></div>
+    <div class="stat-row"><span class="stat-label">收盤</span><span class="stat-val dn">46,969.87</span></div>
+    <div class="stat-row"><span class="stat-label">漲跌</span><span class="stat-val dn">-1,655.96（-3.41%）</span></div>
+    <div class="stat-row"><span class="stat-label">當日振幅</span><span class="stat-val dn">3.39%（1,587.37 點）</span></div>
+    <div class="stat-row"><span class="stat-label">收盤位置</span><span class="stat-val dn">11.0%（極弱）</span></div>
+    <div class="stat-row"><span class="stat-label">自最低回升</span><span class="stat-val">+174.49 點（僅 0.37%）</span></div>
+    <div class="stat-row"><span class="stat-label">自 10/06 歷史高回落</span><span class="stat-val dn">-2,852.68 點（-5.73%）</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title">成交量能：10 月最大量，筆數暴增 2.17 倍</div>
+    <div class="stat-row"><span class="stat-label">成交金額</span><span class="stat-val dn">1 兆 4,313 億元</span></div>
+    <div class="stat-row"><span class="stat-label">vs 昨日（9,781 億）</span><span class="stat-val dn">1.46 倍</span></div>
+    <div class="stat-row"><span class="stat-label">成交股數</span><span class="stat-val dn">186.87 億股</span></div>
+    <div class="stat-row"><span class="stat-label">vs 昨日（113.76 億股）</span><span class="stat-val dn">1.64 倍</span></div>
+    <div class="stat-row"><span class="stat-label">成交筆數</span><span class="stat-val dn">984.6 萬筆</span></div>
+    <div class="stat-row"><span class="stat-label">vs 昨日（453.5 萬筆）</span><span class="stat-val dn">2.17 倍 ⚠️</span></div>
+    <div class="stat-row"><span class="stat-label">一般股票成交金額</span><span class="stat-val">1 兆 2,102 億元（84.6%）</span></div>
+    <div class="stat-row"><span class="stat-label">ETF 成交金額</span><span class="stat-val highlight">2,140 億元（15.0%）</span></div>
+    <div class="note">
+      <strong>成交筆數暴增 2.17 倍是最值得注意的細節。</strong>金額增 1.46 倍、股數增 1.64 倍，但筆數增 2.17 倍 —— 代表<strong>單筆平均金額下降，大量小額交易湧入</strong>，是典型的恐慌性換手特徵（散戶停損與短線進出）。<br>
+      ETF 成交金額佔 15.0%、成交股數達 84.74 億股，顯示 ETF 體系同步出現大量贖回與避險交易。
+    </div>
+  </div>
+</div>
+
+<!-- 漲跌家數 -->
+<div class="section-title">📉 漲跌家數：全面性崩跌，非族群性</div>
+<div class="card">
+  <div class="card-title">股票漲跌家數（上市，不含權證／ETF）</div>
+  <div class="breadth-wrap">
+    <div class="breadth-up" style="width:18.6%;">上漲 200（18.6%）</div>
+    <div class="breadth-flat" style="width:6.7%;">持平 72</div>
+    <div class="breadth-dn" style="width:74.7%;">下跌 805（74.7%）</div>
+  </div>
+  <div class="table-wrap" style="margin-top:14px;">
+    <table>
+      <tr><th>類型</th><th>整體市場（含權證等）</th><th>股票</th><th>研判</th></tr>
+      <tr><td>上漲（漲停）</td><td class="up">2,045（10）</td><td class="up">200（4）</td><td class="up">僅 18.6% 收紅</td></tr>
+      <tr><td>下跌（跌停）</td><td class="dn">15,229（186）</td><td class="dn">805（21）</td><td class="red">74.7% 收黑，跌停 21 檔</td></tr>
+      <tr><td>持平</td><td>300</td><td>72</td><td class="neu">6.7%</td></tr>
+      <tr><td>下跌／上漲比</td><td class="dn">7.45 倍</td><td class="dn">4.03 倍</td><td class="red">一面倒</td></tr>
+      <tr><td>跌停／漲停比</td><td class="dn">18.6 倍</td><td class="dn">5.25 倍</td><td class="red">恐慌性賣壓</td></tr>
+    </table>
+  </div>
+  <div class="note">
+    <strong>這組數字直接否證了今日早盤報告的「分化行情」預期。</strong>若真是「半導體殺、傳產強」的輪動，上漲家數應明顯高於 200 檔。實際是 <strong>805 檔下跌、僅 200 檔上漲（4.03 倍）、21 檔跌停</strong> —— 賣壓全面擴散，外資 10/14 大買的傳產原物料並未扮演避風港角色。<br>
+    整體市場下跌 15,229（跌停 186）的數字主要由認購權證貢獻（指數暴跌使認購權證大量跌停），不宜與股票家數混用，但也側面反映今日賣壓之猛。
+  </div>
+</div>
+
+<!-- 近期K線 -->
+<div class="section-title">📅 10 月 K 線全記錄：從歷史高 49,823 到今日 46,970</div>
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <tr><th>日期</th><th>開盤</th><th>最高</th><th>最低</th><th>收盤</th><th>漲跌點</th><th>漲跌%</th><th>成交金額</th><th>註記</th></tr>
+      <tr><td>10/01</td><td>47,962</td><td>48,353</td><td>47,893</td><td class="up">48,353</td><td class="up">+413.36</td><td class="up">+0.86%</td><td>8,740 億</td><td>收最高</td></tr>
+      <tr><td>10/02</td><td>48,391</td><td>48,492</td><td>48,206</td><td class="up">48,476</td><td class="up">+122.25</td><td class="up">+0.25%</td><td>9,382 億</td><td>續攻</td></tr>
+      <tr style="background:#0f2d1a;"><td><strong>10/05</strong></td><td>48,575</td><td>49,771</td><td>48,575</td><td class="up"><strong>49,712</strong></td><td class="up"><strong>+1,236.30</strong></td><td class="up"><strong>+2.55%</strong></td><td><strong>1.211 兆</strong></td><td>🟢 本波最大漲幅</td></tr>
+      <tr style="background:#2d2008;"><td><strong>10/06</strong></td><td>49,736</td><td class="highlight">49,969</td><td>49,480</td><td class="up"><strong>49,822.55</strong></td><td class="up">+110.51</td><td class="up">+0.22%</td><td>1.026 兆</td><td>⭐ <strong>歷史收盤高</strong></td></tr>
+      <tr><td>10/07</td><td>49,857</td><td>49,967</td><td>49,568</td><td class="dn">49,806</td><td class="dn">-16.18</td><td class="dn">-0.03%</td><td>9,863 億</td><td>高檔停滯</td></tr>
+      <tr><td>10/08</td><td>49,783</td><td>49,783</td><td>49,190</td><td class="dn">49,313</td><td class="dn">-492.93</td><td class="dn">-0.99%</td><td>9,245 億</td><td>開盤即最高（第1次）</td></tr>
+      <tr><td>10/12</td><td>49,272</td><td>49,413</td><td>48,769</td><td class="dn">49,302</td><td class="dn">-11.48</td><td class="dn">-0.02%</td><td>8,945 億</td><td>探低拉回</td></tr>
+      <tr style="background:#2d1010;"><td><strong>10/13</strong></td><td>49,126</td><td>49,126</td><td>48,066</td><td class="dn"><strong>48,341</strong></td><td class="dn"><strong>-960.65</strong></td><td class="dn"><strong>-1.95%</strong></td><td class="red"><strong>1.202 兆</strong></td><td>🔴 量增下跌，開盤即最高（第2次）</td></tr>
+      <tr><td>10/14</td><td>48,383</td><td>49,059</td><td>48,383</td><td class="up">48,626</td><td class="up">+284.52</td><td class="up">+0.59%</td><td>9,781 億</td><td>反彈觸 MA5 被壓回</td></tr>
+      <tr style="background:#3d1010;"><td><strong>10/15 今日</strong></td><td>48,383</td><td>48,383</td><td class="red">46,795</td><td class="dn"><strong>46,969.87</strong></td><td class="dn"><strong>-1,655.96</strong></td><td class="dn"><strong>-3.41%</strong></td><td class="red"><strong>1.431 兆</strong></td><td>🔻 <strong>MA20 貫穿，10月最大量，開盤即最高（第3次）</strong></td></tr>
+    </table>
+  </div>
+  <div class="note">
+    <strong>型態演變：</strong>10/05 以 1.211 兆大量上攻（+2.55%）→ 10/06 創歷史高但量縮至 1.026 兆（<strong>價創高、量不創高</strong>）→ 10/08、10/13、10/15 <strong>三度出現「開盤即最高」的全日無反彈長黑</strong>，且每次量能遞增（9,245 億 → 1.202 兆 → <strong>1.431 兆</strong>）。<br>
+    <strong>「開盤即最高」在十個交易日內出現三次，且伴隨量能放大，是賣方主導盤面的明確特徵。</strong>
+  </div>
+</div>
+
+<!-- 量能視覺化 -->
+<div class="card">
+  <div class="card-title">10 月成交金額（億元）：今日為最大量</div>
+  <div class="bar-row"><div class="bar-label">10/15（-3.41%）</div><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#f85149;"></div></div><div class="bar-val dn">14,313 億 🔻最大量</div></div>
+  <div class="bar-row"><div class="bar-label">10/05（+2.55%）</div><div class="bar-bg"><div class="bar-fill" style="width:85%;background:#3fb950;"></div></div><div class="bar-val up">12,110 億</div></div>
+  <div class="bar-row"><div class="bar-label">10/13（-1.95%）</div><div class="bar-bg"><div class="bar-fill" style="width:84%;background:#f85149;"></div></div><div class="bar-val dn">12,019 億</div></div>
+  <div class="bar-row"><div class="bar-label">10/06（創高日）</div><div class="bar-bg"><div class="bar-fill" style="width:72%;background:#e3b341;"></div></div><div class="bar-val highlight">10,262 億</div></div>
+  <div class="bar-row"><div class="bar-label">10/07（-0.03%）</div><div class="bar-bg"><div class="bar-fill" style="width:69%;background:#8b949e;"></div></div><div class="bar-val" style="color:#8b949e;">9,863 億</div></div>
+  <div class="bar-row"><div class="bar-label">10/14（+0.59%）</div><div class="bar-bg"><div class="bar-fill" style="width:68%;background:#3fb950;"></div></div><div class="bar-val up">9,781 億</div></div>
+  <div class="bar-row"><div class="bar-label">10/02（+0.25%）</div><div class="bar-bg"><div class="bar-fill" style="width:66%;background:#3fb950;"></div></div><div class="bar-val up">9,382 億</div></div>
+  <div class="bar-row"><div class="bar-label">10/08（-0.99%）</div><div class="bar-bg"><div class="bar-fill" style="width:65%;background:#f85149;"></div></div><div class="bar-val dn">9,245 億</div></div>
+  <div class="bar-row"><div class="bar-label">10/12（-0.02%）</div><div class="bar-bg"><div class="bar-fill" style="width:62%;background:#8b949e;"></div></div><div class="bar-val" style="color:#8b949e;">8,945 億</div></div>
+  <div class="bar-row"><div class="bar-label">10/01（+0.86%）</div><div class="bar-bg"><div class="bar-fill" style="width:61%;background:#3fb950;"></div></div><div class="bar-val up">8,740 億</div></div>
+  <div class="note">
+    10 月成交金額前三大分別是 10/15（-3.41%）、10/05（+2.55%）、10/13（-1.95%）—— <strong>三個大量日中有兩個是大跌日，且今日的最大量對應最大跌幅。</strong>這是「量增下跌」的完整確認，與 10/06 創高時量縮（1.026 兆，僅排第四）形成鮮明對比。
+  </div>
+</div>
+
+<!-- 關鍵價位 -->
+<div class="section-title">📍 關鍵價位：MA20 已破，季線成為下一防線</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">下方支撐（由近至遠）</div>
+    <div class="level-block" style="border:2px solid #e3b341;">
+      <div><div class="level-left">⭐ 第一防線 · 季線 MA60</div><div class="level-val highlight">45,932</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:170px;"><strong>距今收僅 -2.21%（1,037 點）</strong>。MA20 破後最重要的支撐</div>
+    </div>
+    <div class="level-block" style="border:1px solid #6e4040;">
+      <div><div class="level-left">🔴 第二防線 · 布林下軌</div><div class="level-val dn">45,347</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:170px;">距今收 -3.45%。與季線相距僅 585 點，構成支撐帶</div>
+    </div>
+    <div class="level-block" style="border:1px solid #6e4040;">
+      <div><div class="level-left">🔴 第三防線 · 半年線 MA120</div><div class="level-val dn">44,729</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:170px;">距今收 -4.77%。中長期多頭最後防線</div>
+    </div>
+    <div class="level-block" style="border:1px solid #30363d;">
+      <div><div class="level-left">⚪ 9 月低點（09/15）</div><div class="level-val">45,511</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:170px;">距今收 -3.11%，落在季線與布林下軌之間</div>
+    </div>
+    <div class="note"><strong>45,347 – 45,932 是一個有厚度的支撐帶</strong>（季線、布林下軌、9 月低點三者集中於 585 點內）。這是接下來最值得觀察的區域 —— 若在此量縮止穩，技術上是合理的回檔終點；若量增貫穿，半年線 44,729 將是中長期多頭的最後防線。</div>
+  </div>
+  <div class="card">
+    <div class="card-title">上方壓力（反彈需克服）</div>
+    <div class="level-block" style="border:1px solid #f85149;">
+      <div><div class="level-left">🔴 第一壓力 · 今日最低反壓區</div><div class="level-val dn">47,500 附近</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:170px;">今日長黑的中段，解套賣壓密集</div>
+    </div>
+    <div class="level-block" style="border:2px solid #f85149;">
+      <div><div class="level-left">🔴 關鍵壓力 · MA20（昨日支撐、今日反壓）</div><div class="level-val dn">47,986</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:170px;"><strong>距今收 +2.16%。</strong>收復才算跌勢中止</div>
+    </div>
+    <div class="level-block" style="border:1px solid #6e4040;">
+      <div><div class="level-left">🔴 今日開盤＝最高</div><div class="level-val dn">48,383</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:170px;">距今收 +3.01%，跳空缺口上緣</div>
+    </div>
+    <div class="stat-row"><span class="stat-label">乖離 · 季線 MA60</span><span class="stat-val up">+2.26%（緩衝已大幅收斂）</span></div>
+    <div class="stat-row"><span class="stat-label">乖離 · 半年線 MA120</span><span class="stat-val up">+5.01%</span></div>
+    <div class="stat-row"><span class="stat-label">均線排列</span><span class="stat-val dn">股價已落至 MA20 之下，MA5／MA10 將開始下彎</span></div>
+    <div class="note"><strong>MA20（47,986）的角色今日正式反轉</strong> —— 從支撐變成反壓。技術上，跌破重要均線後的首次反彈若無法收復該均線，通常確認其為有效反壓。接下來若反彈至 47,986 附近再度受阻，將強化中期轉弱的判讀。</div>
+  </div>
+</div>
+
+<!-- 轉空清單 -->
+<div class="section-title">✅ 轉空確認清單更新（10/08 建立，逐日追蹤）</div>
+<div class="card">
+  <div class="card-title">第 1 項今日完整觸發 —— 清單建立以來第一次</div>
+  <div class="trigger-item">
+    <div class="trigger-num tn-hit">1</div>
+    <div class="trigger-body">
+      <strong>① 跌破 MA20 且量放大 → ✅ 今日完整觸發</strong><br>
+      <span style="color:#8b949e;font-size:12px;">收盤 46,969.87 跌破 MA20（47,985.87）達 <strong>1,016 點（-2.12%）</strong>，同時成交金額 <strong>1 兆 4,313 億元為 10 月最大量</strong>（昨日 1.46 倍、成交股數 1.64 倍、筆數 2.17 倍）。兩個條件同日成立，<strong>這是清單建立七個交易日以來第一次完整觸發的轉空條件。</strong>依既定紀律，應執行機械式減碼。</span>
+    </div>
+  </div>
+  <div class="trigger-item">
+    <div class="trigger-num tn-near">2</div>
+    <div class="trigger-body">
+      <strong>② VIX 突破 20 → 未觸發（美股尚未開盤）</strong><br>
+      <span style="color:#8b949e;font-size:12px;">最新 VIX 為 10/14 美股收盤的 16.87（+10.48%），距 20 還有 +18.6%。今夜美股反應台股暴跌與亞股走勢，<strong>VIX 是否突破 20 是今夜最重要的觀察 —— 突破反而代表恐慌開始充分釋放。</strong></span>
+    </div>
+  </div>
+  <div class="trigger-item">
+    <div class="trigger-num tn-safe">3</div>
+    <div class="trigger-body">
+      <strong>③ 美債 10Y 突破一年高 5.31% → 持續改善中</strong><br>
+      <span style="color:#8b949e;font-size:12px;">10/14 收 5.19%，連三日下降（5.28 → 5.22 → 5.19%），距一年高 -2.28%。<strong>這仍是唯一持續改善的宏觀變數</strong>，但今日台股暴跌 3.41% 再次證明：債息回落無法阻止獲利預期下修所引發的賣壓。</span>
+    </div>
+  </div>
+  <div class="trigger-item">
+    <div class="trigger-num tn-hit">4</div>
+    <div class="trigger-body">
+      <strong>④ AMD 或 NVIDIA 轉弱 → ✅ 已完全兌現</strong><br>
+      <span style="color:#8b949e;font-size:12px;">10/14 收盤 AMD 距高 -12.10%（當日 -5.73%）、NVDA 距高 -7.50%（-3.16%）；費半 11,684.38 距高 <strong>-20.16% 已入熊市</strong>。10/08 預警的「領漲面僅剩兩檔、無接棒者」風險，已完整實現並反映在今日台股。</span>
+    </div>
+  </div>
+  <div class="trigger-item">
+    <div class="trigger-num tn-near">5</div>
+    <div class="trigger-body">
+      <strong>⑤ 外資連續賣超台積電逾 1 萬張／日 → 需重新評估（今日籌碼未公布）</strong><br>
+      <span style="color:#8b949e;font-size:12px;">此項於今日早盤報告中因 10/14 賣超收斂至 -6,753 張而暫時解除。但<strong>今日指數暴跌 3.41%、台幣急貶至 32.39（距一年最貶 0.02%），外資賣超極可能大幅回升。</strong>T86 於 18:00 後公布，<strong>這是今晚最關鍵的待確認資訊。</strong></span>
+    </div>
+  </div>
+</div>
+
+<!-- 矛盾 -->
+<div class="section-title">⚡ 今日三大判讀重點</div>
+<div class="conflict">
+  <div class="conflict-t">⚡ 一：台股跌 3.41%，比費半昨日的 -4.30% 只輕 0.89 個百分點 —— 沒有「相對抗跌」</div>
+  <div class="conflict-b">
+    費半 10/14 跌 -4.30%，台股今日跌 -3.41%，<strong>跌幅僅差 0.89pp</strong>。對照標普 500 僅 -1.11%、納斯達克 -1.88%，<strong>台股的跌幅更貼近費半而非美股大盤</strong>。<br>
+    <strong>解讀：</strong>這證實台股權值結構與半導體的高度綁定，在半導體族群進入熊市（費半距高 -20.16%）時，台股無法藉由傳產輪動脫鉤。早盤報告期待的「傳產接棒、指數抗跌」在實務上失效 —— <strong>因為半導體在加權指數中的權重，大到任何其他族群都無法對沖。</strong>
+  </div>
+</div>
+<div class="conflict">
+  <div class="conflict-t">⚡ 二：台幣 32.39 幾乎觸及一年最貶（32.40），與股市暴跌同步發生</div>
+  <div class="conflict-b">
+    USD/TWD 今日 <strong>32.39（+0.88%）</strong>，距一年最貶價位 32.40 僅 <strong>0.02%</strong>。同時美元指數 102.12 反而下跌 -0.42% —— <strong>台幣的貶值不是因為美元強，而是台幣自身的賣壓。</strong><br>
+    <strong>解讀：</strong>美元走弱而台幣仍貶，典型指向<strong>資金從台灣流出</strong>（外資賣股後匯出）。這與今日成交金額 1.43 兆的巨量、全面性賣壓（805 檔下跌）互相印證。<br>
+    <strong>這也是我早盤判斷失準的核心</strong> —— 我依據 10/14 外資買超 69.9 萬張推論「資金沒離開台灣」，但匯率告訴我們相反的事。<strong>匯率往往比單日籌碼更誠實。</strong>
+  </div>
+</div>
+<div class="conflict">
+  <div class="conflict-t">⚡ 三：成交筆數暴增 2.17 倍 vs 金額僅增 1.46 倍 —— 恐慌性小額換手</div>
+  <div class="conflict-b">
+    成交金額 1.43 兆（昨日 1.46 倍）、成交股數 186.87 億股（1.64 倍），但<strong>成交筆數 984.6 萬筆（2.17 倍）</strong>。筆數增幅遠超金額增幅，代表<strong>單筆平均交易金額明顯下降</strong>。<br>
+    <strong>解讀：</strong>這是散戶與短線資金大量停損、小額進出的特徵，而非法人大單調節。配合跌停 21 檔、下跌 805 檔，<strong>今日具備「恐慌性殺盤」的量化特徵。</strong><br>
+    <strong>但要注意：</strong>恐慌性殺盤本身不等於底部。真正的止跌通常需要「量縮」配合，而非單日巨量。<strong>明日量能若維持在 1.2 兆以上且續跌，代表賣壓尚未宣洩完畢。</strong>
+  </div>
+</div>
+
+<!-- 籌碼待確認 -->
+<div class="alert-box alert-blue">
+  <div class="alert-title" style="color:#79c0ff;">📌 今日（10/15）三大法人籌碼尚未公布 — 本報告無法納入</div>
+  <p>
+    證交所 T86 三大法人買賣超資料於每日約 <strong>18:00 後</strong>更新，本報告擷取時間為 15:15，<strong>目前可取得的最新籌碼仍是 10/14</strong>（外資 +698,967 張、投信 +43,236 張）。<br>
+    由於今日指數暴跌 3.41%、台幣急貶至近一年最貶、成交創 10 月最大量，<strong>10/14 的籌碼數據已不足以描述今日的資金流向，本報告因此不以其推論今日籌碼</strong>。<br>
+    <strong>今晚 18:00 後最該確認的三件事：</strong><br>
+    ① <strong>外資賣超總額</strong> —— 是否回到 10/13 的 -61 萬張量級，甚至更大<br>
+    ② <strong>台積電（2330）外資動向</strong> —— 10/14 已收斂至 -6,753 張，今日是否大幅擴大（決定轉空清單第 5 項是否重啟）<br>
+    ③ <strong>傳產原物料是否也被賣</strong> —— 中鋼、台塑、台玻、華新在 10/14 獲外資大買，若今日反手賣出，代表 10/14 買盤確實只是單日現象
+  </p>
+</div>
+
+<!-- 多空辯論 -->
+<div class="section-title">⚖️ 盤後多空辯論</div>
+<div class="debate-col">
+  <div class="bull-card">
+    <div class="debate-head" style="color:#3fb950;">🐂 看多方（中期結構仍有緩衝）</div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">1.</span><span><strong>季線與半年線仍未破</strong>：收盤 46,970 高於 MA60 的 45,932（+2.26%）與 MA120 的 44,729（+5.01%），中長期多頭結構尚未破壞</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">2.</span><span><strong>下方有厚實支撐帶</strong>：季線 45,932、布林下軌 45,347、9 月低點 45,511 三者集中於 585 點內，構成有厚度的防線</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">3.</span><span><strong>美債連三日下降</strong>（5.28→5.22→5.19%），距一年高 -2.28%，評價壓力持續減輕，是中期最實質的支撐</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">4.</span><span><strong>這不是全球系統性風險</strong>：標普 500 距高僅 -1.28%、納斯達克 -3.29%，美股大盤由非科技族群撐住，資金未離開股市</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">5.</span><span><strong>今日具恐慌性殺盤特徵</strong>：成交筆數暴增 2.17 倍、跌停 21 檔、收盤位置 11.0%，<strong>單日情緒宣洩往往接近短線低點</strong>（但需量縮確認）</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">6.</span><span><strong>自高點僅回落 5.73%</strong>（49,823 → 46,970），對照 7 月那次 -16.36% 的回撤，幅度仍屬中度修正範圍</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">7.</span><span><strong>油價回落</strong>至 $104.53（-1.44%），通膨壓力略減；黃金 +1.23% 顯示資金尋求避險但未全面撤離風險資產</span></div>
+  </div>
+  <div class="bear-card">
+    <div class="debate-head" style="color:#f85149;">🐻 看空方（空方條件全數成立）</div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">1.</span><span><strong>第 1 項轉空條件完整觸發</strong>：跌破 MA20 達 -2.12%（1,016 點），同時成交 1.43 兆為 10 月最大量 —— 清單建立以來首次</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">2.</span><span><strong>開盤即最高，全場無反彈</strong>，收盤位置僅 <strong>11.0%</strong>；且這是十個交易日內<strong>第三次</strong>出現此型態（10/08、10/13、10/15），每次量能遞增</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">3.</span><span><strong>全面性崩跌，非族群輪動</strong>：股票下跌 805 檔 vs 上漲 200 檔（4.03 倍）、跌停 21 檔對漲停 4 檔，無避風港</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">4.</span><span><strong>台幣急貶至 32.39</strong>，距一年最貶僅 0.02%，而美元指數反而 -0.42% —— <strong>是台幣自身賣壓，指向資金外流</strong></span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">5.</span><span><strong>費半已入熊市</strong>（距高 -20.16%），而台股今日跌 -3.41% 貼近費半的 -4.30%，證明<strong>台股無法靠傳產輪動脫鉤</strong></span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">6.</span><span><strong>MA20 角色反轉為反壓</strong>（47,986，距今收 +2.16%）；MA5、MA10 將開始下彎，均線多頭排列面臨瓦解</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">7.</span><span><strong>殺的是獲利預期而非評價</strong>：美債連降三日卻無法止跌，問題需靠財報與訂單修正，無法靠利率解決</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">8.</span><span><strong>VIX 僅 16.87</strong>（10/14），距一年高 -45.67%，恐慌尚未充分定價 —— <strong>風險釋放可能才到中途</strong></span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">9.</span><span><strong>今日籌碼未明</strong>：以暴跌幅度與匯率推測，外資賣超極可能回到 -60 萬張以上量級，且傳產買盤恐已反手</span></div>
+  </div>
+</div>
+<div class="verdict">
+  <div style="font-size:15px;font-weight:800;margin-bottom:5px;">裁決：中期轉弱已確認，紀律優先於判斷</div>
+  <div class="ratio-bar">
+    <div class="ratio-bull" style="width:28%;">看多 28%</div>
+    <div class="ratio-bear" style="width:72%;">看空 72%</div>
+  </div>
+  <p style="font-size:13px;color:#c9d1d9;line-height:1.9;">
+    <strong>看空權重由今晨的 60% 上調至 72%</strong>，原因單純：<strong>清單建立七個交易日以來，第一項轉空條件今日完整觸發。</strong>這不是預測，而是既定紀律的執行訊號 —— 當初訂下「跌破 MA20 且量增」就減碼，就不該在觸發當天為它找理由。<br>
+    多方論點仍然成立且重要：季線（45,932）與半年線（44,729）尚未破、下方有 585 點厚度的支撐帶、美債持續改善、美股大盤未鬆動、今日具恐慌殺盤特徵。<strong>這些使我判定為「中期轉弱」而非「趨勢轉空」</strong> —— 中長期多頭結構仍在，但短中期已失去主導權。<br>
+    <strong>務實結論：今日應依紀律減碼至防守水位，而非在此猜測是否為短線低點。</strong>恐慌性殺盤可以反彈，但「反彈」與「止跌」是兩件事 —— 真正的止跌需要看到季線附近的<strong>量縮</strong>止穩，以及費半脫離熊市加速段。在那之前，現金就是部位。
+  </p>
+</div>
+
+<!-- 策略 -->
+<div class="section-title">⚔️ 明日操作策略</div>
+<div class="strat-card strat-a">
+  <div class="strat-title">⚔️ 積極型（部位降至 25-35%，執行既定紀律）</div>
+  <div class="strat-body">
+    <strong>核心原則：轉空條件已觸發，先減碼再談其他。不要為觸發當天找理由。</strong><br>
+    ✅ <strong>立即執行</strong>：依早盤報告既定紀律「跌破 MA20 且量超門檻 → 減碼至三成」，今日兩條件皆成立，<strong>部位降至 25-35%</strong><br>
+    ✅ <strong>保留的部位選擇</strong>：等今晚 18:00 T86 公布後再決定 —— <strong>只保留今日外資仍在買的標的</strong>；若連中鋼、台塑、台玻、華新等 10/14 的買超主力今日都被反手賣出，則不留任何傳產部位<br>
+    ⛔ <strong>明日不搶反彈</strong>：今日收盤位置 11.0%、開盤即最高，型態極弱。若明日開高，視為<strong>減碼機會</strong>而非進場機會<br>
+    ⛔ <strong>反彈壓力位</strong>：47,500 附近（今日長黑中段）、MA20 47,986（+2.16%）—— 反彈至此受阻，確認 MA20 為有效反壓<br>
+    🎯 <strong>重新加碼的唯一條件</strong>：指數回測季線 45,932 附近<strong>量縮止穩</strong>（成交金額降至 1 兆以下），且費半止跌
+  </div>
+</div>
+<div class="strat-card strat-b">
+  <div class="strat-title">⚖️ 均衡型（現金 65-75%，等季線表態）</div>
+  <div class="strat-body">
+    <strong>核心原則：下一個決勝區是 45,347–45,932，距今收僅 2.21%–3.45%，很快就會到。</strong><br>
+    ✅ <strong>減碼至三成以下</strong>，保留現金等兩種情境：<br>
+    　🟢 <strong>情境A（季線守住）</strong>：指數在 45,932 附近<strong>量縮</strong>止穩（關鍵是量縮，非量增反彈），可分批回補 → 但須先確認費半脫離熊市加速段<br>
+    　🔴 <strong>情境B（季線量增跌破）</strong>：直接看半年線 44,729（-4.77%），期間完全不接刀；若連半年線亦破，則中長期多頭結構正式瓦解<br>
+    ⏸️ <strong>台積電（2330）</strong>：費半入熊市（-20.16%）、ADR 距高 -11.49%，族群趨勢未止則個股難獨強。<strong>持股者今日應已依紀律減碼；空手者在費半站回 12,500（需 +7.0%）前不進場</strong><br>
+    ⚠️ <strong>不要用「跌深」當進場理由</strong>：自高點僅回落 5.73%，對照 7 月那次 -16.36%，目前的跌幅並不算深
+  </div>
+</div>
+<div class="strat-card strat-c">
+  <div class="strat-title">🛡️ 保守型（現金 85%+，等 VIX 破 20 後回落）</div>
+  <div class="strat-body">
+    <strong>核心原則：恐慌才剛被定價，不是結束。</strong><br>
+    VIX 最新僅 16.87（10/14），距一年高 -45.67%。今日台股暴跌 3.41% 的反應要等今夜美股才會完整呈現。<strong>在 VIX 尚未突破 20 之前，任何「低接」都是在猜底。</strong><br><br>
+    🔴 <strong>明確迴避：</strong><br>
+    ・<strong>整個半導體供應鏈</strong> —— 費半距高 -20.16% 已入熊市，趨勢未轉；美光距高 -24.67% 仍在領跌<br>
+    ・<strong>所有「跌深搶反彈」標的</strong> —— 今日跌停 21 檔，跌停股隔日的反彈多為解套賣壓<br>
+    ・<strong>槓桿型 ETF 與高週轉標的</strong> —— 今日 ETF 成交金額佔 15.0%、成交股數 84.74 億股，贖回與避險交易密集<br><br>
+    🟢 <strong>重新評估的訊號（需三選二）：</strong><br>
+    ① <strong>VIX 突破 20 後回落</strong>，代表恐慌已充分定價並開始消退<br>
+    ② 指數在 <strong>45,347–45,932 支撐帶量縮止穩</strong>（成交金額降至 1 兆以下連兩日）<br>
+    ③ <strong>費半站回 12,500 以上</strong>（目前 11,684，需 +7.0%），脫離 -20% 熊市區間<br><br>
+    🔵 <strong>補充：台幣 32.39 若突破 32.40 的一年最貶</strong>，代表資金外流壓力進一步升高，應將重新進場的門檻再提高。
+  </div>
+</div>
+
+<!-- 觀察清單 -->
+<div class="section-title">📋 今晚與明日觀察清單（依重要性）</div>
+<div class="card">
+  <div class="stat-row"><span class="stat-label red">① 今晚 18:00 · T86 三大法人</span><span class="stat-val dn">外資賣超總額、台積電動向、傳產是否反手 —— 今晚最關鍵資訊</span></div>
+  <div class="stat-row"><span class="stat-label red">② 今夜美股 · VIX 能否破 20</span><span class="stat-val dn">目前 16.87。突破代表恐慌開始充分釋放，是觀察止跌的前提</span></div>
+  <div class="stat-row"><span class="stat-label red">③ 今夜費半能否止跌</span><span class="stat-val dn">11,684（距高 -20.16%）。若再跌，台股明日難止穩</span></div>
+  <div class="stat-row"><span class="stat-label highlight">④ 季線 45,932（距今收 -2.21%）</span><span class="stat-val highlight">下一個決勝區。量縮守住＝合理回檔終點；量增貫穿＝看半年線 44,729</span></div>
+  <div class="stat-row"><span class="stat-label">⑤ 明日成交金額</span><span class="stat-val">續跌且量維持 1.2 兆以上＝賣壓未宣洩完；量縮至 1 兆以下＝接近止穩</span></div>
+  <div class="stat-row"><span class="stat-label">⑥ MA20 47,986 反壓測試</span><span class="stat-val dn">若反彈至此受阻，確認角色由支撐轉反壓，強化中期轉弱</span></div>
+  <div class="stat-row"><span class="stat-label">⑦ USD/TWD 32.39 vs 一年最貶 32.40</span><span class="stat-val dn">僅差 0.02%。突破代表資金外流壓力再升</span></div>
+  <div class="stat-row"><span class="stat-label">⑧ 明日漲跌家數</span><span class="stat-val">上漲家數能否回到 400 檔以上（今日僅 200）—— 衡量賣壓是否收窄</span></div>
+  <div class="stat-row"><span class="stat-label">⑨ 台廠 Q3 財報與 10 月營收</span><span class="stat-val">10 月中下旬陸續公布。這波殺的是獲利預期，財報是唯一的修正機制</span></div>
+</div>
+
+</div>
+
+<div class="footer">
+  <p>
+    ⚠️ <strong>免責聲明：</strong>本報告由 AI 自動生成，僅供研究參考，<strong>不構成任何投資建議</strong>。報告中所有價位與情境推演均為風險參考，非價格預測。股市投資有風險，過去績效不代表未來結果，任何操作請自行評估並承擔風險。<br>
+    <strong>資料來源與日期：</strong>台股加權指數今日開高低收、10 月每日 OHLC、成交金額／股數／筆數、漲跌家數統計 — <strong>台灣證券交易所官方 API</strong>（MI_5MINS_HIST、FMTQIK、MI_INDEX），2026/10/15 收盤｜均線、RSI、布林通道數值 — Yahoo Finance（yfinance），以 10/14 收盤為基期計算（今日收盤尚未納入均線重算，MA 值為 10/14 基準，實際明日 MA 將下移）｜費半、美債 10Y、VIX、納斯達克、標普 500、台積電 ADR、NVDA、AMD、美光、博通、ASML — yfinance，2026/10/14 美股收盤（今夜美股尚未開盤）｜美元指數、USD/TWD、黃金、布蘭特原油 — yfinance，2026/10/15。<br>
+    <strong>資料限制說明：</strong>①<strong>今日（10/15）三大法人 T86 籌碼於 18:00 後才公布，本報告未納入，文中已明確標示並未以 10/14 數據推論今日資金流向</strong>；②均線數值以 10/14 為計算基期，今日收盤納入後 MA5／MA10／MA20 將進一步下移，明日實際值會低於本報告所列；③美股數據為 10/14 收盤，今夜美股對台股暴跌的反應尚未發生；④台指期外資未平倉因資料來源回傳異常值已排除；⑤櫃買指數（^TWOII）資料無法取得。<br>
+    <strong>前次報告檢視：</strong>本報告已於文中「自我檢視」區塊說明今日早盤報告中「分化行情」預期未能實現的原因與判斷失誤處。<br>
+    報告產生時間：2026-10-15 15:15（台北時間）
+  </p>
+</div>
+
+</body>
+</html>
