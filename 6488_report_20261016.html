@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>環球晶(6488) 深度研究報告 第2次 | 2026-10-16</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+    --accent:#9f1239;--accent2:#be123c;--accent3:#fda4af;
+    --green:#16a34a;--red:#dc2626;--yellow:#d97706;--blue:#2563eb;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.6}
+  a{color:var(--accent)}
+  td,th{font-variant-numeric:tabular-nums}
+
+  .cover{background:linear-gradient(135deg,#1a0309 0%,#4c0519 32%,#9f1239 68%,#fb7185 100%);color:#fff;padding:56px 40px 48px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-70px;right:-50px;width:310px;height:310px;border-radius:50%;background:rgba(255,255,255,0.06)}
+  .cover::after{content:'';position:absolute;bottom:-90px;left:-50px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.04)}
+  .cover-ticker{font-size:13px;opacity:.72;margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+  .cover-name{font-size:36px;font-weight:800;line-height:1.1;margin-bottom:6px}
+  .cover-subtitle{font-size:15px;opacity:.85;margin-bottom:24px}
+  .cover-price-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:10px}
+  .cover-price{font-size:54px;font-weight:900;line-height:1}
+  .cover-chg{font-size:21px;padding:4px 14px;border-radius:8px;background:rgba(220,38,38,0.35);border:1px solid rgba(252,165,165,0.6)}
+  .price-note{display:inline-block;font-size:12.5px;background:rgba(0,0,0,0.32);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 13px;margin-bottom:22px;line-height:1.65}
+  .cover-meta{display:flex;gap:24px;flex-wrap:wrap}
+  .cover-meta-item{font-size:13px;opacity:.8}
+  .cover-meta-item strong{opacity:1;font-weight:700}
+  .risk-badge{position:absolute;top:32px;right:40px;background:rgba(217,119,6,0.32);border:1.5px solid rgba(251,191,36,0.7);border-radius:12px;padding:10px 18px;text-align:center}
+  .risk-badge .num{font-size:28px;font-weight:900;color:#fde68a}
+  .risk-badge .lbl{font-size:11px;opacity:.88;letter-spacing:1px}
+  .report-no-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(253,164,175,0.25);border:1px solid rgba(253,164,175,0.5);border-radius:8px;padding:3px 12px;font-size:12px;margin-bottom:12px}
+
+  .container{max-width:960px;margin:0 auto;padding:0 20px 60px}
+  section{margin-top:32px}
+  .section-title{font-size:18px;font-weight:800;color:var(--accent);border-left:4px solid var(--accent);padding-left:12px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .section-num{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+  .card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07),0 0 0 1px var(--border)}
+  .card + .card{margin-top:12px}
+
+  .verdict-box{background:linear-gradient(135deg,#fff1f2,#ffe4e6);border:2px solid #9f1239;border-radius:14px;padding:20px 24px;margin-bottom:14px}
+  .verdict-box h4{font-size:15px;font-weight:800;color:#4c0519;margin-bottom:10px}
+  .verdict-box p{font-size:13.5px;line-height:1.75;color:#4c0519}
+  .verdict-box p + p{margin-top:9px}
+
+  .conclusion-card{background:linear-gradient(135deg,#1a0309 0%,#4c0519 55%,#e11d48 100%);color:#fff;border-radius:16px;padding:28px 32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+  .conc-item .label{font-size:11px;opacity:.68;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+  .conc-item .val{font-size:21px;font-weight:800;line-height:1.15}
+  .conc-item .sub{font-size:12px;opacity:.78;margin-top:4px}
+  @media(max-width:640px){.conclusion-card{grid-template-columns:1fr 1fr}}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+  .kpi-card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border);text-align:center}
+  .kpi-label{font-size:11px;color:var(--muted);margin-bottom:4px;letter-spacing:.5px}
+  .kpi-val{font-size:20px;font-weight:800;color:var(--accent)}
+  .kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+  .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.charts-grid{grid-template-columns:1fr}}
+  .chart-box{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border)}
+  .chart-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px}
+  .chart-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center;line-height:1.55}
+
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{background:var(--bg);padding:8px 12px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px;white-space:nowrap}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+  .tag-green{background:#dcfce7;color:#16a34a}
+  .tag-red{background:#fee2e2;color:#dc2626}
+  .tag-yellow{background:#fef9c3;color:#d97706}
+  .tag-blue{background:#dbeafe;color:#2563eb}
+  .tag-rose{background:#ffe4e6;color:#9f1239}
+
+  .analyst-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.analyst-grid{grid-template-columns:1fr}}
+  .analyst-card{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border)}
+  .analyst-card h4{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .analyst-card ul{list-style:none;padding:0}
+  .analyst-card li{font-size:13px;padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px}
+  .analyst-card li:last-child{border-bottom:none}
+  .bull-icon{color:#16a34a;font-weight:900;flex-shrink:0}
+  .bear-icon{color:#dc2626;font-weight:900;flex-shrink:0}
+
+  .score-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+  .score-label{width:104px;font-size:13px;flex-shrink:0}
+  .score-bar-bg{flex:1;height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+  .score-bar-fill{height:100%;border-radius:5px}
+  .score-num{width:36px;font-size:13px;font-weight:700;text-align:right;flex-shrink:0}
+
+  .strategy-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:640px){.strategy-grid{grid-template-columns:1fr}}
+  .strat-card{border-radius:14px;padding:20px;color:#fff}
+  .strat-card.attack{background:linear-gradient(135deg,#dc2626,#ef4444)}
+  .strat-card.balance{background:linear-gradient(135deg,#9f1239,#e11d48)}
+  .strat-card.defend{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+  .strat-card h3{font-size:15px;font-weight:800;margin-bottom:12px}
+  .strat-item{font-size:13px;margin:6px 0;display:flex;gap:8px}
+  .strat-item span:first-child{opacity:.75;flex-shrink:0}
+
+  .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.tech-grid{grid-template-columns:1fr}}
+
+  .alert{border-radius:10px;padding:14px 18px;margin-bottom:12px;font-size:13px;display:flex;gap:12px;align-items:flex-start;line-height:1.7}
+  .alert-red{background:#fee2e2;border-left:4px solid #dc2626;color:#7f1d1d}
+  .alert-green{background:#dcfce7;border-left:4px solid #16a34a;color:#14532d}
+  .alert-yellow{background:#fef9c3;border-left:4px solid #d97706;color:#713f12}
+  .alert-rose{background:#ffe4e6;border-left:4px solid #9f1239;color:#4c0519}
+
+  .disclaimer{background:#fef9c3;border:1px solid #d97706;border-radius:10px;padding:16px 20px;font-size:12px;color:#713f12;margin-top:32px}
+
+  .glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:540px){.glossary-grid{grid-template-columns:1fr}}
+  .glossary-item{background:var(--card);border-radius:10px;padding:12px 14px;border:1px solid var(--border)}
+  .glossary-term{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:4px}
+  .glossary-def{font-size:12px;color:var(--muted);line-height:1.5}
+
+  .calc-box{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:12px;font-size:12.5px;line-height:1.7}
+  .calc-box .row{display:flex;justify-content:space-between;gap:12px;padding:3px 0;border-bottom:1px dashed #cbd5e1}
+  .calc-box .row:last-child{border-bottom:none;font-weight:800;color:var(--accent);padding-top:7px}
+  .calc-title{font-size:12px;font-weight:800;color:var(--accent);margin-bottom:7px;letter-spacing:.5px}
+
+  .timeline{margin-top:14px;border-left:2px solid var(--accent3);padding-left:18px}
+  .tl-item{position:relative;padding-bottom:14px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{content:'';position:absolute;left:-25px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid #fff}
+  .tl-date{font-size:11.5px;font-weight:800;color:var(--accent);letter-spacing:.5px}
+  .tl-text{font-size:12.5px;color:var(--text);line-height:1.65;margin-top:2px}
+  .tl-item.bad::before{background:#dc2626}
+  .tl-item.bad .tl-date{color:#dc2626}
+  .tl-item.good::before{background:#16a34a}
+  .tl-item.good .tl-date{color:#16a34a}
+
+  .neg{color:#dc2626;font-weight:700}
+  .pos{color:#16a34a;font-weight:700}
+
+  .scorecard{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  @media(max-width:640px){.scorecard{grid-template-columns:1fr}}
+  .sc-item{border-radius:10px;padding:14px 16px}
+  .sc-hit{background:#dcfce7;border:1px solid #86efac}
+  .sc-miss{background:#fee2e2;border:1px solid #fca5a5}
+  .sc-partial{background:#fef9c3;border:1px solid #fcd34d}
+  .sc-head{font-size:12px;font-weight:800;margin-bottom:6px}
+  .sc-hit .sc-head{color:#14532d}
+  .sc-miss .sc-head{color:#7f1d1d}
+  .sc-partial .sc-head{color:#713f12}
+  .sc-body{font-size:12.5px;line-height:1.65;color:#334155}
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div class="risk-badge">
+    <div class="num">6.5</div>
+    <div class="lbl">風險等級</div>
+  </div>
+  <div class="cover-ticker">TPEx 6488 · 上櫃 · 半導體矽晶圓</div>
+  <div class="report-no-badge">第 2 次報告 ｜ 首次 2026-10-14</div>
+  <div class="cover-name">環球晶</div>
+  <div class="cover-subtitle">兩個交易日 −9.7%、觸及跌停、跌破季線 · 我在首次報告建立的世創領先指標開始作用 · 並更正首次報告的兩處錯誤</div>
+  <div class="cover-price-row">
+    <div class="cover-price">921</div>
+    <div class="cover-chg">−2 (−0.22%)</div>
+  </div>
+  <div class="price-note">2026-10-16 盤中（開 936 / 高 936 / 低 915；昨收 923）<br>漲停 1,015 · 跌停 831（修正值；詳見第 09 節）</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">距首次報告 <strong>−9.7%</strong></div>
+    <div class="cover-meta-item">市值 <strong>約 4,403 億</strong></div>
+    <div class="cover-meta-item">本益比 <strong>44.7 倍</strong></div>
+    <div class="cover-meta-item">股價淨值比 <strong>4.55 倍</strong></div>
+    <div class="cover-meta-item">報告日 <strong>2026-10-16</strong></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 02 對帳 -->
+<section>
+  <div class="section-title"><span class="section-num">1</span>🔴 先對帳：首次報告（2026-10-14）驗收，含兩處必須更正的錯誤</div>
+  <div class="card">
+    <p style="font-size:13.5px;line-height:1.85">首次報告只隔兩個交易日，但發生的事情很多，而且<strong>我自己有兩個地方寫錯了，必須先更正</strong>。</p>
+    <div class="scorecard">
+      <div class="sc-item sc-hit">
+        <div class="sc-head">✅ 核心預測：方法有效，數字幾乎命中</div>
+        <div class="sc-body">首次報告以世創季末股價推估 <strong>Q3'26 EPS 1.96～2.66 元</strong>（季減 66～75%）。查核後發現<strong>凱基投顧 9/22 已將 Q3'26 EPS 由 6.65 元大幅下修至 1.91 元</strong>——<strong>我的下緣 1.96 元與法人下修後的 1.91 元幾乎一致</strong>。首次報告建立的「世創股價 → 評價損益 → EPS」推估路徑可用。</div>
+      </div>
+      <div class="sc-item sc-hit">
+        <div class="sc-head">✅ 停損判斷：條件如實觸發</div>
+        <div class="sc-body">首次報告寫「<strong>跌破 993（季線）且三日內未收復 → 停損或暫不進場，下一支撐 872／823</strong>」。10/15 股價收 923、<strong>盤中最低 918 精準觸及當日跌停</strong>，今日 921 仍在季線（重算後 979.15）之下 <strong>−5.94%</strong>。<strong>停損條件已成立，且保護了約 10% 的下跌。</strong></div>
+      </div>
+      <div class="sc-item sc-miss">
+        <div class="sc-head">❌ 更正一：法人目標價基準用錯了（首次報告的頭條結論之一）</div>
+        <div class="sc-body">首次報告以「FactSet 14 位分析師中位數 <strong>717 元</strong>」為主要比較基準，並據此下了「<strong>現價高於共識 42.3%</strong>」這個頭條判斷。<strong>這是錯的。</strong>查核後，有明確出處與日期的法人目標價是：<strong>凱基 1,500 元（9/22、9/30 兩度維持）、官股投顧 1,735 元（7 月中）、野村 1,200 元（7 月初）</strong>。<strong>以現價 921 元計，股價其實比凱基的 1,500 元低 38.6%，不是「高於共識」。</strong>首次報告引用的 717 元來自未標註日期的彙整資料，我誤將其當成最新共識。</div>
+      </div>
+      <div class="sc-item sc-miss">
+        <div class="sc-head">❌ 更正二：業外曝險結構漏了一層，且完全沒提義大利廠火災</div>
+        <div class="sc-body"><strong>(a)</strong> 首次報告說業外來自「世創 13.67% 持股」。公司實際揭露是<strong>兩層</strong>：世創股票，<strong>加上德國子公司發行、以世創股票為認股標的的「海外附認股權公司債」</strong>，兩者皆按市價認列。所以敏感度比我估的 0.305 元／€1 更高（見第 05 節重算）。<strong>(b)</strong> 首次報告<strong>完全沒有提到 2026 年 7 月下旬的義大利 Novara 廠 8 吋產線火災</strong>（7/22 公告，法人估影響全球 8 吋產能約 5%）——這是重大缺漏。</div>
+      </div>
+    </div>
+    <div class="alert alert-rose" style="margin-top:14px;margin-bottom:0">
+      <div>📌</div>
+      <div><strong>兩處更正的方向其實相反，必須一起看：</strong>更正一讓估值看起來<strong>比首次報告說的便宜得多</strong>（股價遠低於法人目標價，而非高於）；更正二則讓業外風險<strong>比首次報告說的更大</strong>（多一層附認股權公司債），並補上一個我漏掉的營運事件（火災）。<strong>淨結果是：這檔股票的「價格」比我原先判斷的有吸引力，但「獲利波動性」比我原先判斷的更劇烈。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 核心結論 -->
+<section>
+  <div class="section-title"><span class="section-num">2</span>核心結論</div>
+  <div class="verdict-box">
+    <h4>一句話說完這兩天發生了什麼</h4>
+    <p><strong>我在首次報告裡說「每天追蹤世創（Siltronic）股價，每變動 €1 約影響環球晶 EPS 0.30～0.32 元」——這個指標兩天內動得很猛，而且是往壞的方向：世創從 9/30 的 €81.30 跌到 10/14 的 €71.15（−12.5%），環球晶同期從 1,020 元跌到 921 元（−9.7%），10/15 盤中精準觸及跌停。</strong></p>
+    <p>重點是：<strong>這不是本業出問題。</strong>公司 8 月自結稅後純益 7.04 億、<strong>年增 144.98%</strong>（EPS 1.47 元），Q3 合併營收 148.71 億、年增 2.60%，美國德州與密蘇里州 SOI 廠、日本新潟廠均傳捷報，義大利火災產線也已在 9 月中旬逐步重啟。<strong>跌的是帳面評價，不是生意。</strong></p>
+    <p><strong>但更正一改變了估值結論。</strong>首次報告誤用 717 元當共識，說「現價高於共識 42.3%」；實際有出處的法人目標價是 1,200～1,735 元，<strong>現價 921 元比凱基的 1,500 元低 38.6%</strong>。所以估值風險我由 8.5 分下調至 7.0 分——<strong>但綜合風險仍是 6.5，因為業外波動性的風險更大了。</strong></p>
+  </div>
+
+  <div class="conclusion-card">
+    <div class="conc-item">
+      <div class="label">投資建議</div>
+      <div class="val">觀望偏多 · 分批</div>
+      <div class="sub">首次「觀望」→ 本次「偏多」<br>但須接受單月 EPS 劇烈擺盪</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">參考價值區間</div>
+      <div class="val">831 ~ 979</div>
+      <div class="sub">跌停 831 / 季線 979.15<br>法人目標價 1,200~1,735</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">最大風險</div>
+      <div class="val">月自結公告</div>
+      <div class="sub">世創 Q4 迄今 −€10.15<br>推估 −3.1 ~ −3.6 元 EPS</div>
+    </div>
+  </div>
+
+  <div class="alert alert-red" style="margin-top:14px">
+    <div>🔴</div>
+    <div><strong>最近的風險事件不是 11 月的 Q3 法說會，是「月自結公告」——這點我首次報告說錯了方向。</strong>環球晶因股價波動劇烈曾遭櫃買中心列為注意股，<strong>依主管機關要求按月公布自結損益</strong>。2026 年 7 月 29 日公告 6 月自結<strong>單月歸屬母公司淨損 39.55 億元、每股淨損 8.27 元</strong>，次日股價<strong>開盤跳空跌停至 778 元</strong>，台勝科、合晶同步跌停。<strong>世創在 10/12～10/14 又跌了 €4.05，10 月自結數字很可能再次難看。</strong></div>
+  </div>
+  <div class="alert alert-green">
+    <div>🟢</div>
+    <div><strong>但本業的證據同樣明確：</strong>8 月自結稅後純益 <strong>7.04 億、年增 144.98%</strong>；Q3 營收 148.71 億、<strong>年增 2.60%</strong>（季減 2.26%）；12 吋 SiC 已完成開發；2027 年新一輪長約漲價是法人上調評價的主要依據（凱基估 <strong>2027 年 EPS 59.99 元</strong>）。<strong>公司也明確表示評價損失「無關現金流動，不影響本業營運」。</strong></div>
+  </div>
+</section>
+
+<!-- 04 KPI -->
+<section>
+  <div class="section-title"><span class="section-num">3</span>關鍵財務 KPI（八格速覽）</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">近四季每股盈餘（TTM）</div>
+      <div class="kpi-val">20.60 元</div>
+      <div class="kpi-sub">本益比 44.7 倍<br>（首次報告於 1,020 元為 49.5 倍）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">近四季營業利益</div>
+      <div class="kpi-val">65.07 億</div>
+      <div class="kpi-sub">營益率 11.18%<br><span style="color:#dc2626">本業本益比 82.1 倍</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">每股淨值</div>
+      <div class="kpi-val">202.30 元</div>
+      <div class="kpi-sub">股價淨值比 <strong>4.55 倍</strong><br>（首次為 5.04 倍）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">8 月自結稅後純益</div>
+      <div class="kpi-val" style="color:#16a34a">7.04 億</div>
+      <div class="kpi-sub">年增 <strong>144.98%</strong>、EPS 1.47 元<br>本業確實轉強</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">世創（WAF.DE）最新</div>
+      <div class="kpi-val" style="color:#dc2626">€71.15</div>
+      <div class="kpi-sub">Q3 季末 €81.30<br>Q4 迄今 <strong>−€10.15</strong></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">推估 Q4 評價損失</div>
+      <div class="kpi-val" style="color:#dc2626">−3.1 ~ −3.6 元</div>
+      <div class="kpi-sub">以修正後敏感度 0.30~0.36<br>元／€1 推算（每股）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">法人目標價區間</div>
+      <div class="kpi-val">1,200 ~ 1,735</div>
+      <div class="kpi-sub">凱基 1,500（9/22 維持）<br><span style="color:#16a34a">現價低於凱基 38.6%</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">年化波動率</div>
+      <div class="kpi-val" style="color:#dc2626">82.3%</div>
+      <div class="kpi-sub">本系列最高<br>10/15 盤中觸及跌停</div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 圖表 -->
+<section>
+  <div class="section-title"><span class="section-num">4</span>財務與價格趨勢圖（純 Canvas 繪製）</div>
+  <div class="charts-grid">
+    <div class="chart-box">
+      <div class="chart-title">🔴 環球晶股價（2026-10-01 ~ 10-16，元）</div>
+      <canvas id="pxChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">10/07 的 1,215 元是本波高點；10/15 收 923（盤中觸及跌停 918）。<strong>首次報告寫於 10/14 的 1,020 元</strong></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">🔴 世創 Siltronic（WAF.DE，歐元）</div>
+      <canvas id="wafChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">10/06 的 €84.00 之後連跌：€80.50 → 79.20 → <strong>75.20 → 73.40 → 71.15</strong>。<strong>這是環球晶跌勢的直接解釋</strong></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">每股盈餘 季度趨勢（近 8 季，元）</div>
+      <canvas id="epsChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">Q4'24 的 0.87 元與 Q2'26 的 7.90 元，<strong>同一個原因、相反方向</strong>——都是世創相關部位的評價損益</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">🔴 業外損益（近 8 季，億元）</div>
+      <canvas id="nonopChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">擺盪 −27.88 ～ +31.62 億，<strong>比本業營業利益（12～24 億）波動更大</strong>。EPS 由這張圖決定</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">營業利益率 季度趨勢（近 8 季，%）</div>
+      <canvas id="opmChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">自 2024 年的 20～22% 降至近四季的 8.5～16.4%。<strong>本業獲利能力確實在壓縮</strong></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">🟢 現價 vs 法人目標價（元）</div>
+      <canvas id="tgtChart" width="420" height="220" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note"><strong>這張圖是對首次報告的更正</strong>。首次誤用 717 元為共識；實際有出處者為 1,200～1,735 元</div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 世創機制重算 -->
+<section>
+  <div class="section-title"><span class="section-num">5</span>🔴 更正後的世創曝險機制與敏感度重算</div>
+  <div class="card">
+    <div class="calc-title">首次報告漏掉的那一層</div>
+    <p style="font-size:13.5px;line-height:1.85">首次報告把業外歸因於「環球晶持有世創 13.67% 股權」。公司在 2026 年 7 月 29 日的公告中，把來源說得更完整——虧損來自<strong>兩個部位</strong>：</p>
+    <div class="table-wrap" style="margin-top:12px">
+    <table>
+      <tr><th>部位</th><th>性質</th><th>會計處理</th></tr>
+      <tr><td><strong>① 持有的德國世創（Siltronic）股票</strong></td><td>股權投資（約 13.67%）</td><td>按公允價值衡量，評價損益進損益表</td></tr>
+      <tr style="background:#ffe4e6"><td><strong>② 德國子公司發行、以世創股票為認股標的的<br>「海外附認股權公司債」</strong></td><td><strong>內含選擇權的負債</strong></td><td><strong>依國際會計準則按市價認列評價損益</strong><br><span class="tag tag-red">首次報告未納入</span></td></tr>
+    </table>
+    </div>
+    <div class="alert alert-yellow" style="margin-top:12px">
+      <div>⚠️</div>
+      <div><strong>為什麼這一層很重要：</strong>附認股權公司債的價值會隨世創股價<strong>非線性</strong>變動（選擇權特性）。這代表敏感度<strong>不是固定的常數</strong>，世創股價越高、該選擇權越價內，環球晶的曝險就越大。<strong>首次報告把它當成單一線性股權部位，低估了波動幅度。</strong></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">用公司實際公告的數字反推敏感度</div>
+    <div class="calc-box">
+      <div class="row"><span>世創 2026/05/29 收盤</span><span>€104.70</span></div>
+      <div class="row"><span>世創 2026/06/30 收盤</span><span>€81.50（<strong>−€23.20，跌幅逾 20%</strong>）</span></div>
+      <div class="row"><span>公司公告 6 月單月歸屬母公司淨損</span><span><strong>39.55 億元</strong></span></div>
+      <div class="row"><span>公司公告 6 月單月每股淨損</span><span><strong>8.27 元</strong></span></div>
+      <div class="row"><span>反推：8.27 元 ÷ €23.20</span><span><strong>約 0.356 元 EPS 每 €1</strong></span></div>
+      <div class="row"><span>首次報告以純股權部位推估</span><span>0.305 元／€1（偏低約 17%）</span></div>
+    </div>
+    <div class="alert alert-yellow" style="margin-top:12px">
+      <div>⚠️</div>
+      <div><strong>但 0.356 應視為上限，理由要說清楚：</strong>公司表述為虧損「<strong>主要</strong>來自」世創股票與附認股權公司債評價損失，<strong>並非全部</strong>——該月份也含本業損益與其他項目。所以把整個月損除以世創漲跌幅，會把非世創的部分也算進敏感度。<br><strong>本報告因此採用區間：0.30 ～ 0.36 元 EPS 每 €1</strong>（下緣為純股權推算，上緣為 6 月實際公告反推），而非單一數字。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">🔴 用修正後敏感度推算 Q4'26 迄今的累積評價影響</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>期間</th><th>世創期初→期末</th><th>變動</th><th>EPS 影響（0.30）</th><th>EPS 影響（0.36）</th><th>狀態</th></tr>
+      <tr><td>2026 Q2</td><td>€52.20 → €81.50</td><td class="pos">+€29.30</td><td class="pos">+8.79 元</td><td class="pos">+10.55 元</td><td>已公告（Q2 業外 +31.62 億）</td></tr>
+      <tr><td>2026 Q3</td><td>€81.50 → €81.30</td><td>−€0.20</td><td>約 0 元</td><td>約 0 元</td><td><span class="tag tag-yellow">Q3 財報未公布</span></td></tr>
+      <tr style="background:#fee2e2"><td><strong>2026 Q4 迄今</strong></td><td><strong>€81.30 → €71.15</strong></td><td class="neg"><strong>−€10.15</strong></td><td class="neg"><strong>−3.05 元</strong></td><td class="neg"><strong>−3.65 元</strong></td><td><span class="tag tag-red">正在累積</span></td></tr>
+    </table>
+    </div>
+    <div class="alert alert-red" style="margin-top:12px">
+      <div>🔴</div>
+      <div><strong>首次報告寫 Q4 迄今 −1.86 元（以 €75.20 計）；兩天後世創已跌到 €71.15，推估損失擴大到 −3.1 ~ −3.6 元。</strong>而且<strong>季末（12/31）的收盤價才是認列基準</strong>，現在只是中途數字。若世創回到 €81.30，Q4 評價歸零；若再跌到 €60，累積影響將達 −6.4 ~ −7.7 元。<strong>這個區間的寬度，就是這檔股票單季 EPS 的不確定性。</strong></div>
+    </div>
+    <div class="alert alert-green" style="margin-bottom:0">
+      <div>✅</div>
+      <div><strong>首次報告的核心預測獲得外部驗證。</strong>我以此方法推估 Q3'26 EPS <strong>1.96～2.66 元</strong>；查核後發現<strong>凱基投顧 9/22 已將 Q3'26 EPS 由 6.65 元下修至 1.91 元</strong>，而統一投顧估 3.37 元。<strong>我的推估落在兩家之間、下緣與凱基幾乎重合。</strong>這代表「世創股價 → 評價損益 → EPS」的推估框架是可用的——這也是本系列報告唯一可以每日自行追蹤的領先指標。</div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 公司與事件 -->
+<section>
+  <div class="section-title"><span class="section-num">6</span>公司概覽與首次報告漏掉的事件</div>
+  <div class="card">
+    <div class="table-wrap">
+    <table>
+      <tr><th style="width:120px">項目</th><th>內容</th></tr>
+      <tr><td><strong>公司</strong></td><td>環球晶圓股份有限公司，代號 6488，<strong>上櫃</strong>。全球第三大半導體矽晶圓供應商，隸屬中美晶（5483）集團</td></tr>
+      <tr><td><strong>主要業務</strong></td><td>12 吋／8 吋／6 吋半導體矽晶圓；抛光片、磊晶片、SOI；<strong>12 吋 SiC 已完成開發</strong></td></tr>
+      <tr><td><strong>關鍵資產</strong></td><td>美國德州 12 吋新廠（唯一參與美國晶片法案且可在美國本土生產先進 12 吋矽晶圓者）；美國密蘇里州 SOI 廠；日本新潟廠；義大利 Novara 廠</td></tr>
+      <tr><td><strong>2026 最大訂單</strong></td><td>7 月與美光簽訂公司史上最長、金額最大的 <strong>10 年長約</strong>，取得逾 <strong>5 億美元</strong>策略性資金；德州第 1 期月產能約 30 萬片已被預訂一空</td></tr>
+      <tr style="background:#fee2e2"><td><strong>🔴 首次報告漏掉：<br>義大利 Novara 廠火災</strong></td><td><strong>2026 年 7 月下旬發生、7 月 22 日公告。</strong>8 吋產線停產，當日股價跌停。火災主要在 8 吋晶圓廠<strong>後段製程區域</strong>，非整廠受損，<strong>全體員工安全撤離，12 吋新廠不受影響</strong>。<strong>法人估影響全球 8 吋產能約 5%</strong>。<br><strong>復工：</strong>截至 9 月中旬關鍵廠務系統均已恢復，部分前段製程陸續重啟。<br><strong>保險：</strong>已投保財產綜合保險，<strong>涵蓋財產損失及營運中斷損失</strong>，理賠申請程序進行中</td></tr>
+      <tr><td><strong>轉投資曝險</strong></td><td>德國世創（Siltronic）股票（約 13.67%，2022 年併購破局後保留）<strong>＋ 以世創股票為認股標的的海外附認股權公司債</strong>，兩者皆按市價認列評價損益</td></tr>
+      <tr><td><strong>月自結機制</strong></td><td>因股價波動劇烈曾遭櫃買中心列為注意股，<strong>依主管機關要求按月公布自結損益</strong>。這使評價損益會<strong>提前於季報浮現</strong></td></tr>
+      <tr><td><strong>2027 成長依據</strong></td><td><strong>新一輪長約漲價</strong>。凱基估 2027 年 EPS <strong>59.99 元</strong>；官股投顧 7 月以 2027 年 EPS 為基準、48 倍本益比估得目標價 1,735 元</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">本業近期實績（與評價損益分開看）</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>項目</th><th>數值</th><th>解讀</th></tr>
+      <tr style="background:#dcfce7"><td><strong>8 月自結稅後純益</strong></td><td class="pos"><strong>7.04 億元、年增 144.98%</strong>（EPS 1.47 元）</td><td>火災後仍大幅成長</td></tr>
+      <tr><td>Q3'26 合併營收</td><td><strong>148.71 億元</strong>（季減 2.26%、年增 2.60%）</td><td>由三個月營收加總，已公告</td></tr>
+      <tr><td>9 月營收</td><td>51.29 億元（月增 7.65%、年減 13.13%）</td><td>月增轉正</td></tr>
+      <tr><td>H1'26 每股盈餘</td><td>11.87 元（Q1 3.97 ＋ Q2 7.90）</td><td>與公司公告一致</td></tr>
+      <tr><td>營運進展</td><td>美國德州、密蘇里州 SOI 廠、日本新潟廠<strong>均傳捷報</strong>；12 吋 SiC 完成開發</td><td></td></tr>
+      <tr><td>管理層 Q3 指引</td><td>董事長曾表示「儘管義大利火災，Q3 營收仍力拚優於 Q2」</td><td><span class="tag tag-yellow">實際季減 2.26%，未達成</span></td></tr>
+    </table>
+    </div>
+    <div class="alert alert-green" style="margin-top:12px;margin-bottom:0">
+      <div>⚖️</div>
+      <div><strong>請把這一節和上一節分開讀。</strong>本業（賣矽晶圓）在火災後仍做到 8 月稅後純益年增 145%、Q3 營收年增 2.6%、三座海外廠傳捷報——<strong>這部分是健康的</strong>。股價兩天跌 9.7%、7 月單月帳上虧 39.55 億，全部來自世創相關部位的<strong>帳面評價</strong>，公司明確表示<strong>無關現金流動</strong>。<strong>投資這檔股票的真正問題不是「公司好不好」，而是「你能不能忍受一家好公司的 EPS 被一檔德國股票拖著上下甩」。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 基本面 -->
+<section>
+  <div class="section-title"><span class="section-num">7</span>基本面分析</div>
+  <div class="card">
+    <div class="calc-title">八季財報全貌（單季數；金額單位：億元）</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>季度</th><th>營收</th><th>毛利率</th><th>營益率</th><th>營業利益</th><th>業外</th><th>業外/稅前</th><th>淨利</th><th>EPS</th></tr>
+      <tr><td>2024 Q3</td><td>174.63</td><td>30.04%</td><td>20.16%</td><td>35.20</td><td>+3.43</td><td>9.8%</td><td>28.72</td><td>6.18</td></tr>
+      <tr style="background:#fee2e2"><td>2024 Q4</td><td>185.62</td><td>30.09%</td><td>21.93%</td><td>40.71</td><td class="neg"><strong>−27.88</strong></td><td class="neg">−350%</td><td>4.07</td><td class="neg"><strong>0.87</strong></td></tr>
+      <tr><td>2025 Q1</td><td>155.95</td><td>26.37%</td><td>16.60%</td><td>25.89</td><td class="neg">−4.56</td><td>−21.4%</td><td>14.56</td><td>3.05</td></tr>
+      <tr><td>2025 Q2</td><td>160.08</td><td>25.76%</td><td>15.23%</td><td>24.38</td><td class="neg">−1.50</td><td>−6.5%</td><td>16.82</td><td>3.52</td></tr>
+      <tr><td>2025 Q3</td><td>144.93</td><td class="neg">18.37%</td><td class="neg">8.49%</td><td class="neg">12.30</td><td>+9.57</td><td>43.8%</td><td>19.69</td><td>4.12</td></tr>
+      <tr><td>2025 Q4</td><td>145.02</td><td>25.70%</td><td>16.41%</td><td>23.79</td><td>+5.28</td><td>18.2%</td><td>22.05</td><td>4.61</td></tr>
+      <tr><td>2026 Q1</td><td class="neg">139.85</td><td>20.83%</td><td>10.55%</td><td>14.75</td><td>+8.71</td><td>37.1%</td><td>18.96</td><td>3.97</td></tr>
+      <tr style="background:#ffe4e6"><td><strong>2026 Q2</strong></td><td><strong>152.14</strong></td><td>20.64%</td><td class="neg">9.35%</td><td>14.23</td><td style="color:#d97706"><strong>+31.62</strong></td><td class="neg"><strong>69.0%</strong></td><td><strong>37.79</strong></td><td><strong>7.90</strong></td></tr>
+      <tr style="background:#fff1f2"><td>近四季合計</td><td><strong>581.94</strong></td><td>—</td><td>11.18%</td><td><strong>65.07</strong></td><td><strong>+55.18</strong></td><td><strong>45.9%</strong></td><td><strong>98.49</strong></td><td><strong>20.60</strong></td></tr>
+    </table>
+    </div>
+    <div class="chart-note" style="text-align:left;margin-top:10px">「業外」為財報「營業外收入及支出合計」。2024 Q3／Q4 的營業利益由營收 × 營益率推算。2024 Q4 業外 −27.88 億使稅前淨利僅 4.07 億、EPS 0.87 元，與當年世創股價大跌逾 40% 吻合。</div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">估值重算（現價 921 元 vs 首次報告的 1,020 元）</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>指標</th><th>首次（1,020 元）</th><th>本次（921 元）</th><th>變化</th></tr>
+      <tr><td>市值</td><td>4,876.8 億</td><td><strong>4,403.4 億</strong></td><td class="neg">−9.7%</td></tr>
+      <tr><td>本益比（TTM EPS 20.60 元）</td><td>49.5 倍</td><td><strong>44.7 倍</strong></td><td class="pos">改善</td></tr>
+      <tr><td><strong>本業本益比</strong>（TTM 營業利益 65.07 億）</td><td>91.0 倍</td><td class="neg"><strong>82.1 倍</strong></td><td class="pos">改善但仍極高</td></tr>
+      <tr><td>股價淨值比（每股淨值 202.30 元）</td><td>5.04 倍</td><td><strong>4.55 倍</strong></td><td class="pos">改善</td></tr>
+      <tr style="background:#dcfce7"><td><strong>相對法人目標價</strong></td><td class="neg">首次誤判為「高於共識 42.3%」</td><td class="pos"><strong>低於凱基 1,500 元達 38.6%</strong></td><td><span class="tag tag-green">結論反轉</span></td></tr>
+      <tr><td>距 52 週高 1,600 元</td><td>−36.3%</td><td class="neg"><strong>−42.4%</strong></td><td></td></tr>
+      <tr><td>距 52 週低 333 元</td><td>+206.3%</td><td>+176.6%</td><td></td></tr>
+    </table>
+    </div>
+    <div class="alert alert-yellow" style="margin-top:12px">
+      <div>⚠️</div>
+      <div><strong>但「本業本益比 82.1 倍」這一行不能忽略。</strong>近四季營業利益 65.07 億，以 Q2 有效稅率 17.6% 推估稅後約 53.62 億、每股 11.21 元，<strong>921 ÷ 11.21 ＝ 82.1 倍</strong>。也就是說：即使完全不看業外，<strong>現價仍是本業獲利的 82 倍</strong>。法人目標價 1,200～1,735 元依據的是 <strong>2027 年 EPS 約 60 元</strong>（新一輪長約漲價），<strong>那是一個尚未發生的假設。</strong></div>
+    </div>
+    <div class="alert alert-rose" style="margin-bottom:0">
+      <div>📌</div>
+      <div><strong>兩種估值視角並列，請自行選擇：</strong><br>
+      <strong>視角 A（法人）：</strong>以 2027 年 EPS 59.99 元計，現價 921 元 ＝ <strong>15.4 倍</strong>——很便宜。<br>
+      <strong>視角 B（現況）：</strong>以近四季本業獲利計 ＝ <strong>82.1 倍</strong>——很貴。<br>
+      <strong>兩者的差距就是「2027 年長約漲價是否實現」這一個賭注。</strong>首次報告偏向視角 B，本次因更正目標價基準而對視角 A 給予更多權重，但<strong>不接受把 2027 年預估當成既成事實。</strong></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">財務結構（沿用首次報告數據，本期無新財報）</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>項目（2026 Q2）</th><th>數值</th><th>解讀</th></tr>
+      <tr><td>總資產 / 負債 / 權益</td><td>2,192.2 億 / 1,225.0 億 / 967.2 億</td><td>負債比 <strong>55.9%</strong></td></tr>
+      <tr><td>不動產廠房及設備</td><td>1,078.6 億（占總資產 <strong>49.2%</strong>）</td><td>重資產</td></tr>
+      <tr><td>總借款</td><td>302.8 億（短期 215.7 ＋ 長期 87.1）</td><td></td></tr>
+      <tr><td><strong>2025 全年自由現金流</strong></td><td class="neg"><strong>−207.53 億</strong></td><td>營業現金流 127.45 億 vs 資本支出 334.97 億</td></tr>
+      <tr><td>2025 全年折舊</td><td>89.27 億</td><td class="neg"><strong>已超過當年營業利益 86.36 億</strong></td></tr>
+      <tr><td>合約負債（流動）</td><td>69.6 億</td><td><span class="tag tag-green">客戶預付款</span>＋美光逾 5 億美元策略性資金</td></tr>
+    </table>
+    </div>
+    <div class="chart-note" style="text-align:left;margin-top:10px">本期（10/16）無新財報公布，以上為 2026 Q2 財報數據，與首次報告相同，此處僅為完整性保留，未重複展開分析。</div>
+  </div>
+</section>
+
+<!-- 09 籌碼 -->
+<section>
+  <div class="section-title"><span class="section-num">8</span>籌碼面分析</div>
+  <div class="alert alert-yellow">
+    <div>ℹ️</div>
+    <div><strong>資料取得說明：</strong>本次透過 FinMind 查詢三大法人與融資融券，回傳值皆為 0。<strong>這是資料缺口，不代表「持平」或「餘額為零」</strong>。本次搜尋亦<strong>未能取得 10/15～10/16 的最新籌碼數字</strong>，以下沿用首次報告（資料日 2026-10-13）之公開資訊並明確標註日期；官方查詢管道為<strong>證券櫃檯買賣中心</strong>每日盤後公告（6488 為上櫃股票）。</div>
+  </div>
+
+  <div class="card">
+    <div class="table-wrap">
+    <table>
+      <tr><th>項目</th><th>數值</th><th>資料日</th><th>解讀</th></tr>
+      <tr><td>外資持股比率</td><td><strong>36.15%</strong>（172,870 張）</td><td>2026-10-13</td><td><span class="tag tag-green">高度機構化</span>股價對國際資金流敏感</td></tr>
+      <tr><td>三大法人買賣超</td><td class="neg">−3,405 張<br>（外資 −3,039 / 投信 −134 / 自營 −231）</td><td>2026-10-13</td><td>當日同步賣超，該日盤中亦觸及跌停</td></tr>
+      <tr><td>融資餘額</td><td>15,366 張（使用率 11.6%）</td><td>2026-10-13</td><td>＝股本 <strong>3.21%</strong>；市值約 141.5 億（按 921 元計）</td></tr>
+      <tr><td>融券餘額 / 資券比</td><td>486 張 / 31.6 倍</td><td>2026-10-13</td><td><strong>幾無軋空動能</strong>，壓力在融資多單</td></tr>
+    </table>
+    </div>
+    <div class="alert alert-yellow" style="margin-top:12px;margin-bottom:0">
+      <div>⚠️</div>
+      <div><strong>必須修正一個常見誤讀：</strong>部分工具因資料缺漏顯示「融券為 0 → 放空比例偏高 → 注意軋空」，<strong>這是錯的</strong>。融券僅 486 張、資券比 31.6，<strong>沒有軋空的可能</strong>。<br><strong>另需留意：</strong>10/15 盤中觸及跌停、10/16 續弱，<strong>融資餘額很可能已明顯減少（斷頭或主動減碼）</strong>，但本報告<strong>無法取得 10/15～10/16 的實際數字</strong>，故不作推測。這是本報告的資料限制。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">量能結構</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>指標</th><th>數值</th><th>解讀</th></tr>
+      <tr><td>5 日均量 / 20 日均量</td><td>15,254 張 / 14,929 張</td><td>量能持續偏高</td></tr>
+      <tr><td><strong>5 日均成交金額</strong></td><td class="pos"><strong>159.1 億元</strong></td><td><span class="tag tag-green">流動性極佳</span>20 日均 155.1 億</td></tr>
+      <tr><td>日週轉率（5 日均）</td><td>3.19%</td><td>任何部位皆可順利進出</td></tr>
+      <tr><td>2026-10-15 成交量</td><td><strong>18,850 張</strong></td><td>爆量下跌，收 923（−9.51%）、盤中觸及跌停</td></tr>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- 10 技術 -->
+<section>
+  <div class="section-title"><span class="section-num">9</span>技術分析（含兩項腳本錯誤修正）</div>
+
+  <div class="card">
+    <div class="alert alert-red">
+      <div>🚨</div>
+      <div><strong>腳本錯誤修正一：漲跌停價算錯。</strong>行情抓取腳本輸出「漲停 1,122.0 / 跌停 918.0」。1,122 ÷ 1.1 ＝ 1,020，可見它<strong>把 10/14 的收盤價 1,020 元當成昨收</strong>——但 10/16 的昨收應是 10/15 的 <strong>923 元</strong>（現價 921 ＋ 2 ＝ 923），<strong>腳本的昨收足足落後兩個交易日</strong>。且未套用台股最小升降單位取整。<br><strong>自行修正：</strong>923 × 1.1 ＝ 1,015.3 →（1,000 元以上升降單位 5 元，向內取整）＝ <strong>漲停 1,015 元</strong>；923 × 0.9 ＝ 830.7 →（500～1,000 元區間升降單位 1 元，向內取整）＝ <strong>跌停 831 元</strong>。</div>
+    </div>
+    <div class="alert alert-red" style="margin-bottom:0">
+      <div>🚨</div>
+      <div><strong>腳本錯誤修正二：技術指標未含當日價。</strong>腳本輸出 MA5 1,040.60、MA60 983.88、MACD 20.94、RSI 40.29，經檢查<strong>全部只計算到 10/15，未納入 10/16 的 921 元</strong>。直接引用會誤判均線位置。下表並列腳本值與本報告重算值。</div>
+    </div>
+  </div>
+
+  <div class="tech-grid">
+    <div class="card">
+      <div class="calc-title">均線系統（重算，含 10/16）</div>
+      <div class="table-wrap">
+      <table>
+        <tr><th>均線</th><th>重算值</th><th>股價 921 相對位置</th><th>腳本值</th></tr>
+        <tr><td>MA5</td><td><strong>998.80</strong></td><td class="neg">跌破 −7.79%</td><td>1,040.60</td></tr>
+        <tr><td>MA10</td><td><strong>1,091.40</strong></td><td class="neg">跌破 −15.61%</td><td>1,107.80</td></tr>
+        <tr><td>MA20（月線）</td><td><strong>1,028.60</strong></td><td class="neg">跌破 −10.46%</td><td>1,028.25</td></tr>
+        <tr><td>MA60（季線）</td><td><strong>979.15</strong></td><td class="neg"><strong>跌破 −5.94%</strong></td><td>983.88</td></tr>
+      </table>
+      </div>
+      <p style="font-size:12.5px;line-height:1.7;margin-top:10px"><strong>股價已跌破全部四條均線。</strong>首次報告（10/14）時股價 1,020 元還站在季線 993.25 之上 +2.69%，<strong>如今季線重算為 979.15，股價在其下 5.94%——首次報告標示的「關鍵防線」已失守。</strong>MA20（1,028.60）仍高於 MA60（979.15），代表 9 月以來的上漲尚未完全被抹除。</p>
+    </div>
+
+    <div class="card">
+      <div class="calc-title">動能指標（重算，含 10/16）</div>
+      <div class="table-wrap">
+      <table>
+        <tr><th>指標</th><th>重算值</th><th>腳本值</th><th>訊號</th></tr>
+        <tr><td>MACD</td><td><strong>9.07</strong></td><td>20.94</td><td rowspan="3"><span class="tag tag-red">死叉且加深</span><br><span style="font-size:11.5px">首次報告時為<strong>金叉 +6.68</strong>，兩天內翻空</span></td></tr>
+        <tr><td>訊號線</td><td><strong>28.77</strong></td><td>33.69</td></tr>
+        <tr><td>柱狀值</td><td class="neg"><strong>−19.70</strong></td><td>−12.75</td></tr>
+        <tr><td>RSI(14)</td><td>47.58</td><td>40.29</td><td><span class="tag tag-yellow">中性偏弱</span>兩值差異源於平滑方法不同（見註）</td></tr>
+        <tr><td>布林帶寬</td><td><strong>40.8%</strong></td><td>41.0%</td><td><span class="tag tag-red">極端擴張</span></td></tr>
+      </table>
+      </div>
+      <p style="font-size:12.5px;line-height:1.7;margin-top:10px"><strong>註：</strong>RSI 的兩個數值（47.58 vs 40.29）差異來自平滑演算法不同——本報告採簡單移動平均，業界常用 Wilder 平滑法。<strong>本報告不宣稱腳本的 RSI「錯誤」，僅指出慣例差異</strong>；兩者結論一致：<strong>中性偏弱，距超賣（30）尚有空間。</strong></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">關鍵價位（依重算值）</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>類型</th><th>價位</th><th>來源與意義</th></tr>
+      <tr><td><span class="tag tag-red">壓力四</span></td><td>1,091.40</td><td>MA10</td></tr>
+      <tr><td><span class="tag tag-red">壓力三</span></td><td>1,028.60</td><td>MA20（月線）＝布林中軌</td></tr>
+      <tr><td><span class="tag tag-red">壓力二</span></td><td><strong>998.80</strong></td><td><strong>MA5——站回才算短線止跌</strong></td></tr>
+      <tr><td><span class="tag tag-red">壓力一</span></td><td><strong>979.15</strong></td><td><strong>MA60（季線）——首次報告的「關鍵防線」，現已轉為壓力</strong></td></tr>
+      <tr><td><span class="tag tag-blue">現價</span></td><td><strong>921</strong></td><td>今日開 936、高 936、低 915</td></tr>
+      <tr><td><span class="tag tag-green">支撐一</span></td><td><strong>915 / 918</strong></td><td><strong>今日盤中低 915；10/15 盤中低 918（＝當日跌停價）</strong></td></tr>
+      <tr><td><span class="tag tag-green">支撐二</span></td><td>872</td><td>2026 年 9 月收盤低點區</td></tr>
+      <tr><td><span class="tag tag-green">支撐三</span></td><td><strong>831</strong></td><td><strong>今日跌停價</strong></td></tr>
+      <tr><td><span class="tag tag-green">支撐四</span></td><td>823 / 818.63</td><td>2026 年 8 月低點 / 布林下軌</td></tr>
+      <tr><td><span class="tag tag-green">強支撐</span></td><td><strong>778</strong></td><td><strong>2026/07/30 低點（6 月自結巨虧後跳空跌停價）</strong></td></tr>
+      <tr><td><span class="tag tag-rose">價值參考</span></td><td>202.30</td><td>每股淨值（股價淨值比 4.55 倍，離得仍遠）</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">完整價格時間軸（首次報告之後）</div>
+    <div class="timeline">
+      <div class="tl-item good">
+        <div class="tl-date">2026-10-07</div>
+        <div class="tl-text">本波收盤高點 <strong>1,215 元</strong>（盤中曾達 1,240）。同期世創 €83.95</div>
+      </div>
+      <div class="tl-item bad">
+        <div class="tl-date">2026-10-08 ~ 10-13</div>
+        <div class="tl-text">1,130（−7.00%）→ 1,115 → <strong>1,015（−8.97%，盤中觸及跌停 1,005）</strong>。同期世創 €80.50 → 79.20 → 75.20 → 73.40</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-10-14</div>
+        <div class="tl-text"><strong>本系列首次報告日</strong>。收 1,020 元（+0.49%），技術面站上季線 993.25。<strong>當時結論：觀望、等 11 月初 Q3 法說會，風險 6.5</strong>。同日世創收 <strong>€71.15</strong></div>
+      </div>
+      <div class="tl-item bad">
+        <div class="tl-date">2026-10-15</div>
+        <div class="tl-text"><strong>開 950（跳空 −6.86%）、盤中最低 918 精準觸及跌停、收 923（−9.51%）</strong>，成交 18,850 張爆量。<strong>首次報告的季線停損條件觸發</strong></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-10-16（今日）</div>
+        <div class="tl-text">開 936、高 936、低 <strong>915</strong>（破前日低）、現 <strong>921（−0.22%）</strong>。<strong>跌幅收斂、但尚未站回任何均線</strong></div>
+      </div>
+    </div>
+    <div class="alert alert-yellow" style="margin-top:14px;margin-bottom:0">
+      <div>⚠️</div>
+      <div><strong>關於 10/15～10/16 下跌原因的誠實說明：</strong>本次搜尋<strong>未能找到 10/15 或 10/16 針對環球晶的公司公告或專屬新聞報導</strong>。依時序最合理的解釋是<strong>世創股價自 10/06 的 €84.00 連續下跌至 10/14 的 €71.15（−15.3%）</strong>所引發的評價損失預期——這正是首次報告點出的機制。<strong>但本報告無法排除其他因素（族群連動、大盤、外資調節），故不宣稱單一因果。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 融資融券 -->
+<section>
+  <div class="section-title"><span class="section-num">10</span>融資融券與查詢說明</div>
+  <div class="card">
+    <div class="table-wrap">
+    <table>
+      <tr><th>項目</th><th>數值（資料日 2026-10-13）</th><th>換算（按現價 921 元）</th></tr>
+      <tr><td>融資餘額</td><td>15,366 張（使用率 11.6%）</td><td>＝股本 <strong>3.21%</strong>，市值約 <strong>141.5 億元</strong></td></tr>
+      <tr><td>融資餘額（當日變化）</td><td>減少 1,135 張</td><td>下跌過程中的去槓桿</td></tr>
+      <tr><td>融券餘額</td><td>486 張（使用率 0.4%）</td><td>＝股本 0.10%</td></tr>
+      <tr><td>資券比</td><td><strong>31.6 倍</strong></td><td><strong>無軋空動能</strong></td></tr>
+    </table>
+    </div>
+    <div class="alert alert-red" style="margin-top:12px">
+      <div>🔴</div>
+      <div><strong>本報告最明確的資料限制：10/15 盤中觸及跌停、10/16 續弱，融資餘額極可能已大幅變動，但本次無法取得 10/15～10/16 的官方數字。</strong>融資佔股本 3.21% 的絕對比例屬健康水準（對照眾達-KY 的 12.68%），但在連續急跌中仍可能出現斷頭賣壓。<br><strong>建議讀者自行查證：</strong>證券櫃檯買賣中心 → 上櫃股票 → 融資融券餘額（每日盤後公告），或券商看盤軟體個股籌碼頁。</div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 辯論 -->
+<section>
+  <div class="section-title"><span class="section-num">11</span>研究員團隊辯論</div>
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <h4><span style="color:#16a34a">▲</span> 看多研究員（8 點）</h4>
+      <ul>
+        <li><span class="bull-icon">1</span><div><strong>現價遠低於法人目標價：凱基 1,500 元（9/22、9/30 兩度維持「增加持股」）、官股投顧 1,735 元、野村 1,200 元。現價 921 元比凱基低 38.6%</strong>——這是對首次報告的重大更正</div></li>
+        <li><span class="bull-icon">2</span><div><strong>本業在火災後仍大幅成長：8 月自結稅後純益 7.04 億、年增 144.98%</strong>（EPS 1.47 元）；Q3 營收 148.71 億、年增 2.60%</div></li>
+        <li><span class="bull-icon">3</span><div><strong>公司明確表示評價損失「無關現金流動，不影響本業營運」。</strong>跌的是帳面數字，不是生意</div></li>
+        <li><span class="bull-icon">4</span><div><strong>美光 10 年長約＋逾 5 億美元策略性資金</strong>；德州第 1 期月產能 30 萬片已被預訂一空；唯一能在美國本土生產先進 12 吋矽晶圓者</div></li>
+        <li><span class="bull-icon">5</span><div><strong>三座海外廠傳捷報</strong>（美國德州、密蘇里州 SOI、日本新潟）；<strong>12 吋 SiC 已完成開發</strong></div></li>
+        <li><span class="bull-icon">6</span><div><strong>2027 年新一輪長約漲價為法人評價核心</strong>：凱基估 2027 年 EPS <strong>59.99 元</strong>，以現價 921 元計僅 <strong>15.4 倍</strong></div></li>
+        <li><span class="bull-icon">7</span><div><strong>義大利火災已投保財產綜合保險，涵蓋財產損失及營運中斷損失</strong>，理賠申請進行中；截至 9 月中旬關鍵廠務系統已恢復</div></li>
+        <li><span class="bull-icon">8</span><div><strong>估值全面改善：</strong>本益比 49.5 → 44.7 倍、股價淨值比 5.04 → 4.55 倍、本業本益比 91.0 → 82.1 倍；流動性極佳（日均成交 159.1 億）</div></li>
+      </ul>
+    </div>
+    <div class="analyst-card">
+      <h4><span style="color:#dc2626">▼</span> 看空研究員（9 點）</h4>
+      <ul>
+        <li><span class="bear-icon">1</span><div><strong>世創 Q4 迄今已跌 −€10.15（€81.30 → €71.15），推估累積評價損失 −3.1 ~ −3.6 元 EPS</strong>，且季末收盤價才是認列基準，目前仍在惡化中</div></li>
+        <li><span class="bear-icon">2</span><div><strong>業外曝險比首次報告認知的更大：</strong>除世創 13.67% 股權，另有<strong>以世創股票為認股標的的海外附認股權公司債</strong>，具選擇權的非線性特性</div></li>
+        <li><span class="bear-icon">3</span><div><strong>月自結公告是近期最大風險：</strong>2026/07/29 公告 6 月單月淨損 <strong>39.55 億、每股淨損 8.27 元</strong>，次日<strong>開盤跳空跌停至 778 元</strong>，台勝科、合晶同步跌停</div></li>
+        <li><span class="bear-icon">4</span><div><strong>本業本益比 82.1 倍。</strong>近四季營業利益僅 65.07 億、營益率 11.18%；營益率自 2024 年的 20～22% 降至 8.5～16.4%</div></li>
+        <li><span class="bear-icon">5</span><div><strong>技術面全面轉空：</strong>股價跌破全部四條均線；<strong>首次報告的季線防線（現為 979.15）已失守 −5.94%</strong>；MACD 自金叉 +6.68 翻為<strong>死叉 −19.70</strong></div></li>
+        <li><span class="bear-icon">6</span><div><strong>2025 全年自由現金流 −207.53 億</strong>（營業現金流 127.45 億 vs 資本支出 334.97 億）；<strong>折舊 89.27 億已超過當年營業利益 86.36 億</strong>；負債比 55.9%</div></li>
+        <li><span class="bear-icon">7</span><div><strong>年化波動率 82.3%（本系列最高）。</strong>52 週區間 333～1,600 元（4.80 倍）；10/13 與 10/15 兩度盤中觸及跌停</div></li>
+        <li><span class="bear-icon">8</span><div><strong>Novara 廠火災影響全球 8 吋產能約 5%</strong>，復工仍在進行；<strong>管理層「Q3 營收力拚優於 Q2」的指引未達成</strong>（實際季減 2.26%）</div></li>
+        <li><span class="bear-icon">9</span><div><strong>法人預估離散度極大且曾大幅下修：</strong>凱基 9/22 將 Q3'26 EPS 由 6.65 元<strong>下修至 1.91 元</strong>、全年由 26.85 元<strong>下修至 16.69 元</strong>；統一投顧估 Q3 3.37 元。<strong>2027 年 EPS 60 元是尚未發生的假設</strong></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="calc-title">辯論總結與量化權重</div>
+    <div class="score-row">
+      <div class="score-label">看多</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:48%;background:linear-gradient(90deg,#16a34a,#4ade80)"></div></div>
+      <div class="score-num">48%</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">看空</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:52%;background:linear-gradient(90deg,#dc2626,#f87171)"></div></div>
+      <div class="score-num">52%</div>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>首次報告為 42:58 偏空，本次調整為 48:52 接近持平。</strong>變化全部來自<strong>更正一</strong>：首次誤以 717 元為共識、認定股價「高於共識 42.3%」，實際有出處的法人目標價是 1,200～1,735 元，<strong>現價反而低於凱基 38.6%</strong>。這讓估值的風險報酬比明顯改善。</p>
+    <p style="font-size:13px;line-height:1.8;margin-top:9px"><strong>但仍未翻多，原因有三：</strong>① <strong>更正二</strong>揭露業外曝險多一層附認股權公司債，波動性比原先認知更大，且 Q4 迄今已累積 −3.1~3.6 元；② <strong>月自結公告</strong>是隨時可能引爆的近期風險，7 月那次的前例是「開盤跳空跌停」；③ 不論法人目標價多高，<strong>現價仍是本業獲利的 82.1 倍</strong>，而 1,200～1,735 元的依據是<strong>尚未發生的 2027 年漲價</strong>。</p>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">給一般投資人的話</div>
+    <p style="font-size:13.5px;line-height:1.85"><strong>先承認錯誤。</strong>我兩天前的首次報告說「現價比法人共識高出 42.3%」，這是個相當顯眼的結論，<strong>而它是錯的</strong>。我引用了一份沒有標註日期的彙整資料（717 元），把它當成最新共識。實際上凱基投顧 9 月下旬兩度維持 1,500 元目標價、官股投顧 7 月給 1,735 元、野村給 1,200 元。<strong>以現價 921 元計，股價是遠低於法人目標價，不是高於。</strong>這個更正的方向對這檔股票是有利的，但錯誤本身是我的。</p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:9px"><strong>第二件漏掉的事：義大利 Novara 廠在 7 月下旬發生火災</strong>，8 吋產線停產、法人估影響全球 8 吋產能約 5%。首次報告完全沒提。好消息是已投保、涵蓋營運中斷損失，9 月中旬關鍵系統已恢復。</p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:9px"><strong>接著說對的那部分。</strong>首次報告的核心是：這家公司的 EPS 被一檔德國股票（世創）拖著走，我估 Q3 每股只賺 1.96～2.66 元。<strong>查核後發現凱基投顧已把 Q3 預估下修到 1.91 元——和我的下緣幾乎一樣。</strong>而且首次報告寫的季線停損（993 元）兩天後就真的被跌破，<strong>如果照著做，避開了約 10% 的下跌。</strong></p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:9px"><strong>現在最該知道的一件事：這家公司每個月都要公布自結損益。</strong>7 月 29 日那次公布 6 月單月虧 39.55 億、每股虧 8.27 元，<strong>隔天開盤直接跳空跌停到 778 元</strong>。世創在 10 月 12～14 日又跌了 €4，<strong>所以下一次月自結公告的數字很可能難看。</strong>這比 11 月的法說會更近。</p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:9px"><strong>而本業是真的在好轉：</strong>8 月自結稅後賺 7.04 億、年增 145%，Q3 營收年增 2.6%，三座海外廠傳捷報。<strong>公司也說評價損失不影響現金。</strong></p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:10px"><strong>我的建議：如果要參與，請分批、而且挑在月自結公告「之後」而非之前。</strong>合理的觀察區是 831（今日跌停）～ 979（季線），部位控制在 5～8%。<strong>並且請接受一個事實：你買的是一家本業不錯、但單月每股盈餘可能在 +8 元和 −8 元之間擺盪的公司。</strong>這種波動不是異常，是它的結構。</p>
+  </div>
+</section>
+
+<!-- 13 風控 -->
+<section>
+  <div class="section-title"><span class="section-num">12</span>風控評估（六維加權）</div>
+  <div class="card">
+    <div class="score-row">
+      <div class="score-label">估值風險 30%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:linear-gradient(90deg,#dc2626,#fb923c)"></div></div>
+      <div class="score-num">7.0</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">財務風險 25%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:75%;background:linear-gradient(90deg,#dc2626,#fb923c)"></div></div>
+      <div class="score-num">7.5</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">流動性風險 10%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:15%;background:linear-gradient(90deg,#16a34a,#4ade80)"></div></div>
+      <div class="score-num">1.5</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">產業風險 15%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:linear-gradient(90deg,#dc2626,#fb923c)"></div></div>
+      <div class="score-num">7.0</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">總經風險 10%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:50%;background:linear-gradient(90deg,#d97706,#fcd34d)"></div></div>
+      <div class="score-num">5.0</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">籌碼風險 10%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:linear-gradient(90deg,#dc2626,#f87171)"></div></div>
+      <div class="score-num">8.0</div>
+    </div>
+    <div class="calc-box" style="margin-top:14px">
+      <div class="calc-title">加權計算</div>
+      <div class="row"><span>估值 7.0 × 30%（首次為 8.5）</span><span>2.100</span></div>
+      <div class="row"><span>財務 7.5 × 25%</span><span>1.875</span></div>
+      <div class="row"><span>流動性 1.5 × 10%</span><span>0.150</span></div>
+      <div class="row"><span>產業 7.0 × 15%</span><span>1.050</span></div>
+      <div class="row"><span>總經 5.0 × 10%</span><span>0.500</span></div>
+      <div class="row"><span>籌碼 8.0 × 10%</span><span>0.800</span></div>
+      <div class="row"><span><strong>綜合風險評分</strong></span><span><strong>6.475 → 6.5（與首次相同）</strong></span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">各維度理由與與首次報告的差異</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>維度</th><th>本次</th><th>首次</th><th>理由</th></tr>
+      <tr><td>估值</td><td class="pos"><strong>7.0</strong></td><td>8.5</td><td><strong>調降 1.5 分。</strong>① 股價跌 9.7%，本益比 49.5→44.7 倍、股價淨值比 5.04→4.55 倍；② <strong>更正首次誤用的目標價基準</strong>——現價低於凱基 1,500 元達 38.6%，而非高於共識。<strong>但本業本益比仍 82.1 倍，故未降至 6 以下</strong></td></tr>
+      <tr><td>財務</td><td class="neg"><strong>7.5</strong></td><td>7.5</td><td>不變。2025 自由現金流 −207.53 億、折舊 &gt; 營業利益、負債比 55.9%、借款 302.8 億。<strong>新增認知：業外多一層附認股權公司債（增加風險）；但火災已投保、8 月自結轉佳（降低風險），兩者抵銷</strong></td></tr>
+      <tr><td>流動性</td><td class="pos"><strong>1.5</strong></td><td>1.5</td><td>不變。日均成交 159.1 億元、週轉率 3.19%、外資持股 36.15%</td></tr>
+      <tr><td>產業</td><td class="neg"><strong>7.0</strong></td><td>7.0</td><td>不變。CPO/矽晶圓循環性強、同業台勝科 Q1'26 毛利率僅 0.83%。<strong>新增：Novara 火災影響全球 8 吋產能約 5%（增加）；但 8 月自結年增 145%、三座海外廠傳捷報、2027 長約漲價（降低）</strong></td></tr>
+      <tr><td>總經</td><td style="color:#d97706"><strong>5.0</strong></td><td>5.0</td><td>不變。AI 資本支出集中、美中關稅、台幣匯率影響業外</td></tr>
+      <tr><td>籌碼</td><td class="neg"><strong>8.0</strong></td><td>8.0</td><td>不變。<strong>年化波動率 82.3%（系列最高）</strong>、10/13 與 10/15 兩度盤中觸及跌停、融資市值 141.5 億、資券比 31.6 無軋空動能。<strong>資料限制：無法取得 10/15~10/16 籌碼數字</strong></td></tr>
+    </table>
+    </div>
+    <div class="alert alert-rose" style="margin-top:12px;margin-bottom:0">
+      <div>📌</div>
+      <div><strong>綜合分數與首次相同（6.5），但內涵不同。</strong>首次的 6.5 主要由「估值過高（8.5）」驅動；本次估值降至 7.0，但<strong>我同時更正了業外曝險的結構（多一層附認股權公司債）並補上火災事件</strong>，這些在財務與產業維度上抵銷了估值的改善。<br><strong>實務意涵：價格變得比較有吸引力，但這家公司的獲利波動性比我原先描述的更劇烈。投資建議因此由首次的「觀望」調整為「觀望偏多、分批」，而非「買進」。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 策略 -->
+<section>
+  <div class="section-title"><span class="section-num">13</span>台股三段式策略</div>
+  <div class="strategy-grid">
+    <div class="strat-card attack">
+      <h3>⚔️ 進攻</h3>
+      <div class="strat-item"><span>觸發</span><span><strong>帶量</strong>站回 979（季線）</span></div>
+      <div class="strat-item"><span>量能門檻</span><span>單日 &gt; 20,000 張</span></div>
+      <div class="strat-item"><span>目標</span><span>998.80（MA5）→ 1,028.60（月線）</span></div>
+      <div class="strat-item"><span>部位</span><span>3% 以內</span></div>
+      <div class="strat-item"><span>停損</span><span>跌回 915（今日低）即出</span></div>
+      <div class="strat-item"><span>⚠️ 注意</span><span><strong>不建議在月自結公告前追價。</strong>7 月那次的前例是「開盤跳空跌停」，無法停損</span></div>
+    </div>
+    <div class="strat-card balance">
+      <h3>⚖️ 均衡（本報告建議）</h3>
+      <div class="strat-item"><span>進場區</span><span><strong>831（跌停）~ 918 分批</strong></span></div>
+      <div class="strat-item"><span>分批方式</span><span>三批：915 / 872 / 831 各 1/3</span></div>
+      <div class="strat-item"><span>部位</span><span><strong>總資產 5～8%</strong></span></div>
+      <div class="strat-item"><span>持有期</span><span>1～2 年（等 2027 年長約漲價驗證）</span></div>
+      <div class="strat-item"><span>停損</span><span><strong>跌破 778（7/30 低點）</strong></span></div>
+      <div class="strat-item"><span>加碼</span><span><strong>月自結公告後</strong>若評價損失已認列且股價止穩；或世創回站 €81.30</span></div>
+    </div>
+    <div class="strat-card defend">
+      <h3>🛡️ 防守</h3>
+      <div class="strat-item"><span>做法</span><span><strong>等下一次月自結公告落地</strong></span></div>
+      <div class="strat-item"><span>要看什麼</span><span>① <strong>世創（WAF.DE）每日收盤</strong>——可自行追蹤的領先指標<br>② 月自結的業外認列金額<br>③ Q3 法說會的毛利率與營益率<br>④ Novara 廠復工與保險理賠進度<br>⑤ 2027 長約漲價的具體進展</span></div>
+      <div class="strat-item"><span>理想進場</span><span>月自結利空出盡後、股價在 <strong>780～870</strong> 區間止穩</span></div>
+      <div class="strat-item"><span>代價</span><span>可能錯過反彈。但以 82.3% 的年化波動率，等待的代價不高</span></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="calc-title">操作建議表</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>情境</th><th>價位</th><th>動作</th></tr>
+      <tr><td>帶量站回季線</td><td>&gt; 979（量 &gt; 20,000 張）</td><td>進攻型可小量試單，停損 915</td></tr>
+      <tr><td>區間整理</td><td>918 ~ 979</td><td><strong>觀望。</strong>均線全空、MACD 死叉加深</td></tr>
+      <tr><td><strong>回測前低</strong></td><td><strong>915 ~ 918</strong></td><td>均衡型可建立第一批（總部位 5～8% 上限）</td></tr>
+      <tr><td>深度回檔</td><td>831 ~ 872</td><td><strong>本報告認為最佳分批區</strong>（跌停價至 9 月低點區）</td></tr>
+      <tr><td>破 7 月低點</td><td>&lt; 778</td><td><strong>無條件停損。</strong>代表世創跌幅已超出評價損失預期，或本業出現新變化</td></tr>
+      <tr><td>月自結公告當下</td><td>任意</td><td><strong>不要在公告前新增部位。</strong>7 月前例為開盤跳空跌停，當日無法有效停損</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">催化劑時程表</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>時間</th><th>事件</th><th>重要性</th></tr>
+      <tr><td><strong>近期（隨時）</strong></td><td><strong>🔴 月自結損益公告</strong>——因曾列注意股而依主管機關要求按月公布。<strong>世創 Q4 迄今 −€10.15，推估評價影響 −3.1~3.6 元 EPS。這是比法說會更近的風險</strong></td><td><span class="tag tag-red">極高</span></td></tr>
+      <tr><td><strong>每日</strong></td><td><strong>🔴 世創（WAF.DE）收盤價</strong>。每變動 €1 約影響 EPS 0.30～0.36 元。<strong>唯一可自行每日追蹤的領先指標</strong></td><td><span class="tag tag-red">極高</span></td></tr>
+      <tr><td>2026/11 初</td><td><strong>Q3'26 財報與法說會</strong>（去年同期為 11 月 4 日；今年確切日期以公開資訊觀測站董事會公告為準）。推估 EPS 1.96~2.66 元，凱基估 1.91 元、統一估 3.37 元</td><td><span class="tag tag-red">極高</span></td></tr>
+      <tr><td>2026/11/10 前</td><td>10 月營收公告</td><td><span class="tag tag-yellow">中</span></td></tr>
+      <tr><td>持續</td><td>義大利 Novara 廠復工進度與<strong>保險理賠認列</strong>（涵蓋營運中斷損失）</td><td><span class="tag tag-blue">高</span></td></tr>
+      <tr><td>2027 年</td><td><strong>新一輪長約漲價</strong>——法人目標價 1,200～1,735 元的核心依據（凱基估 2027 EPS 59.99 元）</td><td><span class="tag tag-red">決定性</span></td></tr>
+      <tr><td>持續</td><td>德州 12 吋廠第 2 期、密蘇里州 SOI 廠、日本新潟廠進度；12 吋 SiC 商業化</td><td><span class="tag tag-blue">高</span></td></tr>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- 15 名詞 -->
+<section>
+  <div class="section-title"><span class="section-num">14</span>名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">半導體矽晶圓</div>
+      <div class="glossary-def">晶片製造的「地基」——把高純度矽拉成晶柱再切成圓形薄片。晶圓越大（12 吋 &gt; 8 吋 &gt; 6 吋），單片能做的晶片越多、單價越高。全球僅五家廠商具規模。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">🔴 海外附認股權公司債</div>
+      <div class="glossary-def">公司債加上「可認購特定股票」的權利。環球晶德國子公司發行的這種債券，<strong>認股標的是世創股票</strong>。因內含選擇權，其市價會隨世創股價<strong>非線性</strong>變動，依國際會計準則須按市價認列評價損益。<strong>這是首次報告漏掉的一層曝險。</strong></div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">評價損益（未實現）</div>
+      <div class="glossary-def">手上的投資還沒賣掉，但按市價重算帳面價值產生的盈虧。<strong>市價跌回去，獲利就不見了。</strong>公司明確表示這類損失<strong>無關現金流動</strong>——錢沒有真的流出去。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">🔴 月自結損益公告</div>
+      <div class="glossary-def">公司每月自行結算（未經會計師查核）的損益並公告。環球晶<strong>因股價波動劇烈曾遭櫃買中心列為注意股</strong>，依主管機關要求按月公布。<strong>這使評價損益會提前於季報浮現</strong>——2026/07/29 公告 6 月單月每股淨損 8.27 元，隔日開盤跳空跌停。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">世創 Siltronic（WAF.DE）</div>
+      <div class="glossary-def">德國矽晶圓廠。環球晶 2020 年發動收購、2022 年因德國政府未核准破局，支付 5 千萬歐元終止費，<strong>但保留約 13.67% 股權</strong>。其股價漲跌直接進環球晶損益表。可於任何國際財經網站查 WAF.DE 代號。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">本業本益比</div>
+      <div class="glossary-def">只用「營業利益」（賣產品賺的錢）計算的本益比，排除業外。環球晶近四季營業利益 65.07 億，稅後每股約 11.21 元，<strong>921 ÷ 11.21 ＝ 82.1 倍</strong>。這個數字比一般本益比 44.7 倍誠實地反映了本業的昂貴程度。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">自由現金流（FCF）</div>
+      <div class="glossary-def">＝營業活動現金流 − 資本支出。環球晶 2025 年為 <strong>−207.53 億</strong>，因大舉擴產（德州、崑山等）。擴產期為負不必然是壞事，但必須靠借款或客戶預付款支應。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">折舊 vs 營業利益</div>
+      <div class="glossary-def">設備成本按年攤提成費用。環球晶 2025 年折舊 <strong>89.27 億，已超過當年營業利益 86.36 億</strong>——這是重資產循環股的典型特徵，景氣下行時折舊無法縮減，獲利波動因此被放大。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">🔴 漲跌停與最小升降單位</div>
+      <div class="glossary-def">台股單日漲跌限制 ±10%，但計算出的價格要<strong>取整到最小升降單位</strong>（500～1,000 元為 1 元、1,000 元以上為 5 元），且向昨收方向取整。環球晶昨收 923 元 → 漲停 <strong>1,015</strong>（1,015.3 取整）、跌停 <strong>831</strong>（830.7 取整）。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">資券比與軋空</div>
+      <div class="glossary-def"><strong>資券比</strong>＝融資 ÷ 融券。環球晶為 31.6 倍，表示幾乎沒有空單，<strong>因此沒有軋空的可能，壓力在融資多單</strong>。若工具顯示「融券為 0 → 注意軋空」，那是資料缺漏造成的錯誤敘述。</div>
+    </div>
+  </div>
+</section>
+
+<!-- 16 免責 -->
+<div class="disclaimer">
+  <strong>⚠️ 免責聲明與資料來源說明</strong>
+  <p style="margin-top:9px">本報告為研究性質之資料整理與分析，<strong>不構成任何投資建議、要約或招攬</strong>。本人並非持有證照之投資顧問。所有投資決策應由投資人自行判斷並承擔全部風險。股票投資可能導致本金部分或全部損失。</p>
+
+  <p style="margin-top:11px"><strong>資料來源與取得時間</strong></p>
+  <ul style="margin:6px 0 0 18px;line-height:1.75">
+    <li><strong>即時報價</strong>：富果 Fugle API，2026-10-16 擷取（<strong>盤中價，非收盤價</strong>）</li>
+    <li><strong>歷史 K 線、季度財報、資產負債表、現金流量表</strong>：FinMind，2026-10-16 擷取（日 K 線最新日期為 2026-10-15，10/16 價格取自即時報價）</li>
+    <li><strong>世創（Siltronic AG, WAF.DE）歷史股價</strong>：Yahoo Finance，2026-10-16 擷取（最新交易日為 2026-10-14）</li>
+    <li><strong>6 月自結數字、附認股權公司債、Novara 廠火災、8 月自結、法人目標價與 EPS 預估</strong>：媒體報導引述公司公告與券商報告（經濟日報、工商時報、鉅亨網、自由財經、Yahoo 股市、LINE TODAY、FTNN、MoneyDJ、uanalyze）</li>
+    <li><strong>籌碼數據（外資 36.15%、三大法人 −3,405 張、融資 15,366 張、融券 486 張）</strong>：公開資訊彙整，<strong>資料日 2026-10-13</strong>，沿用首次報告。官方查詢管道為證券櫃檯買賣中心每日盤後公告</li>
+  </ul>
+
+  <p style="margin-top:11px"><strong>🔴 對首次報告（2026-10-14）的更正</strong></p>
+  <ul style="margin:6px 0 0 18px;line-height:1.75">
+    <li><strong>【更正一】法人目標價基準錯誤。</strong>首次報告以「FactSet 14 位分析師中位數 717 元」為主要比較基準，並據此得出「現價高於共識 42.3%」之頭條結論。<strong>該 717 元來自未標註日期之彙整資料，不應視為最新共識。</strong>本次查得有明確出處與日期者為：凱基投顧 1,500 元（2026-09-22 及 09-30 兩度維持「增加持股」）、官股金控投顧 1,735 元（2026-07 中，區間操作，以 2027 年 EPS × 48 倍估算）、野村 1,200 元（2026-07 初）、另有法人於火災後給 1,600 元。<strong>以現價 921 元計，股價低於凱基目標價 38.6%。此更正使估值風險由 8.5 降至 7.0。</strong></li>
+    <li><strong>【更正二】業外曝險結構不完整。</strong>首次報告僅述「世創 13.67% 持股」。公司實際揭露為兩個部位：世創股票，<strong>加上德國子公司發行、以世創股票為認股標的之海外附認股權公司債</strong>，兩者皆按市價認列評價損益。因後者具選擇權之非線性特性，<strong>敏感度高於首次報告推估之 0.305 元／€1</strong>。</li>
+    <li><strong>【更正三】遺漏義大利 Novara 廠火災。</strong>首次報告完全未提及 2026 年 7 月下旬發生、7 月 22 日公告之火災事件（8 吋產線停產、法人估影響全球 8 吋產能約 5%、已投保涵蓋營運中斷損失、9 月中旬關鍵系統恢復）。此為重大遺漏，本次補正。</li>
+    <li><strong>【方向修正】首次報告指「11 月初 Q3 法說會」為最關鍵近期事件。</strong>經查公司因曾列注意股而<strong>依主管機關要求按月公布自結損益</strong>，故<strong>月自結公告是更早的風險事件</strong>（2026/07/29 公告 6 月單月每股淨損 8.27 元，隔日開盤跳空跌停至 778 元）。</li>
+  </ul>
+
+  <p style="margin-top:11px"><strong>🔴 本次發現的腳本錯誤</strong></p>
+  <ul style="margin:6px 0 0 18px;line-height:1.75">
+    <li><strong>漲跌停價錯誤（兩個錯誤疊加）：</strong>腳本輸出「漲停 1,122.0 / 跌停 918.0」，反推其昨收為 1,020 元（即 10/14 收盤），<strong>落後兩個交易日</strong>；且未套用最小升降單位取整。<strong>正確值：以昨收 923 元計，漲停 1,015 元、跌停 831 元。</strong></li>
+    <li><strong>技術指標未含當日價：</strong>腳本輸出之 MA5 1,040.60、MA10 1,107.80、MA20 1,028.25、MA60 983.88、MACD 20.94、RSI 40.29，經檢查<strong>僅計算至 2026-10-15</strong>。本報告重算（含 10/16 的 921 元）為 MA5 998.80、MA10 1,091.40、MA20 1,028.60、MA60 979.15、MACD 9.07／訊號 28.77／柱狀 −19.70。<strong>第 09 節已並列兩組數值。</strong></li>
+    <li><strong>RSI 差異非腳本錯誤：</strong>本報告重算 47.58 vs 腳本 40.29，差異源於平滑演算法不同（簡單移動平均 vs Wilder 平滑法），<strong>本報告不宣稱腳本錯誤</strong>，兩者結論一致（中性偏弱）。</li>
+    <li><strong>三大法人與融資融券經 FinMind 查詢回傳 0，屬資料缺口</strong>，未解讀為「持平」或「餘額為零」。</li>
+  </ul>
+
+  <p style="margin-top:11px"><strong>🔴 其他資料限制與自行推算</strong></p>
+  <ul style="margin:6px 0 0 18px;line-height:1.75">
+    <li><strong>6488 為上櫃股票，yfinance 查詢 6488.TW 回傳 HTTP 404</strong>，本益比、股價淨值比、市值皆為 null。本報告以下數值<strong>全部自行計算</strong>：市值 4,403.4 億元（4.781137 億股 × 921 元）、每股淨值 202.30 元、股價淨值比 4.55 倍、本益比 44.7 倍、本業本益比 82.1 倍。</li>
+    <li><strong>世創敏感度 0.30～0.36 元／€1 為本報告推算區間</strong>：下緣 0.305 以純股權部位推算（世創流通股數約 3,000 萬股 × 13.67% × 歐元兌台幣約 35.5 ÷ 4.781 億股）；上緣 0.356 以公司 6 月實際公告反推（每股淨損 8.27 元 ÷ 世創 −€23.20）。<strong>上緣應視為上限</strong>，因該月損益亦含本業與其他項目，公司表述為「主要來自」而非全部。</li>
+    <li><strong>Q4'26 累積評價影響 −3.1 ~ −3.6 元為本報告推算</strong>，且<strong>季末（12/31）收盤價才是認列基準</strong>，目前僅為中途值。世創最新可得收盤為 2026-10-14 的 €71.15。</li>
+    <li><strong>Q3'26 EPS 推估 1.96~2.66 元為首次報告之自行推算</strong>，非公司財測。本次查得法人預估離散度極大：凱基 1.91 元（9/22 由 6.65 元下修）、統一投顧 3.37 元。</li>
+    <li><strong>2024 Q3／Q4 之營業利益（35.20 億、40.71 億）為營收 × 營益率推算值</strong>；其餘季度為財報原始值。</li>
+    <li><strong>10/15~10/16 下跌原因未能確認：</strong>本次搜尋未找到該兩日針對環球晶之公司公告或專屬新聞。報告中以世創連續下跌為最合理解釋，<strong>但明確聲明無法排除族群連動、大盤或外資調節等其他因素，不宣稱單一因果</strong>。</li>
+    <li><strong>籌碼數據資料日為 2026-10-13，距報告日已 3 天</strong>，且期間經歷 10/15 盤中跌停，<strong>融資餘額極可能已大幅變動但無法取得</strong>。此為本報告最明確的資料限制。</li>
+    <li><strong>Q3 法說會日期未能查得</strong>。去年 Q3 法說會為 11 月 4 日，本報告據此推估「11 月初」，<strong>確切日期應以公開資訊觀測站之董事會公告為準</strong>。</li>
+    <li><strong>9 月自結損益數字未能取得</strong>（公司通常於 10 月初公布）。建議讀者自行查詢公開資訊觀測站重大訊息。</li>
+    <li><strong>部分媒體對火災日期記載不一</strong>（7/20、7/21、7/22），本報告採「7 月下旬發生、7 月 22 日公告」之表述。</li>
+    <li><strong>財務結構數據（第 07 節末）沿用 2026 Q2 財報，與首次報告相同</strong>，本期無新財報公布，未重複展開分析。</li>
+  </ul>
+
+  <p style="margin-top:11px"><strong>本報告的立場</strong></p>
+  <p style="margin-top:5px">本報告<strong>首先更正首次報告的三處錯誤</strong>（法人目標價基準、業外曝險結構、遺漏火災事件）與一處方向修正（月自結公告為更近之風險事件）。更正後的判斷是：<strong>價格比首次報告認定的更有吸引力</strong>（現價低於凱基目標價 38.6%，而非高於共識 42.3%；本益比 44.7 倍、股價淨值比 4.55 倍），<strong>但獲利波動性比首次報告描述的更劇烈</strong>（業外多一層附認股權公司債、世創 Q4 迄今已累積 −3.1~3.6 元 EPS 之推估影響、月自結公告隨時可能引爆）。</p>
+  <p style="margin-top:7px">同時確認首次報告有兩項做對：<strong>①</strong> 以世創股價推估 Q3 EPS 1.96~2.66 元，與凱基 9/22 下修後的 1.91 元幾乎一致，<strong>方法有效</strong>；<strong>②</strong> 季線停損條件（993 元）兩個交易日後確實觸發，<strong>保護了約 10% 的下跌</strong>。</p>
+  <p style="margin-top:7px"><strong>結論為「觀望偏多、分批，建議區間 831~918，部位 5~8%，且不在月自結公告前新增部位」，多空權重 48:52（首次為 42:58），風險評分 6.5（與首次相同，但估值風險由 8.5 降至 7.0、業外認知風險上升，兩者抵銷）。</strong>以上判斷基於本報告列出之公開數據，<strong>讀者應自行驗證並形成自己的結論</strong>。</p>
+</div>
+
+</div><!-- /container -->
+
+<script>
+function drawBarChart(id,labels,data,barColor,accentColor,negColor,dec){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=54,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  var D=(dec===undefined)?2:dec;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||0.5;
+  var lo=(min<0)?(min-pad):Math.max(0,min-pad);
+  var hi=max+pad,range=hi-lo;
+  var n=data.length;
+  var barW=chartW/n*0.58,gap=chartW/n;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0){ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();}
+  for(var i=0;i<n;i++){
+    var x=PL+i*gap+(gap-barW)/2;
+    var vy=PT+chartH-((data[i]-lo)/range*chartH);
+    var top=Math.min(vy,zeroY),bh=Math.abs(vy-zeroY);
+    if(bh<1.5)bh=1.5;
+    var isLast=(i===n-1);
+    var color=(data[i]<0)?(negColor||'#dc2626'):(isLast?accentColor:barColor);
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,top,barW,bh,3);ctx.fillStyle=color;ctx.fill();}
+    else{ctx.fillStyle=color;ctx.fillRect(x,top,barW,bh);}
+    ctx.fillStyle=(data[i]<0)?'#dc2626':(isLast?accentColor:'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(D),x+barW/2,(data[i]<0)?(top+bh+11):(top-4));
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    var lx=PL+i*gap+gap/2,ly=PT+chartH+14;
+    if(labels[i].length>4){ctx.save();ctx.translate(lx,ly);ctx.rotate(-Math.PI/6);ctx.fillText(labels[i],0,0);ctx.restore();}
+    else ctx.fillText(labels[i],lx,ly);
+  }
+}
+function drawLineChart(id,labels,data,color,negColor,dec){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=54,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  var D=(dec===undefined)?1:dec;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||1;
+  var lo=min-pad,hi=max+pad,range=hi-lo;
+  var n=data.length;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(D===0?0:1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0&&hi>0){
+    ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);
+    ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();
+  }
+  var pts=[];
+  for(var i=0;i<n;i++)pts.push({x:PL+i*chartW/(n-1),y:PT+chartH-(data[i]-lo)/range*chartH});
+  var base=(lo<0&&hi>0)?zeroY:(PT+chartH);
+  ctx.beginPath();ctx.moveTo(pts[0].x,base);
+  for(var i=0;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.lineTo(pts[n-1].x,base);ctx.closePath();
+  var grad=ctx.createLinearGradient(0,PT,0,PT+chartH);
+  var hex=color.slice(1);
+  var r=parseInt(hex.slice(0,2),16),g2=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  grad.addColorStop(0,'rgba('+r+','+g2+','+b+',0.25)');
+  grad.addColorStop(1,'rgba('+r+','+g2+','+b+',0.02)');
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+  for(var i=1;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+  for(var i=0;i<n;i++){
+    var isLast=(i===n-1);
+    var dotCol=(data[i]<0&&negColor)?negColor:color;
+    ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,isLast?5:3,0,Math.PI*2);
+    ctx.fillStyle=isLast?dotCol:'#fff';ctx.fill();
+    ctx.strokeStyle=dotCol;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=isLast?dotCol:((data[i]<0)?'#dc2626':'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(D),pts[i].x,pts[i].y+(isLast?-10:-8));
+  }
+  for(var i=0;i<n;i++){
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    var lx=pts[i].x, ly=PT+chartH+14;
+    if(labels[i].length>4){ctx.save();ctx.translate(lx,ly);ctx.rotate(-Math.PI/6);ctx.fillText(labels[i],0,0);ctx.restore();}
+    else ctx.fillText(labels[i],lx,ly);
+  }
+}
+function drawHBarChart(id,labels,data,colors,suffix){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var max=Math.max.apply(null,data)*1.28;
+  var n=labels.length;
+  var rowH=H/(n+0.6);
+  var PL=158,PR=62;
+  for(var i=0;i<n;i++){
+    var y=rowH*(i+0.3)+rowH*0.12;
+    var bh=rowH*0.66;
+    ctx.fillStyle='#f1f5f9';ctx.fillRect(PL,y,(W-PL-PR),bh);
+    var bw=(data[i]/max)*(W-PL-PR);
+    if(bw<2)bw=2;
+    var col=colors?colors[i]:'#9f1239';
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(PL,y,bw,bh,4);ctx.fillStyle=col;ctx.fill();}
+    else{ctx.fillStyle=col;ctx.fillRect(PL,y,bw,bh);}
+    ctx.fillStyle='#1e293b';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(labels[i],PL-8,y+bh/2+4);
+    ctx.fillStyle='#1e293b';ctx.font='bold 12px Arial';ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(0)+(suffix||''),PL+bw+6,y+bh/2+4);
+  }
+}
+window.addEventListener('DOMContentLoaded',function(){
+  drawLineChart('pxChart',
+    ['10/01','10/02','10/05','10/06','10/07','10/08','10/12','10/13','10/14','10/15','10/16'],
+    [1085,1190,1180,1205,1215,1130,1115,1015,1020,923,921],
+    '#9f1239',null,0);
+  drawLineChart('wafChart',
+    ['9/30','10/01','10/02','10/05','10/06','10/07','10/08','10/09','10/12','10/13','10/14'],
+    [81.30,78.60,83.85,82.75,84.00,83.95,80.50,79.20,75.20,73.40,71.15],
+    '#be123c',null,1);
+  drawBarChart('epsChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [6.18,0.87,3.05,3.52,4.12,4.61,3.97,7.90],
+    '#fda4af','#9f1239','#dc2626',2);
+  drawBarChart('nonopChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [3.43,-27.88,-4.56,-1.50,9.57,5.28,8.71,31.62],
+    '#fcd34d','#d97706','#dc2626',2);
+  drawLineChart('opmChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [20.16,21.93,16.60,15.23,8.49,16.41,10.55,9.35],
+    '#9f1239',null,1);
+  drawHBarChart('tgtChart',
+    ['現價（10/16）','野村（7月初）','法人（火災後）','凱基（9/22 維持）','官股投顧（7月中）'],
+    [921,1200,1600,1500,1735],
+    ['#dc2626','#94a3b8','#94a3b8','#16a34a','#94a3b8'],' 元');
+});
+</script>
+</body>
+</html>
