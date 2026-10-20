@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南亞科(2408) 深度研究報告 第4次 | 2026-10-20</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+    --accent:#0c4a6e;--accent2:#0284c7;--accent3:#bae6fd;
+    --green:#16a34a;--red:#dc2626;--yellow:#d97706;--blue:#2563eb;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.6}
+  a{color:var(--accent)}
+  td,th{font-variant-numeric:tabular-nums}
+
+  .cover{background:linear-gradient(135deg,#021220 0%,#082f49 32%,#0c4a6e 68%,#38bdf8 100%);color:#fff;padding:56px 40px 48px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-70px;right:-50px;width:310px;height:310px;border-radius:50%;background:rgba(255,255,255,0.06)}
+  .cover::after{content:'';position:absolute;bottom:-90px;left:-50px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.04)}
+  .cover-ticker{font-size:13px;opacity:.72;margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+  .cover-name{font-size:36px;font-weight:800;line-height:1.1;margin-bottom:6px}
+  .cover-subtitle{font-size:15px;opacity:.85;margin-bottom:24px}
+  .cover-price-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:10px}
+  .cover-price{font-size:54px;font-weight:900;line-height:1}
+  .cover-chg{font-size:21px;padding:4px 14px;border-radius:8px;background:rgba(220,38,38,0.35);border:1px solid rgba(252,165,165,0.6)}
+  .price-note{display:inline-block;font-size:12.5px;background:rgba(0,0,0,0.32);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 13px;margin-bottom:22px;line-height:1.65}
+  .cover-meta{display:flex;gap:24px;flex-wrap:wrap}
+  .cover-meta-item{font-size:13px;opacity:.8}
+  .cover-meta-item strong{opacity:1;font-weight:700}
+  .risk-badge{position:absolute;top:32px;right:40px;background:rgba(217,119,6,0.32);border:1.5px solid rgba(251,191,36,0.7);border-radius:12px;padding:10px 18px;text-align:center}
+  .risk-badge .num{font-size:28px;font-weight:900;color:#fde68a}
+  .risk-badge .lbl{font-size:11px;opacity:.88;letter-spacing:1px}
+  .report-no-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(186,230,253,0.25);border:1px solid rgba(186,230,253,0.5);border-radius:8px;padding:3px 12px;font-size:12px;margin-bottom:12px}
+
+  .container{max-width:960px;margin:0 auto;padding:0 20px 60px}
+  section{margin-top:32px}
+  .section-title{font-size:18px;font-weight:800;color:var(--accent);border-left:4px solid var(--accent);padding-left:12px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .section-num{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+  .card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07),0 0 0 1px var(--border)}
+  .card + .card{margin-top:12px}
+
+  .verdict-box{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border:2px solid #0c4a6e;border-radius:14px;padding:20px 24px;margin-bottom:14px}
+  .verdict-box h4{font-size:15px;font-weight:800;color:#082f49;margin-bottom:10px}
+  .verdict-box p{font-size:13.5px;line-height:1.75;color:#082f49}
+  .verdict-box p + p{margin-top:9px}
+
+  .conclusion-card{background:linear-gradient(135deg,#021220 0%,#082f49 55%,#0284c7 100%);color:#fff;border-radius:16px;padding:28px 32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+  .conc-item .label{font-size:11px;opacity:.68;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+  .conc-item .val{font-size:21px;font-weight:800;line-height:1.15}
+  .conc-item .sub{font-size:12px;opacity:.78;margin-top:4px}
+  @media(max-width:640px){.conclusion-card{grid-template-columns:1fr 1fr}}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+  .kpi-card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border);text-align:center}
+  .kpi-label{font-size:11px;color:var(--muted);margin-bottom:4px;letter-spacing:.5px}
+  .kpi-val{font-size:20px;font-weight:800;color:var(--accent)}
+  .kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+  .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.charts-grid{grid-template-columns:1fr}}
+  .chart-box{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border)}
+  .chart-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px}
+  .chart-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center;line-height:1.55}
+
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{background:var(--bg);padding:8px 12px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px;white-space:nowrap}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+  .tag-green{background:#dcfce7;color:#16a34a}
+  .tag-red{background:#fee2e2;color:#dc2626}
+  .tag-yellow{background:#fef9c3;color:#d97706}
+  .tag-blue{background:#dbeafe;color:#2563eb}
+  .tag-sky{background:#e0f2fe;color:#0c4a6e}
+
+  .analyst-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.analyst-grid{grid-template-columns:1fr}}
+  .analyst-card{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border)}
+  .analyst-card h4{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .analyst-card ul{list-style:none;padding:0}
+  .analyst-card li{font-size:13px;padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px}
+  .analyst-card li:last-child{border-bottom:none}
+  .bull-icon{color:#16a34a;font-weight:900;flex-shrink:0}
+  .bear-icon{color:#dc2626;font-weight:900;flex-shrink:0}
+
+  .score-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+  .score-label{width:104px;font-size:13px;flex-shrink:0}
+  .score-bar-bg{flex:1;height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+  .score-bar-fill{height:100%;border-radius:5px}
+  .score-num{width:36px;font-size:13px;font-weight:700;text-align:right;flex-shrink:0}
+
+  .strategy-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:640px){.strategy-grid{grid-template-columns:1fr}}
+  .strat-card{border-radius:14px;padding:20px;color:#fff}
+  .strat-card.attack{background:linear-gradient(135deg,#dc2626,#ef4444)}
+  .strat-card.balance{background:linear-gradient(135deg,#0c4a6e,#0284c7)}
+  .strat-card.defend{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+  .strat-card h3{font-size:15px;font-weight:800;margin-bottom:12px}
+  .strat-item{font-size:13px;margin:6px 0;display:flex;gap:8px}
+  .strat-item span:first-child{opacity:.75;flex-shrink:0}
+
+  .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.tech-grid{grid-template-columns:1fr}}
+
+  .alert{border-radius:10px;padding:14px 18px;margin-bottom:12px;font-size:13px;display:flex;gap:12px;align-items:flex-start;line-height:1.7}
+  .alert-red{background:#fee2e2;border-left:4px solid #dc2626;color:#7f1d1d}
+  .alert-green{background:#dcfce7;border-left:4px solid #16a34a;color:#14532d}
+  .alert-yellow{background:#fef9c3;border-left:4px solid #d97706;color:#713f12}
+  .alert-sky{background:#e0f2fe;border-left:4px solid #0c4a6e;color:#082f49}
+
+  .disclaimer{background:#fef9c3;border:1px solid #d97706;border-radius:10px;padding:16px 20px;font-size:12px;color:#713f12;margin-top:32px}
+
+  .glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:540px){.glossary-grid{grid-template-columns:1fr}}
+  .glossary-item{background:var(--card);border-radius:10px;padding:12px 14px;border:1px solid var(--border)}
+  .glossary-term{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:4px}
+  .glossary-def{font-size:12px;color:var(--muted);line-height:1.5}
+
+  .calc-box{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:12px;font-size:12.5px;line-height:1.7}
+  .calc-box .row{display:flex;justify-content:space-between;gap:12px;padding:3px 0;border-bottom:1px dashed #cbd5e1}
+  .calc-box .row:last-child{border-bottom:none;font-weight:800;color:var(--accent);padding-top:7px}
+  .calc-title{font-size:12px;font-weight:800;color:var(--accent);margin-bottom:7px;letter-spacing:.5px}
+
+  .timeline{margin-top:14px;border-left:2px solid var(--accent3);padding-left:18px}
+  .tl-item{position:relative;padding-bottom:14px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{content:'';position:absolute;left:-25px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid #fff}
+  .tl-date{font-size:11.5px;font-weight:800;color:var(--accent);letter-spacing:.5px}
+  .tl-text{font-size:12.5px;color:var(--text);line-height:1.65;margin-top:2px}
+  .tl-item.bad::before{background:#dc2626}
+  .tl-item.bad .tl-date{color:#dc2626}
+  .tl-item.good::before{background:#16a34a}
+  .tl-item.good .tl-date{color:#16a34a}
+
+  .neg{color:#dc2626;font-weight:700}
+  .pos{color:#16a34a;font-weight:700}
+
+  .scorecard{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  @media(max-width:640px){.scorecard{grid-template-columns:1fr}}
+  .sc-item{border-radius:10px;padding:14px 16px}
+  .sc-hit{background:#dcfce7;border:1px solid #86efac}
+  .sc-miss{background:#fee2e2;border:1px solid #fca5a5}
+  .sc-partial{background:#fef9c3;border:1px solid #fcd34d}
+  .sc-head{font-size:12px;font-weight:800;margin-bottom:6px}
+  .sc-hit .sc-head{color:#14532d}
+  .sc-miss .sc-head{color:#7f1d1d}
+  .sc-partial .sc-head{color:#713f12}
+  .sc-body{font-size:12.5px;line-height:1.65;color:#334155}
+</style>
+</head>
+<body>
+
+<!-- 01 封面 -->
+<div class="cover">
+  <div class="risk-badge">
+    <div class="num">4.8</div>
+    <div class="lbl">風險等級</div>
+  </div>
+  <div class="cover-ticker">TWSE 2408 · 上市 · DRAM 記憶體</div>
+  <div class="report-no-badge">第 4 次報告 ｜ 前次 2026-07-20</div>
+  <div class="cover-name">南亞科</div>
+  <div class="cover-subtitle">Q3 單季每股賺 25.40 元、毛利率 85.7% 雙創新高 · 法說會後六個交易日卻跌 19% · 這是「低本益比陷阱」的教科書案例</div>
+  <div class="cover-price-row">
+    <div class="cover-price">427.0</div>
+    <div class="cover-chg">−9.0 (−2.06%)</div>
+  </div>
+  <div class="price-note">2026-10-20 盤中（開 425.0 / 高 430.5 / 低 422.5；昨收 436.0）<br>漲停 479.5 · 跌停 392.5（修正值；詳見第 09 節）</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">市值 <strong>約 1.473 兆</strong></div>
+    <div class="cover-meta-item">近四季本益比 <strong>8.4 倍</strong></div>
+    <div class="cover-meta-item">2026F 本益比 <strong>5.6 倍</strong></div>
+    <div class="cover-meta-item">距 52 週高 <strong>−25.0%</strong></div>
+    <div class="cover-meta-item">報告日 <strong>2026-10-20</strong></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 02 對帳 -->
+<section>
+  <div class="section-title"><span class="section-num">1</span>🔴 先對帳：第 3 次報告（2026-07-20）誠實驗收</div>
+  <div class="card">
+    <p style="font-size:13.5px;line-height:1.85">第 3 次報告寫於 2026-07-20，當時盤中 393 元（<strong>實際收盤 381.0 元</strong>）。以下逐項驗收，<strong>對錯並列，不只報喜</strong>。</p>
+    <div class="scorecard">
+      <div class="sc-item sc-hit">
+        <div class="sc-head">✅ 方向判斷：正確</div>
+        <div class="sc-body">第 3 次在 393 元建議「分批建倉」（第一批 370~395 元），方向看多。<strong>收盤 381 元正落在建議區間內。</strong><br>· 381 → 今日 427 元 ＝ <strong>+12.07%</strong><br>· 期間最高收盤 543.0 元（8/31）＝ 自 381 元 <strong>+42.5%</strong><br>· 期間盤中最高 <strong>569.0 元（8/28）</strong>＝ +49.3%<br>即使含近期重挫，持有至今仍為正報酬。</div>
+      </div>
+      <div class="sc-item sc-hit">
+        <div class="sc-head">✅ 目標價一（460 元）：達成</div>
+        <div class="sc-body"><strong>2026-08-10 收盤 502.0 元</strong>，首度突破 460 元，距報告日僅 <strong>15 個交易日</strong>。自報告價 393 元起算 <strong>+27.7%</strong>，達成速度遠快於原報告預設的「2~6 個月」。</div>
+      </div>
+      <div class="sc-item sc-partial">
+        <div class="sc-head">⚠️ 目標價二（545 元）：差 2 元，收盤未達</div>
+        <div class="sc-body">期間<strong>最高收盤 543.0 元</strong>（8/31），距 545 元僅差 <strong>2.0 元（0.37%）</strong>，依收盤標準<strong>未達成</strong>；但<strong>盤中最高 569.0 元已超過</strong>。判定「部分達成」。<br><strong>教訓：目標價若不註明「收盤或盤中」，驗收會產生歧義。本次報告已統一改為收盤價基準。</strong></div>
+      </div>
+      <div class="sc-item sc-miss">
+        <div class="sc-head">🔴 停損：價位被擊破，靠「兩日確認」條款僥倖未出場</div>
+        <div class="sc-body"><strong>這是本次對帳最該誠實交代的一項。</strong><br>· 7/29 收 353.5 元 → <strong>攻擊型停損 370 元觸發出場</strong>，自 393 元虧 −10.05%<br>· 7/30 收 <strong>328.0 元</strong>、盤中最低 322.0 元 → <strong>均衡型停損價 345 元被貫破</strong>，自 393 元虧 <strong>−16.54%</strong>（盤中 −18.07%）<br>· 但原條件為「<strong>連續兩日</strong>收盤在 345 元以下」，7/31 已反彈至 360.5 元——<strong>整段期間只有 7/30 一天</strong>收在 345 以下，嚴格依規則<strong>並未出場</strong><br>· 事後看未出場是對的：7/30 低點 322 元之後漲到 8/28 的 569 元，<strong>+76.7%</strong><br><strong>誠實評價：這不是判斷正確，是停損設得太近、靠條款僥倖。</strong>第 3 次把停損設在 MA60（354 元）下方僅 9 元，對一檔布林帶寬經常超過 15% 的高波動 DRAM 股明顯不足。<strong>本次已放寬緩衝。</strong></div>
+      </div>
+      <div class="sc-item sc-miss">
+        <div class="sc-head">🔴 Q2'26 EPS 預估：嚴重低估</div>
+        <div class="sc-body">第 3 次推估 Q2'26 EPS <strong>10~12 元</strong>，實際公告 <strong>14.66 元</strong>。對上緣低估 <strong>18.6%</strong>、對下緣低估 31.8%。<br><strong>低估原因：</strong>報告假設「毛利率可望維持 65%+」，實際 Q2 毛利率衝到 <strong>79.49%</strong>，高出假設 14.5 個百分點。<strong>DRAM 漲價期的營運槓桿被嚴重低估。</strong></div>
+      </div>
+      <div class="sc-item sc-miss">
+        <div class="sc-head">🔴 FY2026E EPS 44.79 元：低估近一半</div>
+        <div class="sc-body">第 3 次引用法人 FY2026E EPS <strong>44.79 元</strong>（市場共識區間 35~45 元）。<br><strong>實際進度：H1'26 已賺 23.07 元、Q3'26 再賺 25.40 元，前三季累計 48.47 元</strong>，單憑三季就超過原全年預估 8.2%。最新 FactSet 13 位分析師共識已上修至 <strong>76.14 元</strong>，較原 44.79 元高 <strong>+70.0%</strong>。<br><strong>判定：錯（嚴重低估）。但這同時也是市場共識的集體錯誤，不是本系列獨有的誤判。</strong></div>
+      </div>
+      <div class="sc-item sc-miss">
+        <div class="sc-head">🔴 H1'26 累積營收 1,159.83 億：算錯了</div>
+        <div class="sc-body">第 3 次寫 H1'26 累積營收「約 1,159.83 億元」。<br><strong>實際：Q1'26 490.87 億 ＋ Q2'26 825.49 億 ＝ 1,316.36 億元。</strong>以換算後月營收加總（1~6 月）亦為 1,316.36 億，兩者完全一致。<br><strong>原報告低估 156.53 億元（−11.89%），研判是只加總了 5 個月、漏掉一個月。判定：算術錯誤。</strong></div>
+      </div>
+      <div class="sc-item sc-hit">
+        <div class="sc-head">✅ TTM EPS 11.17 元與風險劇本：皆正確</div>
+        <div class="sc-body"><strong>(a)</strong> 第 3 次算的近四季 EPS ＝ Q2'25 −1.32 ＋ Q3'25 0.50 ＋ Q4'25 3.58 ＋ Q1'26 8.41 ＝ <strong>11.17 元</strong>，計算正確；對應 TTM 本益比 35.2 倍亦正確。<br><strong>(b)</strong> 第 3 次把「最大風險」寫為「DRAM 循環反轉／2027 年產能擴張超過需求成長」，並標註「2027 Q1 為供需轉折確認點」。<strong>如今市場爭論的正是同一件事——風險框架抓對了。</strong></div>
+      </div>
+    </div>
+    <div class="alert alert-sky" style="margin-top:14px;margin-bottom:0">
+      <div>📌</div>
+      <div><strong>對帳總結：方向與目標價一做對，但三項數字算錯或低估（Q2 EPS、全年 EPS、H1 營收），停損設定也明顯過窄。</strong>最重要的教訓是：<strong>在循環股的漲價期，營運槓桿會讓獲利遠超線性推估</strong>——第 3 次用 65% 毛利率假設，實際跑到 79.49%，再到 Q3 的 85.7%。<strong>本次報告因此改用「月營收加總 ＋ 成本結構外推」的方法，並在下節呈現其驗證結果。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 方法驗證 -->
+<section>
+  <div class="section-title"><span class="section-num">2</span>✅ 方法驗證：月營收加總法三季全中</div>
+  <div class="card">
+    <div class="calc-title">資料庫月份換算規則的三季交叉驗證</div>
+    <p style="font-size:13.5px;line-height:1.85">本系列採用的規則是：<strong>資料庫申報月份 − 1 ＝ 實際賺取月份</strong>。南亞科的驗證結果是本系列至今最乾淨的一檔：</p>
+    <div class="table-wrap" style="margin-top:12px">
+    <table>
+      <tr><th>季度</th><th>換算後月營收加總</th><th>財報／法說會公布值</th><th>誤差</th></tr>
+      <tr><td>2026 Q1</td><td>153.10 ＋ 156.07 ＋ 181.70 ＝ <strong>490.87 億</strong></td><td><strong>490.87 億</strong>（財報）</td><td class="pos"><strong>0.00%</strong></td></tr>
+      <tr><td>2026 Q2</td><td>254.91 ＋ 276.70 ＋ 293.88 ＝ <strong>825.49 億</strong></td><td><strong>825.49 億</strong>（財報）</td><td class="pos"><strong>0.00%</strong></td></tr>
+      <tr style="background:#dcfce7"><td><strong>2026 Q3</strong></td><td>438.68 ＋ 446.90 ＋ 450.91 ＝ <strong>1,336.49 億</strong></td><td><strong>1,336.49 億</strong>（10/12 法說會）</td><td class="pos"><strong>0.00%</strong></td></tr>
+    </table>
+    </div>
+    <div class="alert alert-green" style="margin-top:12px;margin-bottom:0">
+      <div>✅</div>
+      <div><strong>三季全部精準吻合至元位。</strong>這代表月份換算規則在本檔完全成立，而且<strong>只要月營收公告齊備，就能在財報之前精確算出季營收</strong>。<br><br><strong>更進一步的驗證：</strong>在 10/12 法說會公布前，以 Q2 成本結構外推 Q3 EPS 得到 <strong>24.99 ~ 25.75 元</strong>區間；<strong>實際公布 25.40 元</strong>，落在區間正中（誤差 −1.6% ~ +1.4%）。<strong>這套「月營收加總 ＋ 成本結構外推」的方法在本檔可用。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 核心結論 -->
+<section>
+  <div class="section-title"><span class="section-num">3</span>核心結論</div>
+  <div class="verdict-box">
+    <h4>一句話說完這檔股票</h4>
+    <p><strong>南亞科現在的問題不是「賺不賺錢」，而是「這些錢能賺多久」。</strong>Q3 單季每股賺 <strong>25.40 元</strong>、毛利率 <strong>85.7%</strong>、營益率 <strong>80.0%</strong>——全部歷史新高，而且業外只佔稅前淨利 <strong>2.4%</strong>，獲利幾乎純本業。負債比僅 <strong>16.8%</strong>、淨現金 <strong>1,992 億元</strong>。財務面幾乎找不到瑕疵。</p>
+    <p><strong>但 10 月 12 日法說會公布歷史最佳財報，當天股價卻收跌 0.94%；之後六個交易日從 527 元跌到 427 元，−19.0%，10/15 盤中還精準觸及跌停。</strong>這是教科書級的「賣在消息上」。</p>
+    <p><strong>關鍵在於：市場用 2027 年預估 EPS 算，本益比只有約 3.4 倍。</strong>這不代表「便宜到不可思議」，而是<strong>市場根本不相信 2027 年能維持這個獲利水準</strong>。這就是「低本益比陷阱」——週期股在獲利高峰時本益比天生就低，因為分母（EPS）是不可持續的峰值。</p>
+  </div>
+
+  <div class="conclusion-card">
+    <div class="conc-item">
+      <div class="label">投資建議</div>
+      <div class="val">區間承接 · 不追價</div>
+      <div class="sub">已跌破布林下軌（超賣）<br>但技術面四線全空</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">參考價值區間</div>
+      <div class="val">392 ~ 446</div>
+      <div class="sub">跌停 392.5 / MA5 446.10<br>法人目標價 555~681 元</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">最大風險</div>
+      <div class="val">峰值盈餘 + 位元零成長</div>
+      <div class="sub">Q3 位元出貨季減中個位數%<br>獲利 100% 來自漲價</div>
+    </div>
+  </div>
+
+  <div class="alert alert-red" style="margin-top:14px">
+    <div>🔴</div>
+    <div><strong>三個必須正視的裂縫：</strong><br>
+    <strong>①</strong> <strong>Q3 位元出貨（銷售量）季減中個位數百分比</strong>——獲利 100% 來自漲價，<strong>沒有一絲量的成長</strong>，公司並明示 2027 年新廠投產前位元出貨將維持持平。<br>
+    <strong>②</strong> <strong>漲價動能正在收斂</strong>：TrendForce 估 2026 Q3 伺服器 DRAM 合約價季增 13~18%，<strong>Q4 傳統 DRAM 收斂至 10~15%</strong>。<br>
+    <strong>③</strong> <strong>自由現金流黃金期即將結束</strong>：H1 資本支出僅 68.6 億，但全年上限已上修至 <strong>697 億元</strong>，意味 H2 要衝 628 億；屏東新廠另有 <strong>100 億美元</strong>計畫。</div>
+  </div>
+  <div class="alert alert-green">
+    <div>🟢</div>
+    <div><strong>但供給面的敘事其實偏緊，這點與空方觀點直接衝突，必須並列：</strong><strong>SK 海力士公開預期 2027 年將是產業史上供給最吃緊的一年</strong>，且<strong>現在核准的產能要到 2029 年才會產出首批晶圓</strong>。另有（非正式）業界消息稱三大廠 2027 年 DRAM 與 HBM 產能已大致售罄、買方僅能拿到原需求的 60~70%。TrendForce 亦指 2027 年 PC DRAM 供給可能因產能轉向伺服器而減少。</div>
+  </div>
+  <div class="alert alert-sky">
+    <div>⚖️</div>
+    <div><strong>所以真正的矛盾是這個：產業敘事說 2027 年供給吃緊，但市場只願意用 3.4 倍本益比評價 2027 年的預估獲利。</strong>兩者不可能同時正確。<br><strong>本報告的判讀：</strong>供給吃緊主要集中在 <strong>HBM 與伺服器 DRAM</strong>，而南亞科以<strong>傳統 DRAM（DDR4／DDR5）</strong>為主、HBM 並非其主力。<strong>市場的折價可能不是不信「DRAM 緊」，而是不信「南亞科能分到這波緊俏的紅利」。</strong>這個區別決定了這檔股票值 3.4 倍還是 8 倍本益比。</div>
+  </div>
+</section>
+
+<!-- 05 KPI -->
+<section>
+  <div class="section-title"><span class="section-num">4</span>關鍵財務 KPI（八格速覽）</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Q3'26 單季每股盈餘</div>
+      <div class="kpi-val">25.40 元</div>
+      <div class="kpi-sub"><strong>歷史新高</strong>、季增 73.3%<br>單季賺 2.5 個股本</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q3'26 毛利率 / 營益率</div>
+      <div class="kpi-val">85.7% / 80.0%</div>
+      <div class="kpi-sub">毛利率季增 6.2 個百分點<br><strong>雙創新高</strong></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">近四季每股盈餘（還原）</div>
+      <div class="kpi-val">50.72 元</div>
+      <div class="kpi-sub">本益比 <strong>8.4 倍</strong><br>未還原直接相加為 52.05 元</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">業外佔稅前淨利</div>
+      <div class="kpi-val" style="color:#16a34a">僅 2.4%</div>
+      <div class="kpi-sub">Q2'26｜<strong>97.6% 來自本業</strong><br>自 Q3'25 的 44.7% 持續下降</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Q3'26 單季營收</div>
+      <div class="kpi-val">1,336.5 億</div>
+      <div class="kpi-sub">季增 61.9%<br>月營收加總驗證 <strong>誤差 0.00%</strong></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">淨現金 / 負債比</div>
+      <div class="kpi-val" style="color:#16a34a">1,992 億 / 16.8%</div>
+      <div class="kpi-sub">現金 2,176 億 − 借款 184 億<br>佔市值 <strong>13.5%</strong></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">2026F 本益比</div>
+      <div class="kpi-val">5.6 倍</div>
+      <div class="kpi-sub">FactSet 13 位共識 76.14 元<br><span style="color:#dc2626">2027F 僅約 3.4 倍</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">年化波動率</div>
+      <div class="kpi-val" style="color:#dc2626">87.7%</div>
+      <div class="kpi-sub"><strong>本系列最高</strong><br>52 週區間 102 ~ 569 元</div>
+    </div>
+  </div>
+  <div class="alert alert-yellow" style="margin-top:12px">
+    <div>⚠️</div>
+    <div><strong>KPI 讀法提醒：上表「近四季每股盈餘 50.72 元」已做股數還原。</strong>南亞科在 2026 年第 2 季完成大額增資——由各季「稅後淨利 ÷ EPS」反推，隱含股數自 Q1'26 的 <strong>30.99 億股</strong>跳升至 Q2'26 的 <strong>34.24 億股（+10.5%）</strong>。<strong>把不同股數基礎的季 EPS 直接相加會失真</strong>，故本報告一律以「稅後淨利 ÷ 現行股數 34.502 億股」重算。</div>
+  </div>
+</section>
+
+<!-- 06 圖表 -->
+<section>
+  <div class="section-title"><span class="section-num">5</span>財務與價格趨勢圖（純 Canvas 繪製）</div>
+  <div class="charts-grid">
+    <div class="chart-box">
+      <div class="chart-title">🔴 股價（2026-10-01 ~ 10-20，元）</div>
+      <canvas id="pxChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">10/12 法說會公布歷史最佳財報當日收 527（<strong>−0.94%，利多不漲</strong>），之後六個交易日跌至 427，<strong>−19.0%</strong></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">🟢 每股盈餘（已還原股本，近 8 季，元）</div>
+      <canvas id="epsChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">自 Q2'25 的 <strong>−1.19 元</strong>到 Q3'26 的 <strong>25.40 元</strong>，五季翻轉。全部以現行 34.502 億股重算</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">🟢 毛利率 季度趨勢（近 8 季，%）</div>
+      <canvas id="gmChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">自 Q2'25 的 <strong>−20.56%</strong> 到 Q3'26 的 <strong>85.7%</strong>——<strong>106 個百分點的翻轉</strong>，這是 DRAM 超級循環的威力</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">季營收（近 8 季，億元）</div>
+      <canvas id="qrevChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">Q4'24 的 65.75 億 → Q3'26 的 1,336.49 億，<strong>8 季成長 20.3 倍</strong></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">月營收（2026 實際月份，億元）</div>
+      <canvas id="mrChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">1 月 153.10 億 → 9 月 450.91 億。<strong>但 7~9 月已趨平（438.68／446.90／450.91），動能放緩</strong></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">現價 vs 法人目標價（元）</div>
+      <canvas id="tgtChart" width="420" height="230" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">瑞銀／大摩／美銀為 Q2 法說後（8 月）數字；共識 681 元為 FactSet。<strong>Q3 法說後尚未查得更新</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 基本面 -->
+<section>
+  <div class="section-title"><span class="section-num">6</span>基本面分析</div>
+  <div class="card">
+    <div class="calc-title">八季財報全貌（單季數；EPS 已還原為現行 34.502 億股）</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>季度</th><th>營收(億)</th><th>毛利率</th><th>營益率</th><th>營業利益(億)</th><th>業外(億)</th><th>業外/稅前</th><th>淨利(億)</th><th>EPS<br>（原報）</th><th>EPS<br>（還原）</th></tr>
+      <tr><td>2024 Q4</td><td>65.75</td><td class="neg">−10.56%</td><td class="neg">−42.76%</td><td class="neg">−28.12</td><td>+8.99</td><td>−47.0%</td><td class="neg">−15.74</td><td class="neg">−0.51</td><td class="neg">−0.46</td></tr>
+      <tr><td>2025 Q1</td><td>71.88</td><td class="neg">−14.95%</td><td class="neg">−43.90%</td><td class="neg">−31.55</td><td>+7.32</td><td>−30.2%</td><td class="neg">−19.41</td><td class="neg">−0.63</td><td class="neg">−0.56</td></tr>
+      <tr style="background:#fee2e2"><td>2025 Q2</td><td>105.26</td><td class="neg"><strong>−20.56%</strong></td><td class="neg">−42.76%</td><td class="neg">−45.01</td><td class="neg">−5.99</td><td>11.7%</td><td class="neg">−41.02</td><td class="neg"><strong>−1.32</strong></td><td class="neg"><strong>−1.19</strong></td></tr>
+      <tr><td>2025 Q3</td><td>187.79</td><td class="pos">18.45%</td><td class="pos">5.96%</td><td class="pos">+11.19</td><td>+9.04</td><td>44.7%</td><td class="pos">+15.63</td><td class="pos">0.50</td><td class="pos">0.45</td></tr>
+      <tr><td>2025 Q4</td><td>300.94</td><td>49.05%</td><td>39.15%</td><td>117.81</td><td>+16.02</td><td>12.0%</td><td>110.93</td><td>3.58</td><td>3.22</td></tr>
+      <tr><td>2026 Q1</td><td>490.87</td><td>67.89%</td><td>61.34%</td><td>301.11</td><td>+16.07</td><td>5.1%</td><td>260.59</td><td>8.41</td><td>7.55</td></tr>
+      <tr><td>2026 Q2</td><td>825.49</td><td>79.49%</td><td>73.68%</td><td>608.26</td><td>+15.03</td><td class="pos"><strong>2.4%</strong></td><td>501.92</td><td>14.66</td><td>14.55</td></tr>
+      <tr style="background:#e0f2fe"><td><strong>2026 Q3</strong></td><td><strong>1,336.49</strong></td><td><strong>85.70%</strong></td><td><strong>80.00%</strong></td><td><strong>約 1,069</strong></td><td>—</td><td>—</td><td><strong>約 876</strong></td><td><strong>25.40</strong></td><td><strong>25.40</strong></td></tr>
+      <tr style="background:#f0f9ff"><td>近四季合計</td><td><strong>2,953.79</strong></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><strong>52.05</strong></td><td><strong>50.72</strong></td></tr>
+    </table>
+    </div>
+    <div class="chart-note" style="text-align:left;margin-top:10px">Q3'26 之營業利益與淨利為本報告以法說會公布之營收 1,336.49 億、營益率 80.0%、及 Q2 有效稅率 19.5% 推算（約 1,069 億／876 億），<strong>非財報原始值</strong>（Q3 財報尚未正式公布）。其餘季度為 FinMind 財報原始值。Q3'25 以 EPS 0.50 元終結<strong>連 11 季虧損</strong>。</div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">🟢 獲利品質：業外佔比持續下降至 2.4%</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>季度</th><th>業外(億)</th><th>業外 / 稅前淨利</th><th>解讀</th></tr>
+      <tr><td>2025 Q3</td><td>+9.04</td><td>44.7%</td><td>剛轉盈，本業微薄，業外佔比高</td></tr>
+      <tr><td>2025 Q4</td><td>+16.02</td><td>12.0%</td><td>本業快速放大</td></tr>
+      <tr><td>2026 Q1</td><td>+16.07</td><td>5.1%</td><td></td></tr>
+      <tr style="background:#dcfce7"><td><strong>2026 Q2</strong></td><td>+15.03</td><td class="pos"><strong>2.4%</strong></td><td><strong>97.6% 來自本業</strong></td></tr>
+    </table>
+    </div>
+    <div class="alert alert-green" style="margin-top:12px;margin-bottom:0">
+      <div>✅</div>
+      <div><strong>這一點必須和本系列近期分析過的個股對照：</strong>眾達-KY 業外佔稅前 <strong>69%</strong>、環球晶 <strong>69%</strong>（Q2'26 單季）、大洋約 <strong>92%</strong>、晉泰 13.9%、台光電 0.4%。<strong>南亞科的 2.4% 屬於最乾淨的一端——這個 EPS 是賣 DRAM 賺來的，不是靠評價利益或匯兌。</strong>而且業外絕對金額穩定在 15~16 億，沒有異常跳動。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">🔴 但這是「低本益比陷阱」的典型形態</div>
+    <div class="calc-box">
+      <div class="row"><span>近四季本益比（還原後 EPS 50.72 元）</span><span><strong>8.4 倍</strong>　<span class="tag tag-yellow">看起來便宜</span></span></div>
+      <div class="row"><span>2026 年本益比（FactSet 13 位共識 76.14 元）</span><span><strong>5.6 倍</strong>　<span class="tag tag-yellow">更便宜</span></span></div>
+      <div class="row"><span>2027 年本益比（市場流通之 126 元預估）</span><span><strong>約 3.4 倍</strong>　<span class="tag tag-red">便宜到不合理</span></span></div>
+      <div class="row"><span><strong>這代表什麼</strong></span><span><strong>市場不相信 2027 年能賺 126 元</strong></span></div>
+    </div>
+    <div class="alert alert-red" style="margin-top:12px">
+      <div>🔴</div>
+      <div><strong>週期股在獲利高峰時本益比天生就低，因為分母是不可持續的峰值。</strong>3.4 倍的 2027 年本益比不是「市場誤判」，而是市場對「峰值盈餘可持續性」投下的不信任票。<br><strong>判斷這檔股票的關鍵，不是去算本益比多低，而是回答一個問題：Q3 的 85.7% 毛利率，能維持幾季？</strong></div>
+    </div>
+    <div class="alert alert-yellow" style="margin-bottom:0">
+      <div>⚠️</div>
+      <div><strong>一個更誠實的估值錨點：股價淨值比。</strong>Q2'26 底每股淨值 93.49 元；加回 Q3 賺的 25.40 元，Q3 底約 <strong>118.9 元</strong>。以現價 427 元計，<strong>股價淨值比約 3.6 倍</strong>（若以 Q2 底淨值計為 4.57 倍）。<strong>對一檔循環高峰期的 DRAM 股，3.6 倍股價淨值比既不便宜也不算貴——這比本益比 3.4 倍的錯覺誠實得多。</strong></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">財務結構與資本支出轉折</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>項目</th><th>數值</th><th>解讀</th></tr>
+      <tr><td>現金 / 總借款 / 淨現金</td><td>2,176 億 / 184 億 / <strong>1,992 億</strong></td><td><span class="tag tag-green">極強</span>淨現金佔市值 13.5%</td></tr>
+      <tr><td>負債比</td><td class="pos"><strong>16.8%</strong></td><td><span class="tag tag-green">本系列最低</span>（環球晶 55.9%、台光電 63.2%）</td></tr>
+      <tr><td>單季自由現金流</td><td class="pos">約 518 億元</td><td>循環高峰的現金收割期</td></tr>
+      <tr style="background:#fef9c3"><td><strong>H1'26 資本支出</strong></td><td>僅 <strong>68.6 億元</strong></td><td rowspan="2"><strong>🔴 H2 要衝約 628 億元</strong>——自由現金流黃金期即將結束</td></tr>
+      <tr style="background:#fef9c3"><td><strong>FY2026 資本支出上限</strong></td><td>已上修至 <strong>697 億元</strong></td></tr>
+      <tr><td>屏東新廠計畫</td><td><strong>100 億美元</strong></td><td>3D 封裝與測試廠，2028 年底前導入矽穿孔（TSV）</td></tr>
+      <tr><td>新廠裝機時程</td><td><strong>2027 Q1 開始裝機</strong></td><td>2028 年底月投片 3 萬片；<strong>2030 年底月投片 5 萬片</strong></td></tr>
+      <tr><td>擴產策略</td><td colspan="2">公司強調<strong>未來擴建皆以客戶長期合約的 AI 專案為主要目標</strong></td></tr>
+    </table>
+    </div>
+    <div class="alert alert-sky" style="margin-top:12px;margin-bottom:0">
+      <div>📌</div>
+      <div><strong>「以客戶長期合約的 AI 專案為主」這句話值得留意。</strong>它暗示南亞科正試圖從「傳統 DRAM 現貨／合約」走向「AI 相關的長約」——若成功，峰值盈餘的可持續性會提高；但<strong>新產能最快 2028 年底才達 3 萬片／月，2030 年底才 5 萬片／月</strong>。<strong>也就是說：公司自己的擴產時程，證實了「2027 年新廠投產前位元出貨維持持平」這個說法。未來一年多，獲利完全取決於價格，不是數量。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 產業 -->
+<section>
+  <div class="section-title"><span class="section-num">7</span>DRAM 產業：多空敘事正面衝突</div>
+  <div class="card">
+    <div class="analyst-grid">
+      <div class="analyst-card">
+        <h4><span style="color:#16a34a">▲</span> 供給吃緊的證據</h4>
+        <ul>
+          <li><span class="bull-icon">·</span><div><strong>SK 海力士公開預期 2027 年將是產業史上供給最吃緊的一年</strong></div></li>
+          <li><span class="bull-icon">·</span><div><strong>現在核准的產能要到 2029 年才會產出首批晶圓</strong>——新增供給的前置期極長</div></li>
+          <li><span class="bull-icon">·</span><div>TrendForce：2026 Q3 伺服器 DRAM 合約價<strong>季增 13~18%</strong>；下半年至 2027 下半年<strong>仍逐季上漲</strong></div></li>
+          <li><span class="bull-icon">·</span><div>TrendForce：<strong>2027 年 PC DRAM 供給可能減少</strong>，因產能轉向伺服器應用</div></li>
+          <li><span class="bull-icon">·</span><div>現貨面：主流 DDR4 8Gb 於 2026/07/28 達 <strong>42.08 美元</strong>；<strong>長約限制了持約客戶的漲幅，壓力落在無長約的買方</strong></div></li>
+          <li><span class="bull-icon">·</span><div><span class="tag tag-yellow">非正式消息</span>有業界報導稱三大廠 2027 年 DRAM 與 HBM 產能<strong>已大致售罄</strong>、買方僅能拿到原需求的 60~70%</div></li>
+        </ul>
+      </div>
+      <div class="analyst-card">
+        <h4><span style="color:#dc2626">▼</span> 動能收斂與結構疑慮</h4>
+        <ul>
+          <li><span class="bear-icon">·</span><div><strong>漲幅正在收斂：</strong>伺服器 DRAM 合約價 Q3 季增 13~18% → <strong>Q4 傳統 DRAM 收斂至 10~15%</strong></div></li>
+          <li><span class="bear-icon">·</span><div><strong>南亞科 Q3 位元出貨季減中個位數百分比</strong>——獲利 100% 靠價格，<strong>零量成長</strong></div></li>
+          <li><span class="bear-icon">·</span><div>公司明示<strong>2027 年新廠投產前位元出貨將維持持平</strong>，新產能 2028 年底才達 3 萬片／月</div></li>
+          <li><span class="bear-icon">·</span><div><strong>🔴 結構性落差：供給吃緊主要集中在 HBM 與伺服器 DRAM，而南亞科以傳統 DDR4／DDR5 為主、HBM 非其主力</strong></div></li>
+          <li><span class="bear-icon">·</span><div>第 3 次報告已標註的風險點正在成形：<strong>2027 年三大廠新產能開出時點</strong>，是法人下修估值倍數的理由</div></li>
+          <li><span class="bear-icon">·</span><div><strong>市場用 3.4 倍本益比評價 2027 年預估獲利</strong>——這是對峰值盈餘可持續性最直接的不信任票</div></li>
+        </ul>
+      </div>
+    </div>
+    <div class="alert alert-sky" style="margin-top:14px;margin-bottom:0">
+      <div>⚖️</div>
+      <div><strong>兩邊的證據都是真的，矛盾在於「誰分得到」。</strong>若 2027 年真如 SK 海力士所言是史上最緊的一年，而產能又已售罄，那麼<strong>連傳統 DRAM 都會因為產能被排擠到伺服器而受益</strong>（TrendForce 的 PC DRAM 供給減少說法支持這點）——這對南亞科是好事。<br>但若 AI 需求集中在 HBM、而傳統 DRAM 因三大廠新產能開出而先鬆動，<strong>南亞科會是最早感受到壓力的一端</strong>。<br><strong>本報告無法判定哪一邊會發生，但可以指出觀察點：南亞科每月的「位元出貨量」是否由持平轉為成長，以及傳統 DRAM 合約價的季增幅能否止穩在 10% 以上。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 籌碼 -->
+<section>
+  <div class="section-title"><span class="section-num">8</span>籌碼面分析</div>
+  <div class="alert alert-yellow">
+    <div>ℹ️</div>
+    <div><strong>資料取得說明：</strong>本次透過 FinMind 查詢三大法人（資料日 2026-10-19）與融資融券，<strong>回傳值皆為 0</strong>。<strong>這是資料缺口，不代表「持平」或「餘額為零」</strong>，亦不可解讀為「融券為 0 → 注意軋空」。本次搜尋未能取得 10 月中下旬的官方籌碼數字。<strong>官方查詢管道：臺灣證券交易所（2408 為上市）每日盤後「三大法人買賣超日報」與「融資融券餘額」。</strong></div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">量能結構（可取得之客觀數據）</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>指標</th><th>數值</th><th>解讀</th></tr>
+      <tr><td><strong>5 日均成交金額</strong></td><td class="pos"><strong>295.6 億元</strong></td><td><span class="tag tag-green">流動性極佳</span>20 日均 244.0 億，本系列最高之一</td></tr>
+      <tr><td>5 日均量 / 20 日均量</td><td>63,633 張 / 48,806 張</td><td>近週量能明顯放大（下跌放量）</td></tr>
+      <tr><td>2026-10-13 成交量</td><td><strong>96,848 張</strong></td><td>法說會後首個交易日爆量，當日 −7.40%</td></tr>
+      <tr><td>2026-10-15 成交量</td><td>78,465 張</td><td>當日 −8.53%、<strong>盤中最低 432.5 精準觸及跌停</strong></td></tr>
+      <tr><td>2026-10-19 成交量</td><td>41,032 張</td><td><span class="tag tag-green">縮量</span>為 5 日均量的 0.64 倍</td></tr>
+    </table>
+    </div>
+    <div class="alert alert-green" style="margin-top:12px;margin-bottom:0">
+      <div>✅</div>
+      <div><strong>量能結構出現初步的賣壓衰退跡象：</strong>10/13 爆量 96,848 張下跌 → 10/15 78,465 張再跌 → <strong>10/19 縮至 41,032 張（僅 5 日均量 0.64 倍）</strong>。<strong>「量縮」通常是賣壓耗盡的前兆</strong>——第 3 次報告對帳時也看到同一型態：7/31 收 360.5 元時成交量僅 814 萬股（極度縮量），隨後八個交易日攻上 502 元。<strong>但量縮只是必要條件，不是充分條件，仍需配合價格止穩。</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 技術 -->
+<section>
+  <div class="section-title"><span class="section-num">9</span>技術分析（含腳本錯誤修正）</div>
+  <div class="card">
+    <div class="alert alert-red">
+      <div>🚨</div>
+      <div><strong>腳本錯誤修正一：漲跌停價算錯。</strong>行情腳本輸出「漲停 492.25 / 跌停 402.75」，反推其昨收為 <strong>447.50 元（即 10/16 收盤）——落後一個交易日</strong>；10/20 的昨收應為 10/19 的 <strong>436.0 元</strong>（現價 427 ＋ 9 ＝ 436）。且未套用最小升降單位取整。<br><strong>自行修正：</strong>436 × 1.1 ＝ 479.6 →（100~500 元升降單位 0.5 元，向內取整）＝ <strong>漲停 479.5 元</strong>；436 × 0.9 ＝ 392.4 → <strong>跌停 392.5 元</strong>。</div>
+    </div>
+    <div class="alert alert-red" style="margin-bottom:0">
+      <div>🚨</div>
+      <div><strong>腳本錯誤修正二：技術指標未含當日價。</strong>腳本輸出 MA5 458.30、MA10 491.95、MACD −11.22、布林下軌 443.10，經檢查<strong>僅計算至 2026-10-19，未納入 10/20 的 427 元</strong>。下表並列腳本值與重算值。<strong>這項差異會改變結論</strong>——以腳本的下軌 443.10 看，股價 427 已跌破 16.1 元；以重算的下軌 431.75 看，跌破 4.75 元，<strong>超賣程度沒有腳本顯示的那麼極端。</strong></div>
+    </div>
+  </div>
+
+  <div class="tech-grid">
+    <div class="card">
+      <div class="calc-title">均線系統（重算，含 10/20）</div>
+      <div class="table-wrap">
+      <table>
+        <tr><th>均線</th><th>重算值</th><th>股價 427 相對</th><th>腳本值</th></tr>
+        <tr><td>MA5</td><td><strong>446.10</strong></td><td class="neg">跌破 −4.28%</td><td>458.30</td></tr>
+        <tr><td>MA10</td><td><strong>481.65</strong></td><td class="neg">跌破 −11.35%</td><td>491.95</td></tr>
+        <tr><td>MA20（月線）</td><td><strong>498.62</strong></td><td class="neg">跌破 −14.36%</td><td>501.68</td></tr>
+        <tr><td>MA60（季線）</td><td><strong>486.02</strong></td><td class="neg">跌破 −12.14%</td><td>486.01</td></tr>
+      </table>
+      </div>
+      <p style="font-size:12.5px;line-height:1.7;margin-top:10px"><strong>股價跌破全部四條均線</strong>，且 MA20（498.62）高於 MA60（486.02），<strong>短中期均線尚未形成死亡交叉</strong>——代表這波下跌還屬於「高檔回落」而非「趨勢反轉確認」。<strong>反彈的第一個確認訊號是站回 MA5（446.10）。</strong></p>
+    </div>
+
+    <div class="card">
+      <div class="calc-title">動能與通道（重算，含 10/20）</div>
+      <div class="table-wrap">
+      <table>
+        <tr><th>指標</th><th>重算值</th><th>腳本值</th><th>訊號</th></tr>
+        <tr><td>MACD</td><td class="neg"><strong>−14.80</strong></td><td>−11.22</td><td rowspan="3"><span class="tag tag-red">死叉</span><br><span style="font-size:11.5px">快線已翻負，空方動能仍在</span></td></tr>
+        <tr><td>訊號線</td><td>−3.58</td><td>−0.78</td></tr>
+        <tr><td>柱狀值</td><td class="neg">−11.22</td><td>−10.45</td></tr>
+        <tr><td>RSI(14)</td><td>35.31（腳本值）</td><td>35.31</td><td><span class="tag tag-yellow">接近超賣</span>距 30 僅 5.3 點</td></tr>
+        <tr><td>布林上軌</td><td>565.50</td><td>560.25</td><td rowspan="3"><strong>帶寬 26.8%</strong><br><span style="font-size:11.5px">股價 427 <strong>跌破下軌 4.75 元</strong></span></td></tr>
+        <tr><td>布林中軌</td><td>498.62</td><td>501.68</td></tr>
+        <tr><td><strong>布林下軌</strong></td><td><strong>431.75</strong></td><td>443.10</td></tr>
+      </table>
+      </div>
+      <p style="font-size:12.5px;line-height:1.7;margin-top:10px"><strong>股價跌破布林下軌 ＋ RSI 35.31 接近超賣 ＋ 量能縮至 5 日均量 0.64 倍</strong>——三者同時出現，<strong>技術性反彈的機率上升</strong>。但 MACD 死叉未收斂，反彈的性質可能只是「超賣修正」而非趨勢反轉。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">關鍵價位（依重算值）</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>類型</th><th>價位</th><th>來源與意義</th></tr>
+      <tr><td><span class="tag tag-red">壓力五</span></td><td>498.62</td><td>MA20（月線）＝布林中軌</td></tr>
+      <tr><td><span class="tag tag-red">壓力四</span></td><td>486.02</td><td>MA60（季線）</td></tr>
+      <tr><td><span class="tag tag-red">壓力三</span></td><td>481.65</td><td>MA10</td></tr>
+      <tr><td><span class="tag tag-red">壓力二</span></td><td>479.5</td><td>今日漲停價</td></tr>
+      <tr><td><span class="tag tag-red">壓力一</span></td><td><strong>446.10</strong></td><td><strong>MA5——站回才算短線止跌</strong></td></tr>
+      <tr><td><span class="tag tag-blue">現價</span></td><td><strong>427.0</strong></td><td>今日開 425.0、高 430.5、低 422.5</td></tr>
+      <tr><td><span class="tag tag-green">支撐一</span></td><td><strong>431.75 / 422.5</strong></td><td><strong>布林下軌（已失守）／今日盤中低點</strong></td></tr>
+      <tr><td><span class="tag tag-green">支撐二</span></td><td>415.5</td><td>2026-10-19 盤中低點</td></tr>
+      <tr><td><span class="tag tag-green">支撐三</span></td><td><strong>392.5</strong></td><td><strong>今日跌停價</strong></td></tr>
+      <tr><td><span class="tag tag-green">強支撐</span></td><td><strong>381.0</strong></td><td><strong>第 3 次報告日（7/20）收盤價——跌破代表三個月漲幅全數回吐</strong></td></tr>
+      <tr><td><span class="tag tag-green">極端支撐</span></td><td>322.0</td><td>2026-07-30 盤中低點（本波起漲點）</td></tr>
+      <tr><td><span class="tag tag-sky">價值參考</span></td><td>118.9</td><td>Q3'26 底推估每股淨值（股價淨值比約 3.6 倍）</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">價格時間軸：法說會後的六個交易日</div>
+    <div class="timeline">
+      <div class="tl-item good">
+        <div class="tl-date">2026-08-28 / 08-31</div>
+        <div class="tl-text">盤中最高 <strong>569.0 元</strong>（52 週新高）；8/31 收 <strong>543.0 元</strong>（期間最高收盤）</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-09 ~ 10-08</div>
+        <div class="tl-text">高檔震盪消化，區間約 465~532。10/08 收 532（+3.50%、量 64,506 張）</div>
+      </div>
+      <div class="tl-item bad">
+        <div class="tl-date">2026-10-12（Q3 法說會）</div>
+        <div class="tl-text"><strong>公布 Q3 EPS 25.40 元、毛利率 85.7%、營益率 80.0%，雙創歷史新高。當日卻收 527 元（−0.94%）</strong>——<strong>利多不漲，是本次報告最關鍵的訊號</strong></div>
+      </div>
+      <div class="tl-item bad">
+        <div class="tl-date">2026-10-13</div>
+        <div class="tl-text">收 <strong>488.0 元（−7.40%）</strong>，成交 <strong>96,848 張爆量</strong>。「賣在消息上」確認</div>
+      </div>
+      <div class="tl-item bad">
+        <div class="tl-date">2026-10-14 ~ 10-15</div>
+        <div class="tl-text">10/14 收 480.5（−1.54%）→ 10/15 收 <strong>439.5（−8.53%）</strong>，<strong>盤中最低 432.5 精準觸及跌停</strong>（480.5 × 0.9 ＝ 432.45，取整 432.5）</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-10-16</div>
+        <div class="tl-text">收 <strong>447.5（+1.82%）</strong>，技術性反彈，但量能 47,093 張未放大</div>
+      </div>
+      <div class="tl-item bad">
+        <div class="tl-date">2026-10-19</div>
+        <div class="tl-text">開 419.0、盤中低 <strong>415.5</strong>、收 <strong>436.0（−2.57%）</strong>，量縮至 41,032 張。<strong>下影線長，低檔有承接</strong></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-10-20（今日）</div>
+        <div class="tl-text">開 425.0、高 430.5、低 422.5、現 <strong>427.0（−2.06%）</strong>。<strong>自 10/12 的 527 元累計 −19.0%</strong></div>
+      </div>
+    </div>
+    <div class="alert alert-red" style="margin-top:14px;margin-bottom:0">
+      <div>🔴</div>
+      <div><strong>「利多不漲」是這六個交易日唯一需要記住的事。</strong>公司公布史上最佳財報——每股賺 25.40 元、毛利率 85.7%（比台積電還高）——當天股價卻收跌。<strong>這代表好消息已被完全反映在股價裡，而市場開始交易「之後呢」。</strong>年化波動率 87.7%（本系列最高）意味這種 19% 級的回落，在這檔股票上並不罕見：對帳期間（7/20~10/20）就出現過兩次近 20% 的回撤。</div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 融資融券 -->
+<section>
+  <div class="section-title"><span class="section-num">10</span>融資融券與查詢說明</div>
+  <div class="card">
+    <div class="alert alert-yellow">
+      <div>⚠️</div>
+      <div><strong>本報告無法提供南亞科的融資融券數字。</strong>FinMind 回傳值為 0（資料缺口），本次 WebSearch 亦未取得 2026 年 10 月中下旬之官方餘額。<strong>本報告拒絕以 0 或推測值填充。</strong></div>
+    </div>
+    <div class="calc-title">趨勢判讀（依可取得之客觀條件推論，非實際餘額）</div>
+    <p style="font-size:13.5px;line-height:1.8">南亞科為高單價（427 元）、高市值（1.473 兆）之上市大型股，<strong>融資成本高，散戶融資參與度相對低於中小型股</strong>，主要由機構法人主導。此外，10/13 爆量 96,848 張下跌、10/15 盤中觸及跌停，<strong>若原有融資部位較大，期間極可能出現明顯減少（斷頭或主動減碼）</strong>——但這屬推論，<strong>不作為數據引用</strong>。</p>
+    <div class="calc-box">
+      <div class="calc-title">請自行查證（官方管道）</div>
+      <div class="row"><span>融資融券餘額</span><span>臺灣證券交易所 → 交易資訊 → 融資融券 → 個股融資融券餘額</span></div>
+      <div class="row"><span>三大法人買賣超</span><span>臺灣證券交易所 → 交易資訊 → 三大法人 → 買賣超日報</span></div>
+      <div class="row"><span>借券賣出餘額</span><span>臺灣證券交易所 → 交易資訊 → 借券</span></div>
+      <div class="row"><span>或</span><span>券商看盤軟體個股籌碼頁（代號 2408）</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 辯論 -->
+<section>
+  <div class="section-title"><span class="section-num">11</span>研究員團隊辯論</div>
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <h4><span style="color:#16a34a">▲</span> 看多研究員（8 點）</h4>
+      <ul>
+        <li><span class="bull-icon">1</span><div><strong>Q3'26 全面創歷史新高：</strong>EPS <strong>25.40 元</strong>（季增 73.3%）、毛利率 <strong>85.7%</strong>（季增 6.2pp）、營益率 <strong>80.0%</strong>、營收 1,336.49 億（季增 61.9%）</div></li>
+        <li><span class="bull-icon">2</span><div><strong>獲利品質極佳：業外僅佔稅前淨利 2.4%</strong>（Q2'26），97.6% 來自本業；業外絕對金額穩定在 15~16 億，無異常跳動</div></li>
+        <li><span class="bull-icon">3</span><div><strong>財務結構本系列最強：</strong>負債比僅 <strong>16.8%</strong>、淨現金 <strong>1,992 億元</strong>（佔市值 13.5%）、單季自由現金流約 518 億元</div></li>
+        <li><span class="bull-icon">4</span><div><strong>估值極低：</strong>近四季本益比 <strong>8.4 倍</strong>、2026F <strong>5.6 倍</strong>；股價淨值比約 3.6 倍（以 Q3 底推估淨值計）</div></li>
+        <li><span class="bull-icon">5</span><div><strong>現價遠低於法人目標價：</strong>瑞銀 555 元、大摩 580 元、美銀 660 元、FactSet 共識 681 元，<strong>對現價 427 元有 30%~60% 空間</strong></div></li>
+        <li><span class="bull-icon">6</span><div><strong>供給面敘事偏緊：SK 海力士預期 2027 年將是產業史上供給最吃緊的一年</strong>，且現在核准的產能要到 2029 年才產出首批晶圓；TrendForce 指 2027 年 PC DRAM 供給可能減少</div></li>
+        <li><span class="bull-icon">7</span><div><strong>技術面超賣訊號齊備：</strong>跌破布林下軌（431.75）＋ RSI 35.31 接近超賣 ＋ <strong>10/19 量縮至 5 日均量 0.64 倍</strong>。對帳期間 7/31 的極度縮量後曾八個交易日反彈 +55.9%</div></li>
+        <li><span class="bull-icon">8</span><div><strong>流動性極佳：</strong>5 日均成交 <strong>295.6 億元</strong>，任何部位皆可順利進出；MA20 仍高於 MA60，<strong>尚未形成死亡交叉</strong></div></li>
+      </ul>
+    </div>
+    <div class="analyst-card">
+      <h4><span style="color:#dc2626">▼</span> 看空研究員（9 點）</h4>
+      <ul>
+        <li><span class="bear-icon">1</span><div><strong>🔴 低本益比陷阱：市場用約 3.4 倍本益比評價 2027 年預估 EPS 126 元</strong>——這不是便宜，是<strong>市場不相信峰值盈餘可持續</strong></div></li>
+        <li><span class="bear-icon">2</span><div><strong>🔴 Q3 位元出貨季減中個位數百分比。獲利 100% 來自漲價，零量成長</strong>；公司明示 2027 年新廠投產前位元出貨維持持平</div></li>
+        <li><span class="bear-icon">3</span><div><strong>🔴 利多不漲：10/12 公布史上最佳財報，當日收跌 0.94%；之後六個交易日 −19.0%</strong>，10/15 盤中觸及跌停。好消息已完全反映</div></li>
+        <li><span class="bear-icon">4</span><div><strong>漲價動能收斂：</strong>伺服器 DRAM 合約價 Q3 季增 13~18% → <strong>Q4 傳統 DRAM 收斂至 10~15%</strong></div></li>
+        <li><span class="bear-icon">5</span><div><strong>🔴 結構性落差：供給吃緊集中在 HBM 與伺服器 DRAM，南亞科以傳統 DDR4／DDR5 為主、HBM 非主力。</strong>市場折價可能不是不信「DRAM 緊」，而是不信「南亞科分得到」</div></li>
+        <li><span class="bear-icon">6</span><div><strong>自由現金流黃金期即將結束：</strong>H1 資本支出僅 68.6 億，全年上限上修至 <strong>697 億</strong>（H2 須衝 628 億）；屏東新廠另有 <strong>100 億美元</strong>計畫</div></li>
+        <li><span class="bear-icon">7</span><div><strong>新產能遠水救不了近火：</strong>2027 Q1 才開始裝機，<strong>2028 年底才達月投片 3 萬片、2030 年底 5 萬片</strong>——未來一年多獲利完全取決於價格</div></li>
+        <li><span class="bear-icon">8</span><div><strong>年化波動率 87.7%（本系列最高）。</strong>對帳期間（7/20~10/20）出現兩次近 20% 回撤：7/30 的 −18.07% 與本次的 −19.0%</div></li>
+        <li><span class="bear-icon">9</span><div><strong>技術面四線全空：</strong>股價跌破 MA5／MA10／MA20／MA60 全部四條；MACD <strong>−14.80</strong> 死叉且快線已翻負，空方動能未收斂</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="calc-title">辯論總結與量化權重</div>
+    <div class="score-row">
+      <div class="score-label">看多</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:47%;background:linear-gradient(90deg,#16a34a,#4ade80)"></div></div>
+      <div class="score-num">47%</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">看空</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:53%;background:linear-gradient(90deg,#dc2626,#f87171)"></div></div>
+      <div class="score-num">53%</div>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>這場辯論的特殊之處是：雙方都同意「現在很賺錢」且「財務很乾淨」。</strong>看多方的所有論點（Q3 創高、業外僅 2.4%、負債比 16.8%、淨現金 1,992 億、本益比 8.4 倍）看空方都不否認。<strong>分歧只有一件事：這個獲利水準能維持多久。</strong></p>
+    <p style="font-size:13px;line-height:1.8;margin-top:9px"><strong>權重給 53% 看空，理由有三：</strong>① <strong>「位元出貨零成長」是已確認的事實</strong>，而「2027 供給吃緊」是尚未驗證的預期；② <strong>利多不漲＋六日 −19% 是市場已經投票的結果</strong>，而不是預測；③ 南亞科的產品組合（傳統 DRAM）與目前最緊的環節（HBM／伺服器）<strong>存在結構性落差</strong>。</p>
+    <p style="font-size:13px;line-height:1.8;margin-top:9px"><strong>但 53:47 幾乎持平，不是看壞公司。</strong>技術面超賣訊號齊備（跌破下軌、RSI 35.31、量縮 0.64 倍），而對帳期間已驗證過一次同型態的反彈（7/31 極度縮量後八日 +55.9%）。<strong>這是一個「等訊號、不猜底」的局面。</strong></p>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">給一般投資人的話</div>
+    <p style="font-size:13.5px;line-height:1.85"><strong>先說一個數字，它會讓你誤判：這家公司的本益比只有 8.4 倍，用 2026 年預估算只有 5.6 倍，用 2027 年預估算只有 3.4 倍。</strong>看起來便宜到不可思議。</p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:9px"><strong>但請反過來想：如果真有一家公司明年會賺 126 元、而股價只要 427 元，為什麼市場不買？</strong>答案是——<strong>市場不相信它明年賺得到 126 元。</strong>這叫「低本益比陷阱」：循環股在獲利最好的時候，本益比天生就最低，因為那個 EPS 是撐不住的高點。</p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:9px"><strong>最具體的證據在這裡：Q3 單季每股賺 25.40 元、毛利率 85.7%（比台積電還高），但「位元出貨量」是季減的。</strong>意思是它賣出去的顆數比上一季少，賺更多錢完全是因為「漲價」。而公司自己說，<strong>2027 年新廠投產前，出貨量會維持持平</strong>。所以未來一年多，獲利好不好 100% 看價格，一點都不看量。</p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:9px"><strong>而市場已經用行動回答了：</strong>10 月 12 日法說會公布史上最佳財報，<strong>當天股價收跌 0.94%</strong>；接下來六個交易日從 527 元跌到 427 元，<strong>跌掉 19%</strong>，10 月 15 日盤中還觸及跌停。這叫「賣在消息上」——好消息早就在價格裡了。</p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:9px"><strong>公平地說另一面：這家公司的體質真的很好。</strong>獲利 97.6% 來自本業（不是靠投資或匯兌賺的）、負債比只有 16.8%、手上淨現金 1,992 億元（佔市值 13.5%）。<strong>而且 SK 海力士公開說 2027 年會是歷史上供給最吃緊的一年。</strong></p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:9px"><strong>但有一個區別很重要：最缺的是 HBM 和伺服器用的 DRAM，而南亞科主要做的是傳統 DDR4／DDR5。</strong>市場的折價，可能不是不信「DRAM 會缺」，而是不信「南亞科分得到這波紅利」。</p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:10px"><strong>我的建議：技術面確實出現超賣訊號</strong>（股價跌破布林下軌、RSI 35.3 接近超賣、10/19 成交量縮到只有五日均量的 0.64 倍）<strong>，但不要猜底。</strong>合理做法是在 <strong>392~446 元</strong>分批承接、部位控制在 <strong>總資產 5~8%</strong>，並且<strong>等到「站回 446 元（MA5）」或「RSI 從 30 以下回升」至少出現一個</strong>再加碼。<strong>停損放在 381 元</strong>（第 3 次報告日的收盤價）——跌破那裡，代表三個月的漲幅全數回吐，故事需要重新檢視。</p>
+    <p style="font-size:13.5px;line-height:1.85;margin-top:9px"><strong>最後一個提醒：這檔股票的年化波動率 87.7%，是我分析過的所有個股中最高的。</strong>光是最近三個月就出現兩次接近 20% 的回撤。這種波動不是異常，是它的常態。</p>
+  </div>
+</section>
+
+<!-- 13 風控 -->
+<section>
+  <div class="section-title"><span class="section-num">12</span>風控評估（六維加權）</div>
+  <div class="card">
+    <div class="score-row">
+      <div class="score-label">估值風險 30%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:55%;background:linear-gradient(90deg,#d97706,#fbbf24)"></div></div>
+      <div class="score-num">5.5</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">財務風險 25%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:30%;background:linear-gradient(90deg,#16a34a,#86efac)"></div></div>
+      <div class="score-num">3.0</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">流動性風險 10%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:10%;background:linear-gradient(90deg,#16a34a,#4ade80)"></div></div>
+      <div class="score-num">1.0</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">產業風險 15%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:75%;background:linear-gradient(90deg,#dc2626,#fb923c)"></div></div>
+      <div class="score-num">7.5</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">總經風險 10%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:50%;background:linear-gradient(90deg,#d97706,#fcd34d)"></div></div>
+      <div class="score-num">5.0</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">籌碼風險 10%</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:linear-gradient(90deg,#dc2626,#fb923c)"></div></div>
+      <div class="score-num">7.0</div>
+    </div>
+    <div class="calc-box" style="margin-top:14px">
+      <div class="calc-title">加權計算</div>
+      <div class="row"><span>估值 5.5 × 30%</span><span>1.650</span></div>
+      <div class="row"><span>財務 3.0 × 25%</span><span>0.750</span></div>
+      <div class="row"><span>流動性 1.0 × 10%</span><span>0.100</span></div>
+      <div class="row"><span>產業 7.5 × 15%</span><span>1.125</span></div>
+      <div class="row"><span>總經 5.0 × 10%</span><span>0.500</span></div>
+      <div class="row"><span>籌碼 7.0 × 10%</span><span>0.700</span></div>
+      <div class="row"><span><strong>綜合風險評分</strong></span><span><strong>4.825 → 4.8（中等風險，較第 3 次 4.0 上調 0.8 分）</strong></span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">各維度理由與調整說明</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>維度</th><th>本次</th><th>第 3 次</th><th>理由</th></tr>
+      <tr><td>估值</td><td style="color:#d97706"><strong>5.5</strong></td><td>—</td><td>本益比 8.4 倍、2026F 5.6 倍、股價淨值比約 3.6 倍，絕對水準低；現價遠低於法人目標價（555~681 元）。<strong>但這是週期峰值盈餘的低本益比陷阱，2027F 僅 3.4 倍反映市場不信任</strong>，故不給 4 以下</td></tr>
+      <tr><td>財務</td><td class="pos"><strong>3.0</strong></td><td>—</td><td><strong>本系列最佳之一：</strong>負債比 16.8%、淨現金 1,992 億、業外僅佔稅前 2.4%、單季自由現金流約 518 億。<strong>加分項：</strong>H2 資本支出須衝 628 億、屏東新廠 100 億美元計畫，自由現金流將轉弱，故未給 2 以下</td></tr>
+      <tr><td>流動性</td><td class="pos"><strong>1.0</strong></td><td>—</td><td>5 日均成交 <strong>295.6 億元</strong>、市值 1.473 兆，本系列流動性最佳</td></tr>
+      <tr><td>產業</td><td class="neg"><strong>7.5</strong></td><td>—</td><td><strong>DRAM 強循環：</strong>Q3 位元出貨季減、獲利 100% 靠漲價、Q4 漲幅收斂至 10~15%、2027 三大廠新產能開出；<strong>且南亞科以傳統 DRAM 為主，與最緊的 HBM／伺服器環節存在結構性落差</strong>。<strong>減分項：</strong>SK 海力士稱 2027 供給史上最緊、新核准產能要到 2029 才出貨</td></tr>
+      <tr><td>總經</td><td style="color:#d97706"><strong>5.0</strong></td><td>—</td><td>AI 需求與一般消費電子的分化、利率環境、美中關稅</td></tr>
+      <tr><td>籌碼</td><td class="neg"><strong>7.0</strong></td><td>—</td><td><strong>年化波動率 87.7%（本系列最高）</strong>、三個月內兩次近 20% 回撤、10/15 盤中觸及跌停、技術面四線全空。<strong>減分項：</strong>10/19 量縮至 5 日均量 0.64 倍（賣壓衰退跡象）、<strong>資料限制：無法取得融資融券與三大法人數字</strong></td></tr>
+      <tr style="background:#fef9c3"><td colspan="4"><strong>為何由 4.0 上調至 4.8：</strong>第 3 次給 4.0「中等風險」，但實際波動遠高於該分數所隱含的水準——報告日後 8 個交易日最大回撤 <strong>−18.07%</strong>（393→322），8/28 高點 569 至今 <strong>−25.0%</strong>，本次六個交易日 <strong>−19.0%</strong>。<strong>三個月內兩次近 20% 級別回撤，4.0 分明顯低估。</strong></td></tr>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- 14 策略 -->
+<section>
+  <div class="section-title"><span class="section-num">13</span>台股三段式策略</div>
+  <div class="strategy-grid">
+    <div class="strat-card attack">
+      <h3>⚔️ 進攻</h3>
+      <div class="strat-item"><span>觸發</span><span><strong>帶量</strong>站回 446.10（MA5）</span></div>
+      <div class="strat-item"><span>量能門檻</span><span>單日 &gt; 65,000 張</span></div>
+      <div class="strat-item"><span>目標</span><span>481.65（MA10）→ 486.02（季線）</span></div>
+      <div class="strat-item"><span>部位</span><span>3% 以內</span></div>
+      <div class="strat-item"><span>停損</span><span>跌回 422.5（今日低）即出</span></div>
+      <div class="strat-item"><span>⚠️ 注意</span><span>MACD −14.80 死叉未收斂，反彈可能僅為超賣修正而非趨勢反轉</span></div>
+    </div>
+    <div class="strat-card balance">
+      <h3>⚖️ 均衡（本報告建議）</h3>
+      <div class="strat-item"><span>進場區</span><span><strong>392.5 ~ 446 分批</strong></span></div>
+      <div class="strat-item"><span>分批方式</span><span>三批：427 / 410 / 393 各 1/3</span></div>
+      <div class="strat-item"><span>部位</span><span><strong>總資產 5~8%</strong></span></div>
+      <div class="strat-item"><span>持有期</span><span>6 個月 ~ 1 年（循環股不宜長抱）</span></div>
+      <div class="strat-item"><span>停損</span><span><strong>381 元連續兩日收盤</strong>（第 3 次報告日收盤價；緩衝距現價 −10.8%，較第 3 次明顯放寬）</span></div>
+      <div class="strat-item"><span>加碼條件</span><span>站回 446（MA5）<strong>或</strong> RSI 自 30 以下回升，至少一個</span></div>
+    </div>
+    <div class="strat-card defend">
+      <h3>🛡️ 防守</h3>
+      <div class="strat-item"><span>做法</span><span>等「量縮止跌 ＋ 價格止穩」兩者並現</span></div>
+      <div class="strat-item"><span>要看什麼</span><span>① <strong>月營收的「位元出貨量」是否由持平轉增</strong><br>② 傳統 DRAM 合約價季增幅能否止穩在 10% 以上<br>③ Q4 財報毛利率能否守住 80%<br>④ H2 資本支出實際執行率<br>⑤ 屏東新廠與 AI 長約進度</span></div>
+      <div class="strat-item"><span>理想進場</span><span>若回測 <strong>381~400</strong> 區間且量縮止穩，風險報酬比最佳</span></div>
+      <div class="strat-item"><span>代價</span><span>可能錯過超賣反彈。但以 87.7% 的年化波動率，等待成本不高</span></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="calc-title">操作建議表（全部以收盤價為基準）</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>情境</th><th>價位</th><th>動作</th></tr>
+      <tr><td>帶量站回 MA5</td><td>&gt; 446.10（量 &gt; 65,000 張）</td><td>進攻型可小量試單，停損 422.5</td></tr>
+      <tr><td>超賣區震盪</td><td>422 ~ 446</td><td><strong>均衡型可建立第一批（1/3 部位）</strong></td></tr>
+      <tr><td><strong>回測跌停附近</strong></td><td><strong>392.5 ~ 415</strong></td><td><strong>本報告認為最佳分批區</strong>（含 10/19 盤中低 415.5）</td></tr>
+      <tr><td>破第 3 次報告日收盤</td><td>&lt; 381（連兩日收盤）</td><td><strong>停損。</strong>三個月漲幅全數回吐，需重新檢視循環位置</td></tr>
+      <tr><td>極端下殺</td><td>&lt; 322（7/30 低點）</td><td>本波起漲點失守，代表 DRAM 循環確認反轉。<strong>此時應重估基本面，不是攤平</strong></td></tr>
+      <tr><td>反彈至季線</td><td>&gt; 486</td><td>短線獲利了解，保留核心部位。<strong>循環高峰期不宜追價</strong></td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="calc-title">催化劑時程表</div>
+    <div class="table-wrap">
+    <table>
+      <tr><th>時間</th><th>事件</th><th>重要性</th></tr>
+      <tr><td><strong>2026/11/10 前</strong></td><td><strong>10 月營收公告</strong>——7~9 月已趨平（438.68／446.90／450.91 億），<strong>觀察能否突破 450 億</strong></td><td><span class="tag tag-red">高</span></td></tr>
+      <tr><td><strong>每月</strong></td><td><strong>🔴 位元出貨量趨勢</strong>（法說會與月營收結構）——Q3 已季減中個位數%，<strong>這是本報告最重要的追蹤指標</strong></td><td><span class="tag tag-red">極高</span></td></tr>
+      <tr><td>持續</td><td><strong>傳統 DRAM 合約價季增幅</strong>：Q3 伺服器 +13~18% → Q4 估 +10~15%。<strong>若跌破 +10% 代表漲價循環轉折</strong></td><td><span class="tag tag-red">極高</span></td></tr>
+      <tr><td>2027 Q1</td><td><strong>新廠開始裝機</strong>；同時第 3 次報告已標註「2027 Q1 為 DRAM 供需轉折確認點」</td><td><span class="tag tag-red">決定性</span></td></tr>
+      <tr><td>2027 上半年</td><td>三大廠新產能開出時點（市場關注 SK 海力士、美光、三星之排程）</td><td><span class="tag tag-red">決定性</span></td></tr>
+      <tr><td>2028 年底 / 2030 年底</td><td>新廠產能目標：月投片 <strong>3 萬片</strong> / <strong>5 萬片</strong>；屏東 3D 封測廠導入矽穿孔</td><td><span class="tag tag-blue">高</span></td></tr>
+      <tr><td>持續</td><td>H2 資本支出執行（全年上限 697 億，H1 僅用 68.6 億）；AI 長約簽訂進度</td><td><span class="tag tag-blue">高</span></td></tr>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- 15 名詞 -->
+<section>
+  <div class="section-title"><span class="section-num">14</span>名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item">
+      <div class="glossary-term">DRAM（動態隨機存取記憶體）</div>
+      <div class="glossary-def">電腦、手機、伺服器的「短期記憶」。南亞科主要生產<strong>傳統 DRAM（DDR4／DDR5）</strong>，用於 PC、消費電子與一般伺服器。它是高度標準化的商品，<strong>價格由供需決定，廠商幾乎沒有定價權</strong>——這是它波動極大的根本原因。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">HBM（高頻寬記憶體）</div>
+      <div class="glossary-def">把多層 DRAM 垂直堆疊、專供 AI 晶片使用的高階產品，單價與毛利遠高於傳統 DRAM。目前供給最緊的就是 HBM。<strong>但 HBM 並非南亞科的主力——這是理解市場為何給它折價的關鍵。</strong></div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">🔴 低本益比陷阱</div>
+      <div class="glossary-def">循環股在獲利高峰時，本益比天生就低，因為分母（EPS）是不可持續的峰值。南亞科 2027 年預估本益比僅約 <strong>3.4 倍</strong>，<strong>這不是「便宜到不可思議」，而是市場根本不相信那個 EPS 會實現</strong>。判斷循環股不能只看本益比低。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">🔴 位元出貨量（Bit Shipment）</div>
+      <div class="glossary-def">記憶體業衡量「賣了多少」的單位（以位元計，而非顆數，因為單顆容量不同）。<strong>南亞科 Q3 位元出貨季減中個位數%，代表賣得比上一季少，獲利全靠漲價。</strong>這是判斷「量」與「價」誰在貢獻獲利的核心指標。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">「賣在消息上」（Sell the News）</div>
+      <div class="glossary-def">好消息公布時股價反而下跌，因為市場早已把預期反映在價格裡。<strong>南亞科 10/12 公布史上最佳財報，當天收跌 0.94%，之後六個交易日 −19.0%</strong>——這是教科書級的案例。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">業外佔稅前淨利比重</div>
+      <div class="glossary-def">判斷獲利「純不純」的核心指標。南亞科 Q2'26 僅 <strong>2.4%</strong>，代表 97.6% 來自本業。對照本系列：眾達-KY 69%、環球晶 69%、大洋約 92%、晉泰 13.9%、台光電 0.4%。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">🔴 股數還原與增資稀釋</div>
+      <div class="glossary-def">公司增資後股數變多，每股盈餘會被稀釋。由各季「稅後淨利 ÷ EPS」反推，南亞科隱含股數自 Q1'26 的 <strong>30.99 億股</strong>跳至 Q2'26 的 <strong>34.24 億股（+10.5%）</strong>。<strong>把不同股數基礎的季 EPS 直接相加會失真</strong>，必須以現行股數重算。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">淨現金與負債比</div>
+      <div class="glossary-def"><strong>淨現金</strong>＝現金 − 總借款。南亞科為 <strong>1,992 億元</strong>（佔市值 13.5%），<strong>負債比僅 16.8%</strong>——意思是即使景氣反轉，它也有極厚的緩衝。這是循環股難得的優勢。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">布林通道與超賣</div>
+      <div class="glossary-def">以 20 日均線為中軌、上下各加減兩個標準差。股價跌破<strong>下軌（431.75）</strong>通常視為超賣，技術性反彈機率上升。但<strong>超賣不等於會漲</strong>，需配合量縮與價格止穩。</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term">🔴 漲跌停與最小升降單位</div>
+      <div class="glossary-def">台股單日漲跌限制 ±10%，但要<strong>取整到最小升降單位</strong>（100~500 元為 0.5 元），且向昨收方向取整。南亞科昨收 436 元 → 漲停 <strong>479.5</strong>（479.6 取整）、跌停 <strong>392.5</strong>（392.4 取整）。</div>
+    </div>
+  </div>
+</section>
+
+<!-- 16 免責 -->
+<div class="disclaimer">
+  <strong>⚠️ 免責聲明與資料來源說明</strong>
+  <p style="margin-top:9px">本報告為研究性質之資料整理與分析，<strong>不構成任何投資建議、要約或招攬</strong>。本人並非持有證照之投資顧問。所有投資決策應由投資人自行判斷並承擔全部風險。股票投資可能導致本金部分或全部損失。</p>
+
+  <p style="margin-top:11px"><strong>資料來源與取得時間</strong></p>
+  <ul style="margin:6px 0 0 18px;line-height:1.75">
+    <li><strong>即時報價</strong>：富果 Fugle API，2026-10-20 擷取（<strong>盤中價，非收盤價</strong>）</li>
+    <li><strong>歷史 K 線、季度財報（至 2026 Q2）、資產負債表、現金流量表、月營收</strong>：FinMind，2026-10-20 擷取（日 K 線最新為 2026-10-19，10/20 價格取自即時報價）</li>
+    <li><strong>Q3'26 法說會數字</strong>（EPS 25.40 元、毛利率 85.7%、營業毛利 1,144.82 億、營益率 80.0%、營收 1,336.49 億季增 61.9%、位元出貨季減中個位數%、資本支出上限 697 億、新廠 2027 Q1 裝機／2028 年底月投片 3 萬片／2030 年底 5 萬片、屏東 3D 封測廠 2028 年底前導入矽穿孔、擴建以客戶長期合約 AI 專案為主）：2026-10-12 法說會，經自由財經、今周刊、鉅亨網等媒體報導引述</li>
+    <li><strong>法人目標價</strong>（瑞銀 555 元由 495 上調 12.1%、大摩 580 元由 550 上調 5.4%、美銀 660 元）：<strong>Q2 法說會後（2026 年 8 月）</strong>之數字，經媒體報導引述。FactSet 13 位分析師 FY2026E EPS 共識 76.14 元</li>
+    <li><strong>DRAM 產業數據</strong>：TrendForce（Q3 伺服器 DRAM 合約價季增 13~18%、Q4 傳統 DRAM 季增 10~15%、2027 年 PC DRAM 供給可能減少）、SK 海力士公開說法（2027 年供給最吃緊、現核准產能 2029 年才出首批晶圓）、DDR4 8Gb 現貨 2026/07/28 達 42.08 美元</li>
+    <li><strong>第 3 次報告比較基準</strong>：本系列 2026-07-20 之南亞科報告（盤中 393 元、實際收盤 381.0 元）</li>
+  </ul>
+
+  <p style="margin-top:11px"><strong>🔴 本次發現的腳本錯誤</strong></p>
+  <ul style="margin:6px 0 0 18px;line-height:1.75">
+    <li><strong>漲跌停價錯誤（兩個錯誤疊加）：</strong>腳本輸出「漲停 492.25 / 跌停 402.75」，反推昨收為 447.50 元（即 10/16 收盤），<strong>落後一個交易日</strong>；且未套用最小升降單位取整。<strong>正確值：以昨收 436.0 元計，漲停 479.5 元、跌停 392.5 元。</strong></li>
+    <li><strong>技術指標未含當日價：</strong>腳本輸出 MA5 458.30、MA10 491.95、MA20 501.68、MA60 486.01、MACD −11.22／−0.78／−10.45、布林 560.25／501.68／443.10，經檢查<strong>僅計算至 2026-10-19</strong>。本報告重算（含 10/20 的 427 元）為 MA5 446.10、MA10 481.65、MA20 498.62、MA60 486.02、MACD −14.80／−3.58／−11.22、布林 565.50／498.62／<strong>431.75</strong>。<strong>此差異會改變超賣程度的判讀（以腳本下軌計跌破 16.1 元，以重算下軌計僅跌破 4.75 元），第 09 節已並列兩組數值。</strong></li>
+    <li><strong>RSI 35.31 採腳本值</strong>，未自行重算（不同平滑演算法會有差異，本報告不宣稱腳本錯誤）。</li>
+    <li><strong>yfinance 之本益比 16.50 倍與股價淨值比 4.56 倍不予採用：</strong>反推其 EPS 約 25.9 元，顯示<strong>其 TTM 區間為 Q3'25~Q2'26，未納入 Q3'26</strong>，落後一季。本報告以自行計算之還原後近四季 EPS 50.72 元（本益比 8.4 倍）為準。</li>
+    <li><strong>三大法人（資料日 2026-10-19）與融資融券經 FinMind 查詢回傳 0，屬資料缺口</strong>，未解讀為「持平」或「餘額為零」，亦未以推測值填充。</li>
+  </ul>
+
+  <p style="margin-top:11px"><strong>🔴 資料限制與自行推算</strong></p>
+  <ul style="margin:6px 0 0 18px;line-height:1.75">
+    <li><strong>🔴 Q3'26 之營業利益（約 1,069 億）與淨利（約 876 億）為本報告推算值</strong>，以法說會公布之營收 1,336.49 億 × 營益率 80.0%、及 Q2'26 有效稅率 19.5% 推得。<strong>Q3 財報尚未正式公布</strong>，第 07 節表格已標明。其餘季度為 FinMind 財報原始值。</li>
+    <li><strong>🔴 EPS 已全部還原為現行 34.502 億股。</strong>南亞科於 2026 Q2 完成大額增資：由各季「稅後淨利 ÷ EPS」反推，隱含股數自 Q1'26 的 30.99 億股跳至 Q2'26 的 34.24 億股（<strong>+10.5%</strong>）。第 07 節表格同時列出「原報」與「還原」兩欄。<strong>近四季 EPS 還原後為 50.72 元，未還原直接相加為 52.05 元。</strong></li>
+    <li><strong>月份換算驗證結果（三季全中）：</strong>資料庫申報月份減 1 ＝實際賺取月份。2026 Q1 加總 490.87 億 vs 財報 490.87 億、Q2 加總 825.49 億 vs 財報 825.49 億、<strong>Q3 加總 1,336.49 億 vs 法說會 1,336.49 億，三季誤差皆 0.00%</strong>。</li>
+    <li><strong>市值 1.473 兆為自行計算</strong>（34.502 億股 × 427 元 ＝ 14,732 億）；yfinance 顯示 14,715 億，差異來自股數認定。</li>
+    <li><strong>Q3'26 底每股淨值約 118.9 元為推算值</strong>（Q2'26 底 93.49 元 ＋ Q3 每股盈餘 25.40 元），<strong>未計入股利發放、其他綜合損益等調整項</strong>，僅供估值參考。</li>
+    <li><strong>2027F 本益比約 3.4 倍係以市場流通之 2027 年 EPS 126 元預估推算</strong>，該預估值為<strong>市場流通數字而非本報告自行推估</strong>，且離散度可能很大。</li>
+    <li><strong>法人目標價（瑞銀 555、大摩 580、美銀 660 元）為 Q2 法說會後（2026 年 8 月）之數字，已偏舊</strong>；本次搜尋<strong>未能取得 Q3 法說會（10/12）後的更新目標價或評等變動</strong>。FactSet 共識 681 元之調查時點亦未能確認。<strong>讀者不應將其視為當前共識。</strong></li>
+    <li><strong>融資融券與三大法人數字完全無法取得</strong>，第 10 節僅提供趨勢判讀與官方查詢管道，<strong>未引用任何數值</strong>。此為本報告最明確的資料限制。</li>
+    <li><strong>「三大廠 2027 年 DRAM 與 HBM 產能已大致售罄、買方僅能拿到 60~70%」為非正式業界報導</strong>，報告中已標示來源層級，<strong>建議讀者向原廠或研調機構求證</strong>。</li>
+    <li><strong>「南亞科以傳統 DRAM 為主、HBM 非主力」為本報告依公開資訊所作之產品組合判斷</strong>，公司未逐項揭露 HBM 營收佔比，此判斷可能不精確。</li>
+    <li><strong>單季自由現金流約 518 億元、現金 2,176 億、借款 184 億、負債比 16.8%、H1 資本支出 68.6 億</strong>等數據源自 Q2'26 財報與法說會，<strong>Q3 對應數字尚未公布</strong>。</li>
+    <li><strong>52 週區間採腳本值 102 ~ 569 元。</strong>本報告以 FinMind 查詢 2025-10-15 起之資料時，期間最低為 85.0 元（2025-10-15），<strong>該日期略早於 52 週窗口起點，故不採用</strong>。</li>
+    <li><strong>技術指標</strong>基於 2026-10-20 盤中價 427 元計算，收盤後數值將變動。</li>
+  </ul>
+
+  <p style="margin-top:11px"><strong>本報告的立場</strong></p>
+  <p style="margin-top:5px">本報告<strong>首先完成對第 3 次報告（2026-07-20）的誠實對帳</strong>：方向判斷與目標價一（460 元）做對，但<strong>三項數字錯誤或低估</strong>（Q2'26 EPS 預估 10~12 元 vs 實際 14.66 元；FY2026E 44.79 元 vs 共識已上修至 76.14 元；<strong>H1'26 累積營收 1,159.83 億為算術錯誤，實際 1,316.36 億，疑漏加一個月</strong>），且<strong>停損設定過窄、靠「兩日確認」條款僥倖未出場</strong>。風險評分亦由 4.0 低估修正為 4.8。</p>
+  <p style="margin-top:7px">對公司本身，本報告<strong>高度肯定其獲利品質與財務結構</strong>：Q3'26 EPS 25.40 元、毛利率 85.7%、營益率 80.0% 全創新高，<strong>業外僅佔稅前淨利 2.4%（97.6% 來自本業）</strong>，負債比僅 16.8%、淨現金 1,992 億元。月營收換算法亦<strong>三季全部精準吻合</strong>，證實本報告的季度外推方法可用。</p>
+  <p style="margin-top:7px">但同時明確指出三項裂縫：<strong>①</strong> <strong>Q3 位元出貨季減中個位數%，獲利 100% 來自漲價、零量成長</strong>，且公司明示 2027 年新廠投產前位元出貨維持持平；<strong>②</strong> <strong>10/12 公布史上最佳財報當日收跌 0.94%、之後六個交易日 −19.0%</strong>，為教科書級「賣在消息上」；<strong>③</strong> <strong>市場用約 3.4 倍本益比評價 2027 年預估獲利，是對峰值盈餘可持續性的不信任票</strong>，而南亞科的傳統 DRAM 產品組合與目前最緊的 HBM／伺服器環節存在結構性落差。</p>
+  <p style="margin-top:7px"><strong>結論為「區間承接但不追價，建議區間 392.5~446 元，部位 5~8%，停損 381 元連續兩日收盤」，多空權重 47:53，風險評分 4.8（較第 3 次 4.0 上調）。</strong>技術面超賣訊號已齊備（跌破布林下軌、RSI 35.31、10/19 量縮至 5 日均量 0.64 倍），但 MACD 死叉未收斂，<strong>建議等「站回 MA5 446 元」或「RSI 自 30 以下回升」至少一個訊號出現再加碼，不猜底</strong>。以上判斷基於本報告列出之公開數據，<strong>讀者應自行驗證並形成自己的結論</strong>。</p>
+</div>
+
+</div><!-- /container -->
+
+<script>
+function drawBarChart(id,labels,data,barColor,accentColor,negColor,dec){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=56,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  var D=(dec===undefined)?2:dec;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||0.5;
+  var lo=(min<0)?(min-pad):Math.max(0,min-pad);
+  var hi=max+pad,range=hi-lo;
+  var n=data.length;
+  var barW=chartW/n*0.58,gap=chartW/n;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(D===0?0:1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0){ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();}
+  for(var i=0;i<n;i++){
+    var x=PL+i*gap+(gap-barW)/2;
+    var vy=PT+chartH-((data[i]-lo)/range*chartH);
+    var top=Math.min(vy,zeroY),bh=Math.abs(vy-zeroY);
+    if(bh<1.5)bh=1.5;
+    var isLast=(i===n-1);
+    var color=(data[i]<0)?(negColor||'#dc2626'):(isLast?accentColor:barColor);
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,top,barW,bh,3);ctx.fillStyle=color;ctx.fill();}
+    else{ctx.fillStyle=color;ctx.fillRect(x,top,barW,bh);}
+    ctx.fillStyle=(data[i]<0)?'#dc2626':(isLast?accentColor:'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(D),x+barW/2,(data[i]<0)?(top+bh+11):(top-4));
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    var lx=PL+i*gap+gap/2,ly=PT+chartH+14;
+    if(labels[i].length>4){ctx.save();ctx.translate(lx,ly);ctx.rotate(-Math.PI/6);ctx.fillText(labels[i],0,0);ctx.restore();}
+    else ctx.fillText(labels[i],lx,ly);
+  }
+}
+function drawLineChart(id,labels,data,color,negColor,dec){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=56,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  var D=(dec===undefined)?1:dec;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||1;
+  var lo=min-pad,hi=max+pad,range=hi-lo;
+  var n=data.length;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(D===0?0:1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0&&hi>0){
+    ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);
+    ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();
+  }
+  var pts=[];
+  for(var i=0;i<n;i++)pts.push({x:PL+i*chartW/(n-1),y:PT+chartH-(data[i]-lo)/range*chartH});
+  var base=(lo<0&&hi>0)?zeroY:(PT+chartH);
+  ctx.beginPath();ctx.moveTo(pts[0].x,base);
+  for(var i=0;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.lineTo(pts[n-1].x,base);ctx.closePath();
+  var grad=ctx.createLinearGradient(0,PT,0,PT+chartH);
+  var hex=color.slice(1);
+  var r=parseInt(hex.slice(0,2),16),g2=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  grad.addColorStop(0,'rgba('+r+','+g2+','+b+',0.25)');
+  grad.addColorStop(1,'rgba('+r+','+g2+','+b+',0.02)');
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+  for(var i=1;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+  for(var i=0;i<n;i++){
+    var isLast=(i===n-1);
+    var dotCol=(data[i]<0&&negColor)?negColor:color;
+    ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,isLast?5:3,0,Math.PI*2);
+    ctx.fillStyle=isLast?dotCol:'#fff';ctx.fill();
+    ctx.strokeStyle=dotCol;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=isLast?dotCol:((data[i]<0)?'#dc2626':'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(D),pts[i].x,pts[i].y+(isLast?-10:-8));
+  }
+  for(var i=0;i<n;i++){
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    var lx=pts[i].x, ly=PT+chartH+14;
+    if(labels[i].length>4){ctx.save();ctx.translate(lx,ly);ctx.rotate(-Math.PI/6);ctx.fillText(labels[i],0,0);ctx.restore();}
+    else ctx.fillText(labels[i],lx,ly);
+  }
+}
+function drawHBarChart(id,labels,data,colors,suffix){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var max=Math.max.apply(null,data)*1.28;
+  var n=labels.length;
+  var rowH=H/(n+0.6);
+  var PL=170,PR=62;
+  for(var i=0;i<n;i++){
+    var y=rowH*(i+0.3)+rowH*0.12;
+    var bh=rowH*0.66;
+    ctx.fillStyle='#f1f5f9';ctx.fillRect(PL,y,(W-PL-PR),bh);
+    var bw=(data[i]/max)*(W-PL-PR);
+    if(bw<2)bw=2;
+    var col=colors?colors[i]:'#0c4a6e';
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(PL,y,bw,bh,4);ctx.fillStyle=col;ctx.fill();}
+    else{ctx.fillStyle=col;ctx.fillRect(PL,y,bw,bh);}
+    ctx.fillStyle='#1e293b';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(labels[i],PL-8,y+bh/2+4);
+    ctx.fillStyle='#1e293b';ctx.font='bold 12px Arial';ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(0)+(suffix||''),PL+bw+6,y+bh/2+4);
+  }
+}
+window.addEventListener('DOMContentLoaded',function(){
+  drawLineChart('pxChart',
+    ['10/01','10/02','10/05','10/06','10/07','10/08','10/12','10/13','10/14','10/15','10/16','10/19','10/20'],
+    [519,526,530,525,514,532,527,488,480.5,439.5,447.5,436,427],
+    '#0c4a6e',null,0);
+  drawBarChart('epsChart',
+    ["Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"],
+    [-0.46,-0.56,-1.19,0.45,3.22,7.55,14.55,25.40],
+    '#bae6fd','#0c4a6e','#dc2626',2);
+  drawLineChart('gmChart',
+    ["Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"],
+    [-10.56,-14.95,-20.56,18.45,49.05,67.89,79.49,85.70],
+    '#0284c7','#dc2626',1);
+  drawBarChart('qrevChart',
+    ["Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"],
+    [65.75,71.88,105.26,187.79,300.94,490.87,825.49,1336.49],
+    '#bae6fd','#0c4a6e','#dc2626',0);
+  drawLineChart('mrChart',
+    ['1月','2月','3月','4月','5月','6月','7月','8月','9月'],
+    [153.10,156.07,181.70,254.91,276.70,293.88,438.68,446.90,450.91],
+    '#0c4a6e',null,1);
+  drawHBarChart('tgtChart',
+    ['現價（10/20）','瑞銀（8月）','大摩（8月）','美銀（8月）','FactSet 共識'],
+    [427,555,580,660,681],
+    ['#dc2626','#94a3b8','#94a3b8','#94a3b8','#16a34a'],' 元');
+});
+</script>
+</body>
+</html>
