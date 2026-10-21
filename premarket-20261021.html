@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股早盤戰情室 2026/10/21｜季線第三次測試，投信力道崩塌</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d1117; color: #e6edf3; font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif; font-size: 14px; line-height: 1.6; }
+  .header { background: linear-gradient(135deg, #2d1010 0%, #0d1117 65%); border-bottom: 2px solid #f85149; padding: 20px 24px; }
+  .header h1 { font-size: 23px; font-weight: 700; }
+  .header .sub { font-size: 12px; color: #8b949e; margin-top: 5px; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin: 3px 4px 0 0; }
+  .badge-ok { background: #0f2d1a; color: #3fb950; border: 1px solid #3fb950; }
+  .badge-warn { background: #2d2008; color: #e3b341; border: 1px solid #e3b341; }
+  .badge-danger { background: #3d1a1a; color: #f85149; border: 1px solid #f85149; }
+  .badge-info { background: #1a2540; color: #79c0ff; border: 1px solid #388bfd; }
+  .ticker-bar { background: #161b22; border-bottom: 1px solid #21262d; padding: 11px 24px; display: flex; gap: 19px; flex-wrap: wrap; }
+  .ticker-item { display: flex; flex-direction: column; align-items: center; min-width: 96px; }
+  .ticker-label { font-size: 10px; color: #8b949e; text-align: center; }
+  .ticker-val { font-size: 16px; font-weight: 700; }
+  .up { color: #3fb950; } .dn { color: #f85149; } .neu { color: #e6edf3; }
+  .container { max-width: 1300px; margin: 0 auto; padding: 20px 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  @media (max-width: 950px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  .card { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 17px; margin-bottom: 16px; }
+  .card-title { font-size: 13px; font-weight: 700; color: #8b949e; letter-spacing: 0.5px; margin-bottom: 13px; padding-bottom: 8px; border-bottom: 1px solid #21262d; }
+  .stat-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #21262d; }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-label { color: #8b949e; font-size: 13px; }
+  .stat-val { font-weight: 700; font-size: 13px; text-align: right; }
+  .alert-box { border-radius: 8px; padding: 15px 19px; margin-bottom: 16px; }
+  .alert-red { background: #2d1010; border: 1px solid #f85149; }
+  .alert-yellow { background: #2d2008; border: 1px solid #e3b341; }
+  .alert-green { background: #0f2d1a; border: 1px solid #3fb950; }
+  .alert-blue { background: #0d1f38; border: 1px solid #388bfd; }
+  .alert-title { font-weight: 700; font-size: 15px; margin-bottom: 9px; }
+  .alert-box p { font-size: 13px; color: #c9d1d9; line-height: 1.9; }
+  .section-title { font-size: 17px; font-weight: 700; color: #e6edf3; margin: 28px 0 13px; padding-left: 11px; border-left: 4px solid #f85149; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #0d1117; color: #8b949e; font-weight: 600; padding: 9px 10px; text-align: left; border-bottom: 1px solid #21262d; white-space: nowrap; }
+  td { padding: 8px 10px; border-bottom: 1px solid #21262d; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+  .highlight { color: #e3b341; font-weight: 700; }
+  .red { color: #f85149; font-weight: 700; }
+  .green { color: #3fb950; font-weight: 700; }
+  .blue { color: #79c0ff; font-weight: 700; }
+  .bar-row { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; font-size: 12px; }
+  .bar-label { width: 86px; color: #c9d1d9; text-align: right; flex-shrink: 0; }
+  .bar-zero { position: relative; flex: 1; height: 20px; background: #21262d; border-radius: 3px; }
+  .bar-pos { position: absolute; left: 50%; height: 100%; background: #3fb950; border-radius: 0 3px 3px 0; }
+  .bar-neg { position: absolute; height: 100%; background: #f85149; border-radius: 3px 0 0 3px; }
+  .bar-mid { position: absolute; left: 50%; width: 1px; height: 28px; top: -4px; background: #8b949e; }
+  .bar-val { width: 124px; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+  .conflict { background: #2d1010; border-left: 4px solid #f85149; border-radius: 6px; padding: 13px 16px; margin-bottom: 11px; }
+  .conflict-t { font-weight: 700; color: #f85149; font-size: 13.5px; margin-bottom: 6px; }
+  .conflict-b { font-size: 13px; color: #c9d1d9; line-height: 1.8; }
+  .debate-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width:760px) { .debate-col { grid-template-columns:1fr; } }
+  .bull-card { background: #0f2d1a; border: 1px solid #3fb950; border-radius: 8px; padding: 15px; }
+  .bear-card { background: #2d1010; border: 1px solid #f85149; border-radius: 8px; padding: 15px; }
+  .debate-head { font-weight: 700; font-size: 14px; margin-bottom: 11px; }
+  .debate-item { display: flex; gap: 8px; margin-bottom: 9px; font-size: 13px; color: #c9d1d9; line-height: 1.7; }
+  .verdict { background: #1c2128; border: 1px solid #388bfd; border-radius: 8px; padding: 16px; margin-top: 13px; }
+  .ratio-bar { display: flex; height: 27px; border-radius: 6px; overflow: hidden; margin: 11px 0; font-size: 12px; font-weight: 700; }
+  .ratio-bear { background: #f85149; color: #0d1117; display: flex; align-items: center; justify-content: center; }
+  .ratio-bull { background: #3fb950; color: #0d1117; display: flex; align-items: center; justify-content: center; }
+  .level-block { background: #0d1117; border-radius: 8px; padding: 11px 15px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .level-left { font-size: 12px; color: #8b949e; }
+  .level-val { font-size: 18px; font-weight: 800; }
+  .note { font-size: 11.5px; color: #6e7681; margin-top: 9px; line-height: 1.7; }
+  .strat-card { border-radius: 8px; padding: 17px; margin-bottom: 12px; }
+  .strat-a { background: #0d1f38; border: 1px solid #388bfd; }
+  .strat-b { background: #1a1a0d; border: 1px solid #e3b341; }
+  .strat-c { background: #1a0d0d; border: 1px solid #6e4040; }
+  .strat-title { font-weight: 700; font-size: 15px; margin-bottom: 9px; }
+  .strat-body { font-size: 13px; color: #c9d1d9; line-height: 1.9; }
+  .verdict-box { background: linear-gradient(135deg,#2d1010,#0d1117); border: 2px solid #f85149; border-radius: 10px; padding: 19px; margin-bottom: 18px; }
+  .openbar { background:#0d1117; border-radius:8px; padding:17px; margin-bottom:14px; }
+  .openbar-track { position:relative; height:38px; background:#21262d; border-radius:5px; margin:32px 0 10px; }
+  .openbar-zone { position:absolute; height:100%; border-radius:5px; }
+  .openbar-line { position:absolute; width:3px; height:52px; top:-7px; }
+  .openbar-labels { display:flex; justify-content:space-between; font-size:11px; color:#8b949e; }
+  .selfcheck { background: #0d1f38; border-left: 4px solid #388bfd; border-radius: 6px; padding: 14px 17px; margin-bottom: 12px; }
+  .sc-t { font-weight: 700; color: #79c0ff; font-size: 13.5px; margin-bottom: 7px; }
+  .sc-b { font-size: 13px; color: #c9d1d9; line-height: 1.85; }
+  .trigger-item { display: flex; gap: 11px; margin-bottom: 12px; align-items: flex-start; }
+  .trigger-num { width: 26px; height: 26px; border-radius: 50%; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .tn-hit { background: #f85149; color: #0d1117; }
+  .tn-near { background: #e3b341; color: #0d1117; }
+  .tn-done { background: #3fb950; color: #0d1117; }
+  .trigger-body { font-size: 13px; color: #c9d1d9; line-height: 1.75; }
+  .footer { background: #161b22; border-top: 1px solid #21262d; padding: 17px 24px; margin-top: 34px; }
+  .footer p { font-size: 11px; color: #6e7681; line-height: 1.8; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔴 台股早盤戰情室 — 季線第三次測試，投信力道崩塌</h1>
+  <div class="sub">2026年10月21日（週三）｜資料擷取 09:14｜昨收 46,292.93｜距季線僅剩 +0.39%</div>
+  <div style="margin-top:9px;">
+    <span class="badge badge-danger">距季線僅 +0.39%（179 點）</span>
+    <span class="badge badge-danger">投信買超崩至 +6,944 張</span>
+    <span class="badge badge-danger">外資首見連兩日同向賣超</span>
+    <span class="badge badge-danger">台幣 32.62 連三日創新貶且加速</span>
+    <span class="badge badge-ok">VIX 連三日降至 17.31</span>
+    <span class="badge badge-warn">費半 -0.29% 又轉弱</span>
+  </div>
+</div>
+
+<div class="ticker-bar">
+  <div class="ticker-item">
+    <span class="ticker-label">台股昨收（10/20）</span>
+    <span class="ticker-val dn">46,292.93</span>
+    <span class="ticker-label dn">-529.15（-1.13%）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">季線 MA60 ⚠️</span>
+    <span class="ticker-val dn">46,113</span>
+    <span class="ticker-label dn">距昨收僅 -0.39%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">布林下軌</span>
+    <span class="ticker-val dn">46,102</span>
+    <span class="ticker-label dn">距昨收 -0.41%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">費半 SOX</span>
+    <span class="ticker-val dn">11,283.81</span>
+    <span class="ticker-label dn">-0.29%（距高-22.90%）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">納斯達克</span>
+    <span class="ticker-val neu">26,424.82</span>
+    <span class="ticker-label">-0.02%（平盤）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">道瓊 🟢</span>
+    <span class="ticker-val up">52,495.88</span>
+    <span class="ticker-label up">+1.02%</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">VIX 🟢</span>
+    <span class="ticker-val up">17.31</span>
+    <span class="ticker-label up">-6.13%（連三降）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">USD/TWD ⚠️</span>
+    <span class="ticker-val dn">32.62</span>
+    <span class="ticker-label dn">連三日創新貶（加速）</span>
+  </div>
+  <div class="ticker-item">
+    <span class="ticker-label">RSI14</span>
+    <span class="ticker-val dn">39.81</span>
+    <span class="ticker-label dn">跌破 40</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- 自我檢視放前面 -->
+<div class="selfcheck">
+  <div class="sc-t">📌 先檢討昨日報告的兩個判斷錯誤 —— 都影響了可操作的結論</div>
+  <div class="sc-b">
+    <strong>❌ 錯誤一：開盤預估方向就錯了。</strong><br>
+    我昨日寫「費半 +1.61% → 推估開高 +0.5%~+1.0%，落在 47,050–47,290」。<strong>實際開盤 46,712.57，是開低 -0.23%</strong>，比我預估下限低 338 點。全日更是開低走低收 46,292.93（-1.13%），盤中最高 46,967.91 連 MA5 都沒摸到。<br>
+    <strong>錯在哪：</strong>我在同一份報告裡明明把「台幣連兩日創新貶」列為利空，卻在推算開盤時<strong>只用了費半漲幅，沒有把匯率作為折減因子</strong>。在資金外流的環境下，外部指數的漲幅無法完整傳導到台股 —— 這是這波反覆出現的現象，我卻沒把它納入模型。<br>
+    <strong>修正：</strong>今後開盤推算改為<strong>「外部指數漲跌 × 匯率折減係數」</strong>。台幣當日續貶時，外部漲幅打對折計算；台幣創新貶時，外部漲幅不計入，只計跌幅。<br><br>
+    <strong>❌ 錯誤二：把友達列為試單首選，隔天就被砍 31,611 張。</strong><br>
+    我昨日的理由是「外資連兩日買超（10/16 +23,367、10/19 +8,761，累計 +32,128），昨日三大法人同買」。<strong>結果 10/20 外資反手賣超 -31,611 張</strong>，兩日買的幾乎全吐回去。<br>
+    <strong>錯在哪：這是同一份報告裡的自我矛盾。</strong>我在前半段才剛寫下「外資單日籌碼五日內四次反轉，今後以五日累計為主軸」，後半段卻用「連兩日」來選股。<strong>兩日和一日的差別不大，都不足以判斷持續性。</strong><br>
+    <strong>修正：選股的籌碼門檻提高到「連續三個交易日以上同向，且累計量有意義」。</strong>以此標準重新檢視，目前只有<strong>中鋼 2002</strong> 合格（見下方籌碼章節）。
+  </div>
+</div>
+
+<!-- 核心判讀 -->
+<div class="verdict-box">
+  <div class="alert-title" style="color:#f85149;font-size:17px;">🎯 今日核心：季線緩衝只剩 179 點，而唯一的買方（投信）力道崩塌</div>
+  <p style="font-size:14px;color:#e6edf3;line-height:1.95;">
+    昨日收 <strong>46,292.93（-529.15，-1.13%）</strong>，開盤 46,712.57 即開低，盤中最低 <strong>46,163.03</strong> —— <strong>連續第二天精準測到季線上緣</strong>（10/19 低 46,170、10/20 低 46,163，距季線 46,113 僅 50–74 點），收盤位置 16.1%。<br><br>
+    <strong>🔴 三個關鍵惡化：</strong><br>
+    ① <strong>季線緩衝從 +1.59%（10/19）收斂至 +0.39%（179.84 點）</strong>。季線 46,113.09 與布林下軌 46,101.64 相距僅 11.45 點，今日只要跌 180 點就破。<strong>這將是第三次測試 —— 而第三次測試同一支撐的成功率，通常明顯低於第一次。</strong><br>
+    ② <strong>投信買超力道崩塌：+57,235（10/19）→ +6,944（10/20）</strong>，降至不到八分之一。投信是這波唯一穩定的買方，<strong>它一旦退場，指數就失去最後的承接力。</strong><br>
+    ③ <strong>外資首次出現連續兩日同向賣超</strong>（-460,794、-521,648）。此前五個交易日每天翻面，現在方向統一了 —— 六日累計 <strong>-182.4 萬張</strong>。<br>
+    ④ <strong>台幣連三日創一年新貶，且貶幅加速</strong>：32.48 → 32.51（+0.03）→ <strong>32.62（+0.11）</strong>。而美元指數昨日反而 -0.18%。<br><br>
+    <strong>🟢 僅有的正面：</strong>VIX 連三日降至 17.31（-6.13%），恐慌持續消退；道瓊 +1.02%；美債回落至 5.12%。<strong>但納斯達克 -0.02%、費半 -0.29% —— 美股的強勢集中在傳統產業，科技仍疲弱。</strong><br><br>
+    <strong>結論：今日是季線的第三次攻防，而守方的子彈（投信）已經打完。</strong>
+  </p>
+</div>
+
+<!-- 開盤預估 -->
+<div class="section-title">🎯 開盤預估（已套用修正後的匯率折減）</div>
+<div class="openbar">
+  <div style="font-size:13px;color:#c9d1d9;margin-bottom:4px;"><strong>今日開盤預估區間與季線位置</strong></div>
+  <div class="openbar-track">
+    <div class="openbar-zone" style="left:22%;width:50%;background:linear-gradient(90deg,#4d1f1f,#e3b341);opacity:0.6;"></div>
+    <div class="openbar-line" style="left:14%;background:#f85149;"></div>
+    <div style="position:absolute;left:1%;top:-28px;font-size:11px;color:#f85149;font-weight:700;white-space:nowrap;">季線 46,113 ⚠️</div>
+    <div style="position:absolute;left:30%;top:12px;font-size:11px;color:#fff;font-weight:700;">預估開盤 46,150–46,350</div>
+    <div class="openbar-line" style="left:86%;background:#8b949e;"></div>
+    <div style="position:absolute;right:1%;top:-28px;font-size:11px;color:#8b949e;font-weight:700;white-space:nowrap;">昨收 46,293</div>
+  </div>
+  <div class="openbar-labels">
+    <span style="color:#f85149;">季線 46,113 / 布林下軌 46,102</span>
+    <span>昨日低 46,163</span>
+    <span>昨收 46,293</span>
+  </div>
+  <div class="note">
+    <strong>推算（修正後方法）：</strong>費半 -0.29%、納斯達克 -0.02%、標普 +0.28%、道瓊 +1.02% —— 外部整體<strong>中性偏弱</strong>（科技弱、傳統強，而台股權值偏科技）。依修正規則，<strong>台幣創新貶時外部漲幅不計入、只計跌幅</strong>，故以費半與納指為主：<strong>預估開盤 -0.31% 至 +0.12%，落在 46,150–46,350。</strong><br>
+    <strong>最關鍵的一點：預估開盤區間的下緣（46,150）距季線（46,113）只有 37 點。</strong>也就是說<strong>開盤就可能直接貼上季線</strong>，不需要盤中下殺。<br>
+    <strong>昨日盤中最低 46,163.03 也落在這個區間內</strong>，意味今日開盤即可能測試昨日低點。
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">三道底線（緩衝已極薄）</div>
+    <div class="level-block" style="border:2px solid #f85149;">
+      <div><div class="level-left">⚠️ 第一道 · 季線 MA60 ＋ 布林下軌</div><div class="level-val dn">46,113 / 46,102</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:175px;"><strong>距昨收僅 -0.39%/-0.41%（179/191 點）。今日第三次測試</strong></div>
+    </div>
+    <div class="level-block" style="border:1px solid #6e4040;">
+      <div><div class="level-left">🔴 第二道 · 半年線 MA120</div><div class="level-val dn">45,004</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:175px;">距昨收 -2.78%。季線破後的下一個支撐</div>
+    </div>
+    <div class="level-block" style="border:1px solid #30363d;">
+      <div><div class="level-left">⚪ 第三道 · 若破半年線</div><div class="level-val">中長期結構瓦解</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:175px;">五條均線將全面空頭排列</div>
+    </div>
+    <div class="stat-row"><span class="stat-label">季線與布林下軌間距</span><span class="stat-val dn">僅 11.45 點（幾乎重合）</span></div>
+    <div class="stat-row"><span class="stat-label">10/19 盤中低（第一次測試）</span><span class="stat-val">46,170.00（距季線 +57 點）</span></div>
+    <div class="stat-row"><span class="stat-label">10/20 盤中低（第二次測試）</span><span class="stat-val">46,163.03（距季線 +50 點）</span></div>
+    <div class="stat-row"><span class="stat-label">RSI14</span><span class="stat-val dn">39.81（跌破 40，續降）</span></div>
+    <div class="note"><strong>連續兩日的盤中低點幾乎相同</strong>（46,170、46,163，相差僅 7 點），顯示季線附近確實有買盤。但<strong>收盤緩衝從 +1.59% 快速收斂至 +0.39%</strong>，代表買盤的力道在遞減 —— 第一次拉回 652 點，第二次只拉回 130 點。</div>
+  </div>
+  <div class="card">
+    <div class="card-title">上方關卡（反彈須克服）</div>
+    <div class="level-block" style="border:1px solid #e3b341;">
+      <div><div class="level-left">🟡 第一關 · 昨日最高</div><div class="level-val highlight">46,968</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:175px;">距昨收 +1.46%</div>
+    </div>
+    <div class="level-block" style="border:1px solid #f85149;">
+      <div><div class="level-left">🔴 第二關 · MA5</div><div class="level-val dn">47,164</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:175px;">距昨收 +1.88%。昨日最高 46,968 未觸及</div>
+    </div>
+    <div class="level-block" style="border:1px solid #6e4040;">
+      <div><div class="level-left">🔴 主要反壓 · MA20（＝布林中軌）</div><div class="level-val dn">48,170</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:175px;">距昨收 +4.05%。10/15 貫穿後從未收復</div>
+    </div>
+    <div class="level-block" style="border:1px solid #30363d;">
+      <div><div class="level-left">⚪ MA10</div><div class="level-val">48,241</div></div>
+      <div style="text-align:right;font-size:11px;color:#8b949e;max-width:175px;">距昨收 +4.21%</div>
+    </div>
+    <div class="stat-row"><span class="stat-label">均線排列</span><span class="stat-val dn">MA5 47,164＜MA20 48,170＜MA10 48,241（混亂）</span></div>
+    <div class="stat-row"><span class="stat-label">距 52 週高（10/06）</span><span class="stat-val dn">-7.08%（高點 49,822.55）</span></div>
+    <div class="stat-row"><span class="stat-label">昨日成交金額</span><span class="stat-val dn">8,029 億（10 月最低）</span></div>
+    <div class="note"><strong>MA10（48,241）已高於 MA20（48,170）</strong>，加上 MA5 遠低於兩者，均線排列完全混亂。這是空頭排列成形前的過渡型態。<br>昨日量能 8,029 億為 10 月最低，<strong>距我設的 8,000 億門檻只差 0.37%</strong>。</div>
+  </div>
+</div>
+
+<!-- 籌碼 -->
+<div class="section-title">💼 籌碼：外資首見連兩日同向賣超，投信力道崩塌</div>
+<div class="alert-box alert-red">
+  <div class="alert-title" style="color:#f85149;">🚨 投信買超從 +57,235 張崩至 +6,944 張 —— 最後的買方正在退場</div>
+  <p>
+    <strong>投信六日軌跡：</strong>+68,572（10/13）→ +43,236（10/14）→ +82,241（10/15）→ +48,525（10/16）→ +57,235（10/19）→ <span class="red">+6,944（10/20）</span><br>
+    前五日平均買超約 <strong>6 萬張</strong>，昨日驟降至 <strong>6,944 張（僅前一日的 12%）</strong>。<br>
+    <strong>這是本波最重要的籌碼變化。</strong>投信是唯一全程站在買方的法人，10/19 指數能在季線拉回 652 點、昨日能收在季線之上，靠的就是這股承接力。<strong>一旦投信也退場，季線的第三次測試將缺乏守方。</strong><br><br>
+    <strong>外資六日軌跡（首次出現連續同向）：</strong><br>
+    -611,265 → +698,967 → -1,462,210 → +533,301 → <span class="red">-460,794</span> → <span class="red">-521,648</span><br>
+    前五日每天翻面，<strong>但 10/19 與 10/20 連續兩日賣超，且規模還擴大（-46.1 萬 → -52.2 萬張）。方向終於統一了，而且是向下。</strong>六日累計淨賣 <span class="red">-182.4 萬張</span>。
+  </p>
+</div>
+
+<div class="card">
+  <div class="card-title">外資全市場單日買賣超（萬張）—— 方向終於統一</div>
+  <div class="bar-row"><div class="bar-label">10/13</div><div class="bar-zero"><div class="bar-mid"></div><div class="bar-neg" style="left:29%;width:21%;"></div></div><div class="bar-val dn">-61.1 萬張</div></div>
+  <div class="bar-row"><div class="bar-label">10/14</div><div class="bar-zero"><div class="bar-mid"></div><div class="bar-pos" style="width:24%;"></div></div><div class="bar-val up">+69.9 萬張</div></div>
+  <div class="bar-row"><div class="bar-label">10/15</div><div class="bar-zero"><div class="bar-mid"></div><div class="bar-neg" style="left:0%;width:50%;"></div></div><div class="bar-val dn">-146.2 萬張</div></div>
+  <div class="bar-row"><div class="bar-label">10/16</div><div class="bar-zero"><div class="bar-mid"></div><div class="bar-pos" style="width:18%;"></div></div><div class="bar-val up">+53.3 萬張</div></div>
+  <div class="bar-row"><div class="bar-label">10/19</div><div class="bar-zero"><div class="bar-mid"></div><div class="bar-neg" style="left:34%;width:16%;"></div></div><div class="bar-val dn">-46.1 萬張</div></div>
+  <div class="bar-row"><div class="bar-label" style="color:#f85149;font-weight:700;">10/20</div><div class="bar-zero"><div class="bar-mid"></div><div class="bar-neg" style="left:32%;width:18%;"></div></div><div class="bar-val dn">-52.2 萬張 ⬅連兩日</div></div>
+  <div style="margin-top:14px;padding:12px 15px;background:#2d1010;border-radius:6px;border:1px solid #f85149;">
+    <div style="font-size:13px;color:#c9d1d9;line-height:1.8;">
+      <strong>六日累計：<span class="red">-182.4 萬張</span></strong>｜投信同期累計 <span class="green">+30.7 萬張</span>（但昨日力道已崩）｜自營同期累計約 <span class="red">-1,000 萬張</span>（多為 ETF 造市與贖回）<br>
+      <strong>10/19–10/20 是五個交易日來第一次連續同向賣超，且規模擴大。</strong>這比單日的 -146.2 萬張更值得警惕 —— 前者是震盪，後者是趨勢。
+    </div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">🟢 外資買超前 12（T86 10/20）— 轉向 PC／代工</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>代碼</th><th>名稱</th><th>外資</th><th>投信</th><th>研判</th></tr>
+        <tr style="background:#0f2d1a;"><td><strong>3231</strong></td><td><strong>緯創</strong></td><td class="up">+32,813</td><td class="up">+8,333</td><td class="green">★當日最大（三大法人+42,702）</td></tr>
+        <tr><td>1802</td><td>台玻</td><td class="up">+17,677</td><td>+25</td><td class="highlight">🔄10/19 曾 -29,814</td></tr>
+        <tr><td>2324</td><td>仁寶</td><td class="up">+14,964</td><td class="dn">-801</td><td class="up">PC 代工</td></tr>
+        <tr style="background:#0f2d1a;"><td><strong>2002</strong></td><td><strong>中鋼</strong></td><td class="up">+13,459</td><td class="up">+11,147</td><td class="green">★連四日買超（雙買）</td></tr>
+        <tr><td>6505</td><td>台塑化</td><td class="up">+11,723</td><td class="dn">-11,131</td><td class="red">⚡內外資嚴重對立</td></tr>
+        <tr><td>2353</td><td>宏碁</td><td class="up">+10,791</td><td>-923</td><td class="up">PC 品牌</td></tr>
+        <tr><td>2356</td><td>英業達</td><td class="up">+8,067</td><td>-1,214</td><td class="up">代工</td></tr>
+        <tr><td>4938</td><td>和碩</td><td class="up">+7,718</td><td>-1,012</td><td class="up">代工</td></tr>
+        <tr><td>2377</td><td>微星</td><td class="up">+5,390</td><td>-189</td><td class="up">PC 板卡</td></tr>
+        <tr><td>2542</td><td>興富發</td><td class="up">+5,309</td><td>-360</td><td class="neu">建設</td></tr>
+        <tr><td>00712</td><td>復華富時不動產</td><td class="up">+4,256</td><td>0</td><td style="color:#8b949e;">REITs（自營-43,546）</td></tr>
+        <tr><td>1216</td><td>統一</td><td class="up">+3,902</td><td class="dn">-3,721</td><td class="highlight">內外資對立</td></tr>
+      </table>
+    </div>
+    <div class="note">
+      <strong>新買盤方向：PC／代工／AI 組裝</strong> —— 緯創 +32,813、仁寶 +14,964、宏碁 +10,791、英業達 +8,067、和碩 +7,718、微星 +5,390、鴻海 +3,853、廣達 +3,170。<br>
+      <strong>但依我今日修正後的標準（需連三日同向），這只是第一天，不構成進場依據。</strong>緯創本身在 10/15 曾遭砍 -42,606 張，籌碼歷史並不穩定。
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">🔴 外資賣超前 12（T86 10/20）</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>代碼</th><th>名稱</th><th>外資</th><th>投信</th><th>研判</th></tr>
+        <tr><td>00406A</td><td>主動中信台灣收益</td><td class="dn">-130,736</td><td>0</td><td style="color:#8b949e;">ETF巨量贖回（自營-38.9萬）</td></tr>
+        <tr><td>0050</td><td>元大台灣50</td><td class="dn">-49,032</td><td>+660</td><td style="color:#8b949e;">核心ETF續贖回</td></tr>
+        <tr style="background:#3d1010;"><td><strong>2409</strong></td><td><strong>友達</strong></td><td class="dn">-31,611</td><td class="up">+3,057</td><td class="red">🔄連兩日買後反手（見自我檢討）</td></tr>
+        <tr><td>00981A</td><td>主動統一台股增長</td><td class="dn">-29,052</td><td>0</td><td style="color:#8b949e;">ETF贖回</td></tr>
+        <tr><td>2887</td><td>台新新光金</td><td class="dn">-22,524</td><td class="dn">-673</td><td class="red">金控雙賣</td></tr>
+        <tr><td>6770</td><td>力積電</td><td class="dn">-19,452</td><td class="up">+5,525</td><td class="red">⚡內外資持續對立</td></tr>
+        <tr><td>2303</td><td>聯電</td><td class="dn">-18,620</td><td class="dn">-11,713</td><td class="red">★連續雙賣</td></tr>
+        <tr><td>00919</td><td>群益台灣精選高息</td><td class="dn">-15,905</td><td>0</td><td style="color:#8b949e;">高息ETF續贖回</td></tr>
+        <tr><td>009816</td><td>凱基台灣TOP50</td><td class="dn">-15,532</td><td>0</td><td style="color:#8b949e;">ETF（自營-117,426）</td></tr>
+        <tr><td>00415A</td><td>主動群益核心50</td><td class="dn">-14,112</td><td>0</td><td style="color:#8b949e;">ETF贖回</td></tr>
+        <tr><td>009828</td><td>中信台日韓PCB</td><td class="dn">-13,995</td><td>0</td><td style="color:#8b949e;">ETF贖回</td></tr>
+        <tr><td>1301</td><td>台塑</td><td class="dn">-12,485</td><td>+262</td><td class="red">連四日賣超</td></tr>
+      </table>
+    </div>
+    <div class="note">
+      <strong>ETF 贖回仍是最大賣壓來源：</strong>00406A、0050、00981A、00919、009816、00415A、009828 七檔合計約 <span class="red">-26.8 萬張</span>，佔外資賣超總額超過一半。<br>
+      <strong>台積電（2330）外資 -9,365 張、投信 +1,029 張</strong>，連兩日都在 -9,xxx（10/19 -9,835），<strong>都略低於 1 萬張門檻</strong>。六日累計 -107,754 張。
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">以修正後標準（連三日以上同向）篩選 —— 只有一檔合格</div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>標的</th><th>10/14</th><th>10/16</th><th>10/19</th><th>10/20</th><th>連續性</th><th>判定</th></tr>
+      <tr style="background:#0f2d1a;"><td><strong>中鋼 2002</strong></td><td class="up">+77,005</td><td class="up">+43,728</td><td class="up">+10,021</td><td class="up">+13,459</td><td class="green"><strong>連四日買超</strong></td><td class="green">✅ 唯一合格</td></tr>
+      <tr style="background:#2d1010;"><td>友達 2409</td><td>—</td><td class="up">+23,367</td><td class="up">+8,761</td><td class="dn">-31,611</td><td class="dn">兩日後反手</td><td class="red">❌ 淘汰</td></tr>
+      <tr><td>緯創 3231</td><td>—</td><td class="up">+10,253</td><td class="dn">-2,619</td><td class="up">+32,813</td><td class="dn">跳動無序</td><td class="dn">❌ 不合格（僅1日）</td></tr>
+      <tr><td>台玻 1802</td><td class="up">+46,522</td><td class="up">+15,056</td><td class="dn">-29,814</td><td class="up">+17,677</td><td class="dn">反覆</td><td class="dn">❌ 不合格</td></tr>
+      <tr><td>台塑 1301</td><td class="up">+53,390</td><td class="dn">-14,092</td><td class="dn">-12,010</td><td class="dn">-12,485</td><td class="dn">連三日賣</td><td class="red">❌ 迴避</td></tr>
+      <tr><td>中華電 2412</td><td>—</td><td class="dn">-2,322</td><td class="up">+3,344</td><td class="up">+1,287</td><td class="highlight">連兩日買（量小）</td><td class="highlight">⏸️ 觀察</td></tr>
+      <tr><td>力積電 6770</td><td class="up">+15,782</td><td class="up">+4,159</td><td class="dn">-46,466</td><td class="dn">-19,452</td><td class="dn">連兩日賣</td><td class="red">❌ 迴避</td></tr>
+      <tr><td>聯電 2303</td><td>—</td><td class="up">+2,382</td><td class="dn">-5,662</td><td class="dn">-18,620</td><td class="dn">連兩日雙賣</td><td class="red">❌ 迴避</td></tr>
+    </table>
+  </div>
+  <div class="note">
+    <strong>這張表是今日修正方法後最實用的產出。</strong>用「連三日以上同向」篩選，<strong>只有中鋼 2002 合格（連四日買超，累計 +144,213 張，且 10/20 外資投信雙買 +13,459／+11,147）</strong>。<br>
+    中華電 2412 連兩日小幅買超，量太小（+3,344、+1,287），列為觀察而非進場。<br>
+    <strong>其餘標的的籌碼在四個交易日內都至少翻面一次</strong> —— 包括我昨日誤判的友達，以及昨日當日最大買超的緯創。
+  </div>
+</div>
+
+<!-- 隔夜 -->
+<div class="section-title">🌐 隔夜美股（10/20）：道瓊獨強，科技仍弱</div>
+<div class="grid-3">
+  <div class="card">
+    <div class="card-title">🟢 改善的部分</div>
+    <div class="stat-row"><span class="stat-label up">道瓊</span><span class="stat-val up">52,495.88（+1.02%）</span></div>
+    <div class="stat-row"><span class="stat-label">距一年高</span><span class="stat-val">-3.41%</span></div>
+    <div class="stat-row"><span class="stat-label">標普 500</span><span class="stat-val up">7,712.57（+0.28%）距高 -1.36%</span></div>
+    <div class="stat-row"><span class="stat-label up">VIX</span><span class="stat-val up">17.31（-6.13%）</span></div>
+    <div class="stat-row"><span class="stat-label">VIX 連續下降</span><span class="stat-val up">第 3 日（19.99→18.44→17.31）</span></div>
+    <div class="stat-row"><span class="stat-label">美債 10Y</span><span class="stat-val up">5.12%（-0.37%）轉降</span></div>
+    <div class="stat-row"><span class="stat-label">美元指數</span><span class="stat-val up">101.79（-0.18%）</span></div>
+    <div class="note"><strong>VIX 連三日降至 17.31（距一年高 -44.25%）</strong>，恐慌明確消退。道瓊 +1.02% 大漲、美債回落至 5.12%。<strong>但這些利多主要落在傳統產業與債市，不是科技。</strong></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🟡 科技仍疲弱</div>
+    <div class="stat-row"><span class="stat-label dn">費半 SOX</span><span class="stat-val dn">11,283.81（-0.29%）</span></div>
+    <div class="stat-row"><span class="stat-label">距一年高</span><span class="stat-val dn">-22.90%（前日 -22.67%）</span></div>
+    <div class="stat-row"><span class="stat-label">納斯達克</span><span class="stat-val neu">26,424.82（-0.02%）</span></div>
+    <div class="stat-row"><span class="stat-label">距一年高</span><span class="stat-val dn">-4.26%</span></div>
+    <div class="stat-row"><span class="stat-label">距 12,000 門檻</span><span class="stat-val dn">需 +6.3%</span></div>
+    <div class="stat-row"><span class="stat-label dn">布蘭特油</span><span class="stat-val dn">$110.00（+0.41%）站上 110</span></div>
+    <div class="stat-row"><span class="stat-label">黃金</span><span class="stat-val dn">$4,136（-0.58%）</span></div>
+    <div class="note"><strong>費半 10/19 才 +1.61% 止跌，10/20 又 -0.29% 轉弱</strong>，距一年高從 -22.67% 微幅惡化至 -22.90%。<strong>單日反彈未能延續，證實我昨日「不要把費半單日反彈當基本面轉折」的判斷。</strong>油價站上 $110。</div>
+  </div>
+  <div class="card">
+    <div class="card-title">⚠️ ADR 落後一日（10/19 值）</div>
+    <div class="stat-row"><span class="stat-label">台積電 ADR</span><span class="stat-val up">$420.22（+1.84%）</span></div>
+    <div class="stat-row"><span class="stat-label">距一年高</span><span class="stat-val dn">-13.50%</span></div>
+    <div class="stat-row"><span class="stat-label">NVDA</span><span class="stat-val up">$217.09（+1.38%）距高 -9.26%</span></div>
+    <div class="stat-row"><span class="stat-label">AMD</span><span class="stat-val up">$538.05（+1.76%）距高 -17.15%</span></div>
+    <div class="stat-row"><span class="stat-label">美光</span><span class="stat-val up">$904.90（+2.97%）距高 -25.43%</span></div>
+    <div class="stat-row"><span class="stat-label">博通</span><span class="stat-val up">$334.59（+1.78%）距高 -30.52%</span></div>
+    <div class="stat-row"><span class="stat-label">英特爾</span><span class="stat-val up">$92.03（+2.43%）距高 -34.70%</span></div>
+    <div class="stat-row"><span class="stat-label">應材</span><span class="stat-val up">$413.11（+0.93%）距高 -42.86%</span></div>
+    <div class="note">
+      <strong>這些是 10/19 的收盤值（對應費半當日 +1.61%），已反映在昨日台股盤中</strong> —— 而昨日台股仍收 -1.13%。<br>
+      <strong>依修正後方法，本報告不以 ADR 推算今日開盤。</strong>10/20 的個股數據尚未由資料來源更新。
+    </div>
+  </div>
+</div>
+
+<!-- 進場條件 -->
+<div class="section-title">✅ 進場條件檢視 —— 淨結果比昨日更差</div>
+<div class="card">
+  <div class="card-title">一項達成、一項半達成、兩項惡化</div>
+  <div class="trigger-item">
+    <div class="trigger-num tn-done">1</div>
+    <div class="trigger-body">
+      <strong>① VIX 觸頂後回落 → 🟢 已達成且持續強化</strong><br>
+      <span style="color:#8b949e;font-size:12px;">19.99（10/16）→ 18.44（10/19）→ <strong>17.31（10/20，-6.13%）</strong>，連續三日回落，距一年高 -44.25%。這是四項條件中唯一穩定改善的。</span>
+    </div>
+  </div>
+  <div class="trigger-item">
+    <div class="trigger-num tn-near">2</div>
+    <div class="trigger-body">
+      <strong>② 季線連兩日守住 ＋ 站上 MA5 且量達 1 兆 → 🟡 前半達成，後半完全未達</strong><br>
+      <span style="color:#8b949e;font-size:12px;"><strong>「季線連兩日守住」已達成</strong>（10/19 收 46,822、10/20 收 46,293，皆在季線 46,113 之上）。<br>但<strong>「站上 MA5 且量達 1 兆」完全未達</strong>：昨日最高 46,967.91 未觸及 MA5 的 47,164.39（差 196 點），成交金額 8,029 億僅為 1 兆的 80%。<br><strong>而且季線的收盤緩衝已從 +1.59% 收斂至 +0.39%，「守住」的品質在快速下降。</strong></span>
+    </div>
+  </div>
+  <div class="trigger-item">
+    <div class="trigger-num tn-hit">3</div>
+    <div class="trigger-body">
+      <strong>③ 費半連兩日收紅並站回 12,000 → 🔴 未達成，單日反彈即中斷</strong><br>
+      <span style="color:#8b949e;font-size:12px;">10/19 +1.61% 後，10/20 立刻 -0.29%，<strong>「連兩日收紅」未能成立</strong>。目前 11,283.81，距 12,000 需 +6.3%，距一年高 -22.90%（略為惡化）。</span>
+    </div>
+  </div>
+  <div class="trigger-item">
+    <div class="trigger-num tn-hit">4</div>
+    <div class="trigger-body">
+      <strong>④ 台幣回到 32.40 以下 → 🔴 連三日創新貶，且貶幅加速</strong><br>
+      <span style="color:#8b949e;font-size:12px;">32.48（10/19）→ 32.51（10/20，+0.03）→ <strong>32.62（今日，+0.11）</strong>。<strong>貶幅在加速</strong>，而美元指數昨日反而 -0.18%。<br>我昨日設的警戒線是「續貶破 32.60 即降回防守水位」—— <strong>今日 32.62 已觸發這條警戒線。</strong></span>
+    </div>
+  </div>
+</div>
+
+<!-- 矛盾 -->
+<div class="section-title">⚡ 今日三大矛盾</div>
+<div class="conflict">
+  <div class="conflict-t">⚡ 一：VIX 連三日降（恐慌消退），但台幣連三日創新貶且加速（資金外流）</div>
+  <div class="conflict-b">
+    VIX 從 19.99 連續三日降至 17.31（-13.4%），全球恐慌明確消退；道瓊 +1.02%、美債回落至 5.12%。<strong>但台幣同期連三日創一年新貶（32.48 → 32.51 → 32.62），而且貶幅從 +0.03 加速到 +0.11，同時美元指數還下跌 0.18%。</strong><br>
+    <strong>解讀：全球風險偏好在回升，但資金正在加速離開台灣。</strong>這不是「市場恐慌」，而是「針對台灣的資產再配置」—— 對應外資連兩日賣超（-46.1 萬、-52.2 萬張）與 ETF 的持續贖回。<br>
+    <strong>實務意義：不要用 VIX 下降來推論台股安全。</strong>這波台股的壓力來源不是全球恐慌，而是外資的結構性減碼 + 匯率。VIX 降到 15 也不會改變這一點。
+  </div>
+</div>
+<div class="conflict">
+  <div class="conflict-t">⚡ 二：季線連兩日守住（技術面），但守方的力道在崩塌</div>
+  <div class="conflict-b">
+    表面上「季線連兩日守住」是正面訊號 —— 但拆開看，<strong>守的品質在急速惡化</strong>：<br>
+    ・10/19：盤中低 46,170（距季線 +57 點）→ 拉回 <strong>652 點</strong>，收盤緩衝 <strong>+1.59%</strong><br>
+    ・10/20：盤中低 46,163（距季線 +50 點）→ 只拉回 <strong>130 點</strong>，收盤緩衝 <strong>+0.39%</strong><br>
+    <strong>拉回幅度剩五分之一，收盤緩衝剩四分之一。</strong>同時投信買超從 +57,235 崩至 +6,944 張 —— <strong>承接的主力正在收手。</strong><br>
+    <strong>這是為什麼今日的第三次測試值得高度警戒：</strong>支撐位置還在，但守方的子彈快打完了。
+  </div>
+</div>
+<div class="conflict">
+  <div class="conflict-t">⚡ 三：昨日家數改善（2.61 倍 vs 前日 5.21 倍），但指數跌更多</div>
+  <div class="conflict-b">
+    10/19：下跌 849／上漲 163（跌方 5.21 倍），指數 <strong>-0.61%</strong><br>
+    10/20：下跌 701／上漲 269（跌方 <strong>2.61 倍</strong>，明顯改善），指數 <strong>-1.13%</strong>（跌更多）<br>
+    <strong>且昨日跌停 0 檔、漲停 8 檔。</strong><br>
+    <strong>解讀：這次換成權值股在拖累。</strong>10/19 是「指數撐住、個股失血」（權值護盤），10/20 反過來變成「個股改善、指數下殺」—— 意味昨日賣壓集中在大型權值股。<br>
+    對應籌碼：台積電外資 -9,365、聯電 -18,620（投信也賣 -11,713）、台塑 -12,485、台新新光金 -22,524、中信金 -8,625。<strong>權值與金融同步被減碼，這比中小型股下跌更難用護盤抵銷。</strong>
+  </div>
+</div>
+
+<!-- 多空辯論 -->
+<div class="section-title">⚖️ 盤前多空辯論</div>
+<div class="debate-col">
+  <div class="bull-card">
+    <div class="debate-head" style="color:#3fb950;">🐂 看多方（恐慌消退，支撐仍在）</div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">1.</span><span><strong>VIX 連三日降至 17.31</strong>（-6.13%，距一年高 -44.25%），全球恐慌明確消退，進場條件①持續強化</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">2.</span><span><strong>季線連兩日守住</strong>：10/19、10/20 盤中低點（46,170、46,163）幾乎相同，顯示季線附近確實存在買盤</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">3.</span><span><strong>昨日家數明顯改善</strong>：跌方比從 5.21 倍降至 2.61 倍，跌停 0 檔、漲停 8 檔，中小型股的失血已止</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">4.</span><span><strong>美債回落至 5.12%</strong>（-0.37%）、美元指數 -0.18%，評價壓力與資金回流美國的壓力同步減輕</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">5.</span><span><strong>道瓊 +1.02%、標普 +0.28%</strong>（距高僅 -1.36%），美股大盤未鬆動，非系統性風險</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">6.</span><span><strong>ADR 於 10/19 全面反彈</strong>：台積電 +1.84%、美光 +2.97%、英特爾 +2.43%、AMD +1.76%，個股層面已見買盤</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">7.</span><span><strong>量能已降至 8,029 億</strong>（10 月最低，距 8,000 億門檻僅 0.37%），賣壓可能接近耗盡</span></div>
+    <div class="debate-item"><span style="color:#3fb950;font-weight:700;">8.</span><span><strong>半年線 45,004 仍有 2.78% 緩衝</strong>；有一檔籌碼明確延續的標的（中鋼連四日買超 +144,213 張）</span></div>
+  </div>
+  <div class="bear-card">
+    <div class="debate-head" style="color:#f85149;">🐻 看空方（守方力竭，資金加速外流）</div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">1.</span><span><strong>投信買超從 +57,235 崩至 +6,944 張</strong>（僅前一日 12%），唯一全程站在買方的法人正在退場 —— 本波最重要的籌碼變化</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">2.</span><span><strong>外資首次連續兩日同向賣超</strong>且規模擴大（-46.1 萬 → -52.2 萬張），六日累計 <strong>-182.4 萬張</strong>；前五日每天翻面，現在方向統一向下</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">3.</span><span><strong>台幣連三日創新貶且加速</strong>（32.48→32.51→32.62，貶幅 +0.03→+0.11），<strong>已觸發我昨日設的 32.60 警戒線</strong>，而美元指數還下跌 0.18%</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">4.</span><span><strong>季線緩衝從 +1.59% 收斂至 +0.39%（179 點）</strong>，拉回力道從 652 點剩 130 點 —— 支撐位置還在，守方力道剩五分之一</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">5.</span><span><strong>今日是季線第三次測試</strong>，而第三次測試同一支撐的失守機率明顯高於第一次；預估開盤下緣（46,150）距季線僅 37 點</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">6.</span><span><strong>費半單日反彈即中斷</strong>：10/19 +1.61% 後 10/20 -0.29%，距一年高 -22.90%（略惡化），距 12,000 需 +6.3%</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">7.</span><span><strong>權值與金融同步被減碼</strong>：台積電 -9,365、聯電 -18,620（投信也賣 -11,713）、台塑 -12,485、台新新光金 -22,524、中信金 -8,625</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">8.</span><span><strong>ETF 贖回未止</strong>：七檔合計約 -26.8 萬張，佔外資賣超一半以上；00406A 自營 -38.9 萬張、009816 自營 -11.7 萬張</span></div>
+    <div class="debate-item"><span style="color:#f85149;font-weight:700;">9.</span><span><strong>均線排列混亂</strong>（MA5 47,164＜MA20 48,170＜MA10 48,241），RSI 39.81 跌破 40 且續降</span></div>
+  </div>
+</div>
+<div class="verdict">
+  <div style="font-size:15px;font-weight:800;margin-bottom:5px;">裁決：季線第三次測試，守方已無子彈 —— 看空權重上調</div>
+  <div class="ratio-bar">
+    <div class="ratio-bull" style="width:30%;">看多 30%</div>
+    <div class="ratio-bear" style="width:70%;">看空 70%</div>
+  </div>
+  <p style="font-size:13px;color:#c9d1d9;line-height:1.9;">
+    <strong>看空權重由昨日 62% 上調至 70%。</strong>這是本週第一次上調（前幾日都在下調），原因是三個結構性惡化同時出現：<br>
+    ① <strong>投信買超崩塌至 +6,944 張</strong>（前五日平均約 6 萬張）—— 守方的主力退場<br>
+    ② <strong>外資首次連兩日同向賣超且規模擴大</strong> —— 震盪變趨勢<br>
+    ③ <strong>台幣連三日創新貶且加速至 32.62</strong> —— 已觸發我昨日設的 32.60 警戒線<br>
+    加上季線緩衝只剩 179 點（+0.39%）、拉回力道剩五分之一，而今日是第三次測試。<br>
+    <strong>看多的論點（VIX 連三降、家數改善、量能接近耗盡）都成立，但它們描述的是「恐慌程度」，而空方描述的是「資金流向」。在這波行情裡，資金流向一直是對的那一方。</strong><br>
+    <strong>務實結論：今日應降至防守水位，不做試單。</strong>依昨日既定規則，台幣破 32.60 即「不論技術面如何都降回防守」—— 今日 32.62 已觸發。<strong>季線 46,113 若量增跌破，下一個觀察點是半年線 45,004（-2.78%），期間不接刀。</strong>
+  </p>
+</div>
+
+<!-- 策略 -->
+<div class="section-title">⚔️ 今日操作策略</div>
+<div class="strat-card strat-a">
+  <div class="strat-title">⚔️ 積極型（降至 15-25%，取消昨日的試單額度）</div>
+  <div class="strat-body">
+    <strong>核心原則：昨日給的 15% 試單額度今日取消 —— 台幣破 32.60 已觸發既定的降部位規則。</strong><br>
+    ⛔ <strong>立即執行：</strong>部位由 25-35% 降至 <strong>15-25%</strong>。昨日若已依建議買入友達（外資 10/20 反手砍 -31,611 張），<strong>應於今日反彈時出清</strong><br>
+    ✅ <strong>唯一可留的籌碼明確標的：中鋼 2002</strong> —— 連四日外資買超（+77,005、+43,728、+10,021、+13,459，累計 +144,213），且 10/20 外資投信雙買（+13,459／+11,147）。<strong>這是以修正後標準（連三日以上同向）唯一合格者</strong><br>
+    ⛔ <strong>不碰昨日的新買盤方向</strong>：緯創（+32,813）、仁寶、宏碁、英業達、和碩、微星 —— <strong>這只是第一天，且緯創 10/15 曾遭砍 -42,606 張</strong>，依修正後標準不構成進場依據<br>
+    ⛔ <strong>明確迴避內外資對立者</strong>：台塑化 6505（外資 +11,723／投信 -11,131）、力積電 6770（-19,452／+5,525）、統一 1216（+3,902／-3,721）<br>
+    🎯 <strong>停損：季線 46,113 收盤跌破即出清所有部位</strong>（距昨收 -0.39%，極近）
+  </div>
+</div>
+<div class="strat-card strat-b">
+  <div class="strat-title">⚖️ 均衡型（現金提高至 75-85%）</div>
+  <div class="strat-body">
+    <strong>核心原則：四項進場條件中兩項惡化，且其中一項（匯率）已觸發降部位的警戒線。</strong><br>
+    ✅ <strong>現金水位由 60-70% 提高至 75-85%</strong>，理由是昨日明訂的規則：「台幣若續貶破 32.60，代表資金外流加速，應立即將部位降回防守水位，不論技術面如何」—— <strong>今日 32.62 已觸發。</strong><br>
+    🔴 <strong>今日的兩種情境：</strong><br>
+    　・<strong>季線 46,113 量增跌破（量 &gt; 9,000 億）</strong> → 確認失守，下一個觀察點半年線 45,004（-2.78%），期間不接刀<br>
+    　・<strong>季線量縮守住（量 &lt; 8,000 億）</strong> → 第三次測試成功，但<strong>仍不進場</strong>，因為投信已退場、外資連兩日賣，缺乏承接力。改為觀察明日能否站回 MA5 47,164<br>
+    ⏸️ <strong>台積電（2330）</strong>：外資六日累計 -107,754 張，連兩日 -9,xxx（略低於門檻），投信僅 +1,029 張承接。<strong>加碼條件不變：費半連兩日收紅並站回 12,000（目前 11,284，需 +6.3%）</strong><br>
+    ⚠️ <strong>新增觀察：台幣若續貶破 32.80</strong>，應考慮將現金提高至 90% 以上
+  </div>
+</div>
+<div class="strat-card strat-c">
+  <div class="strat-title">🛡️ 保守型（維持現金 85%+，等待期再延長）</div>
+  <div class="strat-body">
+    <strong>核心原則：VIX 已達標，但匯率條件持續惡化，淨結果不支持進場。</strong><br>
+    ① VIX 觸頂後回落 → 🟢 <strong>已達成</strong>（19.99 → 18.44 → 17.31，連三日降）<br>
+    ② 季線連兩日守住 ＋ 站上 MA5 且量達 1 兆 → 🟡 <strong>前半達成、後半完全未達</strong>（最高 46,968 未觸 MA5 47,164；量 8,029 億為 1 兆的 80%）<br>
+    ③ 費半連兩日收紅站回 12,000 → 🔴 <strong>未達成</strong>（單日反彈即中斷，需 +6.3%）<br>
+    ④ 台幣回 32.40 以下 → 🔴 <strong>連三日創新貶且加速（32.62）</strong><br>
+    <strong>四項中一項達成、一項半達成、兩項惡化 → 維持現金 85% 以上不變。</strong><br><br>
+    🔴 <strong>今日明確迴避：</strong><br>
+    ・<strong>所有 ETF（尤其主動型與槓桿型）</strong> —— 七檔合計遭贖回約 26.8 萬張，00406A 自營 -38.9 萬張，贖回潮未見緩解<br>
+    ・<strong>金融股</strong> —— 台新新光金 -22,524（雙賣）、中信金 -8,625（投信也賣 -3,512）、玉山金 -4,673，昨日轉為賣超方向<br>
+    ・<strong>半導體成熟製程與記憶體</strong> —— 聯電連兩日雙賣（-18,620／-11,713）、力積電 -19,452、南亞科 -3,936<br>
+    ・<strong>所有四日內籌碼翻面的標的</strong>（友達、台玻、緯創、台塑化等）<br><br>
+    🟢 <strong>最可靠的領先指標仍是台幣。</strong>在 USD/TWD 回到 32.40 以下之前，不執行任何第一筆承接 —— 這波行情中，匯率的方向從未給過錯誤訊號。
+  </div>
+</div>
+
+<!-- 觀察清單 -->
+<div class="section-title">📋 今日盤中觀察清單（依重要性）</div>
+<div class="card">
+  <div class="stat-row"><span class="stat-label red">① 季線 46,113 / 布林下軌 46,102</span><span class="stat-val dn"><strong>第三次測試。</strong>量增跌破＝失守確認；量縮守住＝僅拖延，不代表轉強</span></div>
+  <div class="stat-row"><span class="stat-label red">② USD/TWD 32.62（已破 32.60 警戒）</span><span class="stat-val dn">續貶破 32.80＝現金提高至 90%；回 32.40 以下才是止穩</span></div>
+  <div class="stat-row"><span class="stat-label red">③ 投信今日是否續買</span><span class="stat-val dn">昨日已崩至 +6,944 張。若轉賣超，季線大概率失守</span></div>
+  <div class="stat-row"><span class="stat-label highlight">④ 成交金額 8,000 億</span><span class="stat-val highlight">昨日 8,029 億。跌破季線時若量 &gt;9,000 億＝真實賣壓；&lt;8,000 億＝賣壓耗盡</span></div>
+  <div class="stat-row"><span class="stat-label">⑤ 開盤是否直接貼季線</span><span class="stat-val dn">預估開盤下緣 46,150 距季線僅 37 點，開盤即可能測試</span></div>
+  <div class="stat-row"><span class="stat-label">⑥ 台積電 2330</span><span class="stat-val">外資連兩日 -9,xxx（略低於門檻）。若今日破 1 萬張，「連三日」正式成立</span></div>
+  <div class="stat-row"><span class="stat-label">⑦ 中鋼 2002 能否連五日獲買</span><span class="stat-val up">唯一以修正後標準合格者。延續＝真實買盤；轉賣＝全市場無可靠方向</span></div>
+  <div class="stat-row"><span class="stat-label">⑧ 緯創 3231 是否延續</span><span class="stat-val">昨日最大買超（三大法人 +42,702）。連三日才具參考性</span></div>
+  <div class="stat-row"><span class="stat-label">⑨ 今夜美股費半</span><span class="stat-val dn">11,284（距 12,000 需 +6.3%）。需連兩日收紅才算族群止跌</span></div>
+  <div class="stat-row"><span class="stat-label">⑩ 台廠 Q3 財報與 10 月營收</span><span class="stat-val">本月下旬陸續公布。這波殺的是獲利預期，財報是唯一的檢驗機制</span></div>
+</div>
+
+</div>
+
+<div class="footer">
+  <p>
+    ⚠️ <strong>免責聲明：</strong>本報告由 AI 自動生成，僅供研究參考，<strong>不構成任何投資建議</strong>。報告中所有價位、開盤預估與情境推演均為風險參考，非價格預測；實際開盤須以當日試撮價為準。股市投資有風險，過去績效不代表未來結果，任何操作請自行評估並承擔風險。<br>
+    <strong>資料來源與日期：</strong>台股加權指數昨日開高低收、成交金額／股數／筆數、漲跌家數 — <strong>台灣證券交易所官方 API</strong>（MI_5MINS_HIST、FMTQIK、MI_INDEX），2026/10/20 收盤｜均線、RSI、布林通道 — 以 yfinance 一年歷史序列接上 TWSE 官方 2026/10/20 收盤值（46,292.93）重新計算，基準日 2026/10/20｜費半、美債 10Y、VIX、納斯達克、標普 500、道瓊、美元指數、黃金、布蘭特原油 — yfinance，2026/10/20 美股收盤｜USD/TWD — yfinance，2026/10/21｜台積電 ADR、NVDA、AMD、美光、博通、ASML、應材、英特爾 — yfinance，<strong>2026/10/19 收盤（落後一個交易日）</strong>｜三大法人買賣超 — 台灣證券交易所 T86 官方 API，資料日期 2026/10/13 至 2026/10/20。<br>
+    <strong>資料限制說明：</strong>①yfinance 的 ^TWII 序列於擷取時僅更新至 10/19，故均線以官方 10/20 收盤值接續後重算，與資料來源自行更新後的數值可能有微小差異；②個股 ADR 報價落後指數一個交易日（個股 10/19、指數 10/20），<strong>依修正後方法未用於開盤推算</strong>；③台指期外資未平倉因資料來源回傳異常值已排除；④櫃買指數（^TWOII）資料無法取得；⑤本日未取得 Podcast 新集內容，觀點聚合部分以數據矛盾偵測替代。<br>
+    <strong>方法修正記錄：</strong>本報告已修正兩項前次報告的方法瑕疵 —— ①<strong>開盤推算</strong>改為「外部指數漲跌 × 匯率折減係數」（台幣續貶時外部漲幅打對折、創新貶時僅計跌幅），因昨日僅用費半漲幅推算導致方向錯誤；②<strong>選股的籌碼門檻</strong>由「連兩日同向」提高至「連續三個交易日以上同向且累計量有意義」，因昨日以連兩日為依據推薦的友達，隔日即遭外資反手賣超 31,611 張。<br>
+    報告產生時間：2026-10-21 09:14（台北時間）
+  </p>
+</div>
+
+</body>
+</html>
