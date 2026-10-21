@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台光電(2383) 深度研究報告 第6次 | 2026-10-21</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+    --accent:#4c1d95;--accent2:#6d28d9;--accent3:#ddd6fe;
+    --green:#16a34a;--red:#dc2626;--yellow:#d97706;--blue:#2563eb;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.6}
+  a{color:var(--accent)}
+  td,th{font-variant-numeric:tabular-nums}
+
+  .cover{background:linear-gradient(135deg,#14052a 0%,#2e1065 30%,#4c1d95 64%,#8b5cf6 100%);color:#fff;padding:56px 40px 48px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-70px;right:-50px;width:310px;height:310px;border-radius:50%;background:rgba(255,255,255,0.06)}
+  .cover::after{content:'';position:absolute;bottom:-90px;left:-50px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.04)}
+  .cover-ticker{font-size:13px;opacity:.72;margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+  .cover-name{font-size:36px;font-weight:800;line-height:1.1;margin-bottom:6px}
+  .cover-subtitle{font-size:15px;opacity:.85;margin-bottom:24px}
+  .cover-price-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:10px}
+  .cover-price{font-size:54px;font-weight:900;line-height:1}
+  .cover-chg{font-size:21px;padding:4px 14px;border-radius:8px;background:rgba(220,38,38,0.38);border:1px solid rgba(252,165,165,0.7)}
+  .price-note{display:inline-block;font-size:12.5px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 13px;margin-bottom:22px;line-height:1.65}
+  .cover-meta{display:flex;gap:24px;flex-wrap:wrap}
+  .cover-meta-item{font-size:13px;opacity:.8}
+  .cover-meta-item strong{opacity:1;font-weight:700}
+  .risk-badge{position:absolute;top:32px;right:40px;background:rgba(217,119,6,0.32);border:1.5px solid rgba(251,191,36,0.7);border-radius:12px;padding:10px 18px;text-align:center}
+  .risk-badge .num{font-size:28px;font-weight:900;color:#fde68a}
+  .risk-badge .lbl{font-size:11px;opacity:.88;letter-spacing:1px}
+  .report-no-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(221,214,254,0.25);border:1px solid rgba(221,214,254,0.5);border-radius:8px;padding:3px 12px;font-size:12px;margin-bottom:12px}
+
+  .container{max-width:960px;margin:0 auto;padding:0 20px 60px}
+  section{margin-top:32px}
+  .section-title{font-size:18px;font-weight:800;color:var(--accent);border-left:4px solid var(--accent);padding-left:12px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .section-num{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+  .card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07),0 0 0 1px var(--border)}
+  .card + .card{margin-top:12px}
+
+  .verdict-box{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:2px solid #4c1d95;border-radius:14px;padding:20px 24px;margin-bottom:14px}
+  .verdict-box h4{font-size:15px;font-weight:800;color:#2e1065;margin-bottom:10px}
+  .verdict-box p{font-size:13.5px;line-height:1.75;color:#2e1065}
+  .verdict-box p + p{margin-top:9px}
+
+  .conclusion-card{background:linear-gradient(135deg,#14052a 0%,#4c1d95 55%,#8b5cf6 100%);color:#fff;border-radius:16px;padding:28px 32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+  .conc-item .label{font-size:11px;opacity:.68;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+  .conc-item .val{font-size:21px;font-weight:800;line-height:1.15}
+  .conc-item .sub{font-size:12px;opacity:.78;margin-top:4px}
+  @media(max-width:640px){.conclusion-card{grid-template-columns:1fr 1fr}}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+  .kpi-card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border);text-align:center}
+  .kpi-label{font-size:11px;color:var(--muted);margin-bottom:4px;letter-spacing:.5px}
+  .kpi-val{font-size:20px;font-weight:800;color:var(--accent)}
+  .kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+  .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.charts-grid{grid-template-columns:1fr}}
+  .chart-box{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border)}
+  .chart-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px}
+  .chart-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center;line-height:1.55}
+
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{background:var(--bg);padding:8px 12px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px;white-space:nowrap}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+  .tag-green{background:#dcfce7;color:#16a34a}
+  .tag-red{background:#fee2e2;color:#dc2626}
+  .tag-yellow{background:#fef9c3;color:#d97706}
+  .tag-blue{background:#dbeafe;color:#2563eb}
+  .tag-purple{background:#ede9fe;color:#4c1d95}
+
+  .analyst-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.analyst-grid{grid-template-columns:1fr}}
+  .analyst-card{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border)}
+  .analyst-card h4{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .analyst-card ul{list-style:none;padding:0}
+  .analyst-card li{font-size:13px;padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px}
+  .analyst-card li:last-child{border-bottom:none}
+  .bull-icon{color:#16a34a;font-weight:900;flex-shrink:0}
+  .bear-icon{color:#dc2626;font-weight:900;flex-shrink:0}
+
+  .score-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+  .score-label{width:104px;font-size:13px;flex-shrink:0}
+  .score-bar-bg{flex:1;height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+  .score-bar-fill{height:100%;border-radius:5px}
+  .score-num{width:36px;font-size:13px;font-weight:700;text-align:right;flex-shrink:0}
+
+  .strategy-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:640px){.strategy-grid{grid-template-columns:1fr}}
+  .strat-card{border-radius:14px;padding:20px;color:#fff}
+  .strat-card.attack{background:linear-gradient(135deg,#dc2626,#ef4444)}
+  .strat-card.balance{background:linear-gradient(135deg,#4c1d95,#8b5cf6)}
+  .strat-card.defend{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+  .strat-card h3{font-size:15px;font-weight:800;margin-bottom:12px}
+  .strat-item{font-size:13px;margin:6px 0;display:flex;gap:8px}
+  .strat-item span:first-child{opacity:.75;flex-shrink:0}
+
+  .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.tech-grid{grid-template-columns:1fr}}
+
+  .alert{border-radius:10px;padding:14px 18px;margin-bottom:12px;font-size:13px;display:flex;gap:12px;align-items:flex-start;line-height:1.7}
+  .alert-red{background:#fee2e2;border-left:4px solid #dc2626;color:#7f1d1d}
+  .alert-green{background:#dcfce7;border-left:4px solid #16a34a;color:#14532d}
+  .alert-yellow{background:#fef9c3;border-left:4px solid #d97706;color:#713f12}
+  .alert-purple{background:#ede9fe;border-left:4px solid #4c1d95;color:#2e1065}
+
+  .disclaimer{background:#fef9c3;border:1px solid #d97706;border-radius:10px;padding:16px 20px;font-size:12px;color:#713f12;margin-top:32px}
+  .disclaimer h4{font-size:13px;margin-bottom:8px}
+  .disclaimer ul{margin:6px 0 10px 18px}
+  .disclaimer li{margin:3px 0;line-height:1.65}
+
+  .glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:540px){.glossary-grid{grid-template-columns:1fr}}
+  .glossary-item{background:var(--card);border-radius:10px;padding:12px 14px;border:1px solid var(--border)}
+  .glossary-term{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:4px}
+  .glossary-def{font-size:12px;color:var(--muted);line-height:1.5}
+
+  .calc-box{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:12px;font-size:12.5px;line-height:1.7}
+  .calc-box .row{display:flex;justify-content:space-between;gap:12px;padding:3px 0;border-bottom:1px dashed #cbd5e1}
+  .calc-box .row:last-child{border-bottom:none;font-weight:800;color:var(--accent);padding-top:7px}
+  .calc-title{font-size:12px;font-weight:800;color:var(--accent);margin-bottom:7px;letter-spacing:.5px}
+
+  .asset-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  @media(max-width:700px){.asset-grid{grid-template-columns:repeat(2,1fr)}}
+  .asset-tile{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:10px;padding:13px;text-align:center}
+  .asset-tile.hl{background:#ede9fe;border:2px solid #4c1d95}
+  .asset-tile .at-val{font-size:18px;font-weight:800;color:#2e1065}
+  .asset-tile .at-name{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
+
+  .timeline{margin-top:14px;border-left:2px solid var(--accent3);padding-left:18px}
+  .tl-item{position:relative;padding-bottom:14px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{content:'';position:absolute;left:-25px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid #fff}
+  .tl-date{font-size:11.5px;font-weight:800;color:var(--accent);letter-spacing:.5px}
+  .tl-text{font-size:12.5px;color:var(--text);line-height:1.65;margin-top:2px}
+  .tl-item.bad::before{background:#dc2626}
+  .tl-item.bad .tl-date{color:#dc2626}
+  .tl-item.good::before{background:#16a34a}
+  .tl-item.good .tl-date{color:#16a34a}
+
+  .neg{color:#dc2626;font-weight:700}
+  .pos{color:#16a34a;font-weight:700}
+
+  .scorecard{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  @media(max-width:640px){.scorecard{grid-template-columns:1fr}}
+  .sc-item{border-radius:10px;padding:14px 16px}
+  .sc-hit{background:#dcfce7;border:1px solid #86efac}
+  .sc-miss{background:#fee2e2;border:1px solid #fca5a5}
+  .sc-partial{background:#fef9c3;border:1px solid #fcd34d}
+  .sc-head{font-size:12px;font-weight:800;margin-bottom:6px}
+  .sc-hit .sc-head{color:#14532d}
+  .sc-miss .sc-head{color:#7f1d1d}
+  .sc-partial .sc-head{color:#713f12}
+  .sc-body{font-size:12.5px;line-height:1.65;color:#334155}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="risk-badge">
+    <div class="num">5.9</div>
+    <div class="lbl">RISK / 10</div>
+  </div>
+  <div class="report-no-badge">第 6 次追蹤報告　|　上次 2026-10-15</div>
+  <div class="cover-ticker">深度研究報告 · 台股 TWSE · 第 06 次</div>
+  <div class="cover-name">台光電子材料</div>
+  <div class="cover-subtitle">股票代碼：2383　·　AI 伺服器高階 CCL（銅箔基板）材料龍頭</div>
+  <div class="cover-price-row">
+    <div class="cover-price">5,175 元</div>
+    <div class="cover-chg">&#9650; 230 元（+4.65%）</div>
+  </div>
+  <div class="price-note">
+    2026-10-21 盤中 09:15:55 即時報價　|　開 5,135 ／ 高 5,205 ／ 低 5,100　|　昨收 4,945（10/20）<br>
+    &#9888; 本報價為開盤後約 16 分鐘的極早盤快照，累計成交僅 669 張，價格代表性有限，收盤值可能顯著不同<br>
+    官方漲停 5,435 元 ／ 跌停 4,455 元（腳本輸出 5,637.5／4,612.5 為錯誤值，詳見第 08 節）
+  </div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">分析日期　<strong>2026-10-21</strong></div>
+    <div class="cover-meta-item">市值　<strong>1.8543 兆元</strong></div>
+    <div class="cover-meta-item">TTM EPS　<strong>64.08 元</strong></div>
+    <div class="cover-meta-item">TTM P/E　<strong>80.8 倍</strong></div>
+    <div class="cover-meta-item">P/B　<strong>31.8 倍</strong></div>
+    <div class="cover-meta-item">Q3 財報　<strong>2026-10-28</strong></div>
+  </div>
+</div>
+
+<div class="container">
+<section>
+  <div class="section-title"><span class="section-num">01</span>與第 5 次報告（2026-10-15）逐項對帳</div>
+
+  <div class="alert alert-purple">
+    <span>&#128269;</span>
+    <div>
+      <strong>本次定位：這六天「基本面沒有新數字，但出現兩項重要新事實」。</strong><br>
+      六個交易日（10/15~10/21）內，台光電 <strong>沒有公告任何財報、月營收或重大訊息</strong>。
+      但本報告主動查證後，取得兩項第 5 次報告「查不到」或「寫錯」的關鍵資訊：
+      <strong>(1) Q3'26 財報董事會日期確定為 2026-10-28</strong>（第 5 次寫「11 月中」，實際提前約兩週，距今僅 5 個交易日）；
+      <strong>(2) 第 5 次標示「尚未公告」的三大法人與融資融券官方數據，現已全部取得</strong>——
+      第 5 次曾寫「這是判斷此波下跌是否結束的最關鍵單一資訊」，本報告正面回答了它。
+      此外本報告也<strong>修正第 5 次自身的一處 10 倍計算錯誤</strong>（融資佔股本比重）。
+      除此之外，基本面數字一律沿用第 5 次，<strong>不為填版面重複論述或編造新論點</strong>。
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:12px;color:#4c1d95">第 5 次報告的 10 項判斷 vs 這六天的實況</h4>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>第 5 次（10/15）的判斷</th><th>當時數值</th><th>六日後（10/21）實況</th><th>結論</th>
+        </tr>
+        <tr>
+          <td>即時報價</td>
+          <td>5,140 元（13:22 盤中）</td>
+          <td>當日<strong>實際收盤 5,120 元</strong>（盤中快照高估 20 元）；今日盤中 <strong>5,175 元</strong>，相對 10/15 收盤 <span class="pos">+1.07%</span></td>
+          <td><span class="tag tag-blue">六日幾乎原地</span></td>
+        </tr>
+        <tr>
+          <td>觀察買點 4,950 ~ 5,000 元</td>
+          <td>三重密集支撐帶</td>
+          <td><strong>10/19 最低 4,955、10/20 最低 4,930、收 4,945</strong> ——買點已觸發，且收盤曾小幅破帶 5 元；以中值 4,975 進場，今日 5,175 為 <span class="pos">+4.02%</span></td>
+          <td><span class="tag tag-green">買點正確</span></td>
+        </tr>
+        <tr>
+          <td>「MACD 再一個 -3% 交易日即可能死叉」</td>
+          <td>柱狀體 +20.14（盤中）／收盤基準 +18.87</td>
+          <td><strong>10/16 即正式死叉</strong>（柱狀體 +18.87 → -11.22）。但<strong>死叉發生在 +0.88% 的上漲日</strong>，是動能自然衰減所致，不需要再一根長黑</td>
+          <td><span class="tag tag-yellow">結論對、機制錯</span></td>
+        </tr>
+        <tr>
+          <td>壓力帶 MA20／MA60 糾結 5,281~5,329</td>
+          <td>當日雙破</td>
+          <td>六日後 MA20 升至 <strong>5,311</strong>、MA60 <strong>5,338</strong>，<strong>股價一次都沒收復過</strong>（今日 5,175 仍在其下 -2.57%／-3.06%）</td>
+          <td><span class="tag tag-green">壓力確認</span></td>
+        </tr>
+        <tr>
+          <td>停損 收盤 4,635 元</td>
+          <td>9/17 盤中低點</td>
+          <td>六日最低僅 4,930（10/20），<strong>距停損線還有 +6.36% 緩衝，從未接近</strong></td>
+          <td><span class="tag tag-green">未觸發</span></td>
+        </tr>
+        <tr>
+          <td>「18:00 後查三大法人是最關鍵單一資訊」</td>
+          <td>當時無法取得</td>
+          <td><strong>本報告已取得官方值</strong>：10/15 外資單日賣超 <span class="neg">962 張</span>、四日累計賣超 <span class="neg">906 張</span>；但 10/16、10/19 外資已轉小幅買超</td>
+          <td><span class="tag tag-purple">已回答</span></td>
+        </tr>
+        <tr>
+          <td>Q3'26 財報時間「11 月中」</td>
+          <td>推測值</td>
+          <td><strong>錯誤。</strong>公司 2026-09-29 已公告，第三季財務報告董事會<strong>預計 2026-10-28 召開</strong>，距今僅 5 個交易日</td>
+          <td><span class="tag tag-red">本次修正</span></td>
+        </tr>
+        <tr>
+          <td>融資餘額 2,414 張「佔流通股數 0.067%」</td>
+          <td>10/07 官方值</td>
+          <td>張數正確，但<strong>百分比算錯 10 倍</strong>：2,414,000 股 ÷ 358,321,100 股 = <strong>0.674%</strong>；融資市值亦應為 <strong>124.1 億元</strong>而非 12.4 億元</td>
+          <td><span class="tag tag-red">本次修正</span></td>
+        </tr>
+        <tr>
+          <td>多空權重 45 : 55 偏空</td>
+          <td>風險 6.0 / 10</td>
+          <td><strong>48 : 52</strong>（風險 <strong>5.9</strong>）。支撐帶守住＋量縮止跌＋催化劑提前為加分，MACD 正式死叉為扣分</td>
+          <td><span class="tag tag-blue">微幅上調 3pp</span></td>
+        </tr>
+        <tr>
+          <td>Q3'26 EPS 推估 35.61 ~ 38.43 元</td>
+          <td>自行推算</td>
+          <td><strong>完全維持不變</strong>（無新資訊可更新）。但驗證日由「11 月中」提前到 <strong>10/28</strong>，本預測將在 5 個交易日內被實際財報檢驗</td>
+          <td><span class="tag tag-purple">即將驗證</span></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="scorecard">
+    <div class="sc-item sc-hit">
+      <div class="sc-head">&#9989; 第 5 次做對的事（1）：買點抓得很準</div>
+      <div class="sc-body">
+        第 5 次把觀察買點訂在 <strong>4,950 ~ 5,000 元</strong>（依據：10/15 低點 4,980、9/24 低點 4,980、10/01 收盤 4,975 三重密集）。
+        實際上 10/19 最低 4,955、10/20 最低 4,930 都落進這個帶子，而今日盤中已反彈到 5,175 元。
+        以帶子中值 4,975 元計，六日帳面報酬 <strong>+4.02%</strong>。這比第 4 次把買點訂在 MA20（5,291）的做法進步非常明顯。
+      </div>
+    </div>
+    <div class="sc-item sc-hit">
+      <div class="sc-head">&#9989; 第 5 次做對的事（2）：壓力帶判斷正確</div>
+      <div class="sc-body">
+        第 5 次把 MA20／MA60 糾結帶（當時 5,281 ~ 5,329）列為「壓力 1」，並寫「若未帶量突破，視為反壓」。
+        六個交易日過去，<strong>股價連一次都沒有收在這個帶子之上</strong>——10/16 最高 5,260、10/20 最高 5,200、今日最高 5,205，
+        全部被壓在 5,311（今日 MA20）之下。這條線現在依然是最硬的反壓。
+      </div>
+    </div>
+    <div class="sc-item sc-partial">
+      <div class="sc-head">&#9888; 第 5 次不完整的事：「縮量止跌」前置條件把人擋在外面</div>
+      <div class="sc-body">
+        第 5 次均衡型策略的前置條件是「量 &lt; 2,900 張<strong>且不破 4,975</strong>」。
+        實際上 10/19（1,749 張）與 10/20（1,814 張）都已縮量達標，<strong>但 10/20 收 4,945 元，破了 4,975 的條件</strong>。
+        嚴格照紀律執行的人會在 10/20 停手，然後錯過今日 +4.65% 的反彈。
+        <strong>教訓：在年化波動率 67% 的股票上，把「不破某價」和「縮量」設成同時成立的硬條件，實際上幾乎不可能同時滿足。</strong>
+      </div>
+    </div>
+    <div class="sc-item sc-miss">
+      <div class="sc-head">&#10060; 第 5 次做錯的事：Q3 財報日期寫成「11 月中」</div>
+      <div class="sc-body">
+        第 5 次在第 05 節與催化劑時間表都寫「Q3'26 財報與法說會：2026 年 11 月中」。
+        但公司早在 <strong>2026-09-29</strong> 就公告第三季財務報告董事會<strong>預計 2026-10-28 召開</strong>。
+        這個錯誤的影響很大：第 5 次因此建議「等 11 月中財報確認再加碼」，實際上<strong>驗證時點只剩 5 個交易日</strong>，
+        整個操作節奏（尤其是財報前該不該建倉）必須重寫。這是本次報告最重要的單一修正。
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-yellow" style="margin-top:14px">
+    <span>&#128221;</span>
+    <div>
+      <strong>誠實說明：本期基本面確實沒有新數字。</strong><br>
+      10 月營收<strong>尚未公告</strong>（法定期限 11/10 前），季報要等 10/28，公司六日內未發布任何重大訊息。
+      因此本報告第 06 節（基本面）的季度損益、現金流、應收帳款等數字<strong>與第 5 次完全一致，一字未改</strong>。
+      本期的增量價值全部集中在三個地方：<strong>第 01 節的對帳</strong>、<strong>第 07 與 09 節新取得的官方籌碼數據</strong>、
+      以及<strong>第 08 節重算後的技術指標與腳本錯誤修正</strong>。其餘章節保留僅為讓報告自成一體，不是在假裝有新發現。
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">02</span>核心投資結論</div>
+  <div class="conclusion-card">
+    <div class="conc-item">
+      <div class="label">今日評級</div>
+      <div class="val">觀察 / 財報前不動作</div>
+      <div class="sub">10/28 季報只剩 5 個交易日，等數字再決定</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">多空權重</div>
+      <div class="val">看多 48 : 看空 52</div>
+      <div class="sub">自第 5 次 45:55 微幅上調 3pp</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">風險評分</div>
+      <div class="val">5.9 / 10 中高</div>
+      <div class="sub">第 5 次 6.0 → 本次 5.9（-0.1）</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">最近端支撐</div>
+      <div class="val">4,930 ~ 4,945 元</div>
+      <div class="sub">10/20 盤中低點與收盤（已實測承接）</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">最硬反壓</div>
+      <div class="val">5,311 ~ 5,338 元</div>
+      <div class="sub">MA20／MA60，六日來一次都沒收復</div>
+    </div>
+    <div class="conc-item">
+      <div class="label">停損紀律</div>
+      <div class="val">收盤 4,635 元</div>
+      <div class="sub">沿用第 5 次；六日最低 4,930，未接近</div>
+    </div>
+  </div>
+
+  <div class="verdict-box" style="margin-top:14px">
+    <h4>&#128161; 白話版總結：三句話看完這六天</h4>
+    <p><strong>第一句：這六天股價「繞了一圈回到原點」，但籌碼真相揭曉了。</strong>
+    10/15 收 5,120 元，今日盤中 5,175 元，六天淨漲 <strong>+1.07%</strong>——看起來什麼都沒發生。
+    但中間的路徑很顛簸：10/16 小漲、10/19 小跌、<strong>10/20 再殺 -3.51% 到 4,945 元（盤中最低 4,930）</strong>，
+    然後今天開高跳上 5,135、盤中衝到 5,205。真正的新資訊是籌碼：
+    本報告向臺灣證券交易所查到官方數據，<strong>10/15 那天外資單日賣超 962 張</strong>，10/15~10/20 四個交易日外資累計賣超 <strong>906 張</strong>、自營商賣超 <strong>219 張</strong>，投信小幅買超 158 張。
+    第 5 次「高度疑似法人出貨」的猜測<strong>已被官方數據證實</strong>。</p>
+    <p><strong>第二句：技術面正式轉空，但下跌動能明顯衰竭。</strong>
+    MACD 在 <strong>10/16 正式死叉</strong>（柱狀體 +18.87 → -11.22），到今日已連續 4 個交易日為負（今日 -53.89），中期動能確認翻空。
+    MA20（5,311）與 MA60（5,338）六天來<strong>一次都沒被收復</strong>。
+    但另一面：<strong>成交量從 10/15 的 5,904 張急縮到 10/19 的 1,749 張、10/20 的 1,814 張</strong>（僅 5 日均量 2,913 張的 0.60~0.62 倍），
+    這是典型的「賣壓衰竭」型態——跌，但沒人在大量賣了。加上 10/20 最低 4,930 被買盤接起、今日跳空上漲，短線最壞的時候大概率已經過去。</p>
+    <p><strong>第三句：真正該盯的日子是 10 月 28 日，而且關鍵不是 EPS。</strong>
+    第 5 次推估 Q3'26 EPS 為 <strong>35.61 ~ 38.43 元</strong>，這個預測本報告<strong>完全維持、不做任何修改</strong>，讓它接受 10/28 財報的實際檢驗。
+    但請注意：<strong>EPS 落在這個區間的機率本來就很高</strong>（因為 Q3 三個月營收 608.85 億元早已公告完畢，只剩毛利率一個變數），
+    猜中並不代表什麼。<strong>真正的關鍵是營業現金流能否從上半年的 0.33 倍回升。</strong>
+    上半年帳上賺 152.13 億元、實際收到現金只有 50.45 億元，差額卡在半年暴增 292.13 億元的應收帳款裡。
+    如果 10/28 的季報顯示 Q3 營業現金流／淨利仍低於 0.5 倍，那麼「獲利漂亮但現金沒進來」就從一季的異常變成持續的結構問題，
+    80 倍本益比會非常難守。<strong>看財報時請先翻現金流量表，再看 EPS。</strong></p>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">10/28 財報前的三個情境（基本面假設不變，純操作層面）</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>情境</th><th>觸發條件</th><th>對應價位</th><th>操作建議</th></tr>
+        <tr>
+          <td><span class="tag tag-green">續彈</span></td>
+          <td>今日收盤站上 5,100 以上，且後續 2~3 日量能回升到 5 日均量以上並挑戰 MA20</td>
+          <td>5,175 → 5,311 ~ 5,338</td>
+          <td>已持股者續抱至財報；<strong>空手者不要在財報前追價</strong>，因為 5,311~5,338 是確認過的反壓</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue">區間整理</span></td>
+          <td>在 4,930 ~ 5,250 之間縮量橫盤直到 10/28</td>
+          <td>4,930 ~ 5,250</td>
+          <td><strong>本報告認為機率最高。</strong>可在 4,950 ~ 5,050 分批建立第一批（總部位 15~20%），保留主力資金到財報後</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">再破底</span></td>
+          <td>收盤跌破 4,930（10/20 低點），或財報後出現「EPS 達標但 OCF／淨利 &lt; 0.5 倍」</td>
+          <td>&lt; 4,930 → 4,855 → 4,635</td>
+          <td>停止所有承接計畫；收盤破 4,635 全數停損。<strong>現金流不改善就是本報告的多方論述瓦解點</strong></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">03</span>關鍵財務與估值 KPI（八格速覽）</div>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-label">10/21 盤中股價</div><div class="kpi-val">5,175 元</div><div class="kpi-sub">+230 元（+4.65%）｜昨收 4,945</div></div>
+    <div class="kpi-card"><div class="kpi-label">市值</div><div class="kpi-val">1.8543 兆元</div><div class="kpi-sub">5,175 × 3.5832 億股</div></div>
+    <div class="kpi-card"><div class="kpi-label">TTM EPS（近四季）</div><div class="kpi-val">64.08 元</div><div class="kpi-sub">Q3'25~Q2'26 四季加總（未變）</div></div>
+    <div class="kpi-card"><div class="kpi-label">本益比 P/E（TTM）</div><div class="kpi-val">80.8 倍</div><div class="kpi-sub">第 5 次 80.2 倍（@5,140）</div></div>
+    <div class="kpi-card"><div class="kpi-label">每股淨值 BVPS</div><div class="kpi-val">162.80 元</div><div class="kpi-sub">股東權益 583.35 億 ÷ 3.5832 億股</div></div>
+    <div class="kpi-card"><div class="kpi-label">股價淨值比 P/B</div><div class="kpi-val">31.8 倍</div><div class="kpi-sub">極高；需靠 ROE 45.6% 支撐</div></div>
+    <div class="kpi-card"><div class="kpi-label">業外佔稅前（TTM）</div><div class="kpi-val">-0.22%</div><div class="kpi-sub">本業貢獻 100.2%｜獲利極乾淨</div></div>
+    <div class="kpi-card"><div class="kpi-label">綜合風險評分</div><div class="kpi-val">5.9 / 10</div><div class="kpi-sub">中高風險（第 5 次 6.0）</div></div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="calc-title">&#128202; 估值計算完整過程（@5,175 元，可自行驗算）</div>
+    <div class="calc-box">
+      <div class="row"><span>流通在外股數（沿用第 5 次：由 Q2'26 淨利 98.73 億 ÷ EPS 27.55 元反推並以股本校驗）</span><strong>358,321,100 股</strong></div>
+      <div class="row"><span>市值 ＝ 5,175 元 × 358,321,100 股</span><strong>1,854,311,692,500 元（1.8543 兆）</strong></div>
+      <div class="row"><span>TTM EPS ＝ 11.19 ＋ 10.44 ＋ 14.90 ＋ 27.55</span><strong>64.08 元</strong></div>
+      <div class="row"><span>TTM P/E ＝ 5,175 ÷ 64.08</span><strong>80.76 倍</strong></div>
+      <div class="row"><span>BVPS ＝ 583.35 億 ÷ 3.5832 億股</span><strong>162.80 元</strong></div>
+      <div class="row"><span>P/B ＝ 5,175 ÷ 162.80</span><strong>31.79 倍</strong></div>
+      <div class="row"><span>ROE（TTM）＝ TTM 淨利 229.15 億 ÷ 四季平均權益 502.83 億</span><strong>45.6%</strong></div>
+      <div class="row"><span>前瞻 P/E ＝ 5,175 ÷ FY2026E 114.80 ~ 122.80 元</span><strong>42.1 ~ 45.1 倍</strong></div>
+      <div class="row"><span>單張交易門檻 ＝ 5,175 元 × 1,000 股</span><strong>517.5 萬元</strong></div>
+      <div class="row"><span>自 10/12 波段高點 6,150 元的累計跌幅</span><strong>-15.85%</strong></div>
+      <div class="row"><span>自 52 週高 6,470 元的累計跌幅</span><strong>-20.02%</strong></div>
+    </div>
+    <div class="alert alert-red" style="margin-top:12px;margin-bottom:0">
+      <span>&#128680;</span>
+      <div>
+        <strong>腳本市值也錯了。</strong>行情抓取腳本輸出「市值 1,771,897,356,288 元（1.7719 兆）」，
+        這個數字是用 <strong>10/20 收盤價 4,945 元</strong>算出來的，不是用它自己同時回報的即時價。
+        以今日 5,175 元與本系列一貫的股數 358,321,100 股計算，正確市值應為 <strong>1.8543 兆元</strong>，腳本值低估 4.45%。
+        同理，腳本輸出的 P/E 80.17 倍與 P/B 30.37 倍亦為舊價基準，正確值為 <strong>80.76 倍</strong>與 <strong>31.79 倍</strong>。
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">04</span>財務與股價趨勢圖表</div>
+  <div class="charts-grid">
+    <div class="chart-box">
+      <div class="chart-title">&#128201; 近 12 個交易日收盤價（元，含今日盤中）</div>
+      <canvas id="pxChart" width="440" height="260" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">10/12 高點 6,150 → 10/20 低點收盤 4,945，今日盤中反彈至 5,175。六日淨變化僅 +1.07%。</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">&#127970; 三大法人合計買賣超（張，官方值）【本次新增】</div>
+      <canvas id="instChart" width="440" height="260" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">臺灣證券交易所三大法人買賣超日報。四日全為賣超，但規模由 10/15 的 -633 張收斂到 -192 張。</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">&#128176; 融資餘額（張，官方值）【本次新增】</div>
+      <canvas id="marginChart" width="440" height="260" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">10/07 的 2,414 張增至 10/20 的 2,895 張（+481 張、+19.93%）。股價下跌期間散戶反而加槓桿。</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">&#128201; MACD 柱狀體（10/12 ~ 今日）【本次新增】</div>
+      <canvas id="macdChart" width="440" height="260" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">10/16 正式翻負（死叉），至今連續 4 日為負。但負值已停止擴大（-56.30 → -53.89），動能衰竭。</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">&#128176; 單季營收（億元，含 Q3'26 月營收加總）</div>
+      <canvas id="qrevChart" width="440" height="260" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">Q3'26 的 608.85 億元由 7／8／9 月實際月營收加總（非財報），季增 +28.79%、年增 +142.13%。10/28 公告驗證。</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">&#128200; 單季 EPS 趨勢（元，近 10 季）</div>
+      <canvas id="epsChart" width="440" height="260" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">Q2'26 單季 EPS 27.55 元為歷史新高。本報告推估 Q3'26 為 35.61 ~ 38.43 元，10/28 驗證。</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">&#128197; 月營收趨勢（億元，2026 年 1~9 月實際月份）</div>
+      <canvas id="revChart" width="440" height="260" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">9 月 215.32 億元為歷史單月新高，年增 +168.87%。10 月營收尚未公告（11/10 前）。</div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">&#128269; 本益比階梯（@5,175 元）</div>
+      <canvas id="peChart" width="440" height="260" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">TTM 80.8 倍 → FY2026E 42.1~45.1 倍 → FY2027E（外資估 262.85 元）19.7 倍。估值完全押注未來兩年成長兌現。</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">05</span>公司概覽</div>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <tr><th>項目</th><th>內容</th></tr>
+        <tr><td>公司全名</td><td>台光電子材料股份有限公司（Elite Material Co., Ltd.）</td></tr>
+        <tr><td>股票代碼</td><td>2383.TW（臺灣證券交易所上市）</td></tr>
+        <tr><td>產業類別</td><td>電子零組件 — 銅箔基板（CCL）／膠片（Prepreg）材料</td></tr>
+        <tr><td>主力產品</td><td>高階低損耗 CCL：M6 / M7 / M8 / M9 世代；M10 送樣中；ABF 載板用 CCL 開始出貨</td></tr>
+        <tr><td>核心應用</td><td>AI 伺服器主機板與加速卡（GPU / ASIC / TPU）、高速交換器（Switch）、網通設備</td></tr>
+        <tr><td>流通股數</td><td>358,321,100 股（約 3.58 億股，股本約 35.83 億元）</td></tr>
+        <tr><td>外資持股比重</td><td>45.18%（2026-10-13，資料來源：公開資訊觀測站 / 臺灣證券交易所）<br><span style="font-size:12px;color:#64748b">本次查證未取得更新值，沿用第 5 次的數字與日期，不以任何推估值替代</span></td></tr>
+        <tr><td>董監持股</td><td>8.58%，<strong>質押比 0%</strong>（無股票質押，經營層無融資斷頭風險）</td></tr>
+        <tr><td>價格策略</td><td>規劃自 2026 年第 2 季起全產品線調漲逾 10%；若供需持續偏緊，不排除再調漲（法人報導）</td></tr>
+        <tr><td>產能規劃<span class="tag tag-purple" style="margin-left:6px">本次更新</span></td><td>2026 年底月產能約 <strong>615 萬張</strong> → 2027 年底 <strong>945 萬張</strong>（增幅 <strong>+53.66%</strong>）<br><span style="font-size:12px;color:#64748b">第 5 次寫「崑山／觀音新廠 2027 完工、產能 +51.22%」，本次查得的法人報導數字為 615 → 945 萬張，換算增幅 +53.66%，兩者略有差異，均為法人預估而非公司正式指引</span></td></tr>
+        <tr><td>Q3'26 財報<span class="tag tag-red" style="margin-left:6px">本次修正</span></td><td><strong>2026 年 10 月 28 日</strong>（公司 2026-09-29 公告「115 年第三季財務報告董事會預計召開日期」）<br><span style="font-size:12px;color:#64748b">第 5 次誤寫「11 月中」。去年同期（114 年第三季）董事會為 10/30，時程一致</span></td></tr>
+        <tr><td>2026 資本支出</td><td>市場報導上修至約 320 億元（擴產高階 CCL 與 ABF 產能）</td></tr>
+      </table>
+    </div>
+    <div class="asset-grid">
+      <div class="asset-tile"><div class="at-val">強</div><div class="at-name">高階 CCL 技術</div></div>
+      <div class="asset-tile"><div class="at-val">強</div><div class="at-name">客戶認證門檻</div></div>
+      <div class="asset-tile"><div class="at-val">強</div><div class="at-name">AI 伺服器曝光度</div></div>
+      <div class="asset-tile"><div class="at-val">中高</div><div class="at-name">定價能力</div></div>
+      <div class="asset-tile"><div class="at-val">中</div><div class="at-name">材料替代風險</div></div>
+      <div class="asset-tile hl"><div class="at-val">偏弱</div><div class="at-name">現金轉換能力<br>（10/28 驗證）</div></div>
+      <div class="asset-tile"><div class="at-val">+53.7%</div><div class="at-name">2027 底產能增幅<br>（法人估）</div></div>
+      <div class="asset-tile"><div class="at-val">0%</div><div class="at-name">董監質押比</div></div>
+    </div>
+    <div class="alert alert-purple" style="margin-top:14px;margin-bottom:0">
+      <span>&#128273;</span>
+      <div>
+        <strong>核心護城河（沿用第 5 次，本次新增一項具體風險）：</strong>
+        台光電賣的是「AI 伺服器主機板最底層那一張板材」。訊號跑得越快（從 PCIe 5.0 到 6.0、從 800G 到 1.6T 交換器），
+        板材的介電損耗就必須越低，能做 M8 / M9 等級的供應商全球只有少數幾家，認證週期長達一到兩年，形成很強的客戶黏著度。
+        外資研究並認為台光電是 <strong>M9 的獨家供應商</strong>，M9 大量生產自 2026 年下半年開始、2027 年進入放量。<br>
+        <strong>本次查到的新風險細節：</strong>市場傳出<strong>下一代 AI 平台（VR200）部分板件可能不採用 M9</strong>，
+        即所謂「規格調降」風險。該外資的看法是<strong>規格調降風險有限、維持買進評級</strong>。
+        這與第 5 次提到的 PTFE（鐵氟龍）替代題材屬於同一類風險，但指向更具體的平台與板件層級。
+        <strong>本報告僅將其列為不確定性來源，公司官方未就此發布任何重大訊息。</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">06</span>基本面分析（本期無新增財務數字）</div>
+
+  <div class="alert alert-yellow">
+    <span>&#128221;</span>
+    <div>
+      <strong>誠實說明：</strong>本節的季度損益、現金流、應收帳款數字<strong>與第 5 次報告完全一致，一字未改</strong>，
+      因為 10/15~10/21 這六個交易日內<strong>沒有任何新的財報、月營收或重大訊息公告</strong>。
+      保留本節的目的是讓報告自成一體（投資人不必翻回第 5 次就能看懂全貌），而不是假裝有新發現。
+      本節唯一的新增內容是<strong>月營收換算規則的第三方獨立交叉驗證</strong>（見下方），那是本次新查到的證據。
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">近 10 季損益結構全表（含業外佔比）</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>季度</th><th>營收(億)</th><th>毛利率</th><th>營益率</th><th>業外(億)</th><th>業外/稅前</th><th>淨利(億)</th><th>EPS(元)</th><th>淨利率</th></tr>
+        <tr><td>Q1'24</td><td>129.02</td><td>28.97%</td><td>19.65%</td><td>+0.78</td><td>+2.98%</td><td>19.78</td><td>5.76</td><td>15.33%</td></tr>
+        <tr><td>Q2'24</td><td>154.49</td><td>27.41%</td><td>18.92%</td><td>+0.52</td><td>+1.74%</td><td>24.36</td><td>7.08</td><td>15.77%</td></tr>
+        <tr><td>Q3'24</td><td>174.63</td><td>27.00%</td><td>18.14%</td><td>+0.07</td><td>+0.22%</td><td>25.16</td><td>7.30</td><td>14.41%</td></tr>
+        <tr><td>Q4'24</td><td>185.62</td><td>28.45%</td><td>18.99%</td><td>-1.55</td><td>-4.60%</td><td>26.48</td><td>7.67</td><td>14.27%</td></tr>
+        <tr><td>Q1'25</td><td>216.80</td><td>30.40%</td><td>20.94%</td><td>+1.28</td><td>+2.74%</td><td>34.69</td><td>10.01</td><td>16.00%</td></tr>
+        <tr><td>Q2'25</td><td>225.08</td><td>30.34%</td><td>20.63%</td><td>-1.77</td><td>-3.95%</td><td>34.78</td><td>10.02</td><td>15.45%</td></tr>
+        <tr><td>Q3'25</td><td>251.46</td><td>30.13%</td><td>19.84%</td><td>+1.31</td><td>+2.56%</td><td>39.65</td><td>11.19</td><td>15.77%</td></tr>
+        <tr><td>Q4'25</td><td>249.27</td><td>28.58%</td><td>19.80%</td><td>-3.14</td><td>-6.81%</td><td>37.37</td><td>10.44</td><td>14.99%</td></tr>
+        <tr><td>Q1'26</td><td>330.67</td><td>29.42%</td><td>21.56%</td><td>+0.66</td><td>+0.91%</td><td>53.40</td><td>14.90</td><td>16.15%</td></tr>
+        <tr><td>Q2'26</td><td>472.75</td><td><strong>33.85%</strong></td><td><strong>26.94%</strong></td><td>+0.52</td><td>+0.40%</td><td>98.73</td><td><strong>27.55</strong></td><td>20.88%</td></tr>
+      </table>
+    </div>
+    <div class="alert alert-green" style="margin-top:12px;margin-bottom:0">
+      <span>&#11088;</span>
+      <div>
+        <strong>本報告認定的第一核心賣點：獲利 100% 來自本業（未變）。</strong><br>
+        近四季（Q3'25 ~ Q2'26）業外收支合計 <strong>-0.6605 億元</strong>、稅前利益合計 <strong>297.21 億元</strong>，
+        業外佔稅前比重 <strong>-0.222%</strong>，意即本業貢獻度 <strong>100.22%</strong>。最新一季 Q2'26 的業外僅 +0.52 億元、佔稅前 0.40%。
+        營業利益 297.87 億元與稅前利益 297.21 億元幾乎相同，代表每一塊錢的獲利都是賣板材賺來的、具備可重複性。
+        這是支撐高估值最硬的一塊基本面論據，也是本報告在六次追蹤中<strong>始終維持「不看空公司體質」的根本原因</strong>。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">月營收換算規則：本次取得第三方獨立驗證<span class="tag tag-purple" style="margin-left:8px">本次新增</span></h4>
+    <div class="alert alert-red">
+      <span>&#128290;</span>
+      <div>
+        <strong>這是本系列最容易出錯的一個地方，本次有新發現。</strong><br>
+        行情抓取腳本輸出的月營收表，「年月」欄位標示的是 <strong>公告月份</strong>，不是營收歸屬月份，兩者相差一個月。
+        腳本最新一列寫「<strong>年月 2026-10，月營收 215.3 億元</strong>」，很容易被誤讀成「10 月營收已公告」——
+        <strong>這是錯的，那是 2026 年 9 月的營收。</strong><br>
+        <strong>本次新查證：</strong>本報告直接呼叫 FinMind 原始 API（<code>taiwan_stock_month_revenue</code>），
+        發現原始回傳欄位 <code>revenue_year</code> / <code>revenue_month</code> 的最新值為 <strong>2026 年 9 月</strong>，
+        而腳本在呈現時把它<strong>加了一個月</strong>變成「2026-10」。
+        換句話說：<strong>原始 API 的月份就是實際月份，腳本的「年月」才需要減 1。</strong>
+        第 5 次提出的「減 1」規則對腳本輸出而言正確無誤，本次進一步釐清了誤差來源。
+      </div>
+    </div>
+    <h4 style="font-size:13px;font-weight:800;margin:14px 0 8px;color:#4c1d95">月營收加總 vs 財報季營收 逐季交叉驗證（六個季度）</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>季度</th><th>實際月份</th><th>月營收加總(億)</th><th>財報季營收(億)</th><th>差異(億)</th><th>吻合程度</th></tr>
+        <tr><td>Q1'25</td><td>2025 年 1／2／3 月</td><td>216.8426</td><td>216.8000</td><td>+0.0426</td><td>+0.0196%</td></tr>
+        <tr><td>Q2'25</td><td>2025 年 4／5／6 月</td><td>225.0351</td><td>225.0769</td><td>-0.0418</td><td>-0.0186%</td></tr>
+        <tr><td>Q3'25</td><td>2025 年 7／8／9 月</td><td>251.4562</td><td>251.4564</td><td>-0.0002</td><td>-0.0001%</td></tr>
+        <tr><td>Q4'25</td><td>2025 年 10／11／12 月</td><td>249.0860</td><td>249.2718</td><td>-0.1858</td><td>-0.0745%</td></tr>
+        <tr><td>Q1'26</td><td>2026 年 1／2／3 月</td><td>330.6723</td><td>330.6726</td><td>-0.0003</td><td>-0.0001%</td></tr>
+        <tr><td>Q2'26</td><td>2026 年 4／5／6 月</td><td>472.7522</td><td>472.7519</td><td>+0.0003</td><td>+0.0001%</td></tr>
+        <tr><td><strong>Q3'26</strong></td><td><strong>2026 年 7／8／9 月</strong></td><td><strong>608.8452</strong></td><td>尚未公告（<strong>10/28</strong>）</td><td>—</td><td><span class="tag tag-purple">待驗證</span></td></tr>
+      </table>
+    </div>
+    <div class="alert alert-green" style="margin-top:12px">
+      <span>&#9989;</span>
+      <div>
+        <strong>驗證結論一（本次複查）：Q3'26 營收 608.85 億元經複算完全一致。</strong><br>
+        608.8452 ＝ 7 月 192.0670 ＋ 8 月 201.4559 ＋ 9 月 215.3223。
+        六個已公告季度全部吻合，最大誤差僅 -0.0745%（Q4'25），其中 Q1'26 與 Q2'26 誤差均為 0.0001% 等級（金額差 3 萬元，屬四捨五入層級）。
+        季增 +28.79%（對 Q2'26 的 472.75 億）、年增 +142.13%（對 Q3'25 的 251.46 億）。<br>
+        <strong>驗證結論二（本次新增的第三方證據）：</strong>財經媒體報導「台光電前 9 月營收約 <strong>1,412 億元</strong>」，
+        本報告以實際月份加總 2026 年 1~9 月得 <strong>1,412.27 億元</strong>，<strong>兩者完全吻合</strong>。
+        另一則 2025-11-05 的營收報導稱「2025 年 10 月營收 80.75 億元、累計前 10 月 774.08 億元」，
+        本報告資料庫的 2025 年 10 月為 <strong>80.7481 億元</strong>、前 10 月加總為 <strong>774.08 億元</strong>，<strong>同樣完全吻合</strong>。
+        <strong>這是第 5 次沒有的獨立外部驗證——換算規則至此可視為確認無誤。</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">2026 年月營收明細（已換算為實際月份）</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>實際月份</th><th>腳本標示「年月」</th><th>月營收(億元)</th><th>月增率</th><th>年增率</th></tr>
+        <tr><td>2026 年 1 月</td><td>2026-02</td><td>108.63</td><td>+24.79%</td><td>資料庫未提供</td></tr>
+        <tr><td>2026 年 2 月</td><td>2026-03</td><td>101.94</td><td>-6.16%</td><td>資料庫未提供</td></tr>
+        <tr><td>2026 年 3 月</td><td>2026-04</td><td>120.11</td><td>+17.83%</td><td>資料庫未提供</td></tr>
+        <tr><td>2026 年 4 月</td><td>2026-05</td><td>139.24</td><td>+15.93%</td><td>+93.62%</td></tr>
+        <tr><td>2026 年 5 月</td><td>2026-06</td><td>156.19</td><td>+12.17%</td><td>+114.63%</td></tr>
+        <tr><td>2026 年 6 月</td><td>2026-07</td><td>177.33</td><td>+13.54%</td><td>+120.69%</td></tr>
+        <tr><td>2026 年 7 月</td><td>2026-08</td><td>192.07</td><td>+8.31%</td><td>+129.40%</td></tr>
+        <tr><td>2026 年 8 月</td><td>2026-09</td><td>201.46</td><td>+4.89%</td><td>+129.85%</td></tr>
+        <tr><td>2026 年 9 月</td><td>2026-10</td><td><strong>215.32</strong></td><td>+6.88%</td><td><strong>+168.87%</strong></td></tr>
+        <tr><td><strong>2026 年 10 月</strong></td><td>（尚未出現）</td><td colspan="3"><strong>尚未公告。</strong>法定公告期限為 2026-11-10 前。年增率比較基期為 2025 年 10 月的 <strong>80.75 億元</strong>；月增率基期為 9 月的 215.32 億元</td></tr>
+      </table>
+    </div>
+    <div class="alert alert-yellow" style="margin-top:12px;margin-bottom:0">
+      <span>&#128201;</span>
+      <div>
+        <strong>一個該注意的細節（沿用第 5 次）：月增率正在遞減。</strong>
+        從 6 月的 +13.54% → 7 月 +8.31% → 8 月 +4.89% → 9 月 +6.88%，月增幅已明顯由兩位數降到個位數。
+        這不代表衰退（年增率仍高達 +168.87%），但代表<strong>「每月都創新高」的爆發期斜率正在趨緩</strong>。
+        <strong>10 月營收（11/10 前公告）的觀察重點：月增率能否回升到 +8% 以上。</strong>
+        若能，是成長斜率未轉折的有力證據；若繼續低於 +5%，則 80 倍本益比的容錯空間會進一步壓縮。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">Q3'26 EPS 推估（維持第 5 次，不做任何修改，10/28 驗證）</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>情境</th><th>毛利率假設</th><th>營業利益(億)</th><th>營益率</th><th>稅後淨利(億)</th><th>推估 EPS</th><th>淨利率</th></tr>
+        <tr><td>保守</td><td>33.85%（與 Q2'26 持平）</td><td>165.30</td><td>27.15%</td><td>127.61</td><td><strong>35.61 元</strong></td><td>20.96%</td></tr>
+        <tr><td>基準</td><td>34.50%</td><td>169.26</td><td>27.80%</td><td>130.67</td><td><strong>36.47 元</strong></td><td>21.46%</td></tr>
+        <tr><td>樂觀</td><td>36.00%</td><td>178.39</td><td>29.30%</td><td>137.72</td><td><strong>38.43 元</strong></td><td>22.62%</td></tr>
+      </table>
+    </div>
+    <div class="calc-box">
+      <div class="calc-title">推估假設（全部明列，供 10/28 檢驗）</div>
+      <div class="row"><span>Q3'26 營收（月營收加總，非財報）</span><strong>608.85 億元</strong></div>
+      <div class="row"><span>營業費用率假設（取 Q2'26 實績：毛利率 33.85% − 營益率 26.94%）</span><strong>6.70%</strong></div>
+      <div class="row"><span>有效稅率假設（取 Q2'26 實績：29.14 億 ÷ 127.85 億）</span><strong>22.80%</strong></div>
+      <div class="row"><span>業外收支假設（近四季僅 -0.65 億，影響可忽略）</span><strong>0 元</strong></div>
+      <div class="row"><span>股數假設（無增資、無減資）</span><strong>358,321,100 股</strong></div>
+      <div class="row"><span>推估 Q3'26 EPS 區間（10/28 驗證）</span><strong>35.61 ~ 38.43 元</strong></div>
+    </div>
+    <div class="alert alert-red" style="margin-top:12px;margin-bottom:0">
+      <span>&#128680;</span>
+      <div>
+        <strong>&#9888; 請讀者特別注意：10/28 的關鍵不是 EPS，而是營業現金流。</strong><br>
+        本報告刻意<strong>保留</strong>這個可被驗證的 EPS 預測（35.61 ~ 38.43 元），不因股價波動而事後調整。
+        但必須提醒：<strong>猜中 EPS 的難度其實不高</strong>——因為 Q3 三個月營收 608.85 億元早已全部公告完畢，
+        只剩毛利率一個變數，而毛利率在 33.85% ~ 36.00% 之間移動的空間有限。所以 EPS 落入區間內是高機率事件，猜中並不構成洞見。<br>
+        <strong>真正會改變投資結論的是現金流量表：</strong>上半年營業現金流（OCF）僅 50.45 億元、對淨利 152.13 億元只有 <strong>0.332 倍</strong>
+        （FY2025 全年為 0.817 倍）。10/28 請直接檢查三件事：<br>
+        <strong>(a) Q3 單季 OCF ÷ 單季淨利是否回到 0.5 倍以上</strong>（若仍低於 0.5 倍，財務風險維度應由 6 分上調）；<br>
+        <strong>(b) 應收帳款是否停止膨脹</strong>（Q2'26 已達 652.78 億元，超過 Q3 整季營收）；<br>
+        <strong>(c) 負債比是否止於 63.23%</strong>（Q4'25 為 53.26%，半年升 9.97pp）。<br>
+        <strong>EPS 達標但現金流沒改善，對 80 倍本益比而言是壞消息，不是好消息。</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">FY2026 全年 EPS 推估與前瞻本益比（@5,175 元重算）</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>情境</th><th>Q1'26 實際</th><th>Q2'26 實際</th><th>Q3'26 推估</th><th>Q4'26 推估</th><th>FY2026E EPS</th><th>前瞻 P/E @5,175</th></tr>
+        <tr><td>保守</td><td>14.90</td><td>27.55</td><td>35.60</td><td>36.75</td><td><strong>114.80 元</strong></td><td>45.1 倍</td></tr>
+        <tr><td>基準</td><td>14.90</td><td>27.55</td><td>36.50</td><td>41.00</td><td><strong>119.95 元</strong></td><td>43.1 倍</td></tr>
+        <tr><td>樂觀</td><td>14.90</td><td>27.55</td><td>38.40</td><td>41.95</td><td><strong>122.80 元</strong></td><td>42.1 倍</td></tr>
+      </table>
+    </div>
+    <div class="alert alert-purple" style="margin-top:12px;margin-bottom:0">
+      <span>&#128269;</span>
+      <div>
+        <strong>本報告推估 vs 法人預估的落差（沿用第 5 次，本次查證無變動）：</strong>
+        本報告 FY2026E 為 <strong>114.80 ~ 122.80 元</strong>，而 2026-10-07 媒體報導的外資預估為 <strong>128.72 元</strong>，
+        比本報告上限再高 4.8%、比下限高 12.1%。<br>
+        <strong>落差來源：</strong>本報告 Q4'26 只假設 36.75 ~ 41.95 元（相當於 Q4 營收僅比 Q3 成長 3~15%），
+        而外資若要湊到 128.72 元，隱含 Q4'26 EPS 需達 128.72 − 14.90 − 27.55 − 36.50 ≒ <strong>49.77 元</strong>，
+        相當於 Q4 單季再比 Q3 成長約 36%。<strong>本報告選擇維持保守</strong>，因為 9 月月增率已降到 +6.88%，
+        要在一季內再加速 36% 需要漲價或新產品放量的實證支持，而目前仍然沒有。
+        外資的 FY2027E 262.85 元與 FY2028E 403.76 元已超出本報告可合理推算的範圍，僅列為市場參考。<br>
+        <strong>本次查證結果：這六天沒有查到任何券商調整目標價或 EPS 預估的新報導</strong>，上述數字全部維持。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">&#9888; 現金流與資產負債品質（本次維持，並標註 10/28 為驗證日）</h4>
+    <div class="asset-grid">
+      <div class="asset-tile hl"><div class="at-val">0.33 倍</div><div class="at-name">H1'26 營業現金流 ÷ 淨利<br>（50.45 億 ÷ 152.13 億）</div></div>
+      <div class="asset-tile hl"><div class="at-val">-56.34 億</div><div class="at-name">H1'26 自由現金流<br>（OCF 50.45 − 資本支出 106.79）</div></div>
+      <div class="asset-tile hl"><div class="at-val">652.78 億</div><div class="at-name">Q2'26 應收帳款<br>（半年 +81.0%）</div></div>
+      <div class="asset-tile hl"><div class="at-val">63.23%</div><div class="at-name">Q2'26 負債比<br>（Q4'25 為 53.26%）</div></div>
+    </div>
+    <div class="table-wrap" style="margin-top:14px">
+      <table>
+        <tr><th>指標</th><th>FY2025 全年</th><th>2026 上半年</th><th>變化解讀</th></tr>
+        <tr><td>營業活動現金流（OCF）</td><td>119.68 億</td><td>50.45 億</td><td>半年僅達去年全年的 42%，但同期淨利已達去年全年 104%</td></tr>
+        <tr><td>稅後淨利</td><td>146.49 億</td><td>152.13 億</td><td>半年淨利已超越去年全年</td></tr>
+        <tr><td>OCF ÷ 淨利（現金含量）</td><td>0.817 倍</td><td><strong>0.332 倍</strong></td><td><span class="neg">嚴重惡化</span> 賺的錢有 2/3 沒變成現金</td></tr>
+        <tr><td>資本支出</td><td>-94.90 億</td><td>-106.79 億</td><td>半年即超過去年全年，擴產力道極強</td></tr>
+        <tr><td>自由現金流（FCF）</td><td>+24.78 億</td><td><strong>-56.34 億</strong></td><td><span class="neg">由正轉負</span> 需靠舉債或現金水位支應</td></tr>
+        <tr><td>應收帳款</td><td>360.65 億（Q4'25）</td><td>652.78 億（Q2'26）</td><td>+292.13 億（+81.0%），應收天數約 125.7 天</td></tr>
+        <tr><td>存貨</td><td>167.52 億（Q4'25）</td><td>236.64 億（Q2'26）</td><td>+69.12 億（+41.3%），低於營收成長幅度，屬合理備料</td></tr>
+        <tr><td>借款總額</td><td>174.99 億（Q4'25）</td><td>256.04 億（Q2'26）</td><td>+81.05 億（+46.3%），對應負擔資本支出與營運資金</td></tr>
+        <tr><td>負債比率</td><td>53.26%（Q4'25）</td><td>63.23%（Q2'26）</td><td>上升 9.97 個百分點</td></tr>
+        <tr><td>流動比率</td><td>160.0%（Q4'25）</td><td>135.5%（Q2'26）</td><td>下降 24.5 個百分點，仍在 100% 以上安全線</td></tr>
+      </table>
+    </div>
+    <div class="alert alert-red" style="margin-top:12px;margin-bottom:0">
+      <span>&#128680;</span>
+      <div>
+        <strong>白話解釋這個風險（沿用第 5 次）：</strong>
+        台光電上半年「帳上」賺了 152.13 億元，但「實際收到」的現金只有 50.45 億元，
+        差額 101.68 億元大多卡在應收帳款裡（半年暴增 292.13 億元）。同一時間公司又花了 106.79 億元擴廠，
+        結果自由現金流變成 <strong>-56.34 億元</strong>，只能靠借款（半年增加 81.05 億元）補洞，負債比也因此從 53.26% 升到 63.23%。<br>
+        <strong>這不一定是壞事</strong>——高速成長的公司通常都會經歷「營收衝太快、應收跟著膨脹」的階段，而且客戶多為國際大廠，呆帳風險相對低。
+        <strong>但它是一個必須盯著的脆弱點</strong>：應收帳款 652.78 億元已經超過 Q3'26 整季營收 608.85 億元，
+        一旦下游客戶拉貨放緩或延後付款，現金壓力會立刻放大。<br>
+        <strong>本次的唯一變化是時間：</strong>第 5 次以為要等到 11 月中才能驗證，實際上<strong>只剩 5 個交易日（10/28）</strong>。
+        這也是本報告把「財報前不加碼」列為主要紀律的原因——沒有必要在答案揭曉前五天押注。
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">07</span>籌碼面分析（本期變化最大的一節）</div>
+
+  <div class="alert alert-green">
+    <span>&#9989;</span>
+    <div>
+      <strong>重大進展：第 5 次標示「尚未公告」的三大法人數據，本次已全部取得官方值。</strong><br>
+      第 5 次報告寫下：「建議投資人於今日 18:00 後自行查證三大法人買賣超，<strong>這是判斷此波下跌是否結束的最關鍵單一資訊</strong>。」
+      本報告已改用官方管道——<strong>臺灣證券交易所「三大法人買賣超日報」（T86）</strong>與<strong>「融資融券餘額」（MI_MARGN）</strong>——
+      取得 10/15、10/16、10/19、10/20 四個交易日的完整數據，正面回答了這個問題。以下所有數字均標明資料日期與官方來源。
+    </div>
+  </div>
+
+  <div class="alert alert-red">
+    <span>&#128680;</span>
+    <div>
+      <strong>資料品質警告（本次仍然成立）：FinMind 回傳的「0」是資料缺口，不是「持平」。</strong><br>
+      本次執行行情抓取腳本時，FinMind 的三大法人資料集（TaiwanStockInstitutionalInvestorsBuySell）在 2026-10-20 仍回傳
+      外資 0 張、投信 0 張、自營商 0 張，腳本將其自動解讀為「<strong>三大法人合計買賣持平</strong>」。
+      融資融券資料集（TaiwanStockMarginPurchaseShortSale）同樣在 2026-10-20 回傳融資餘額 0 張、融券餘額 0 張，
+      腳本更進一步產生「<strong>融券餘額 0 張，放空比例偏高，需注意軋空風險</strong>」的錯誤敘述。<br>
+      <strong>這兩段敘述本報告一律不採用。</strong>經向臺灣證券交易所查證，2026-10-20 的實際數字是
+      三大法人合計<strong>賣超 192 張</strong>、融資餘額 <strong>2,895 張</strong>、融券餘額 <strong>19 張</strong>——
+      全部都不是 0。這是 API 當日資料尚未落地的典型缺口，<strong>把它寫成「持平」或「融券 0 張要注意軋空」都是嚴重錯誤的解讀</strong>。
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">三大法人買賣超（張，臺灣證券交易所官方值）<span class="tag tag-purple" style="margin-left:8px">本次新增</span></h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>交易日</th><th>收盤</th><th>漲跌</th><th>外陸資</th><th>投信</th><th>自營商</th><th>三大法人合計</th><th>當日成交量</th></tr>
+        <tr><td>2026-10-15</td><td>5,120</td><td><span class="neg">-7.25%</span></td><td><span class="neg">-962.5</span></td><td><span class="pos">+268.0</span></td><td><span class="pos">+61.8</span></td><td><span class="neg">-632.7</span></td><td>5,904 張</td></tr>
+        <tr><td>2026-10-16</td><td>5,165</td><td><span class="pos">+0.88%</span></td><td><span class="pos">+196.3</span></td><td><span class="neg">-185.5</span></td><td><span class="neg">-73.1</span></td><td><span class="neg">-62.3</span></td><td>2,773 張</td></tr>
+        <tr><td>2026-10-19</td><td>5,125</td><td><span class="neg">-0.77%</span></td><td><span class="pos">+16.7</span></td><td><span class="pos">+15.1</span></td><td><span class="neg">-111.2</span></td><td><span class="neg">-79.3</span></td><td>1,749 張</td></tr>
+        <tr><td>2026-10-20</td><td>4,945</td><td><span class="neg">-3.51%</span></td><td><span class="neg">-156.6</span></td><td><span class="pos">+60.5</span></td><td><span class="neg">-96.3</span></td><td><span class="neg">-192.4</span></td><td>1,814 張</td></tr>
+        <tr><td><strong>四日累計</strong></td><td>—</td><td><span class="neg">-3.42%</span></td><td><span class="neg">-906.0</span></td><td><span class="pos">+158.1</span></td><td><span class="neg">-218.7</span></td><td><span class="neg">-966.7</span></td><td>12,240 張</td></tr>
+        <tr><td>2026-10-21（今日）</td><td>5,175 盤中</td><td><span class="pos">+4.65%</span></td><td colspan="4">盤後約 18:00 公告，本報告無法取得；<strong>不以任何估算值替代</strong></td><td>669 張（09:15 累計）</td></tr>
+      </table>
+    </div>
+    <div class="alert alert-yellow" style="margin-top:12px">
+      <span>&#128209;</span>
+      <div>
+        <strong>這組數字怎麼讀？四個結論。</strong><br>
+        <strong>(1) 第 5 次的猜測被證實了，但規模比想像的小。</strong>
+        第 5 次從量價關係判斷 10/15 「高度疑似法人出貨」，但明確聲明「在臺灣證券交易所正式公告前不宣稱已證實」。
+        官方數據顯示 10/15 外資單日確實賣超 <strong>962 張</strong>——而第 5 次設的警戒門檻是「單日 &gt; 1,000 張代表調節未結束」，
+        <strong>962 張只差 38 張就觸發，屬於「幾乎觸發但未觸發」</strong>。判斷方向正確。<br>
+        <strong>(2) 外資賣壓已明顯收斂，甚至中間轉買。</strong>
+        10/16 外資反而買超 196 張、10/19 小買 17 張，只有 10/20 再賣 157 張。
+        四日累計賣超 906 張，<strong>僅佔四日總成交量 12,240 張的 7.40%</strong>；
+        以外資持股 45.18%（約 161,889 張）計算，<strong>賣掉的只有自己持股的 0.56%</strong>。
+        這不是「外資出逃」，而是「小幅調節」。<br>
+        <strong>(3) 真正連續賣的是自營商，不是外資。</strong>
+        自營商四日中有三日賣超（-73、-111、-96 張），四日累計 <strong>-219 張</strong>，是唯一「連續性」的賣方。
+        但自營商持股僅約 2%，影響力遠小於外資。<br>
+        <strong>(4) 投信是唯一的淨買方。</strong>
+        四日累計買超 <strong>+158 張</strong>（10/15 當天最恐慌時反而買 268 張）。
+        投信是本土法人，資金來源為台灣基金投資人，<strong>在最大跌幅日逆向加碼，代表本土法人並未改變對基本面的看法</strong>。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">股權結構（官方公開資訊）</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>項目</th><th>數值</th><th>資料日期</th><th>來源</th><th>解讀</th></tr>
+        <tr><td>外資及陸資持股比重</td><td>45.18%</td><td>2026-10-13</td><td>臺灣證券交易所 / 公開資訊觀測站</td><td>本次查證<strong>未取得更新值</strong>，沿用第 5 次數字；不以推估值替代</td></tr>
+        <tr><td>董監事持股比重</td><td>8.58%</td><td>最近月份申報</td><td>公開資訊觀測站</td><td>經營層持股穩定，數月未變動</td></tr>
+        <tr><td>董監持股質押比</td><td><strong>0%</strong></td><td>最近月份申報</td><td>公開資訊觀測站</td><td><span class="pos">正面</span> 無股票質押，不存在股價下跌被追繳的風險</td></tr>
+        <tr><td>融資餘額</td><td><strong>2,895 張</strong></td><td><strong>2026-10-20</strong></td><td>臺灣證券交易所 MI_MARGN</td><td><strong>本次新取得。</strong>佔流通股數 <strong>0.808%</strong>，散戶槓桿仍輕但<strong>六日來明顯增加</strong></td></tr>
+        <tr><td>融券餘額</td><td><strong>19 張</strong></td><td><strong>2026-10-20</strong></td><td>臺灣證券交易所 MI_MARGN</td><td><strong>本次新取得。</strong>券資比僅 <strong>0.66%</strong>，<span class="pos">無軋空題材</span></td></tr>
+        <tr><td>三大法人 10/21 買賣超</td><td>尚未公告</td><td>—</td><td>—</td><td>每日約 18:00 更新；本報告不以任何估算值替代</td></tr>
+      </table>
+    </div>
+    <div class="alert alert-red" style="margin-top:12px;margin-bottom:0">
+      <span>&#10060;</span>
+      <div>
+        <strong>本次修正第 5 次報告自身的一處 10 倍計算錯誤。</strong><br>
+        第 5 次寫「融資餘額 2,414 張（10/07），佔流通股數 358,321,100 股的 <strong>0.067%</strong>」，
+        並據此推算「融資市值約 <strong>12.4 億元</strong>」。<strong>這兩個數字都少算了 10 倍。</strong><br>
+        正確計算：2,414 張 × 1,000 股 ＝ 2,414,000 股；2,414,000 ÷ 358,321,100 ＝ <strong>0.6737%</strong>（不是 0.067%）。
+        融資市值 ＝ 2,414,000 股 × 5,140 元 ＝ <strong>124.08 億元</strong>（不是 12.4 億元）。<br>
+        <strong>這個錯誤不改變質性結論</strong>——0.67% 的融資比重依然屬於「極輕」，依然不存在融資斷頭雪崩風險。
+        但本報告認為<strong>系列報告必須自我勘誤</strong>，不能讓錯誤數字在後續報告中被反覆引用。
+        以 10/20 的 2,895 張與今日 5,175 元重算：融資佔流通股數 <strong>0.808%</strong>、融資市值 <strong>149.82 億元</strong>、佔總市值 <strong>0.808%</strong>。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">&#9888; 本期發現的唯一籌碼隱憂：散戶在接法人的貨</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>比較項目</th><th>10/07</th><th>10/15</th><th>10/16</th><th>10/19</th><th>10/20</th><th>變化</th></tr>
+        <tr><td>融資餘額（張）</td><td>2,414</td><td>2,844</td><td>2,903</td><td>2,907</td><td><strong>2,895</strong></td><td><span class="neg">+481 張（+19.93%）</span></td></tr>
+        <tr><td>融資單日增減（張）</td><td>—</td><td>—</td><td>+59</td><td>+4</td><td>-12</td><td>增幅主要發生於 10/07~10/15</td></tr>
+        <tr><td>融券餘額（張）</td><td>未取得</td><td>2</td><td>6</td><td>7</td><td><strong>19</strong></td><td>+17 張（基期極低）</td></tr>
+        <tr><td>三大法人合計（張）</td><td>—</td><td>-632.7</td><td>-62.3</td><td>-79.3</td><td>-192.4</td><td><span class="neg">四日累計 -966.7 張</span></td></tr>
+        <tr><td>收盤價（元）</td><td>5,950</td><td>5,120</td><td>5,165</td><td>5,125</td><td>4,945</td><td><span class="neg">-16.89%（自 10/07）</span></td></tr>
+      </table>
+    </div>
+    <div class="alert alert-yellow" style="margin-top:12px;margin-bottom:0">
+      <span>&#9888;</span>
+      <div>
+        <strong>白話解釋這張表：這是典型的「籌碼由法人手上轉到散戶手上」。</strong><br>
+        從 10/07 到 10/20，股價跌了 <strong>16.89%</strong>（5,950 → 4,945）。同一期間：
+        <strong>法人在賣</strong>（10/15~10/20 四日合計賣超 967 張），
+        <strong>散戶卻在加槓桿買</strong>（融資餘額從 2,414 張增加到 2,895 張，<strong>+19.93%</strong>）。<br>
+        在台股的經驗法則裡，「<strong>股價下跌 + 融資增加</strong>」通常不是好組合，因為它代表散戶在「攤平」而非法人在「進場」，
+        籌碼安定度下降。<strong>這是本期唯一真正惡化的籌碼指標。</strong><br>
+        <strong>但必須按比例看，不要誇大：</strong>2,895 張換算只佔流通股數 <strong>0.808%</strong>、融資市值 149.82 億元佔總市值 1.8543 兆元的 <strong>0.808%</strong>。
+        絕對水位仍然極低，<strong>不足以引發融資斷頭雪崩</strong>。主要原因很單純——
+        一張股票 <strong>517.5 萬元</strong>，就算融資六成也要自備約 207 萬元，絕大多數散戶買不起，
+        所以「散戶接貨」的量在這檔股票上天花板很低。<br>
+        <strong>另外請注意融券：餘額僅 19 張、券資比 0.66%</strong>。
+        這代表<strong>完全沒有軋空題材</strong>——如果有人跟你說台光電「融券低要注意軋空」，那是把資料缺口誤讀成訊號。
+        19 張融券對一檔日成交 1,700~5,900 張的股票而言毫無影響力。
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">08</span>技術分析與腳本錯誤修正</div>
+
+  <div class="alert alert-red">
+    <span>&#128680;</span>
+    <div>
+      <strong>腳本錯誤 1（必讀）：漲跌停價又算錯了，而且是同一個老問題。</strong><br>
+      行情抓取腳本輸出「<strong>漲停板：5637.5（昨收×110%），跌停板：4612.5（昨收×90%）</strong>」，
+      這是<strong>兩個錯誤疊加</strong>的結果，與第 5 次發現的錯誤型態完全相同：<br>
+      <strong>錯誤一：昨收落後一個交易日。</strong>5,637.5 ÷ 1.1 ＝ 5,125 元，4,612.5 ÷ 0.9 ＝ 5,125 元。
+      <strong>5,125 元是 10/19 的收盤價</strong>，而 10/21 的昨收應為 <strong>10/20 的 4,945 元</strong>。<br>
+      <strong>錯誤二：沒有依最小升降單位取整。</strong>台光電股價超過 1,000 元，<strong>最小升降單位為 5 元</strong>，
+      漲跌停價必須朝昨收方向（內側）取整到 5 元的倍數。<br>
+      <strong>正確計算：</strong>漲停 ＝ 4,945 × 1.1 ＝ 5,439.5 → 向下取整至 5 的倍數 ＝ <strong>5,435 元</strong>；
+      跌停 ＝ 4,945 × 0.9 ＝ 4,450.5 → 向上取整至 5 的倍數 ＝ <strong>4,455 元</strong>。<br>
+      <strong>交叉驗證：</strong>本報告向臺灣證券交易所 MIS 即時行情介面（mis.twse.com.tw）查證，
+      官方回傳欄位 <strong>u（漲停）＝ 5,435.0、w（跌停）＝ 4,455.0、y（昨收）＝ 4,945.0</strong>，
+      與本報告修正值<strong>完全一致</strong>。<br>
+      <strong>這個錯誤為什麼重要？</strong>若誤用腳本的 5,637.5，會以為今日距漲停還有 8.9% 的空間；
+      實際上距正確漲停 5,435 元只有 <strong>5.02%</strong>。在一檔單日波動 ±5~10% 屬常態的股票上，這個差距會直接影響當日的委託價格判斷。
+    </div>
+  </div>
+
+  <div class="alert alert-red">
+    <span>&#128680;</span>
+    <div>
+      <strong>腳本錯誤 2（必讀）：所有技術指標都沒有納入當日價格。</strong><br>
+      本次實測確認：腳本輸出的 <strong>MA5 ＝ 5,175.00</strong>，恰好等於由 10/16（5,165）、10/19（5,125）、10/20（4,945）、
+      10/14（5,520）、10/15（5,120）五個<strong>歷史收盤價</strong>平均而得（25,875 ÷ 5 ＝ 5,175），
+      <strong>完全沒有用到今日的 5,175 元</strong>。<br>
+      <strong>&#9888; 這裡有一個極容易上當的巧合：腳本的 MA5（5,175.00）剛好等於今日股價（5,175 元）。</strong>
+      若直接引用腳本輸出，會得出「股價正好站在 5 日均線上，多空完全平衡」的結論——<strong>這是純粹的數字巧合，而且是錯的</strong>。
+      納入今日價格後，正確的 MA5 是 <strong>5,106 元</strong>，股價實際站在 MA5 之上 <strong>+1.35%</strong>。<br>
+      同理，腳本的 MACD（DIF -15.62／訊號 40.68／柱狀 -56.30）、RSI 40.77、布林（6,152.43／5,297.25／4,442.07）
+      均僅採計至 10/20 收盤。<strong>本報告已自行重算並在下表並列兩組數值對照。</strong>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">技術指標：腳本輸出值 vs 本報告重算值（含今日 5,175 元）</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>指標</th><th>腳本輸出（僅至 10/20 收盤）</th><th>本報告重算（含今日 5,175）</th><th>差異</th><th>結論改變了嗎？</th></tr>
+        <tr><td>MA5</td><td>5,175.00</td><td><strong>5,106.00</strong></td><td>-69.00</td><td><span class="tag tag-red">是</span> 腳本值與今日股價巧合相同，易誤判為「正好在均線上」</td></tr>
+        <tr><td>MA10</td><td>5,551.50</td><td><strong>5,469.50</strong></td><td>-82.00</td><td>否，均為反壓</td></tr>
+        <tr><td>MA20（月線）</td><td>5,297.25</td><td><strong>5,311.50</strong></td><td>+14.25</td><td>否，均未收復</td></tr>
+        <tr><td>MA60（季線）</td><td>5,331.33</td><td><strong>5,338.33</strong></td><td>+7.00</td><td>否，均未收復</td></tr>
+        <tr><td>股價 vs MA5</td><td>-4.44%（對 10/20 收盤）</td><td><strong>+1.35%</strong></td><td>由負轉正</td><td><span class="tag tag-red">是</span> 今日已站上 MA5</td></tr>
+        <tr><td>股價 vs MA20</td><td>-6.65%</td><td><strong>-2.57%</strong></td><td>+4.08pp</td><td>否，仍在下方</td></tr>
+        <tr><td>股價 vs MA60</td><td>-7.25%</td><td><strong>-3.06%</strong></td><td>+4.19pp</td><td>否，仍在下方</td></tr>
+        <tr><td>MACD DIF</td><td>-15.62</td><td><strong>-26.68</strong></td><td>-11.06</td><td>否，均為負</td></tr>
+        <tr><td>MACD 訊號線</td><td>40.68</td><td><strong>27.21</strong></td><td>-13.47</td><td>—</td></tr>
+        <tr><td>MACD 柱狀體</td><td>-56.30</td><td><strong>-53.89</strong></td><td>+2.41</td><td>否，<strong>仍為死叉</strong>，但負值停止擴大</td></tr>
+        <tr><td>RSI(14)</td><td>40.77</td><td><strong>46.47</strong></td><td>+5.70</td><td>否，均未超賣（&lt;30）</td></tr>
+        <tr><td>布林上軌</td><td>6,152.43</td><td><strong>6,148.36</strong></td><td>-4.07</td><td>—</td></tr>
+        <tr><td>布林中軌</td><td>5,297.25</td><td><strong>5,311.50</strong></td><td>+14.25</td><td>否，股價仍在中軌下方</td></tr>
+        <tr><td>布林下軌</td><td>4,442.07</td><td><strong>4,474.64</strong></td><td>+32.57</td><td>距現價還有 -13.53%</td></tr>
+        <tr><td>布林帶寬</td><td>32.29%</td><td><strong>31.51%</strong></td><td>-0.78pp</td><td>波動度維持極高</td></tr>
+        <tr><td>年化波動率(60日)</td><td>68.35%</td><td><strong>67.47%</strong></td><td>-0.88pp</td><td>極高（大盤約 15~20%）</td></tr>
+      </table>
+    </div>
+    <div class="alert alert-purple" style="margin-top:12px;margin-bottom:0">
+      <span>&#128202;</span>
+      <div>
+        <strong>重算方法說明（供檢驗）：</strong>本報告取 FinMind 日 K 線 2025-01-02 ~ 2026-10-20 共 <strong>435 個交易日</strong>收盤序列，
+        在序列末端<strong>追加今日盤中價 5,175 元</strong>後重算。
+        MACD 採標準 EMA(12)／EMA(26)／訊號 EMA(9)；RSI 採 Wilder 平滑法（已驗證此法可完全重現腳本在 10/20 的 40.77，確認方法一致）；
+        布林通道採 20 日母體標準差 ±2σ，帶寬定義為（上軌−下軌）÷ 中軌；年化波動率採近 60 日對數報酬標準差 × √252。
+        <strong>因 10/21 尚未收盤，若最終收盤價不等於 5,175 元，以上所有重算值均須再次重算。</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">今日價量（2026-10-21，09:15:55 盤中）</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><td>最新成交價</td><td><strong>5,175 元</strong></td><td>漲跌</td><td><span class="pos">+230 元（+4.65%）</span></td></tr>
+        <tr><td>昨收（10/20）</td><td>4,945 元</td><td>開盤</td><td>5,135 元（跳空上漲 +3.84%）</td></tr>
+        <tr><td>最高 / 最低</td><td>5,205 元 / 5,100 元</td><td>日內振幅</td><td>105 元＝昨收的 2.12%</td></tr>
+        <tr><td><strong>正確漲停 / 跌停</strong></td><td><strong>5,435 元 / 4,455 元</strong></td><td>距漲停 / 跌停</td><td>+5.02% / -13.91%</td></tr>
+        <tr><td>委買 / 委賣（09:15）</td><td>5,170 元 / 5,180 元</td><td>買賣價差</td><td>10 元（＝2 個升降單位）</td></tr>
+        <tr><td>成交量（09:15 累計）</td><td><strong>669 張</strong></td><td>開盤後經過時間</td><td><strong>約 16 分鐘</strong></td></tr>
+        <tr><td>5 日均量（至 10/20）</td><td>2,913 張</td><td>20 日均量（至 10/20）</td><td>2,678 張</td></tr>
+        <tr><td>10/19 成交量</td><td>1,749 張（5 日均量 0.60 倍）</td><td>10/20 成交量</td><td>1,814 張（5 日均量 0.62 倍）</td></tr>
+      </table>
+    </div>
+    <div class="alert alert-yellow" style="margin-top:12px;margin-bottom:0">
+      <span>&#9888;</span>
+      <div>
+        <strong>必須明確警告：本次報價的時效性比第 5 次差很多。</strong><br>
+        第 5 次的報價取於 13:22（距 13:30 收盤僅 8 分鐘），累計成交 5,194 張，已具代表性。
+        <strong>本次報價取於 09:15:55，開盤僅 16 分鐘，累計成交只有 669 張</strong>——
+        僅為 5 日均量 2,913 張的 <strong>23%</strong>。<br>
+        在一檔年化波動率 67.47% 的股票上，<strong>早盤 16 分鐘的價格完全不能代表當日收盤</strong>。
+        今日 +4.65% 可能是開盤跳空後的續強，也可能是空頭回補後的開高走低。
+        <strong>本報告所有與股價相關的數值（市值、P/E、P/B、全部技術指標、所有策略價位）都建立在 5,175 元之上，
+        若收盤價不同，全部須重算。</strong>請讀者務必在收盤後自行以實際收盤價複核。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">關鍵價位圖（壓力與支撐，@5,175 元）</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>層級</th><th>價位</th><th>依據</th><th>距現價</th></tr>
+        <tr><td>壓力 4</td><td>5,469 元</td><td>MA10 — <strong>高於今日漲停 5,435，今日絕對觸及不到</strong></td><td>+5.69%</td></tr>
+        <tr><td>壓力 3</td><td>5,435 元</td><td>今日漲停價（官方 MIS 驗證）</td><td>+5.02%</td></tr>
+        <tr><td><strong>壓力 2（最硬）</strong></td><td><strong>5,311 ~ 5,338 元</strong></td><td><strong>MA20 與 MA60 糾結帶 — 六個交易日來一次都沒收復過</strong></td><td>+2.63% ~ +3.16%</td></tr>
+        <tr><td>壓力 1</td><td>5,205 元</td><td>今日盤中最高價</td><td>+0.58%</td></tr>
+        <tr><td><strong>★ 現價</strong></td><td><strong>5,175 元</strong></td><td>2026-10-21 盤中 09:15:55</td><td>—</td></tr>
+        <tr><td>支撐 1</td><td>5,106 元</td><td>MA5（今日剛站上）</td><td>-1.33%</td></tr>
+        <tr><td><strong>支撐 2（已實測）</strong></td><td><strong>4,930 ~ 4,945 元</strong></td><td><strong>10/20 盤中低點 4,930 與收盤 4,945 — 買盤確實在此承接</strong></td><td>-4.73% ~ -4.44%</td></tr>
+        <tr><td>支撐 3</td><td>4,855 ~ 4,860 元</td><td>9/22 低點 4,855 與收盤 4,860</td><td>-6.18% ~ -6.09%</td></tr>
+        <tr><td><strong>停損線</strong></td><td><strong>4,635 元</strong></td><td>9/17 盤中低點（沿用第 5 次；六日最低 4,930 從未接近）</td><td>-10.43%</td></tr>
+        <tr><td>布林下軌</td><td>4,474 元</td><td>20 日均 -2 標準差（極端值參考）</td><td>-13.53%</td></tr>
+        <tr><td>跌停</td><td>4,455 元</td><td>今日跌停價（官方 MIS 驗證）</td><td>-13.91%</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">技術面綜合判讀：空頭格局確認，但下跌動能衰竭</h4>
+    <div class="alert alert-red">
+      <span>&#128201;</span>
+      <div>
+        <strong>(1) MACD 已在 10/16 正式死叉，中期動能確認翻空。</strong>
+        柱狀體序列：10/12 +141.52 → 10/13 +101.38 → 10/14 +68.91 → 10/15 +18.87 → <strong>10/16 -11.22（死叉成立）</strong>
+        → 10/19 -32.61 → 10/20 -56.30 → 今日 -53.89。<strong>已連續 4 個交易日為負。</strong><br>
+        <strong>&#9888; 第 5 次的預測對了一半：</strong>第 5 次寫「只要再有一個 -3% 以上的交易日，MACD 大概率形成死叉」。
+        死叉確實在隔一個交易日就來了，<strong>但 10/16 是一個 +0.88% 的上漲日</strong>——
+        死叉的成因是「DIF 下滑速度快於訊號線」的動能自然衰減，<strong>不需要再一根長黑</strong>。
+        這是一個值得記錄的方法論教訓：<strong>MACD 的交叉由兩條線的相對斜率決定，不是由單日漲跌幅決定。</strong>
+      </div>
+    </div>
+    <div class="alert alert-red">
+      <span>&#128201;</span>
+      <div>
+        <strong>(2) MA20 與 MA60 六個交易日來一次都沒收復，而且兩條線還在上移。</strong>
+        10/15 第 5 次報告時 MA20 ＝ 5,280、MA60 ＝ 5,328；今日 MA20 ＝ <strong>5,311</strong>、MA60 ＝ <strong>5,338</strong>，<strong>兩條線都往上走</strong>
+        （因為 20 日與 60 日窗口內被移出的是更低的 9 月價格）。
+        這意味著<strong>反壓位置不但沒有下移，反而每天墊高一點</strong>。
+        六日內最高價分別為 5,330（10/15）、5,260（10/16）、5,165（10/19）、5,200（10/20）、5,205（今日），
+        <strong>連一次都沒有觸及 5,311</strong>。這是明確的空頭排列特徵（MA5 &lt; MA10，股價 &lt; MA20 &lt; MA60）。
+      </div>
+    </div>
+    <div class="alert alert-green">
+      <span>&#9989;</span>
+      <div>
+        <strong>(3) 最重要的正面訊號：量能急縮，賣壓衰竭。</strong>
+        成交量序列：10/15 <strong>5,904 張</strong>（恐慌爆量）→ 10/16 2,773 張 → 10/19 <strong>1,749 張</strong> → 10/20 <strong>1,814 張</strong>。
+        10/19 與 10/20 分別只有 5 日均量（2,913 張）的 <strong>0.60 倍與 0.62 倍</strong>、20 日均量（2,678 張）的 0.65 倍與 0.68 倍。<br>
+        <strong>這是「跌但量縮」，與 10/15 的「跌且量爆」性質完全不同。</strong>
+        10/20 雖然再跌 -3.51%，但只用了 1,814 張的量——代表<strong>願意在這個價位砍倉的人已經不多了</strong>。
+        第 5 次設定的「縮量」門檻是 &lt; 2,900 張，10/19 與 10/20 都已達標。
+      </div>
+    </div>
+    <div class="alert alert-green">
+      <span>&#9989;</span>
+      <div>
+        <strong>(4) 支撐帶實測有效，且今日跳空上漲。</strong>
+        10/20 盤中最低 4,930 元，收 4,945 元——<strong>自低點回升 15 元</strong>，說明該價位有買盤承接。
+        今日開盤 5,135 元（跳空上漲 +3.84%），盤中最高 5,205 元，<strong>已重新站上 MA5（5,106）</strong>。
+        第 5 次訂的 4,950~5,000 觀察買點，實際上在 10/19（低 4,955）與 10/20（低 4,930）被完整觸發。
+      </div>
+    </div>
+    <div class="alert alert-yellow">
+      <span>&#9888;</span>
+      <div>
+        <strong>(5) RSI 46.47 的意思是「不上不下」，沒有進場依據。</strong>
+        RSI 由 10/20 的 40.77 回升到 46.47，<strong>既沒有進入 30 以下的超賣區（代表沒有「跌夠了」的訊號）</strong>，
+        也離 70 以上的超買區很遠。換句話說，<strong>RSI 現在不提供任何方向資訊</strong>，不應作為買賣依據。
+        第 5 次指出「RSI 44.28 代表還有下跌空間」，後續 10/20 確實又跌到 4,945——這個判斷成立，但現在 RSI 已回到中性。
+      </div>
+    </div>
+    <div class="alert alert-purple" style="margin-bottom:0">
+      <span>&#128202;</span>
+      <div>
+        <strong>技術面總結：空頭格局 + 動能衰竭 + 事件逼近 ＝ 最不該重倉的組合。</strong><br>
+        把五點合起來看：趨勢是空的（MACD 死叉、股價在 MA20／MA60 之下、空頭排列），
+        但下跌的力氣已經用完了（量縮到均量 0.6 倍、支撐帶實測有買盤、今日跳空上漲）。
+        這種「跌不下去但也漲不上去」的狀態，技術上叫做<strong>底部震盪</strong>，通常需要一個外部事件才能選擇方向。<br>
+        <strong>而那個事件就在 5 個交易日後（10/28 的 Q3 財報）。</strong>
+        在這種情況下，技術分析能提供的最有價值建議不是「買」或「賣」，而是
+        <strong>「不要在事件前把籌碼押滿，因為技術面已經明確告訴你它無法預測這個事件的結果」</strong>。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">近期走勢時間軸（延伸第 5 次，新增六個交易日）</h4>
+    <div class="timeline">
+      <div class="tl-item bad">
+        <div class="tl-date">2026-09-17</div>
+        <div class="tl-text">單日由 5,085 跌至 4,695（-8.43%），盤中最低 <strong>4,635 元</strong>，成交量爆到 5,813 張。本波的結構性低點，也是目前的停損依據。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-09-18 ~ 10-02</div>
+        <div class="tl-text">在 4,855 ~ 5,185 之間震盪打底約 11 個交易日，量能萎縮至 1,300~2,400 張，形成底部平台。</div>
+      </div>
+      <div class="tl-item good">
+        <div class="tl-date">2026-10-05 ~ 10-12</div>
+        <div class="tl-text">五個交易日由 5,185 急拉至 <strong>6,150 元（+18.6%）</strong>，10/06 單日爆量 5,087 張。推測與 AI CCL 族群法人調升目標價題材有關。</div>
+      </div>
+      <div class="tl-item bad">
+        <div class="tl-date">2026-10-13</div>
+        <div class="tl-text">由 6,150 重挫至 5,545（<strong>-9.84%</strong>），成交量 4,882 張。同日財經媒體報導外資、投信逢高調節。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-10-14（第 4 次報告日）</div>
+        <div class="tl-text">收 5,520 元（-0.45%），量縮至 2,326 張，一度被視為止跌訊號。第 4 次報告據此建議 5,291~5,520 分批（事後證明區間訂得太高）。</div>
+      </div>
+      <div class="tl-item bad">
+        <div class="tl-date">2026-10-15（第 5 次報告日）</div>
+        <div class="tl-text">開 5,010 跳空 -9.24%，最低 4,980（距正確跌停 4,970 僅 10 元），<strong>收 5,120 元（-7.25%）</strong>，爆量 <strong>5,904 張</strong>。
+        同日跌破 MA20 與 MA60。<strong>官方數據（本次取得）：外資單日賣超 962 張、三大法人合計賣超 633 張，投信逆向買超 268 張。</strong></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-10-16</div>
+        <div class="tl-text">收 5,165 元（+0.88%），量縮至 2,773 張。<strong>MACD 柱狀體由 +18.87 翻為 -11.22，正式死叉</strong>——發生在一個上漲日。
+        官方數據：外資轉為<strong>買超 196 張</strong>，投信賣超 185 張。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-10-19</div>
+        <div class="tl-text">收 5,125 元（-0.77%），<strong>量縮至 1,749 張（5 日均量 0.60 倍）</strong>，盤中最低 4,955 元（進入第 5 次的觀察買點帶）。
+        官方數據：外資小買 17 張、投信小買 15 張，自營商賣超 111 張。</div>
+      </div>
+      <div class="tl-item bad">
+        <div class="tl-date">2026-10-20</div>
+        <div class="tl-text">收 <strong>4,945 元（-3.51%）</strong>，盤中最低 <strong>4,930 元</strong>——本波段新低，<strong>小幅跌破第 5 次的 4,950~5,000 支撐帶</strong>。
+        但量僅 1,814 張（5 日均量 0.62 倍），屬縮量下跌。官方數據：外資賣超 157 張、三大法人合計賣超 192 張。融資餘額 2,895 張、融券 19 張。</div>
+      </div>
+      <div class="tl-item good">
+        <div class="tl-date">2026-10-21（本報告）</div>
+        <div class="tl-text">開 <strong>5,135 元（跳空 +3.84%）</strong>，09:15:55 報 <strong>5,175 元（+4.65%）</strong>，盤中高 5,205 / 低 5,100，累計量僅 669 張。
+        <strong>重新站上 MA5（5,106），但 MA20（5,311）與 MA60（5,338）仍未收復。</strong>
+        自 10/12 高點 6,150 累計 <strong>-15.85%</strong>，自 52 週高 6,470 累計 <strong>-20.02%</strong>，距 9/17 低點 4,635 還有 +11.65%。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-10-28（5 個交易日後）</div>
+        <div class="tl-text"><strong>Q3'26 財務報告董事會（公司 2026-09-29 公告）。本系列最關鍵的驗證日。</strong>
+        檢核點：(a) EPS 是否落在 35.61~38.43 元；(b) 毛利率能否守住 33.85%；<strong>(c) 營業現金流／淨利能否自 0.33 倍回升至 0.5 倍以上（最重要）。</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">09</span>融資融券與流動性</div>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <tr><th>項目</th><th>數值</th><th>資料日期</th><th>說明</th></tr>
+        <tr><td>融資餘額</td><td><strong>2,895 張</strong></td><td>2026-10-20</td><td>臺灣證券交易所 MI_MARGN 官方公告值（本次新取得）</td></tr>
+        <tr><td>融資前日餘額</td><td>2,907 張</td><td>2026-10-19</td><td>單日減少 12 張</td></tr>
+        <tr><td>融資佔流通股數</td><td><strong>0.808%</strong></td><td>2026-10-20</td><td>2,895,000 股 ÷ 358,321,100 股（本報告自行計算）</td></tr>
+        <tr><td>融資市值（以 5,175 元估）</td><td>約 <strong>149.82 億元</strong></td><td>推算</td><td>佔市值 1.8543 兆元的 0.808%</td></tr>
+        <tr><td>融券餘額</td><td><strong>19 張</strong></td><td>2026-10-20</td><td>官方值（本次新取得）；前日為 7 張，單日增 12 張</td></tr>
+        <tr><td>券資比</td><td><strong>0.656%</strong></td><td>2026-10-20</td><td>19 ÷ 2,895（本報告自行計算）；<span class="pos">極低，無軋空題材</span></td></tr>
+        <tr><td>5 日均量</td><td>2,913 張</td><td>至 2026-10-20</td><td>以均價估算日均成交金額約 148 億元</td></tr>
+        <tr><td>20 日均量</td><td>2,678 張</td><td>至 2026-10-20</td><td>以均價估算日均成交金額約 139 億元</td></tr>
+        <tr><td>最近兩日量能</td><td>1,749 / 1,814 張</td><td>10/19 / 10/20</td><td>僅 5 日均量的 0.60 / 0.62 倍，<strong>流動性較前期明顯變薄</strong></td></tr>
+        <tr><td>今日成交量</td><td>669 張</td><td>10/21 09:15:55</td><td>開盤 16 分鐘累計，無法與全日均量直接比較</td></tr>
+        <tr><td>單張交易門檻</td><td>約 <strong>517.5 萬元</strong></td><td>以 5,175 元計</td><td>一張（1,000 股）即需 517.5 萬元，散戶參與門檻極高</td></tr>
+      </table>
+    </div>
+    <div class="alert alert-purple" style="margin-top:12px;margin-bottom:0">
+      <span>&#128161;</span>
+      <div>
+        <strong>白話解釋：融資 0.808% 是好消息，但「0.808%」這個數字本身是本次修正過的。</strong><br>
+        台股常見的崩跌加速器是「融資斷頭」——散戶借錢買股，股價跌破維持率就被券商強制賣出，賣壓引發更多斷頭，形成雪崩。
+        台光電基本上沒有這個結構：全市場只有 2,895 張融資（約 149.82 億元），對照 1.8543 兆元市值佔 <strong>0.808%</strong>。
+        主因很單純——<strong>一張要 517.5 萬元，就算融資六成也要自備約 207 萬元，絕大多數散戶買不起</strong>。<br>
+        <strong>（第 5 次把這個比重寫成 0.067%，少算了 10 倍，本報告已於第 07 節更正。質性結論不變，但數字必須修正。）</strong><br>
+        這帶來兩個推論：<strong>(1)</strong> 10/15~10/20 的賣壓不可能來自融資斷頭（官方數據顯示是外資與自營商在賣）；
+        <strong>(2)</strong> 後續若繼續下跌，不會有「融資雪崩」的額外下殺動能。<br>
+        <strong>但流動性本期確實變薄，這是新的風險：</strong>10/19 與 10/20 成交量只有 1,749 / 1,814 張，
+        比 5 日均量低了近 四成。對一般投資人而言，這代表<strong>進出時的滑價成本上升</strong>；
+        對持有大額部位者而言，<strong>在 10/28 財報前這種量能下想要調節部位會更困難</strong>——
+        這也是本報告建議「財報前不要把部位放大」的技術性理由之一。
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">10</span>研究員多空辯論</div>
+  <div class="card" style="margin-bottom:12px">
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+      <span class="tag tag-green" style="font-size:13px;padding:5px 14px">看多 48%</span>
+      <span class="tag tag-red" style="font-size:13px;padding:5px 14px">看空 52%</span>
+    </div>
+    <div style="font-size:13px;line-height:1.75">
+      第 5 次為 <strong>45 : 55</strong>，本次微幅上調至 <strong>48 : 52</strong>。
+      <strong>上調的 3 個百分點全部來自技術面與籌碼面的「事實揭曉」</strong>：
+      (a) 4,950~5,000 支撐帶經 10/19、10/20 兩日實測確有買盤承接；
+      (b) 量能急縮至 5 日均量 0.60~0.62 倍，顯示賣壓衰竭；
+      (c) 官方數據顯示外資四日賣超僅 906 張（佔其持股 0.56%），且 10/16、10/19 已轉小幅買超，<strong>賣壓規模遠小於第 5 次的擔憂</strong>；
+      (d) 催化劑由「11 月中」提前到 10/28，不確定期大幅縮短。<br>
+      <strong>同時有三項扣分因素抵銷了大部分加分</strong>：
+      (a) MACD 已於 10/16 正式死叉，中期動能確認翻空；
+      (b) MA20／MA60 六日來一次都沒收復，且反壓位置還在上移；
+      (c) 融資餘額逆勢增加 19.93%，籌碼由法人轉向散戶。<br>
+      <strong>基本面論據完全沒有變動</strong>（獲利 100% 來自本業、Q3 營收 608.85 億元已確定、法人目標價未調整），
+      因為本期沒有任何新的財報或營收數字。<strong>仍維持偏空，因為估值風險與現金流疑慮都還沒有被回答——而答案就在 10/28。</strong>
+    </div>
+  </div>
+
+  <div class="analyst-grid">
+    <div class="analyst-card">
+      <h4><span style="color:#16a34a">&#9650;</span> 看多研究員：6 大論點</h4>
+      <ul>
+        <li><span class="bull-icon">1</span><div><strong>獲利 100% 來自本業，一塊錢都不是靠業外撐的。</strong>
+        近四季業外收支合計僅 <strong>-0.65 億元</strong>，佔稅前利益 <strong>-0.222%</strong>，本業貢獻度 <strong>100.22%</strong>；
+        最新一季 Q2'26 業外只有 +0.52 億元、佔稅前 0.40%。營業利益 297.87 億元與稅前利益 297.21 億元幾乎完全相同，
+        代表獲利具高度可重複性，不是一次性收益。<strong>這一點六次報告以來從未動搖。</strong></div></li>
+        <li><span class="bull-icon">2</span><div><strong>Q3'26 營收 608.85 億元已確定，且本次取得第三方獨立驗證。</strong>
+        608.85 億元由 7 月 192.07 億、8 月 201.46 億、9 月 215.32 億三個<strong>已正式公告</strong>的月營收加總，季增 <strong>+28.79%</strong>、年增 <strong>+142.13%</strong>。
+        本次新增的外部證據：媒體報導「前 9 月營收約 1,412 億元」，本報告加總得 <strong>1,412.27 億元，完全吻合</strong>；
+        另一則報導的「2025 年 10 月營收 80.75 億、前 10 月累計 774.08 億」也與本報告資料庫<strong>完全吻合</strong>。
+        <strong>換算規則至此已由六個季度內部驗證 + 兩項外部報導雙重確認。</strong></div></li>
+        <li><span class="bull-icon">3</span><div><strong>支撐帶經實測有效，且量能已衰竭到賣不動。</strong>
+        10/19 盤中最低 4,955、10/20 最低 4,930 收 4,945（自低點回升 15 元），買盤確實存在。
+        更關鍵的是量能：10/15 爆量 <strong>5,904 張</strong> → 10/19 <strong>1,749 張</strong> → 10/20 <strong>1,814 張</strong>，
+        僅 5 日均量（2,913 張）的 <strong>0.60 / 0.62 倍</strong>。
+        <strong>10/20 雖再跌 -3.51%，卻只用了 1,814 張的量</strong>——願意砍倉的人已經不多。今日更跳空開高 +3.84%。</div></li>
+        <li><span class="bull-icon">4</span><div><strong>官方數據證明外資賣壓規模其實很小，而且已經轉買。</strong>
+        10/15~10/20 四日外資累計賣超 <strong>906 張</strong>，僅佔四日總成交量 12,240 張的 <strong>7.40%</strong>；
+        以外資持股 45.18%（約 161,889 張）計算，<strong>只賣掉自己持股的 0.56%</strong>。
+        而且 <strong>10/16 外資反而買超 196 張、10/19 小買 17 張</strong>。
+        <strong>投信更是四日淨買超 158 張</strong>，其中 10/15 最恐慌那天逆向買 268 張——<strong>本土法人完全沒有改變對基本面的看法。</strong></div></li>
+        <li><span class="bull-icon">5</span><div><strong>催化劑提前兩週，不確定期大幅縮短。</strong>
+        第 5 次以為要等「11 月中」，實際上 Q3 財報董事會<strong>就在 10/28</strong>（距今 5 個交易日）。
+        Q3 營收 608.85 億元已是公告事實、只剩毛利率一個變數，<strong>財報「大幅低於預期」的機率結構上就偏低</strong>。
+        對看多者而言，這意味著<strong>只需要再忍受 5 個交易日的不確定性</strong>，而非三週。</div></li>
+        <li><span class="bull-icon">6</span><div><strong>籌碼結構仍然乾淨：融資 0.81%、董監零質押、券資比 0.66%。</strong>
+        融資餘額 2,895 張僅佔流通股數 <strong>0.808%</strong>（約 149.82 億元），不存在融資斷頭雪崩機制；
+        董監持股 8.58% 且<strong>質押比 0%</strong>，無大股東被追繳風險；
+        融券餘額僅 19 張、券資比 <strong>0.656%</strong>，也沒有空方堆積。
+        <strong>台股最常見的三種加速下跌機制（融資斷頭、大股東斷頭、空方攻擊）在這檔股票上全部不存在，下跌動能有自然上限。</strong></div></li>
+      </ul>
+    </div>
+    <div class="analyst-card">
+      <h4><span style="color:#dc2626">&#9660;</span> 看空研究員：6 大論點</h4>
+      <ul>
+        <li><span class="bear-icon">1</span><div><strong>估值仍在極端水位，而且因為今日反彈又變貴了。</strong>
+        以 5,175 元計，TTM 本益比 <strong>80.76 倍</strong>（EPS 64.08 元）、股價淨值比 <strong>31.79 倍</strong>（BVPS 162.80 元），
+        都比第 5 次的 80.2 倍 / 31.6 倍更高。以本報告自行推算的 FY2026E 114.80 ~ 122.80 元計算，前瞻本益比仍達 <strong>42.1 ~ 45.1 倍</strong>。
+        <strong>這個價格隱含「成長毫無失誤地延續兩年」的假設，任何一季低於預期都會引發劇烈修正。</strong>
+        而過去九個交易日已經示範過兩次：10/13 跌 9.84%、10/15 跌 7.25%。</div></li>
+        <li><span class="bear-icon">2</span><div><strong>現金流品質依然是最硬的空方證據，而且本期完全沒有新資訊可以緩解。</strong>
+        H1'26 營業現金流僅 <strong>50.45 億元</strong>，相對淨利 152.13 億元只有 <strong>0.332 倍</strong>（FY2025 為 0.817 倍）；
+        資本支出 106.79 億元使自由現金流變成 <strong>-56.34 億元</strong>（FY2025 為 +24.78 億元）。
+        賺的錢 2/3 沒變成現金，擴產又要燒錢，缺口只能靠借款：<strong>借款半年增加 81.05 億元（+46.3%）</strong>，
+        負債比由 53.26% 升至 <strong>63.23%</strong>（+9.97pp）、流動比率由 160.0% 降至 135.5%。
+        <strong>這個疑慮在六天內沒有獲得任何新證據緩解，只是把驗證日提前到了 10/28。</strong></div></li>
+        <li><span class="bear-icon">3</span><div><strong>應收帳款 652.78 億元，已超過 Q3 整季營收。</strong>
+        應收帳款半年由 360.65 億元暴增至 <strong>652.78 億元</strong>（+292.13 億元、+81.0%），應收天數約 <strong>125.7 天</strong>。
+        這個金額<strong>比 Q3'26 整季營收 608.85 億元還大</strong>。
+        只要下游 AI 伺服器客戶拉貨放緩或延長付款條件，現金壓力會立刻放大，且在高資本支出期間沒有緩衝空間。
+        <strong>更該注意的是：如果 Q3 營收再成長 28.79%，應收帳款很可能同步再膨脹——10/28 這個數字可能更難看。</strong></div></li>
+        <li><span class="bear-icon">4</span><div><strong>MACD 已正式死叉，技術面不再有「還沒翻空」的辯護空間。</strong>
+        第 5 次時柱狀體仍為正（+18.87），DIF 仍在訊號線上方，技術上還算「金叉」。
+        <strong>10/16 正式死叉後，至今已連續 4 個交易日為負</strong>（-11.22 → -32.61 → -56.30 → -53.89）。
+        同時 <strong>MA20（5,311）與 MA60（5,338）六個交易日來一次都沒被收復</strong>，而且兩條線還在<strong>往上移動</strong>，
+        意味著反壓位置每天墊高。目前是明確的空頭排列（股價 &lt; MA10 &lt; MA20 &lt; MA60），<strong>中期趨勢已經轉空，不是「可能轉空」。</strong></div></li>
+        <li><span class="bear-icon">5</span><div><strong>籌碼品質實質下降：法人賣、散戶用融資接。</strong>
+        10/07 到 10/20，股價跌 <strong>16.89%</strong>（5,950 → 4,945）。同一期間融資餘額從 2,414 張增加到 <strong>2,895 張（+481 張、+19.93%）</strong>，
+        而三大法人 10/15~10/20 四日合計<strong>賣超 967 張</strong>（外資 -906、自營商 -219、投信 +158）。
+        <strong>「股價下跌 + 融資增加 + 法人賣超」是台股典型的籌碼惡化組合</strong>，代表散戶在攤平、法人在減碼。
+        雖然絕對水位（0.808%）仍低到不致引發斷頭雪崩，但<strong>方向是錯的</strong>，且本期是第一次出現這個訊號。</div></li>
+        <li><span class="bear-icon">6</span><div><strong>成長斜率遞減 + 法人預估落差 + 規格調降傳聞 + 目標價分歧 66%，四項不確定性同時存在。</strong>
+        (a) 月增率由 6 月 +13.54% → 7 月 +8.31% → 8 月 +4.89% → 9 月 +6.88%，已從兩位數掉到個位數；
+        (b) 外資 FY2026E 128.72 元<strong>隱含 Q4'26 單季 EPS 需達約 49.77 元</strong>（比 Q3 推估再成長約 36%），
+        而目前沒有任何漲價或新產品放量的實證支持這個加速度；
+        (c) 本次新查到市場傳出<strong>下一代 AI 平台（VR200）部分板件可能不採用 M9</strong> 的規格調降風險（外資認為風險有限，但傳聞本身已是波動來源）；
+        (d) 法人目標價從 6,145 元到 10,200 元，<strong>上緣是下緣的 1.66 倍</strong>，連專業機構都沒有共識。
+        加上年化波動率 <strong>67.47%</strong>（大盤約 15~20%）、布林帶寬 31.51%，<strong>高波動是常態而非例外。</strong></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="verdict-box" style="margin-top:14px">
+    <h4>&#128172; 給一般投資人的話</h4>
+    <p><strong>先說結論：這六天最重要的事不是股價，而是你現在知道「答案什麼時候會來」了。</strong>
+    第 5 次報告以為 Q3 財報要等 11 月中，所以建議「等支撐帶確認再分批」。
+    但公司早在 9/29 就公告了——<strong>Q3 財報董事會是 10 月 28 日，只剩 5 個交易日</strong>。
+    這件事徹底改變了操作節奏：<strong>你不需要再猜了，只要再等 5 個交易日就有答案。</strong>
+    在這種情況下，把資金押滿去賭財報，和等 5 天看完數字再決定，<strong>風險報酬完全不對等</strong>。</p>
+    <p><strong>這六天股價其實沒變，但籌碼的真相揭曉了。</strong>
+    10/15 收 5,120 元，今天盤中 5,175 元，六天淨漲 1.07%。中間 10/20 曾殺到 4,930 元（本波新低），然後今天跳空反彈。
+    本報告向證交所查到了第 5 次查不到的官方數據：<strong>10/15 外資單日確實賣超 962 張</strong>，證實了「法人出貨」的猜測。
+    但同時也發現<strong>賣壓比想像的小得多</strong>——四天累計只賣 906 張，佔外資持股的 0.56%，而且 10/16、10/19 還轉為買超；
+    投信四天反而淨買 158 張。<strong>這不是外資出逃，是小幅調節。</strong></p>
+    <p><strong>技術面已經明確轉空，但也明確顯示跌不下去了。</strong>
+    MACD 在 10/16 正式死叉（而且是在一個上漲日死叉的，這點連第 5 次都沒料到），
+    月線 5,311 與季線 5,338 六天來一次都沒收復過。<strong>趨勢是空的，這點沒有爭議。</strong>
+    但另一邊：成交量從 10/15 的 5,904 張急縮到 10/19 的 1,749 張、10/20 的 1,814 張，<strong>只有均量的六成</strong>。
+    10/20 再跌 3.51% 卻只用了 1,814 張——<strong>這代表想賣的人已經賣完了。</strong>
+    「趨勢向下但賣壓衰竭」就是底部震盪，而底部震盪需要一個事件來決定方向。</p>
+    <p><strong>實際怎麼做？三個建議，而且第一條和第 5 次不一樣。</strong><br>
+    <strong>(1) 財報前不要加碼，這是本次最重要的改變。</strong>
+    第 5 次建議「等縮量止跌就分批」，縮量確實發生了（10/19、10/20 都達標）。
+    但現在情況不同：<strong>5 個交易日後就有財報</strong>。在答案揭曉前五天把部位放大，等於放棄了「先看數字再決定」這個免費的優勢。
+    若真要參與，<strong>最多以 15~20% 的小部位試單</strong>，把主力資金留到 10/28 之後。<br>
+    <strong>(2) 10/28 看財報時，請先翻現金流量表，不要先看 EPS。</strong>
+    本報告維持 Q3 EPS 推估 <strong>35.61 ~ 38.43 元</strong>，但老實說<strong>猜中的難度不高</strong>——
+    Q3 三個月營收 608.85 億元早就公告完畢，只剩毛利率一個變數。<strong>真正的分水嶺是營業現金流。</strong>
+    上半年帳上賺 152 億、實際收到現金只有 50 億（0.33 倍），差額卡在半年暴增 292 億的應收帳款裡。
+    <strong>如果 Q3 的「營業現金流 ÷ 淨利」還是低於 0.5 倍，那麼 80 倍本益比會非常難守</strong>——
+    因為那代表「獲利漂亮但現金收不回來」從一季的異常變成了結構性問題。<strong>EPS 達標但現金流沒改善，是壞消息不是好消息。</strong><br>
+    <strong>(3) 已在 4,950~5,000 進場的人，可以續抱但要守紀律。</strong>
+    第 5 次的買點在 10/19、10/20 已被觸發，以中值 4,975 元計，今日 5,175 元帳面 <strong>+4.02%</strong>。
+    紀律很明確：<strong>收盤跌破 4,635 元（9/17 低點）就出場</strong>，那代表 9 月以來的底部結構瓦解，
+    此時應該承認判斷錯誤，而不是攤平。中途若收盤跌破 4,930 元（10/20 新低），就該停止任何加碼計畫。</p>
+    <p><strong>最後一句話（本次特別提醒）：不要被今天的 +4.65% 誤導。</strong>
+    本報告的報價取於 <strong>09:15:55，開盤只過了 16 分鐘，累計成交僅 669 張</strong>（均量的 23%）。
+    在一檔年化波動率 <strong>67.47%</strong> 的股票上，早盤 16 分鐘的價格<strong>完全不能代表當日收盤</strong>。
+    今天可能開高走高，也可能開高走低。這檔股票一張要 <strong>517.5 萬元</strong>、單日上下 5~10% 是常態，
+    如果你無法接受「一張股票一天波動 25~50 萬元」，那麼不論基本面多好，這檔股票都不適合你。</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">11</span>風控評估（六維加權評分）</div>
+  <div class="card">
+    <div class="score-row"><div class="score-label">估值風險 30%</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:#dc2626"></div></div><div class="score-num">7/10</div></div>
+    <div style="font-size:12.5px;color:#64748b;margin:0 0 10px 116px;line-height:1.6">
+      TTM P/E <strong>80.76 倍</strong>、P/B <strong>31.79 倍</strong>、前瞻 P/E <strong>42.1~45.1 倍</strong>，仍屬極端高估值區。
+      <strong>維持 7 分（與第 5 次相同）</strong>：今日反彈使 P/E 由 80.2 倍微升至 80.76 倍，惡化幅度不足以進位到 8 分。
+    </div>
+    <div class="score-row"><div class="score-label">財務風險 25%</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:#d97706"></div></div><div class="score-num">6/10</div></div>
+    <div style="font-size:12.5px;color:#64748b;margin:0 0 10px 116px;line-height:1.6">
+      OCF/淨利 0.332 倍、自由現金流 -56.34 億、應收帳款 652.78 億（+81.0%）、負債比 63.23%（+9.97pp）。
+      減分項：獲利 100% 來自本業、流動比率仍 135.5%、存貨增幅（+41.3%）低於營收增幅。
+      <strong>維持 6 分</strong>：本期無任何新財務數據，<strong>評分不應因股價變動而調整</strong>。驗證日為 <strong>10/28</strong>。
+    </div>
+    <div class="score-row"><div class="score-label">流動性風險 10%</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:30%;background:#16a34a"></div></div><div class="score-num">3/10</div></div>
+    <div style="font-size:12.5px;color:#64748b;margin:0 0 10px 116px;line-height:1.6">
+      日均成交金額約 139~148 億元，流動性仍充足。扣分僅因單張 517.5 萬元門檻過高、大額部位調節需數日。
+      <strong>維持 3 分</strong>：10/19、10/20 量能縮至均量 0.6 倍是負面變化，但絕對金額（約 90 億元／日）仍遠超一般投資人需求，不足以進位。
+    </div>
+    <div class="score-row"><div class="score-label">產業風險 15%</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:#d97706"></div></div><div class="score-num">6/10</div></div>
+    <div style="font-size:12.5px;color:#64748b;margin:0 0 10px 116px;line-height:1.6">
+      AI 伺服器需求強勁（9 月營收年增 +168.87%），但存在 PTFE 材料替代題材、
+      <strong>本次新增的 VR200 部分板件可能不採 M9 的規格調降傳聞</strong>（外資認為風險有限），以及高階 CCL 同業擴產壓力。
+      <strong>維持 6 分</strong>：新風險細節更具體，但外資評估為「風險有限」且公司未證實，不足以進位。
+    </div>
+    <div class="score-row"><div class="score-label">總經風險 10%</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:50%;background:#d97706"></div></div><div class="score-num">5/10</div></div>
+    <div style="font-size:12.5px;color:#64748b;margin:0 0 10px 116px;line-height:1.6">
+      AI 資本支出循環、美國關稅與出口管制政策、新台幣匯率，均可能影響需求與獲利。<strong>維持中性 5 分</strong>，本期無新資訊。
+    </div>
+    <div class="score-row"><div class="score-label">籌碼風險 10%</div><div class="score-bar-bg"><div class="score-bar-fill" style="width:60%;background:#d97706"></div></div><div class="score-num">6/10</div></div>
+    <div style="font-size:12.5px;color:#64748b;margin:0 0 4px 116px;line-height:1.6">
+      <strong>本次由 7 分下調至 6 分</strong>，這是本期唯一變動的維度。理由：第 5 次給 7 分的組成之一是
+      「三大法人當日數據<strong>尚未公告</strong>（不確定性）」，<strong>該不確定性本次已解除</strong>，
+      且揭曉結果屬中性偏空而非極端——外資四日賣超 906 張僅佔四日成交量 7.40%、佔外資持股 0.56%，10/16 與 10/19 更轉為小幅買超，投信四日淨買 158 張。
+      <strong>新增扣分項：融資餘額逆勢增加 19.93%（2,414 → 2,895 張），籌碼由法人轉向散戶。</strong>
+      其餘減分項不變：融資僅佔流通股數 0.808%、董監零質押、券資比 0.656%，無任何斷頭或軋空機制。
+    </div>
+    <div class="calc-box">
+      <div class="calc-title">&#128290; 加權計算過程（權重合計 100%）</div>
+      <div class="row"><span>估值風險　7 × 30%</span><strong>2.10</strong></div>
+      <div class="row"><span>財務風險　6 × 25%</span><strong>1.50</strong></div>
+      <div class="row"><span>流動性風險　3 × 10%</span><strong>0.30</strong></div>
+      <div class="row"><span>產業風險　6 × 15%</span><strong>0.90</strong></div>
+      <div class="row"><span>總經風險　5 × 10%</span><strong>0.50</strong></div>
+      <div class="row"><span>籌碼風險　6 × 10%</span><strong>0.60</strong></div>
+      <div class="row"><span>綜合風險評分（2.10＋1.50＋0.30＋0.90＋0.50＋0.60）</span><strong>5.90 / 10　中高風險</strong></div>
+    </div>
+    <div class="alert alert-purple" style="margin-top:12px;margin-bottom:0">
+      <span>&#128202;</span>
+      <div>
+        <strong>與第 5 次的差異分解：第 5 次 6.00 → 本次 5.90，下降 0.10 分。</strong><br>
+        <strong>全部變動來自單一維度</strong>：籌碼風險由 7 分降至 6 分（加權 -0.10 分）。其餘五個維度分數完全不變。<br>
+        <strong>為什麼只動一個維度？</strong>因為本期<strong>基本面沒有任何新數據</strong>——沒有財報、沒有月營收、沒有重大訊息。
+        在這種情況下調整財務或產業維度的分數，就等於讓股價波動倒過來決定風險評分，那是本末倒置。
+        <strong>唯一真正改變的是「資訊可得性」：第 5 次無法取得的籌碼數據，本次已全部取得，不確定性因此消除。</strong><br>
+        <strong>關鍵訊息：5.90 分這個「幾乎沒變」本身就是結論——這六天價格繞了一圈回到原點，風險結構也幾乎原地。
+        真正會讓這個分數明顯移動的是 10/28 的現金流數字，而不是這六天的任何一根 K 線。</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">12</span>台股三段式操作策略</div>
+  <div class="alert alert-red">
+    <span>&#9888;</span>
+    <div>
+      <strong>本次策略的核心改變：所有策略都加上「10/28 財報」這個硬約束。</strong><br>
+      第 5 次的三段式策略是在「財報要等 11 月中」的假設下設計的，所以主軸是「等縮量止跌就分批」。
+      既然財報<strong>只剩 5 個交易日</strong>，本報告認為正確做法是
+      <strong>把主力資金留到財報後，財報前的任何進場都應視為「小額試單」而非「建立部位」</strong>。
+      這不是看空，而是因為「再等 5 天就有答案」這個選擇是免費的，放棄它沒有道理。
+    </div>
+  </div>
+  <div class="strategy-grid">
+    <div class="strat-card attack">
+      <h3>&#9876; 進攻型（積極）</h3>
+      <div class="strat-item"><span>適合</span><span>能承受單日 ±8% 波動、有即時盯盤能力、且<strong>願意承擔財報跳空風險</strong></span></div>
+      <div class="strat-item"><span>進場條件</span><span>站穩 MA5（5,106 元）之上且量能回升</span></div>
+      <div class="strat-item"><span>買點</span><span>5,100 ~ 5,175 元</span></div>
+      <div class="strat-item"><span>部位</span><span>總資金 <strong>10 ~ 15%</strong>（第 5 次為 15~20%，本次下調）</span></div>
+      <div class="strat-item"><span>目標一</span><span>5,311 ~ 5,338 元（MA20／MA60 糾結帶，+2.6~3.2%）</span></div>
+      <div class="strat-item"><span>目標二</span><span>5,435 元（今日漲停，+5.0%）</span></div>
+      <div class="strat-item"><span>停損</span><span>4,930 元（10/20 新低，-4.7%）</span></div>
+      <div class="strat-item"><span>持有期</span><span><strong>3 ~ 5 個交易日（10/28 前出清或減半）</strong></span></div>
+      <div class="strat-item"><span>報酬/風險</span><span>+2.6~5.0% / -4.7%，約 0.6 ~ 1.1 : 1</span></div>
+      <div class="strat-item"><span>&#9888; 警告</span><span><strong>報酬風險比不到 1.1:1，本報告不推薦。</strong>上方 5,311~5,338 是六日來未被突破的硬反壓，空間有限而財報風險巨大</span></div>
+    </div>
+    <div class="strat-card balance">
+      <h3>&#9878; 均衡型（穩健，本報告主推）</h3>
+      <div class="strat-item"><span>適合</span><span>看好 AI CCL 長線、能接受 3~12 個月持有</span></div>
+      <div class="strat-item"><span>核心原則</span><span><strong>財報前只試單，主力資金留到 10/28 後</strong></span></div>
+      <div class="strat-item"><span>試單（財報前）</span><span>4,950 ~ 5,100 元 / 部位 <strong>15%</strong></span></div>
+      <div class="strat-item"><span>第二批（財報後）</span><span>條件：<strong>Q3 營業現金流 ÷ 淨利 ≥ 0.5 倍</strong> / 部位 20%</span></div>
+      <div class="strat-item"><span>第三批</span><span>收復 MA60（5,338）且 MACD 重回金叉 / 部位 15%</span></div>
+      <div class="strat-item"><span>不加碼條件</span><span><strong>若 Q3 OCF／淨利 &lt; 0.5 倍，停止第二批與第三批，僅保留試單</strong></span></div>
+      <div class="strat-item"><span>目標一</span><span>6,145 元（本土投顧目標價，+18.7%）</span></div>
+      <div class="strat-item"><span>目標二</span><span>7,200 元（本土投顧目標價，+39.1%）</span></div>
+      <div class="strat-item"><span>停損</span><span>收盤 4,635 元（9/17 低點，-10.4%）</span></div>
+      <div class="strat-item"><span>持有期</span><span>3 ~ 12 個月</span></div>
+      <div class="strat-item"><span>報酬/風險</span><span>+18.7~39.1% / -10.4%，約 1.8 ~ 3.8 : 1</span></div>
+    </div>
+    <div class="strat-card defend">
+      <h3>&#128737; 防守型（保守）</h3>
+      <div class="strat-item"><span>適合</span><span>風險趨避者、首次接觸此股者</span></div>
+      <div class="strat-item"><span>觀望條件</span><span><strong>完全不動，等 10/28 財報</strong></span></div>
+      <div class="strat-item"><span>檢核一</span><span>EPS 是否落在 35.61 ~ 38.43 元</span></div>
+      <div class="strat-item"><span>檢核二</span><span>毛利率能否維持 33.85% 以上</span></div>
+      <div class="strat-item"><span>檢核三（最重要）</span><span><strong>營業現金流 ÷ 淨利 ≥ 0.5 倍、應收帳款停止膨脹</strong></span></div>
+      <div class="strat-item"><span>加碼條件</span><span>三項檢核全過，<strong>且</strong>股價站回 MA60（5,338）、MACD 重回金叉</span></div>
+      <div class="strat-item"><span>買點</span><span>4,700 ~ 4,900 元（9 月底部平台）</span></div>
+      <div class="strat-item"><span>部位</span><span>總資金 10 ~ 15%</span></div>
+      <div class="strat-item"><span>目標</span><span>5,700 ~ 6,145 元</span></div>
+      <div class="strat-item"><span>停損</span><span>4,635 元（零容忍，收盤破即出）</span></div>
+      <div class="strat-item"><span>持有期</span><span>6 ~ 18 個月</span></div>
+      <div class="strat-item"><span>&#128161; 替代方案</span><span>若無法接受 80 倍本益比，直接放棄此股亦完全合理</span></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4 style="font-size:14px;font-weight:800;margin-bottom:10px;color:#4c1d95">催化劑與追蹤時間表（已依 10/28 重排）</h4>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">今日 18:00 後</div>
+        <div class="tl-text">查臺灣證券交易所<strong>三大法人買賣超日報（10/21）</strong>與融資融券餘額。
+        觀察重點：今日 +4.65% 的反彈是<strong>外資回頭買</strong>還是<strong>融資追價</strong>。
+        若是前者，籌碼風險可再下調；若是後者（融資再增、法人仍賣），則今日反彈的持續性可疑。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-10-22 ~ 10-27（4 個交易日）</div>
+        <div class="tl-text"><strong>財報空窗期。</strong>唯一觀察重點：能否收復 <strong>MA20（5,311）與 MA60（5,338）</strong>。
+        若能帶量站上，代表市場提前對財報投下信任票；若持續被壓在 5,311 之下且量能萎縮，則是觀望氣氛濃厚。
+        <strong>本報告建議此期間不做任何重大部位調整。</strong></div>
+      </div>
+      <div class="tl-item bad">
+        <div class="tl-date">2026-10-28（最高優先）</div>
+        <div class="tl-text"><strong>Q3'26 財務報告董事會（公司 2026-09-29 公告）。本系列最關鍵事件。</strong>三個檢核點：<br>
+        <strong>(a)</strong> EPS 是否落在本報告推估的 <strong>35.61 ~ 38.43 元</strong>區間（營收 608.85 億元已確定，難度不高）；<br>
+        <strong>(b)</strong> 毛利率能否維持 <strong>33.85%</strong> 以上；<br>
+        <strong>(c)【最重要】營業現金流 ÷ 淨利能否自 H1 的 0.332 倍回升至 0.5 倍以上</strong>；
+        同時檢查應收帳款（Q2 為 652.78 億）是否停止膨脹、負債比是否止於 63.23%。
+        <strong>若 (a)(b) 達標但 (c) 未達標，本報告的財務風險維度將由 6 分上調至 7 分，綜合評分將升至 6.15 以上。</strong></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026 年 11 月 10 日前</div>
+        <div class="tl-text"><strong>10 月營收公告</strong>（即 2026 年 10 月實際月營收，<strong>本報告確認截至 10/21 仍未公告</strong>）。
+        觀察重點：月增率能否止住遞減趨勢（9 月為 +6.88%）。若 10 月月增率回升到 +8% 以上，是成長斜率未轉折的有力證據。
+        年增率比較基期為 2025 年 10 月的 <strong>80.75 億元</strong>。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026 年 Q4 ~ 2027 年 Q1</div>
+        <div class="tl-text"><strong>下一代 AI 平台材料規格確認期。</strong>
+        包括 <strong>VR200 板件是否採用 M9</strong>（本次新查到的傳聞）與 PTFE 混合方案的實際採用比重，
+        將決定 M9 / M10 的市佔與定價能力。此為法人目標價從 6,145 到 10,200 元分歧的根本原因，也是最大的單一基本面變數。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2027 年 3 月</div>
+        <div class="tl-text"><strong>FY2026 全年財報。</strong>驗證本報告 FY2026E <strong>114.80 ~ 122.80 元</strong> vs 外資 128.72 元誰更接近。
+        同時觀察全年自由現金流能否轉正（H1 為 -56.34 億元）。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">13</span>名詞小教室</div>
+  <div class="glossary-grid">
+    <div class="glossary-item"><div class="glossary-term">CCL（銅箔基板）</div><div class="glossary-def">印刷電路板（PCB）的底層基材，由玻璃纖維布、樹脂與銅箔壓合而成。訊號在板子上跑得越快，基板的「介電損耗」就必須越低。台光電就是做這種高階低損耗 CCL 的公司。</div></div>
+    <div class="glossary-item"><div class="glossary-term">M6 / M7 / M8 / M9 / M10</div><div class="glossary-def">台光電 CCL 的世代代號，數字越大代表損耗越低、可支援的訊號速度越快、單價與毛利也越高。目前 M8 / M9 是 AI 伺服器主流，M9 預計 2026 下半年小量出貨、2027 年放量，M10 還在送樣階段。</div></div>
+    <div class="glossary-item"><div class="glossary-term">董事會召開日期 ＝ 財報公布日</div><div class="glossary-def">台股公司的季報必須先經董事會通過才能公告，所以「第三季財務報告董事會預計召開日期」實質上就是財報公布日。台光電公告為 <strong>2026-10-28</strong>。這個日期會提前在公開資訊觀測站公告，不必猜。</div></div>
+    <div class="glossary-item"><div class="glossary-term">營業現金流 ÷ 淨利</div><div class="glossary-def">「帳上賺的錢」有多少真的變成「口袋裡的現金」。健康的公司通常在 0.8~1.2 倍。台光電上半年只有 <strong>0.332 倍</strong>，代表賺的錢有 2/3 還卡在應收帳款裡沒收到。<strong>這是 10/28 財報最該看的一個數字。</strong></div></div>
+    <div class="glossary-item"><div class="glossary-term">自由現金流 FCF</div><div class="glossary-def">營業現金流減掉資本支出（蓋廠買機器）後剩下的錢。台光電上半年是 -56.34 億元，代表「本業收到的現金不夠付擴廠費用」，差額得靠借款補。擴張期的成長股常見，但要盯著不能持續太久。</div></div>
+    <div class="glossary-item"><div class="glossary-term">應收帳款天數</div><div class="glossary-def">賣出貨品後平均多久才收到錢。台光電 Q2'26 約 125.7 天（超過四個月）。天數拉長代表議價時讓了付款條件，或客戶拉貨太猛來不及收款，是現金流壓力的直接來源。</div></div>
+    <div class="glossary-item"><div class="glossary-term">業外佔稅前比重</div><div class="glossary-def">「稅前利益」扣掉「營業利益」後的部分就是業外損益（匯兌、利息、投資收益、資產處分等）。這個比重越接近 0，代表獲利越純粹來自本業、越可靠。台光電近四季僅 -0.22%，是極優秀的數字。</div></div>
+    <div class="glossary-item"><div class="glossary-term">本益比 P/E（TTM 與前瞻）</div><div class="glossary-def">股價 ÷ 每股盈餘。TTM 用「過去四季已實現」的 EPS（台光電 64.08 元 → 80.8 倍），前瞻用「未來一年預估」的 EPS（114.80~122.80 元 → 42.1~45.1 倍）。成長股的 TTM 本益比通常看起來很貴。</div></div>
+    <div class="glossary-item"><div class="glossary-term">股價淨值比 P/B</div><div class="glossary-def">股價 ÷ 每股淨值。台光電每股淨值 162.80 元、股價 5,175 元，P/B ＝ 31.8 倍，意思是你付了淨值的 31.8 倍去買它。這只有在公司 ROE 極高（台光電 45.6%）時才說得通。</div></div>
+    <div class="glossary-item"><div class="glossary-term">MACD 死叉與金叉</div><div class="glossary-def">快線（DIF）減慢線（訊號線）的差值叫柱狀體。柱狀體由正翻負＝<strong>死叉</strong>（動能偏空），由負翻正＝金叉。台光電<strong>已於 2026-10-16 正式死叉</strong>，至今連續 4 日為負。<strong>重點：交叉由兩條線的相對斜率決定，不是由單日漲跌幅決定</strong>——10/16 死叉那天其實是上漲 +0.88%。</div></div>
+    <div class="glossary-item"><div class="glossary-term">MA20（月線）與 MA60（季線）</div><div class="glossary-def">過去 20 個與 60 個交易日的平均收盤價，分別代表短中期與中期成本線。台光電今日 MA20 ＝ 5,311、MA60 ＝ 5,338，股價（5,175）<strong>六個交易日來一次都沒收復過</strong>。注意這兩條線目前還在<strong>往上移動</strong>，代表反壓每天墊高。</div></div>
+    <div class="glossary-item"><div class="glossary-term">RSI（相對強弱指標）</div><div class="glossary-def">0~100 的動能指標，一般 70 以上算超買、30 以下算超賣。台光電今日 46.47，<strong>處於中性區，不提供任何方向資訊</strong>——既沒有「跌夠了」的訊號，也沒有過熱。此時用 RSI 做買賣決策是沒有依據的。</div></div>
+    <div class="glossary-item"><div class="glossary-term">最小升降單位（Tick）與漲跌停</div><div class="glossary-def">台股股價越高，每次跳動的最小金額越大。股價超過 1,000 元時最小升降單位是 <strong>5 元</strong>。所以漲跌停價（昨收 ±10%）必須朝昨收方向取整到 5 的倍數：<strong>4,945 × 1.1 ＝ 5,439.5 → 漲停 5,435 元；4,945 × 0.9 ＝ 4,450.5 → 跌停 4,455 元。</strong></div></div>
+    <div class="glossary-item"><div class="glossary-term">三大法人買賣超日報</div><div class="glossary-def">臺灣證券交易所每日約 18:00 公告的官方資料，列出外資及陸資、投信、自營商對每一檔股票的買賣超股數。<strong>這是唯一權威來源</strong>。第三方 API 當日常有缺口（回傳 0），<strong>切勿把 0 解讀為「持平」</strong>。</div></div>
+    <div class="glossary-item"><div class="glossary-term">融資餘額與融資斷頭</div><div class="glossary-def">投資人向券商借錢買股的未償還金額。股價下跌到一定程度，券商會強制賣出（斷頭），形成連鎖賣壓。台光電融資 2,895 張、<strong>僅佔流通股數 0.808%</strong>，所以幾乎沒有這個風險。<strong>（註：第 5 次報告誤算為 0.067%，少算 10 倍，本報告已更正。）</strong></div></div>
+    <div class="glossary-item"><div class="glossary-term">券資比與軋空</div><div class="glossary-def">融券餘額 ÷ 融資餘額。比值高代表空方部位重，股價上漲時空方被迫回補會加速上漲（軋空）。台光電券資比僅 <strong>0.656%</strong>（19 張 ÷ 2,895 張），<strong>完全沒有軋空題材</strong>。若看到「融券 0 張要注意軋空」的說法，那是把資料缺口誤讀成訊號。</div></div>
+    <div class="glossary-item"><div class="glossary-term">年化波動率</div><div class="glossary-def">把每日漲跌幅換算成「一年可能的波動範圍」。台光電 <strong>67.47%</strong>，而台股大盤約 15~20%。意思是這檔股票的震盪程度是大盤的 3~4 倍，單日 ±5~7% 完全在正常範圍內。</div></div>
+    <div class="glossary-item"><div class="glossary-term">月營收的「年月」陷阱</div><div class="glossary-def">腳本輸出的月營收「年月」是<strong>公告月份</strong>，不是營收歸屬月份，兩者相差一個月。標示 2026-10 的 215.32 億元，實際是 <strong>2026 年 9 月</strong>的營收。<strong>截至本報告日，10 月營收仍未公告。</strong>（註：FinMind 原始 API 的 revenue_month 欄位才是實際月份，腳本在呈現時加了一個月。）</div></div>
+    <div class="glossary-item"><div class="glossary-term">PTFE（鐵氟龍）與規格調降</div><div class="glossary-def">PTFE 是一種介電損耗極低的替代基材。市場曾傳出下一代 AI 平台可能部分改用 PTFE 取代 M9 / M10；本次另查到傳聞稱 <strong>VR200 部分板件可能不採用 M9</strong>。外資認為「規格調降風險有限」並維持買進評級。<strong>公司官方未就此發布任何重大訊息</strong>，本報告僅列為不確定性來源。</div></div>
+    <div class="glossary-item"><div class="glossary-term">量縮止跌 vs 爆量下殺</div><div class="glossary-def">同樣是下跌，「跌且量爆」代表有大額賣方在出貨（如 10/15 的 5,904 張）；「跌但量縮」代表願意砍倉的人已經不多（如 10/20 的 1,814 張，僅均量 0.62 倍）。<strong>後者通常是賣壓衰竭的訊號，但不等於上漲訊號</strong>——它只說明「跌不下去」，不說明「漲得上去」。</div></div>
+  </div>
+</section>
+
+<div class="disclaimer">
+  <h4>&#9888; 本報告由 AI 輔助分析系統生成，僅供投資研究參考，不構成任何投資建議或勸誘。</h4>
+
+  <h4 style="margin-top:12px">一、資料來源與取得時間</h4>
+  <ul>
+    <li><strong>即時股價（5,175 元、開 5,135 / 高 5,205 / 低 5,100 / 昨收 4,945）、官方漲跌停價（漲停 5,435 / 跌停 4,455）、累計成交量 669 張、委買賣 5,170 / 5,180：</strong>
+    臺灣證券交易所 MIS 即時行情介面（mis.twse.com.tw），回傳時間戳記 <strong>2026-10-21 09:15:55</strong>，取得時間 2026-10-21 上午。</li>
+    <li><strong>歷史日 K 線（用於 MA / MACD / RSI / 布林 / 均量 / 波動率計算）：</strong>
+    FinMind TaiwanStockPrice，資料區間 2025-01-02 ~ 2026-10-20（共 <strong>435 個交易日</strong>），取得時間 2026-10-21 上午。</li>
+    <li><strong>三大法人買賣超（10/15、10/16、10/19、10/20 四日）：</strong>
+    臺灣證券交易所「三大法人買賣超日報」（T86，selectType=28 電子零組件業），各日官方公告值，取得時間 2026-10-21 上午。</li>
+    <li><strong>融資融券餘額（10/16、10/19、10/20，及 10/15 之餘額由 10/16 報表之「融資前日餘額」欄位取得）：</strong>
+    臺灣證券交易所「融資融券餘額」（MI_MARGN，selectType=STOCK），各日官方公告值，取得時間 2026-10-21 上午。</li>
+    <li><strong>月營收（2025-01 ~ 2026-09 實際月份共 21 筆）：</strong>
+    FinMind TaiwanStockMonthRevenue（直接呼叫原始 API 取得 revenue_year / revenue_month 欄位），取得時間 2026-10-21 上午。</li>
+    <li><strong>季度財報（損益表、資產負債表、現金流量表，2024Q1 ~ 2026Q2）：</strong>
+    沿用第 5 次報告之整理，來源為 FinMind TaiwanStockFinancialStatements 及公開資訊觀測站正式公告值。
+    <strong>本次未重新抓取</strong>，因 Q3'26 財報要到 2026-10-28 才公告，期間不可能有任何變動。</li>
+    <li><strong>Q3'26 財報董事會日期 2026-10-28：</strong>公司於 2026-09-29 發布之「115 年第三季財務報告董事會預計召開日期」公告，
+    以網路檢索取得於 2026-10-21。<strong>此為本次最重要的新增資訊，亦為對第 5 次報告「11 月中」之修正。</strong></li>
+    <li><strong>外資持股 45.18%（2026-10-13）、董監持股 8.58% 與質押比 0%：</strong>
+    臺灣證券交易所 / 公開資訊觀測站公開資料，沿用第 5 次。<strong>本次查證未能取得更新值</strong>，故維持原數字與原資料日期，未以任何推估值替代。</li>
+    <li><strong>法人目標價（6,145 / 7,200 / 10,200 元）與法人 EPS 預估（FY2026~2028E 128.72 / 262.85 / 403.76 元、2027E 204.85 元）：</strong>
+    財經媒體報導，報導日期 2026-10-02 與 2026-10-07，沿用第 5 次。<strong>本次查證未發現任何券商於 10/15~10/21 期間調整目標價或 EPS 預估的新報導。</strong></li>
+    <li><strong>M9 出貨時程、VR200 規格調降傳聞、產能 615 → 945 萬張、全產品線調漲逾 10%、前 9 月營收 1,412 億元、2025 年 10 月營收 80.75 億元：</strong>
+    財經媒體與法人報告轉載報導，以網路檢索取得於 2026-10-21。<strong>均為媒體二手資訊，非公司正式公告。</strong></li>
+  </ul>
+
+  <h4 style="margin-top:12px">二、所有自行推算項目與假設（非官方公告值，請勿視為事實）</h4>
+  <ul>
+    <li><strong>正確漲停 5,435 元 / 跌停 4,455 元：</strong>以昨收 4,945 元 × 110% ＝ 5,439.5 向下取整至 5 元倍數、× 90% ＝ 4,450.5 向上取整至 5 元倍數自行計算，
+    並經臺灣證券交易所 MIS 官方欄位（u ＝ 5,435.0、w ＝ 4,455.0）<strong>交叉驗證一致</strong>。</li>
+    <li><strong>全部重算技術指標（MA5 5,106 / MA10 5,469.50 / MA20 5,311.50 / MA60 5,338.33、MACD DIF -26.68 / 訊號 27.21 / 柱狀 -53.89、
+    RSI 46.47、布林 6,148.36 / 5,311.50 / 4,474.64、帶寬 31.51%、年化波動率 67.47%）：</strong>
+    以 FinMind 日 K 線收盤序列（至 2026-10-20）<strong>追加今日盤中價 5,175 元</strong>後自行計算。
+    MACD 採 EMA(12)/EMA(26)/訊號 EMA(9)；RSI 採 Wilder 平滑法；布林採 20 日母體標準差 ±2σ、帶寬＝(上軌−下軌)÷中軌；年化波動率採近 60 日對數報酬標準差 × √252。
+    <strong>因 10/21 尚未收盤，若最終收盤價不等於 5,175 元，以上全部數值均須重算。</strong></li>
+    <li><strong>MACD 死叉日期 2026-10-16：</strong>以上述方法對歷史收盤序列逐日計算柱狀體，偵測由正翻負之交叉點而得。
+    柱狀體序列為 10/12 +141.52、10/13 +101.38、10/14 +68.91、10/15 +18.87、10/16 -11.22、10/19 -32.61、10/20 -56.30、今日 -53.89。
+    <strong>第 5 次報告引用的 10/15 柱狀體 +20.14 係以當時盤中價 5,140 元計算；以 10/15 實際收盤 5,120 元重算為 +18.87。</strong></li>
+    <li><strong>Q3'26 營收 608.85 億元：</strong>為 2026 年 7 / 8 / 9 月實際月營收加總（192.0670＋201.4559＋215.3223），<strong>非財報公告值</strong>。
+    已以 Q1'25~Q2'26 六個季度交叉驗證換算規則，最大誤差 -0.0745%；並經兩則媒體報導（前 9 月 1,412 億元、2025 年前 10 月 774.08 億元）外部驗證吻合。
+    <strong>財報將於 2026-10-28 公告。</strong></li>
+    <li><strong>Q3'26 EPS 35.61 ~ 38.43 元：</strong>沿用第 5 次，<strong>本次未做任何修改</strong>，以保留可被驗證的預測。
+    假設毛利率 33.85% / 34.50% / 36.00%、營業費用率 6.70%（取 Q2'26 實績）、有效稅率 22.80%（取 Q2'26 實績）、業外收支為 0、股數不變（358,321,100 股）。
+    <strong>任一假設變動都會改變結果。</strong></li>
+    <li><strong>FY2026E EPS 114.80 ~ 122.80 元：</strong>＝ Q1 實際 14.90 ＋ Q2 實際 27.55 ＋ Q3 推估 35.60~38.40 ＋
+    Q4 推估 36.75~41.95（<strong>此項為本報告主觀假設，無任何公開指引支持</strong>）。</li>
+    <li><strong>流通股數 358,321,100 股：</strong>沿用第 5 次，由 Q2'26 本期淨利 98.73 億元 ÷ 公告 EPS 27.55 元反推並以股本校驗。
+    若期間有增資、減資或庫藏股變動，市值、BVPS、P/B、EPS 推估、融資比重均須調整。</li>
+    <li><strong>市值 1.8543 兆元、P/E 80.76 倍、BVPS 162.80 元、P/B 31.79 倍、ROE 45.6%、前瞻 P/E 42.1~45.1 倍、單張門檻 517.5 萬元：</strong>
+    以 5,175 元與上述股數自行計算。<strong>股價為極早盤盤中價，收盤後數值會變動。</strong></li>
+    <li><strong>融資佔流通股數 0.808%、融資市值 149.82 億元、券資比 0.656%：</strong>
+    以官方 2,895 張 × 1,000 股 ÷ 358,321,100 股、× 5,175 元、及 19 ÷ 2,895 自行計算。</li>
+    <li><strong>外資四日賣超 906 張佔四日成交量 7.40%、佔外資持股 0.56%：</strong>
+    以官方四日買賣超加總（-906,034 股）÷ 四日成交量加總（12,240 張）、及 ÷ 外資持股估計值（45.18% × 358,321,100 股 ≒ 161,889 張）自行計算。
+    <strong>外資持股比重資料日期為 2026-10-13，期間可能已變動。</strong></li>
+    <li><strong>產能增幅 +53.66%：</strong>以媒體報導之 2027 年底 945 萬張 ÷ 2026 年底 615 萬張自行計算。
+    <strong>第 5 次報告寫「產能 +51.22%」，兩者口徑可能不同，均為法人預估而非公司正式指引。</strong></li>
+    <li><strong>風險評分 5.90 / 10：</strong>為本報告依六維度（估值 30% / 財務 25% / 流動性 10% / 產業 15% / 總經 10% / 籌碼 10%）
+    主觀評分後加權而得，<strong>並非任何機構的標準化評等</strong>。計算過程已完整列於第 11 節供檢驗。</li>
+    <li><strong>多空權重 48 : 52、所有支撐壓力價位、三段式策略的買點、目標價、停損價與部位比例：</strong>
+    均為本報告基於技術分析與事件時程的主觀判斷，<strong>不保證任何價位會被觸及或守住</strong>。</li>
+  </ul>
+
+  <h4 style="margin-top:12px">三、資料限制與已發現的錯誤（重要）</h4>
+  <ul>
+    <li><strong>【資料限制 1 — 本次最嚴重】本報告為極早盤分析，報價代表性有限。</strong>
+    所有股價相關數值取自 <strong>2026-10-21 09:15:55</strong>，距 09:00 開盤僅約 16 分鐘，<strong>累計成交量僅 669 張</strong>
+    （為 5 日均量 2,913 張的 23%），距 13:30 收盤還有超過 4 小時。
+    在一檔年化波動率 67.47% 的股票上，<strong>早盤 16 分鐘的價格完全不能代表當日收盤</strong>。
+    <strong>最終收盤價極可能與 5,175 元顯著不同</strong>，屆時市值、P/E、P/B、全部技術指標與所有策略價位均須重新計算。
+    本限制比第 5 次（13:22 取價、已成交 5,194 張）嚴重得多，請讀者務必於收盤後自行複核。</li>
+    <li><strong>【腳本錯誤 1】漲跌停價計算錯誤（與第 5 次同一型態，未修復）：</strong>
+    腳本輸出「漲停板 5,637.5 元、跌停板 4,612.5 元」，經查為<strong>兩個錯誤疊加</strong>：
+    (a) 使用 <strong>10/19 收盤價 5,125 元</strong>而非 10/20 收盤價 4,945 元作為昨收（<strong>昨收落後一個交易日</strong>）；
+    (b) 未依台股規定將結果取整至最小升降單位（股價 &gt; 1,000 元時為 5 元）。
+    本報告修正為<strong>漲停 5,435 元、跌停 4,455 元</strong>，並以臺灣證券交易所 MIS 官方回傳欄位（u ＝ 5,435.0、w ＝ 4,455.0、y ＝ 4,945.0）交叉驗證一致。</li>
+    <li><strong>【腳本錯誤 2】技術指標未納入當日價格（與第 5 次同一型態，未修復）：</strong>
+    腳本輸出的 MA5 5,175.00 / MA10 5,551.50 / MA20 5,297.25 / MA60 5,331.33、MACD DIF -15.62 / 訊號 40.68 / 柱狀 -56.30、
+    RSI 40.77、布林 6,152.43 / 5,297.25 / 4,442.07，<strong>均僅採計至 10/20 收盤的歷史序列，未納入 10/21 盤中價 5,175 元</strong>。
+    <strong>特別危險的巧合：腳本的 MA5（5,175.00）恰好等於今日股價（5,175 元）</strong>，
+    若直接引用會誤判為「股價正好站在 5 日均線上」；納入今日價格後正確 MA5 為 <strong>5,106 元</strong>，股價實際在其上 +1.35%。
+    本報告已自行重算並在第 08 節並列兩組數值完整對照。</li>
+    <li><strong>【腳本錯誤 3】市值、P/E、P/B 使用舊價基準：</strong>
+    腳本輸出「市值 1,771,897,356,288 元、本益比 80.17185、股價淨值比 30.37432」，
+    經反推係以 <strong>10/20 收盤 4,945 元</strong>計算，而非其自身同時回報的即時價。
+    以今日 5,175 元與本系列股數 358,321,100 股重算，正確值為<strong>市值 1.8543 兆元、P/E 80.76 倍、P/B 31.79 倍</strong>。</li>
+    <li><strong>【腳本錯誤 4】成交量欄位自相矛盾：</strong>
+    腳本同時輸出「成交量(張)：0」與「今日成交量：1,814,404」，後者實為 <strong>10/20 的成交量（1,814 張）</strong>，並非今日。
+    腳本據此產生的「今日成交量低於均量（0.6 倍）、縮量」敘述，描述的是 10/20 而非 10/21。
+    本報告改採臺灣證券交易所 MIS 的累計成交量欄位 v ＝ <strong>669 張（09:15:55）</strong>，並明確標註其為開盤 16 分鐘累計值。</li>
+    <li><strong>【第 5 次報告自身錯誤】融資比重與融資市值少算 10 倍：</strong>
+    第 5 次寫「融資餘額 2,414 張，佔流通股數 358,321,100 股的 <strong>0.067%</strong>」、「融資市值約 <strong>12.4 億元</strong>」。
+    正確值為 2,414,000 ÷ 358,321,100 ＝ <strong>0.6737%</strong>、2,414,000 × 5,140 ＝ <strong>124.08 億元</strong>。
+    該錯誤在第 5 次第 07、09 節及多空辯論中被重複引用。<strong>質性結論（融資極輕、無斷頭風險）不受影響，但數字必須更正。</strong>
+    本報告以 10/20 官方值 2,895 張重算為 <strong>0.808%</strong> 與 <strong>149.82 億元</strong>。</li>
+    <li><strong>【第 5 次報告自身錯誤】Q3 財報日期誤寫為「11 月中」：</strong>
+    公司早於 2026-09-29 公告 Q3 財務報告董事會<strong>預計 2026-10-28 召開</strong>。
+    第 5 次因此低估了事件的急迫性，並在策略上建議「等 11 月中財報確認」。本報告已全面依 10/28 重排策略與催化劑時間表。</li>
+    <li><strong>【資料缺口 1】FinMind 三大法人回傳 0：</strong>
+    2026-10-20 的外資、投信、自營商買賣超均回傳 0 張，腳本將其敘述為「三大法人合計買賣持平」。
+    <strong>這是資料缺口，不是持平</strong>——經向臺灣證券交易所查證，當日實際為外資 -156,583 股、投信 +60,459 股、自營商 -96,261 股、合計 <strong>-192,385 股</strong>。
+    <strong>本報告不採用腳本敘述</strong>，全部改用官方 T86 日報，並標明每一筆的資料日期。</li>
+    <li><strong>【資料缺口 2】FinMind 融資融券回傳 0：</strong>
+    2026-10-20 的融資餘額、融券餘額均回傳 0 張，腳本進一步產生「融券餘額 0 張，放空比例偏高，需注意軋空風險」的
+    <strong>完全錯誤敘述</strong>（餘額為 0 時券資比與軋空風險皆無從判斷）。
+    經查證，當日實際融資餘額 <strong>2,895 張</strong>、融券餘額 <strong>19 張</strong>、券資比 <strong>0.656%</strong>，
+    <strong>券資比極低，完全沒有軋空題材</strong>——與腳本敘述的方向正好相反。本報告改用官方 MI_MARGN 資料。</li>
+    <li><strong>【資料缺口 3】今日（10/21）籌碼數據尚未公告：</strong>
+    三大法人買賣超與融資融券餘額均於盤後約 18:00 更新，本報告於上午完成，<strong>無法取得今日數值</strong>，
+    於第 07 節明確標示「尚未公告」，<strong>不以任何估算值替代</strong>。</li>
+    <li><strong>【資料缺口 4】外資持股比重無法更新：</strong>
+    本次查證僅能取得 2026-07-03 的 44.36%（第三方網站）與第 5 次引用的 2026-10-13 的 45.18%，
+    <strong>無法取得 10/21 的最新值</strong>。本報告沿用 45.18% 並標明資料日期 2026-10-13，未做任何推估。</li>
+    <li><strong>【資料限制 2】月營收年增率部分缺漏：</strong>
+    資料庫中 2026 年 1~3 月三筆的年增率欄位均回傳 0.0，本報告標示為「資料庫未提供」，<strong>未以任何方式自行填補或推估</strong>。</li>
+    <li><strong>【資料限制 3】10 月營收尚未公告：</strong>
+    本報告已確認截至 2026-10-21，FinMind 原始 API 的最新 revenue_month 為 <strong>2026 年 9 月</strong>，
+    <strong>10 月營收並未公告</strong>（法定期限 11/10 前）。腳本輸出的「最新月份 2026-10，月營收 215.3 億元」
+    係因腳本將月份加一呈現，<strong>實為 9 月營收，不可誤讀為 10 月已公告</strong>。</li>
+    <li><strong>【資料限制 4】法人目標價來自媒體二手報導：</strong>
+    6,145 / 7,200 / 10,200 元及法人 EPS 預估均引自財經媒體報導，<strong>本報告未取得券商原始研究報告</strong>。
+    各法人的假設基礎、目標年度與估值倍數不一致（有的用 2027 年獲利 30 倍、有的用 33 倍、有的用 37 倍），不宜直接比較。
+    本次檢索另發現多則較早期的目標價報導（1,530 / 2,250 / 3,500 / 4,020 / 5,100 元），
+    <strong>其價格水準明顯低於現價，判斷為較早期或股本變動前之報告，本報告不予引用、亦不與現價比較。</strong></li>
+    <li><strong>【資料限制 5】Q3'26 獲利數字尚未公布：</strong>
+    本報告的 Q3'26 EPS 推估完全建立在月營收加總與 Q2'26 的費用率、稅率延續假設之上。
+    實際財報（2026-10-28）可能因存貨評價、匯兌、一次性費用或稅務調整而與推估產生顯著差異。</li>
+    <li><strong>【資料限制 6】M9 時程、VR200 規格調降與產能數字均未經公司證實：</strong>
+    相關敘述引自媒體報導與法人評論，<strong>台光電官方未就此發布任何重大訊息</strong>，本報告僅將其列為不確定性來源，不作為任何結論的依據。
+    法人對 M9 放量時點的看法本身即不一致（有稱 2026 Q2 開始放量、有稱 2026 下半年小量而 2027 放量）。</li>
+  </ul>
+
+  <h4 style="margin-top:12px">四、一般性聲明</h4>
+  <ul>
+    <li>本報告分析日期：<strong>2026 年 10 月 21 日（盤中 09:15:55，極早盤）</strong>。為台光電（2383）系列追蹤報告的<strong>第 6 次</strong>，前次為 2026-10-15。</li>
+    <li><strong>本期基本面無新增數字</strong>：六個交易日內無財報、無月營收、無重大訊息公告。
+    本報告的增量價值集中於 (1) 與第 5 次的逐項對帳、(2) 新取得的官方籌碼數據、(3) Q3 財報日期修正、(4) 技術指標重算與腳本錯誤修正、(5) 對第 5 次自身兩處錯誤的勘誤。
+    <strong>基本面章節的保留僅為讓報告自成一體，並非假裝有新發現。</strong></li>
+    <li>過去績效不代表未來表現。台光電年化波動率達 <strong>67.47%</strong>，單日波動 ±5~7% 屬常態，<strong>實際獲利與股價可能大幅偏離本報告所有推估</strong>。</li>
+    <li>本報告所有數值均經本報告自行驗算，但 AI 輔助分析仍可能存在計算或解讀錯誤，
+    <strong>請以公開資訊觀測站、臺灣證券交易所及券商原始報告為最終依據</strong>。</li>
+    <li>本報告不構成個人化投資建議，未考量任何特定投資人的財務狀況、投資目標或風險承受能力。投資前請諮詢合格的投資顧問。</li>
+    <li>撰寫本報告的 AI 系統及其操作者未持有台光電（2383）部位，亦未收受任何形式的報酬或委託。</li>
+    <li>投資人應自行負責所有投資決定及損益。</li>
+  </ul>
+
+  <div style="margin-top:14px;padding-top:10px;border-top:1px solid #d97706;font-size:11.5px">
+    報告生成時間：2026-10-21（盤中 09:15:55 報價基準）　|　報告序號：2383 系列第 6 次　|　分析團隊：AI Stock Analysis Team<br>
+    <strong>下次關鍵驗證日：2026-10-28（Q3'26 財務報告董事會）——請優先檢查營業現金流，而非 EPS。</strong>
+  </div>
+</div>
+
+</div>
+<script>
+function drawBarChart(id,labels,data,barColor,accentColor,negColor,dec){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=54,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  var D=(dec===undefined)?2:dec;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||0.5;
+  var lo=(min<0)?(min-pad):Math.max(0,min-pad);
+  var hi=max+pad,range=hi-lo;
+  var n=data.length;
+  var barW=chartW/n*0.58,gap=chartW/n;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(D===0?0:1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0){ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();}
+  for(var i=0;i<n;i++){
+    var x=PL+i*gap+(gap-barW)/2;
+    var vy=PT+chartH-((data[i]-lo)/range*chartH);
+    var top=Math.min(vy,zeroY),bh=Math.abs(vy-zeroY);
+    if(bh<1.5)bh=1.5;
+    var isLast=(i===n-1);
+    var color=(data[i]<0)?(negColor||'#dc2626'):(isLast?accentColor:barColor);
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,top,barW,bh,3);ctx.fillStyle=color;ctx.fill();}
+    else{ctx.fillStyle=color;ctx.fillRect(x,top,barW,bh);}
+    ctx.fillStyle=(data[i]<0)?'#dc2626':(isLast?accentColor:'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(D),x+barW/2,(data[i]<0)?(top+bh+11):(top-4));
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    var lx=PL+i*gap+gap/2,ly=PT+chartH+14;
+    if(labels[i].length>4){ctx.save();ctx.translate(lx,ly);ctx.rotate(-Math.PI/6);ctx.fillText(labels[i],0,0);ctx.restore();}
+    else ctx.fillText(labels[i],lx,ly);
+  }
+}
+function drawLineChart(id,labels,data,color,negColor,dec){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=54,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  var D=(dec===undefined)?1:dec;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||1;
+  var lo=min-pad,hi=max+pad,range=hi-lo;
+  var n=data.length;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0&&hi>0){
+    ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);
+    ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();
+  }
+  var pts=[];
+  for(var i=0;i<n;i++)pts.push({x:PL+i*chartW/(n-1),y:PT+chartH-(data[i]-lo)/range*chartH});
+  var base=(lo<0&&hi>0)?zeroY:(PT+chartH);
+  ctx.beginPath();ctx.moveTo(pts[0].x,base);
+  for(var i=0;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.lineTo(pts[n-1].x,base);ctx.closePath();
+  var grad=ctx.createLinearGradient(0,PT,0,PT+chartH);
+  var hex=color.slice(1);
+  var r=parseInt(hex.slice(0,2),16),g2=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  grad.addColorStop(0,'rgba('+r+','+g2+','+b+',0.25)');
+  grad.addColorStop(1,'rgba('+r+','+g2+','+b+',0.02)');
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+  for(var i=1;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+  for(var i=0;i<n;i++){
+    var isLast=(i===n-1);
+    var dotCol=(data[i]<0&&negColor)?negColor:color;
+    ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,isLast?5:3,0,Math.PI*2);
+    ctx.fillStyle=isLast?dotCol:'#fff';ctx.fill();
+    ctx.strokeStyle=dotCol;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=isLast?dotCol:((data[i]<0)?'#dc2626':'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(D),pts[i].x,pts[i].y+(isLast?-10:-8));
+  }
+  for(var i=0;i<n;i++){
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    ctx.fillText(labels[i],pts[i].x,PT+chartH+14);
+  }
+}
+function drawHBarChart(id,labels,data,colors,suffix){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var max=Math.max.apply(null,data)*1.32;
+  var n=labels.length;
+  var rowH=H/(n+0.6);
+  var PL=196,PR=56;
+  for(var i=0;i<n;i++){
+    var y=rowH*(i+0.3)+rowH*0.12;
+    var bh=rowH*0.66;
+    ctx.fillStyle='#f1f5f9';ctx.fillRect(PL,y,(W-PL-PR),bh);
+    var bw=(data[i]/max)*(W-PL-PR);
+    if(bw<2)bw=2;
+    var col=colors?colors[i]:'#7e22ce';
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(PL,y,bw,bh,4);ctx.fillStyle=col;ctx.fill();}
+    else{ctx.fillStyle=col;ctx.fillRect(PL,y,bw,bh);}
+    ctx.fillStyle='#1e293b';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(labels[i],PL-8,y+bh/2+4);
+    ctx.fillStyle='#1e293b';ctx.font='bold 12px Arial';ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(1)+(suffix||'x'),PL+bw+6,y+bh/2+4);
+  }
+}
+window.addEventListener('DOMContentLoaded',function(){
+  drawLineChart('pxChart',
+    ['10/5','10/6','10/7','10/8','10/12','10/13','10/14','10/15','10/16','10/19','10/20','10/21'],
+    [5700,5995,5950,6000,6150,5545,5520,5120,5165,5125,4945,5175],
+    '#4c1d95',null,0);
+  drawBarChart('instChart',
+    ['10/15','10/16','10/19','10/20'],
+    [-632.7,-62.3,-79.3,-192.4],
+    '#ddd6fe','#4c1d95','#dc2626',1);
+  drawLineChart('marginChart',
+    ['10/7','10/15','10/16','10/19','10/20'],
+    [2414,2844,2903,2907,2895],
+    '#4c1d95',null,0);
+  drawBarChart('macdChart',
+    ['10/12','10/13','10/14','10/15','10/16','10/19','10/20','10/21'],
+    [141.62,101.47,69.00,18.94,-11.22,-32.55,-56.30,-53.89],
+    '#ddd6fe','#4c1d95','#dc2626',2);
+  drawBarChart('qrevChart',
+    ["Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26E"],
+    [174.63,185.62,216.80,225.08,251.46,249.27,330.67,472.75,608.85],
+    '#ddd6fe','#4c1d95','#dc2626',1);
+  drawBarChart('epsChart',
+    ["Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [5.76,7.08,7.30,7.67,10.01,10.02,11.19,10.44,14.90,27.55],
+    '#ddd6fe','#4c1d95','#dc2626',2);
+  drawLineChart('revChart',
+    ['1月','2月','3月','4月','5月','6月','7月','8月','9月'],
+    [108.63,101.94,120.11,139.24,156.19,177.33,192.07,201.46,215.32],
+    '#4c1d95',null,2);
+  drawHBarChart('peChart',
+    ['近四季 TTM（64.08元）','FY2026E 保守（114.80元）','FY2026E 基準（119.95元）','FY2026E 樂觀（122.80元）','FY2027E 外資（262.85元）'],
+    [80.8,45.1,43.1,42.1,19.7],
+    ['#dc2626','#d97706','#4c1d95','#0f766e','#16a34a'],'倍');
+});
+</script>
+
+</body>
+</html>
