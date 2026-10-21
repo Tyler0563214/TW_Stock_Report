@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>德宏(5475) 深度研究報告 第1次 | 2026-10-21</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+    --accent:#134e4a;--accent2:#0f766e;--accent3:#ccfbf1;
+    --green:#16a34a;--red:#dc2626;--yellow:#d97706;--blue:#2563eb;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.6}
+  a{color:var(--accent)}
+  td,th{font-variant-numeric:tabular-nums}
+
+  .cover{background:linear-gradient(135deg,#04201e 0%,#0f3330 32%,#134e4a 68%,#5eead4 100%);color:#fff;padding:56px 40px 48px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-70px;right:-50px;width:310px;height:310px;border-radius:50%;background:rgba(255,255,255,0.06)}
+  .cover::after{content:'';position:absolute;bottom:-90px;left:-50px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.04)}
+  .cover-ticker{font-size:13px;opacity:.72;margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+  .cover-name{font-size:36px;font-weight:800;line-height:1.1;margin-bottom:6px}
+  .cover-subtitle{font-size:15px;opacity:.85;margin-bottom:24px}
+  .cover-price-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:10px}
+  .cover-price{font-size:54px;font-weight:900;line-height:1}
+  .cover-chg{font-size:21px;padding:4px 14px;border-radius:8px;background:rgba(220,38,38,0.38);border:1px solid rgba(252,165,165,0.7)}
+  .price-note{display:inline-block;font-size:12.5px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 13px;margin-bottom:22px;line-height:1.65}
+  .cover-meta{display:flex;gap:24px;flex-wrap:wrap}
+  .cover-meta-item{font-size:13px;opacity:.8}
+  .cover-meta-item strong{opacity:1;font-weight:700}
+  .risk-badge{position:absolute;top:32px;right:40px;background:rgba(217,119,6,0.32);border:1.5px solid rgba(251,191,36,0.7);border-radius:12px;padding:10px 18px;text-align:center}
+  .risk-badge .num{font-size:28px;font-weight:900;color:#fde68a}
+  .risk-badge .lbl{font-size:11px;opacity:.88;letter-spacing:1px}
+  .report-no-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(233,213,255,0.25);border:1px solid rgba(233,213,255,0.5);border-radius:8px;padding:3px 12px;font-size:12px;margin-bottom:12px}
+
+  .container{max-width:960px;margin:0 auto;padding:0 20px 60px}
+  section{margin-top:32px}
+  .section-title{font-size:18px;font-weight:800;color:var(--accent);border-left:4px solid var(--accent);padding-left:12px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .section-num{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+  .card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07),0 0 0 1px var(--border)}
+  .card + .card{margin-top:12px}
+
+  .verdict-box{background:linear-gradient(135deg,#f0fdfa,#ccfbf1);border:2px solid #134e4a;border-radius:14px;padding:20px 24px;margin-bottom:14px}
+  .verdict-box h4{font-size:15px;font-weight:800;color:#0f3330;margin-bottom:10px}
+  .verdict-box p{font-size:13.5px;line-height:1.75;color:#0f3330}
+  .verdict-box p + p{margin-top:9px}
+
+  .conclusion-card{background:linear-gradient(135deg,#04201e 0%,#0f3330 55%,#14b8a6 100%);color:#fff;border-radius:16px;padding:28px 32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+  .conc-item .label{font-size:11px;opacity:.68;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+  .conc-item .val{font-size:21px;font-weight:800;line-height:1.15}
+  .conc-item .sub{font-size:12px;opacity:.78;margin-top:4px}
+  @media(max-width:640px){.conclusion-card{grid-template-columns:1fr 1fr}}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+  .kpi-card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border);text-align:center}
+  .kpi-label{font-size:11px;color:var(--muted);margin-bottom:4px;letter-spacing:.5px}
+  .kpi-val{font-size:20px;font-weight:800;color:var(--accent)}
+  .kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+  .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.charts-grid{grid-template-columns:1fr}}
+  .chart-box{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border)}
+  .chart-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px}
+  .chart-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center;line-height:1.55}
+
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{background:var(--bg);padding:8px 12px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px;white-space:nowrap}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+  .tag-green{background:#dcfce7;color:#16a34a}
+  .tag-red{background:#fee2e2;color:#dc2626}
+  .tag-yellow{background:#fef9c3;color:#d97706}
+  .tag-blue{background:#dbeafe;color:#2563eb}
+  .tag-purple{background:#ccfbf1;color:#134e4a}
+
+  .analyst-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.analyst-grid{grid-template-columns:1fr}}
+  .analyst-card{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border)}
+  .analyst-card h4{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .analyst-card ul{list-style:none;padding:0}
+  .analyst-card li{font-size:13px;padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px}
+  .analyst-card li:last-child{border-bottom:none}
+  .bull-icon{color:#16a34a;font-weight:900;flex-shrink:0}
+  .bear-icon{color:#dc2626;font-weight:900;flex-shrink:0}
+
+  .score-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+  .score-label{width:104px;font-size:13px;flex-shrink:0}
+  .score-bar-bg{flex:1;height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+  .score-bar-fill{height:100%;border-radius:5px}
+  .score-num{width:36px;font-size:13px;font-weight:700;text-align:right;flex-shrink:0}
+
+  .strategy-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:640px){.strategy-grid{grid-template-columns:1fr}}
+  .strat-card{border-radius:14px;padding:20px;color:#fff}
+  .strat-card.attack{background:linear-gradient(135deg,#dc2626,#ef4444)}
+  .strat-card.balance{background:linear-gradient(135deg,#134e4a,#14b8a6)}
+  .strat-card.defend{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+  .strat-card h3{font-size:15px;font-weight:800;margin-bottom:12px}
+  .strat-item{font-size:13px;margin:6px 0;display:flex;gap:8px}
+  .strat-item span:first-child{opacity:.75;flex-shrink:0}
+
+  .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.tech-grid{grid-template-columns:1fr}}
+
+  .alert{border-radius:10px;padding:14px 18px;margin-bottom:12px;font-size:13px;display:flex;gap:12px;align-items:flex-start;line-height:1.7}
+  .alert-red{background:#fee2e2;border-left:4px solid #dc2626;color:#7f1d1d}
+  .alert-green{background:#dcfce7;border-left:4px solid #16a34a;color:#14532d}
+  .alert-yellow{background:#fef9c3;border-left:4px solid #d97706;color:#713f12}
+  .alert-purple{background:#ccfbf1;border-left:4px solid #134e4a;color:#0f3330}
+
+  .disclaimer{background:#fef9c3;border:1px solid #d97706;border-radius:10px;padding:16px 20px;font-size:12px;color:#713f12;margin-top:32px}
+  .disclaimer h4{font-size:13px;margin-bottom:8px}
+  .disclaimer ul{margin:6px 0 10px 18px}
+  .disclaimer li{margin:3px 0;line-height:1.65}
+
+  .glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:540px){.glossary-grid{grid-template-columns:1fr}}
+  .glossary-item{background:var(--card);border-radius:10px;padding:12px 14px;border:1px solid var(--border)}
+  .glossary-term{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:4px}
+  .glossary-def{font-size:12px;color:var(--muted);line-height:1.5}
+
+  .calc-box{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:12px;font-size:12.5px;line-height:1.7}
+  .calc-box .row{display:flex;justify-content:space-between;gap:12px;padding:3px 0;border-bottom:1px dashed #cbd5e1}
+  .calc-box .row:last-child{border-bottom:none;font-weight:800;color:var(--accent);padding-top:7px}
+  .calc-title{font-size:12px;font-weight:800;color:var(--accent);margin-bottom:7px;letter-spacing:.5px}
+
+  .asset-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  @media(max-width:700px){.asset-grid{grid-template-columns:repeat(2,1fr)}}
+  .asset-tile{background:#f0fdfa;border:1px solid #ccfbf1;border-radius:10px;padding:13px;text-align:center}
+  .asset-tile.hl{background:#ccfbf1;border:2px solid #134e4a}
+  .asset-tile .at-val{font-size:18px;font-weight:800;color:#0f3330}
+  .asset-tile .at-name{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
+
+  .timeline{margin-top:14px;border-left:2px solid var(--accent3);padding-left:18px}
+  .tl-item{position:relative;padding-bottom:14px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{content:'';position:absolute;left:-25px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid #fff}
+  .tl-date{font-size:11.5px;font-weight:800;color:var(--accent);letter-spacing:.5px}
+  .tl-text{font-size:12.5px;color:var(--text);line-height:1.65;margin-top:2px}
+  .tl-item.bad::before{background:#dc2626}
+  .tl-item.bad .tl-date{color:#dc2626}
+  .tl-item.good::before{background:#16a34a}
+  .tl-item.good .tl-date{color:#16a34a}
+
+  .neg{color:#dc2626;font-weight:700}
+  .pos{color:#16a34a;font-weight:700}
+
+  .scorecard{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  @media(max-width:640px){.scorecard{grid-template-columns:1fr}}
+  .sc-item{border-radius:10px;padding:14px 16px}
+  .sc-hit{background:#dcfce7;border:1px solid #86efac}
+  .sc-miss{background:#fee2e2;border:1px solid #fca5a5}
+  .sc-partial{background:#fef9c3;border:1px solid #fcd34d}
+  .sc-head{font-size:12px;font-weight:800;margin-bottom:6px}
+  .sc-hit .sc-head{color:#14532d}
+  .sc-miss .sc-head{color:#7f1d1d}
+  .sc-partial .sc-head{color:#713f12}
+  .sc-body{font-size:12.5px;line-height:1.65;color:#334155}
+</style></head>
+<body>
+
+<div class="cover">
+  <div class="risk-badge"><div class="num">7.9</div><div class="lbl">風險等級 / 10</div></div>
+  <div class="cover-ticker">TPEx 5475 · 上櫃 · 電子零組件</div>
+  <div class="report-no-badge">首次研究報告</div>
+  <div class="cover-name">德宏工業</div>
+  <div class="cover-subtitle">GLOTECH INDUSTRIAL CORP · 電子級玻纖布 · CCL 上游材料</div>
+  <div class="cover-price-row">
+    <div class="cover-price">222.0</div>
+    <div class="cover-chg">−6.50　−2.84%</div>
+  </div>
+  <div class="price-note">
+    盤中報價 2026-10-21 10:22（富果 Fugle，0 秒延遲）· 昨收 228.5（10/20 漲停）<br>
+    今日 開 234.5　高 <strong>244.5</strong>　低 219.5　|　漲停 <strong>251.0</strong>　跌停 <strong>206.0</strong>（本報告修正值，見第 08 節）
+  </div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">發行股數 <strong>1.2713 億股</strong></div>
+    <div class="cover-meta-item">市值 <strong>282.2 億元</strong></div>
+    <div class="cover-meta-item">52週 <strong>52.1 ~ 404.5</strong></div>
+    <div class="cover-meta-item">距 52週高 <strong>−45.1%</strong></div>
+    <div class="cover-meta-item">TTM EPS <strong>1.30 元</strong></div>
+  </div>
+</div>
+
+<div class="container">
+
+<section>
+  <div class="section-title"><span class="section-num">02</span>核心結論</div>
+
+  <div class="verdict-box">
+    <h4>一句話總結</h4>
+    <p><strong>德宏是一檔「本業品質極乾淨、但價格已把 2027 年的夢全部買進去」的玻纖布轉機股。</strong>基本面是真的：連虧 14 季後，Q2&#39;26 毛利率衝到 36.62%、業外佔稅前僅 −0.17%（本系列最乾淨），9 月自結單月 EPS 0.97 元已超過 Q2 整季。但三件事讓它不是一檔可以追的股票 ——<strong>（1）TTM 本益比 170.8 倍、股價淨值比 25.9 倍</strong>（櫃買中心 10/19 官方公告 161.24 / 24.27，與本報告自算一致）；<strong>（2）7/2 董事會通過、上限 1,200 萬股的現金增資至今尚未發行</strong>，等於還有 9.44% 的稀釋沒入帳；<strong>（3）10/19 當沖率 67.86%、週轉率 12.53%，外資持股在十週內走過 18.02% → 4.05% → 5.03%</strong>，籌碼結構是當沖盤而非法人盤。</p>
+    <p><strong>操作定位：觀望，不是買進。</strong>這檔股票 4 月見 404.5，7 月崩到 101.0（−75%），現在 222 —— 它證明過自己一個月可以腰斬。用「產業對、公司對」去合理化「價格對」，是本報告認為最危險的推論。</p>
+  </div>
+
+  <div class="kpi-grid" style="margin-top:14px">
+    <div class="verdict-sub">
+      <div class="vs-label">投資建議</div>
+      <div class="vs-value" style="color:#d97706">觀望 / 不追高</div>
+      <div class="vs-note">本業確實轉強，但估值與籌碼同時站在不利的一方。等現金增資定價與條件明朗、當沖率退到 30% 以下再評估。</div>
+    </div>
+    <div class="verdict-sub">
+      <div class="vs-label">合理價區間（本報告自估）</div>
+      <div class="vs-value">150 ~ 215 元</div>
+      <div class="vs-note">以稀釋後 FY2027E EPS 14.4~20.1 元、給 10~11 倍（高波動、高當沖、產能未公告之折價）推得。現價 222 已在區間之上。</div>
+    </div>
+    <div class="verdict-sub">
+      <div class="vs-label">最大風險</div>
+      <div class="vs-value" style="color:#dc2626">現金增資稀釋 + 2027 中國產能</div>
+      <div class="vs-note">1,200 萬股增資未發行；建滔、中國巨石的大規模電子級玻纖產能多在 2027 年底前完成，正好撞上法人押注的 2027 爆發年。</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="note-title">本報告最重要的三個獨立發現</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:23%">發現</th><th>內容與推導</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>① 7 月崩盤 −58% 的真正原因</strong></td>
+          <td>市場多把它歸為「飆股獲利了結」。但時序對得上的是<strong>現金增資</strong>：7/2 董事會決議現金增資（上限 12,000 仟股），7/3 收 238.5 為當波最高，<strong>7/6 起連續走低</strong>；7/23 公司發布補充說明（撤回 2025/11/13 舊案、確認繼續執行 7/2 新案），<strong>隔日 7/24 單日 −9.70%</strong>，接著 7/28 −9.47%、7/29 −8.79%、7/30 −7.34% 殺到 101.0。此外<strong>融資餘額全年為 0</strong>（見第 09 節），所以這波不可能是融資斷頭，只能是現股與籌碼面賣壓。</td>
+        </tr>
+        <tr>
+          <td><strong>② 外資持股的異常雙向巨量</strong></td>
+          <td>官方集保資料：6/30 外資持股 1,107.5 萬股（8.71%）→ <strong>7/31 暴增至 2,272.7 萬股（17.87%）</strong>，8/3 見頂 2,292.1 萬股（18.02%）→ <strong>8/31 驟減至 850.4 萬股（6.68%）</strong>，9/29 落到 516.0 萬股（4.05%）。一個月增持相當於全公司 9.2% 股權、下一個月倒出 1,422 萬股（全公司 11.2%），這在 1.27 億股的小型股上不是「法人看多/看空」，而是少數帳戶的大額轉倉或避險部位。<strong>結論：外資這條線在本檔應讀作「籌碼安定度指標」，不是買賣訊號。</strong></td>
+        </tr>
+        <tr>
+          <td><strong>③ 法人 FY2026E EPS 4.01 元明顯過時</strong></td>
+          <td>理財周刊 10/20 引用法人估 2026 EPS 4.01 元、2027 EPS 28.00 元（+598%）。但公司自結前 9 月淨利已達約 4.47 億元（本報告推估 EPS 3.51 元），<strong>若全年只有 4.01 元，代表 Q4 單季僅 0.50 元 —— 而 9 月單月就賺 0.97 元</strong>。該 2026 預估在算術上已不可能成立，應視為失效數字。本報告自估 FY2026E 6.8~7.4 元。</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">03</span>關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-label">最新股價</div><div class="kpi-value">222.0</div><div class="kpi-sub neg">−2.84%（昨收 228.5 漲停）</div><div class="kpi-plain">白話：昨天剛漲停，今天開高 234.5 後一路回到 222，盤中上下振幅達 25 元（11.4%）。</div></div>
+    <div class="kpi"><div class="kpi-label">近四季 TTM EPS</div><div class="kpi-value">1.30 <span class="unit">元</span></div><div class="kpi-sub">Q3&#39;25 0.01 + Q4&#39;25 0.10 + Q1&#39;26 0.24 + Q2&#39;26 0.95</div><div class="kpi-plain">白話：過去一年每股只賺 1.3 元。櫃買中心用 208 元算出本益比 161.24 倍，反推 EPS 1.29 元，與此數字吻合。</div></div>
+    <div class="kpi"><div class="kpi-label">TTM 本益比</div><div class="kpi-value" style="color:#dc2626">170.8 <span class="unit">倍</span></div><div class="kpi-sub">官方 10/19 公告 161.24 倍（當日收 208）</div><div class="kpi-plain">白話：用已經賺到的錢算，要 170 年才回本。這個數字只有在「未來獲利暴增」成立時才有意義。</div></div>
+    <div class="kpi"><div class="kpi-label">股價淨值比</div><div class="kpi-value" style="color:#dc2626">25.9 <span class="unit">倍</span></div><div class="kpi-sub">每股淨值 8.57 元（2026Q2）· 官方 24.27</div><div class="kpi-plain">白話：公司帳上每股淨資產只有 8.57 元，市場願意付 222 元 —— 付的是未來，不是資產。</div></div>
+    <div class="kpi"><div class="kpi-label">Q2&#39;26 毛利率</div><div class="kpi-value pos">36.62 <span class="unit">%</span></div><div class="kpi-sub">2024 全年 2.78% → 2025 約 19.4% → 1H26 33.43%</div><div class="kpi-plain">白話：兩年前幾乎不賺錢，現在每賣 100 元能留 36.6 元毛利。這是漲價加產品組合調整的結果，是真的改善。</div></div>
+    <div class="kpi"><div class="kpi-label">9 月營收</div><div class="kpi-value pos">3.24 <span class="unit">億</span></div><div class="kpi-sub">+227.6% YoY · +27.1% MoM · 連 24 月年增</div><div class="kpi-plain">白話：單月營收比去年同期多 3.3 倍，而且還在加速。前 9 月累計 16.42 億元（+176.9%）。</div></div>
+    <div class="kpi"><div class="kpi-label">負債比</div><div class="kpi-value" style="color:#d97706">63.7 <span class="unit">%</span></div><div class="kpi-sub">有息負債 10.76 億 · 現金僅 1.51 億</div><div class="kpi-plain">白話：公司資產裡有六成多是借來的，手上現金卻只有 1.5 億。這就是為什麼要辦現金增資。</div></div>
+    <div class="kpi"><div class="kpi-label">外資持股</div><div class="kpi-value">5.03 <span class="unit">%</span></div><div class="kpi-sub">8/3 曾達 18.02% → 9/29 低至 4.05%</div><div class="kpi-plain">白話：外資持股在十週內劇烈進出，不是穩定的長期持有，而是短線資金的痕跡。</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">04</span>財務趨勢圖</div>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-title">季度 EPS（元）</div>
+      <canvas id="epsChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ Q4&#39;24 ~ Q2&#39;26 為合併財報實際值；<strong>Q3&#39;26E 2.32 元為本報告推算值</strong>（7 月自結淨利 0.79 億 + 8 月以淨利率內插推估 0.92 億 + 9 月自結 1.24 億 = 2.95 億 ÷ 1.2713 億股）。連虧 14 季後於 Q3&#39;25 轉正。</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">月營收（億元，2026 年實際月份）</div>
+      <canvas id="revChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 全部為公司公告實際值。2 月 0.82 億為農曆年工作日較少所致；3 月起連 7 個月向上，9 月 3.24 億創單月歷史新高。</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">毛利率（%）</div>
+      <canvas id="gmChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 全部為合併財報實際值。從 Q4&#39;24 的 3.60% 連 6 季走高到 Q2&#39;26 的 36.62%，累計提升 33.0 個百分點 —— 這是本檔最強的基本面證據。</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">季營收（億元）</div>
+      <canvas id="qrevChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ Q4&#39;24 ~ Q2&#39;26 為合併財報；<strong>Q3&#39;26E 8.03 億為推算值</strong>（7+8+9 月公告營收合計 8.077 億 × 0.994 合併調整係數，見下方校準說明）。</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="note-title">月營收口徑校準（本系列每份報告都做的動作）</div>
+    <p style="font-size:13px;line-height:1.75">FinMind 資料庫的月營收<strong>申報月份需減 1 才是實際賺取月份</strong>。本次用三個獨立來源驗證，全部吻合：</p>
+    <div class="table-wrap">
+    <table style="margin-top:10px">
+      <thead><tr><th>驗證來源</th><th>該來源說法</th><th>FinMind 標籤</th><th>結果</th></tr></thead>
+      <tbody>
+        <tr><td>Winvest 營收快訊</td><td>2026 年 <strong>7 月</strong>營收 2.29 億，月增 31.61%、年增 264.03%</td><td>2026-08 = 229,336 千元，月增 31.61%、年增 264.03%</td><td class="pos">完全吻合</td></tr>
+        <tr><td>histock 月營收表</td><td>2026/<strong>06</strong> 營收 174,251 千元，累計 834,473 千元</td><td>2026-07 = 174,251 千元</td><td class="pos">完全吻合</td></tr>
+        <tr><td>公司公告（理財周刊 10/20）</td><td>前 9 月累計營收 <strong>16.42 億</strong>，年增 176.92%</td><td>本報告由月資料加總得 <strong>16.421 億</strong></td><td class="pos">完全吻合</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.75;margin-top:10px"><strong>合併財報校準：</strong>月營收加總 Q1 3.207 億 vs 合併財報 3.189 億、Q2 5.137 億 vs 5.106 億，兩季比值皆為 1.006（差 0.6%），差異來自母公司自結與合併報表口徑。本報告推估 Q3 時統一套用 0.994 的調整係數。</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">05</span>公司概覽</div>
+  <div class="card">
+    <div class="table-wrap">
+    <table>
+      <tbody>
+        <tr><th style="width:22%">公司全稱</th><td>德宏工業股份有限公司（GLOTECH INDUSTRIAL CORP）</td></tr>
+        <tr><th>股票代碼 / 市場</th><td>5475 · 櫃買中心（TPEx 上櫃）· 上櫃日 2001-01-16 · 產業：電子零組件</td></tr>
+        <tr><th>總部</th><td>桃園市楊梅區</td></tr>
+        <tr><th>主要業務</th><td>玻璃布（玻纖布）之製造加工與買賣，主要供應銅箔基板（CCL）廠作為印刷電路基層板材料。<strong>玻纖布佔營收 96.67%</strong>，是極少數的純玻纖布標的。</td></tr>
+        <tr><th>產品線</th><td>① <strong>玻纖布</strong>（主力，含 Low-Dk 低介電產品）② <strong>石英纖維紗</strong> ③ <strong>石英纖維布（Q 布）</strong>，二氧化矽含量 &gt;99%</td></tr>
+        <tr><th>發行股數 / 股本</th><td>127,127,017 股 / 12.713 億元（面額 10 元）。<strong>自 2024Q3 以來股本未變動，亦無發放股利紀錄</strong> —— 故 52 週高點 404.5 元無需除權還原。</td></tr>
+        <tr><th>市值</th><td>222.0 元 × 1.27127 億股 = <strong>282.2 億元</strong>（yfinance 對上櫃股回傳 404，此為本報告自算）</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="note-title">它在 AI 供應鏈的哪一層？</div>
+    <p style="font-size:13px;line-height:1.8">玻纖紗 → <strong>玻纖布（德宏在這裡）</strong> → 銅箔基板 CCL（台光電、聯茂、台燿） → 印刷電路板 PCB（欣興、健鼎、金像電） → AI 伺服器主機板。<br><br>AI 伺服器要跑更高的訊號速率，基板材料必須降低介電損耗，因此從一般玻纖布升級到 <strong>Low-Dk（低介電常數）玻纖布</strong>，再往上還有 Low-Dk2 與石英布（Q 布）。這一層的特性是：<strong>設備門檻高、認證期長、產能無法用一般玻纖布直接替代</strong>，所以在 AI 需求爆發時最先出現瓶頸、價格彈性最大 —— 這就是德宏毛利率能從 2.78% 衝到 36.62% 的結構原因。</p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">產業現況與競爭格局（截至 2026-10）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:20%">項目</th><th>內容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>價格</strong></td><td>第二代 Low-Dk 布每公尺約 <strong>US$17.9 ~ 22.4</strong>，已應用於 NVIDIA GB200；一般厚布報價較去年低點約翻倍。但最新口風已轉變：中國「反內捲」政策使競爭趨於理性，<strong>同業調整價格結構、整體報價「趨穩」而非續漲</strong>（理財周刊 10/20）。</td></tr>
+        <tr><td><strong>需求驅動</strong></td><td>NVIDIA Rubin 平台、美系 CSP 自研 AI ASIC 對訊號完整性要求提高，Low-Dk 玻纖布成為 AI ASIC 應用的主流配置。</td></tr>
+        <tr><td><strong>供給（關鍵風險）</strong></td><td>建滔集團韶關年產 7 萬噸電子級玻纖紗產線已於 <strong>2026 年 6 月提前投產</strong>，清遠另有兩座新窯於下半年推進；中國巨石淮安 10 萬噸產線於 2026 年 3 月、6 月分期投入並已滿載，另有 5 萬噸紗線與 3.2 億米布線在建，並投入約 46 億人民幣（約 220 億台幣）擴產。產線約需 <strong>18 個月達量產，多數擴產預計 2027 年底前完成</strong>。</td></tr>
+        <tr><td><strong>德宏自身產能</strong></td><td><strong>公司未公告具體擴產規模與時程。</strong>但 7/2 現金增資案的資金用途已擴大為「購置機器設備、償還銀行借款及充實營運資金」—— 可反推擴產是靠這筆增資支應。</td></tr>
+        <tr><td><strong>Q 布進度</strong></td><td>內部測試完成、<strong>已進入送樣階段，等待客戶需求通知</strong>。認證測試需 6 個月至 1 年以上，目前營收貢獻仍小。<strong>尚無確認訂單。</strong></td></tr>
+        <tr><td><strong>同業</strong></td><td>富喬 1815（玻纖紗布垂直整合）、台玻 1802（高階產線由 4 條擴至 12 條）、建榮 5340（日東紡持股 47.65%，T-glass 已於 2026Q2 量產出貨）。</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">06</span>基本面分析</div>
+
+  <div class="chart-card" style="margin-bottom:12px">
+    <div class="chart-title">基本面六項評分（1~10 分）</div>
+    <canvas id="fundChart" width="420" height="230" style="width:100%;height:auto;"></canvas>
+    <div class="chart-note">成長性與獲利品質接近滿分，但財務結構與估值把整體拉下來 —— 這正是德宏的性格：<strong>營運是好公司，股票是貴股票。</strong></div>
+  </div>
+
+  <div class="card">
+    <div class="note-title">季度損益表（億元，合併財報實際值）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>季度</th><th>營收</th><th>毛利</th><th>毛利率</th><th>營業利益</th><th>營益率</th><th>業外損益</th><th>稅前淨利</th><th>稅後歸母</th><th>EPS</th></tr></thead>
+      <tbody>
+        <tr><td>2024Q4</td><td>1.650</td><td>0.059</td><td>3.60%</td><td class="neg">−0.334</td><td class="neg">−20.23%</td><td>−0.009</td><td class="neg">−0.343</td><td class="neg">−0.638</td><td class="neg">−0.51</td></tr>
+        <tr><td>2025Q1</td><td>1.671</td><td>0.230</td><td>13.75%</td><td class="neg">−0.191</td><td class="neg">−11.43%</td><td>0.004</td><td class="neg">−0.187</td><td class="neg">−0.185</td><td class="neg">−0.15</td></tr>
+        <tr><td>2025Q2</td><td>1.969</td><td>0.322</td><td>16.36%</td><td class="neg">−0.152</td><td class="neg">−7.72%</td><td>−0.000</td><td class="neg">−0.152</td><td class="neg">−0.150</td><td class="neg">−0.12</td></tr>
+        <tr><td>2025Q3</td><td>2.313</td><td>0.496</td><td>21.46%</td><td class="pos">0.013</td><td>0.58%</td><td>−0.007</td><td class="pos">0.006</td><td class="pos">0.007</td><td class="pos">0.01</td></tr>
+        <tr><td>2025Q4</td><td>2.806</td><td>0.651</td><td>23.21%</td><td>0.063</td><td>2.24%</td><td>0.094</td><td>0.157</td><td>0.121</td><td>0.10</td></tr>
+        <tr><td>2026Q1</td><td>3.189</td><td>0.903</td><td>28.32%</td><td>0.282</td><td>8.83%</td><td>0.027</td><td>0.309</td><td>0.310</td><td>0.24</td></tr>
+        <tr class="hl"><td><strong>2026Q2</strong></td><td><strong>5.106</strong></td><td><strong>1.870</strong></td><td><strong>36.62%</strong></td><td><strong>1.208</strong></td><td><strong>23.66%</strong></td><td><strong>−0.002</strong></td><td><strong>1.206</strong></td><td><strong>1.208</strong></td><td><strong>0.95</strong></td></tr>
+        <tr style="background:#f0fdfa"><td>2026Q3E</td><td>~8.03</td><td>—</td><td>~45%*</td><td>—</td><td>—</td><td>—</td><td>~2.95</td><td>~2.95</td><td>~2.32</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:12.5px;color:#64748b;margin-top:8px">* Q3&#39;26E 為本報告推算值。毛利率 ~45% 係由 9 月自結淨利 1.24 億 ÷ 營收 3.237 億 = 38.3% 淨利率反推（營業費用約 0.25 億/月、稅負為 0），非公司公告。</p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">獲利品質檢驗：業外佔稅前淨利比重（本系列核心指標）</div>
+    <p style="font-size:13px;line-height:1.8"><strong>2026Q2 業外損益 −0.002 億 ÷ 稅前淨利 1.206 億 = −0.17%。</strong>幾乎是零。這代表德宏的獲利 <strong>100% 來自本業</strong>，沒有靠業外投資、匯兌或處分資產美化。近四季合計業外佔稅前 6.7%，同樣乾淨。</p>
+    <div class="table-wrap">
+    <table style="margin-top:10px">
+      <thead><tr><th>個股</th><th>業外佔稅前淨利</th><th>判讀</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><strong>德宏 5475（Q2&#39;26）</strong></td><td><strong>−0.17%</strong></td><td>本系列最乾淨，獲利純度最高</td></tr>
+        <tr><td>台光電 2383（TTM）</td><td>−0.3%</td><td>極乾淨</td></tr>
+        <tr><td>台光電 2383（Q2&#39;26）</td><td>0.4%</td><td>極乾淨</td></tr>
+        <tr><td>南亞科 2408</td><td>2.4%</td><td>乾淨</td></tr>
+        <tr><td>晉泰 6221</td><td>13.9%</td><td>尚可</td></tr>
+        <tr><td>眾達-KY 4977</td><td>69%</td><td>本業佔比偏低</td></tr>
+        <tr><td>環球晶 6488（Q2&#39;26）</td><td>69%</td><td>業外主導（Siltronic 權益法）</td></tr>
+        <tr><td>大洋 1321</td><td>92%</td><td>幾乎全靠業外</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="note-title">⚠ 被忽略的細節一：實質稅率為 0，而且有到期日</div>
+    <p style="font-size:13px;line-height:1.8">德宏 2025Q1~Q3 與 2026Q1 的所得稅費用<strong>全為 0</strong>，2025Q4 僅 0.0386 億。Q2&#39;26 稅前 1.206 億、稅後 1.206 億 —— <strong>一毛稅都沒繳</strong>。原因是帳上有巨額累積虧損可供扣抵。</p>
+    <div class="table-wrap">
+    <table style="margin-top:10px">
+      <thead><tr><th>時點</th><th>累積虧損（未分配盈餘）</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td>2025Q4</td><td class="neg">−10.372 億</td><td>谷底</td></tr>
+        <tr><td>2026Q1</td><td class="neg">−10.063 億</td><td>開始回補</td></tr>
+        <tr><td>2026Q2</td><td class="neg">−8.855 億</td><td>單季回補 1.208 億</td></tr>
+        <tr><td>2026Q3E</td><td class="neg">約 −5.9 億</td><td>推估回補 2.95 億</td></tr>
+        <tr><td>2026Q4E</td><td class="neg">約 −2.0 ~ −2.6 億</td><td>推估回補 3.3~3.9 億</td></tr>
+        <tr class="hl"><td><strong>2027Q1E</strong></td><td><strong>轉正</strong></td><td><strong>虧損扣抵用盡 → 稅負自 2027Q2 起開始實質發生</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>為什麼這很重要：</strong>法人估 2027 年 EPS 28.00 元。若 2027 下半年起適用 20% 營所稅，等於該預估的獲利要打約 85 折（全年平均）。本報告的 2027 推估已納入此因素，法人的似乎沒有。<br><br><strong>另一個反向的隱藏利多：</strong>公司在 2024Q4 把遞延所得稅資產從 0.181 億全數沖銷為 0（當時持續虧損、認定不可回收）。如今已轉盈，<strong>未來可能迴轉這筆沖銷，產生一次性、非現金的 EPS 挹注約 0.14~0.24 元</strong>。這會是帳面利多而非營運改善，看到時不要誤判。</p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">⚠ 被忽略的細節二：1,200 萬股現金增資尚未發行</div>
+    <p style="font-size:13px;line-height:1.8">公司 2026/7/2 董事會決議：在<strong>不超過 12,000 仟股（1,200 萬股）普通股</strong>的額度內辦理現金增資，資金用途為<strong>購置機器設備、償還銀行借款及充實營運資金</strong>；同時不再辦理 2025/11/13 董事會通過（用途僅限償還銀行借款）的舊案。</p>
+    <p style="font-size:13px;line-height:1.8;margin-top:8px"><strong>而截至 2026-10-20，官方集保資料顯示發行股數仍為 127,127,017 股 —— 增資尚未發行。</strong>這代表稀釋還沒入帳：</p>
+    <div class="table-wrap">
+    <table style="margin-top:10px">
+      <thead><tr><th>項目</th><th>現況</th><th>完全稀釋後</th><th>稀釋幅度</th></tr></thead>
+      <tbody>
+        <tr><td>發行股數</td><td>127,127,017</td><td>139,127,017</td><td class="neg">+9.44%</td></tr>
+        <tr><td>TTM EPS</td><td>1.30 元</td><td>1.19 元</td><td class="neg">−8.6%</td></tr>
+        <tr><td>FY2026E EPS（本報告）</td><td>6.8 ~ 7.4 元</td><td>6.2 ~ 6.8 元</td><td class="neg">−8.6%</td></tr>
+        <tr><td>FY2027E EPS（法人 28.00 元）</td><td>28.00 元</td><td>25.58 元</td><td class="neg">−8.6%</td></tr>
+        <tr><td>每股淨值</td><td>8.57 元</td><td>視認購價而定（若 180 元認購，約 23.3 元）</td><td class="pos">提升</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>雙面刃：</strong>以 180 元認購計，可募得約 21.6 億元，足以把 10.76 億有息負債大幅清掉並支應擴產 —— 財務結構會從「危險」變「健康」，每股淨值從 8.57 元跳到約 23 元，股價淨值比從 25.9 倍降到約 9.5 倍。<strong>但認購價、股數、時程公司均未公告</strong>，這是目前最大的未知數，也是本報告建議「等條件明朗再評估」的主因。</p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">資產負債與現金流（億元）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>項目</th><th>2025Q4</th><th>2026Q1</th><th>2026Q2</th><th>判讀</th></tr></thead>
+      <tbody>
+        <tr><td>現金及約當現金</td><td>0.909</td><td>1.064</td><td>1.514</td><td class="neg">偏低，僅約 0.5 個月營收</td></tr>
+        <tr><td>應收帳款</td><td>3.192</td><td>3.750</td><td>5.286</td><td>隨營收成長；週轉天數 94 天偏長</td></tr>
+        <tr><td>存貨</td><td>2.304</td><td>3.598</td><td>3.686</td><td class="pos">營收 +60% 而存貨幾乎沒增 → 去化良好</td></tr>
+        <tr><td>流動資產</td><td>9.683</td><td>12.955</td><td>16.003</td><td>—</td></tr>
+        <tr><td>流動負債</td><td>13.191</td><td>6.143</td><td>8.338</td><td>—</td></tr>
+        <tr><td><strong>流動比率</strong></td><td class="neg"><strong>73%</strong></td><td class="pos"><strong>211%</strong></td><td class="pos"><strong>192%</strong></td><td class="pos">2026Q1 債務長期化後脫離流動性危機</td></tr>
+        <tr><td>短期借款</td><td>9.803</td><td>0.200</td><td>0.800</td><td class="pos">大幅下降</td></tr>
+        <tr><td>長期借款</td><td>0.153</td><td>10.011</td><td>9.964</td><td>短債轉長債，消除換約風險</td></tr>
+        <tr><td>有息負債合計</td><td>9.956</td><td>10.211</td><td>10.764</td><td class="neg">總額未減，只是展期</td></tr>
+        <tr><td>總負債 / 總資產</td><td>13.971 / 22.810</td><td>16.780 / 26.220</td><td>18.929 / 29.736</td><td class="neg">負債比 63.7%</td></tr>
+        <tr><td>權益（歸屬母公司）</td><td>8.921</td><td>9.523</td><td>10.891</td><td>每股淨值 8.57 元</td></tr>
+        <tr><td><strong>淨負債 / 權益</strong></td><td class="neg">101.6%</td><td class="neg">96.1%</td><td class="neg"><strong>85.6%</strong></td><td class="neg">仍高，但方向正確</td></tr>
+        <tr class="hl"><td><strong>營業活動現金流</strong></td><td class="neg">−0.621（全年）</td><td class="neg">−0.248</td><td class="pos"><strong>+1.420（H1）</strong></td><td class="pos"><strong>首次明顯轉正</strong>（2024 全年 −1.429）</td></tr>
+        <tr><td>折舊</td><td>0.539（全年）</td><td>0.180</td><td>0.359（H1）</td><td>年化約 0.72 億，資本密集度中等</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>白話總結：</strong>2025 年底德宏其實是一家<strong>流動比率只有 73%、現金 0.9 億、短債 9.8 億、累積虧損 10.4 億</strong>的公司 —— 距離財務危機不遠。2026Q1 把短債換成長債解除了立即的壓力，Q2 營業現金流首次大幅轉正 +1.42 億。<strong>財務面確實在好轉，但還沒到安全。現金增資是必要的，不是可選的。</strong></p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">估值推演（本報告自算，非法人數字）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>基準</th><th>EPS</th><th>@222 元本益比</th><th>來源與假設</th></tr></thead>
+      <tbody>
+        <tr><td>近四季 TTM</td><td>1.30 元</td><td class="neg">170.8 倍</td><td>合併財報實際值；櫃買中心 10/19 公告 161.24 倍（@208）可交叉驗證</td></tr>
+        <tr><td>Q2&#39;26 年化</td><td>3.80 元</td><td class="neg">58.4 倍</td><td>0.95 × 4</td></tr>
+        <tr><td>前 9 月累計（含推估）</td><td>3.51 元</td><td>—</td><td>1H 實際 1.19 + Q3E 2.32</td></tr>
+        <tr><td><strong>FY2026E（本報告）</strong></td><td><strong>6.8 ~ 7.4 元</strong></td><td><strong>30.0 ~ 32.6 倍</strong></td><td>Q4 以月營收 3.6~4.2 億、淨利率 38~40% 推估</td></tr>
+        <tr><td>FY2026E（法人）</td><td class="neg">4.01 元</td><td>55.4 倍</td><td class="neg">算術上已不可能（隱含 Q4 僅 0.50 元，但 9 月單月即 0.97 元）→ <strong>視為失效</strong></td></tr>
+        <tr><td><strong>FY2027E（本報告，未稀釋）</strong></td><td><strong>15.7 ~ 22.0 元</strong></td><td><strong>10.1 ~ 14.1 倍</strong></td><td>營收 60~75 億、稅後淨利率 33~38%（<strong>已計入 2027Q2 起稅負正常化</strong>）</td></tr>
+        <tr class="hl"><td><strong>FY2027E（本報告，稀釋後）</strong></td><td><strong>14.4 ~ 20.1 元</strong></td><td><strong>11.0 ~ 15.4 倍</strong></td><td>除以 1.3913 億股</td></tr>
+        <tr><td>FY2027E（法人）</td><td>28.00 元</td><td>7.9 倍</td><td>+598.25%。本報告認為偏高 25~45%，主因：(1) 未見稅負正常化 (2) 所需產能公司未公告 (3) 未計增資稀釋</td></tr>
+        <tr><td>股價淨值比</td><td>淨值 8.57 元</td><td class="neg">25.9 倍</td><td>官方 10/19 公告 24.27 倍（@208）</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>壓力測試法人的 28 元：</strong>28 元 × 1.2713 億股 = 淨利 35.6 億元。若淨利率 40%，需營收 <strong>89 億元</strong>，是 9 月年化（38.9 億）的 2.3 倍、也是本報告 FY2026E（約 24 億）的 3.7 倍。這需要在 12 個月內把產能翻倍以上、同時維持 40% 淨利率、且完全不繳稅。<strong>在公司尚未公告任何擴產規模的情況下，這個數字應被視為最樂觀情境，不是基準情境。</strong></p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">07</span>籌碼面分析</div>
+
+  <div class="card" style="border:2px solid #dc2626">
+    <div class="note-title" style="color:#7f1d1d">⚠ 資料來源聲明：本節不使用腳本的「三大法人」欄位</div>
+    <p style="font-size:13px;line-height:1.8">本次抓取的 FinMind 三大法人回傳<strong>外資 0 張、投信 0 張、自營商 0 張</strong>，腳本把它敘述為「三大法人合計買賣持平」。<strong>這是資料缺口，不是持平。</strong>證據：櫃買中心 10/19 的注意股公告明確記載德宏<strong>近 5 日三大法人買超 806 張</strong>。德宏為上櫃股，官方籌碼資料應以櫃買中心（TPEx）為準。<br><br>本節改用<strong>官方集保的外資持股日資料</strong>（每日申報、可回溯），這是本檔目前最可靠且最有訊息量的籌碼來源。</p>
+  </div>
+
+  <div class="chart-card" style="margin-top:12px">
+    <div class="chart-title">外資持股比例（%，各月底，10 月為 10/20）</div>
+    <canvas id="fshChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+    <div class="chart-note">★ 全部為官方集保申報實際值。<strong>7 月那根 17.87% 就是整張圖的故事</strong> —— 股價崩跌 58% 的那個月，外資持股從 8.71% 翻倍到 17.87%，下個月又倒回 6.68%。</div>
+  </div>
+
+  <div class="card">
+    <div class="note-title">外資持股 × 股價對照（官方集保資料）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>時點</th><th>外資持股（股）</th><th>持股比</th><th>當時股價</th><th>單月增減（股）</th><th>解讀</th></tr></thead>
+      <tbody>
+        <tr><td>2026-01-31</td><td>10,760,608</td><td>8.46%</td><td>106.5</td><td>—</td><td>起漲初期</td></tr>
+        <tr><td>2026-02-28</td><td>11,236,476</td><td>8.83%</td><td>212.5</td><td class="pos">+475,868</td><td>股價翻倍，外資小增</td></tr>
+        <tr><td>2026-03-31</td><td>6,173,572</td><td>4.85%</td><td>204.5</td><td class="neg">−5,062,904</td><td class="neg">大減 506 萬股</td></tr>
+        <tr><td>2026-04-30</td><td>7,546,949</td><td>5.93%</td><td>358.0</td><td class="pos">+1,373,377</td><td>4/21 見 404.5 歷史高點，外資持股僅 5.9%</td></tr>
+        <tr><td>2026-05-31</td><td>8,471,662</td><td>6.66%</td><td>270.0</td><td class="pos">+924,713</td><td>回檔中增持</td></tr>
+        <tr><td>2026-06-30</td><td>11,075,376</td><td>8.71%</td><td>244.5</td><td class="pos">+2,603,714</td><td>崩盤前夕</td></tr>
+        <tr class="sc-miss" style="background:#fee2e2"><td><strong>2026-07-31</strong></td><td><strong>22,726,866</strong></td><td><strong>17.87%</strong></td><td class="neg"><strong>111.0</strong></td><td class="pos"><strong>+11,651,490</strong></td><td class="neg"><strong>股價 −58% 的同月，持股暴增全公司 9.2% 股權</strong></td></tr>
+        <tr><td>2026-08-03（峰值）</td><td>22,920,866</td><td>18.02%</td><td>122.0</td><td>—</td><td>歷史最高持股</td></tr>
+        <tr class="sc-miss" style="background:#fee2e2"><td><strong>2026-08-31</strong></td><td><strong>8,503,742</strong></td><td><strong>6.68%</strong></td><td><strong>204.5</strong></td><td class="neg"><strong>−14,223,124</strong></td><td class="neg"><strong>股價反彈 84% 的同月，倒出全公司 11.2% 股權</strong></td></tr>
+        <tr><td>2026-09-29（谷底）</td><td>5,160,084</td><td>4.05%</td><td>180.5</td><td>—</td><td>歷史最低持股</td></tr>
+        <tr class="hl"><td><strong>2026-10-20</strong></td><td><strong>6,404,459</strong></td><td><strong>5.03%</strong></td><td><strong>228.5</strong></td><td class="pos"><strong>+1,194,519</strong></td><td>10 月回補約 124 萬股</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>這張表該怎麼讀（重要）：</strong>在一家只有 1.27 億股的小型股上，單月進出 1,100~1,400 萬股（相當於全公司 9~11% 股權）<strong>不可能是一般法人的建倉或減碼行為</strong>。更合理的解釋是少數大額帳戶的轉倉、保管機構變更或避險部位建立與解除。10/07 增 113.3 萬股、10/08 減 115.6 萬股，兩天幾乎完全對沖，更佐證這一點。<br><br><strong>結論：德宏的外資持股數字應讀作「籌碼安定度指標」而非「看多看空訊號」。而它傳達的訊息是：極不安定。</strong></p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">櫃買中心官方公告數據（2026-10-19 列入注意股）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>官方指標</th><th>數值</th><th>本報告交叉驗證</th></tr></thead>
+      <tbody>
+        <tr><td>本益比</td><td>161.24 倍（當日收 208）</td><td class="pos">反推 EPS 1.29 元，與本報告 TTM 1.30 元吻合</td></tr>
+        <tr><td>股價淨值比</td><td>24.27 倍</td><td class="pos">反推每股淨值 8.57 元，與本報告自算完全一致</td></tr>
+        <tr><td>週轉率</td><td>12.53%（單日）</td><td class="neg">一天換手超過一成股本</td></tr>
+        <tr><td>近 5 日當沖比</td><td>40.95%</td><td class="neg">極高</td></tr>
+        <tr><td>10/19 現股當沖</td><td>約 10,800 張，當沖率 <strong>67.86%</strong></td><td class="neg">當日成交三分之二是當沖（Goodinfo）</td></tr>
+        <tr><td>近 5 日三大法人</td><td>買超 806 張</td><td>金額約 1.6 億元，對 282 億市值而言影響有限</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>67.86% 的當沖率意味著什麼：</strong>10/19 那天每 3 張成交就有 2 張是當天買、當天賣。這種結構下的「漲停」與「放量」<strong>不代表有人願意持有</strong>，只代表短線資金在裡面洗。這是 7 月崩盤能在 19 個交易日內腰斬的結構性原因，而且這個結構今天依然存在。</p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">處置與注意交易紀錄（流動性風險的客觀證據）</div>
+    <div class="timeline">
+      <div class="tl-item bad"><div class="tl-date">2025-05-29 ~ 06-12</div><div class="tl-text">列入處置股，改為每 5 分鐘人工撮合，交易達一定數量時預收款券（原因：連續 3 個營業日達公布注意交易資訊標準）</div></div>
+      <div class="tl-item bad"><div class="tl-date">2025-09-15</div><div class="tl-text">再次列入處置股</div></div>
+      <div class="tl-item bad"><div class="tl-date">2025-11-05</div><div class="tl-text">再次列入處置股</div></div>
+      <div class="tl-item bad"><div class="tl-date">2025-12-12 ~ 12-26</div><div class="tl-text">因 30 個營業日內曾被處置、且近 10 個營業日有 6 日被公布注意交易資訊，改為<strong>每 20 分鐘撮合一次並預收款券</strong></div></div>
+      <div class="tl-item bad"><div class="tl-date">2026-03 中旬</div><div class="tl-text">一次處置期結束後，股價衝上當時歷史新高 243 元，隨即於 3/16 盤中跌停至 202 元（同日公布 2025 全年 EPS −0.16 元、董事會決議不配發股利）</div></div>
+      <div class="tl-item bad"><div class="tl-date">2026-10-12</div><div class="tl-text">公司主動公告「本公司有價證券近期多次達公布注意交易資訊標準」</div></div>
+      <div class="tl-item bad"><div class="tl-date">2026-10-19</div><div class="tl-text">再度列入注意股（本益比 161.24、股價淨值比 24.27、週轉率 12.53%）</div></div>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px">一年內至少 <strong>5 次</strong>處置或注意紀錄。處置期間撮合頻率降到 5~20 分鐘一次並預收款券，<strong>流動性會被人為壓縮</strong>，想賣的時候可能賣不掉想要的價格。這不是「題材熱」的副作用，它本身就是一項可量化的風險。</p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">法說會與法人覆蓋度</div>
+    <p style="font-size:13px;line-height:1.8">本次查詢<strong>未能取得德宏的法說會召開紀錄或出席名單</strong>，公開資訊中也<strong>查無任何券商的正式目標價</strong>。唯一的法人數字是理財周刊 10/20 引用的 EPS 預估（2026 年 4.01 元、2027 年 28.00 元），未具名出處、未附目標價。<br><br><strong>老實說：這是一檔法人覆蓋度極低的小型上櫃股。</strong>搜尋中出現的「EPS 上看 21 元、目標價 320 元」標題經查屬於另一家 CCL 公司，<strong>不可套用到德宏</strong>。投資人看到任何號稱德宏目標價的數字，都應先問出處。</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">08</span>技術分析</div>
+
+  <div class="card" style="border:2px solid #d97706;background:#fffbeb">
+    <div class="note-title" style="color:#92400e">🔴 腳本輸出錯誤校正表（本報告每份必做）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:18%">項目</th><th>腳本輸出</th><th>正確值 / 判定</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr><td><strong>漲停 / 跌停</strong></td><td class="neg">228.8 / 187.2</td><td class="pos"><strong>251.0 / 206.0</strong></td><td>腳本用 10/19 昨收 208.0（落後一個交易日），且未做台股檔位進位。<strong>反證：</strong>10/20 實際漲停價為 228.5（cnyes 盤中速報），正是 208.0×1.1=228.8 以 0.5 元檔位向內進位的結果 —— 證明檔位規則存在而腳本沒做。今日昨收 228.5 → 漲停 228.5×1.1=251.35→<strong>251.0</strong>、跌停 228.5×0.9=205.65→<strong>206.0</strong>。</td></tr>
+        <tr><td><strong>今日成交量</strong></td><td class="neg">13,569,199 股</td><td class="pos">那是 <strong>10/20</strong> 的量</td><td>腳本把前一交易日成交量標為「今日」。今日（10/21 10:22）實際僅 19 張，因盤剛開不久。所有量能倍數判讀都應以 10/20 為基準日。</td></tr>
+        <tr><td><strong>三大法人</strong></td><td class="neg">全部 0 張，敘述「持平」</td><td class="pos">資料缺口</td><td>官方近 5 日買超 806 張。上櫃股應查櫃買中心（TPEx），非 FinMind。</td></tr>
+        <tr><td><strong>融資融券</strong></td><td class="neg">0 / 0，且敘述「融券餘額 0 張，放空比例偏高，需注意軋空風險」</td><td class="pos">0 是<strong>真值</strong>，但敘述完全錯誤</td><td>見第 09 節。融券為 0 代表<strong>沒有人放空</strong>，不可能「放空比例偏高」，更不存在軋空 —— 腳本這句話自相矛盾。</td></tr>
+        <tr><td><strong>本益比 / 股價淨值比 / 市值</strong></td><td class="neg">全部 null</td><td class="pos">170.8 倍 / 25.9 倍 / 282.2 億</td><td>yfinance 對上櫃（.TWO）代碼回傳 404「Quote not found for symbol: 5475.TW」。本報告自算，並與櫃買中心官方公告交叉驗證。</td></tr>
+        <tr><td><strong>布林通道位置</strong></td><td class="neg">「觸及上軌（可能過熱）」</td><td class="pos">10/20 收盤<strong>站上上軌之上 8.5 元</strong></td><td>腳本拿今日盤中價 222.0 比對上軌 220.0 判為「觸及」，但 10/20 收盤 228.5 已明確突破上軌，強度被低估。</td></tr>
+        <tr><td><strong>均線時點</strong></td><td>MA 皆為 10/20 收盤基準</td><td class="pos">本次<strong>無</strong>漏計當日的問題</td><td>已驗算 MA5=207.60、MA10=202.80、MA20=191.38 皆含 10/20 收盤，正確。但不含今日 222.0，本報告另列含今日版本。</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="chart-grid" style="margin-top:12px">
+    <div class="chart-card">
+      <div class="chart-title">月收盤價走勢（元）</div>
+      <canvas id="pxChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 全部為實際月收盤價。2025/10 的 68.5 → 2026/04 的 358（盤中高 404.5）→ 2026/07 的 111（盤中低 101.0）→ 現在 228.5。<strong>一年內走過 5.9 倍漲幅與 75% 回檔。</strong></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">本益比情境比較（倍）</div>
+      <canvas id="peChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 同一個 222 元股價，用不同年度的 EPS 算出 7.9 倍到 170.8 倍。<strong>這張圖就是德宏的投資爭議本身：你相信哪一條，決定它是便宜還是昂貴。</strong></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="note-title">技術指標（基準日 2026-10-20 收盤 228.5）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>指標</th><th>截至 10/20 收盤</th><th>若今日收 222.0（本報告重算）</th><th>判讀</th></tr></thead>
+      <tbody>
+        <tr><td>MA5</td><td>207.60</td><td>210.00</td><td class="pos">股價仍在 MA5 之上</td></tr>
+        <tr><td>MA10</td><td>202.80</td><td>206.90</td><td class="pos">多頭</td></tr>
+        <tr><td>MA20</td><td>191.38</td><td>193.53</td><td class="pos">多頭</td></tr>
+        <tr><td>MA60</td><td>171.72</td><td>約 173</td><td class="pos">多頭排列（MA5&gt;MA10&gt;MA20&gt;MA60）</td></tr>
+        <tr><td>MACD / 訊號 / 柱狀</td><td>8.81 / 5.87 / +2.93</td><td>—</td><td class="pos">金叉，柱狀為正且擴大，短期動能偏多</td></tr>
+        <tr><td>RSI(14)</td><td>69.24</td><td>—</td><td class="neg">接近 70 超買門檻</td></tr>
+        <tr><td>布林上軌（+2σ）</td><td>220.00</td><td>224.48</td><td class="neg">10/20 收盤 228.5 已站上上軌之上</td></tr>
+        <tr><td>布林中軌（MA20）</td><td>191.38</td><td>193.53</td><td>—</td></tr>
+        <tr><td>布林下軌（−2σ）</td><td>162.75</td><td>162.57</td><td>—</td></tr>
+        <tr><td>標準差 σ</td><td>14.31</td><td>15.48</td><td class="neg">帶寬 32.0%，波動極大</td></tr>
+        <tr><td>成交量（10/20）</td><td>13,569 張</td><td>5 日均量 7,324 張</td><td>1.85 倍，放量</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>技術面白話總結：</strong>四條均線全部向上排列、MACD 金叉、放量突破布林上軌 —— 單看技術面是<strong>標準的強勢多頭格局</strong>。但同時 RSI 69.2 已近超買、布林帶寬 32% 代表波動極大，而今日開高 234.5 後一度衝到 244.5 卻回落到 222（<strong>自高點回吐 22.5 元，振幅 11.4%</strong>），是典型的<strong>上影線出貨型態</strong>。技術面偏多，但追價風險極高。</p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">關鍵價位（支撐與壓力）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>類型</th><th>價位</th><th>依據</th><th>意義</th></tr></thead>
+      <tbody>
+        <tr><td class="neg">壓力 4</td><td><strong>404.5</strong></td><td>52 週 / 歷史最高（2026-04-21）</td><td>距今 −45.1%，心理天花板</td></tr>
+        <tr><td class="neg">壓力 3</td><td>270.0</td><td>2026/05 月收盤</td><td>5 月反彈失敗處</td></tr>
+        <tr><td class="neg">壓力 2</td><td><strong>251.0</strong></td><td>今日漲停價（本報告修正值）</td><td>當日上限</td></tr>
+        <tr><td class="neg">壓力 1</td><td><strong>244.5</strong></td><td>今日盤中高點</td><td>最近的實際賣壓</td></tr>
+        <tr class="hl"><td><strong>現價</strong></td><td><strong>222.0</strong></td><td>2026-10-21 10:22</td><td>—</td></tr>
+        <tr><td class="pos">支撐 1</td><td><strong>228.5 → 已失守</strong></td><td>10/20 漲停收盤 / 昨收</td><td>今日已跌破，轉為短線壓力</td></tr>
+        <tr><td class="pos">支撐 2</td><td>219.5</td><td>今日盤中低點</td><td>第一道觀察</td></tr>
+        <tr><td class="pos">支撐 3</td><td>210.0</td><td>MA5（含今日）</td><td>短線多頭防線</td></tr>
+        <tr><td class="pos">支撐 4</td><td><strong>206.0</strong></td><td>今日跌停價（本報告修正值）</td><td>當日下限</td></tr>
+        <tr><td class="pos">支撐 5</td><td>193.5</td><td>MA20 / 布林中軌（含今日）</td><td>跌破則多頭轉折</td></tr>
+        <tr><td class="pos">支撐 6</td><td>171.7</td><td>MA60</td><td>中期趨勢線</td></tr>
+        <tr><td class="pos">支撐 7</td><td><strong>101.0</strong></td><td>2026-07-30 低點</td><td>極端情境參考（距今 −54.5%）</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">09</span>融資融券</div>
+
+  <div class="card" style="border:2px solid #16a34a;background:#f0fdf4">
+    <div class="note-title" style="color:#14532d">✅ 本檔的 0 是真值 —— 這與本系列過去的判定相反，特別說明</div>
+    <p style="font-size:13px;line-height:1.8">本系列報告過去一律把 FinMind 回傳的融資融券 0 視為<strong>資料缺口</strong>。但德宏這次不同：</p>
+    <div class="table-wrap">
+    <table style="margin-top:10px">
+      <thead><tr><th>項目</th><th>FinMind（2026-10-20）</th><th>Goodinfo（2026-10-19）</th><th>判定</th></tr></thead>
+      <tbody>
+        <tr><td>融資餘額</td><td>0 張</td><td><strong>0（且 2026 全年皆為 0）</strong></td><td class="pos">雙來源一致 → <strong>真值</strong></td></tr>
+        <tr><td>融券餘額</td><td>0 張</td><td>0</td><td class="pos">真值</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>為什麼會是 0？</strong>最合理的解釋是<strong>信用交易（融資融券）已被暫停</strong>。德宏一年內至少 5 次被列為處置股或注意股（見第 07 節），而處置措施與相關規定會限制或停止該檔的信用交易。<span style="color:#92400e"><strong>註：這是本報告的推論，公司與櫃買中心的正式停止信用交易公告本次未能取得原文，請以櫃買中心公告為準。</strong></span></p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">這件事的三個實質意義</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:24%">意義</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>① 7 月崩盤不是融資斷頭</strong></td><td>融資餘額全年為 0，<strong>根本沒有融資部位可以被斷頭</strong>。所以 7 月那波 −58% 完全是現股賣壓（配合現金增資消息與籌碼面轉倉）。這排除了一個常見的誤判，也代表<strong>這檔股票下跌時沒有「融資殺完就止跌」這條底</strong>。</td></tr>
+        <tr><td><strong>② 不存在軋空行情</strong></td><td>融券 0 張 = 沒有空單。任何「德宏融券低、要軋空」的說法都不成立。腳本自動產生的那句「放空比例偏高，需注意軋空風險」是錯的，本報告予以否決。</td></tr>
+        <tr><td><strong>③ 槓桿需求全擠到當沖</strong></td><td>不能融資，想做槓桿的資金只剩<strong>現股當沖</strong>一條路 —— 這正好解釋 10/19 的當沖率為何高達 67.86%、近 5 日 40.95%。<strong>也就是說：這檔的槓桿風險沒有消失，只是從融資餘額（看得見）轉移到當沖（看不見，且當天結清）。</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>查詢方式（上櫃股請用櫃買中心）：</strong>櫃買中心 TPEx 官網 →「上櫃」→「交易資訊」→「融資融券」，輸入 5475。若顯示停止信用交易，即可確認本節推論。<strong>切勿用證交所（TWSE）查上櫃股。</strong></p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">10</span>研究員辯論</div>
+
+  <div class="debate-grid">
+    <div class="debate-col bull">
+      <div class="debate-head">看多研究員 — 6 點論據</div>
+      <ol class="debate-list">
+        <li><strong>毛利率連 6 季走高，幅度達 33 個百分點。</strong>Q4&#39;24 3.60% → Q1&#39;25 13.75% → Q2&#39;25 16.36% → Q3&#39;25 21.46% → Q4&#39;25 23.21% → Q1&#39;26 28.32% → <strong>Q2&#39;26 36.62%</strong>。沒有一季反轉。2024 全年毛利率僅 2.78%，兩年內變成 36.62% —— 這不是景氣波動，是產品結構與定價權的結構性改變。</li>
+        <li><strong>獲利 100% 來自本業，是本系列最乾淨的一檔。</strong>Q2&#39;26 業外損益 −0.002 億，佔稅前淨利 −0.17%。對照環球晶 69%、大洋 92%，德宏的每一塊錢都是賣玻纖布賺來的，沒有任何業外美化。</li>
+        <li><strong>營業槓桿極高，增量毛利率驚人。</strong>Q1→Q2 營收增 1.917 億，營業利益增 0.926 億 —— <strong>增量營業利益率 48.3%</strong>。9 月營收 3.237 億、自結淨利 1.24 億，<strong>淨利率 38.3%</strong>。固定成本已被攤完，後續每一塊營收成長有近四成落到淨利。</li>
+        <li><strong>營收動能仍在加速，而非趨緩。</strong>連 24 個月年增；2026 年 3 月起連 7 個月向上；9 月 3.24 億（+227.6% YoY、+27.1% MoM）創單月歷史新高。前 9 月累計 16.42 億，年增 176.92%。<strong>加速度（MoM）在 9 月是全年最高之一。</strong></li>
+        <li><strong>財務體質正在實質修復。</strong>營業現金流 2024 全年 −1.429 億、2025 全年 −0.621 億 → <strong>2026H1 +1.420 億，首次明顯轉正</strong>。流動比率從 2025Q4 的 73% 修復到 192%。淨負債/權益從 101.6% 降到 85.6%。累積虧損從 −10.372 億回補到 −8.855 億。</li>
+        <li><strong>供給端短期確實緊，且德宏不繳稅。</strong>Low-Dk2 布每公尺 US$17.9~22.4、已進 NVIDIA GB200；高階布產能無法用一般玻纖布替代，認證期長。同時累積虧損 8.855 億提供<strong>實質 0% 稅率</strong>，直到 2027Q1 前的每一塊稅前淨利都 100% 落到 EPS。</li>
+      </ol>
+    </div>
+
+    <div class="debate-col bear">
+      <div class="debate-head">看空研究員 — 7 點論據</div>
+      <ol class="debate-list">
+        <li><strong>估值已經離開可辯護的範圍。</strong>TTM 本益比 <strong>170.8 倍</strong>、股價淨值比 <strong>25.9 倍</strong>（櫃買中心官方 161.24 / 24.27）。要讓現價合理，必須相信法人的 2027 年 EPS 28 元。而 28 元需要營收 89 億元 —— 是 9 月年化（38.9 億）的 2.3 倍，<strong>而公司從未公告任何擴產規模。</strong></li>
+        <li><strong>1,200 萬股現金增資尚未發行，稀釋 9.44% 還沒入帳。</strong>7/2 董事會通過上限 12,000 仟股，但 10/20 官方發行股數仍是 127,127,017 股。認購價、股數、時程全部未知。法人的 28 元若除以稀釋後股數只剩 25.58 元 —— <strong>而這個下修法人似乎沒做。</strong></li>
+        <li><strong>法人的 FY2026E 4.01 元在算術上已不可能成立。</strong>公司自結前 9 月淨利約 4.47 億（本報告推估 EPS 3.51 元），若全年只有 4.01 元代表 Q4 僅 0.50 元，但<strong>9 月單月就賺 0.97 元</strong>。這代表該法人預估至少落後兩個季度 —— <strong>當一份預估的近端數字已明顯失效，它的遠端數字（2027 年 28 元）憑什麼可信？</strong></li>
+        <li><strong>中國的供給反擊已經在混凝土裡了。</strong>建滔韶關 7 萬噸電子級玻纖紗 2026 年 6 月<strong>提前</strong>投產、清遠兩座新窯下半年推進；中國巨石淮安 10 萬噸已滿載，另有 5 萬噸紗 + 3.2 億米布在建，再投 46 億人民幣。產線 18 個月達量產，<strong>多數擴產 2027 年底前完成 —— 正好撞上法人押注的 2027 爆發年。</strong>而且中國「反內捲」政策下，報價口風已從「連 3 月上漲」轉為「趨穩」。</li>
+        <li><strong>籌碼結構是當沖盤，不是法人盤。</strong>10/19 當沖率 <strong>67.86%</strong>、週轉率 12.53%、近 5 日當沖比 40.95%。外資持股十週內走過 18.02% → 4.05% → 5.03%，8 月單月倒出 1,422 萬股（全公司 11.2% 股權）。<strong>一年內至少 5 次處置或注意股紀錄，且融資融券已為 0（推定停止信用交易）—— 下跌時既沒有融資底，也沒有空單回補盤。</strong></li>
+        <li><strong>它已經證明過自己一個月可以腰斬。</strong>4/21 高 404.5 → 7/30 低 101.0，<strong>−75%</strong>；其中 7/3 的 238.5 到 7/30 的 101.0 只用了 <strong>19 個交易日（−57.6%）</strong>，期間 8 次單日跌幅超過 7%。崩跌的導火線（現金增資）至今<strong>仍未定價</strong>。</li>
+        <li><strong>兩個被忽略的獲利品質折扣。</strong>(a) <strong>稅率必然正常化</strong>：累積虧損依本報告推估於 2027Q1 用盡，2027Q2 起開始繳稅，法人 28 元若未計入，全年獲利需打約 85 折。(b) <strong>Q 布只是選擇權，不是訂單</strong>：目前僅「內部測試完成、已送樣、等客戶需求通知」，認證需 6 個月至 1 年以上，<strong>尚無確認訂單</strong>，營收貢獻仍小。</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="note-title">辯論總結與量化權重</div>
+    <div class="weight-bar">
+      <div class="weight-bull" style="width:40%">看多 40%</div>
+      <div class="weight-bear" style="width:60%">看空 60%</div>
+    </div>
+    <p style="font-size:13.5px;line-height:1.8;margin-top:14px"><strong>裁決：看空 60% / 看多 40%。但請注意這個權重的性質 ——「看空」指的是股價，不是公司。</strong></p>
+    <p style="font-size:13.5px;line-height:1.8;margin-top:8px">多方的六點論據<strong>幾乎全部成立且品質很高</strong>：毛利率連 6 季改善是硬數據、業外 −0.17% 是本系列最乾淨、增量營業利益率 48.3% 是真實的營業槓桿、營業現金流轉正是真的體質修復。<strong>如果這份報告只評價「這是一家正在變好的公司嗎」，答案是明確的「是」。</strong></p>
+    <p style="font-size:13.5px;line-height:1.8;margin-top:8px">但空方贏在三個多方無法反駁的點：<strong>（1）支撐現價的唯一數字（法人 2027 年 28 元）來自一份連 2026 年預估都已算術失效的來源；（2）9.44% 的稀釋確定會來，只是不知道價格；（3）籌碼是 67.86% 當沖率、沒有融資底、一年 5 次處置的結構。</strong>在這三者同時成立時，「公司會變好」不足以支撐「現在可以買」。</p>
+    <div class="advice-box" style="margin-top:14px">
+      <div class="advice-title">給一般投資人的話</div>
+      <p>德宏是一個很好的教材：<strong>它同時是「基本面最乾淨」和「估值最危險」的同一檔股票。</strong>很多人會把前者當成後者的理由 —— 「公司這麼好，貴一點沒關係」。但這檔股票在 2026 年 4 月到 7 月已經親自示範過答案：<strong>當時公司也很好（毛利率正從 28% 衝向 36%、營收連月新高），股價照樣從 404.5 跌到 101.0。</strong></p>
+      <p style="margin-top:9px">如果你正在考慮這檔股票，本報告建議你先能回答三個問題，而不是先看它會漲到幾塊：<strong>（1）現金增資的認購價與股數是多少？（公司還沒公告）（2）法人的 2027 年 28 元，是誰估的、什麼時候估的、有沒有扣掉稅和稀釋？（3）在當沖率 67.86% 的股票上，你打算跌 20% 時怎麼辦？</strong></p>
+      <p style="margin-top:9px">如果三題有任何一題答不出來，那麼現在不是進場時機，而是繼續觀察的時機 —— 而這檔股票<strong>每個月都會公告自結淨利與 EPS</strong>（見下方催化劑），你有非常密集的觀察點，不需要急。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">11</span>風控評估</div>
+
+  <div class="chart-card">
+    <div class="chart-title">六維風險評分（1~10 分，分數越高風險越大）</div>
+    <canvas id="riskChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+    <div class="chart-note">加權公式：估值 30% + 財務 25% + 流動性 10% + 產業 15% + 總經 10% + 籌碼 10%</div>
+  </div>
+
+  <div class="card">
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:12%">維度</th><th style="width:8%">權重</th><th style="width:8%">評分</th><th>評分依據</th></tr></thead>
+      <tbody>
+        <tr><td><strong>估值風險</strong></td><td>30%</td><td class="neg"><strong>9.5</strong></td><td>TTM 本益比 170.8 倍、股價淨值比 25.9 倍（官方 161.24 / 24.27）。唯一能合理化現價的 FY2027E 28 元來源不明且未計稅負與稀釋。本報告自估稀釋後 FY2027E 14.4~20.1 元，給 10~11 倍得合理價 150~215 元，<strong>現價 222 已在上緣之上</strong>。</td></tr>
+        <tr><td><strong>財務風險</strong></td><td>25%</td><td style="color:#d97706"><strong>7.0</strong></td><td>負債比 63.7%、淨負債/權益 85.6%、現金僅 1.514 億（約 0.5 個月營收）、累積虧損 8.855 億、應收週轉 94 天。<strong>減分項：</strong>營業現金流 2026H1 首次轉正 +1.420 億、流動比率由 73% 修復至 192%、短債已長期化、存貨去化良好。方向正確但絕對水準仍不安全。</td></tr>
+        <tr><td><strong>流動性風險</strong></td><td>10%</td><td class="neg"><strong>8.5</strong></td><td>10/19 當沖率 67.86%、週轉率 12.53%、近 5 日當沖比 40.95%。一年內至少 5 次處置／注意股（處置期間 5~20 分鐘撮合並預收款券）。融資融券為 0，推定停止信用交易。股本僅 12.713 億，<strong>想賣時可能賣不到想要的價格</strong>。</td></tr>
+        <tr><td><strong>產業風險</strong></td><td>15%</td><td style="color:#d97706"><strong>6.5</strong></td><td>短期供需確實緊、Low-Dk2 單價 US$17.9~22.4 且已進 GB200。<strong>但：</strong>建滔韶關 7 萬噸已於 2026/6 提前投產、中國巨石淮安 10 萬噸滿載且另有 5 萬噸紗 +3.2 億米布在建，多數擴產 2027 年底前完成；中國「反內捲」使報價由「連 3 月漲」轉為「趨穩」。<strong>德宏自身產能計畫未公告。</strong></td></tr>
+        <tr><td><strong>總經風險</strong></td><td>10%</td><td style="color:#d97706"><strong>5.5</strong></td><td>AI 伺服器資本支出仍強（NVIDIA Rubin、美系 CSP 自研 ASIC），需求端尚無轉弱訊號。但 2027 年將面對 2026 的高基期，加上關稅與匯率不確定性。</td></tr>
+        <tr><td><strong>籌碼風險</strong></td><td>10%</td><td class="neg"><strong>9.0</strong></td><td>外資持股十週內 18.02% → 4.05% → 5.03%；8 月單月倒出 1,422 萬股（全公司 11.2% 股權）；7 月崩盤同月持股反而暴增 1,165 萬股（異常）。<strong>1,200 萬股現金增資未發行</strong>。法人覆蓋度極低、查無正式券商目標價。</td></tr>
+        <tr class="hl"><td colspan="2"><strong>加權綜合</strong></td><td class="neg"><strong>7.9</strong></td><td><strong>高風險（7~8 分級）。</strong>計算：9.5×0.30 + 7.0×0.25 + 8.5×0.10 + 6.5×0.15 + 5.5×0.10 + 9.0×0.10 = 2.85 + 1.75 + 0.85 + 0.975 + 0.55 + 0.90 = <strong>7.875</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>風險結構的特徵：</strong>德宏的風險<strong>不是「公司會不會變差」，而是「價格與籌碼」</strong>。估值（9.5）與籌碼（9.0）兩項幾乎滿分，而這兩項恰好是權重最高（30%）與最容易被題材熱度掩蓋的。相對地，產業（6.5）與總經（5.5）其實是六維中最低的 —— 這解釋了為什麼德宏的多頭故事聽起來很有說服力：<strong>因為故事講的正是風險最低的那兩個維度。</strong></p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">12</span>台股三段式策略</div>
+
+  <div class="strategy-grid">
+    <div class="strategy-card attack">
+      <div class="sc-title">進攻情境</div>
+      <div class="sc-cond">觸發條件</div>
+      <ul>
+        <li>現金增資公告，認購價在市價 9 折以上、股數明顯低於 1,200 萬股上限</li>
+        <li>Q3 財報公告 EPS ≥ 2.3 元（驗證本報告推估）</li>
+        <li>10 月營收 &gt; 3.24 億（續創新高）</li>
+        <li>當沖率退到 30% 以下且外資持股穩定回升超過 7%</li>
+        <li>公司正式公告擴產規模與時程</li>
+      </ul>
+      <div class="sc-cond">參考價位</div>
+      <p class="sc-price">分批區間 190 ~ 215 元<br>目標 280 ~ 330 元<br>停損 171（MA60）</p>
+      <div class="sc-note">以上條件需<strong>同時滿足 3 項以上</strong>才算成立。目前 0 項成立。</div>
+    </div>
+
+    <div class="strategy-card balance">
+      <div class="sc-title">均衡情境（現況）</div>
+      <div class="sc-cond">現況判定</div>
+      <ul>
+        <li>基本面強、估值極貴、籌碼極亂 —— 三者並存</li>
+        <li>現金增資條件未定（最大未知數）</li>
+        <li>技術面多頭排列但 RSI 69.2、站上布林上軌，今日已出現 11.4% 振幅的上影線</li>
+        <li>法人 FY2026E 已失效，FY2027E 可信度待驗</li>
+      </ul>
+      <div class="sc-cond">操作傾向</div>
+      <p class="sc-price"><strong>觀望為主</strong><br>既有持股可考慮分批減碼<br>不建立新倉</p>
+      <div class="sc-note">每月 10 日前的自結公告是高頻驗證點 —— <strong>有密集觀察窗口就不需要急著進場</strong>。</div>
+    </div>
+
+    <div class="strategy-card defense">
+      <div class="sc-title">防守情境</div>
+      <div class="sc-cond">觸發條件</div>
+      <ul>
+        <li>現金增資以市價 7 折以下、接近 1,200 萬股上限發行（稀釋 + 折價雙殺）</li>
+        <li>月營收 MoM 連兩月轉負，或 YoY 增幅跌破 +100%</li>
+        <li>Q3 財報 EPS 明顯低於 2.0 元（代表淨利率推估錯誤）</li>
+        <li>收盤連 2 日跌破 193.5（MA20 / 布林中軌）</li>
+        <li>中國新增產能提前放量、Low-Dk 報價出現下跌（非僅「趨穩」）</li>
+        <li>再度被列入處置股（流動性被壓縮）</li>
+      </ul>
+      <div class="sc-cond">參考價位</div>
+      <p class="sc-price">減碼觸發 193.5<br>第二道 171.7（MA60）<br>極端情境參考 101.0</p>
+      <div class="sc-note">本檔曾在 19 個交易日內下跌 57.6%，<strong>停損必須機械化執行</strong>，不可用「公司基本面很好」自我說服。</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="note-title">催化劑時程表</div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-date">每月 10 日前（高頻驗證點）</div><div class="tl-text"><strong>月營收 + 自結淨利 / EPS 公告。</strong>德宏有逐月揭露自結獲利的習慣（7 月 0.79 億/0.62 元、9 月 1.24 億/0.97 元），這是本檔最有價值的追蹤工具 —— <strong>不必等季報就能驗證獲利軌跡。</strong>觀察重點：單月淨利率能否維持 38% 以上。</div></div>
+      <div class="tl-item bad"><div class="tl-date">時程未定（最關鍵）</div><div class="tl-text"><strong>現金增資的認購價、實際股數與繳款時程。</strong>7/2 董事會已通過上限 1,200 萬股，資金用途含購置機器設備。<strong>這是唯一能同時解開「擴產能力」與「稀釋幅度」兩個問號的事件</strong>，也是本報告建議觀望的核心理由。</div></div>
+      <div class="tl-item"><div class="tl-date">2026 年 11 月中旬</div><div class="tl-text"><strong>Q3 財報。</strong>驗證本報告推估的 Q3 EPS 2.32 元、營收 8.03 億、毛利率約 45%。同時觀察應收帳款天數是否從 94 天進一步惡化。</div></div>
+      <div class="tl-item"><div class="tl-date">2026Q4 ~ 2027</div><div class="tl-text"><strong>Q 布（石英布）客戶認證結果。</strong>目前僅送樣階段、認證需 6 個月至 1 年以上、尚無確認訂單。若取得認證將是真正的題材升級；若遲遲無下文，則 2027 年的高成長故事少了一條腿。</div></div>
+      <div class="tl-item bad"><div class="tl-date">2027Q1（推估）</div><div class="tl-text"><strong>累積虧損扣抵用盡 → 稅負開始實質發生。</strong>本報告推估累積虧損於 2027Q1 回補完畢，2027Q2 起適用營所稅。這會讓淨利率從目前的 38% 降到約 31%。<span style="color:#dc2626"><strong>法人的 2027 年 28 元似乎未計入此項。</strong></span></div></div>
+      <div class="tl-item bad"><div class="tl-date">2027 全年</div><div class="tl-text"><strong>中國新增電子級玻纖產能陸續量產。</strong>建滔韶關 7 萬噸（2026/6 已投產，18 個月後達量產約 2027 年底）、清遠新窯、中國巨石 5 萬噸紗 + 3.2 億米布。<strong>供給落地的時點與法人押注的獲利爆發年高度重疊。</strong></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">13</span>名詞小教室</div>
+  <div class="card">
+    <div class="glossary">
+      <div class="gl-item"><div class="gl-term">玻纖布（玻璃纖維布）</div><div class="gl-def">把玻璃抽成極細的紗，再織成布。它是銅箔基板（CCL）的「骨架」，決定基板的強度與電氣特性。德宏做的就是這個，佔它營收 96.67%。<strong>白話：電路板裡那層看不見的布。</strong></div></div>
+      <div class="gl-item"><div class="gl-term">Low-Dk（低介電常數玻纖布）</div><div class="gl-def">Dk 是材料「拖慢訊號」的程度。AI 伺服器訊號跑得極快，一般玻纖布會讓訊號失真，所以要用 Dk 更低的特殊配方玻璃。第二代（Low-Dk2）每公尺賣 US$17.9~22.4，已用在 NVIDIA GB200 上。<strong>白話：高速公路用的特殊水泥，比一般水泥貴好幾倍。</strong></div></div>
+      <div class="gl-item"><div class="gl-term">Q 布（石英纖維布）</div><div class="gl-def">二氧化矽純度 &gt;99% 的頂級材料，電氣特性比 Low-Dk 更好，是下一代規格。德宏目前<strong>只到「送樣」階段，認證要 6 個月到 1 年以上，還沒有訂單</strong>。<strong>白話：它是一張還沒兌現的彩券，不是已經入袋的收入。</strong></div></div>
+      <div class="gl-item"><div class="gl-term">處置股 / 注意股</div><div class="gl-def">股價或成交異常時，交易所會先列「注意股」警示；更嚴重就列「處置股」，把撮合從每 5 秒改成每 5~20 分鐘一次，還要預先繳錢繳股票。德宏一年內至少 5 次。<strong>白話：被裁判吹哨放慢比賽速度 —— 你想賣的時候會比平常難賣。</strong></div></div>
+      <div class="gl-item"><div class="gl-term">當沖率</div><div class="gl-def">當天買進又當天賣出的成交量佔總成交量的比例。德宏 10/19 是 <strong>67.86%</strong>，代表每 3 張成交有 2 張是當沖。<strong>白話：這些人根本不想持有這檔股票，只想賺當天的價差 —— 所以「放量上漲」不等於「有人看好」。</strong></div></div>
+      <div class="gl-item"><div class="gl-term">現金增資與稀釋</div><div class="gl-def">公司發新股換現金。好處是拿到錢可以擴產、還債；壞處是股數變多，原本的股東每股分到的獲利變少，這叫「稀釋」。德宏 7/2 通過上限 1,200 萬股，會稀釋 <strong>9.44%</strong>，但<strong>至今還沒發行</strong>。<strong>白話：一塊披薩要切給更多人分。</strong></div></div>
+      <div class="gl-item"><div class="gl-term">累積虧損與虧損扣抵</div><div class="gl-def">以前虧的錢會記在帳上（德宏 −8.855 億）。稅法允許用以前的虧損抵掉現在的獲利，所以德宏現在<strong>幾乎不用繳稅</strong>。但虧損抵完就要開始繳，本報告推估是 2027Q1。另外，<strong>累積虧損沒補完，法律上也不能發股利</strong> —— 這就是德宏至今不配息的原因。<strong>白話：欠稅局的「免繳額度」會用完，而且補完虧損前不准發紅包。</strong></div></div>
+      <div class="gl-item"><div class="gl-term">股價淨值比（P/B）</div><div class="gl-def">股價 ÷ 每股淨資產。德宏每股淨值 8.57 元、股價 222 元 → <strong>25.9 倍</strong>（櫃買中心官方 24.27）。一般製造業通常在 1~3 倍。<strong>白話：公司帳上每股只有 8.57 元的實質資產，你付 222 元 —— 付的 213 元全是對未來的想像。</strong></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">14</span>免責聲明與資料來源</div>
+  <div class="disclaimer">
+    <div class="dis-title">⚠️ 重要聲明</div>
+    <p><strong>本報告僅供研究參考，不構成任何投資建議、要約或招攬。</strong>報告中所有目標價、合理價區間、EPS 預估與策略情境皆為基於公開資訊的推演，不保證實現。投資決策應由投資人自行判斷並承擔全部風險。股票投資可能導致本金損失。</p>
+    <p style="margin-top:10px"><strong>本報告標示規範：</strong>所有「實際值」皆註明來源（合併財報／公司公告／官方集保／櫃買中心）；所有「推算值」均明確標示為推估並附推導方式。<strong>請特別留意以下數字為本報告推估，非公司公告：</strong>Q3&#39;26 EPS 2.32 元、Q3&#39;26 營收 8.03 億、Q3&#39;26 毛利率約 45%、8 月淨利 0.92 億、FY2026E EPS 6.8~7.4 元、FY2027E EPS 14.4~22.0 元、累積虧損於 2027Q1 用盡的時點、以及「融資融券為 0 係因停止信用交易」此一推論。</p>
+    <p style="margin-top:10px"><strong>已知的資料限制與來源衝突（誠實揭露）：</strong></p>
+    <ul style="margin:8px 0 0 20px;font-size:13px;line-height:1.8">
+      <li><strong>未能取得：</strong>櫃買中心融資融券原始頁面（HTTP 403）、Goodinfo 月 K 原始頁面（HTTP 403）、TPEx OpenAPI 三大法人與融資融券端點（回傳非 JSON）、德宏法說會紀錄、任何券商正式目標價、現金增資的認購價與時程、德宏自身擴產規模。</li>
+      <li><strong>來源衝突：</strong>某媒體報導德宏 2026 上半年「稅後純益 1.52 億、EPS 1.49 元」。1.52 億與合併財報的 1.518 億吻合，但 1.49 元反推股數僅約 1.019 億股，與官方發行股數 1.27127 億股不符；<strong>本報告一律採用合併財報的 1.19 元（Q1 0.24 + Q2 0.95）</strong>。另有媒體將 9 月營收誤植為 57.29 億元（實為 3.24 億元），本報告不採用。另有「EPS 上看 21 元、目標價 320 元」之標題經查屬於另一家 CCL 公司，<strong>與德宏無關</strong>。</li>
+      <li><strong>2026 年 10 月處置期間的確切起訖日未能自公開搜尋確認</strong>，僅有報導提及處置至 10/16 前後；但 10/12 公司公告「近期多次達公布注意交易資訊標準」與 10/19 列入注意股為可確認事實。</li>
+      <li><strong>法人 EPS 預估（2026 年 4.01 元、2027 年 28.00 元）未具名出處</strong>，本報告已於第 06 節說明其 2026 年數字在算術上失效，引用時請自行查證。</li>
+    </ul>
+    <p style="margin-top:10px"><strong>資料來源：</strong>富果 Fugle API（即時報價，2026-10-21 10:22）、FinMind（歷史 K 線、合併財務報表、資產負債表、現金流量表、月營收、官方集保外資持股申報）、櫃買中心 TPEx 注意股公告（2026-10-19：本益比 161.24、股價淨值比 24.27、週轉率 12.53%、近 5 日當沖比 40.95%、近 5 日三大法人買超 806 張）、Goodinfo（融資餘額、當沖率、年度高低點）、公開資訊觀測站重大訊息（2026/7/2 現金增資董事會決議、7/23 補充說明）、理財周刊／yam（2026-10-20）、uanalyze、FTNN、winvest、histock、cnyes 盤中速報、風傳媒（2026-03-16）、科技新報、數位時代、三立新聞、TVBS、永豐金豐雲學堂。</p>
+    <p style="margin-top:10px"><strong>交叉驗證紀錄：</strong>FinMind 月份慣例經 Winvest、histock、公司公告三方驗證（前 9 月累計 16.421 億 vs 公告 16.42 億）；FinMind 日期正確性經 cnyes 盤中速報三度驗證（7/17 跌停 158.0、8/17 盤中 157.5、4 月 351.5）；TTM EPS 1.30 元與每股淨值 8.57 元經櫃買中心官方本益比 161.24 倍與股價淨值比 24.27 倍反推驗證；漲跌停檔位規則經 10/20 實際漲停價 228.5 驗證。</p>
+    <p style="margin-top:10px">報告產製時間：2026-10-21 · 德宏工業（5475）第 1 次研究報告（首次）· 本報告由多角色分析團隊流程產出，圖表以原生 Canvas 2D API 繪製，無任何外部 CDN 依賴。</p>
+  </div>
+</section>
+
+<script>
+function drawBarChart(id,labels,data,barColor,accentColor,negColor,dec){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=54,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  var D=(dec===undefined)?2:dec;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||0.5;
+  var lo=(min<0)?(min-pad):Math.max(0,min-pad);
+  var hi=max+pad,range=hi-lo;
+  var n=data.length;
+  var barW=chartW/n*0.58,gap=chartW/n;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(D===0?0:1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0){ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();}
+  for(var i=0;i<n;i++){
+    var x=PL+i*gap+(gap-barW)/2;
+    var vy=PT+chartH-((data[i]-lo)/range*chartH);
+    var top=Math.min(vy,zeroY),bh=Math.abs(vy-zeroY);
+    if(bh<1.5)bh=1.5;
+    var isLast=(i===n-1);
+    var color=(data[i]<0)?(negColor||'#dc2626'):(isLast?accentColor:barColor);
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,top,barW,bh,3);ctx.fillStyle=color;ctx.fill();}
+    else{ctx.fillStyle=color;ctx.fillRect(x,top,barW,bh);}
+    ctx.fillStyle=(data[i]<0)?'#dc2626':(isLast?accentColor:'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(D),x+barW/2,(data[i]<0)?(top+bh+11):(top-4));
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    var lx=PL+i*gap+gap/2,ly=PT+chartH+14;
+    if(labels[i].length>4){ctx.save();ctx.translate(lx,ly);ctx.rotate(-Math.PI/6);ctx.fillText(labels[i],0,0);ctx.restore();}
+    else ctx.fillText(labels[i],lx,ly);
+  }
+}
+function drawLineChart(id,labels,data,color,negColor,dec){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=54,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  var D=(dec===undefined)?1:dec;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||1;
+  var lo=min-pad,hi=max+pad,range=hi-lo;
+  var n=data.length;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0&&hi>0){
+    ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);
+    ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();
+  }
+  var pts=[];
+  for(var i=0;i<n;i++)pts.push({x:PL+i*chartW/(n-1),y:PT+chartH-(data[i]-lo)/range*chartH});
+  var base=(lo<0&&hi>0)?zeroY:(PT+chartH);
+  ctx.beginPath();ctx.moveTo(pts[0].x,base);
+  for(var i=0;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.lineTo(pts[n-1].x,base);ctx.closePath();
+  var grad=ctx.createLinearGradient(0,PT,0,PT+chartH);
+  var hex=color.slice(1);
+  var r=parseInt(hex.slice(0,2),16),g2=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  grad.addColorStop(0,'rgba('+r+','+g2+','+b+',0.25)');
+  grad.addColorStop(1,'rgba('+r+','+g2+','+b+',0.02)');
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+  for(var i=1;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+  for(var i=0;i<n;i++){
+    var isLast=(i===n-1);
+    var dotCol=(data[i]<0&&negColor)?negColor:color;
+    ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,isLast?5:3,0,Math.PI*2);
+    ctx.fillStyle=isLast?dotCol:'#fff';ctx.fill();
+    ctx.strokeStyle=dotCol;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=isLast?dotCol:((data[i]<0)?'#dc2626':'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(D),pts[i].x,pts[i].y+(isLast?-10:-8));
+  }
+  for(var i=0;i<n;i++){
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    ctx.fillText(labels[i],pts[i].x,PT+chartH+14);
+  }
+}
+function drawHBarChart(id,labels,data,colors,suffix){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var max=Math.max.apply(null,data)*1.32;
+  var n=labels.length;
+  var rowH=H/(n+0.6);
+  var PL=196,PR=56;
+  for(var i=0;i<n;i++){
+    var y=rowH*(i+0.3)+rowH*0.12;
+    var bh=rowH*0.66;
+    ctx.fillStyle='#f1f5f9';ctx.fillRect(PL,y,(W-PL-PR),bh);
+    var bw=(data[i]/max)*(W-PL-PR);
+    if(bw<2)bw=2;
+    var col=colors?colors[i]:'#7e22ce';
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(PL,y,bw,bh,4);ctx.fillStyle=col;ctx.fill();}
+    else{ctx.fillStyle=col;ctx.fillRect(PL,y,bw,bh);}
+    ctx.fillStyle='#1e293b';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(labels[i],PL-8,y+bh/2+4);
+    ctx.fillStyle='#1e293b';ctx.font='bold 12px Arial';ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(1)+(suffix||'x'),PL+bw+6,y+bh/2+4);
+  }
+}
+window.addEventListener('DOMContentLoaded',function(){
+  drawBarChart('epsChart',
+    ["Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26E"],
+    [-0.51,-0.15,-0.12,0.01,0.10,0.24,0.95,2.32],
+    '#ccfbf1','#134e4a','#dc2626',2);
+  drawLineChart('revChart',
+    ['1月','2月','3月','4月','5月','6月','7月','8月','9月'],
+    [1.00,0.82,1.39,1.59,1.81,1.74,2.29,2.55,3.24],
+    '#134e4a',null,2);
+  drawLineChart('gmChart',
+    ["Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [3.60,13.75,16.36,21.46,23.21,28.32,36.62],
+    '#0f766e',null,2);
+  drawBarChart('qrevChart',
+    ["Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26E"],
+    [1.65,1.67,1.97,2.31,2.81,3.19,5.11,8.03],
+    '#ccfbf1','#134e4a','#dc2626',2);
+  drawBarChart('fundChart',
+    ['成長性','獲利品質','毛利趨勢','財務結構','現金流','估值'],
+    [9.5,9.0,9.0,4.0,5.5,1.5],
+    '#5eead4','#134e4a','#dc2626',1);
+  drawLineChart('fshChart',
+    ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10/20'],
+    [8.46,8.83,4.85,5.93,6.66,8.71,17.87,6.68,4.09,5.03],
+    '#0f766e',null,2);
+  drawLineChart('pxChart',
+    ['25/10','25/11','25/12','26/1','26/2','26/3','26/4','26/5','26/6','26/7','26/8','26/9','26/10'],
+    [68.5,59.8,95.9,106.5,212.5,204.5,358.0,270.0,244.5,111.0,204.5,179.5,228.5],
+    '#134e4a',null,1);
+  drawHBarChart('peChart',
+    ["TTM（EPS 1.30 元）","FY2026E 本報告（7.1）","FY2027E 稀釋（17.3）","FY2027E 法人（28.0）"],
+    [170.8,31.3,12.8,7.9],
+    ['#dc2626','#d97706','#0f766e','#16a34a'],'倍');
+  drawHBarChart('riskChart',
+    ['估值 30%','財務 25%','流動性 10%','產業 15%','總經 10%','籌碼 10%','加權綜合'],
+    [9.5,7.0,8.5,6.5,5.5,9.0,7.9],
+    ['#dc2626','#d97706','#dc2626','#d97706','#16a34a','#dc2626','#134e4a'],'分');
+});
+</script>
+
+</div>
+</body>
+</html>
