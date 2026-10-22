@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>台達電(2308) 深度研究報告 第3次 | 2026-10-22</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+    --accent:#15803d;--accent2:#16a34a;--accent3:#dcfce7;
+    --green:#16a34a;--red:#dc2626;--yellow:#d97706;--blue:#2563eb;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.6}
+  a{color:var(--accent)}
+  td,th{font-variant-numeric:tabular-nums}
+
+  .cover{background:linear-gradient(135deg,#052e16 0%,#14532d 32%,#15803d 68%,#86efac 100%);color:#fff;padding:56px 40px 48px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-70px;right:-50px;width:310px;height:310px;border-radius:50%;background:rgba(255,255,255,0.06)}
+  .cover::after{content:'';position:absolute;bottom:-90px;left:-50px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.04)}
+  .cover-ticker{font-size:13px;opacity:.72;margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+  .cover-name{font-size:36px;font-weight:800;line-height:1.1;margin-bottom:6px}
+  .cover-subtitle{font-size:15px;opacity:.85;margin-bottom:24px}
+  .cover-price-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:10px}
+  .cover-price{font-size:54px;font-weight:900;line-height:1}
+  .cover-chg{font-size:21px;padding:4px 14px;border-radius:8px;background:rgba(220,38,38,0.38);border:1px solid rgba(252,165,165,0.7)}
+  .price-note{display:inline-block;font-size:12.5px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 13px;margin-bottom:22px;line-height:1.65}
+  .cover-meta{display:flex;gap:24px;flex-wrap:wrap}
+  .cover-meta-item{font-size:13px;opacity:.8}
+  .cover-meta-item strong{opacity:1;font-weight:700}
+  .risk-badge{position:absolute;top:32px;right:40px;background:rgba(217,119,6,0.32);border:1.5px solid rgba(251,191,36,0.7);border-radius:12px;padding:10px 18px;text-align:center}
+  .risk-badge .num{font-size:28px;font-weight:900;color:#fde68a}
+  .risk-badge .lbl{font-size:11px;opacity:.88;letter-spacing:1px}
+  .report-no-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(233,213,255,0.25);border:1px solid rgba(233,213,255,0.5);border-radius:8px;padding:3px 12px;font-size:12px;margin-bottom:12px}
+
+  .container{max-width:960px;margin:0 auto;padding:0 20px 60px}
+  section{margin-top:32px}
+  .section-title{font-size:18px;font-weight:800;color:var(--accent);border-left:4px solid var(--accent);padding-left:12px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .section-num{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+  .card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07),0 0 0 1px var(--border)}
+  .card + .card{margin-top:12px}
+
+  .verdict-box{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #15803d;border-radius:14px;padding:20px 24px;margin-bottom:14px}
+  .verdict-box h4{font-size:15px;font-weight:800;color:#14532d;margin-bottom:10px}
+  .verdict-box p{font-size:13.5px;line-height:1.75;color:#14532d}
+  .verdict-box p + p{margin-top:9px}
+
+  .conclusion-card{background:linear-gradient(135deg,#052e16 0%,#14532d 55%,#22c55e 100%);color:#fff;border-radius:16px;padding:28px 32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+  .conc-item .label{font-size:11px;opacity:.68;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+  .conc-item .val{font-size:21px;font-weight:800;line-height:1.15}
+  .conc-item .sub{font-size:12px;opacity:.78;margin-top:4px}
+  @media(max-width:640px){.conclusion-card{grid-template-columns:1fr 1fr}}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+  .kpi-card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border);text-align:center}
+  .kpi-label{font-size:11px;color:var(--muted);margin-bottom:4px;letter-spacing:.5px}
+  .kpi-val{font-size:20px;font-weight:800;color:var(--accent)}
+  .kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+  .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.charts-grid{grid-template-columns:1fr}}
+  .chart-box{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border)}
+  .chart-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px}
+  .chart-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center;line-height:1.55}
+
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{background:var(--bg);padding:8px 12px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px;white-space:nowrap}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+  .tag-green{background:#dcfce7;color:#16a34a}
+  .tag-red{background:#fee2e2;color:#dc2626}
+  .tag-yellow{background:#fef9c3;color:#d97706}
+  .tag-blue{background:#dbeafe;color:#2563eb}
+  .tag-purple{background:#dcfce7;color:#15803d}
+
+  .analyst-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.analyst-grid{grid-template-columns:1fr}}
+  .analyst-card{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border)}
+  .analyst-card h4{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .analyst-card ul{list-style:none;padding:0}
+  .analyst-card li{font-size:13px;padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px}
+  .analyst-card li:last-child{border-bottom:none}
+  .bull-icon{color:#16a34a;font-weight:900;flex-shrink:0}
+  .bear-icon{color:#dc2626;font-weight:900;flex-shrink:0}
+
+  .score-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+  .score-label{width:104px;font-size:13px;flex-shrink:0}
+  .score-bar-bg{flex:1;height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+  .score-bar-fill{height:100%;border-radius:5px}
+  .score-num{width:36px;font-size:13px;font-weight:700;text-align:right;flex-shrink:0}
+
+  .strategy-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:640px){.strategy-grid{grid-template-columns:1fr}}
+  .strat-card{border-radius:14px;padding:20px;color:#fff}
+  .strat-card.attack{background:linear-gradient(135deg,#dc2626,#ef4444)}
+  .strat-card.balance{background:linear-gradient(135deg,#15803d,#22c55e)}
+  .strat-card.defend{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+  .strat-card h3{font-size:15px;font-weight:800;margin-bottom:12px}
+  .strat-item{font-size:13px;margin:6px 0;display:flex;gap:8px}
+  .strat-item span:first-child{opacity:.75;flex-shrink:0}
+
+  .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.tech-grid{grid-template-columns:1fr}}
+
+  .alert{border-radius:10px;padding:14px 18px;margin-bottom:12px;font-size:13px;display:flex;gap:12px;align-items:flex-start;line-height:1.7}
+  .alert-red{background:#fee2e2;border-left:4px solid #dc2626;color:#7f1d1d}
+  .alert-green{background:#dcfce7;border-left:4px solid #16a34a;color:#14532d}
+  .alert-yellow{background:#fef9c3;border-left:4px solid #d97706;color:#713f12}
+  .alert-purple{background:#dcfce7;border-left:4px solid #15803d;color:#14532d}
+
+  .disclaimer{background:#fef9c3;border:1px solid #d97706;border-radius:10px;padding:16px 20px;font-size:12px;color:#713f12;margin-top:32px}
+  .disclaimer h4{font-size:13px;margin-bottom:8px}
+  .disclaimer ul{margin:6px 0 10px 18px}
+  .disclaimer li{margin:3px 0;line-height:1.65}
+
+  .glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:540px){.glossary-grid{grid-template-columns:1fr}}
+  .glossary-item{background:var(--card);border-radius:10px;padding:12px 14px;border:1px solid var(--border)}
+  .glossary-term{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:4px}
+  .glossary-def{font-size:12px;color:var(--muted);line-height:1.5}
+
+  .calc-box{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:12px;font-size:12.5px;line-height:1.7}
+  .calc-box .row{display:flex;justify-content:space-between;gap:12px;padding:3px 0;border-bottom:1px dashed #cbd5e1}
+  .calc-box .row:last-child{border-bottom:none;font-weight:800;color:var(--accent);padding-top:7px}
+  .calc-title{font-size:12px;font-weight:800;color:var(--accent);margin-bottom:7px;letter-spacing:.5px}
+
+  .asset-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  @media(max-width:700px){.asset-grid{grid-template-columns:repeat(2,1fr)}}
+  .asset-tile{background:#f0fdf4;border:1px solid #dcfce7;border-radius:10px;padding:13px;text-align:center}
+  .asset-tile.hl{background:#dcfce7;border:2px solid #15803d}
+  .asset-tile .at-val{font-size:18px;font-weight:800;color:#14532d}
+  .asset-tile .at-name{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
+
+  .timeline{margin-top:14px;border-left:2px solid var(--accent3);padding-left:18px}
+  .tl-item{position:relative;padding-bottom:14px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{content:'';position:absolute;left:-25px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid #fff}
+  .tl-date{font-size:11.5px;font-weight:800;color:var(--accent);letter-spacing:.5px}
+  .tl-text{font-size:12.5px;color:var(--text);line-height:1.65;margin-top:2px}
+  .tl-item.bad::before{background:#dc2626}
+  .tl-item.bad .tl-date{color:#dc2626}
+  .tl-item.good::before{background:#16a34a}
+  .tl-item.good .tl-date{color:#16a34a}
+
+  .neg{color:#dc2626;font-weight:700}
+  .pos{color:#16a34a;font-weight:700}
+
+  .scorecard{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  @media(max-width:640px){.scorecard{grid-template-columns:1fr}}
+  .sc-item{border-radius:10px;padding:14px 16px}
+  .sc-hit{background:#dcfce7;border:1px solid #86efac}
+  .sc-miss{background:#fee2e2;border:1px solid #fca5a5}
+  .sc-partial{background:#fef9c3;border:1px solid #fcd34d}
+  .sc-head{font-size:12px;font-weight:800;margin-bottom:6px}
+  .sc-hit .sc-head{color:#14532d}
+  .sc-miss .sc-head{color:#7f1d1d}
+  .sc-partial .sc-head{color:#713f12}
+  .sc-body{font-size:12.5px;line-height:1.65;color:#334155}
+</style></head>
+<body>
+<div class="cover">
+  <div class="risk-badge"><div class="num">5.0</div><div class="lbl">風險等級 / 10</div></div>
+  <div class="cover-ticker">TWSE 2308 · 上市 · 電子零組件</div>
+  <div class="report-no-badge">第 3 次報告 · 前次 2026-07-28（1,580 元）</div>
+  <div class="cover-name">台達電子</div>
+  <div class="cover-subtitle">Delta Electronics · AI 電源 / HVDC / 液冷散熱 · 台股第二大權值股</div>
+  <div class="cover-price-row">
+    <div class="cover-price">1,615</div>
+    <div class="cover-chg">▼ 10.0　−0.62%</div>
+  </div>
+  <div class="price-note">
+    盤中報價 2026-10-22 09:37（富果 Fugle）· 昨收 1,625（10/21）<br>
+    今日 開 1,640　高 1,650　低 1,610　|　漲停 <strong>1,785</strong>　跌停 <strong>1,465</strong>（本報告修正值，見第 08 節）
+  </div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">發行股數 <strong>25.975 億股</strong></div>
+    <div class="cover-meta-item">市值 <strong>4.195 兆元</strong></div>
+    <div class="cover-meta-item">52週 <strong>860 ~ 2,585</strong></div>
+    <div class="cover-meta-item">距 52週高 <strong>−37.5%</strong></div>
+    <div class="cover-meta-item">TTM EPS <strong>31.42 元</strong></div>
+  </div>
+</div>
+
+<div class="container">
+
+<section>
+  <div class="section-title"><span class="section-num">01</span>對帳：第 2 次報告（2026-07-28）逐項驗收</div>
+  <div class="card">
+    <p style="font-size:13px;line-height:1.75;margin-bottom:12px">前次報告寫於 7/28、股價 1,580 元（當日 −9.97%）。以下逐項驗收，<strong>命中與落空都列。</strong></p>
+    <div class="scorecard">
+      <div class="sc-item sc-hit">
+        <div class="sc-head">✓ 命中 1：進場區間抓對了</div>
+        <div class="sc-body">前次寫「<strong>1,500～1,650 區間逢低分批</strong>」。7/28 之後股價最低 1,495（7/30），8 月在 1,580~1,885 震盪，<strong>10/06 最高衝到 2,115</strong>。若照此區間分批，帳面最大獲利約 <strong>+28%~+41%</strong>。這是前次報告最成功的一條。</div>
+      </div>
+      <div class="sc-item sc-hit">
+        <div class="sc-head">✓ 命中 2：毛利率回落的預警</div>
+        <div class="sc-body">前次把「Q2 毛利率可能低於 Q1 的 37%」列為風險。實際 Q2&#39;26 毛利率 <strong>35.64%</strong>，確實較 Q1 的 37.00% 回落 <strong>1.36 個百分點</strong>。方向與幅度都在預期內。</div>
+      </div>
+      <div class="sc-item sc-hit">
+        <div class="sc-head">✓ 命中 3：全年營收突破 7,500 億</div>
+        <div class="sc-body">前次寫「全年有望突破 7,500 億」。前三季已達 <strong>5,396.68 億</strong>（+37.22% YoY），Q4 只要 2,104 億即達標，而 Q3 已是 1,970.59 億。<strong>達成機率高。</strong></div>
+      </div>
+      <div class="sc-item sc-partial">
+        <div class="sc-head">△ 部分：最大風險「Kyber 延遲」未惡化</div>
+        <div class="sc-body">前次把「NVIDIA Kyber NVL144 推遲至 2028」列為最大風險。現況：<strong>GTC 2026 路線圖仍將 Kyber 維持在 2027 年</strong>（Feynman 2028），雖仍有延後至 2028 的傳聞但未獲證實。<strong>風險未如預期惡化 —— 但真正的利空來自別處（見第 02 節）。</strong></div>
+      </div>
+      <div class="sc-item sc-miss">
+        <div class="sc-head">✗ 落空 1：目標價 2,200 元，現價 1,615</div>
+        <div class="sc-body">前次給 12 個月目標價 2,200 元，目前距離 <strong>−26.6%</strong>。期限到 2027-07 尚未屆期，判定為<strong>進行中而非失敗</strong>。但須注意：該目標是用 FY2027E EPS 65.1 元 × 34 倍推得，<strong>而 65.1 元這個分母本報告認為偏高</strong>（見第 07 節）。</div>
+      </div>
+      <div class="sc-item sc-miss">
+        <div class="sc-head">✗ 落空 2：FY2026E EPS 42 元偏高</div>
+        <div class="sc-body">前次採 FY2026E 42 元。本報告依 Q3 實際營收 1,970.59 億與近兩季營益率推估，<strong>FY2026E 約 37~39 元</strong>，前次<strong>高估約 10%</strong>。原因是前次把 Q1&#39;26 的 17.83% 營益率當成常態，但 Q2 已回落到 16.68%。</div>
+      </div>
+      <div class="sc-item sc-miss">
+        <div class="sc-head">✗ 落空 3：市值單位寫錯 10 倍</div>
+        <div class="sc-body">前次封面寫「市值：約 <strong>4,104 億元</strong>」。以當時 1,580 元 × 25.975 億股計算，正確應為 <strong>4.104 兆元</strong>。這是單位錯誤，不影響分析結論，但會誤導讀者對公司規模的認知 —— 台達電是台股第二大權值股，不是 4,000 億等級的中型股。</div>
+      </div>
+      <div class="sc-item sc-miss">
+        <div class="sc-head">✗ 落空 4：「AI 佔比約 40%」與公司說法矛盾</div>
+        <div class="sc-body">前次在護城河段落寫「AI 佔比約 40%」。但公司在同期（7 月底）法說會明確表示：<strong>今年 AI 相關營收占比將超過 25%，高於去年的 18%</strong>。前次高估約 15 個百分點。另外前次寫「自動化 ~20%」，9 月實際為<strong>自動化 8% + 交通 6% = 14%</strong>；基礎設施則由 ~30% 低估為實際 35%。</div>
+      </div>
+    </div>
+    <p style="font-size:13px;line-height:1.75;margin-top:14px"><strong>系統性觀察：</strong>前次報告的<strong>價格判斷全部命中</strong>（進場區間、毛利率預警、營收目標），<strong>但基本面描述有三處錯誤</strong>（市值單位、AI 佔比、業務比重）。這與本系列先前在台光電、南亞科觀察到的偏誤方向相反 —— 那兩檔是 EPS 估太低、停損設太緊。<strong>台達電這份的問題是「對產品組合的描述沒有對著公司公告核過」。</strong>本次已逐項以公司 9 月公告的四大業務比重校正。</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">02</span>核心結論</div>
+  <div class="verdict-box">
+    <h4>一句話總結</h4>
+    <p><strong>台達電是這個系列裡財務體質最好、但動能剛剛熄火的一檔。</strong>淨現金 1,482.6 億、營業現金流÷淨利 1.24 倍、上半年自由現金流 +358.5 億 —— 財務面幾乎挑不出毛病，六維裡財務只給 2.5 分、流動性 1.5 分。問題全在另外兩個地方：<strong>（1）月營收年增率從 6 月的 +55.4% 一路掉到 9 月的 +14.6%，且單月營收已在 645~670 億之間橫盤四個月；（2）外資從 10/07 起連續 11 個交易日減持，累計 30,182 張，持股比今年由 64.65% 降到 60.49%，期間沒有一天是增持。</strong></p>
+    <p>同時出現一個有明確時程的新風險：<strong>美國 ITC 於 10/09 對台達電啟動 337 調查</strong>，申訴方 Vicor，標的正是<strong>垂直電力傳輸系統</strong> —— 也就是 AI 電源這條成長主軸本身。審理約 12~16 個月，裁決落在 2027Q4~2028Q1。</p>
+    <p><strong>操作定位：觀望偏保守，等 10/29 法說會。</strong>法說會在 7 天後，管理層對 337 調查、Q4 展望、800VDC 時程的說明會一次解決本報告三個最大的未知數。<strong>在一檔已從高點回落 37.5% 的權值股上，多等七天的成本，遠低於猜錯的成本。</strong></p>
+  </div>
+  <div class="kpi-grid" style="margin-top:14px">
+    <div class="verdict-sub">
+      <div class="vs-label">投資建議</div>
+      <div class="vs-value" style="color:#d97706">觀望 · 等 10/29 法說</div>
+      <div class="vs-note">財務無虞，但營收動能與外資籌碼同向轉弱，且 337 調查未明。法說會是 7 天內可得的高資訊量事件。</div>
+    </div>
+    <div class="verdict-sub">
+      <div class="vs-label">合理價區間（本報告自估）</div>
+      <div class="vs-value">1,500 ~ 1,950 元</div>
+      <div class="vs-note">以 FY2026E EPS 37~39 元給 40~50 倍推得。現價 1,615 落在區間下緣偏上。法人目標價 2,500~3,088 元<strong>全部發布於 10/07 之前</strong>，未反映 10/13 與 10/15 的下跌。</div>
+    </div>
+    <div class="verdict-sub">
+      <div class="vs-label">最大風險</div>
+      <div class="vs-value" style="color:#dc2626">成長鈍化 + 337 調查</div>
+      <div class="vs-note">月營收連四月橫盤；337 若最終認定違反，USITC 可發布有限排除令，禁止相關產品輸美。</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <div class="note-title">本次最重要的三個發現</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:22%">發現</th><th>內容與推導</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>① 年增率暴跌主要是基期效應，不是訂單衰退</strong></td>
+          <td>9 月年增率只有 +14.6%，比 6 月的 +55.4% 掉了 40.8 個百分點，看起來很嚇人。但拆開看：<strong>比較基期 2025 年 9 月是 570.61 億，而 2025 年 8 月只有 478.60 億 —— 去年 9 月單月暴增 19.2%，是個異常高的基期。</strong>2025 年 11 月基期回落到 505.43 億，所以<strong>若今年 11 月營收維持在 670 億附近，年增率會自動彈回 +32% 以上</strong>。<br><br><strong>真正該看的是月增率：</strong>6 月 656.03 → 7 月 670.73 → 8 月 645.86 → 9 月 654.00，<strong>連續四個月在 645~670 億之間橫盤</strong>。這才是動能鈍化的證據，而且它比年增率講的故事溫和得多：<strong>不是衰退，是高檔盤整。</strong></td>
+        </tr>
+        <tr>
+          <td><strong>② 外資連 11 日單向減持，散戶卻沒接刀</strong></td>
+          <td>官方集保資料：10/07 持股 1,601,646,992 股 → 10/21 <strong>1,571,465,088 股</strong>，<strong>11 個交易日累計減持 30,181,904 股（30,182 張），且每一日都是淨減</strong>。持股比由今年 1 月的 64.65% 降至 <strong>60.49%</strong>，年內少了 4.16 個百分點。<br><br>對照散戶端：<strong>融資餘額 10,139 張（10/14），近 20 日僅增加 185 張</strong>，佔流通股數 0.39%；融券僅 46 張。<strong>所以這不是「法人出貨、散戶接刀」，而是單純的法人減碼，散戶根本沒進場。</strong>這與群創 3481 的結構完全相反（群創融資近 20 日增加 9,470 張）—— 好處是沒有浮額堆積，壞處是反彈缺乏散戶追價動能。</td>
+        </tr>
+        <tr>
+          <td><strong>③ 337 調查打的是成長主軸本身</strong></td>
+          <td>USITC 於 <strong>2026-10-09</strong> 宣布啟動 337 調查，申訴方為美國麻州 Andover 的 <strong>Vicor Corporation</strong>（2026-09-09 提出申訴），被訴方 20 家，含鴻海、廣達、台達電。台達電 <strong>10/12 發布重大訊息</strong>，確認公司及旗下兩家美國子公司在列。<br><br><strong>關鍵在標的：「垂直電力傳輸系統」正是 AI 伺服器電源的核心技術</strong>，不是週邊產品的專利糾紛。公司回應已委任智慧財產權法律顧問、將積極應對，並表示「目前相關產品未受影響」；因案件已進入法律程序，不便進一步評論。背景是 Vicor 先前控告案的延伸，台達電否認侵權並已在美國法院<strong>反訴</strong>。<br><br><strong>時程可排：</strong>337 審理通常 12~16 個月 → 裁決約落在 <strong>2027Q4 ~ 2028Q1</strong>。若最終認定違反，USITC 可發布<strong>有限排除令</strong>，由美國海關暨邊境保護局禁止侵權產品進口。</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">03</span>關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-label">最新股價</div><div class="kpi-value">1,615</div><div class="kpi-sub neg">−0.62%（昨收 1,625）</div><div class="kpi-plain">白話：距 5/27 的 52 週高點 2,585 元已回落 37.5%，但仍比去年 10 月的低點 860 元高 87.8%。</div></div>
+    <div class="kpi"><div class="kpi-label">近四季 TTM EPS</div><div class="kpi-value">31.42 <span class="unit">元</span></div><div class="kpi-sub">7.16 + 6.67 + 7.91 + 9.68</div><div class="kpi-plain">白話：過去一年每股賺 31.42 元，而且是逐季墊高的（Q2&#39;26 的 9.68 元為歷史單季最佳）。</div></div>
+    <div class="kpi"><div class="kpi-label">TTM 本益比</div><div class="kpi-value" style="color:#d97706">51.4 <span class="unit">倍</span></div><div class="kpi-sub">FY2026E 約 42.5 倍</div><div class="kpi-plain">白話：以已賺到的錢算要 51 年回本。對權值股偏高，但比 5 月高點時的 82 倍已大幅收斂。</div></div>
+    <div class="kpi"><div class="kpi-label">股價淨值比</div><div class="kpi-value" style="color:#d97706">14.28 <span class="unit">倍</span></div><div class="kpi-sub">每股淨值 113.07 元</div><div class="kpi-plain">白話：帳面淨資產每股 113 元，市場付 1,615 元 —— 付的是技術與品牌，不是廠房。</div></div>
+    <div class="kpi"><div class="kpi-label">Q3&#39;26 營收</div><div class="kpi-value pos">1,970.59 <span class="unit">億</span></div><div class="kpi-sub">QoQ +7.5% · YoY +31.1% · 連兩季新高</div><div class="kpi-plain">白話：單季營收創歷史新高，而且是連續第二季。營收本身沒問題，問題在成長速度。</div></div>
+    <div class="kpi"><div class="kpi-label">9 月營收年增</div><div class="kpi-value" style="color:#d97706">+14.6 <span class="unit">%</span></div><div class="kpi-sub">6月 +55.4% → 7月 +47.8% → 8月 +35.0%</div><div class="kpi-plain">白話：年增率連三個月下滑。但其中大部分是去年 9 月基期太高造成的，不全是真衰退（見第 02 節）。</div></div>
+    <div class="kpi"><div class="kpi-label">淨現金</div><div class="kpi-value pos">1,482.6 <span class="unit">億</span></div><div class="kpi-sub">現金 1,823.5 − 借款 340.9</div><div class="kpi-plain">白話：扣掉所有銀行借款後還有 1,482 億現金。財務完全沒有壓力，這是它跟德宏、群創最大的差別。</div></div>
+    <div class="kpi"><div class="kpi-label">外資持股</div><div class="kpi-value neg">60.49 <span class="unit">%</span></div><div class="kpi-sub">今年 1 月 64.65% · 連 11 日減持</div><div class="kpi-plain">白話：外資持有六成股權，但今年一路減。連續 11 個交易日賣、一天都沒買回來，這是明確的減碼訊號。</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">04</span>財務趨勢圖</div>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-title">季度 EPS（元）</div>
+      <canvas id="epsChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ Q1&#39;24 ~ Q2&#39;26 為合併財報實際值；<strong>Q3&#39;26E 9.70 元為本報告推算值</strong>（營收 1,970.59 億已確認，營益率取 16.5~17.5%、歸屬母公司比例 88~92%）。Q2&#39;26 的 9.68 元為歷史單季最佳。</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">季營收（億元）</div>
+      <canvas id="qrevChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 全部為實際值。<strong>Q3&#39;26 的 1,970.59 億已由公司公告確認</strong>（非推估），連兩季創歷史新高，季增 7.5%、年增 31.1%。</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">2026 年月營收（億元，實際月份）</div>
+      <canvas id="revChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 全部為公司公告實際值。<strong>6 月以後已連四個月在 645~670 億之間橫盤</strong> —— 這是本報告判斷「動能鈍化」的直接證據，比年增率更可靠。</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">🔴 月營收年增率（%）</div>
+      <canvas id="yoyChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 全部為實際值。從 6 月的 +55.4% 掉到 9 月的 +14.6%。<strong>但 2025 年 9 月基期異常高（570.61 億，單月 +19.2%），11 月基期回落至 505.43 億 —— 年增率可望自動回升。</strong>1~3 月因資料庫未提供去年同期值而未納入。</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">季毛利率（%）</div>
+      <canvas id="gmChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 全部為合併財報實際值。Q1&#39;26 的 37.00% 為歷史新高，Q2&#39;26 回落至 35.64%（−1.36pp），<strong>前次報告對此已正確預警</strong>。長期趨勢仍向上（2024Q1 僅 29.52%）。</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">季營業利益率（%）</div>
+      <canvas id="opmChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 全部為實際值。從 2024Q1 的 8.10% 一路爬到 2026Q1 的 17.83%，Q2&#39;26 回落至 16.68%。<strong>本報告推估 Q3 時採 16.5~17.5%，而非沿用 Q1 的高點 —— 這正是前次 FY2026E 高估 10% 的原因。</strong></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="note-title">月營收口徑校準（本系列每份報告都做）</div>
+    <p style="font-size:13px;line-height:1.75">FinMind 的月營收<strong>申報月份需減 1 才是實際賺取月份</strong>。本次三方驗證全部吻合，而且吻合到小數點：</p>
+    <div class="table-wrap">
+    <table style="margin-top:10px">
+      <thead><tr><th>驗證項目</th><th>外部來源（媒體／公司公告）</th><th>本報告由 FinMind 換算</th><th>結果</th></tr></thead>
+      <tbody>
+        <tr><td>2026 年 9 月營收</td><td>654 億，月增 1.3%、年增 14.6%</td><td>653.996 億，+1.26%、+14.61%</td><td class="pos">吻合</td></tr>
+        <tr><td><strong>Q3&#39;26 營收</strong></td><td><strong>1,970.59 億</strong>，季增 7.5%、年增 31.1%</td><td><strong>1,970.59 億</strong>（670.73＋645.86＋653.996）</td><td class="pos">完全一致</td></tr>
+        <tr><td><strong>前三季累計營收</strong></td><td><strong>5,396.68 億</strong>，年增 37.22%</td><td><strong>5,396.68 億</strong></td><td class="pos">完全一致</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.75;margin-top:10px"><strong>合併財報校準：</strong>月營收加總 Q1&#39;26 1,593.52 億 vs 合併財報 1,593.53 億；Q2&#39;26 1,832.57 億 vs 1,832.56 億。<strong>兩季誤差皆為 0.01 億（0.0006%），校準係數 = 1.000</strong>，推估 Q3 時無須調整。這是本系列目前吻合度最高的一檔（德宏為 1.006）。</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">05</span>公司概覽</div>
+  <div class="card">
+    <div class="table-wrap">
+    <table>
+      <tbody>
+        <tr><th style="width:22%">公司全稱</th><td>台達電子工業股份有限公司（Delta Electronics, Inc.）</td></tr>
+        <tr><th>股票代碼 / 市場</th><td>2308 · 臺灣證券交易所（TWSE 上市）· 產業：電子零組件 · 成立於 1971 年，總部台北</td></tr>
+        <tr><th>發行股數 / 股本</th><td>2,597,543,329 股 / 259.8 億元（面額 10 元）。<strong>自 2024 年以來股數未變動</strong>（無增資、無配股）。</td></tr>
+        <tr><th>市值</th><td>1,615 元 × 25.9754 億股 = <strong>4.195 兆元</strong>，台股第二大權值股</td></tr>
+        <tr><th>每股淨值</th><td><strong>113.07 元</strong>（2026-06-30 歸屬母公司權益 2,937.1 億 ÷ 25.9754 億股）</td></tr>
+        <tr><th>股利政策</th><td>FY2025 現金股利 <strong>11.60 元</strong>（除息 2026-06-17、發放 2026-07-22），較 FY2024 的 7.00 元大增 65.7%。<strong>以現價計殖利率僅 0.72%</strong> —— 這不是一檔存股標的。</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="note-title">四大業務比重（2026 年 9 月，公司公告）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>事業範疇</th><th>9 月營收比重</th><th>前次報告寫的</th><th>內容</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><strong>電源及零組件</strong></td><td><strong>51%</strong></td><td>~50% <span class="pos">✓</span></td><td>AI 伺服器 PSU、HVDC 高壓直流電源、BBU 備用電源模組</td></tr>
+        <tr><td><strong>基礎設施</strong></td><td><strong>35%</strong></td><td>~30% <span class="neg">低估 5pp</span></td><td>液冷散熱、UPS、資料中心整體解決方案</td></tr>
+        <tr><td><strong>自動化</strong></td><td><strong>8%</strong></td><td rowspan="2">~20% <span class="neg">高估 6pp</span></td><td>工業自動化、樓宇自動化</td></tr>
+        <tr><td><strong>交通</strong></td><td><strong>6%</strong></td><td>電動車充電樁、車用電子</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.75;margin-top:10px"><strong>AI 相關營收占比：公司法說會表示今年將超過 25%，去年為 18%。</strong>前次報告寫的「AI 佔比約 40%」與公司說法不符，本次更正。<br><br><strong>為什麼這個差別重要：</strong>若 AI 佔比是 40%，那麼 AI 訂單變化對整體營收的影響係數是 0.4；若實際只有 25%，係數就是 0.25。<strong>前次報告等於把台達電對 AI 景氣的敏感度高估了六成</strong> —— 這會同時高估上檔空間與下檔風險。</p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">技術定位：為什麼 AI 資料中心需要台達電</div>
+    <p style="font-size:13px;line-height:1.8">傳統資料中心用 48V 直流供電，但 AI 機櫃功耗從數十 kW 衝到 <strong>600 kW</strong> 級別，48V 架構的線損與銅用量變得無法接受，因此整個產業正在轉向 <strong>800 VDC / ±400V 高壓直流（HVDC）</strong>。這個轉換需要新的整流器、固態變壓器（SST）、以及機櫃內的電池備援模組（BBU）。</p>
+    <p style="font-size:13px;line-height:1.8;margin-top:8px">台達電在 2026 年 3 月的 NVIDIA GTC 展出 <strong>800 VDC In-Row 660kW 電源機櫃</strong>（內建 480kW BBU），宣稱 AC-DC 效率達 98%。歐系外資於 9/15 指出其 <strong>HVDC 產品已開始出貨</strong>。</p>
+    <p style="font-size:13px;line-height:1.8;margin-top:8px"><strong>但時程要看清楚：</strong>多數外資認為 400V/800V 架構要到 <strong>2028~2029 年</strong>才會成為更重要的成長動力；NVIDIA 的 Kyber（NVL144，600kW 級機櫃）在 GTC 2026 路線圖上仍是 <strong>2027 年</strong>，Feynman 2028。<strong>換句話說，800VDC 是真題材，但它對損益的實質貢獻主要在 2027 年以後，而現價已經預先反映了一部分。</strong></p>
+  </div>
+
+  <div class="card" style="border:2px solid #dc2626">
+    <div class="note-title" style="color:#7f1d1d">🔴 美國 ITC 337 調查（2026-10-09 啟動）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:18%">項目</th><th>內容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>啟動日</strong></td><td>2026-10-09，美國國際貿易委員會（USITC）宣布</td></tr>
+        <tr><td><strong>申訴方</strong></td><td><strong>Vicor Corporation</strong>（總部美國麻州 Andover），於 <strong>2026-09-09</strong> 提出申訴</td></tr>
+        <tr><td><strong>標的</strong></td><td>進口或在美銷售的<strong>垂直電力傳輸系統、零組件與運算系統</strong>涉嫌侵犯其專利</td></tr>
+        <tr><td><strong>被訴方</strong></td><td>共 20 家企業，含<strong>鴻海、廣達、台達電</strong>及多家中國企業</td></tr>
+        <tr><td><strong>台達電涉案</strong></td><td>公司於 <strong>2026-10-12 發布重大訊息</strong>，確認台達電及<strong>旗下兩家美國子公司</strong>被列為被調查對象</td></tr>
+        <tr><td><strong>公司回應</strong></td><td>已委任智慧財產權及相關法律顧問，將依程序積極應對、維護權益；<strong>「目前相關產品未受影響」</strong>；因已進入法律程序，不便進一步評論</td></tr>
+        <tr><td><strong>背景</strong></td><td>此案為 Vicor 先前控告台達電侵權案的<strong>延伸</strong>。台達電過去否認侵權，並已在美國法院<strong>反訴</strong> Vicor 侵害台達電專利</td></tr>
+        <tr><td><strong>時程</strong></td><td>337 調查審理通常於 <strong>12~16 個月</strong>內完成 → 裁決約落在 <strong>2027Q4 ~ 2028Q1</strong></td></tr>
+        <tr><td><strong>最壞情況</strong></td><td>若最終認定違反，USITC 可發布<strong>有限排除令（limited exclusion order）</strong>，要求美國海關暨邊境保護局禁止特定企業的侵權產品進口美國</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>本報告的判讀：</strong>這件事的嚴重性不在於立即的財務衝擊（目前產品未受影響、尚無侵權認定），而在於<strong>它瞄準的正是台達電的成長主軸</strong>。垂直供電不是週邊零件，是 AI 伺服器電源的核心。而且 Vicor 是這個領域的專利老玩家，雙方已有訴訟前史。<br><br><strong>可追蹤的里程碑：</strong>（1）<strong>10/29 法說會</strong>管理層的說明；（2）USITC 正式立案後的程序時程表；（3）是否有和解跡象。<strong>在裁決前的 12~16 個月，這會是估值上的一個持續折價因子，即使它最終沒有造成實質損害。</strong></p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">06</span>基本面分析</div>
+
+  <div class="card">
+    <div class="note-title">季度損益表（億元，合併財報實際值）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>季度</th><th>營收</th><th>毛利率</th><th>營業利益</th><th>營益率</th><th>業外</th><th>稅前淨利</th><th>所得稅</th><th>稅後淨利</th><th>歸屬母公司</th><th>EPS</th></tr></thead>
+      <tbody>
+        <tr><td>2024Q1</td><td>912.98</td><td>29.52%</td><td>73.95</td><td>8.10%</td><td>13.71</td><td>87.65</td><td>17.98</td><td>69.67</td><td>57.64</td><td>2.22</td></tr>
+        <tr><td>2024Q2</td><td>1,034.44</td><td>34.13%</td><td>131.33</td><td>12.70%</td><td>19.03</td><td>150.36</td><td>30.82</td><td>119.54</td><td>99.48</td><td>3.83</td></tr>
+        <tr><td>2024Q3</td><td>1,122.03</td><td>34.93%</td><td>164.23</td><td>14.64%</td><td>12.52</td><td>176.75</td><td>35.28</td><td>141.47</td><td>123.39</td><td>4.75</td></tr>
+        <tr><td>2024Q4</td><td>1,142.02</td><td>30.77%</td><td>107.01</td><td>9.37%</td><td class="neg">−8.62</td><td>98.40</td><td>25.17</td><td>73.23</td><td>71.78</td><td>2.76</td></tr>
+        <tr><td>2025Q1</td><td>1,189.19</td><td>31.78%</td><td>140.36</td><td>11.80%</td><td>16.27</td><td>156.63</td><td>36.20</td><td>120.43</td><td>102.31</td><td>3.94</td></tr>
+        <tr><td>2025Q2</td><td>1,240.35</td><td>35.51%</td><td>186.69</td><td>15.05%</td><td>9.02</td><td>195.71</td><td>42.37</td><td>153.34</td><td>139.48</td><td>5.37</td></tr>
+        <tr><td>2025Q3</td><td>1,503.18</td><td>34.87%</td><td>248.09</td><td>16.50%</td><td>21.74</td><td>269.83</td><td>60.62</td><td>209.22</td><td>186.06</td><td>7.16</td></tr>
+        <tr><td>2025Q4</td><td>1,616.13</td><td>34.59%</td><td>264.18</td><td>16.35%</td><td class="neg">−7.70</td><td>256.49</td><td>60.11</td><td>196.38</td><td>173.24</td><td>6.67</td></tr>
+        <tr><td>2026Q1</td><td>1,593.53</td><td class="pos">37.00%</td><td>284.17</td><td class="pos">17.83%</td><td>26.76</td><td>310.93</td><td>72.58</td><td>238.35</td><td>205.56</td><td>7.91</td></tr>
+        <tr class="hl"><td><strong>2026Q2</strong></td><td><strong>1,832.56</strong></td><td><strong>35.64%</strong></td><td><strong>305.70</strong></td><td><strong>16.68%</strong></td><td><strong>44.30</strong></td><td><strong>350.00</strong></td><td><strong>78.31</strong></td><td><strong>271.69</strong></td><td><strong>251.36</strong></td><td><strong>9.68</strong></td></tr>
+        <tr style="background:#f0fdf4"><td>2026Q3E</td><td><strong>1,970.59</strong>*</td><td>—</td><td>325~345</td><td>16.5~17.5%</td><td>20~30</td><td>345~375</td><td>—</td><td>268~291</td><td>236~268</td><td><strong>9.1~10.3</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:12.5px;color:#64748b;margin-top:8px">* Q3&#39;26 營收 1,970.59 億為<strong>公司公告實際值</strong>（由 7/8/9 月營收加總，並經媒體與公司說法交叉確認）；該列其餘欄位為本報告推算值，財報預計 10/29 法說會前後公布。</p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">獲利品質：業外佔稅前淨利比重</div>
+    <p style="font-size:13px;line-height:1.8"><strong>2026Q2 業外 44.30 億 ÷ 稅前 350.00 億 = 12.66%；近四季合計 85.10 億 ÷ 1,187.25 億 = 7.17%。</strong>整體屬本業主導，但 <strong>Q2 的 44.30 億是近十季最高</strong>，值得留意 —— 若回到近四季平均水準（約 21 億／季），Q2 稅前會是 327 億而非 350 億，EPS 約 9.04 元而非 9.68 元。<strong>也就是說，Q2 的「歷史新高 EPS」裡有約 0.64 元來自高於常態的業外。</strong></p>
+    <div class="table-wrap">
+    <table style="margin-top:10px">
+      <thead><tr><th>個股</th><th>業外佔稅前</th><th>定位</th></tr></thead>
+      <tbody>
+        <tr><td>德宏 5475（Q2&#39;26）</td><td>−0.17%</td><td>最乾淨</td></tr>
+        <tr><td>台光電 2383（Q2&#39;26）</td><td>0.4%</td><td>極乾淨</td></tr>
+        <tr><td>南亞科 2408</td><td>2.4%</td><td>乾淨</td></tr>
+        <tr class="hl"><td><strong>台達電 2308（TTM）</strong></td><td><strong>7.17%</strong></td><td><strong>本業主導</strong></td></tr>
+        <tr><td>群創 3481（Q2&#39;26 單季）</td><td>9.6%</td><td>本業主導</td></tr>
+        <tr class="hl"><td><strong>台達電 2308（Q2&#39;26 單季）</strong></td><td><strong>12.66%</strong></td><td><strong>本業主導，但單季偏高</strong></td></tr>
+        <tr><td>晉泰 6221</td><td>13.9%</td><td>本業主導</td></tr>
+        <tr><td>群創 3481（H1&#39;26 累計）</td><td>25.7%</td><td>業外有影響</td></tr>
+        <tr><td>欣興 3037（TTM）</td><td>54.1%</td><td>帳面被業外撐高一倍</td></tr>
+        <tr><td>環球晶 6488 / 眾達-KY 4977</td><td>69%</td><td>業外主導</td></tr>
+        <tr><td>大洋 1321</td><td>92%</td><td>幾乎全靠業外</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="note-title">⭐ 財務體質：本系列目前最強的一檔</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>項目</th><th>2025Q4</th><th>2026Q1</th><th>2026Q2</th><th>判讀</th></tr></thead>
+      <tbody>
+        <tr><td>現金及約當現金</td><td>1,511.7</td><td>1,609.3</td><td class="pos"><strong>1,823.5</strong></td><td class="pos">約 2.8 個月營收</td></tr>
+        <tr><td>短期借款</td><td>23.6</td><td>12.2</td><td>163.0</td><td>Q2 增加，但絕對額仍小</td></tr>
+        <tr><td>長期借款</td><td>211.4</td><td>187.2</td><td>177.9</td><td>持續下降</td></tr>
+        <tr class="hl"><td><strong>淨現金</strong></td><td><strong>+1,276.7</strong></td><td><strong>+1,409.9</strong></td><td class="pos"><strong>+1,482.6</strong></td><td class="pos"><strong>零財務風險</strong></td></tr>
+        <tr><td>應收帳款</td><td>1,192.3</td><td>1,268.6</td><td>1,400.1</td><td>隨營收成長，週轉約 69 天</td></tr>
+        <tr><td>存貨</td><td>1,014.8</td><td>1,191.1</td><td>1,393.9</td><td class="neg">年增 71%，高於營收增速，須留意</td></tr>
+        <tr><td>流動比率</td><td>188.8%</td><td>195.4%</td><td>160.0%</td><td class="pos">安全（Q2 下降因股利 301 億列入應付）</td></tr>
+        <tr><td>負債比率</td><td>49.1%</td><td>47.8%</td><td>53.6%</td><td>正常</td></tr>
+        <tr><td>歸屬母公司權益</td><td>2,680.6</td><td>2,995.4</td><td>2,937.1</td><td>Q2 下降因發放 11.60 元股利（約 301 億）</td></tr>
+        <tr class="hl"><td><strong>營業現金流（累計）</strong></td><td><strong>984.7（全年）</strong></td><td>199.3</td><td class="pos"><strong>631.0（H1）</strong></td><td class="pos">H1 已達去年全年 64%</td></tr>
+        <tr><td>資本支出（累計）</td><td>−457.2（全年）</td><td>−110.9</td><td>−272.5（H1）</td><td>擴產持續，H1 已達去年全年 60%</td></tr>
+        <tr class="hl"><td><strong>自由現金流（H1）</strong></td><td>+527.5（全年）</td><td>+88.4</td><td class="pos"><strong>+358.5</strong></td><td class="pos">遠優於 H1&#39;25 的 +245.5</td></tr>
+        <tr><td><strong>OCF ÷ 稅後淨利</strong></td><td>1.45 倍</td><td>0.84 倍</td><td class="pos"><strong>1.24 倍</strong></td><td class="pos">大於 1，賺的錢確實收到現金</td></tr>
+        <tr><td>折舊 ÷ 營業利益（H1）</td><td>—</td><td>—</td><td>24.2%</td><td class="pos">非重資產壓力型（群創 470%、欣興 75%）</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>白話總結：</strong>台達電手上有 1,823 億現金、借款只有 341 億，上半年自己賺進 631 億營運現金、花 272 億擴廠後還剩 358 億。<strong>這家公司在財務上沒有任何需要擔心的地方 —— 這也是為什麼本報告的六維評分裡，財務只給 2.5 分（分數越低風險越小）。</strong><br><br><strong>唯一要盯的是存貨：</strong>從 2025Q2 的 815.3 億漲到 2026Q2 的 1,393.9 億，<strong>年增 71%，高於同期營收年增 47.8%</strong>。在營收動能鈍化的同時存貨增速更快，這個背離要在 Q3 財報確認是否收斂。</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">07</span>估值分析</div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-title">本益比情境比較（@1,615 元）</div>
+      <canvas id="peChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 同一股價，用不同年度 EPS 算出 24.8 ~ 51.4 倍。<strong>前次報告的 2,200 元目標價，正是建立在 FY2027E 65.1 元這個最低本益比情境上。</strong></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">現價 vs 法人目標價（元）</div>
+      <canvas id="tgtChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 全部為具名具日期的實際目標價。<strong>關鍵：最新一筆是 10/07 的 2,500 元，而股價在 10/13 與 10/15 才大跌 —— 所有目標價都未反映這波下跌。</strong></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="note-title">估值推演</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>基準</th><th>EPS</th><th>@1,615 元本益比</th><th>來源與假設</th></tr></thead>
+      <tbody>
+        <tr><td>近四季 TTM</td><td>31.42 元</td><td class="neg">51.4 倍</td><td>Q3&#39;25 7.16 ＋ Q4&#39;25 6.67 ＋ Q1&#39;26 7.91 ＋ Q2&#39;26 9.68（合併財報實際值）</td></tr>
+        <tr><td>Q2&#39;26 年化</td><td>38.72 元</td><td>41.7 倍</td><td>9.68 × 4</td></tr>
+        <tr class="hl"><td><strong>FY2026E（本報告）</strong></td><td><strong>37 ~ 39 元</strong></td><td><strong>41.4 ~ 43.6 倍</strong></td><td>Q1 7.91 ＋ Q2 9.68 實際；Q3E 9.1~10.3（營收已確認 1,970.59 億）；Q4E 10.3~11.0（法人看雙位數季增）</td></tr>
+        <tr><td>FY2026E（前次報告）</td><td class="neg">42 元</td><td>38.5 倍</td><td class="neg">本報告認為<strong>高估約 10%</strong>，因沿用 Q1 的 17.83% 營益率而非 Q2 的 16.68%</td></tr>
+        <tr><td><strong>FY2027E（本報告）</strong></td><td><strong>50 ~ 58 元</strong></td><td><strong>27.8 ~ 32.3 倍</strong></td><td>假設營收年增 20~28%、營益率 17~18%。此區間<strong>不假設 800VDC 大規模放量</strong>（多數外資認為要 2028~2029）</td></tr>
+        <tr><td>FY2027E（前次報告）</td><td>65.1 元</td><td>24.8 倍</td><td class="neg">較本報告上緣高 12%。需營收年增約 40% 且營益率回到 18% 以上才成立</td></tr>
+        <tr><td>股價淨值比</td><td>淨值 113.07 元</td><td class="neg">14.28 倍</td><td>2026-06-30 歸屬母公司權益 ÷ 發行股數；與 yfinance 的 14.371（@1,625）完全吻合</td></tr>
+        <tr><td>現金殖利率</td><td>股利 11.60 元</td><td>0.72%</td><td>FY2025 配發，除息 2026-06-17</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>🟢 本次腳本的本益比與股價淨值比可以用（罕見）：</strong>腳本回傳 PE 51.16、PB 14.371，本報告自算為 51.7、14.37（同以 1,625 元計）。<strong>PB 完全吻合，PE 差 1.1%（可能為稀釋 EPS 口徑）。</strong>本系列先前在南亞科遇到的「yfinance TTM 本益比落後一季」問題<strong>這次沒有發生</strong> —— 若落後一季，TTM 應為 27.11 元、本益比 59.9 倍，與實際回傳值明顯不同。已驗證，可採用。</p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">法人目標價彙整（全部附機構與日期）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>發布日期</th><th>機構</th><th>目標價</th><th>評等</th><th>vs 現價 1,615</th><th>備註</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><strong>2026-10-07</strong></td><td>美系外資</td><td><strong>2,500 元</strong></td><td>加碼</td><td class="pos">+54.8%</td><td><strong>最新一筆。</strong>認為 800V/±400V DC 與 SST 架構提高技術門檻，有利電源廠</td></tr>
+        <tr><td>2026-10-05</td><td>大和資本</td><td>3,088 元<br><span style="font-size:11px">（自 2,988 上調）</span></td><td>—</td><td class="pos">+91.2%</td><td>看好 AI ASIC 伺服器趨勢主要受惠者</td></tr>
+        <tr><td>2026-09-15</td><td>歐系外資</td><td>2,750 元</td><td>買進</td><td class="pos">+70.3%</td><td>指出 HVDC 產品已開始出貨；預估 400V/800V 架構 2028~2029 才成為更重要成長動力</td></tr>
+        <tr><td>2026-07-23</td><td>美系外資</td><td>2,280 元</td><td>買進</td><td class="pos">+41.2%</td><td>「短期利空已反應」</td></tr>
+        <tr><td>2026-07-28</td><td><strong>本系列第 2 次報告</strong></td><td>2,200 元</td><td>分批布局</td><td class="pos">+36.2%</td><td>12 個月目標，期限至 2027-07</td></tr>
+        <tr><td>2026-05 初</td><td>日系外資</td><td>2,440 元</td><td>—</td><td class="pos">+51.1%</td><td>肯定 800VDC 業務進展</td></tr>
+        <tr><td>2026-04-17</td><td>外資</td><td>2,110 元</td><td>—</td><td class="pos">+30.7%</td><td>當時為「再寫新高」階段</td></tr>
+        <tr style="background:#fef9c3"><td class="neg">日期無法確認</td><td>高盛（GS）</td><td class="neg">4,500 元<br><span style="font-size:11px">（自 2,420 上調）</span></td><td>買進</td><td>+178.6%</td><td class="neg"><strong>本報告不採用。</strong>來源為二手轉述，另有報導把同一個 4,500 元歸給「美系外資」且以 5 月營收為背景，<strong>機構歸屬與日期皆不一致</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>🔴 這張表最重要的一列不是數字，是日期。</strong>所有目標價（2,110~3,088 元）都發布於 <strong>10/07 或更早</strong>，而股價在 <strong>10/13 跌 6.6%、10/15 跌 8.7%</strong>，從 1,900 一路掉到 1,630。<strong>目前市場上沒有任何一份反映這波下跌後的目標價。</strong>換句話說，「距目標價還有 55%~91% 上檔空間」這種說法，是拿舊資訊比新價格。<br><br><strong>10/29 法說會後才會出現真正的新目標價 —— 這是本報告建議等待的另一個理由。</strong></p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">08</span>技術分析</div>
+
+  <div class="card" style="border:2px solid #d97706;background:#fffbeb">
+    <div class="note-title" style="color:#92400e">🔴 腳本輸出錯誤校正表</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:16%">項目</th><th>腳本輸出</th><th>正確值 / 判定</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr><td><strong>漲停 / 跌停</strong></td><td class="neg">1,765.5 / 1,444.5</td><td class="pos"><strong>1,785 / 1,465</strong></td><td><strong>兩個錯誤同時存在。</strong>（1）昨收取用 1,605（10/20 收盤）而非 1,625（10/21 收盤）—— 驗算：1,605×1.1 = 1,765.5，與腳本輸出<strong>完全相等</strong>，證明基準日落後一天。（2）未套用檔位：1,000 元以上最小升降單位為 5 元，1,625×1.1 = 1,787.5 須向內進位為 <strong>1,785</strong>；1,625×0.9 = 1,462.5 須向內進位為 <strong>1,465</strong>。</td></tr>
+        <tr><td><strong>今日成交量</strong></td><td class="neg">11,497,703 股</td><td class="pos">那是 <strong>10/21</strong> 的量</td><td>與歷史資料最後一筆完全相同，證明標錯日期。今日（10/22 09:37）實際僅 1 張，因開盤未久。所有量能倍數判讀應以 10/21 為基準日。</td></tr>
+        <tr><td><strong>三大法人</strong></td><td class="neg">全部 0 張，敘述「持平」</td><td class="pos"><strong>資料缺口</strong></td><td>台達電為台股第二大權值股、日均量逾 1 萬張，法人買賣超 0 不可能。官方數據：10/13 外資賣超 5,829 張、10/14 賣超 1,236 張，近 5 日（至 10/14）三大法人賣超 14,414 張。</td></tr>
+        <tr><td><strong>融資融券</strong></td><td class="neg">0 / 0，且敘述「融券餘額 0 張，放空比例偏高，需注意軋空風險」</td><td class="pos"><strong>資料缺口</strong>（融資 10,139 張、融券 46 張）</td><td><strong>與德宏 5475 的情況相反。</strong>德宏的 0 經雙來源確認為真值（停止信用交易）；台達電經第二來源查證為<strong>缺口</strong>。腳本那句「融券 0 張 → 放空比例偏高 → 軋空風險」本身自相矛盾（融券 0 代表沒人放空），一律刪除。</td></tr>
+        <tr><td><strong>均線排列</strong></td><td class="neg">「均線糾結（方向不明）」</td><td class="pos"><strong>空頭排列</strong></td><td>MA5 1,627 &lt; MA10 1,755 &lt; MA60 1,766.83 &lt; MA20 1,835.25。短期均線全數低於長期均線，是明確的空頭排列（僅 MA20 仍高於 MA60 一項不符），腳本的「方向不明」低估了空方強度。</td></tr>
+        <tr><td><strong>本益比 / 股價淨值比</strong></td><td class="pos">51.16 / 14.371</td><td class="pos"><strong>可採用</strong></td><td class="pos">本報告自算 51.7 / 14.37（@1,625）。<strong>PB 完全吻合，PE 差 1.1%。</strong>已驗證未落後季度（若落後，PE 應為 59.9 倍）。</td></tr>
+        <tr><td><strong>MA 時點</strong></td><td class="pos">含 10/21 收盤</td><td class="pos"><strong>無漏計問題</strong></td><td class="pos">已驗算 MA5=1,627.0、MA10=1,755.0、MA20=1,835.25 皆含 10/21。但不含今日 1,615，本報告另列含今日版本。</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="note-title">技術指標（基準日 2026-10-21 收盤 1,625）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>指標</th><th>截至 10/21 收盤</th><th>若今日收 1,615（本報告重算）</th><th>判讀</th></tr></thead>
+      <tbody>
+        <tr><td>MA5</td><td>1,627.0</td><td><strong>1,624.0</strong></td><td class="neg">股價 1,615 仍低於 MA5</td></tr>
+        <tr><td>MA10</td><td>1,755.0</td><td><strong>1,717.5</strong></td><td class="neg">低於 5.96%</td></tr>
+        <tr><td>MA20</td><td>1,835.25</td><td><strong>1,822.25</strong></td><td class="neg">低於 11.37%</td></tr>
+        <tr><td>MA60</td><td>1,766.83</td><td>約 1,760</td><td class="neg">低於 8.24%</td></tr>
+        <tr><td>排列</td><td colspan="2">MA5 &lt; MA10 &lt; MA60 &lt; MA20</td><td class="neg"><strong>空頭排列</strong></td></tr>
+        <tr><td>MACD / 訊號 / 柱狀</td><td>−44.97 / −6.86 / −38.12</td><td>—</td><td class="neg">死叉，柱狀負值且偏大</td></tr>
+        <tr><td>RSI(14)</td><td>37.34</td><td>—</td><td>偏弱但未進入 30 以下超賣區</td></tr>
+        <tr><td>布林上軌（+2σ）</td><td>2,107.10</td><td>2,109.67</td><td>—</td></tr>
+        <tr><td>布林中軌（MA20）</td><td>1,835.25</td><td>1,822.25</td><td class="neg">股價在中軌下方 11.4%</td></tr>
+        <tr><td>布林下軌（−2σ）</td><td>1,563.40</td><td><strong>1,534.83</strong></td><td>股價 1,615 仍高於下軌 5.2%</td></tr>
+        <tr><td>標準差 σ</td><td>135.93</td><td>143.71</td><td class="neg">帶寬 31.5%，波動大</td></tr>
+        <tr><td>成交量（10/21）</td><td>11,498 張</td><td>5 日均量 12,561 張</td><td>0.92 倍，量能正常偏縮</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>技術面白話總結：</strong>四條均線全部在股價上方、MACD 死叉、股價位於布林中軌下方 11.4% —— <strong>標準的空頭格局</strong>。唯一的緩和訊號是 RSI 37.3 尚未超賣、且量能已縮到 5 日均量的 0.92 倍（10/15 爆出 25,336 張後逐步收斂）。<strong>距布林下軌 1,534.8 還有 5.2% 空間，意味著技術上還有下探餘地。</strong>反彈的第一道關卡是 MA5 的 1,624，第二道是 MA10 的 1,717.5。</p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">關鍵價位</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>類型</th><th>價位</th><th>依據</th><th>距現價</th></tr></thead>
+      <tbody>
+        <tr><td class="neg">壓力 6</td><td>2,585</td><td>52 週 / 歷史最高（2026-05-27）</td><td>+60.1%</td></tr>
+        <tr><td class="neg">壓力 5</td><td>2,115</td><td>10/06 波段高點</td><td>+31.0%</td></tr>
+        <tr><td class="neg">壓力 4</td><td>1,835 ~ 1,885</td><td>MA20 / 9 月密集成交區</td><td>+13.6% ~ +16.7%</td></tr>
+        <tr><td class="neg">壓力 3</td><td><strong>1,785</strong></td><td>今日漲停（本報告修正值）</td><td>+10.5%</td></tr>
+        <tr><td class="neg">壓力 2</td><td>1,717.5</td><td>MA10（含今日）</td><td>+6.3%</td></tr>
+        <tr><td class="neg">壓力 1</td><td>1,650</td><td>今日盤中高點</td><td>+2.2%</td></tr>
+        <tr class="hl"><td><strong>現價</strong></td><td><strong>1,615</strong></td><td>2026-10-22 09:37</td><td>—</td></tr>
+        <tr><td class="pos">支撐 1</td><td>1,610</td><td>今日盤中低點</td><td>−0.3%</td></tr>
+        <tr><td class="pos">支撐 2</td><td>1,605</td><td>10/20 收盤（本波最低收盤）</td><td>−0.6%</td></tr>
+        <tr><td class="pos">支撐 3</td><td>1,590 ~ 1,595</td><td>10/19 盤中低點 / 9/11 低點區</td><td>−1.2% ~ −1.5%</td></tr>
+        <tr><td class="pos">支撐 4</td><td><strong>1,534.8</strong></td><td>布林下軌（含今日）</td><td>−5.0%</td></tr>
+        <tr><td class="pos">支撐 5</td><td>1,495</td><td>7/30 波段低點（前次報告進場區下緣）</td><td>−7.4%</td></tr>
+        <tr><td class="pos">支撐 6</td><td><strong>1,465</strong></td><td>今日跌停（本報告修正值）</td><td>−9.3%</td></tr>
+        <tr><td class="pos">支撐 7</td><td>860</td><td>52 週低點（2025-10-01）</td><td>−46.7%</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">09</span>籌碼面與融資融券</div>
+
+  <div class="chart-card">
+    <div class="chart-title">外資持股比例（%，各月底，10 月為 10/21）</div>
+    <canvas id="fshChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+    <div class="chart-note">★ 全部為官方集保申報實際值。<strong>今年 1 月 64.65% → 10/21 的 60.49%，單調下滑，年內減少 4.16 個百分點。</strong>與德宏 5475 的劇烈雙向震盪完全不同 —— 這是大型股的穩定、持續減碼。</div>
+  </div>
+
+  <div class="card">
+    <div class="note-title">外資近 11 個交易日：連續單向減持</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>日期</th><th>外資持股（股）</th><th>持股比</th><th>當日增減（股）</th><th>收盤</th></tr></thead>
+      <tbody>
+        <tr><td>2026-10-07</td><td>1,601,646,992</td><td>61.66%</td><td>—</td><td>1,990</td></tr>
+        <tr><td>2026-10-08</td><td>1,600,590,937</td><td>61.61%</td><td class="neg">−1,056,055</td><td>1,965</td></tr>
+        <tr><td>2026-10-12</td><td>1,598,718,650</td><td>61.54%</td><td class="neg">−1,872,287</td><td>1,900</td></tr>
+        <tr><td>2026-10-13</td><td>1,592,903,712</td><td>61.32%</td><td class="neg">−5,814,938</td><td class="neg">1,775（−6.6%）</td></tr>
+        <tr><td>2026-10-14</td><td>1,591,543,923</td><td>61.27%</td><td class="neg">−1,359,789</td><td>1,785</td></tr>
+        <tr><td>2026-10-15</td><td>1,580,656,527</td><td>60.85%</td><td class="neg">−10,887,396</td><td class="neg">1,630（−8.7%）</td></tr>
+        <tr><td>2026-10-16</td><td>1,578,502,980</td><td>60.76%</td><td class="neg">−2,153,547</td><td>1,635</td></tr>
+        <tr><td>2026-10-19</td><td>1,577,402,581</td><td>60.72%</td><td class="neg">−1,100,399</td><td>1,640</td></tr>
+        <tr><td>2026-10-20</td><td>1,573,953,680</td><td>60.59%</td><td class="neg">−3,448,901</td><td>1,605</td></tr>
+        <tr class="hl"><td><strong>2026-10-21</strong></td><td><strong>1,571,465,088</strong></td><td><strong>60.49%</strong></td><td class="neg"><strong>−2,488,592</strong></td><td><strong>1,625</strong></td></tr>
+        <tr style="background:#fee2e2"><td><strong>11 日累計</strong></td><td colspan="2"><strong>1,601.6 百萬股 → 1,571.5 百萬股</strong></td><td class="neg"><strong>−30,181,904（−30,182 張）</strong></td><td><strong>1,990 → 1,625（−18.3%）</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>這張表最強的訊號是「沒有例外」：11 個交易日，每一天都是淨減持，一天都沒有回補。</strong>減持最多的兩天（10/13 的 −581 萬股、10/15 的 −1,089 萬股）正好對應股價跌幅最大的兩天（−6.6%、−8.7%）。<br><br><strong>交叉驗證：</strong>第三方統計顯示近 5 日（至 10/14）三大法人賣超 14,414 張，其中外資 −12,165 張、投信 −1,924 張、自營商 −326 張。本報告的集保資料同期為 −10,103 張，差異來自<strong>集保為交割後持股（T+2）、買賣超為成交日</strong>，方向與量級一致。</p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">融資融券：散戶沒有進場</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>項目</th><th>數值</th><th>資料日期</th><th>判讀</th></tr></thead>
+      <tbody>
+        <tr><td>融資餘額</td><td><strong>10,139 張</strong></td><td>2026-10-14</td><td>近 20 日僅增加 185 張</td></tr>
+        <tr><td>融資佔流通股數</td><td><strong>0.39%</strong></td><td>自行計算</td><td class="pos">10,139,000 股 ÷ 2,597,543,329 股，極低</td></tr>
+        <tr><td>融資市值（@1,615）</td><td>約 163.7 億元</td><td>推算</td><td>佔市值 4.195 兆的 0.39%</td></tr>
+        <tr><td>融券餘額</td><td><strong>46 張</strong></td><td>2026-10-14</td><td class="pos">極少，無軋空動能</td></tr>
+        <tr><td>資券比</td><td>約 220 倍</td><td>自行計算</td><td>10,139 ÷ 46</td></tr>
+        <tr><td>年內融資區間</td><td>最低 4,660 張（4/20）<br>年初 8,402 張</td><td>Goodinfo 年度統計</td><td>目前水位高於年初，但絕對值仍微小</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>為什麼這很重要 —— 與群創 3481 的對照：</strong></p>
+    <div class="table-wrap">
+    <table style="margin-top:8px">
+      <thead><tr><th>項目</th><th>台達電 2308</th><th>群創 3481</th><th>意義</th></tr></thead>
+      <tbody>
+        <tr><td>法人動向</td><td>外資連 11 日賣</td><td>法人近 20 日賣超 23,207 張</td><td>都在賣</td></tr>
+        <tr><td>融資變化（近 20 日）</td><td class="pos"><strong>+185 張</strong></td><td class="neg"><strong>+9,470 張</strong></td><td>台達電散戶沒接刀，群創有</td></tr>
+        <tr><td>融資佔流通股數</td><td class="pos"><strong>0.39%</strong></td><td class="neg">4.15%</td><td>台達電浮額極輕</td></tr>
+        <tr><td>結構判定</td><td class="pos">單純法人減碼</td><td class="neg">法人出貨、散戶槓桿接刀</td><td>—</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>這對台達電是中性偏正面的：</strong>沒有散戶浮額堆積，代表未來不會有融資斷頭的賣壓螺旋。<strong>但反過來說，也代表反彈時缺少散戶追價的燃料 —— 要漲必須等法人自己回頭買。</strong>所以本報告把「外資是否轉為連續買超」列為第一順位的追蹤條件。</p>
+    <p style="font-size:12.5px;color:#64748b;margin-top:10px"><strong>查詢方式：</strong>台達電為上市股，融資融券與三大法人應查<strong>臺灣證券交易所</strong>（交易資訊 → 融資融券餘額 / 三大法人買賣超日報），每日約 18:00 更新。<strong>勿用櫃買中心查上市股。</strong></p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">10</span>研究員辯論</div>
+  <div class="debate-grid">
+    <div class="debate-col bull">
+      <div class="debate-head">看多研究員 — 6 點論據</div>
+      <ol class="debate-list">
+        <li><strong>財務體質是本系列最強的一檔，沒有之一。</strong>淨現金 <strong>1,482.6 億</strong>（現金 1,823.5 − 借款 340.9）、流動比 160%、營業現金流÷稅後淨利 <strong>1.24 倍</strong>、上半年自由現金流 <strong>+358.5 億</strong>（去年同期 +245.5 億）。折舊佔營業利益僅 24.2%，不是重資產包袱型公司。<strong>在任何景氣情境下，這家公司的生存都不是問題。</strong></li>
+        <li><strong>營收仍在創新高，不是衰退。</strong>Q3&#39;26 營收 <strong>1,970.59 億</strong>，季增 7.5%、年增 31.1%，<strong>連續第二季創歷史新高</strong>。前三季累計 5,396.68 億（+37.22%），全年突破 7,500 億幾無懸念。<strong>市場在罵的是「成長率」，不是「成長」。</strong></li>
+        <li><strong>年增率崩跌有一半是基期造成的假象。</strong>2025 年 9 月單月營收 570.61 億（比 8 月的 478.60 億暴增 19.2%）是個異常高基期；<strong>2025 年 11 月基期回落到 505.43 億</strong>。若今年 11 月維持在 670 億附近，年增率會自動彈回 <strong>+32% 以上</strong>。空方拿 +14.6% 說故事，但那個數字下個月就會變。</li>
+        <li><strong>獲利品質持續改善，且趨勢未斷。</strong>營益率從 2024Q1 的 8.10% 一路走到 2026Q1 的 17.83%，Q2 雖回落至 16.68% 但仍遠高於一年前的 15.05%。毛利率 35.64% 亦高於去年同期。<strong>兩年內營益率翻了一倍以上，這是產品組合實質升級的結果。</strong></li>
+        <li><strong>籌碼結構乾淨，沒有浮額。</strong>融資餘額僅 10,139 張、佔流通股數 <strong>0.39%</strong>，近 20 日只增加 185 張；融券 46 張。<strong>股價從 2,115 跌到 1,605 的過程中散戶根本沒進場接刀</strong> —— 這代表沒有融資斷頭的賣壓螺旋風險，下檔比群創那種 4.15% 融資比的結構安全得多。</li>
+        <li><strong>800VDC 是真需求，且公司已在出貨。</strong>AI 機櫃功耗衝到 600kW 級，48V 架構的線損已無法接受，轉向 800VDC 是物理上的必然而非選擇。台達電已在 GTC 2026 展出 800 VDC In-Row 660kW 機櫃（內建 480kW BBU、AC-DC 效率 98%），歐系外資 9/15 確認<strong>HVDC 產品已開始出貨</strong>。七家外資目標價落在 2,110~3,088 元，全部高於現價。</li>
+      </ol>
+    </div>
+    <div class="debate-col bear">
+      <div class="debate-head">看空研究員 — 7 點論據</div>
+      <ol class="debate-list">
+        <li><strong>月營收已經連續四個月橫盤，這才是真訊號。</strong>6 月 656.03 → 7 月 670.73 → 8 月 645.86 → 9 月 654.00。<strong>四個月區間僅 645~670 億，上下不到 4%。</strong>多方說「年增率是基期假象」沒錯，但月增率這條線沒有基期問題 —— 它說的是：<strong>成長停了。</strong>而現價的 51.4 倍 TTM 本益比，買的正是「繼續高速成長」這個假設。</li>
+        <li><strong>外資連 11 個交易日單向減持，一天都沒回補。</strong>10/07~10/21 累計減持 <strong>30,182 張</strong>，持股比今年由 64.65% 降到 <strong>60.49%</strong>（−4.16pp）。減最兇的 10/13（−581 萬股）與 10/15（−1,089 萬股）正是跌最深的兩天。<strong>持有六成股權的人正在有系統地離場，而且沒有一天改變主意。</strong></li>
+        <li><strong>337 調查瞄準的是成長主軸本身。</strong>USITC 於 10/09 立案，申訴方 Vicor，標的是<strong>垂直電力傳輸系統</strong> —— AI 伺服器電源的核心，不是邊緣產品。台達電 10/12 發重訊確認公司及兩家美國子公司在列。審理 12~16 個月，裁決約 2027Q4~2028Q1，<strong>若認定違反可發布有限排除令禁止輸美</strong>。即使最終無事，這 12~16 個月都是估值上的折價因子。</li>
+        <li><strong>所有法人目標價都是過期資訊。</strong>2,110~3,088 元這些數字<strong>全部發布於 10/07 或更早</strong>，而股價在 10/13 跌 6.6%、10/15 跌 8.7%。<strong>市場上目前沒有任何一份反映這波下跌後的目標價。</strong>拿舊目標價比新股價算出「還有 55%~91% 上檔空間」，是方法論錯誤。其中最高的 4,500 元（高盛）連發布日期與機構歸屬都無法確認。</li>
+        <li><strong>估值仍然不便宜。</strong>TTM 本益比 <strong>51.4 倍</strong>、股價淨值比 <strong>14.28 倍</strong>、現金殖利率僅 <strong>0.72%</strong>。即使用本報告的 FY2026E 37~39 元，也還有 41~44 倍。<strong>而前次報告的 FY2026E 42 元已被證明高估約 10%</strong> —— 當分母持續下修而股價靠分母撐著，風險是雙向放大的。</li>
+        <li><strong>存貨增速超過營收增速。</strong>存貨由 2025Q2 的 815.3 億增至 2026Q2 的 <strong>1,393.9 億，年增 71%</strong>，而同期營收年增 47.8%。<strong>在營收動能鈍化的同時存貨增更快</strong>，這個背離若在 Q3 財報未收斂，就是需求放緩的確認訊號。</li>
+        <li><strong>800VDC 的實質貢獻在 2027 年以後，但股價已先反映過一輪。</strong>歐系外資自己說 400V/800V 架構要到 <strong>2028~2029</strong> 才成為更重要的成長動力；NVIDIA Kyber 在 GTC 2026 路線圖上仍是 <strong>2027 年</strong>。而股價已從去年 10 月的 860 元漲到今年 5 月的 2,585 元（<strong>3 倍</strong>）。<strong>題材是真的，但「什麼時候兌現」與「現在該付多少錢」是兩回事。</strong></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="note-title">辯論總結與量化權重</div>
+    <div class="weight-bar">
+      <div class="weight-bull" style="width:45%">看多 45%</div>
+      <div class="weight-bear" style="width:55%">看空 55%</div>
+    </div>
+    <p style="font-size:13.5px;line-height:1.8;margin-top:14px"><strong>裁決：看空 55% / 看多 45% —— 但這是本系列目前最接近五五波的一次，而且空方的勝出靠的是「時間點」而非「公司品質」。</strong></p>
+    <p style="font-size:13.5px;line-height:1.8;margin-top:8px">多方的財務論據<strong>完全成立且無可反駁</strong>：淨現金 1,482 億、自由現金流轉強、營益率兩年翻倍、營收仍創新高、籌碼無浮額。<strong>如果問「這是一家好公司嗎」，答案是明確的「是」，而且是本系列財務體質最好的一檔。</strong></p>
+    <p style="font-size:13.5px;line-height:1.8;margin-top:8px">空方勝在三個同時發生、且都還沒結束的事：<strong>（1）月營收連四個月橫盤，而 51.4 倍本益比買的是繼續成長；（2）持有六成股權的外資連 11 日單向減持；（3）337 調查打在成長主軸上，且要 12~16 個月才有結果。</strong>多方最強的反駁「年增率是基期假象」本報告認同，但它只能解釋年增率，解釋不了月增率的橫盤。</p>
+    <div class="advice-box" style="margin-top:14px">
+      <div class="advice-title">給一般投資人的話</div>
+      <p>台達電跟你最近看過的德宏、群創是完全不同的物種。<strong>德宏的風險是「公司可能撐不住」，台達電完全沒有這個問題</strong> —— 它手上的淨現金比德宏整家公司的市值還多五倍。所以如果你擔心的是「會不會變成壁紙」，這檔不用擔心。</p>
+      <p style="margin-top:9px"><strong>但「不會倒」跟「現在該買」是兩個問題。</strong>它從 2,585 元跌到 1,615 元（−37.5%）的過程中，公司的營收還在創新高 —— 這告訴你市場殺的不是獲利，是<strong>成長率與估值</strong>。而這兩件事都還在往不利的方向走：月營收橫盤四個月、外資連賣 11 天、337 調查剛立案。</p>
+      <p style="margin-top:9px"><strong>最實際的建議是：這檔股票 7 天後（10/29）要開法說會。</strong>管理層會一次說明 Q4 展望、337 調查進展、800VDC 時程 —— 正好是本報告列出的三個最大未知數。<strong>在一檔已經跌掉 37.5% 的權值股上，多等七天拿到完整資訊的成本，遠低於現在猜錯的成本。</strong>如果你已經持有，法說會的內容會告訴你該加碼還是該減；如果你還沒進場，沒有任何理由要在資訊公布前的最後七天搶進。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">11</span>風控評估</div>
+  <div class="chart-card">
+    <div class="chart-title">六維風險評分（1~10 分，分數越高風險越大）</div>
+    <canvas id="riskChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+    <div class="chart-note">加權公式：估值 30% + 財務 25% + 流動性 10% + 產業 15% + 總經 10% + 籌碼 10%</div>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:12%">維度</th><th style="width:8%">權重</th><th style="width:8%">評分</th><th>評分依據</th></tr></thead>
+      <tbody>
+        <tr><td><strong>估值風險</strong></td><td>30%</td><td style="color:#d97706"><strong>7.0</strong></td><td>TTM 本益比 51.4 倍、股價淨值比 14.28 倍、殖利率僅 0.72%。FY2026E 仍有 41~44 倍。<strong>減分項：</strong>已自 5 月高點的約 82 倍大幅收斂，且 FY2027E 降至 28~32 倍。<strong>加分項：</strong>前次 FY2026E 42 元已證實高估 10%，分母有持續下修風險。</td></tr>
+        <tr><td><strong>財務風險</strong></td><td>25%</td><td class="pos"><strong>2.5</strong></td><td class="pos"><strong>本系列最低分。</strong>淨現金 1,482.6 億、流動比 160%、負債比 53.6%、OCF÷淨利 1.24 倍、H1 自由現金流 +358.5 億、折舊佔營益僅 24.2%。唯一扣分：存貨年增 71% 高於營收年增 47.8%。</td></tr>
+        <tr><td><strong>流動性風險</strong></td><td>10%</td><td class="pos"><strong>1.5</strong></td><td class="pos">台股第二大權值股，市值 4.195 兆，日均量 1.26 萬張（約 200 億元）。融資僅佔流通股數 0.39%、融券 46 張，無浮額與軋空問題。從未被列處置或注意股。</td></tr>
+        <tr><td><strong>產業風險</strong></td><td>15%</td><td style="color:#d97706"><strong>5.5</strong></td><td>AI 電源需求真實，800VDC 為物理必然。<strong>但：</strong>月營收連四月橫盤；800VDC 實質貢獻多數外資認為在 2028~2029；Kyber 時程仍有 2027/2028 之爭；<strong>337 調查瞄準垂直供電此一核心技術，裁決落在 2027Q4~2028Q1。</strong></td></tr>
+        <tr><td><strong>總經風險</strong></td><td>10%</td><td style="color:#d97706"><strong>5.5</strong></td><td>AI 資料中心資本支出仍強。但 10/15 美國 CPI 超乎預期引發系統性賣壓（當日台股重挫 1,655 點、台達電 −8.68%），顯示此類高評價權值股對利率與風險偏好極度敏感。2027 年將面對 2026 的高基期。</td></tr>
+        <tr><td><strong>籌碼風險</strong></td><td>10%</td><td style="color:#d97706"><strong>7.0</strong></td><td>外資連 11 個交易日單向減持累計 30,182 張、無一日回補，持股比年內由 64.65% 降至 60.49%。近 5 日三大法人賣超 14,414 張。<strong>減分項：</strong>融資近 20 日僅增 185 張、佔流通股數 0.39%，<strong>無散戶浮額與斷頭風險</strong>，結構遠優於群創。</td></tr>
+        <tr class="hl"><td colspan="2"><strong>加權綜合</strong></td><td style="color:#d97706"><strong>5.0</strong></td><td><strong>中等風險（4~6 分級）。</strong>7.0×0.30 + 2.5×0.25 + 1.5×0.10 + 5.5×0.15 + 5.5×0.10 + 7.0×0.10 = 2.10 + 0.625 + 0.15 + 0.825 + 0.55 + 0.70 = <strong>4.95</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>風險結構的特徵：</strong>台達電的風險分布與本系列先前幾檔<strong>完全相反</strong>。德宏是估值 9.5 + 籌碼 9.0 + 財務 7.0（三高）；台達電則是<strong>財務 2.5、流動性 1.5 這兩項低到幾乎可以忽略</strong>，風險完全集中在估值（7.0）與籌碼（7.0）。<br><br><strong>這個分布的意思是：你不需要擔心它出事，只需要判斷它值多少錢、以及法人什麼時候停止賣。</strong>而這兩個問題的答案，有很大一部分會在 10/29 法說會後浮現。</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">12</span>台股三段式策略</div>
+  <div class="strategy-grid">
+    <div class="strategy-card attack">
+      <div class="sc-title">進攻情境</div>
+      <div class="sc-cond">觸發條件</div>
+      <ul>
+        <li>10/29 法說會 Q4 展望明確優於市場預期（營收季增雙位數獲管理層確認）</li>
+        <li>管理層對 337 調查提出具體化解路徑（和解進展／產品設計迴避／反訴進度）</li>
+        <li>外資轉為<strong>連續三日以上淨買超</strong>（第一順位訊號）</li>
+        <li>10 月營收（11/10 前公告）突破 700 億，打破四個月橫盤</li>
+        <li>股價站回 MA20（1,822）且量能放大至 5 日均量 1.3 倍以上</li>
+      </ul>
+      <div class="sc-cond">參考價位</div>
+      <p class="sc-price">分批區間 1,600 ~ 1,750 元<br>目標 2,100 ~ 2,300 元<br>停損 1,495（7/30 低點）</p>
+      <div class="sc-note">需<strong>同時滿足 3 項以上</strong>。目前成立 0 項。</div>
+    </div>
+    <div class="strategy-card balance">
+      <div class="sc-title">均衡情境（現況）</div>
+      <div class="sc-cond">現況判定</div>
+      <ul>
+        <li>財務無虞、營收創高，但月營收連四月橫盤</li>
+        <li>外資連 11 日單向減持，散戶未接刀</li>
+        <li>337 調查剛立案，12~16 個月無結果</li>
+        <li>技術面空頭排列，MACD 死叉，股價低於 MA20 達 11.4%</li>
+        <li>所有法人目標價皆為 10/07 前的過期資訊</li>
+      </ul>
+      <div class="sc-cond">操作傾向</div>
+      <p class="sc-price"><strong>觀望至 10/29</strong><br>既有持股可續抱<br>不建立新倉</p>
+      <div class="sc-note">法說會在 7 天後，是三個最大未知數的<strong>同時解答點</strong>。沒有理由在此之前搶進。</div>
+    </div>
+    <div class="strategy-card defense">
+      <div class="sc-title">防守情境</div>
+      <div class="sc-cond">觸發條件</div>
+      <ul>
+        <li>法說會 Q4 展望保守，或管理層對 337 調查無法給出具體說明</li>
+        <li>10 月營收跌破 640 億（四個月橫盤區間下緣失守）</li>
+        <li>Q3 財報營益率跌破 16.5%，或存貨續增而營收未同步成長</li>
+        <li>外資減持延續至 15 個交易日以上</li>
+        <li>收盤跌破布林下軌 1,534.8 且量能放大</li>
+        <li>337 案出現不利的程序裁定</li>
+      </ul>
+      <div class="sc-cond">參考價位</div>
+      <p class="sc-price">第一觀察 1,534.8（布林下軌）<br>第二 1,495（7/30 低點）<br>極端情境 1,300（約 FY2026E 34 倍）</p>
+      <div class="sc-note">本檔日均量 1.26 萬張、無融資斷頭風險，<strong>停損執行不會有流動性問題</strong> —— 這是它優於中小型股的地方。</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="note-title">催化劑時程表</div>
+    <div class="timeline">
+      <div class="tl-item good"><div class="tl-date">2026-10-29（7 天後，最重要）</div><div class="tl-text"><strong>第三季法人說明會。</strong>一次解決本報告三個最大未知數：（1）<strong>Q4 展望</strong>——法人看雙位數季增，需管理層確認；（2）<strong>337 調查</strong>——管理層的說明與因應，是目前唯一能降低此風險不確定性的場合；（3）<strong>800VDC / HVDC 出貨時程與金額</strong>——決定 FY2027E EPS 該給 50 元還是 65 元。<strong>法說會後也才會出現反映本波下跌的新目標價。</strong></div></div>
+      <div class="tl-item"><div class="tl-date">2026-11-10 前</div><div class="tl-text"><strong>10 月營收公告。</strong>兩個觀察點：（1）能否突破 700 億，打破 645~670 億的四個月橫盤；（2）年增率基期為 2025 年 10 月的 573.84 億，若 10 月營收 660 億，年增率約 +15%，仍低；<strong>但 11 月基期降至 505.43 億，屆時年增率可望彈回 +32% 以上。</strong>不要被 10 月的低年增率再嚇一次。</div></div>
+      <div class="tl-item"><div class="tl-date">2026 年 11 月中（法說會前後）</div><div class="tl-text"><strong>Q3 財報。</strong>營收 1,970.59 億已確認，重點看：營益率能否守住 16.5%（驗證本報告 Q3E EPS 9.1~10.3 元）、<strong>存貨是否自 1,393.9 億收斂</strong>、業外是否回到 20~30 億常態（Q2 的 44.30 億偏高）。</div></div>
+      <div class="tl-item bad"><div class="tl-date">2027Q4 ~ 2028Q1（推估）</div><div class="tl-text"><strong>337 調查裁決。</strong>USITC 審理通常 12~16 個月，自 2026-10-09 起算。若認定違反，可發布<strong>有限排除令</strong>禁止侵權產品輸美。<strong>在裁決前的整段期間，這都是估值上的折價因子</strong>，即使最終無實質損害。中途可追蹤：程序時程表公布、是否和解、反訴進展。</div></div>
+      <div class="tl-item"><div class="tl-date">2027 年</div><div class="tl-text"><strong>NVIDIA Kyber（NVL144, 600kW 級機櫃）。</strong>GTC 2026 路線圖維持 2027 年（Feynman 2028），但仍有延至 2028 的傳聞。<strong>這是前次報告列為「最大風險」的項目，目前未惡化。</strong>Kyber 級功耗是 800VDC 成為必要而非選配的轉折點。</div></div>
+      <div class="tl-item"><div class="tl-date">2028 ~ 2029 年</div><div class="tl-text"><strong>800VDC / ±400V 架構成為主要成長動力</strong>（歐系外資 9/15 判斷）。<strong>這是題材真正兌現的時點 —— 距今還有 2~3 年。</strong>現價隱含的成長假設是否該等這麼久，是估值爭論的核心。</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">13</span>名詞小教室</div>
+  <div class="card">
+    <div class="glossary">
+      <div class="gl-item"><div class="gl-term">HVDC / 800VDC（高壓直流）</div><div class="gl-def">資料中心傳統用 48V 直流供電，但 AI 機櫃功耗衝到 600kW 時，48V 要通過的電流大到線材會發燙、銅用量也變得離譜。改用 800V 可讓電流降到十六分之一。<strong>白話：同樣的水量，用粗水管低壓送、還是細水管高壓送 —— AI 時代被迫改成高壓。</strong>這是物理限制，不是廠商想不想換的問題。</div></div>
+      <div class="gl-item"><div class="gl-term">BBU（電池備援模組）</div><div class="gl-def">裝在機櫃裡的備用電池。但在 AI 機櫃裡它的主要任務不是停電時撐住 GPU，而是<strong>吸收 144 顆 GPU 同時開關造成的電流劇烈震盪</strong>，保護上游的電力設備。台達電的 660kW 機櫃內建 480kW 的 BBU。<strong>白話：像汽車的避震器，不是為了跑得快，是為了不把車身震壞。</strong></div></div>
+      <div class="gl-item"><div class="gl-term">垂直供電（Vertical Power Delivery）</div><div class="gl-def">把供電元件直接疊在晶片正下方，而不是放在旁邊，縮短供電路徑、減少損耗。<strong>這正是 337 調查的標的技術</strong> —— 所以這件事不是邊緣產品的專利糾紛，是打在 AI 電源的核心上。</div></div>
+      <div class="gl-item"><div class="gl-term">337 調查與有限排除令</div><div class="gl-def">美國《關稅法》第 337 條的調查，由美國國際貿易委員會（USITC）執行，專門處理「進口產品侵害美國智慧財產權」。審理約 12~16 個月。若認定違反，可發布<strong>有限排除令</strong>，由美國海關禁止特定企業的侵權產品進口。<strong>白話：不是罰錢，是直接不准賣進美國 —— 所以殺傷力比一般專利訴訟大。</strong>目前台達電尚未被認定侵權，且已反訴對方。</div></div>
+      <div class="gl-item"><div class="gl-term">基期效應</div><div class="gl-def">年增率 = 今年 ÷ 去年同月 − 1。如果去年同月特別高，今年就算表現不錯，年增率也會很難看。<strong>台達電 9 月年增率只有 +14.6%，就是因為 2025 年 9 月單月暴增 19.2% 到 570.61 億這個高基期。</strong><strong>白話：不是今年跑慢了，是去年那一步跨特別大。</strong>看成長要同時看月增率才不會被騙。</div></div>
+      <div class="gl-item"><div class="gl-term">集保外資持股</div><div class="gl-def">集保結算所每日公告的外資實際持股數，是<strong>交割後</strong>的結果（T+2），比「三大法人買賣超」慢兩天但更確定。台達電 10/07~10/21 這條線連續 11 日下降、無一日回升。<strong>白話：買賣超是「今天下的單」，持股數是「真的已經過戶的股票」—— 後者作不了假。</strong></div></div>
+      <div class="gl-item"><div class="gl-term">業外佔稅前淨利</div><div class="gl-def">公司賺的錢裡，有多少不是來自本業（而是利息、匯兌、investment 評價等）。台達電近四季 7.17%、Q2 單季 12.66%，屬本業主導。<strong>白話：這個比率越低，代表獲利越「實在」，越不容易某一季突然消失。</strong>台達電算乾淨，但 Q2 那季 44.3 億的業外比平常高，EPS 裡約 0.64 元來自這裡。</div></div>
+      <div class="gl-item"><div class="gl-term">自由現金流（FCF）</div><div class="gl-def">營業現金流 − 資本支出，代表公司營運賺的錢扣掉擴廠後，真正能自由運用的現金。台達電 2026 上半年 <strong>+358.5 億</strong>（去年同期 +245.5 億）。<strong>白話：這是公司「真的存進口袋」的錢。帳上獲利可以靠會計做，現金做不了假。</strong></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">14</span>免責聲明與資料來源</div>
+  <div class="disclaimer">
+    <div class="dis-title">⚠️ 重要聲明</div>
+    <p><strong>本報告僅供研究參考，不構成任何投資建議、要約或招攬。</strong>報告中所有目標價、合理價區間、EPS 預估與策略情境皆為基於公開資訊的推演，不保證實現。投資決策應由投資人自行判斷並承擔全部風險。股票投資可能導致本金損失。</p>
+    <p style="margin-top:10px"><strong>推算值與實際值的區分：</strong>所有實際值皆註明來源（合併財報／公司公告／官方集保／交易所）。<strong>以下為本報告推估，非公司公告：</strong>Q3&#39;26 EPS 9.1~10.3 元、Q3&#39;26 營益率 16.5~17.5%、Q3&#39;26 業外 20~30 億、FY2026E EPS 37~39 元、FY2027E EPS 50~58 元、合理價區間 1,500~1,950 元、337 調查裁決時點 2027Q4~2028Q1（依「審理通常 12~16 個月」推算）、以及「2025 年 11 月低基期將使年增率回升至 +32% 以上」此一推論。<br><strong>Q3&#39;26 營收 1,970.59 億為公司公告實際值，非推估。</strong></p>
+    <p style="margin-top:10px"><strong>已知的資料限制與來源衝突（誠實揭露）：</strong></p>
+    <ul style="margin:8px 0 0 20px;font-size:13px;line-height:1.8">
+      <li><strong>未能取得：</strong>旺得富該篇 337 專題原文（HTTP 403）、Goodinfo 原始頁面（HTTP 403）、10/15 之後的官方三大法人與融資融券逐日數字（第三方統計僅更新至 10/14；本報告以集保外資持股補足至 10/21）、台達電 Q3 財報（尚未公布）、公司對 Q4 的正式財測。</li>
+      <li><strong>目標價來源衝突：</strong>高盛的 4,500 元目標價，一來源稱為高盛（自 2,420 上調），另一來源將同一數字歸於「美系外資」且以 5 月營收為背景，<strong>機構歸屬與發布日期皆無法確認，本報告不予採用、亦不納入任何估值推導</strong>。其餘七筆目標價均有明確機構與日期。</li>
+      <li><strong>所有法人目標價均發布於 2026-10-07 或更早</strong>，未反映 10/13（−6.6%）與 10/15（−8.7%）的下跌。引用時務必注意此時間落差。</li>
+      <li><strong>Kyber 量產時程有歧見：</strong>GTC 2026 路線圖維持 2027 年；另有報導稱因製造問題延至 2028；郭明錤曾主張最快 2026 年底。本報告採 GTC 官方路線圖的 2027 年，並揭露分歧。</li>
+      <li><strong>台達電 660kW 機櫃「2026Q3 出貨」一說</strong>來自第三方彙整表，引用自 Taiwan News 報導但本報告未能查證原文，<strong>故未納入任何財務推估</strong>。</li>
+      <li><strong>前次報告（2026-07-28）經查證有三處錯誤</strong>：市值單位誤植（4,104 億應為 4.104 兆）、AI 佔比 40%（公司說法為超過 25%）、業務比重（自動化 ~20% 實為自動化 8% + 交通 6%）。已於第 01 節逐項更正。</li>
+    </ul>
+    <p style="margin-top:10px"><strong>資料來源：</strong>富果 Fugle API（即時報價 2026-10-22 09:37）、FinMind（歷史 K 線、合併財務報表、資產負債表、現金流量表、月營收、股利、官方集保外資持股申報）、公開資訊觀測站重大訊息（2026-10-12 337 調查重訊）、美國國際貿易委員會 USITC（2026-10-09 立案公告，經媒體轉述）、臺灣證券交易所（融資融券、三大法人，經第三方統計轉述）、中時／工商時報、中央社、科技新報、經濟日報、Yahoo 股市、FinLab、Goodinfo、鉅亨網、自由財經、今周刊、新頭殼、ETtoday、NVIDIA GTC 2026 公開資料與 Delta 官方新聞稿（PRNewswire）。</p>
+    <p style="margin-top:10px"><strong>交叉驗證紀錄：</strong>月營收月份慣例經三方驗證（9 月營收 654 億、<strong>Q3 1,970.59 億、前三季 5,396.68 億，與公司公告數字完全一致</strong>）；月營收加總與合併財報誤差 Q1、Q2 皆為 0.01 億（0.0006%），校準係數 1.000；每股淨值 113.07 元經 yfinance 股價淨值比 14.371 反推驗證完全吻合；TTM EPS 31.42 元經本益比 51.16 倍反推驗證（確認未落後季度）；漲跌停檔位規則經腳本輸出 1,765.5 = 1,605×1.1 反證其基準日落後一天；外資集保持股變動與第三方三大法人買賣超統計方向與量級一致。</p>
+    <p style="margin-top:10px">報告產製時間：2026-10-22 · 台達電子（2308）第 3 次研究報告（前次 2026-07-28、首次 2026-07-20）· 本報告由多角色分析團隊流程產出，圖表以原生 Canvas 2D API 繪製，無任何外部 CDN 依賴。</p>
+  </div>
+</section>
+
+<script>
+function drawBarChart(id,labels,data,barColor,accentColor,negColor,dec){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=54,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  var D=(dec===undefined)?2:dec;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||0.5;
+  var lo=(min<0)?(min-pad):Math.max(0,min-pad);
+  var hi=max+pad,range=hi-lo;
+  var n=data.length;
+  var barW=chartW/n*0.58,gap=chartW/n;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(D===0?0:1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0){ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();}
+  for(var i=0;i<n;i++){
+    var x=PL+i*gap+(gap-barW)/2;
+    var vy=PT+chartH-((data[i]-lo)/range*chartH);
+    var top=Math.min(vy,zeroY),bh=Math.abs(vy-zeroY);
+    if(bh<1.5)bh=1.5;
+    var isLast=(i===n-1);
+    var color=(data[i]<0)?(negColor||'#dc2626'):(isLast?accentColor:barColor);
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,top,barW,bh,3);ctx.fillStyle=color;ctx.fill();}
+    else{ctx.fillStyle=color;ctx.fillRect(x,top,barW,bh);}
+    ctx.fillStyle=(data[i]<0)?'#dc2626':(isLast?accentColor:'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(D),x+barW/2,(data[i]<0)?(top+bh+11):(top-4));
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    var lx=PL+i*gap+gap/2,ly=PT+chartH+14;
+    if(labels[i].length>4){ctx.save();ctx.translate(lx,ly);ctx.rotate(-Math.PI/6);ctx.fillText(labels[i],0,0);ctx.restore();}
+    else ctx.fillText(labels[i],lx,ly);
+  }
+}
+function drawLineChart(id,labels,data,color,negColor,dec){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=54,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  var D=(dec===undefined)?1:dec;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||1;
+  var lo=min-pad,hi=max+pad,range=hi-lo;
+  var n=data.length;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0&&hi>0){
+    ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);
+    ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();
+  }
+  var pts=[];
+  for(var i=0;i<n;i++)pts.push({x:PL+i*chartW/(n-1),y:PT+chartH-(data[i]-lo)/range*chartH});
+  var base=(lo<0&&hi>0)?zeroY:(PT+chartH);
+  ctx.beginPath();ctx.moveTo(pts[0].x,base);
+  for(var i=0;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.lineTo(pts[n-1].x,base);ctx.closePath();
+  var grad=ctx.createLinearGradient(0,PT,0,PT+chartH);
+  var hex=color.slice(1);
+  var r=parseInt(hex.slice(0,2),16),g2=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  grad.addColorStop(0,'rgba('+r+','+g2+','+b+',0.25)');
+  grad.addColorStop(1,'rgba('+r+','+g2+','+b+',0.02)');
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+  for(var i=1;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+  for(var i=0;i<n;i++){
+    var isLast=(i===n-1);
+    var dotCol=(data[i]<0&&negColor)?negColor:color;
+    ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,isLast?5:3,0,Math.PI*2);
+    ctx.fillStyle=isLast?dotCol:'#fff';ctx.fill();
+    ctx.strokeStyle=dotCol;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=isLast?dotCol:((data[i]<0)?'#dc2626':'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(D),pts[i].x,pts[i].y+(isLast?-10:-8));
+  }
+  for(var i=0;i<n;i++){
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    ctx.fillText(labels[i],pts[i].x,PT+chartH+14);
+  }
+}
+function drawHBarChart(id,labels,data,colors,suffix){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var max=Math.max.apply(null,data)*1.32;
+  var n=labels.length;
+  var rowH=H/(n+0.6);
+  var PL=196,PR=56;
+  for(var i=0;i<n;i++){
+    var y=rowH*(i+0.3)+rowH*0.12;
+    var bh=rowH*0.66;
+    ctx.fillStyle='#f1f5f9';ctx.fillRect(PL,y,(W-PL-PR),bh);
+    var bw=(data[i]/max)*(W-PL-PR);
+    if(bw<2)bw=2;
+    var col=colors?colors[i]:'#7e22ce';
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(PL,y,bw,bh,4);ctx.fillStyle=col;ctx.fill();}
+    else{ctx.fillStyle=col;ctx.fillRect(PL,y,bw,bh);}
+    ctx.fillStyle='#1e293b';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(labels[i],PL-8,y+bh/2+4);
+    ctx.fillStyle='#1e293b';ctx.font='bold 12px Arial';ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(1)+(suffix||'x'),PL+bw+6,y+bh/2+4);
+  }
+}
+window.addEventListener('DOMContentLoaded',function(){
+  drawBarChart('epsChart',
+    ["Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26E"],
+    [2.22,3.83,4.75,2.76,3.94,5.37,7.16,6.67,7.91,9.68,9.70],
+    '#dcfce7','#15803d','#dc2626',2);
+  drawBarChart('qrevChart',
+    ["Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"],
+    [913.0,1034.4,1122.0,1142.0,1189.2,1240.4,1503.2,1616.1,1593.5,1832.6,1970.6],
+    '#dcfce7','#15803d','#dc2626',0);
+  drawLineChart('revChart',
+    ['1月','2月','3月','4月','5月','6月','7月','8月','9月'],
+    [496.75,498.97,597.80,586.92,589.62,656.03,670.73,645.86,654.00],
+    '#15803d',null,1);
+  drawLineChart('yoyChart',
+    ['4月','5月','6月','7月','8月','9月'],
+    [43.92,43.65,55.43,47.75,34.95,14.61],
+    '#dc2626',null,1);
+  drawLineChart('gmChart',
+    ["Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [29.52,34.13,34.93,30.77,31.78,35.51,34.87,34.59,37.00,35.64],
+    '#15803d',null,2);
+  drawLineChart('opmChart',
+    ["Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [8.10,12.70,14.64,9.37,11.80,15.05,16.50,16.35,17.83,16.68],
+    '#16a34a',null,2);
+  drawLineChart('fshChart',
+    ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10/21'],
+    [64.65,64.52,64.29,64.42,64.34,63.53,62.31,62.06,61.50,60.49],
+    '#dc2626',null,2);
+  drawHBarChart('peChart',
+    ['近四季 TTM（31.42元）','FY2026E 本報告（38元）','FY2027E 本報告（54元）','FY2027E 前次（65.1元）'],
+    [51.4,42.5,29.9,24.8],
+    ['#dc2626','#d97706','#15803d','#16a34a'],'倍');
+  drawHBarChart('tgtChart',
+    ['現價 1,615','前次報告 7/28','美系外資 10/07','歐系外資 9/15','大和資本 10/05'],
+    [1615,2200,2500,2750,3088],
+    ['#15803d','#64748b','#16a34a','#16a34a','#16a34a'],'元');
+  drawHBarChart('riskChart',
+    ['估值 30%','財務 25%','流動性 10%','產業 15%','總經 10%','籌碼 10%','加權綜合'],
+    [7.0,2.5,1.5,5.5,5.5,7.0,5.0],
+    ['#d97706','#16a34a','#16a34a','#d97706','#d97706','#d97706','#15803d'],'分');
+});
+</script>
+
+</div>
+</body>
+</html>
