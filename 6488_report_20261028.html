@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>環球晶(6488) 深度研究報告 第3次 | 2026-10-28</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#F0F4F8;--card:#FFFFFF;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;
+    --accent:#701a75;--accent2:#a21caf;--accent3:#fae8ff;
+    --green:#16a34a;--red:#dc2626;--yellow:#d97706;--blue:#2563eb;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;line-height:1.6}
+  a{color:var(--accent)}
+  td,th{font-variant-numeric:tabular-nums}
+
+  .cover{background:linear-gradient(135deg,#2a0330 0%,#4a044e 32%,#701a75 68%,#f0abfc 100%);color:#fff;padding:56px 40px 48px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-70px;right:-50px;width:310px;height:310px;border-radius:50%;background:rgba(255,255,255,0.06)}
+  .cover::after{content:'';position:absolute;bottom:-90px;left:-50px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.04)}
+  .cover-ticker{font-size:13px;opacity:.72;margin-bottom:6px;letter-spacing:2px;text-transform:uppercase}
+  .cover-name{font-size:36px;font-weight:800;line-height:1.1;margin-bottom:6px}
+  .cover-subtitle{font-size:15px;opacity:.85;margin-bottom:24px}
+  .cover-price-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:10px}
+  .cover-price{font-size:54px;font-weight:900;line-height:1}
+  .cover-chg{font-size:21px;padding:4px 14px;border-radius:8px;background:rgba(220,38,38,0.38);border:1px solid rgba(252,165,165,0.7)}
+  .price-note{display:inline-block;font-size:12.5px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 13px;margin-bottom:22px;line-height:1.65}
+  .cover-meta{display:flex;gap:24px;flex-wrap:wrap}
+  .cover-meta-item{font-size:13px;opacity:.8}
+  .cover-meta-item strong{opacity:1;font-weight:700}
+  .risk-badge{position:absolute;top:32px;right:40px;background:rgba(217,119,6,0.32);border:1.5px solid rgba(251,191,36,0.7);border-radius:12px;padding:10px 18px;text-align:center}
+  .risk-badge .num{font-size:28px;font-weight:900;color:#fde68a}
+  .risk-badge .lbl{font-size:11px;opacity:.88;letter-spacing:1px}
+  .report-no-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(233,213,255,0.25);border:1px solid rgba(233,213,255,0.5);border-radius:8px;padding:3px 12px;font-size:12px;margin-bottom:12px}
+
+  .container{max-width:960px;margin:0 auto;padding:0 20px 60px}
+  section{margin-top:32px}
+  .section-title{font-size:18px;font-weight:800;color:var(--accent);border-left:4px solid var(--accent);padding-left:12px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .section-num{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+  .card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07),0 0 0 1px var(--border)}
+  .card + .card{margin-top:12px}
+
+  .verdict-box{background:linear-gradient(135deg,#fdf4ff,#fae8ff);border:2px solid #701a75;border-radius:14px;padding:20px 24px;margin-bottom:14px}
+  .verdict-box h4{font-size:15px;font-weight:800;color:#4a044e;margin-bottom:10px}
+  .verdict-box p{font-size:13.5px;line-height:1.75;color:#4a044e}
+  .verdict-box p + p{margin-top:9px}
+
+  .conclusion-card{background:linear-gradient(135deg,#2a0330 0%,#4a044e 55%,#d946ef 100%);color:#fff;border-radius:16px;padding:28px 32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+  .conc-item .label{font-size:11px;opacity:.68;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+  .conc-item .val{font-size:21px;font-weight:800;line-height:1.15}
+  .conc-item .sub{font-size:12px;opacity:.78;margin-top:4px}
+  @media(max-width:640px){.conclusion-card{grid-template-columns:1fr 1fr}}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+  .kpi-card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border);text-align:center}
+  .kpi-label{font-size:11px;color:var(--muted);margin-bottom:4px;letter-spacing:.5px}
+  .kpi-val{font-size:20px;font-weight:800;color:var(--accent)}
+  .kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+  .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.charts-grid{grid-template-columns:1fr}}
+  .chart-box{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06),0 0 0 1px var(--border)}
+  .chart-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px}
+  .chart-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center;line-height:1.55}
+
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{background:var(--bg);padding:8px 12px;text-align:left;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.5px;white-space:nowrap}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+  .tag-green{background:#dcfce7;color:#16a34a}
+  .tag-red{background:#fee2e2;color:#dc2626}
+  .tag-yellow{background:#fef9c3;color:#d97706}
+  .tag-blue{background:#dbeafe;color:#2563eb}
+  .tag-purple{background:#fae8ff;color:#701a75}
+
+  .analyst-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.analyst-grid{grid-template-columns:1fr}}
+  .analyst-card{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border)}
+  .analyst-card h4{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .analyst-card ul{list-style:none;padding:0}
+  .analyst-card li{font-size:13px;padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px}
+  .analyst-card li:last-child{border-bottom:none}
+  .bull-icon{color:#16a34a;font-weight:900;flex-shrink:0}
+  .bear-icon{color:#dc2626;font-weight:900;flex-shrink:0}
+
+  .score-row{display:flex;align-items:center;gap:12px;margin:8px 0}
+  .score-label{width:104px;font-size:13px;flex-shrink:0}
+  .score-bar-bg{flex:1;height:10px;background:var(--bg);border-radius:5px;overflow:hidden}
+  .score-bar-fill{height:100%;border-radius:5px}
+  .score-num{width:36px;font-size:13px;font-weight:700;text-align:right;flex-shrink:0}
+
+  .strategy-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:640px){.strategy-grid{grid-template-columns:1fr}}
+  .strat-card{border-radius:14px;padding:20px;color:#fff}
+  .strat-card.attack{background:linear-gradient(135deg,#dc2626,#ef4444)}
+  .strat-card.balance{background:linear-gradient(135deg,#701a75,#d946ef)}
+  .strat-card.defend{background:linear-gradient(135deg,#0f766e,#14b8a6)}
+  .strat-card h3{font-size:15px;font-weight:800;margin-bottom:12px}
+  .strat-item{font-size:13px;margin:6px 0;display:flex;gap:8px}
+  .strat-item span:first-child{opacity:.75;flex-shrink:0}
+
+  .tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.tech-grid{grid-template-columns:1fr}}
+
+  .alert{border-radius:10px;padding:14px 18px;margin-bottom:12px;font-size:13px;display:flex;gap:12px;align-items:flex-start;line-height:1.7}
+  .alert-red{background:#fee2e2;border-left:4px solid #dc2626;color:#7f1d1d}
+  .alert-green{background:#dcfce7;border-left:4px solid #16a34a;color:#14532d}
+  .alert-yellow{background:#fef9c3;border-left:4px solid #d97706;color:#713f12}
+  .alert-purple{background:#fae8ff;border-left:4px solid #701a75;color:#4a044e}
+
+  .disclaimer{background:#fef9c3;border:1px solid #d97706;border-radius:10px;padding:16px 20px;font-size:12px;color:#713f12;margin-top:32px}
+  .disclaimer h4{font-size:13px;margin-bottom:8px}
+  .disclaimer ul{margin:6px 0 10px 18px}
+  .disclaimer li{margin:3px 0;line-height:1.65}
+
+  .glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:540px){.glossary-grid{grid-template-columns:1fr}}
+  .glossary-item{background:var(--card);border-radius:10px;padding:12px 14px;border:1px solid var(--border)}
+  .glossary-term{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:4px}
+  .glossary-def{font-size:12px;color:var(--muted);line-height:1.5}
+
+  .calc-box{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:12px;font-size:12.5px;line-height:1.7}
+  .calc-box .row{display:flex;justify-content:space-between;gap:12px;padding:3px 0;border-bottom:1px dashed #cbd5e1}
+  .calc-box .row:last-child{border-bottom:none;font-weight:800;color:var(--accent);padding-top:7px}
+  .calc-title{font-size:12px;font-weight:800;color:var(--accent);margin-bottom:7px;letter-spacing:.5px}
+
+  .asset-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  @media(max-width:700px){.asset-grid{grid-template-columns:repeat(2,1fr)}}
+  .asset-tile{background:#fdf4ff;border:1px solid #fae8ff;border-radius:10px;padding:13px;text-align:center}
+  .asset-tile.hl{background:#fae8ff;border:2px solid #701a75}
+  .asset-tile .at-val{font-size:18px;font-weight:800;color:#4a044e}
+  .asset-tile .at-name{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}
+
+  .timeline{margin-top:14px;border-left:2px solid var(--accent3);padding-left:18px}
+  .tl-item{position:relative;padding-bottom:14px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{content:'';position:absolute;left:-25px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid #fff}
+  .tl-date{font-size:11.5px;font-weight:800;color:var(--accent);letter-spacing:.5px}
+  .tl-text{font-size:12.5px;color:var(--text);line-height:1.65;margin-top:2px}
+  .tl-item.bad::before{background:#dc2626}
+  .tl-item.bad .tl-date{color:#dc2626}
+  .tl-item.good::before{background:#16a34a}
+  .tl-item.good .tl-date{color:#16a34a}
+
+  .neg{color:#dc2626;font-weight:700}
+  .pos{color:#16a34a;font-weight:700}
+
+  .scorecard{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  @media(max-width:640px){.scorecard{grid-template-columns:1fr}}
+  .sc-item{border-radius:10px;padding:14px 16px}
+  .sc-hit{background:#dcfce7;border:1px solid #86efac}
+  .sc-miss{background:#fee2e2;border:1px solid #fca5a5}
+  .sc-partial{background:#fef9c3;border:1px solid #fcd34d}
+  .sc-head{font-size:12px;font-weight:800;margin-bottom:6px}
+  .sc-hit .sc-head{color:#14532d}
+  .sc-miss .sc-head{color:#7f1d1d}
+  .sc-partial .sc-head{color:#713f12}
+  .sc-body{font-size:12.5px;line-height:1.65;color:#334155}
+</style></head>
+<body>
+<div class="cover">
+  <div class="risk-badge"><div class="num">6.2</div><div class="lbl">風險等級 / 10</div></div>
+  <div class="cover-ticker">TPEx 6488 · 上櫃 · 半導體矽晶圓</div>
+  <div class="report-no-badge">第 3 次報告 · 前次 2026-10-16（902 元）</div>
+  <div class="cover-name">環球晶圓</div>
+  <div class="cover-subtitle">GlobalWafers · 全球第三大矽晶圓廠 · 持有 Siltronic 世創</div>
+  <div class="cover-price-row">
+    <div class="cover-price">854</div>
+    <div class="cover-chg" style="background:rgba(22,163,74,0.38);border-color:rgba(134,239,172,0.7)">▲ 40.0　+4.91%</div>
+  </div>
+  <div class="price-note">
+    盤中報價 2026-10-28 09:49（富果 Fugle）· 昨收 814（10/27）<br>
+    今日 開 842　高 860　低 839　|　漲停 <strong>895</strong>　跌停 <strong>733</strong>（本報告修正值，見第 08 節）
+  </div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">發行股數 <strong>5.2811 億股</strong></div>
+    <div class="cover-meta-item">市值 <strong>4,510 億元</strong></div>
+    <div class="cover-meta-item">52週 <strong>333 ~ 1,600</strong></div>
+    <div class="cover-meta-item">距 52週高 <strong>−46.6%</strong></div>
+    <div class="cover-meta-item">TTM EPS（稀釋後）<strong>18.65 元</strong></div>
+  </div>
+</div>
+
+<div class="container">
+
+<section>
+  <div class="section-title"><span class="section-num">01</span>🔴 重大更正：前兩次報告用錯了股數</div>
+  <div class="card" style="border:2px solid #dc2626">
+    <div class="note-title" style="color:#7f1d1d">本報告最重要的一件事，必須寫在最前面</div>
+    <p style="font-size:13.5px;line-height:1.8"><strong>環球晶於 2026 年 9 月 22 日完成 GDR（海外存託憑證）定價，發行 5,000 萬股、募資 14.32 億美元（約新台幣 454 億元），並於 2026 年 10 月 14 日正式完成發行股數登記。</strong></p>
+    <div class="table-wrap">
+    <table style="margin-top:12px">
+      <thead><tr><th style="width:22%">證據</th><th>內容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>官方集保資料</strong></td><td>發行股數於 <strong>2026-10-14 由 478,113,725 股增為 528,113,725 股，精確增加 50,000,000 股（+10.46%）</strong></td></tr>
+        <tr><td><strong>外資持股</strong></td><td>2026-10-02 的 123,166,767 股 → <strong>2026-10-05 的 173,641,120 股，單日增加 50,474,353 股</strong>，與 GDR 發行量幾乎一致（GDR 由國際機構法人認購，故計入外資持股）</td></tr>
+        <tr><td><strong>公開報導</strong></td><td>9/22 完成定價，每單位 <strong>US$28.64 ≈ NT$908.32</strong>，較當日收盤 971 元折價 <strong>6.46%</strong>；獲國際機構法人約 <strong>4 倍超額認購</strong>；盧森堡證交所掛牌</td></tr>
+        <tr><td><strong>資金用途</strong></td><td>原幣購料、轉投資海外子公司擴充產能，並降低外匯避險與利息成本</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13.5px;line-height:1.8;margin-top:12px"><strong>而本系列前兩次報告（10/14 首次、10/16 第 2 次）都使用增資前的 4.781 億股。</strong>首次報告正好寫在股數登記當天，第 2 次則是登記後兩天 —— <strong>兩份都錯過了這件事。</strong></p>
+    <div class="table-wrap">
+    <table style="margin-top:10px">
+      <thead><tr><th>項目</th><th>前兩次報告</th><th>正確值</th><th>偏差</th></tr></thead>
+      <tbody>
+        <tr><td>發行股數</td><td class="neg">4.781 億股</td><td class="pos"><strong>5.2811 億股</strong></td><td class="neg">低估 10.46%</td></tr>
+        <tr><td>市值（首次 @1,020）</td><td class="neg">4,876.8 億</td><td class="pos">5,386.8 億</td><td class="neg">低估 510 億</td></tr>
+        <tr><td>市值（第2次 @921）</td><td class="neg">4,403.4 億</td><td class="pos">4,863.9 億</td><td class="neg">低估 460 億</td></tr>
+        <tr><td>所有每股數字</td><td colspan="3" class="neg">EPS、每股淨值、本益比、股價淨值比的分母全部偏小</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13.5px;line-height:1.8;margin-top:12px"><strong>🟢 但這個更正的方向可能和直覺相反 —— 它讓股票看起來「更便宜」而非更貴：</strong></p>
+    <div class="table-wrap">
+    <table style="margin-top:10px">
+      <thead><tr><th>指標</th><th>用增資前股數</th><th>用增資後股數（正確）</th><th>方向</th></tr></thead>
+      <tbody>
+        <tr><td>近四季 EPS</td><td>20.60 元</td><td class="neg"><strong>18.65 元</strong></td><td class="neg">稀釋 9.47%</td></tr>
+        <tr><td>TTM 本益比 @854</td><td>41.5 倍</td><td class="neg"><strong>45.8 倍</strong></td><td class="neg">變貴</td></tr>
+        <tr><td><strong>每股淨值</strong></td><td>202.3 元</td><td class="pos"><strong>約 269.1 元</strong></td><td class="pos"><strong>+33%</strong></td></tr>
+        <tr class="hl"><td><strong>股價淨值比 @854</strong></td><td>4.22 倍</td><td class="pos"><strong>約 3.17 倍</strong></td><td class="pos"><strong>便宜 25%</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13.5px;line-height:1.8;margin-top:12px"><strong>原因：GDR 以每股 908 元發行，遠高於當時每股淨值 202 元。</strong>所以這次增資<strong>稀釋了 9.47% 的每股盈餘，卻把每股淨值推高了三分之一</strong>。用 P/E 看它變貴、用 P/B 看它變便宜 —— 這是高溢價增資的典型結果，兩個方向都要講。</p>
+    <p style="font-size:12.5px;color:#92400e;margin-top:10px"><strong>揭露：</strong>增資後每股淨值 269.1 元為本報告推算（2026-06-30 歸屬母公司權益 967.2 億 ＋ GDR 募資 454 億，除以 5.2811 億股），<strong>未計入 Q3 損益與發行費用</strong>。正式數字須待 Q3 財報。</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">02</span>核心結論</div>
+  <div class="verdict-box">
+    <h4>一句話總結</h4>
+    <p><strong>環球晶現在是一檔「本業在緩慢好轉、但損益被 Siltronic 股價綁架」的公司，而 Siltronic 剛剛又崩了一次。</strong>8 月自結稅後純益 7.04 億、年增 144.98%、單月 EPS 1.47 元，統一投顧明確指出這次改善<strong>不是</strong>來自世創的金融評價利益 —— 本業是真的在好轉。2027 年長約報價也確定要漲（12 吋 epi +15~25%、拋光片 +40% 以上）。</p>
+    <p><strong>但 Siltronic 從 10/07 的 €83.95 跌到 10/28 的 €60.45，三週內 −€23.50（−28.0%）。</strong>這個幅度和 2026 年 6 月那次 −€23.20 幾乎一模一樣 —— 而那次造成環球晶單月認列 <strong>−39.55 億元、每股 −8.27 元</strong>，隔日股價跳空跌停到 778 元。<strong>依同一比例推算，這次的衝擊約為 −40 億元、以增資後股數計每股約 −7.6 元。</strong></p>
+    <p><strong>操作定位：觀望，等 11 月初的三個事件。</strong>9 月自結（約 10/31）→ <strong>Q3 法說會（11/3 16:00）</strong> → Siltronic Q3 財報（11/4）。<strong>五天內三個關鍵資訊，而其中任何一個都可能推翻本報告的推估。現在進場等於在資訊最不對稱的時點下注。</strong></p>
+  </div>
+  <div class="kpi-grid" style="margin-top:14px">
+    <div class="verdict-sub">
+      <div class="vs-label">投資建議</div>
+      <div class="vs-value" style="color:#d97706">觀望 · 等 11/3 法說</div>
+      <div class="vs-note">本業有好轉證據，但 Siltronic 的評價損失尚未入帳。11 月初五天內有三個事件會一次把牌掀開。</div>
+    </div>
+    <div class="verdict-sub">
+      <div class="vs-label">合理價區間（本報告自估）</div>
+      <div class="vs-value">620 ~ 810 元</div>
+      <div class="vs-note">以增資後每股淨值約 269 元給 2.3~3.0 倍推得（矽晶圓景氣中段的常見區間）。現價 854 已在區間之上。法人目標價 529~1,500 元，分歧極大且多數已過時。</div>
+    </div>
+    <div class="verdict-sub">
+      <div class="vs-label">最大風險</div>
+      <div class="vs-value" style="color:#dc2626">Siltronic 評價損失未入帳</div>
+      <div class="vs-note">推估約 −40 億元、每股 −7.6 元，可能出現在 10 月自結或 Q4 財報。市場共識 FY2026E 20~21 元恐難達成。</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <div class="note-title">本次最重要的三個發現</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:22%">發現</th><th>內容與推導</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>① GDR 已完成，前兩次報告漏了（見第 01 節）</strong></td>
+          <td>5,000 萬股、454 億元、10/14 登記完成。<strong>稀釋 EPS 9.47%，但把每股淨值推高 33%</strong>。這同時改變了本報告所有的每股計算，也解釋了 9 月底到 10 月初外資持股為何單日暴增 5,047 萬股。</td>
+        </tr>
+        <tr>
+          <td><strong>② Siltronic 的跌幅與 6 月那次幾乎相同</strong></td>
+          <td><strong>2026 年 6 月：</strong>Siltronic 跌 €23.20 → 環球晶 6 月自結認列 <strong>−39.55 億元、每股 −8.27 元</strong>（7/29 揭露，隔日跳空跌停 778 元）。<br><strong>2026 年 10 月：</strong>Siltronic 自 10/07 的 €83.95 跌至 10/28 的 <strong>€60.45，−€23.50（−28.0%）</strong>。<br><br><strong>依同一比例線性推算：約 −40.06 億元 → 以增資後 5.2811 億股計，每股約 −7.59 元。</strong><br><br>同期環球晶股價自 1,215 元（10/07）跌至 814 元（10/27），<strong>−33.0%，與 Siltronic 的 −28.0% 高度同步</strong> —— 市場顯然已經在反映，但<strong>帳還沒入</strong>。<span style="color:#92400e"><strong>注意：此曝險為選擇權性質（海外附認股權公司債），敏感度非線性，實際數字可能明顯偏離線性推估。</strong></span></td>
+        </tr>
+        <tr>
+          <td><strong>③ 法人目標價的本益比從 28 倍喊到 71 倍，但 EPS 幾乎沒動</strong></td>
+          <td>FactSet 歷次調查的 FY2026E EPS 一直在 <strong>20.33 ~ 21.28 元</strong>的窄幅區間，<strong>但同期間的共識目標價卻從 529 元一路喊到 1,442.5 元（2.7 倍差距）</strong>。<br><br>以 EPS 20.33 元計，529 元對應 <strong>26.0 倍</strong>、1,442.5 元對應 <strong>71.0 倍</strong>。<strong>也就是說，這些目標價的變動幾乎完全來自本益比倍數的改變，而不是獲利預估的改變。</strong><br><br><strong>判讀：此類目標價反映的是市場情緒與動能，不是盈餘推演</strong>，引用時要說清楚它的性質。</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">03</span>關鍵財務 KPI</div>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-label">最新股價</div><div class="kpi-value">854</div><div class="kpi-sub pos">+4.91%（昨收 814）</div><div class="kpi-plain">白話：距 7/15 的 52 週高點 1,600 元已回落 46.6%，但仍比去年 11 月的低點 333 元高 156%。今日反彈可能與 11/3 法說會前買盤有關。</div></div>
+    <div class="kpi"><div class="kpi-label">TTM EPS（稀釋後）</div><div class="kpi-value">18.65 <span class="unit">元</span></div><div class="kpi-sub">原報基礎 20.60 元 ÷ 增資後股數</div><div class="kpi-plain">白話：過去一年每股賺 18.65 元（已用增資後的 5.28 億股重算）。前兩次報告用的 20.60 元是增資前的分母。</div></div>
+    <div class="kpi"><div class="kpi-label">TTM 本益比</div><div class="kpi-value" style="color:#d97706">45.8 <span class="unit">倍</span></div><div class="kpi-sub">yfinance 對上櫃股回傳 null，此為自算</div><div class="kpi-plain">白話：以已賺到的錢算要 45.8 年回本。偏高，但矽晶圓是景氣循環股，循環底部的本益比本來就會偏高。</div></div>
+    <div class="kpi"><div class="kpi-label">股價淨值比</div><div class="kpi-value pos">約 3.17 <span class="unit">倍</span></div><div class="kpi-sub">增資後每股淨值約 269 元（推算）</div><div class="kpi-plain">白話：GDR 以 908 元發行、遠高於帳面 202 元，所以每股淨值一次跳高三分之一，股價淨值比反而變便宜。</div></div>
+    <div class="kpi"><div class="kpi-label">🔴 Q2&#39;26 業外佔稅前</div><div class="kpi-value neg">68.96 <span class="unit">%</span></div><div class="kpi-sub">業外 31.62 億 ÷ 稅前 45.85 億 · TTM 45.88%</div><div class="kpi-plain">白話：Q2 賺的錢有將近七成不是本業來的。這就是為什麼 Siltronic 的股價會主宰環球晶的獲利。</div></div>
+    <div class="kpi"><div class="kpi-label">Q3&#39;26 營收</div><div class="kpi-value">148.71 <span class="unit">億</span></div><div class="kpi-sub">QoQ −2.26% · YoY +2.60%</div><div class="kpi-plain">白話：本業營收幾乎沒成長。前九月累計 440.70 億，年減 4.4%。這跟智邦、台光電那種年增 60% 的成長股是不同的東西。</div></div>
+    <div class="kpi"><div class="kpi-label">8 月自結 EPS</div><div class="kpi-value pos">1.47 <span class="unit">元</span></div><div class="kpi-sub">稅後 7.04 億、+144.98% YoY</div><div class="kpi-plain">白話：單月獲利年增 1.4 倍，而且統一投顧明確說<strong>不是</strong>靠世創的評價利益 —— 本業確實在好轉。</div></div>
+    <div class="kpi"><div class="kpi-label">🔴 Siltronic 股價</div><div class="kpi-value neg">€60.45</div><div class="kpi-sub">10/07 €83.95 → −€23.50（−28.0%）</div><div class="kpi-plain">白話：環球晶轉投資的德國公司三週跌了 28%。6 月跌同樣幅度時，環球晶單月認列每股 −8.27 元的損失。</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">04</span>財務趨勢圖</div>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-title">季度 EPS（元）</div>
+      <canvas id="epsChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 全部為合併財報實際值，<strong>以各期當時的股數計算（Q2&#39;26 及之前為 4.781 億股）</strong>。Q4&#39;24 的 0.87 元與 Q2&#39;26 的 7.90 元都是業外主導的結果，不是本業變化。</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">🔴 季度業外收支淨額（億元）</div>
+      <canvas id="nonopChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 全部為實際值。<strong>這張圖是理解環球晶的鑰匙。</strong>Q4&#39;24 的 −27.88 億、Q2&#39;26 的 +31.62 億，振幅遠大於同期營業利益（14~36 億）。<strong>業外才是 EPS 的主要變數。</strong></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">季度營業利益（億元）—— 本業</div>
+      <canvas id="opChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 全部為實際值。<strong>把業外拿掉後的真實樣貌：</strong>從 2024Q1 的 39.68 億一路滑到 2026Q2 的 14.23 億，<strong>兩年半腰斬還不止</strong>。本業的循環低點是 2025Q3 的 12.30 億。</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">季營收（億元）</div>
+      <canvas id="qrevChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 全部為實際值。<strong>營收兩年幾乎沒動</strong>（150~163 億區間），Q3&#39;26 的 148.71 億還低於 2024 年任一季。這不是成長股的營收曲線。</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">2026 年月營收（億元，實際月份）</div>
+      <canvas id="revChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 全部為公司公告實際值。<strong>月營收在 41~56 億之間鋸齒狀震盪，全年沒有方向</strong>。9 月 51.29 億為近三月高點，但年減 13.1%。</div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">季毛利率（%）</div>
+      <canvas id="gmChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 全部為實際值。<strong>自 2024Q1 的 34.26% 一路滑落至 2026Q2 的 20.64%，兩年半掉了 13.6 個百分點</strong>。2025Q3 的 18.37% 是谷底，之後在 20~26% 間震盪未能回到 30%。</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="note-title">月營收口徑校準（本系列每份報告都做）</div>
+    <p style="font-size:13px;line-height:1.75">FinMind 的月營收<strong>申報月份需減 1 才是實際賺取月份</strong>。本次三項驗證全部吻合：</p>
+    <div class="table-wrap">
+    <table style="margin-top:10px">
+      <thead><tr><th>驗證項目</th><th>公司公告／媒體</th><th>本報告由 FinMind 換算</th><th>結果</th></tr></thead>
+      <tbody>
+        <tr><td>2026 年 9 月營收</td><td>51.29 億，月增 7.7%、年增 −13.13%（公告日 10/07）</td><td>51.286 億，+7.65%、−13.13%</td><td class="pos">吻合</td></tr>
+        <tr><td><strong>Q3&#39;26 營收</strong></td><td><strong>148.7 億</strong>，季減 2.26%、年增 2.6%</td><td><strong>148.708 億</strong>，−2.26%、+2.60%</td><td class="pos">完全一致</td></tr>
+        <tr><td><strong>前三季累計營收</strong></td><td><strong>440.70 億</strong>，年減 4.4%</td><td><strong>440.699 億</strong></td><td class="pos">完全一致</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.75;margin-top:10px"><strong>合併財報校準：</strong>月營收加總 Q1&#39;26 139.848 億 vs 合併財報 139.85 億；Q2&#39;26 152.143 億 vs 152.14 億。<strong>校準係數 = 1.000</strong>，推估 Q3 時無須調整。</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">05</span>公司概覽與產業</div>
+  <div class="card">
+    <div class="table-wrap">
+    <table>
+      <tbody>
+        <tr><th style="width:22%">公司全稱</th><td>環球晶圓股份有限公司（GlobalWafers Co., Ltd.）· 母公司為中美晶 5483</td></tr>
+        <tr><th>股票代碼 / 市場</th><td>6488 · 櫃買中心（TPEx 上櫃）· 產業：半導體矽晶圓</td></tr>
+        <tr><th>主要業務</th><td>6 吋、8 吋、12 吋半導體矽晶圓（拋光片、磊晶片 epi、SOI 等），全球第三大供應商</td></tr>
+        <tr><th>發行股數</th><td><strong>528,113,725 股</strong>（2026-10-14 起，GDR 增資後）· 增資前 478,113,725 股</td></tr>
+        <tr><th>市值</th><td>854 元 × 5.2811 億股 = <strong>4,510 億元</strong>（yfinance 對上櫃股回傳 404，此為自算）</td></tr>
+        <tr><th>每股淨值</th><td>增資前 202.3 元（2026-06-30 歸母權益 967.2 億 ÷ 4.781 億股）<br><strong>增資後推算約 269.1 元</strong>（加計 GDR 454 億 ÷ 5.2811 億股，未計 Q3 損益與發行費用）</td></tr>
+        <tr><th>股利政策</th><td>111 年 14.765 元 → 112 年 19.00 元 → 113 年 11.00 元 → <strong>114 年 5.70 元</strong><br><span style="color:#dc2626"><strong>其中 114 年前半年度配發 0 元（除息 2025-12-31），為近年首見的停發</strong></span>。殖利率 @854 僅 <strong>0.67%</strong>。</td></tr>
+        <tr><th>重要轉投資</th><td><strong>Siltronic AG（世創，德國，XETRA: WAF）</strong> —— 持股與附認股權公司債曝險合計<strong>貢獻近三成獲利</strong>（法人說法）</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:12.5px;color:#64748b;margin-top:10px"><strong>除權還原註記：</strong>52 週高點 1,600 元出現在 2026-07-15，<strong>僅早於 7/16 除息日一天</strong>（配發 5.70 元）。以還原基準比較，現價距高點為 −46.4%（未還原為 −46.6%）。差異 0.2 個百分點。</p>
+  </div>
+
+  <div class="card" style="border:2px solid #dc2626">
+    <div class="note-title" style="color:#7f1d1d">🔴 Siltronic 曝險：本報告的核心追蹤框架</div>
+    <p style="font-size:13px;line-height:1.8"><strong>環球晶對 Siltronic 的曝險有兩條管道，性質完全不同：</strong></p>
+    <div class="table-wrap">
+    <table style="margin-top:10px">
+      <thead><tr><th style="width:24%">管道</th><th>性質</th><th>受什麼驅動</th></tr></thead>
+      <tbody>
+        <tr><td><strong>① 權益法持股</strong></td><td>按持股比例認列 Siltronic 的<strong>損益</strong></td><td>Siltronic 的<strong>獲利</strong>（非股價）→ <strong>Siltronic 將於 11/4 公布 Q3 財報</strong></td></tr>
+        <tr class="hl"><td><strong>② 海外附認股權公司債</strong></td><td>德國子公司發行、<strong>以世創股票為認股標的</strong>，屬<strong>選擇權性質、非線性</strong></td><td>Siltronic 的<strong>股價</strong> → 逐月評價，計入業外損益</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>已校準過的敏感度（來自公司自己的揭露）：</strong></p>
+    <div class="table-wrap">
+    <table style="margin-top:8px">
+      <thead><tr><th>時點</th><th>Siltronic 變動</th><th>環球晶認列</th><th>每股影響</th><th>股價後續</th></tr></thead>
+      <tbody>
+        <tr><td><strong>2026 年 6 月</strong>（7/29 揭露自結）</td><td class="neg">−€23.20</td><td class="neg"><strong>−39.55 億元</strong></td><td class="neg"><strong>−8.27 元</strong>（4.781 億股）</td><td class="neg">隔日跳空<strong>跌停 778 元</strong></td></tr>
+        <tr style="background:#fee2e2"><td><strong>2026 年 10 月</strong>（本報告推估）</td><td class="neg">€83.95（10/07）→ <strong>€60.45（10/28）</strong><br><strong>−€23.50（−28.0%）</strong></td><td class="neg"><strong>約 −40.06 億元</strong></td><td class="neg"><strong>約 −7.59 元</strong>（5.2811 億股）</td><td class="neg">同期股價 1,215 → 814（<strong>−33.0%</strong>）</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>兩次的 Siltronic 跌幅幾乎完全相同（−€23.20 vs −€23.50）</strong>，所以本報告以線性比例推估本次衝擊約 −40 億元。<strong>同期環球晶股價 −33.0% 與 Siltronic 的 −28.0% 高度同步，顯示市場已在反映，但這筆損失還沒有正式入帳。</strong></p>
+    <p style="font-size:12.5px;color:#92400e;margin-top:10px"><strong>⚠️ 三項重要限制，務必一併理解：</strong><br>
+    （1）<strong>附認股權公司債是選擇權，敏感度非線性</strong>。Siltronic 價格越低、認股權越價外，每 €1 的邊際影響會遞減。所以 −40 億是<strong>線性外推的上緣估計</strong>，實際可能明顯較小。<br>
+    （2）<strong>權益法那條管道看的是 Siltronic 的獲利而非股價</strong>，須待 11/4 的 Siltronic Q3 財報才能評估。<br>
+    （3）<strong>Siltronic 報價來源有不一致</strong>：本報告採 €60.45（Stock Events，2026-10-28 前後），但同一頁面的年度報酬率欄位自相矛盾；10/08 另一來源為 €80.05、10/16 為 US$73.05。<strong>方向明確（三週重挫約三成），但精確點位請以 XETRA 官方報價為準。</strong></p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">🟢 另一邊：本業確實在好轉的證據</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:20%">事件</th><th>日期</th><th>內容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>美光 10 年長約</strong></td><td>2026-07-09</td><td>美光透過最高 30 億美元的美國半導體供應鏈投資計畫，提供環球晶 <strong>5 億美元策略性資金</strong>，支援德州廠 12 吋擴產。消息公布後環球晶攻上當時歷史新高 1,485 元並鎖漲停。</td></tr>
+        <tr><td><strong>產能滿載</strong></td><td>2026-08 法說</td><td>董事長徐秀蘭表示 <strong>6 吋、8 吋、12 吋產能皆約滿載</strong>，客戶長約需求明顯升溫、合約年期較過去拉長。</td></tr>
+        <tr class="hl"><td><strong>8 月自結獲利翻倍</strong></td><td>2026-09-30 公告</td><td>營收 47.64 億（+7.63% YoY）、稅前 7.85 億（+85.06%）、<strong>稅後歸母 7.04 億（+144.98%）、單月 EPS 1.47 元</strong>。<strong>統一投顧明確指出此次改善「並非來自世創的金融評價利益」</strong> —— 這是本業好轉最直接的證據。</td></tr>
+        <tr><td><strong>德州廠通過認證</strong></td><td>2026-09</td><td>美國德州新廠已通過一家主要一線半導體客戶的認證，以長約鎖定後續產能。</td></tr>
+        <tr class="hl"><td><strong>2027 長約漲價</strong></td><td>2026-09 業界調查</td><td><strong>12 吋磊晶片（epi）長約價估漲 15~25%，拋光片估漲逾 40%</strong>；法人另估整體長約漲 1~2 成、高階逾 2 成。分析師並預期 2026Q4 現貨價可能高於長約價，有利 2027 議價。</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>所以這檔股票的多空非常清楚：本業在循環底部往上走（長約漲價、產能滿載、8 月自結翻倍），但業外的 Siltronic 曝險在短期內會吃掉這些改善。</strong>兩者的時間尺度不同 —— <strong>Siltronic 是現在，長約漲價是 2027 年。</strong></p>
+    <p style="font-size:12.5px;color:#92400e;margin-top:8px"><strong>揭露：</strong>2027 長約漲幅（epi +15~25%、拋光片 +40%）來源為<strong>未具名的「業界調查」</strong>，經媒體轉述，非公司財測或正式研究報告。本報告未將其量化納入任何 EPS 推估。</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">06</span>基本面分析</div>
+  <div class="card">
+    <div class="note-title">季度損益表（億元，合併財報實際值）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>季度</th><th>營收</th><th>毛利率</th><th>營業利益</th><th>營益率</th><th>業外</th><th>業外/稅前</th><th>稅前淨利</th><th>稅後歸母</th><th>EPS</th></tr></thead>
+      <tbody>
+        <tr><td>2024Q1</td><td>150.87</td><td>34.26%</td><td>39.68</td><td>26.30%</td><td>5.90</td><td>12.9%</td><td>45.58</td><td>35.34</td><td>8.10</td></tr>
+        <tr><td>2024Q2</td><td>153.26</td><td>32.31%</td><td>33.67</td><td>21.97%</td><td>1.65</td><td>4.7%</td><td>35.31</td><td>28.80</td><td>6.02</td></tr>
+        <tr><td>2024Q3</td><td>158.70</td><td>30.04%</td><td>32.00</td><td>20.16%</td><td>3.43</td><td>9.7%</td><td>35.43</td><td>29.54</td><td>6.18</td></tr>
+        <tr><td>2024Q4</td><td>163.43</td><td>30.09%</td><td>35.84</td><td>21.93%</td><td class="neg">−27.88</td><td class="neg">−350.3%</td><td>7.96</td><td>4.79</td><td class="neg">0.87</td></tr>
+        <tr><td>2025Q1</td><td>155.95</td><td>26.37%</td><td>25.89</td><td>16.60%</td><td class="neg">−4.56</td><td>−21.4%</td><td>21.33</td><td>14.56</td><td>3.05</td></tr>
+        <tr><td>2025Q2</td><td>160.08</td><td>25.76%</td><td>24.38</td><td>15.23%</td><td class="neg">−1.50</td><td>−6.6%</td><td>22.89</td><td>16.82</td><td>3.52</td></tr>
+        <tr><td>2025Q3</td><td>144.93</td><td class="neg">18.37%</td><td class="neg">12.30</td><td class="neg">8.49%</td><td>9.57</td><td>43.8%</td><td>21.87</td><td>19.69</td><td>4.12</td></tr>
+        <tr><td>2025Q4</td><td>145.02</td><td>25.70%</td><td>23.79</td><td>16.41%</td><td>5.28</td><td>18.2%</td><td>29.07</td><td>22.05</td><td>4.61</td></tr>
+        <tr><td>2026Q1</td><td>139.85</td><td>20.83%</td><td>14.75</td><td>10.55%</td><td>8.71</td><td>37.1%</td><td>23.47</td><td>18.96</td><td>3.97</td></tr>
+        <tr class="hl"><td><strong>2026Q2</strong></td><td><strong>152.14</strong></td><td><strong>20.64%</strong></td><td><strong>14.23</strong></td><td><strong>9.35%</strong></td><td class="neg"><strong>31.62</strong></td><td class="neg"><strong>68.96%</strong></td><td><strong>45.85</strong></td><td><strong>37.79</strong></td><td><strong>7.90</strong></td></tr>
+        <tr style="background:#fdf4ff"><td>2026Q3</td><td><strong>148.71</strong>*</td><td colspan="8">營收為公司公告實際值；其餘待 11 月財報。<strong>凱基投顧 9/30 表示 Q3 EPS 有機會高於原估的 1.9 元。</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:12.5px;color:#64748b;margin-top:8px">* Q3&#39;26 營收 148.71 億為由 7/8/9 月公告營收加總，與公司公告的 148.7 億一致。</p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">⭐ 獲利品質：業外佔稅前淨利比重 —— 本系列最極端的一檔之一</div>
+    <p style="font-size:13px;line-height:1.8"><strong>Q2&#39;26 業外 31.62 億 ÷ 稅前 45.85 億 = 68.96%；近四季合計 55.18 億 ÷ 120.26 億 = 45.88%。</strong></p>
+    <p style="font-size:13px;line-height:1.8;margin-top:8px"><strong>更關鍵的是波動幅度：</strong>過去十季的業外在 <strong>−27.88 億到 +31.62 億</strong>之間擺盪（區間 59.5 億），而同期營業利益只在 <strong>12.30 億到 39.68 億</strong>之間（區間 27.4 億）。<strong>業外的振幅是本業的 2.2 倍 —— 所以 EPS 的方向主要由業外決定，不是由賣晶圓決定。</strong></p>
+    <div class="table-wrap">
+    <table style="margin-top:10px">
+      <thead><tr><th>個股</th><th>業外佔稅前</th><th>定位</th></tr></thead>
+      <tbody>
+        <tr><td>德宏 5475（Q2&#39;26）</td><td>−0.17%</td><td>最乾淨</td></tr>
+        <tr><td>台光電 2383（Q2&#39;26）</td><td>0.4%</td><td>極乾淨</td></tr>
+        <tr><td>智邦 2345（Q2&#39;26 單季）</td><td>1.63%</td><td>極乾淨</td></tr>
+        <tr><td>南亞科 2408</td><td>2.4%</td><td>乾淨</td></tr>
+        <tr><td>台達電 2308（TTM）</td><td>7.17%</td><td>本業主導</td></tr>
+        <tr><td>群創 3481（Q2&#39;26 單季）</td><td>9.6%</td><td>本業主導</td></tr>
+        <tr><td>晉泰 6221</td><td>13.9%</td><td>本業主導</td></tr>
+        <tr><td>群創 3481（H1&#39;26 累計）</td><td>25.7%</td><td>業外有影響</td></tr>
+        <tr class="hl"><td><strong>環球晶 6488（TTM）</strong></td><td><strong>45.88%</strong></td><td><strong>業外近半</strong></td></tr>
+        <tr><td>欣興 3037（TTM）</td><td>54.1%</td><td>帳面被業外撐高一倍</td></tr>
+        <tr class="hl"><td><strong>環球晶 6488（Q2&#39;26 單季）</strong></td><td class="neg"><strong>68.96%</strong></td><td class="neg"><strong>業外主導</strong></td></tr>
+        <tr><td>眾達-KY 4977</td><td>69%</td><td>業外主導</td></tr>
+        <tr><td>大洋 1321</td><td>92%</td><td>幾乎全靠業外</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>把業外剝掉後的本業 EPS：</strong>Q2&#39;26 營業利益 14.23 億，若無業外、按當季 17.6% 有效稅率計，稅後約 11.73 億 → <strong>本業 EPS 僅約 2.45 元</strong>（帳面 7.90 元）。<strong>也就是說，Q2 那個「亮眼」的 7.90 元裡，有 5.45 元來自業外。</strong></p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">資產負債與現金流（億元）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>項目</th><th>2025Q2</th><th>2025Q4</th><th>2026Q1</th><th>2026Q2</th><th>判讀</th></tr></thead>
+      <tbody>
+        <tr><td>現金及約當現金</td><td>222.2</td><td>194.8</td><td>241.3</td><td>237.8</td><td>GDR 後應大幅增加（Q3 財報可見）</td></tr>
+        <tr><td>應收帳款</td><td>99.9</td><td>100.6</td><td>100.8</td><td>104.4</td><td class="pos">穩定，無異常</td></tr>
+        <tr><td>存貨</td><td>103.0</td><td>104.0</td><td>110.0</td><td>120.2</td><td>溫和增加，週轉天數約 90 天</td></tr>
+        <tr><td>流動資產 / 流動負債</td><td>695.4 / 516.1</td><td>866.3 / 541.1</td><td>769.2 / 622.2</td><td>823.9 / 642.9</td><td>流動比 128.2%</td></tr>
+        <tr><td>短期借款</td><td>162.6</td><td>185.7</td><td>106.9</td><td>215.7</td><td class="neg">Q2 大增</td></tr>
+        <tr><td>長期借款</td><td>146.7</td><td>75.6</td><td>47.4</td><td>87.1</td><td>—</td></tr>
+        <tr class="hl"><td><strong>淨現金 / (淨負債)</strong></td><td>−87.1</td><td>−66.5</td><td>+87.0</td><td class="neg"><strong>−65.0</strong></td><td class="pos"><strong>GDR 454 億入帳後應轉為淨現金約 +389 億</strong></td></tr>
+        <tr><td>總負債 / 總資產</td><td>1,214.8 / 2,063.6</td><td>1,250.5 / 2,183.4</td><td>1,176.6 / 2,110.4</td><td>1,225.0 / 2,192.2</td><td>負債比 55.9%</td></tr>
+        <tr><td>歸屬母公司權益</td><td>848.8</td><td>933.0</td><td>933.8</td><td>967.2</td><td>每股淨值 202.3 元（增資前）</td></tr>
+        <tr><td><strong>營業現金流（累計）</strong></td><td>63.4（H1）</td><td>127.4（全年）</td><td>6.7</td><td><strong>28.1（H1）</strong></td><td class="neg">H1 年減 55.7%</td></tr>
+        <tr><td><strong>OCF ÷ 稅後淨利</strong></td><td>—</td><td>—</td><td>0.35 倍</td><td class="neg"><strong>0.50 倍</strong></td><td class="neg">偏低，但業外多為非現金，屬可解釋</td></tr>
+        <tr class="hl"><td><strong>資本支出（累計）</strong></td><td>−190.9（H1）</td><td><strong>−335.0（全年）</strong></td><td>−34.6</td><td class="pos"><strong>−56.6（H1）</strong></td><td class="pos"><strong>年減 70.4%，大幅收手</strong></td></tr>
+        <tr><td>自由現金流</td><td>−127.5（H1）</td><td>−207.6（全年）</td><td>−27.9</td><td>−28.5（H1）</td><td class="pos">燒錢幅度大減</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>三個值得注意的訊號：</strong><br>
+    <strong>（1）資本支出從 2025 全年的 335.0 億砍到 2026H1 的 56.6 億（年化約 113 億，減少七成）。</strong>這是明確的擴產收手 —— 但同時又用 GDR 募了 454 億說要「轉投資海外子公司擴充產能」。<strong>這兩件事方向相反，是 11/3 法說會值得問的問題。</strong><br>
+    <strong>（2）OCF÷淨利 僅 0.50 倍</strong>，低於本系列的警戒線。但環球晶的淨利有近半來自業外，而業外多為<strong>非現金的評價損益</strong>，所以低現金含量在這檔是結構性的、可解釋的，不等同於智邦那種「存貨吃掉現金」的警訊。<br>
+    <strong>（3）GDR 入帳後財務結構大幅改善</strong>：由淨負債 65.0 億轉為淨現金約 389 億。<strong>這是這次增資最實在的好處。</strong></p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">07</span>估值分析</div>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-title">本益比情境比較（@854 元）</div>
+      <canvas id="peChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ 同一股價，用不同基礎算出 13.1 ~ 92.1 倍。<strong>最左邊那根（本報告情境：計入 Siltronic 衝擊後的 FY2026E 約 9.3 元）就是本報告與市場共識的最大分歧。</strong></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">法人目標價（元，附日期）</div>
+      <canvas id="tgtChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+      <div class="chart-note">★ <strong>529 元到 1,500 元，差距 2.8 倍。</strong>其中 FactSet 的 580 元是 2026-05-06 的舊值；凱基 1,500 元、統一 1,400 元為 2026-09-30 的最新具名目標。</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px;border:2px solid #d97706;background:#fffbeb">
+    <div class="note-title" style="color:#92400e">🔍 法人預估的算術失效檢驗（本系列標準動作）</div>
+    <p style="font-size:13px;line-height:1.8">已知 H1&#39;26 實際 EPS = 3.97 ＋ 7.90 = <strong>11.87 元</strong>。</p>
+    <div class="table-wrap">
+    <table style="margin-top:10px">
+      <thead><tr><th>來源（日期）</th><th>FY2026E</th><th>隱含 H2</th><th>合理性檢驗</th><th>判定</th></tr></thead>
+      <tbody>
+        <tr><td>FactSet 共識（<strong>2026-05-06</strong>，13 位）</td><td>20.33 元</td><td>8.46 元</td><td>Q2 單季 7.90 元中有 5.45 元來自業外；若業外回歸常態，H2 本業約 5 元 ＋ 業外 3.5 元尚屬合理</td><td class="pos">算術上通過<br><span class="neg">但已過時近 6 個月</span></td></tr>
+        <tr><td>統一投顧（<strong>2026-09-30</strong>）</td><td>20.81 元</td><td>8.94 元</td><td>同上</td><td class="pos">算術上通過</td></tr>
+        <tr><td>FactSet（日期未確認）</td><td>21.28 元</td><td>9.41 元</td><td>同上</td><td class="pos">算術上通過</td></tr>
+        <tr style="background:#fee2e2"><td><strong>本報告情境（計入 Siltronic 衝擊）</strong></td><td class="neg"><strong>約 9.3 元</strong></td><td class="neg">約 −2.6 元</td><td>Q3E 約 ＋2.5 元（凱基稱高於原估 1.9 元）；<strong>Q4E 本業約 ＋2.5 元 − Siltronic 約 7.6 元 ≈ −5.1 元</strong></td><td class="neg"><strong>與共識差距逾一倍</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>這次檢驗的結論與德宏、智邦那兩檔不同：</strong>市場共識在<strong>算術上並沒有失效</strong>（隱含 H2 8.5~9.4 元是合理的），<strong>問題出在它們都是在 Siltronic 這波下跌「之前」做的</strong>。FactSet 的 580 元目標價是 <strong>2026-05-06</strong>、統一與凱基是 <strong>2026-09-30</strong>，而 Siltronic 的 −28% 發生在 <strong>10/07 之後</strong>。</p>
+    <p style="font-size:13px;line-height:1.8;margin-top:8px"><strong>所以本報告不說「法人估錯了」，而是說「法人還沒更新」。</strong>真正的檢驗點是 11 月初的三個事件。</p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">估值推演</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>基準</th><th>EPS</th><th>@854 元本益比</th><th>來源與假設</th></tr></thead>
+      <tbody>
+        <tr><td>近四季 TTM（原報基礎）</td><td>20.60 元</td><td>41.5 倍</td><td>Q3&#39;25 4.12 ＋ Q4&#39;25 4.61 ＋ Q1&#39;26 3.97 ＋ Q2&#39;26 7.90（各期以當時股數計）</td></tr>
+        <tr class="hl"><td><strong>近四季 TTM（稀釋後）</strong></td><td><strong>18.65 元</strong></td><td><strong>45.8 倍</strong></td><td>近四季歸母淨利 98.49 億 ÷ 增資後 5.2811 億股</td></tr>
+        <tr><td><strong>本業 TTM（剝除業外）</strong></td><td class="neg"><strong>約 9.3 元</strong></td><td class="neg"><strong>約 92.1 倍</strong></td><td>近四季營業利益 65.07 億，按 20% 稅率估稅後約 52 億 ÷ 5.2811 億股<strong>（本報告推算）</strong></td></tr>
+        <tr><td>FY2026E（FactSet 2026-05-06）</td><td>20.33 元</td><td>42.0 倍</td><td class="neg">13 位分析師中位數，<strong>已過時近 6 個月</strong></td></tr>
+        <tr><td>FY2026E（統一投顧 2026-09-30）</td><td>20.81 元</td><td>41.0 倍</td><td>目標價 1,400 元、維持買進</td></tr>
+        <tr style="background:#fee2e2"><td><strong>FY2026E（本報告，計入 Siltronic）</strong></td><td class="neg"><strong>約 9.3 元</strong></td><td class="neg"><strong>約 91.8 倍</strong></td><td class="neg">H1 實際 11.87 ＋ Q3E 2.5 ＋ Q4E 約 −5.1（Siltronic 衝擊）</td></tr>
+        <tr><td>FY2027E（FactSet 2026-05-06）</td><td>26.65 元</td><td>32.0 倍</td><td>中位數；平均 27.24、最高 34.65、最低 20.86</td></tr>
+        <tr><td>FY2027E（統一投顧 2026-09-30）</td><td>36.5 元</td><td>23.4 倍</td><td>具名、較新</td></tr>
+        <tr><td>FY2027E（法人，2026-09-24 轉述）</td><td>60 ~ 70 元</td><td class="pos">12.2 ~ 14.2 倍</td><td class="neg">未具名機構，經分析師轉述</td></tr>
+        <tr><td>FY2028E（法人，2026-09-24 轉述）</td><td>120 ~ 130 元</td><td class="pos">6.6 ~ 7.1 倍</td><td class="neg">未具名機構，經分析師轉述</td></tr>
+        <tr class="hl"><td><strong>股價淨值比（增資後）</strong></td><td><strong>每股淨值約 269.1 元</strong></td><td class="pos"><strong>約 3.17 倍</strong></td><td>2026-06-30 歸母權益 967.2 億 ＋ GDR 454 億，÷ 5.2811 億股（<strong>推算</strong>）</td></tr>
+        <tr><td>現金殖利率</td><td>股利 5.70 元</td><td>0.67%</td><td>114 年後半年度，除息 2026-07-16；前半年度配 0 元</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>🔴 FY2027E 的 26.65 元 vs 70 元 —— 相差 2.6 倍，這是本檔估值的核心爭議。</strong>兩者的差別在於有沒有把 <strong>2027 年長約漲價（epi +15~25%、拋光片 +40% 以上）</strong>算進去。FactSet 的 26.65 元是 <strong>5 月</strong>的數字，當時長約談判尚未開始；統一的 36.5 元與未具名法人的 60~70 元是 <strong>9 月底</strong>的，已反映漲價預期。<strong>本報告不選邊，但提醒：長約漲幅的來源是「未具名業界調查」，不是公司財測。</strong></p>
+    <p style="font-size:13px;line-height:1.8;margin-top:8px"><strong>本報告的合理價 620~810 元是用股價淨值比推的，不是用本益比</strong> —— 因為這檔的 EPS 被業外主宰、波動過大，本益比在短期內不是可靠的估值工具。以增資後每股淨值約 269 元 × 2.3~3.0 倍（矽晶圓循環中段常見區間）得出。<strong>現價 854 元已在此區間之上。</strong></p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">🔴 法人目標價彙整 —— 請特別注意日期</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>日期</th><th>機構</th><th>目標價</th><th>評等</th><th>vs 現價 854</th><th>EPS 假設與備註</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><strong>2026-09-30</strong></td><td><strong>凱基投顧</strong></td><td class="pos"><strong>1,500 元</strong></td><td>增持</td><td class="pos">+75.6%</td><td>8 月本業略優於預期；<strong>Q3 EPS 有機會高於原估的 1.9 元</strong></td></tr>
+        <tr class="hl"><td><strong>2026-09-30</strong></td><td><strong>統一投顧</strong></td><td class="pos"><strong>1,400 元</strong></td><td>買進</td><td class="pos">+63.9%</td><td>2026E <strong>20.81 元</strong>、2027E <strong>36.5 元</strong>；明確指出 8 月獲利改善<strong>非</strong>來自世創評價利益</td></tr>
+        <tr><td>日期未確認</td><td>FactSet 共識</td><td>1,442.5 元</td><td>—</td><td class="pos">+68.9%</td><td>EPS 21.12 元</td></tr>
+        <tr><td>日期未確認</td><td>FactSet 共識</td><td>1,180 元</td><td>—</td><td class="pos">+38.2%</td><td>EPS 21.28 元</td></tr>
+        <tr><td>日期未確認</td><td>FactSet 共識</td><td>733.5 元</td><td>—</td><td class="neg">−14.1%</td><td>EPS 21.12 元</td></tr>
+        <tr style="background:#fef9c3"><td><strong>2026-05-06</strong></td><td>FactSet 共識（13 位）</td><td class="neg"><strong>580 元</strong></td><td>—</td><td class="neg">−32.1%</td><td>EPS 由 20 元上修至 <strong>20.33 元</strong>；<strong>已過時近 6 個月</strong></td></tr>
+        <tr><td>約 2026-05</td><td>某券商（Q1 財報後）</td><td class="neg">880 元</td><td>—</td><td>+3.0%</td><td class="neg">因折舊大增，將 2026E EPS 由 20.22 下修至 <strong>16.71 元</strong></td></tr>
+        <tr><td>日期未確認</td><td>FactSet 共識</td><td class="neg">529 元</td><td>—</td><td class="neg">−38.1%</td><td>EPS 20.81 元</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>🔴 這張表透露的事，比任何一個數字都重要：</strong></p>
+    <p style="font-size:13px;line-height:1.8;margin-top:8px">FactSet 歷次調查的 <strong>FY2026E EPS 一直在 20.33 ~ 21.28 元的窄幅區間（變動不到 5%）</strong>，<strong>但同期間的共識目標價卻從 529 元擺盪到 1,442.5 元（2.73 倍）</strong>。以 EPS 20.33 元換算，<strong>這等於本益比從 26.0 倍被喊到 71.0 倍。</strong></p>
+    <p style="font-size:13px;line-height:1.8;margin-top:8px"><strong>換句話說：這些目標價的變動幾乎完全來自「市場願意給幾倍」的改變，而不是「公司會賺多少」的改變。</strong>它們反映的是股價動能與情緒，不是盈餘推演的結果。<strong>任何人拿「法人目標價 1,500 元」當作進場理由之前，應該先知道同一批機構在五個月前給的是 580 元，而中間的 EPS 預估幾乎沒變。</strong></p>
+    <p style="font-size:12.5px;color:#92400e;margin-top:10px"><strong>揭露：</strong>上表多筆 FactSet 數字的發布日期未能確認（來源為券商新聞快訊的轉載頁，未標年份）。<strong>本報告僅以兩筆具名且有確切日期的目標價（凱基 1,500 元、統一 1,400 元，皆 2026-09-30）作為參考，且兩者都在 Siltronic 本波下跌之前發布。</strong></p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">08</span>技術分析</div>
+  <div class="card" style="border:2px solid #d97706;background:#fffbeb">
+    <div class="note-title" style="color:#92400e">🔴 腳本輸出錯誤校正表</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:16%">項目</th><th>腳本輸出</th><th>正確值 / 判定</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr><td><strong>漲停 / 跌停</strong></td><td class="neg">908.6 / 743.4</td><td class="pos"><strong>895 / 733</strong></td><td><strong>兩個錯誤同時存在。</strong>（1）昨收取用 826（10/22 收盤）而非 814（10/27 收盤）—— 驗算：826×1.1 = <strong>908.6</strong>，與腳本輸出<strong>完全相等</strong>。（2）未套用檔位：500~1,000 元區間最小升降單位為 1 元，814×1.1 = 895.4 須向內進位為 <strong>895</strong>；814×0.9 = 732.6 須向內進位為 <strong>733</strong>。</td></tr>
+        <tr><td><strong>今日成交量</strong></td><td class="neg">12,207,216 股</td><td class="pos">那是 <strong>10/27</strong> 的量</td><td>與歷史資料最後一筆完全相同。今日（10/28 09:49）實際僅 2 張。</td></tr>
+        <tr><td><strong>三大法人</strong></td><td class="neg">全部 0 張，敘述「持平」</td><td class="pos"><strong>資料缺口</strong></td><td>官方數據：近 5 日（至 10/22）三大法人賣超 <strong>11,308 張</strong>（外資 −11,512、投信 −158、自營 +362）；近 20 日賣超 26,341 張、<strong>連 8 日賣超</strong>。環球晶為<strong>上櫃股，應查櫃買中心</strong>。</td></tr>
+        <tr><td><strong>融資融券</strong></td><td class="neg">0 / 0，且敘述「融券餘額 0 張，放空比例偏高，需注意軋空風險」</td><td class="pos"><strong>資料缺口</strong>（融資 12,958 張、融券 185 張）</td><td>第二來源（10/22）顯示融資 12,958 張、近 20 日減 839 張、融資使用率 9.8%，融券 185 張。腳本那句「融券 0 → 放空比例偏高 → 軋空風險」自相矛盾，刪除。</td></tr>
+        <tr><td><strong>本益比 / 股價淨值比 / 市值</strong></td><td class="neg">全部 null</td><td class="pos">45.8 倍 / 約 3.17 倍 / 4,510 億</td><td>yfinance 對上櫃（.TWO）代碼回傳 404「Quote not found for symbol: 6488.TW」。<strong>本報告自算，並使用增資後股數 5.2811 億股</strong>。</td></tr>
+        <tr><td><strong>均線排列</strong></td><td class="neg">「均線糾結（方向不明）」</td><td class="pos"><strong>空頭排列</strong></td><td>MA5 849.2 ＜ MA10 922.1 ＜ MA60 959.37 ＜ MA20 1005.2。<strong>短期均線（MA5、MA10）全數低於長期均線，是明確的空頭</strong>；僅 MA20 與 MA60 剛交叉。腳本的「方向不明」低估了空方強度。</td></tr>
+        <tr><td><strong>MA 時點</strong></td><td class="pos">含 10/27 收盤</td><td class="pos">無漏計問題</td><td class="pos">已驗算 MA5=849.2、MA10=922.1、MA20=1005.2 皆含 10/27。本報告另列含今日版本。</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="note-title">技術指標（基準日 2026-10-27 收盤 814）</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>指標</th><th>截至 10/27 收盤</th><th>若今日收 854（本報告重算）</th><th>判讀</th></tr></thead>
+      <tbody>
+        <tr><td>MA5</td><td>849.2</td><td><strong>843.6</strong></td><td class="pos">股價 854 已站上 MA5</td></tr>
+        <tr><td>MA10</td><td>922.1</td><td><strong>896.0</strong></td><td class="neg">低於 4.7%</td></tr>
+        <tr><td>MA20</td><td>1,005.2</td><td><strong>1,000.4</strong></td><td class="neg">低於 14.6%</td></tr>
+        <tr><td>MA60</td><td>959.37</td><td>約 955</td><td class="neg">低於 10.6%</td></tr>
+        <tr><td>排列</td><td colspan="2">MA5 &lt; MA10 &lt; MA60 &lt; MA20</td><td class="neg"><strong>空頭排列</strong></td></tr>
+        <tr><td>MACD / 訊號 / 柱狀</td><td>−41.05 / −9.38 / −31.68</td><td>—</td><td class="neg">死叉，柱狀負值大</td></tr>
+        <tr><td>RSI(14)</td><td>34.49</td><td>—</td><td>接近 30 超賣區，為本系列近期個股中最低</td></tr>
+        <tr><td>布林上軌（+2σ）</td><td>1,264.70</td><td>1,267.25</td><td>—</td></tr>
+        <tr><td>布林中軌（MA20）</td><td>1,005.20</td><td>1,000.40</td><td class="neg">股價在中軌下方 14.6%</td></tr>
+        <tr><td>布林下軌（−2σ）</td><td>745.70</td><td><strong>733.55</strong></td><td class="pos">股價 854 高於下軌 16.4%</td></tr>
+        <tr><td>標準差 σ / 帶寬</td><td>129.75 / 51.6%</td><td>133.43 / <strong>53.3%</strong></td><td class="neg"><strong>本系列目前波動最大的一檔</strong>（智邦 20.1%、台達電 31.5%、德宏 32.0%）</td></tr>
+        <tr><td>成交量（10/27）</td><td>12,207 張</td><td>5 日均量 11,275 張</td><td>1.08 倍，量能正常</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>技術面白話總結：</strong>明確的空頭排列、MACD 死叉、股價在布林中軌下方 14.6%。<strong>但 RSI 34.5 已接近超賣，且今日 +4.91% 已站回 MA5。</strong>最值得注意的是<strong>布林帶寬 53.3%</strong> —— 這代表近 20 日的標準差高達 133 元，<strong>約是現價的 15.6%。在這種波動度下，任何小部位的停損設定都會頻繁被觸發。</strong><br><br><strong>巧合但值得記住的一點：</strong>重算後的布林下軌 733.55 元，與本報告修正的今日跌停價 733 元幾乎重合。</p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">關鍵價位</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>類型</th><th>價位</th><th>依據</th><th>距現價</th></tr></thead>
+      <tbody>
+        <tr><td class="neg">壓力 6</td><td>1,600</td><td>52 週 / 歷史最高（2026-07-15）</td><td>+87.4%</td></tr>
+        <tr><td class="neg">壓力 5</td><td>1,267</td><td>布林上軌（含今日）</td><td>+48.4%</td></tr>
+        <tr><td class="neg">壓力 4</td><td>1,215</td><td>10/07 波段高點</td><td>+42.3%</td></tr>
+        <tr><td class="neg">壓力 3</td><td>1,000 ~ 1,005</td><td>MA20 / 布林中軌 / 整數關卡</td><td>+17.1% ~ +17.7%</td></tr>
+        <tr><td class="neg">壓力 2</td><td>955 ~ 959</td><td>MA60</td><td>+11.8% ~ +12.3%</td></tr>
+        <tr><td class="neg">壓力 1</td><td><strong>895</strong></td><td>今日漲停（本報告修正值）</td><td>+4.8%</td></tr>
+        <tr><td class="neg">近壓</td><td>860 ~ 880</td><td>今日盤中高 / 10/21 收盤</td><td>+0.7% ~ +3.0%</td></tr>
+        <tr class="hl"><td><strong>現價</strong></td><td><strong>854</strong></td><td>2026-10-28 09:49</td><td>—</td></tr>
+        <tr><td class="pos">支撐 1</td><td>843.6</td><td>MA5（含今日）</td><td>−1.2%</td></tr>
+        <tr><td class="pos">支撐 2</td><td>839</td><td>今日盤中低點</td><td>−1.8%</td></tr>
+        <tr><td class="pos">支撐 3</td><td>814</td><td>10/27 收盤（本波最低收盤）</td><td>−4.7%</td></tr>
+        <tr><td class="pos">支撐 4</td><td>807</td><td>10/27 盤中最低</td><td>−5.5%</td></tr>
+        <tr><td class="pos">支撐 5</td><td><strong>778</strong></td><td><strong>2026 年 7 月 Siltronic 衝擊後的跳空跌停價</strong></td><td>−8.9%</td></tr>
+        <tr><td class="pos">支撐 6</td><td><strong>733.5</strong></td><td>布林下軌（含今日）≈ 今日跌停 733</td><td>−14.1%</td></tr>
+        <tr><td class="pos">支撐 7</td><td>333</td><td>52 週低點（2025-11-21）</td><td>−61.0%</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>778 元這個價位值得特別標記</strong> —— 那是 2026 年 7 月 Siltronic 上一次跌 €23.20 後，環球晶跳空跌停的價格。<strong>如果這次的 −€23.50 真的在 10 月自結或 Q4 財報認列，778 元是一個有前例可循的參考位置。</strong></p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">09</span>籌碼面與融資融券</div>
+  <div class="chart-card">
+    <div class="chart-title">外資持股比例（%，以增資後 5.2811 億股為統一分母）</div>
+    <canvas id="fshChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+    <div class="chart-note">★ <strong>重要：原始資料的分母在 10/14 變動，直接看官方比例會誤導。</strong>本圖一律以增資後股數重算，才能看出真實的增減。10/05 的跳升即為 GDR 的 5,000 萬股由國際法人認購所致。</div>
+  </div>
+
+  <div class="card">
+    <div class="note-title">🔴 外資持股：GDR 進場後連續減碼</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>日期</th><th>外資持股（股）</th><th>官方比例</th><th>以增資後股數重算</th><th>收盤</th><th>備註</th></tr></thead>
+      <tbody>
+        <tr><td>2026-10-02</td><td>123,166,767</td><td>25.76%</td><td>23.32%</td><td>1,190</td><td>GDR 配發前</td></tr>
+        <tr style="background:#dcfce7"><td><strong>2026-10-05</strong></td><td><strong>173,641,120</strong></td><td>36.31%</td><td class="pos"><strong>32.88%</strong></td><td>1,180</td><td class="pos"><strong>單日 +50,474,353 股 ← GDR 配發</strong></td></tr>
+        <tr><td>2026-10-07</td><td>173,205,985</td><td>36.22%</td><td>32.80%</td><td class="neg">1,215（波段高）</td><td>Siltronic €83.95</td></tr>
+        <tr><td>2026-10-12</td><td>174,346,278</td><td>36.46%</td><td>33.02%</td><td>1,115</td><td>區間最高持股</td></tr>
+        <tr><td>2026-10-13</td><td>172,869,834</td><td>36.15%</td><td>32.73%</td><td>1,015</td><td>—</td></tr>
+        <tr style="background:#fef9c3"><td><strong>2026-10-14</strong></td><td>170,611,732</td><td class="neg">32.30%</td><td>32.31%</td><td>1,020</td><td class="neg"><strong>發行股數正式變更為 528,113,725</strong></td></tr>
+        <tr><td>2026-10-16</td><td>164,410,230</td><td>31.13%</td><td>31.13%</td><td>902</td><td>第 2 次報告日</td></tr>
+        <tr><td>2026-10-20</td><td>160,702,135</td><td>30.42%</td><td>30.43%</td><td>844</td><td>—</td></tr>
+        <tr><td>2026-10-22</td><td>159,494,074</td><td>30.20%</td><td>30.20%</td><td>826</td><td>區間最低持股</td></tr>
+        <tr class="hl"><td><strong>2026-10-27</strong></td><td><strong>160,018,454</strong></td><td><strong>30.29%</strong></td><td><strong>30.30%</strong></td><td><strong>814</strong></td><td class="pos">小幅回補 +524,380 股</td></tr>
+        <tr style="background:#fee2e2"><td><strong>10/12 高點以來</strong></td><td colspan="2"><strong>174,346,278 → 160,018,454</strong></td><td class="neg"><strong>−14,327,824 股（−8.2%）</strong></td><td class="neg">1,115 → 814（−27.0%）</td><td class="neg">持股比 33.02% → 30.30%</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>這張表示範了一個本系列先前沒遇過的陷阱：</strong>10/13 的官方持股比是 <strong>36.15%</strong>，10/14 變成 <strong>32.30%</strong>，看起來像外資一天賣掉 3.85 個百分點。<strong>但實際上外資只減持了 225.8 萬股（−1.3%），其餘 3.8 個百分點全部來自分母（發行股數）的變動。</strong></p>
+    <p style="font-size:13px;line-height:1.8;margin-top:8px"><strong>規則：增資／減資期間，外資持股「比例」不可直接比較，必須用統一分母重算「股數」。</strong>本報告已全面重算。</p>
+    <p style="font-size:13px;line-height:1.8;margin-top:8px"><strong>重算後的真相：</strong>GDR 配發後外資持股在 10/12 達到高點 1.743 億股，隨後 <strong>11 個交易日減持 1,433 萬股（−8.2%）</strong>，同期股價 −27.0%。<strong>認購 GDR 的國際法人有相當一部分在兩週內就賣出了 ——「4 倍超額認購」不等於長期持有。</strong></p>
+  </div>
+
+  <div class="card">
+    <div class="note-title">官方三大法人與融資融券</div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>項目</th><th>數值</th><th>資料日期</th><th>判讀</th></tr></thead>
+      <tbody>
+        <tr><td>三大法人近 5 日</td><td class="neg">賣超 <strong>11,308 張</strong></td><td>2026-10-22</td><td class="neg">外資 −11,512、投信 −158、自營 +362</td></tr>
+        <tr><td>三大法人近 20 日</td><td class="neg">賣超 <strong>26,341 張</strong></td><td>2026-10-22</td><td class="neg"><strong>連續 8 日賣超</strong></td></tr>
+        <tr><td>融資餘額</td><td>12,958 張</td><td>2026-10-22</td><td>近 20 日減少 839 張</td></tr>
+        <tr><td>融資佔流通股數</td><td class="neg"><strong>2.45%</strong></td><td>自行計算</td><td class="neg">12,958,000 股 ÷ 528,113,725 股</td></tr>
+        <tr><td>融資使用率</td><td>9.8%</td><td>2026-10-22</td><td>距滿水位尚遠</td></tr>
+        <tr><td>融券餘額</td><td>185 張</td><td>2026-10-22</td><td>資券比約 70 倍，無軋空動能</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>融資比率 2.45% 是本系列近期四檔中最高的：</strong></p>
+    <div class="table-wrap">
+    <table style="margin-top:8px">
+      <thead><tr><th>個股</th><th>融資佔流通股數</th><th>結構判定</th></tr></thead>
+      <tbody>
+        <tr><td>智邦 2345</td><td class="pos">0.082%</td><td class="pos">浮額極輕</td></tr>
+        <tr><td>台達電 2308</td><td class="pos">0.39%</td><td class="pos">法人減碼、散戶未接刀</td></tr>
+        <tr class="hl"><td><strong>環球晶 6488</strong></td><td class="neg"><strong>2.45%</strong></td><td class="neg"><strong>散戶槓桿相對重</strong></td></tr>
+        <tr><td>群創 3481</td><td class="neg">4.15%</td><td class="neg">法人出貨、散戶槓桿接刀</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:10px"><strong>意義：</strong>環球晶的融資水位雖不到群創那種程度，但<strong>在一檔布林帶寬 53.3%、兩天可以跌 10% 的股票上，2.45% 的融資比足以在急跌時產生斷頭賣壓。</strong>近 20 日融資已減少 839 張，代表洗浮額的過程正在進行但尚未結束。</p>
+    <p style="font-size:12.5px;color:#64748b;margin-top:10px"><strong>查詢方式：</strong>環球晶為<strong>上櫃股</strong>，融資融券與三大法人應查<strong>櫃買中心（TPEx）</strong>。<strong>用證交所查上櫃股會查不到。</strong>官方資料每日約 18:00 更新；本報告取得的第三方統計僅至 10/22，10/23 之後以官方集保外資持股（至 10/27）補足。</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">10</span>研究員辯論</div>
+  <div class="debate-grid">
+    <div class="debate-col bull">
+      <div class="debate-head">看多研究員 — 6 點論據</div>
+      <ol class="debate-list">
+        <li><strong>本業確實在循環底部往上走，而且有乾淨的證據。</strong>8 月自結稅後歸母 <strong>7.04 億、年增 144.98%</strong>、單月 EPS <strong>1.47 元</strong>，<strong>統一投顧明確指出這次改善「並非來自世創的金融評價利益」</strong>。營業利益的循環低點是 2025Q3 的 12.30 億，已經過去五個季度。</li>
+        <li><strong>2027 年長約漲價是這個故事的主軸，而且幅度不小。</strong>業界調查估 12 吋磊晶片長約價漲 <strong>15~25%</strong>、拋光片漲 <strong>40% 以上</strong>；法人另估整體漲 1~2 成、高階逾 2 成。分析師並預期 2026Q4 現貨價可能高於長約價，<strong>這會直接強化 2027 年的議價地位</strong>。矽晶圓是先簽長約再出貨的生意，漲價一旦落定就是鎖定的。</li>
+        <li><strong>產能滿載＋客戶主動綁定，不是廠商求售。</strong>董事長 8 月法說表示 <strong>6 吋、8 吋、12 吋產能皆約滿載</strong>，客戶長約需求升溫、年期拉長。<strong>美光更在 7/9 提供 5 億美元策略性資金</strong>（來自其最高 30 億美元的美國半導體供應鏈投資計畫）支援德州廠 12 吋擴產，並簽下 10 年長約；德州廠已通過一線客戶認證。<strong>客戶願意出錢幫你蓋廠，是產業地位最硬的證明。</strong></li>
+        <li><strong>GDR 讓財務結構脫胎換骨。</strong>募得 454 億元後，公司由 2026Q2 的<strong>淨負債 65.0 億轉為淨現金約 389 億</strong>。而且每股淨值從 202.3 元跳到約 <strong>269.1 元（+33%）</strong>，<strong>股價淨值比由 4.22 倍降到約 3.17 倍</strong>。國際機構法人 <strong>4 倍超額認購</strong>，發行折價僅 6.46%。</li>
+        <li><strong>資本支出大幅收手，自由現金流改善中。</strong>資本支出自 2025 全年的 335.0 億降至 2026H1 的 <strong>56.6 億（年化約減少七成）</strong>，自由現金流由 2025 全年的 −207.6 億收斂至 2026H1 的 −28.5 億。<strong>擴產高峰已過，現金開始回來。</strong></li>
+        <li><strong>技術面已近超賣，估值用淨值看並不貴。</strong>RSI <strong>34.49</strong> 為本系列近期個股最低；股價在布林中軌下方 14.6%。<strong>股價淨值比約 3.17 倍</strong>，對一家全球第三大、產能滿載、2027 年長約要漲價的矽晶圓廠而言，不是泡沫水準。兩筆具名的最新目標價（凱基 1,500 元、統一 1,400 元，皆 9/30）距現價仍有 64~76%。</li>
+      </ol>
+    </div>
+    <div class="debate-col bear">
+      <div class="debate-head">看空研究員 — 7 點論據</div>
+      <ol class="debate-list">
+        <li><strong>Siltronic 的損失還沒入帳，而歷史告訴我們它會很痛。</strong>Siltronic 自 10/07 的 €83.95 跌至 10/28 的 <strong>€60.45（−€23.50、−28.0%）</strong>。<strong>2026 年 6 月跌 €23.20 時，環球晶單月認列 −39.55 億、每股 −8.27 元，隔日跳空跌停到 778 元。</strong>依同比例推估本次約 <strong>−40 億、每股約 −7.6 元</strong>。<strong>市場已經反映（股價 −33%），但帳還沒做。</strong></li>
+        <li><strong>這家公司的 EPS 主要由業外決定，不是由賣晶圓決定。</strong>Q2&#39;26 業外佔稅前 <strong>68.96%</strong>、近四季 45.88%。過去十季業外在 <strong>−27.88 億到 +31.62 億</strong>之間擺盪（區間 59.5 億），<strong>振幅是營業利益區間（27.4 億）的 2.2 倍</strong>。<strong>剝掉業外後，Q2 的本業 EPS 只有約 2.45 元，而非帳面的 7.90 元。</strong></li>
+        <li><strong>本業的營收與毛利率都還在循環低檔，沒有轉強。</strong>Q3&#39;26 營收 148.71 億，<strong>季減 2.26%</strong>，比 2024 年任何一季都低；前三季累計 440.70 億、<strong>年減 4.4%</strong>。毛利率從 2024Q1 的 34.26% 滑到 2026Q2 的 <strong>20.64%，兩年半掉了 13.6 個百分點</strong>。營業利益從 39.68 億掉到 14.23 億。<strong>8 月自結翻倍是從極低基期翻的。</strong></li>
+        <li><strong>法人目標價反映的是情緒，不是盈餘。</strong>FactSet 的 FY2026E EPS 一直在 <strong>20.33~21.28 元的窄幅區間</strong>，<strong>但共識目標價從 529 元擺盪到 1,442.5 元（2.73 倍）</strong> —— 等於本益比從 26.0 倍被喊到 71.0 倍。<strong>而且兩筆最新的具名目標價（凱基 1,500、統一 1,400）都發布於 9/30，在 Siltronic 本波下跌之前。</strong></li>
+        <li><strong>認購 GDR 的國際法人正在賣。</strong>外資持股在 GDR 配發後的 10/12 達 1.743 億股高點，<strong>隨後 11 個交易日減持 1,433 萬股（−8.2%）</strong>，同期股價 −27.0%。官方數據顯示三大法人近 20 日賣超 <strong>26,341 張、連 8 日賣超</strong>。<strong>「4 倍超額認購」在兩週後就變成了賣壓。</strong></li>
+        <li><strong>資本支出大砍與 GDR 擴產說法互相矛盾。</strong>資本支出從 2025 全年 335.0 億砍到 2026H1 的 56.6 億（<strong>−70%</strong>），<strong>但同時用 GDR 募了 454 億，說要「轉投資海外子公司擴充產能」。</strong>這兩件事方向相反。<strong>在管理層於 11/3 法說會說清楚之前，454 億的真實用途是個問號。</strong></li>
+        <li><strong>股利崩跌是管理層自己的訊號。</strong>112 年 19.00 元 → 113 年 11.00 元 → <strong>114 年僅 5.70 元，其中前半年度配發 0 元</strong>（近年首見）。殖利率僅 <strong>0.67%</strong>。<strong>一家說自己產能滿載、長約要漲價的公司，為什麼把股利砍到剩四分之一？</strong>而且融資佔流通股數 2.45%，在布林帶寬 53.3% 的波動下，急跌時會有斷頭賣壓。</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="note-title">辯論總結與量化權重</div>
+    <div class="weight-bar">
+      <div class="weight-bull" style="width:42%">看多 42%</div>
+      <div class="weight-bear" style="width:58%">看空 58%</div>
+    </div>
+    <p style="font-size:13.5px;line-height:1.8;margin-top:14px"><strong>裁決：看空 58% / 看多 42%。但這個權重的有效期很短 —— 它會在 11 月初的五天內被重新定價。</strong></p>
+    <p style="font-size:13.5px;line-height:1.8;margin-top:8px">多方的產業論據<strong>大部分成立</strong>：產能滿載、美光出錢綁約、2027 長約確定要漲、8 月自結翻倍且經統一投顧確認非業外貢獻、GDR 讓財務轉為淨現金 389 億、股價淨值比 3.17 倍不貴。<strong>如果問「這家公司 2027 年會不會比 2026 年好」，答案多半是會。</strong></p>
+    <p style="font-size:13.5px;line-height:1.8;margin-top:8px">空方勝出的關鍵只有一個，但份量夠重：<strong>Siltronic 的 −€23.50 還沒入帳，而上一次同樣幅度造成了每股 −8.27 元與一根跌停。</strong>其餘論據（業外主導、本業營收與毛利率仍在低檔、目標價反映情緒、GDR 認購方在賣、股利砍到剩四分之一）都在強化同一件事：<strong>這檔股票的短期損益不由它的業務決定。</strong></p>
+    <div class="advice-box" style="margin-top:14px">
+      <div class="advice-title">給一般投資人的話</div>
+      <p><strong>環球晶跟你最近看的智邦、台達電是完全不同的生意。</strong>那兩檔的股價反映的是自己的營收與獲利；環球晶的股價，很大一部分反映的是<strong>一家德國公司（Siltronic）的股價</strong>。Q2 它帳面賺 7.90 元，但把業外拿掉只剩約 2.45 元 —— <strong>另外 5.45 元是帳上的評價數字，不是賣晶圓賺來的。</strong></p>
+      <p style="margin-top:9px"><strong>而 Siltronic 剛剛三週跌了 28%。</strong>上一次跌同樣幅度（今年 6 月），環球晶在月自結公告裡認列每股 −8.27 元，隔天開盤就跳空跌停。<strong>這次的跌幅幾乎一模一樣，但帳還沒做。</strong>本報告推估約每股 −7.6 元 —— 這個數字如果對，市場共識的「今年賺 20 元」就不可能成立。</p>
+      <p style="margin-top:9px"><strong>請務必注意這個推估的限制：</strong>那筆曝險是<strong>選擇權性質</strong>（以世創股票為認股標的的公司債），敏感度不是線性的。Siltronic 價格越低，每再跌 €1 的影響會<strong>遞減</strong>。所以 −7.6 元是線性外推的<strong>上緣</strong>，實際可能明顯較小。<strong>本報告沒有辦法算得更準，就不假裝算得更準。</strong></p>
+      <p style="margin-top:9px"><strong>最實際的做法：11 月初的五天內有三個事件會把牌全部掀開</strong> —— 9 月自結（約 10/31）、<strong>Q3 法說會（11/3 下午 4 點）</strong>、Siltronic 自己的 Q3 財報（11/4）。<strong>現在進場，等於在這三個答案都還沒出來、而其中任何一個都可能讓股價再跌一成的時候下注。</strong>這檔股票的布林帶寬是 53.3%，本系列近期個股裡最大的 —— 它兩天跌 10% 是常態，不是意外。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">11</span>風控評估</div>
+  <div class="chart-card">
+    <div class="chart-title">六維風險評分（1~10 分，分數越高風險越大）</div>
+    <canvas id="riskChart" width="420" height="250" style="width:100%;height:auto;"></canvas>
+    <div class="chart-note">加權公式：估值 30% + 財務 25% + 流動性 10% + 產業 15% + 總經 10% + 籌碼 10%</div>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:12%">維度</th><th style="width:8%">權重</th><th style="width:8%">評分</th><th>評分依據</th></tr></thead>
+      <tbody>
+        <tr><td><strong>估值風險</strong></td><td>30%</td><td style="color:#d97706"><strong>7.5</strong></td><td>TTM 稀釋後本益比 <strong>45.8 倍</strong>、本業 TTM 約 92 倍。<strong>若 Siltronic 衝擊於 Q4 認列，FY2026E 可能僅約 9.3 元，與共識 20~21 元差距逾一倍。</strong>法人目標價 529~1,500 元（2.8 倍分歧）且最新兩筆皆在 Siltronic 下跌前。<strong>減分項：</strong>股價淨值比約 3.17 倍不算貴、RSI 34.5 近超賣。</td></tr>
+        <tr><td><strong>財務風險</strong></td><td>25%</td><td style="color:#d97706"><strong>6.0</strong></td><td>2026Q2 仍為淨負債 65.0 億、負債比 55.9%、流動比 128.2%、OCF÷淨利 僅 0.50 倍、H1 營業現金流年減 55.7%。<strong>股利自 19.00 元砍至 5.70 元、且前半年度配 0 元。</strong><strong>減分項：</strong><strong>GDR 454 億入帳後將轉為淨現金約 389 億</strong>，資本支出年減七成、自由現金流大幅收斂。</td></tr>
+        <tr><td><strong>流動性風險</strong></td><td>10%</td><td style="color:#16a34a"><strong>4.0</strong></td><td>市值 4,510 億、日均量 11,275 張（約 96 億元），流動性充裕。<strong>扣分項：</strong>融資佔流通股數 <strong>2.45%</strong>（高於智邦 0.082%、台達電 0.39%），且<strong>曾被列注意股</strong>（故櫃買中心要求提前揭露月自結）；布林帶寬 53.3% 為本系列最大。</td></tr>
+        <tr><td><strong>產業風險</strong></td><td>15%</td><td style="color:#16a34a"><strong>5.0</strong></td><td class="pos">2027 長約估漲 15~25%（epi）／40% 以上（拋光片）；6/8/12 吋產能滿載；美光 10 年長約＋5 億美元策略資金；德州廠通過一線客戶認證。<strong>扣分項：</strong>本業營收前三季年減 4.4%、毛利率兩年半自 34.26% 降至 20.64%，<strong>復甦尚未反映在損益上</strong>；長約漲幅來源為未具名業界調查。</td></tr>
+        <tr><td><strong>總經風險</strong></td><td>10%</td><td style="color:#d97706"><strong>5.5</strong></td><td>AI 需求帶動先進製程矽晶圓，但矽晶圓屬<strong>落後循環</strong>，復甦遞延。10/13、10/15 的系統性賣壓對高波動股衝擊放大。歐元匯率同時影響 Siltronic 曝險評價。</td></tr>
+        <tr><td><strong>籌碼風險</strong></td><td>10%</td><td class="neg"><strong>7.5</strong></td><td class="neg">三大法人近 20 日賣超 <strong>26,341 張、連 8 日賣超</strong>；<strong>GDR 認購方在配發後 11 個交易日減持 1,433 萬股（−8.2%）</strong>；5,000 萬股新籌碼剛進場；融資比 2.45% 在高波動下具斷頭風險；股價與 Siltronic 高度連動，籌碼面受外部標的牽引。</td></tr>
+        <tr class="hl"><td colspan="2"><strong>加權綜合</strong></td><td style="color:#d97706"><strong>6.2</strong></td><td><strong>中等偏高（4~6 分級上緣）。</strong>7.5×0.30 + 6.0×0.25 + 4.0×0.10 + 5.0×0.15 + 5.5×0.10 + 7.5×0.10 = 2.25 + 1.50 + 0.40 + 0.75 + 0.55 + 0.75 = <strong>6.20</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>風險結構的特徵：環球晶是本系列第一檔「風險來源在公司外部」的個股。</strong>德宏是估值與籌碼雙高、台達電是財務極穩而估值籌碼偏高、智邦是估值最低但財務（現金流）最高。<strong>環球晶的最高分落在估值（7.5）與籌碼（7.5），但兩者的根源是同一件事 —— Siltronic 的股價。</strong><br><br>這代表一個很實務的結論：<strong>追蹤這檔股票，與其盯它的月營收，不如每天看 XETRA 的 WAF 報價。</strong>本報告已將 Siltronic 的敏感度校準過兩次（6 月、10 月），這個框架比任何營收預估都更能解釋股價。</p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">12</span>台股三段式策略</div>
+  <div class="strategy-grid">
+    <div class="strategy-card attack">
+      <div class="sc-title">進攻情境</div>
+      <div class="sc-cond">觸發條件</div>
+      <ul>
+        <li><strong>9 月自結（約 10/31）與 Q4 的 Siltronic 認列幅度明顯小於本報告推估的 −7.6 元/股</strong></li>
+        <li>11/3 法說會管理層明確說明 GDR 454 億的產能投放時程與金額</li>
+        <li>管理層給出 2027 長約漲幅的具體口徑（而非僅業界調查）</li>
+        <li>11/4 Siltronic Q3 財報優於預期、股價止穩於 €60 之上</li>
+        <li>三大法人由連 8 日賣超轉為連續買超</li>
+        <li>股價站回 MA20（約 1,000）且量能放大</li>
+      </ul>
+      <div class="sc-cond">參考價位</div>
+      <p class="sc-price">分批區間 740 ~ 820 元<br>目標 1,100 ~ 1,250 元<br>停損 733（布林下軌／跌停）</p>
+      <div class="sc-note">需<strong>同時滿足 3 項以上</strong>，且前兩項為必要條件。目前成立 0 項。</div>
+    </div>
+    <div class="strategy-card balance">
+      <div class="sc-title">均衡情境（現況）</div>
+      <div class="sc-cond">現況判定</div>
+      <ul>
+        <li>本業在循環底部回升（8 月自結＋144.98% 且非業外貢獻）</li>
+        <li>但 Siltronic −€23.50 的評價損失尚未入帳</li>
+        <li>GDR 已完成，財務將轉為淨現金 389 億、每股淨值 +33%</li>
+        <li>技術面空頭排列，RSI 34.5 近超賣，布林帶寬 53.3%</li>
+        <li>法人目標價分歧 2.8 倍，且最新兩筆皆在 Siltronic 下跌前</li>
+      </ul>
+      <div class="sc-cond">操作傾向</div>
+      <p class="sc-price"><strong>觀望至 11/3~11/4</strong><br>既有持股可減碼<br>不建立新倉</p>
+      <div class="sc-note">五天內三個事件（9 月自結、法說會、Siltronic 財報）會一次解決最大的不確定性。</div>
+    </div>
+    <div class="strategy-card defense">
+      <div class="sc-title">防守情境</div>
+      <div class="sc-cond">觸發條件</div>
+      <ul>
+        <li><strong>月自結或 Q4 財報認列 Siltronic 損失達每股 −7 元以上</strong></li>
+        <li>Siltronic 跌破 €55（再擴大 −9%）</li>
+        <li>11/4 Siltronic Q3 財報虧損（將透過權益法再傷一次）</li>
+        <li>11/3 法說會對 GDR 用途或 2027 長約給不出具體數字</li>
+        <li>收盤跌破 778（7 月 Siltronic 衝擊後的跳空跌停價）</li>
+        <li>三大法人賣超延續至 15 個交易日以上</li>
+      </ul>
+      <div class="sc-cond">參考價位</div>
+      <p class="sc-price">第一觀察 <strong>778</strong>（7 月前例）<br>第二 <strong>733.5</strong>（布林下軌）<br>極端情境 620（P/B 2.3 倍）</p>
+      <div class="sc-note">布林帶寬 53.3%，<strong>停損必須機械化執行</strong>；但也要留意此波動度下假跌破的機率偏高，建議以收盤價判定。</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="note-title">🔴 催化劑時程表 —— 五天內三個事件</div>
+    <div class="timeline">
+      <div class="tl-item bad"><div class="tl-date">約 2026-10-31（3 天後，推估）</div><div class="tl-text"><strong>9 月自結損益公告。</strong>環球晶因曾被列注意股，櫃買中心要求提前揭露月自結（8 月自結於 9/30 公告）。<strong>觀察重點：Siltronic 評價損失是否已開始反映。</strong>9 月 Siltronic 仍在高檔，故 9 月自結可能仍不錯 —— <strong>真正的衝擊應落在 10 月自結（約 11 月底）或 Q4 財報。</strong><br><span style="color:#92400e"><strong>日期為推估：</strong>依 8 月自結於 9/30 公告的慣例推算，公司未公告確切日期。</span></div></div>
+      <div class="tl-item bad"><div class="tl-date">2026-11-03 16:00（6 天後，最重要）</div><div class="tl-text"><strong>2026 年第三季法人說明會（英文線上）。</strong>本報告認為必須問清楚的四件事：<strong>（1）GDR 454 億的產能投放金額與時程</strong>——這與資本支出年減七成的事實互相矛盾；<strong>（2）Siltronic 曝險的評價機制與目前部位</strong>；<strong>（3）2027 長約漲幅的公司口徑</strong>（目前只有未具名業界調查）；<strong>（4）股利政策</strong>——為何砍至 5.70 元且前半年度配 0 元。</div></div>
+      <div class="tl-item bad"><div class="tl-date">2026-11-04（7 天後）</div><div class="tl-text"><strong>Siltronic（WAF）第三季財報。</strong>這條管道影響的是<strong>權益法認列</strong>（看 Siltronic 的獲利，不是股價），與附認股權公司債的評價損益是<strong>兩筆分開的帳</strong>。<strong>若 Siltronic Q3 虧損，環球晶會在同一季被傷第二次。</strong></div></div>
+      <div class="tl-item"><div class="tl-date">2026 年 11 月中（推估）</div><div class="tl-text"><strong>Q3 財報。</strong>營收 148.71 億已確認。觀察：<strong>（1）毛利率能否自 20.64% 回升；（2）業外金額（Siltronic 在 Q3 仍處高檔，業外可能仍為正）；（3）GDR 入帳後的現金與權益水位，以驗證本報告推估的每股淨值 269.1 元。</strong>凱基 9/30 稱 Q3 EPS 有機會高於原估的 1.9 元。</div></div>
+      <div class="tl-item bad"><div class="tl-date">約 2026 年 11 月底</div><div class="tl-text"><strong>10 月自結 —— 本報告推估的衝擊落點。</strong>Siltronic 的 −€23.50 發生在 10/07~10/28，<strong>理論上會反映在 10 月自結</strong>。本報告推估約 −40 億元、每股約 −7.6 元（線性外推上緣）。<strong>7 月那次（6 月自結 −8.27 元）公告隔日跳空跌停至 778 元，這是最直接的前例。</strong></div></div>
+      <div class="tl-item"><div class="tl-date">2027 年上半年</div><div class="tl-text"><strong>新長約價格正式適用。</strong>業界調查估 12 吋 epi +15~25%、拋光片 +40% 以上。<strong>這是多方論述真正兌現的時點</strong>，也是法人 2027 年 EPS 預估由 26.65 元（FactSet 5 月）分歧到 60~70 元（9 月未具名法人）的根源。</div></div>
+    </div>
+    <p style="font-size:13px;line-height:1.8;margin-top:12px"><strong>追蹤工具：</strong>本檔最有效的日頻追蹤指標<strong>不是台股的任何數據，而是 XETRA 的 Siltronic（WAF）報價</strong>。已校準的敏感度為每 €1 約影響環球晶每股 0.30~0.36 元（以增資後股數約 0.27~0.33 元），<strong>但屬選擇權性質、非線性，僅供方向判斷。</strong></p>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">13</span>名詞小教室</div>
+  <div class="card">
+    <div class="glossary">
+      <div class="gl-item"><div class="gl-term">🔴 GDR（海外存託憑證）</div><div class="gl-def">公司在國外（本次是盧森堡）發行、代表台股股票的憑證，賣給國際機構法人換現金。環球晶這次發 5,000 萬股、募 454 億元，每股定價 908.32 元。<strong>白話：到國外開一場增資，把新股賣給外國法人。</strong>好處是拿到一大筆錢、財務轉為淨現金；壞處是股數變多，原股東每股分到的獲利被稀釋 9.47%。</div></div>
+      <div class="gl-item"><div class="gl-term">🔴 高溢價增資：稀釋 EPS 卻推高淨值</div><div class="gl-def">環球晶以 908 元發行新股，而當時每股淨值只有 202 元。結果是：<strong>EPS 被稀釋 9.47%（本益比變貴），但每股淨值跳升 33%（股價淨值比變便宜）。</strong><strong>白話：一塊披薩要多切幾片（每片變小），但同時有人付大錢加了很多料進來（整塊變厚）。</strong>所以看 P/E 覺得變貴、看 P/B 覺得變便宜，兩個都對。</div></div>
+      <div class="gl-item"><div class="gl-term">🔴 附認股權公司債（Warrant Bond）</div><div class="gl-def">環球晶的德國子公司發行的債券，附帶「可以用約定價格買 Siltronic 股票」的權利。這個權利是<strong>選擇權</strong>，要按市價評價、損益計入業外。<strong>白話：公司手上有一張「以某價買世創股票」的票券，世創漲它就值錢、跌它就變廢紙，每個月都要重新估價記帳。</strong>關鍵是<strong>它的反應不是線性的</strong>——世創越便宜，這張票越接近廢紙，再跌的影響反而變小。</div></div>
+      <div class="gl-item"><div class="gl-term">權益法 vs 評價損益</div><div class="gl-def">兩條不同的帳。<strong>權益法</strong>：按持股比例認列 Siltronic 的<strong>獲利</strong>（看它賺多少，11/4 公布）。<strong>評價損益</strong>：附認股權公司債按 Siltronic 的<strong>股價</strong>重估（看它值多少，每月變動）。<strong>白話：一個看「公司賺不賺錢」，一個看「股票值不值錢」—— 兩件事可以同時往反方向走。</strong></div></div>
+      <div class="gl-item"><div class="gl-term">業外佔稅前淨利</div><div class="gl-def">賺的錢裡有多少不是本業來的。環球晶 Q2&#39;26 是 <strong>68.96%</strong>，近四季 45.88%。<strong>白話：Q2 帳上賺 7.90 元，但真正靠賣晶圓賺的只有約 2.45 元，另外 5.45 元是帳面評價。</strong>這類公司的 EPS 不能直接拿來算本益比，因為那個分母下一季可能整個反過來。</div></div>
+      <div class="gl-item"><div class="gl-term">🔴 增資期間的外資持股比例陷阱</div><div class="gl-def">10/13 外資持股比是 36.15%，10/14 變成 32.30%，看起來像一天賣掉 3.85 個百分點。<strong>但實際上外資只減了 1.3%，其餘全是因為「發行股數」這個分母在 10/14 變大了。</strong><strong>白話：不是你的那塊變小了，是整個蛋糕變大了。</strong>增資期間一定要改看「股數」而非「比例」。</div></div>
+      <div class="gl-item"><div class="gl-term">長約（LTA）與現貨價</div><div class="gl-def">矽晶圓多以長期合約（Long Term Agreement）鎖定價格與數量，一簽數年。2027 年的新長約正在談，業界估 12 吋磊晶片漲 15~25%、拋光片漲 40% 以上。<strong>白話：這行是先簽約再出貨，所以「漲價」不是明天就反映，而是下一輪合約生效時才一次灌進來。</strong>分析師預期 2026Q4 現貨價高於長約價，這會讓環球晶在談判桌上更有籌碼。</div></div>
+      <div class="gl-item"><div class="gl-term">布林帶寬</div><div class="gl-def">（上軌−下軌）÷ 中軌，衡量近期波動有多大。環球晶是 <strong>53.3%</strong>，智邦 20.1%、台達電 31.5%。<strong>白話：這檔股票近 20 天的「正常波動範圍」就有現價的一半寬。</strong>意思是兩天跌 10% 在它身上是常態而非意外，<strong>設停損時若設得太近，會被正常波動掃出場。</strong></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title"><span class="section-num">14</span>免責聲明與資料來源</div>
+  <div class="disclaimer">
+    <div class="dis-title">⚠️ 重要聲明</div>
+    <p><strong>本報告僅供研究參考，不構成任何投資建議、要約或招攬。</strong>報告中所有目標價、合理價區間、EPS 預估與策略情境皆為基於公開資訊的推演，不保證實現。投資決策應由投資人自行判斷並承擔全部風險。股票投資可能導致本金損失。<strong>第 12 節的三段式策略為情境框架，不是針對任何特定資金規模的配置建議。</strong></p>
+    <p style="margin-top:10px"><strong>🔴 對前兩次報告的更正（詳見第 01 節）：</strong>本系列 2026-10-14（首次）與 2026-10-16（第 2 次）兩份報告<strong>均使用增資前的 4.781 億股</strong>，未納入 2026-09-22 完成定價、2026-10-14 完成登記的 GDR 增資（5,000 萬股）。<strong>兩份報告的市值、每股淨值、本益比、股價淨值比等所有每股指標均需以本報告的 5.2811 億股重新理解。</strong></p>
+    <p style="margin-top:10px"><strong>推算值與實際值的區分：</strong>所有實際值皆註明來源（合併財報／公司公告／官方集保／交易所）。<strong>以下為本報告推估，非公司公告：</strong></p>
+    <ul style="margin:8px 0 0 20px;font-size:13px;line-height:1.8">
+      <li><strong>Siltronic 衝擊約 −40.06 億元、每股約 −7.59 元</strong> —— 以 2026 年 6 月（−€23.20 → −39.55 億）線性外推。<span style="color:#dc2626"><strong>該曝險為選擇權性質、敏感度非線性，此為上緣估計，實際可能明顯較小。</strong></span></li>
+      <li><strong>增資後每股淨值約 269.1 元</strong> —— 2026-06-30 歸母權益 967.2 億 ＋ GDR 454 億，÷ 5.2811 億股，<strong>未計入 Q3 損益與發行費用</strong>。</li>
+      <li><strong>增資後淨現金約 +389 億</strong>、<strong>FY2026E 約 9.3 元</strong>、<strong>本業 TTM EPS 約 9.3 元</strong>、<strong>Q2 本業 EPS 約 2.45 元</strong>、<strong>合理價區間 620~810 元</strong>（P/B 2.3~3.0 倍）。</li>
+      <li><strong>9 月自結公告日（約 10/31）與 Q3 財報日（11 月中）為依慣例推估</strong>，公司未公告。</li>
+    </ul>
+    <p style="margin-top:10px"><strong>已知的資料限制與來源衝突（誠實揭露）：</strong></p>
+    <ul style="margin:8px 0 0 20px;font-size:13px;line-height:1.8">
+      <li><strong>🔴 Siltronic 報價來源不一致。</strong>本報告採 €60.45（Stock Events，日期標示為「Tuesday 19:24」、頁面 FAQ 提及 2026-10-28），<strong>但同一頁面的年度報酬率欄位自相矛盾（−83.33% vs +7.18%）</strong>。其他來源：2026-10-08 為 €80.05（前一交易日 €83.95）、2026-10-16 為 US$73.05。<strong>三週重挫約三成的方向明確，但精確點位請以 XETRA 官方報價為準。</strong></li>
+      <li><strong>🔴 多筆 FactSet 目標價的發布日期無法確認。</strong>僅 580 元那筆確認為 <strong>2026-05-06</strong>（13 位分析師、EPS 20.33 元）。其餘 529／733.5／1,180／1,442.5 元各筆的年份未標示。<strong>本報告僅以凱基 1,500 元、統一 1,400 元（皆 2026-09-30、具名具日期）作為參考，且已註明兩者皆發布於 Siltronic 本波下跌之前。</strong></li>
+      <li><strong>2027 年長約漲幅（epi +15~25%、拋光片 +40% 以上）來源為未具名的「業界調查」</strong>，經媒體轉述，非公司財測。FY2027E 60~70 元、FY2028E 120~130 元亦為<strong>未具名法人經分析師轉述</strong>。<strong>本報告未將任何一項量化納入估值推導。</strong></li>
+      <li><strong>未能取得：</strong>旺得富原文（HTTP 403）、Goodinfo 原始頁面（HTTP 403）、9 月自結損益數字（搜尋未獲）、10/23 之後的官方三大法人與融資融券（第三方統計僅至 10/22，已以官方集保外資持股補足至 10/27）、環球晶對 Siltronic 的最新持股比例、Q3 財報。</li>
+      <li><strong>價格資料缺少 2026-10-23 與 10-26 兩日</strong>（FinMind 日 K 自 10/22 直接跳至 10/27），本報告未能確認原因，所有均線與布林計算均以實際取得的交易日為準。</li>
+      <li><strong>GDR 稀釋比例有兩種算法</strong>：以增資前股數為分母為 <strong>10.46%</strong>（50,000,000 ÷ 478,113,725），以增資後股數為分母為 <strong>9.47%</strong>（50,000,000 ÷ 528,113,725）。公司與媒體採後者，本報告兩者皆列示。</li>
+    </ul>
+    <p style="margin-top:10px"><strong>資料來源：</strong>富果 Fugle API（即時報價 2026-10-28 09:49）、FinMind（歷史 K 線、合併財務報表、資產負債表、現金流量表、月營收、股利、<strong>官方集保外資持股與發行股數申報</strong>）、櫃買中心（三大法人、融資融券，經第三方統計轉述）、公開資訊觀測站重大訊息（8 月自結、GDR）、Stock Events（Siltronic 報價）、工商時報、鉅亨網、Yahoo 股市、理財周刊、旺得富理財網、abmedia、科技新報、經濟日報、富果直送、FinLab、HiStock。</p>
+    <p style="margin-top:10px"><strong>交叉驗證紀錄：</strong>月營收月份慣例經三項驗證（<strong>9 月 51.29 億、Q3 148.7 億、前三季 440.70 億，與公司公告完全一致</strong>）；月營收加總與合併財報 Q1、Q2 皆吻合，校準係數 1.000；<strong>發行股數變動經集保日資料精確定位於 2026-10-14（+50,000,000 股），並以外資持股於 10/02→10/05 增加 50,474,353 股交叉佐證</strong>；EPS 股數基礎經逐季「歸屬母公司淨利 ÷ EPS」反推為 4.776~4.789 億股，與增資前股本 47.8 億一致；8 月自結淨利 7.04 億 ÷ EPS 1.47 元 = 4.789 億股，同樣吻合；漲跌停檔位規則經腳本輸出 908.6 = 826×1.1 反證其基準日落後一個交易日。</p>
+    <p style="margin-top:10px">報告產製時間：2026-10-28 · 環球晶圓（6488）第 3 次研究報告（首次 2026-10-14、第 2 次 2026-10-16）· 本報告由多角色分析團隊流程產出，圖表以原生 Canvas 2D API 繪製，無任何外部 CDN 依賴。</p>
+  </div>
+</section>
+
+<script>
+function drawBarChart(id,labels,data,barColor,accentColor,negColor,dec){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=54,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  var D=(dec===undefined)?2:dec;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||0.5;
+  var lo=(min<0)?(min-pad):Math.max(0,min-pad);
+  var hi=max+pad,range=hi-lo;
+  var n=data.length;
+  var barW=chartW/n*0.58,gap=chartW/n;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(D===0?0:1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0){ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();}
+  for(var i=0;i<n;i++){
+    var x=PL+i*gap+(gap-barW)/2;
+    var vy=PT+chartH-((data[i]-lo)/range*chartH);
+    var top=Math.min(vy,zeroY),bh=Math.abs(vy-zeroY);
+    if(bh<1.5)bh=1.5;
+    var isLast=(i===n-1);
+    var color=(data[i]<0)?(negColor||'#dc2626'):(isLast?accentColor:barColor);
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(x,top,barW,bh,3);ctx.fillStyle=color;ctx.fill();}
+    else{ctx.fillStyle=color;ctx.fillRect(x,top,barW,bh);}
+    ctx.fillStyle=(data[i]<0)?'#dc2626':(isLast?accentColor:'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(D),x+barW/2,(data[i]<0)?(top+bh+11):(top-4));
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    var lx=PL+i*gap+gap/2,ly=PT+chartH+14;
+    if(labels[i].length>4){ctx.save();ctx.translate(lx,ly);ctx.rotate(-Math.PI/6);ctx.fillText(labels[i],0,0);ctx.restore();}
+    else ctx.fillText(labels[i],lx,ly);
+  }
+}
+function drawLineChart(id,labels,data,color,negColor,dec){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  var PL=54,PR=12,PT=22,PB=44;
+  var chartW=W-PL-PR,chartH=H-PT-PB;
+  var D=(dec===undefined)?1:dec;
+  ctx.clearRect(0,0,W,H);
+  var min=Math.min.apply(null,data),max=Math.max.apply(null,data);
+  var pad=(max-min)*0.22||1;
+  var lo=min-pad,hi=max+pad,range=hi-lo;
+  var n=data.length;
+  ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
+  for(var g=0;g<=4;g++){
+    var gy=PT+chartH-chartH*g/4;
+    ctx.beginPath();ctx.moveTo(PL,gy);ctx.lineTo(PL+chartW,gy);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.font='10px Arial';ctx.textAlign='right';
+    ctx.fillText((lo+range*g/4).toFixed(1),PL-4,gy+3);
+  }
+  var zeroY=PT+chartH-((0-lo)/range*chartH);
+  if(lo<0&&hi>0){
+    ctx.beginPath();ctx.moveTo(PL,zeroY);ctx.lineTo(PL+chartW,zeroY);
+    ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.stroke();
+  }
+  var pts=[];
+  for(var i=0;i<n;i++)pts.push({x:PL+i*chartW/(n-1),y:PT+chartH-(data[i]-lo)/range*chartH});
+  var base=(lo<0&&hi>0)?zeroY:(PT+chartH);
+  ctx.beginPath();ctx.moveTo(pts[0].x,base);
+  for(var i=0;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.lineTo(pts[n-1].x,base);ctx.closePath();
+  var grad=ctx.createLinearGradient(0,PT,0,PT+chartH);
+  var hex=color.slice(1);
+  var r=parseInt(hex.slice(0,2),16),g2=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  grad.addColorStop(0,'rgba('+r+','+g2+','+b+',0.25)');
+  grad.addColorStop(1,'rgba('+r+','+g2+','+b+',0.02)');
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+  for(var i=1;i<n;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+  for(var i=0;i<n;i++){
+    var isLast=(i===n-1);
+    var dotCol=(data[i]<0&&negColor)?negColor:color;
+    ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,isLast?5:3,0,Math.PI*2);
+    ctx.fillStyle=isLast?dotCol:'#fff';ctx.fill();
+    ctx.strokeStyle=dotCol;ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=isLast?dotCol:((data[i]<0)?'#dc2626':'#475569');
+    ctx.font=(isLast?'bold ':'')+'10px Arial';ctx.textAlign='center';
+    ctx.fillText(data[i].toFixed(D),pts[i].x,pts[i].y+(isLast?-10:-8));
+  }
+  for(var i=0;i<n;i++){
+    ctx.fillStyle='#64748b';ctx.font='9px Arial';ctx.textAlign='center';
+    ctx.fillText(labels[i],pts[i].x,PT+chartH+14);
+  }
+}
+function drawHBarChart(id,labels,data,colors,suffix){
+  var canvas=document.getElementById(id);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var max=Math.max.apply(null,data)*1.32;
+  var n=labels.length;
+  var rowH=H/(n+0.6);
+  var PL=196,PR=56;
+  for(var i=0;i<n;i++){
+    var y=rowH*(i+0.3)+rowH*0.12;
+    var bh=rowH*0.66;
+    ctx.fillStyle='#f1f5f9';ctx.fillRect(PL,y,(W-PL-PR),bh);
+    var bw=(data[i]/max)*(W-PL-PR);
+    if(bw<2)bw=2;
+    var col=colors?colors[i]:'#7e22ce';
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(PL,y,bw,bh,4);ctx.fillStyle=col;ctx.fill();}
+    else{ctx.fillStyle=col;ctx.fillRect(PL,y,bw,bh);}
+    ctx.fillStyle='#1e293b';ctx.font='11px Arial';ctx.textAlign='right';
+    ctx.fillText(labels[i],PL-8,y+bh/2+4);
+    ctx.fillStyle='#1e293b';ctx.font='bold 12px Arial';ctx.textAlign='left';
+    ctx.fillText(data[i].toFixed(1)+(suffix||'x'),PL+bw+6,y+bh/2+4);
+  }
+}
+window.addEventListener('DOMContentLoaded',function(){
+  drawBarChart('epsChart',
+    ["Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [8.10,6.02,6.18,0.87,3.05,3.52,4.12,4.61,3.97,7.90],
+    '#fae8ff','#701a75','#dc2626',2);
+  drawBarChart('nonopChart',
+    ["Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [5.90,1.65,3.43,-27.88,-4.56,-1.50,9.57,5.28,8.71,31.62],
+    '#fae8ff','#701a75','#dc2626',2);
+  drawBarChart('opChart',
+    ["Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [39.68,33.67,32.00,35.84,25.89,24.38,12.30,23.79,14.75,14.23],
+    '#fae8ff','#701a75','#dc2626',2);
+  drawBarChart('qrevChart',
+    ["Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"],
+    [150.9,153.3,158.7,163.4,156.0,160.1,144.9,145.0,139.9,152.1,148.7],
+    '#fae8ff','#701a75','#dc2626',1);
+  drawLineChart('revChart',
+    ['1月','2月','3月','4月','5月','6月','7月','8月','9月'],
+    [41.39,44.00,54.46,47.48,48.42,56.24,49.78,47.64,51.29],
+    '#701a75',null,2);
+  drawLineChart('gmChart',
+    ["Q1'24","Q2'24","Q3'24","Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26"],
+    [34.26,32.31,30.04,30.09,26.37,25.76,18.37,25.70,20.83,20.64],
+    '#a21caf',null,2);
+  drawLineChart('fshChart',
+    ['10/02','10/05','10/07','10/12','10/13','10/14','10/16','10/20','10/22','10/27'],
+    [23.32,32.88,32.80,33.02,32.73,32.31,31.13,30.43,30.20,30.30],
+    '#701a75',null,2);
+  drawHBarChart('peChart',
+    ['本報告 FY2026E（9.3元）','本業 TTM（9.3元）','TTM 稀釋後（18.65元）','統一 FY2026E（20.81元）','統一 FY2027E（36.5元）','法人 FY2027E（70元）'],
+    [91.8,92.1,45.8,41.0,23.4,12.2],
+    ['#dc2626','#dc2626','#d97706','#d97706','#16a34a','#16a34a'],'倍');
+  drawHBarChart('tgtChart',
+    ['FactSet 580（5/06・舊）','現價 854','某券商 880（約5月）','統一 1400（9/30）','凱基 1500（9/30）'],
+    [580,854,880,1400,1500],
+    ['#64748b','#701a75','#64748b','#16a34a','#16a34a'],'元');
+  drawHBarChart('riskChart',
+    ['估值 30%','財務 25%','流動性 10%','產業 15%','總經 10%','籌碼 10%','加權綜合'],
+    [7.5,6.0,4.0,5.0,5.5,7.5,6.2],
+    ['#dc2626','#d97706','#16a34a','#16a34a','#d97706','#dc2626','#701a75'],'分');
+});
+</script>
+
+</div>
+</body>
+</html>
