@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>台股盤中分析 | 2026-11-06 10:34</title>
+<style>
+:root{
+  --bg:#0d1117; --panel:#161b22; --panel2:#1c2129; --line:#30363d;
+  --txt:#e6edf3; --dim:#8b949e; --dim2:#6e7681;
+  --red:#f85149; --redbg:rgba(248,81,73,.12);
+  --grn:#3fb950; --grnbg:rgba(63,185,80,.12);
+  --amb:#d29922; --ambbg:rgba(210,153,34,.12);
+  --blu:#58a6ff; --blubg:rgba(88,166,255,.12);
+  --pur:#bc8cff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,"Segoe UI",sans-serif;
+  font-size:15px;line-height:1.7;-webkit-text-size-adjust:100%}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px 80px}
+header{padding:34px 0 24px;border-bottom:1px solid var(--line);margin-bottom:28px}
+.kick{font-size:12px;letter-spacing:.22em;color:var(--dim2);text-transform:uppercase}
+h1{font-size:30px;margin:10px 0 6px;font-weight:700;letter-spacing:-.01em}
+.sub{color:var(--dim);font-size:14px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{font-size:12.5px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--dim)}
+.badge.red{color:var(--red);border-color:rgba(248,81,73,.45);background:var(--redbg)}
+.badge.grn{color:var(--grn);border-color:rgba(63,185,80,.45);background:var(--grnbg)}
+.badge.amb{color:var(--amb);border-color:rgba(210,153,34,.45);background:var(--ambbg)}
+.badge.blu{color:var(--blu);border-color:rgba(88,166,255,.45);background:var(--blubg)}
+section{margin:38px 0}
+h2{font-size:12px;letter-spacing:.2em;color:var(--dim2);text-transform:uppercase;
+  margin:0 0 14px;padding-bottom:9px;border-bottom:1px solid var(--line);font-weight:600}
+h3{font-size:17px;margin:26px 0 10px;font-weight:650}
+h4{font-size:14.5px;margin:18px 0 8px;font-weight:650}
+p{margin:10px 0}
+.lead{font-size:16.5px;line-height:1.75}
+.muted{color:var(--dim)} .small{font-size:13px}
+.tiny{font-size:12px;color:var(--dim2)}
+.n{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.up{color:var(--red)} .dn{color:var(--grn)}
+.hero{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;margin:22px 0}
+.heroTop{display:flex;flex-wrap:wrap;align-items:flex-end;gap:18px}
+.bigpx{font-size:44px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.bigch{font-size:19px;font-weight:650}
+.heroMeta{color:var(--dim);font-size:13px;margin-top:4px}
+.grid{display:grid;gap:12px;margin:18px 0}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:820px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px 14px}
+.kpi .lab{font-size:11.5px;color:var(--dim2);letter-spacing:.04em}
+.kpi .val{font-size:22px;font-weight:700;margin-top:3px;line-height:1.15}
+.kpi .note{font-size:12px;color:var(--dim);margin-top:3px}
+.box{border:1px solid var(--line);border-left-width:3px;border-radius:9px;padding:15px 17px;margin:16px 0;background:var(--panel)}
+.box.red{border-left-color:var(--red)} .box.grn{border-left-color:var(--grn)}
+.box.amb{border-left-color:var(--amb)} .box.blu{border-left-color:var(--blu)}
+.box .bt{font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:7px;font-weight:650}
+.box.red .bt{color:var(--red)} .box.grn .bt{color:var(--grn)}
+.box.amb .bt{color:var(--amb)} .box.blu .bt{color:var(--blu)}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0;border:1px solid var(--line);border-radius:9px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:13.5px}
+th,td{padding:8px 11px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:var(--panel2);color:var(--dim);font-weight:600;font-size:12px;letter-spacing:.04em}
+td:first-child,th:first-child{text-align:left}
+tbody tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--redbg)} tr.hl2 td{background:var(--grnbg)}
+tr.tot td{font-weight:650;background:var(--panel2)}
+.bar{display:flex;align-items:center;gap:9px;margin:5px 0;font-size:13px}
+.bar .bl{width:124px;flex:0 0 124px;color:var(--dim)}
+.bar .bt2{flex:1;height:17px;background:var(--panel2);border-radius:3px;overflow:hidden}
+.bar .bf{height:100%;border-radius:3px}
+.bar .bv{width:112px;flex:0 0 112px;text-align:right;font-variant-numeric:tabular-nums}
+/* intraday path */
+.path{position:relative;height:150px;margin:18px 0 6px;background:var(--panel2);border:1px solid var(--line);border-radius:8px}
+.pline{position:absolute;left:0;right:0;border-top:1px dashed var(--line)}
+.plab{position:absolute;right:8px;font-size:11px;color:var(--dim2);transform:translateY(-50%)}
+.pdot{position:absolute;width:9px;height:9px;border-radius:50%;transform:translate(-50%,-50%)}
+.pdlab{position:absolute;font-size:11px;color:var(--dim);transform:translate(-50%,-150%);white-space:nowrap}
+ul,ol{margin:10px 0;padding-left:22px} li{margin:6px 0}
+li::marker{color:var(--dim2)}
+.chk li{list-style:none;margin-left:-14px}
+.ic{display:inline-block;width:19px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.card h4{margin-top:0}
+footer{margin-top:54px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--dim2);line-height:1.8}
+code{background:var(--panel2);padding:1px 5px;border-radius:4px;font-size:12.5px;color:var(--pur)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kick">台股大盤 · 盤中快報</div>
+  <h1>自低點回升 2,043 點，年線盤中收復</h1>
+  <div class="sub">2026 年 11 月 6 日（五）· 報價時間 10:34 · 距 13:30 收盤尚有近三小時，型態未定</div>
+  <div class="badges">
+    <span class="badge amb">加權 39,880.38　-4.08%</span>
+    <span class="badge grn">自今日低點 +5.40%</span>
+    <span class="badge grn">年線 38,784.53 盤中收復 +2.83%</span>
+    <span class="badge amb">跌停鎖死 6 檔 → 2 檔</span>
+    <span class="badge red">櫃買 -5.16%，仍弱於加權</span>
+  </div>
+</header>
+
+<!-- 00 -->
+<section>
+<h2>00 · 先處理一件規則問題：我 09:40 的情境認定前提已經不成立</h2>
+
+<div class="box red">
+  <div class="bt">🔴 必須先說明，因為這會決定後面所有門檻怎麼套</div>
+  <p>今天 09:40 的早盤報告裡我寫：「<strong>今日開盤即最高、盤中最大跌幅 -8.99%、年線失守 —— 認定為續跌情境，門檻用量縮</strong>」，
+  並特別註明「昨天我用錯過一次，所以這次的認定要特別說明理由」。</p>
+  <p><strong>一小時後，那個理由的事實基礎沒了：</strong></p>
+  <div class="tw">
+  <table style="min-width:460px">
+  <thead><tr><th>當時寫的根據</th><th>10:34 的事實</th></tr></thead><tbody>
+    <tr><td>開盤 38,915.76 <strong>即為當日最高</strong></td><td class="dn">當日最高已是 <strong>39,884.28</strong>，高於開盤 2.49%</td></tr>
+    <tr><td>年線 38,784.53 <strong>失守</strong></td><td class="dn">現價 39,880.38，<strong>站上年線 2.83%</strong></td></tr>
+    <tr><td>跌停鎖死至少 6 檔</td><td class="dn">僅剩 <strong>2 檔</strong>（智邦、京元電）</td></tr>
+  </tbody></table>
+  </div>
+  <p style="margin-bottom:0"><strong>準則第 8 條禁止的是「依結果擇優換門檻」，不是禁止在前提被事實推翻時修正認定。</strong>
+  但這兩者很容易混淆，所以我把處理方式明確寫下來，而且<strong>刻意選擇較嚴的那條路</strong>。</p>
+</div>
+
+<div class="box amb">
+  <div class="bt">我不換成「反彈情境」，而是套用更嚴的第三格 —— 而第三格目前 0 勝 1 敗</div>
+  <p>若照我表格的字面定義，現在區間位置 <strong>99.8%</strong>（&gt; 70%）會落進<strong>反彈情境</strong>，門檻變成「量增 &gt; 1 兆」。
+  <strong>那正好是最有利於看多的解讀，所以我不採用。</strong></p>
+  <p>今天的真實型態是：<strong>跳空 -6.40% 開低 → 殺到 -8.99% → 回升 5.40%</strong>。
+  盤中最大跌幅 8.99% 遠超 2.5%，這是<strong>反轉型態</strong>，不是「開平盤後穩步上漲」的反彈。</p>
+  <p style="margin-bottom:0"><strong>而反轉型態就是昨天 11/04 那一格 —— 它上一次出現時給了假訊號，隔日跌 3.20%、56 檔股票跌停。</strong>
+  我昨天在準則裡補的後驗條件是：<strong>① 次日守住反轉日的最低點 ② 外資須於兩日內轉為買超</strong>，
+  並寫明「<strong>下次出現同型態時，應先假設它是假訊號，由後驗條件推翻</strong>」。
+  <strong>今天就是那個「下次」。所以我的預設立場是：這是假訊號，直到那兩項被滿足。</strong></p>
+</div>
+
+<div class="box blu">
+  <div class="bt">🔴 同時發現我的情境表有一個分類缺陷</div>
+  <p>我的表用「收盤位置」當主分類，但<strong>位置 &gt; 70% 這一格無法區分兩種完全不同的日子</strong>：
+  「開平盤後穩步走高」與「崩跌 9% 後拉回全部跌幅」。前者是強勢，後者是劇烈震盪。</p>
+  <p style="margin-bottom:0"><strong>✅ 修正：分類順序要反過來，以「盤中最大跌幅」為第一層。</strong></p>
+  <div class="tw" style="margin-bottom:0">
+  <table style="min-width:540px">
+  <thead><tr><th>第一層</th><th>第二層</th><th>情境</th><th>門檻</th></tr></thead><tbody>
+    <tr class="hl2"><td rowspan="2"><strong>盤中最大跌幅 &gt; 2.5%</strong></td><td>收盤位置 &gt; 50%</td><td><strong>反轉類</strong></td><td>量增為必要；<strong>須過兩項後驗條件</strong></td></tr>
+    <tr class="hl2"><td>收盤位置 &lt; 50%</td><td><strong>續跌</strong></td><td>看量縮 &lt; 8,000 億</td></tr>
+    <tr><td rowspan="2">盤中最大跌幅 ≤ 2.5%</td><td>收盤位置 &gt; 70% 或收紅</td><td>反彈</td><td>看量增 &gt; 1 兆</td></tr>
+    <tr><td>收盤位置 &lt; 30%</td><td>續跌</td><td>看量縮 &lt; 8,000 億</td></tr>
+  </tbody></table>
+  </div>
+</div>
+</section>
+
+<!-- 01 -->
+<section>
+<h2>01 · 盤中實況（10:34）</h2>
+
+<div class="hero">
+  <div class="heroTop">
+    <div><div class="bigpx dn n">39,880.38</div><div class="heroMeta">加權指數 · 昨收 41,574.72</div></div>
+    <div><div class="bigch dn n">-1,694.34　-4.08%</div><div class="heroMeta">開 38,915.76　高 39,884.28（即現在）　低 37,837.05</div></div>
+  </div>
+  <div class="grid g4" style="margin-bottom:0">
+    <div class="kpi"><div class="lab">自今日低點回升</div><div class="val up n">+2,043 點</div><div class="note">+5.40%</div></div>
+    <div class="kpi"><div class="lab">自 09:40 報價回升</div><div class="val up n">+1,430 點</div><div class="note">+3.72%，54 分鐘內</div></div>
+    <div class="kpi"><div class="lab">現價區間位置</div><div class="val up n">99.8%</div><div class="note">貼在當日最高</div></div>
+    <div class="kpi"><div class="lab">自 10/06 高點</div><div class="val n" style="color:var(--amb)">-19.96%</div><div class="note">低點時曾達 -24.06%</div></div>
+  </div>
+</div>
+
+<h4>今日盤中路徑</h4>
+<div class="path">
+  <div class="pline" style="top:5%"></div><div class="plab" style="top:5%">39,884 當日高</div>
+  <div class="pline" style="top:50.5%"></div><div class="plab" style="top:50.5%">38,785 年線</div>
+  <div class="pline" style="top:95%"></div><div class="plab" style="top:95%">37,837 當日低</div>
+  <div class="pdot" style="left:6%;top:47.3%;background:var(--amb)"></div>
+  <div class="pdlab" style="left:6%;top:47.3%">開 38,916</div>
+  <div class="pdot" style="left:34%;top:95%;background:var(--grn)"></div>
+  <div class="pdlab" style="left:34%;top:95%">低 37,837</div>
+  <div class="pdot" style="left:58%;top:68.4%;background:var(--dim)"></div>
+  <div class="pdlab" style="left:58%;top:68.4%">09:40　38,451</div>
+  <div class="pdot" style="left:94%;top:5.2%;background:var(--red)"></div>
+  <div class="pdlab" style="left:94%;top:5.2%">10:34　39,880</div>
+</div>
+<p class="tiny">縱軸以當日高 39,884.28 至當日低 37,837.05 等比繪製；橫軸為示意時序（09:00 開盤至 10:34），非等時間間隔。</p>
+
+<div class="box grn">
+  <div class="bt">🟢 年線盤中被收復，但這是盤中</div>
+  <p>年線 MA240 = <strong>38,784.53</strong>。今日開盤 38,915.76 距它僅 +0.34%，盤中跌破至 37,837.05（低於年線 2.44%），
+  現在回到 39,880.38，<strong>站上年線 2.83%</strong>。</p>
+  <p style="margin-bottom:0"><strong>依準則第 5 條，盤中站上不等於收盤站上。</strong>
+  今天的關鍵判定只有一個：<strong>13:30 收盤能否站在 38,784.53 之上</strong>。
+  若能，今天就是「單日穿刺年線後收復」；若不能，年線失守成立。
+  我早上才把「年線是否構成有效支撐」這個假設結案為「沒撐住」—— <strong>如果收盤站回，這個結案要再改回待驗證。</strong></p>
+</div>
+
+<div class="tw">
+<table>
+<thead><tr><th>均線</th><th>數值</th><th>現價 39,880.38</th><th>今日低 37,837.05</th></tr></thead>
+<tbody>
+<tr class="hl2"><td><strong>MA240（年線）</strong></td><td class="n">38,784.53</td><td class="n up"><strong>+2.83%</strong></td><td class="n dn">-2.44%</td></tr>
+<tr><td>MA5</td><td class="n">43,592.63</td><td class="n dn">-8.51%</td><td class="n dn">-13.20%</td></tr>
+<tr><td>MA20（月線）</td><td class="n">46,640.00</td><td class="n dn">-14.50%</td><td class="n dn">-18.87%</td></tr>
+<tr><td>MA60（季線）</td><td class="n">46,490.63</td><td class="n dn">-14.22%</td><td class="n dn">-18.61%</td></tr>
+<tr><td>MA120（半年線）</td><td class="n">45,360.93</td><td class="n dn">-12.08%</td><td class="n dn">-16.59%</td></tr>
+<tr><td>布林下軌</td><td class="n">42,096.88</td><td class="n dn">-5.27%</td><td class="n dn">-10.12%</td></tr>
+</tbody></table>
+</div>
+<p class="muted small">即使收復年線，其餘五條均線仍全在價格上方 8.5%–14.5% 處。<strong>年線是這波唯一還可能守住的技術位，不是反轉的證據。</strong></p>
+</section>
+
+<!-- 02 -->
+<section>
+<h2>02 · 跌停解鎖：6 檔 → 2 檔</h2>
+
+<p>今天 09:40 時重點股中有六檔跌停鎖死、四檔連最佳買價都沒有。10:34 的狀況：</p>
+
+<div class="tw">
+<table>
+<thead><tr><th>代碼</th><th>名稱</th><th>09:40</th><th>10:34 現價</th><th>10:34 %</th><th>自跌停價回升</th><th>狀態變化</th></tr></thead>
+<tbody>
+<tr class="hl2"><td>2408</td><td>南亞科</td><td class="n dn">-10.00% 鎖死</td><td class="n">346.50</td><td class="n dn">-3.75%</td><td class="n up">+6.94%</td><td class="up">已解鎖</td></tr>
+<tr class="hl2"><td>6669</td><td>緯穎</td><td class="n dn">-10.00% 鎖死</td><td class="n">1,570</td><td class="n dn">-4.85%</td><td class="n up">+5.72%</td><td class="up">已解鎖</td></tr>
+<tr class="hl2"><td>3037</td><td>欣興</td><td class="n dn">-10.00% 鎖死</td><td class="n">753.00</td><td class="n dn">-5.87%</td><td class="n up">+4.58%</td><td class="up">已解鎖</td></tr>
+<tr class="hl2"><td>3711</td><td>日月光投控</td><td class="n dn">-9.97% 鎖死</td><td class="n">536.00</td><td class="n dn">-6.29%</td><td class="n up">+4.08%</td><td class="up">已解鎖</td></tr>
+<tr class="hl2"><td>2308</td><td>台達電</td><td class="n dn">無成交</td><td class="n">1,045</td><td class="n dn">-7.52%</td><td class="n up">+2.45%</td><td class="up">已有成交</td></tr>
+<tr class="hl2"><td>2383</td><td>台光電</td><td class="n dn">無成交</td><td class="n">3,800</td><td class="n dn">-7.32%</td><td class="n up">+2.98%</td><td class="up">已有成交</td></tr>
+<tr class="hl2"><td>1303</td><td>南亞</td><td class="n dn">無成交</td><td class="n">245.50</td><td class="n dn">-1.41%</td><td class="n up">+9.35%</td><td class="up">已有成交</td></tr>
+<tr class="hl2"><td>2344</td><td>華邦電</td><td class="n dn">無成交</td><td class="n">121.00</td><td class="n dn">-5.10%</td><td class="n up">+5.22%</td><td class="up">已有成交</td></tr>
+<tr class="hl"><td>2345</td><td>智邦</td><td class="n dn">-9.78% 鎖死</td><td class="n">1,245</td><td class="n dn">-9.78%</td><td class="n">0.00%</td><td class="dn"><strong>仍鎖死</strong></td></tr>
+<tr class="hl"><td>2449</td><td>京元電</td><td class="n dn">-9.85% 鎖死</td><td class="n">206.00</td><td class="n dn">-9.85%</td><td class="n">0.00%</td><td class="dn"><strong>仍鎖死</strong></td></tr>
+</tbody></table>
+</div>
+
+<div class="box amb">
+  <div class="bt">這條訊號的品質比指數點數高，但要小心怎麼用</div>
+  <p>流動性恢復（跌停解鎖、無成交轉為有成交）是一個<strong>結構性的改善</strong>，比指數回升 2,043 點更實在 ——
+  它代表有人願意在跌停價附近接貨，而不只是賣壓暫歇。</p>
+  <p style="margin-bottom:0"><strong>但智邦（-9.78%）與京元電（-9.85%）兩檔從開盤到現在開＝高＝低，完全沒脫離跌停。</strong>
+  這正是我今天早上才寫進準則第 12 條的狀況：<strong>想賣的人賣不掉。</strong>
+  指數已經回升 5.40%，這兩檔的持有人卻一整個早上都沒有離開的機會 ——
+  <strong>指數的回升不會平均分配到每一檔個股，這是在跌幅擴大前就該計入的風險，不是事後觀察。</strong></p>
+</div>
+</section>
+
+<!-- 03 -->
+<section>
+<h2>03 · 個股自低點回升排序（依準則第 6 條的新方法）</h2>
+
+<p class="muted small">昨天我把「反轉日要用<strong>自當日低點的拉回幅度</strong>排序，不用當日漲跌幅」寫進準則。這是第二次應用。</p>
+
+<div class="bar"><div class="bl">南亞 1303</div><div class="bt2"><div class="bf" style="width:100%;background:var(--red)"></div></div><div class="bv up">+9.35%</div></div>
+<div class="bar"><div class="bl">力積電 6770</div><div class="bt2"><div class="bf" style="width:92.1%;background:var(--red)"></div></div><div class="bv up">+8.61%</div></div>
+<div class="bar"><div class="bl">友達 2409</div><div class="bt2"><div class="bf" style="width:91.4%;background:var(--red)"></div></div><div class="bv up">+8.55%</div></div>
+<div class="bar"><div class="bl">台塑 1301</div><div class="bt2"><div class="bf" style="width:89.0%;background:var(--red)"></div></div><div class="bv up">+8.32%</div></div>
+<div class="bar"><div class="bl">聯發科 2454</div><div class="bt2"><div class="bf" style="width:85.9%;background:var(--amb)"></div></div><div class="bv up">+8.03%</div></div>
+<div class="bar"><div class="bl">瑞昱 2379</div><div class="bt2"><div class="bf" style="width:82.9%;background:var(--amb)"></div></div><div class="bv up">+7.75%</div></div>
+<div class="bar"><div class="bl">華碩 2357</div><div class="bt2"><div class="bf" style="width:82.6%;background:var(--amb)"></div></div><div class="bv up">+7.72%</div></div>
+<div class="bar"><div class="bl">群創 3481</div><div class="bt2"><div class="bf" style="width:81.3%;background:var(--amb)"></div></div><div class="bv up">+7.60%</div></div>
+<div class="bar"><div class="bl">和碩 4938</div><div class="bt2"><div class="bf" style="width:79.0%;background:var(--amb)"></div></div><div class="bv up">+7.39%</div></div>
+<div class="bar"><div class="bl">南亞科 2408</div><div class="bt2"><div class="bf" style="width:74.2%;background:var(--amb)"></div></div><div class="bv up">+6.94%</div></div>
+<div class="bar"><div class="bl"><strong>台積電 2330</strong></div><div class="bt2"><div class="bf" style="width:68.9%;background:var(--blu)"></div></div><div class="bv up"><strong>+6.44%</strong></div></div>
+<div class="bar"><div class="bl">鴻海 2317</div><div class="bt2"><div class="bf" style="width:60.4%;background:var(--blu)"></div></div><div class="bv up">+5.65%</div></div>
+<div class="bar"><div class="bl">緯穎 6669</div><div class="bt2"><div class="bf" style="width:61.2%;background:var(--blu)"></div></div><div class="bv up">+5.72%</div></div>
+<div class="bar"><div class="bl"><strong>加權指數</strong></div><div class="bt2"><div class="bf" style="width:57.8%;background:var(--grn)"></div></div><div class="bv up"><strong>+5.40%</strong></div></div>
+<div class="bar"><div class="bl">華邦電 2344</div><div class="bt2"><div class="bf" style="width:55.8%;background:var(--grn)"></div></div><div class="bv up">+5.22%</div></div>
+<div class="bar"><div class="bl">欣興 3037</div><div class="bt2"><div class="bf" style="width:49.0%;background:var(--grn)"></div></div><div class="bv up">+4.58%</div></div>
+<div class="bar"><div class="bl">日月光 3711</div><div class="bt2"><div class="bf" style="width:43.6%;background:var(--grn)"></div></div><div class="bv up">+4.08%</div></div>
+<div class="bar"><div class="bl">台光電 2383</div><div class="bt2"><div class="bf" style="width:31.9%;background:var(--grn)"></div></div><div class="bv up">+2.98%</div></div>
+<div class="bar"><div class="bl">台達電 2308</div><div class="bt2"><div class="bf" style="width:26.2%;background:var(--grn)"></div></div><div class="bv up">+2.45%</div></div>
+<div class="bar"><div class="bl">智邦 2345 / 京元電 2449</div><div class="bt2"></div><div class="bv dn">0.00% 鎖死</div></div>
+<p class="tiny">條長以 +9.35% 為滿格。計算式為「現價 ÷ 當日最低 − 1」。</p>
+
+<div class="two">
+<div class="card">
+  <h4 style="color:var(--amb)">台積電這次有參與，但只是跟上</h4>
+  <p>台積電自跌停價 2,020 回升到 <strong>2,150（+6.44%）</strong>，略優於指數的 +5.40%，量 60,666 張。</p>
+  <p style="margin-bottom:0">對照 11/04 那次反轉：台積電自低點只回 <strong>+1.12%</strong>，而指數 +2.61% —— <strong>完全沒參與</strong>。
+  <strong>今天它站在指數前面一點點。</strong>依準則第 6 條，這是反轉能否持續的必要條件之一，
+  但「+6.44% vs +5.40%」只是勉強跟上，不是帶領。</p>
+</div>
+<div class="card">
+  <h4 style="color:var(--red)">櫃買仍是落後的一方</h4>
+  <p>加權 -4.08%、櫃買 <strong>-5.16%</strong>；更關鍵的是 <strong>櫃買當日最高 313.77 就是開盤價</strong>，
+  現價 304.89 <strong>仍低於開盤 2.83%</strong>。</p>
+  <p style="margin-bottom:0"><strong>加權已經突破開盤 2.49%，櫃買還沒回到開盤。</strong>
+  依準則第 6 條的「權值遮蔽效應」，這代表<strong>這波回升集中在權值與大型股，中小型股尚未跟上</strong>。
+  指數的 -4.08% 低估了多數持股人的實際傷害。</p>
+</div>
+</div>
+
+<h4>相對抗跌（跌幅最小）</h4>
+<div class="tw">
+<table>
+<thead><tr><th>代碼</th><th>名稱</th><th>現價</th><th>%</th><th>vs 大盤 -4.08%</th><th>量(張)</th></tr></thead>
+<tbody>
+<tr class="hl2"><td>2412</td><td>中華電</td><td class="n">160.50</td><td class="n dn">-0.62%</td><td class="n up">+3.46pp</td><td class="n">10,221</td></tr>
+<tr><td>1303</td><td>南亞</td><td class="n">245.50</td><td class="n dn">-1.41%</td><td class="n up">+2.67pp</td><td class="n">41,986</td></tr>
+<tr><td>2379</td><td>瑞昱</td><td class="n">709.00</td><td class="n dn">-1.53%</td><td class="n up">+2.55pp</td><td class="n">2,392</td></tr>
+<tr><td>2357</td><td>華碩</td><td class="n">851.00</td><td class="n dn">-1.85%</td><td class="n up">+2.23pp</td><td class="n">3,050</td></tr>
+<tr><td>1301</td><td>台塑</td><td class="n">63.80</td><td class="n dn">-2.00%</td><td class="n up">+2.08pp</td><td class="n">25,729</td></tr>
+<tr><td>6770</td><td>力積電</td><td class="n">53.60</td><td class="n dn">-2.19%</td><td class="n up">+1.89pp</td><td class="n">86,618</td></tr>
+<tr><td>2409</td><td>友達</td><td class="n">26.65</td><td class="n dn">-2.20%</td><td class="n up">+1.88pp</td><td class="n">173,864</td></tr>
+</tbody></table>
+</div>
+<p class="muted small">注意<strong>塑化股的位置變了</strong>：南亞 -1.41%、台塑 -2.00%，是今天最抗跌的非電族群之一。
+但我早上才寫過「布蘭特三日崩 19.6%，塑化的產品報價基礎正在下移」—— <strong>昨夜油價反彈 +4.89% 至 99.25</strong>，
+今天的抗跌與這個反彈同向。<strong>依準則第 2 條，單日族群強弱不作為推薦依據</strong>，只記錄。</p>
+</section>
+
+<!-- 04 -->
+<section>
+<h2>04 · 收盤前要驗證的條件（更新早盤版本）</h2>
+
+<div class="box blu">
+  <div class="bt">依第 00 節的修正分類，今天屬「反轉類」，須過兩項後驗條件</div>
+  <p style="margin-bottom:0">盤中最大跌幅 8.99% &gt; 2.5%、現價區間位置 99.8% &gt; 50% → <strong>反轉類</strong>。
+  <strong>量增是必要條件，但預設立場為假訊號</strong>，直到 ①②（下表）被滿足。
+  這是昨天 11/05 假訊號後定下的規則，今天第一次套用。</p>
+</div>
+
+<div class="tw">
+<table>
+<thead><tr><th>#</th><th>條件</th><th>判定門檻</th><th>10:34 狀態</th></tr></thead>
+<tbody>
+<tr class="hl"><td>①</td><td><strong>後驗一：下一交易日守住今日最低 37,837.05</strong></td><td>跌破 = 假訊號確立</td><td class="n">11/07（下週一）判定</td></tr>
+<tr class="hl"><td>②</td><td><strong>後驗二：外資須兩日內轉為買超</strong></td><td>連四日賣，需連兩日買</td><td class="n dn">今晚 18:00 第一次判定</td></tr>
+<tr class="hl2"><td>③</td><td><strong>收盤站上年線 38,784.53</strong></td><td>站上 = 單日穿刺；跌破 = 年線失守成立</td><td class="n up">現價 +2.83%</td></tr>
+<tr><td>④</td><td>收盤位置</td><td>&gt; 50% 才算低點被吸收</td><td class="n up">99.8%</td></tr>
+<tr><td>⑤</td><td>成交金額（<strong>反轉類：量增為必要</strong>）</td><td>&gt; 1 兆才算有量承接</td><td class="n">—（MIS 不提供盤中累計）</td></tr>
+<tr><td>⑥</td><td>跌停家數（昨日股票 56 檔）</td><td>收盤時大幅減少 = 恐慌收斂</td><td class="n up">重點股剩 2 檔鎖死（早盤 6 檔）</td></tr>
+<tr class="hl2"><td>⑦</td><td>台積電能否收在 2,100 之上</td><td>早盤設的門檻</td><td class="n up"><strong>2,150，已達成</strong></td></tr>
+<tr><td>⑧</td><td><strong>櫃買能否收復開盤 313.77</strong></td><td>中小型股跟上的證據</td><td class="n dn">304.89，差 2.83%</td></tr>
+<tr><td>⑨</td><td>USD/TWD 33.00 能否不再破底</td><td>第 4b 條：升值需升破 32.30＋連兩日＋外資連兩日買</td><td class="n">今晨 33.00</td></tr>
+<tr><td>⑩</td><td>融資張數</td><td>單日減 &gt; 2% = 槓桿清洗</td><td class="n dn">11/05 僅 -0.78%</td></tr>
+</tbody></table>
+</div>
+
+<p class="muted small"><strong>早盤版本已達成的：</strong>⑦ 台積電站上 2,100（設 2,100，現 2,150）。
+<strong>早盤版本已被推翻的：</strong>「開盤即最高」（現已突破開盤 2.49%）、「年線失守」（盤中已收復）。
+<strong>早盤版本仍成立的：</strong>櫃買弱於加權、融資未清洗、外資連四日賣、台幣 33.00。</p>
+</section>
+
+<!-- 05 -->
+<section>
+<h2>05 · 立場</h2>
+
+<div class="box amb">
+  <div class="bt">依準則第 5 條，盤中不下方向結論</div>
+  <p style="margin-bottom:0">2026/10/13–10/20 六個交易日中有五日收盤位置落在當日區間下三分之一，而盤中強弱屢次與收盤相反。
+  更近的例子就是今天早上：<strong>09:40 我看到的是 -7.51%、區間位置 3.3%、年線失守；10:34 變成 -4.08%、位置 99.8%、年線收復。</strong>
+  <strong>同一天、相隔 54 分鐘，兩個完全相反的畫面 —— 這就是為什麼盤中不下結論。</strong>
+  距收盤還有近三小時。</p>
+</div>
+
+<div class="two">
+<div class="card">
+  <h4>🛡️ 防守型：維持 85–90% 現金，不調整</h4>
+  <p>三項進場條件<strong>仍是零項成立</strong>：</p>
+  <ul class="chk small">
+    <li><span class="ic dn">✗</span>台幣升破 32.30 連兩日 → 今晨 <strong>33.00</strong></li>
+    <li><span class="ic dn">✗</span>外資連兩日買超 → 連四日賣，五日 -322.1 萬張；今晚 18:00 才有第一個數字</li>
+    <li><span class="ic dn">✗</span>融資張數單日減 &gt; 2% → 11/05 僅 -0.78%</li>
+  </ul>
+  <p class="small" style="margin-bottom:0"><strong>一根盤中大幅拉回不改變任何一項。</strong>
+  10/22 我曾因「四項條件首次全部轉為達成或改善中」把現金由 85% 降到 80%，隨後 -7.82%。
+  那次的錯誤就是<strong>用型態與單一價位替代條件</strong>，這次不重複。</p>
+</div>
+<div class="card">
+  <h4>⚖️ 均衡型：維持不加碼</h4>
+  <p>四項條件目前成立 <strong>零到一項</strong>（收盤位置需連兩日 &gt; 50%，11/05 為 4.5%，今天若收在 50% 以上也只是第一天）。</p>
+  <p class="small" style="margin-bottom:0"><strong>若今日收盤同時滿足 ③（站上年線）＋④（位置 &gt; 50%）＋⑤（量 &gt; 1 兆）＋⑥（跌停大減）</strong>，
+  下一份報告會把「反轉類」型態視為<strong>暫時成立</strong>，但依後驗條件仍須等
+  <strong>①（11/07 守住 37,837.05）與 ②（外資連兩日買）</strong>才改變部位判斷。
+  依準則第 1 條，外資單日買超不算。</p>
+</div>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <h4>⚔️ 進攻型：不提供標的</h4>
+  <p style="margin-bottom:0">今天又出現兩個反例可記：<strong>智邦與京元電從開盤到現在跌停鎖死、完全無法交易</strong>，
+  而指數已回升 5.40%。若在前一份報告推薦了這兩檔，持有人今天一整個早上無法執行任何停損。
+  <strong>這就是準則第 12 條的意義 —— 推薦一檔隔日可能跌停鎖死的標的，等於推薦一個無法執行停損的部位。</strong>
+  第 2 條的樣本已累積到六個（三次推薦全錯、三次不推薦全對），在這個環境下給名單，
+  等於把已被反覆證偽的方法再用一次。</p>
+</div>
+</section>
+
+<footer>
+<h2>資料日期與限制</h2>
+<ul>
+  <li><strong>盤中即時</strong>：TWSE MIS 即時 API（<code>mis.twse.com.tw/stock/api/getStockInfo.jsp</code>），
+      報價時間 <strong>2026-11-06 10:34</strong>，含加權（<code>tse_t00.tw</code>）與櫃買（<code>otc_o00.tw</code>）。
+      多數個股在擷取瞬間無最新成交價（回傳 <code>-</code>），已改用<strong>最佳買價</strong>計算，實際成交價可能略高；
+      智邦與京元電為跌停鎖死（開＝高＝低＝官方跌停價）。漲跌停價取自官方 <code>u</code>／<code>w</code> 欄位。</li>
+  <li><strong>🔴 成交量無法取得</strong>：MIS 不提供指數盤中累計成交量，故條件 ⑤（量增 &gt; 1 兆）<strong>在盤中無法判定</strong>，
+      必須等 17:00 後的 <code>FMTQIK</code> 官方數據。本報告不以任何方式推估成交量。</li>
+  <li><strong>均線、布林</strong>：以 yfinance 一年序列接上 TWSE 官方 11/05 收盤 41,574.72 後重算（<code>^TWII</code> 序列落後一日）。
+      均線值為<strong>以 11/05 為基準</strong>所算 —— 依準則第 10 條，這些是會移動的值，
+      明日判定時須以當日重算的均線為準，不可沿用本表數字當固定門檻。</li>
+  <li><strong>三大法人</strong>：今日（11/06）籌碼約 <strong>18:00 後</strong>才公布，本報告未納入。
+      文中外資數據（連四日賣、五日累計 -3,220,972 張）為 10/30–11/05 的 <code>T86</code> 實際值。</li>
+  <li><strong>融資融券</strong>：最新為 <strong>11/05</strong>（融資 9,440,455 張、融券 277,051 張），今日數據收盤後公布。</li>
+  <li><strong>匯率</strong>：33.00 為今晨 yfinance <code>TWD=X</code> 境外報價；台北收盤官方值未取得，兩個口徑可能有小幅差異。</li>
+  <li><strong>櫃買</strong>：僅有 MIS 即時值（304.89，-5.16%），<code>^TWOII</code> 歷史序列無法取得，故無法做歷史比較，
+      只能與今日開盤 313.77 及加權跌幅對照。</li>
+  <li><strong>未納入</strong>：① TAIFEX 期貨外資未平倉（API 回傳億級口數等異常值，一律排除）；
+      ② 選擇權 Put/Call ratio 與最大未平倉履約價；③ 全市場漲跌家數與跌停檔數（收盤後 <code>MI_INDEX</code> 才完整，
+      本報告的「6 檔 → 2 檔」僅指本報告追蹤的 30 檔重點股）。</li>
+  <li><strong>盤中路徑圖</strong>為示意，橫軸非等時間間隔；僅開盤、當日低、09:40 報價、10:34 報價四點為實際數據。</li>
+</ul>
+<p style="margin-top:16px"><strong>本報告為盤中快報，資料截至 10:34，距 13:30 收盤尚有近三小時，型態未定。</strong>
+依本工作流準則第 5 條，盤中不對當日方向下結論。第 04 節條件已寫成可用當日數據判定的形式，
+收盤後逐項回填，且情境分類與門檻不得因結果更換。
+報告中的三段式策略為情境框架與風險控制邏輯，<strong>不構成投資建議</strong>，亦非針對任何特定資金規模的配置建議。</p>
+<p class="tiny" style="margin-top:14px">產製時間 2026-11-06 10:34（GMT+8）· 資料來源：臺灣證券交易所公開 API、yfinance</p>
+</footer>
+
+</div>
+</body>
+</html>
