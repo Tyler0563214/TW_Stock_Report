@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>台股早盤分析 | 2026-11-06</title>
+<style>
+:root{
+  --bg:#0d1117; --panel:#161b22; --panel2:#1c2129; --line:#30363d;
+  --txt:#e6edf3; --dim:#8b949e; --dim2:#6e7681;
+  --red:#f85149; --redbg:rgba(248,81,73,.12);
+  --grn:#3fb950; --grnbg:rgba(63,185,80,.12);
+  --amb:#d29922; --ambbg:rgba(210,153,34,.12);
+  --blu:#58a6ff; --blubg:rgba(88,166,255,.12);
+  --pur:#bc8cff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,"Segoe UI",sans-serif;
+  font-size:15px;line-height:1.7;-webkit-text-size-adjust:100%}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px 80px}
+header{padding:34px 0 24px;border-bottom:1px solid var(--line);margin-bottom:28px}
+.kick{font-size:12px;letter-spacing:.22em;color:var(--dim2);text-transform:uppercase}
+h1{font-size:30px;margin:10px 0 6px;font-weight:700;letter-spacing:-.01em}
+.sub{color:var(--dim);font-size:14px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{font-size:12.5px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--dim)}
+.badge.red{color:var(--red);border-color:rgba(248,81,73,.45);background:var(--redbg)}
+.badge.grn{color:var(--grn);border-color:rgba(63,185,80,.45);background:var(--grnbg)}
+.badge.amb{color:var(--amb);border-color:rgba(210,153,34,.45);background:var(--ambbg)}
+.badge.blu{color:var(--blu);border-color:rgba(88,166,255,.45);background:var(--blubg)}
+section{margin:38px 0}
+h2{font-size:12px;letter-spacing:.2em;color:var(--dim2);text-transform:uppercase;
+  margin:0 0 14px;padding-bottom:9px;border-bottom:1px solid var(--line);font-weight:600}
+h3{font-size:17px;margin:26px 0 10px;font-weight:650}
+h4{font-size:14.5px;margin:18px 0 8px;font-weight:650}
+p{margin:10px 0}
+.lead{font-size:16.5px;line-height:1.75}
+.muted{color:var(--dim)} .small{font-size:13px}
+.tiny{font-size:12px;color:var(--dim2)}
+.n{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.up{color:var(--red)} .dn{color:var(--grn)}
+.hero{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;margin:22px 0}
+.heroTop{display:flex;flex-wrap:wrap;align-items:flex-end;gap:18px}
+.bigpx{font-size:44px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.bigch{font-size:19px;font-weight:650}
+.heroMeta{color:var(--dim);font-size:13px;margin-top:4px}
+.grid{display:grid;gap:12px;margin:18px 0}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:820px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px 14px}
+.kpi .lab{font-size:11.5px;color:var(--dim2);letter-spacing:.04em}
+.kpi .val{font-size:22px;font-weight:700;margin-top:3px;line-height:1.15}
+.kpi .note{font-size:12px;color:var(--dim);margin-top:3px}
+.box{border:1px solid var(--line);border-left-width:3px;border-radius:9px;padding:15px 17px;margin:16px 0;background:var(--panel)}
+.box.red{border-left-color:var(--red)} .box.grn{border-left-color:var(--grn)}
+.box.amb{border-left-color:var(--amb)} .box.blu{border-left-color:var(--blu)}
+.box .bt{font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:7px;font-weight:650}
+.box.red .bt{color:var(--red)} .box.grn .bt{color:var(--grn)}
+.box.amb .bt{color:var(--amb)} .box.blu .bt{color:var(--blu)}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0;border:1px solid var(--line);border-radius:9px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:13.5px}
+th,td{padding:8px 11px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:var(--panel2);color:var(--dim);font-weight:600;font-size:12px;letter-spacing:.04em}
+td:first-child,th:first-child{text-align:left}
+tbody tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--redbg)} tr.hl2 td{background:var(--grnbg)}
+tr.tot td{font-weight:650;background:var(--panel2)}
+.dv{display:flex;align-items:center;gap:9px;margin:5px 0;font-size:13px}
+.dv .dl{width:104px;flex:0 0 104px;color:var(--dim)}
+.dv .dt{flex:1;height:17px;background:var(--panel2);border-radius:3px;position:relative}
+.dv .dmid{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--line)}
+.dv .dfp{position:absolute;left:50%;top:0;bottom:0;background:var(--red);border-radius:0 3px 3px 0}
+.dv .dfn{position:absolute;right:50%;top:0;bottom:0;background:var(--grn);border-radius:3px 0 0 3px}
+.dv .dvv{width:96px;flex:0 0 96px;text-align:right;font-variant-numeric:tabular-nums}
+.bar{display:flex;align-items:center;gap:9px;margin:5px 0;font-size:13px}
+.bar .bl{width:118px;flex:0 0 118px;color:var(--dim)}
+.bar .bt2{flex:1;height:17px;background:var(--panel2);border-radius:3px;overflow:hidden}
+.bar .bf{height:100%;border-radius:3px}
+.bar .bv{width:104px;flex:0 0 104px;text-align:right;font-variant-numeric:tabular-nums}
+ul,ol{margin:10px 0;padding-left:22px} li{margin:6px 0}
+li::marker{color:var(--dim2)}
+.chk li{list-style:none;margin-left:-14px}
+.ic{display:inline-block;width:19px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.card h4{margin-top:0}
+footer{margin-top:54px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--dim2);line-height:1.8}
+code{background:var(--panel2);padding:1px 5px;border-radius:4px;font-size:12.5px;color:var(--pur)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kick">台股大盤 · 早盤戰情</div>
+  <h1>年線失守，進入技術性熊市</h1>
+  <div class="sub">2026 年 11 月 6 日（五）· 報價時間 09:40 · 盤中進行中，依準則第 5 條收盤前不下方向結論</div>
+  <div class="badges">
+    <span class="badge red">盤中 38,450.84　-7.51%</span>
+    <span class="badge red">自高點 -22.82%</span>
+    <span class="badge red">費半隔夜 -12.25%</span>
+    <span class="badge red">VIX +69.66% 至 28.18</span>
+    <span class="badge red">USD/TWD 33.00</span>
+  </div>
+</header>
+
+<!-- 00 -->
+<section>
+<h2>00 · 前次報告檢視（11/05 盤前）</h2>
+
+<div class="box grn">
+  <div class="bt">✅ 新的開盤推估方法第一次就命中</div>
+  <p>昨天我把準則第 3 條的傳導係數由「接近 1」改為實證的 <strong>0.05x–0.30x</strong>，推估開盤區間 <strong>42,550–42,880（-0.16%~-0.94%）</strong>。</p>
+  <p style="margin-bottom:0"><strong>11/05 實際開盤 42,666.13（-0.66%）—— 落在區間內，傳導係數 0.21x。</strong>
+  這是這個方法第一次給出可用的答案（前三次分別錯 338 點／104 點／142 點）。<strong>但今天它破了，見第 03 節。</strong></p>
+</div>
+
+<div class="box grn">
+  <div class="bt">✅ 拒絕推薦台光電是對的</div>
+  <p>台光電連三日逆勢（11/03 -6.59% → 11/04 +3.64%），我在報告裡寫「<strong>股價強、籌碼弱，外資連兩日賣超，依準則第 2 條不推薦</strong>」。</p>
+  <p style="margin-bottom:0"><strong>11/05 台光電 -9.99%，跌停收 4,100。</strong>
+  這是準則第 2 條（籌碼連續性不等於隔日動能、強勢不可外推）第四次實際避開損失。</p>
+</div>
+
+<h3>❌ 十項條件 0 達成</h3>
+<div class="tw">
+<table>
+<thead><tr><th>#</th><th>條件</th><th>門檻</th><th>11/05 實際</th><th>判定</th></tr></thead>
+<tbody>
+<tr><td>①</td><td>收復布林下軌 42,981.36</td><td>收盤站上</td><td class="n dn">收 41,574.72</td><td class="dn">✗</td></tr>
+<tr class="hl"><td>②</td><td><strong>11/04 低點 41,855.82 不被跌破</strong></td><td>跌破 = 型態失效</td><td class="n dn">低 41,513.57、<strong>收 41,574.72</strong></td><td class="dn">✗ <strong>型態失效</strong></td></tr>
+<tr><td>③</td><td>收盤位置連兩日 &gt; 50%</td><td>型態確立</td><td class="n dn">4.5%</td><td class="dn">✗</td></tr>
+<tr><td>④</td><td>成交金額（反轉情境看量增）</td><td>&gt; 1 兆</td><td class="n dn">9,871 億（前日 1.1769 兆）</td><td class="dn">✗ 量縮</td></tr>
+<tr><td>⑤</td><td>跌停家數維持個位數</td><td>恐慌收斂</td><td class="n dn">股票 <strong>56 檔</strong>、整體 347 檔</td><td class="dn">✗ 創新高</td></tr>
+<tr><td>⑥</td><td>台積電收復 2,280</td><td>權值須參與</td><td class="n dn">收 2,240（-0.88%）</td><td class="dn">✗</td></tr>
+<tr><td>⑦</td><td>櫃買優於加權</td><td>中小型股止血</td><td class="n">無歷史序列可比（見 footer）</td><td class="n">無法判定</td></tr>
+<tr><td>⑧</td><td>T86 外資連兩日買超</td><td>單日不算</td><td class="n dn">-721,277 張，<strong>連四日賣</strong></td><td class="dn">✗</td></tr>
+<tr><td>⑨</td><td>USD/TWD 收回 32.60 以下</td><td>最重要的一條</td><td class="n dn">32.82 → 今晨 <strong>33.00</strong></td><td class="dn">✗</td></tr>
+<tr><td>⑩</td><td>融資張數單日減 &gt; 2%</td><td>槓桿清洗</td><td class="n dn">-0.78%（9,514,913 → 9,440,455）</td><td class="dn">✗</td></tr>
+</tbody></table>
+</div>
+
+<div class="box red">
+  <div class="bt">🔴 我昨天新增的「長下影線反轉」情境，第一次應用就被否定</div>
+  <p>昨天我在準則第 8 條補了第三格：收盤位置 50–70% 且盤中最大跌幅 &gt; 2.5% → <strong>量增才有意義</strong>。
+  11/04 收盤位置 58.0%、盤中最大跌幅 3.35%、量 1.1769 兆 &gt; 1 兆 → 依新規則<strong>判定型態有意義</strong>。</p>
+  <p><strong>結果 11/05 直接跌破 11/04 的低點，型態失效。這個新規則產生了一次假訊號。</strong></p>
+  <p style="margin-bottom:0"><strong>診斷：量增在反轉日是「必要」而遠非「充分」條件。</strong>
+  真正該綁在一起的是另外兩項，而它們當時都明確為否：
+  <strong>外資連四日賣超</strong>、<strong>融資尚未清洗（11/04 甚至逆勢加碼 +0.34%）</strong>。
+  <strong>✅ 修正：第三格的量增門檻必須加上「次日守住反轉日低點」與「外資須於兩日內轉買」兩個後驗條件，缺一即視為假訊號。</strong>
+  一根下影線加大量，不能當成型態成立。</p>
+</div>
+
+<div class="box amb">
+  <div class="bt">昨天我補上的第五個管道，隔一天就成了主因 —— 但我沒有把它量化</div>
+  <p>11/05 我在報告裡承認 11/04 的期中選舉分析漏了「<strong>AI 資本支出的政治風險</strong>」這個管道，並寫下「選舉對大盤是利多、對半導體是利空」。</p>
+  <p style="margin-bottom:0"><strong>隔夜它就造成費半 -12.25%。</strong>
+  但我必須說清楚：<strong>我只是把它當成解釋性註記補上，沒有把它寫成可操作的風險</strong> ——
+  我沒有說「這個管道可能造成兩位數的單日半導體跌幅」，也沒有據此調整任何部位或條件。
+  <strong>辨識出一個風險因子，與對它定價，是兩件事。這次我只做到前者。</strong></p>
+</div>
+</section>
+
+<!-- 01 -->
+<section>
+<h2>01 · 今日開盤實況（09:40）</h2>
+
+<div class="hero">
+  <div class="heroTop">
+    <div><div class="bigpx dn n">38,450.84</div><div class="heroMeta">加權指數 · 昨收 41,574.72</div></div>
+    <div><div class="bigch dn n">-3,123.88　-7.51%</div><div class="heroMeta">開 38,915.76（= 當日最高）　低 37,837.05</div></div>
+  </div>
+  <div class="grid g4" style="margin-bottom:0">
+    <div class="kpi"><div class="lab">開盤</div><div class="val dn n">-6.40%</div><div class="note">38,915.76，<strong>開盤即最高</strong></div></div>
+    <div class="kpi"><div class="lab">盤中最低</div><div class="val dn n">-8.99%</div><div class="note">37,837.05</div></div>
+    <div class="kpi"><div class="lab">現價區間位置</div><div class="val n" style="color:var(--amb)">56.9%</div><div class="note">自低點拉回 613 點</div></div>
+    <div class="kpi"><div class="lab">櫃買指數</div><div class="val dn n">-7.87%</div><div class="note">296.18，略弱於加權</div></div>
+  </div>
+</div>
+
+<div class="grid g3">
+  <div class="kpi"><div class="lab">自 10/06 高 49,822.55</div><div class="val dn n">-22.82%</div><div class="note">現價 · <strong>技術性熊市</strong></div></div>
+  <div class="kpi"><div class="lab">今日最低自高點</div><div class="val dn n">-24.06%</div><div class="note">37,837.05</div></div>
+  <div class="kpi"><div class="lab">11/02 以來五個交易日</div><div class="val dn n">-14.40%</div><div class="note">44,920.14 → 38,450.84</div></div>
+</div>
+
+<h4>重點股跌停一覽（09:40）</h4>
+<div class="tw">
+<table>
+<thead><tr><th>代碼</th><th>名稱</th><th>現價</th><th>昨收</th><th>%</th><th>官方跌停價</th><th>狀態</th></tr></thead>
+<tbody>
+<tr class="hl"><td>3037</td><td>欣興</td><td class="n">720.00</td><td class="n">800.00</td><td class="n dn">-10.00%</td><td class="n">720.0</td><td class="dn">跌停鎖死（開＝高＝低）</td></tr>
+<tr class="hl"><td>2408</td><td>南亞科</td><td class="n">324.00</td><td class="n">360.00</td><td class="n dn">-10.00%</td><td class="n">324.0</td><td class="dn">跌停鎖死</td></tr>
+<tr class="hl"><td>6669</td><td>緯穎</td><td class="n">1,485</td><td class="n">1,650</td><td class="n dn">-10.00%</td><td class="n">1,485</td><td class="dn">跌停鎖死</td></tr>
+<tr class="hl"><td>3711</td><td>日月光投控</td><td class="n">515.00</td><td class="n">572.00</td><td class="n dn">-9.97%</td><td class="n">515.0</td><td class="dn">跌停鎖死</td></tr>
+<tr class="hl"><td>2449</td><td>京元電</td><td class="n">206.00</td><td class="n">228.50</td><td class="n dn">-9.85%</td><td class="n">206.0</td><td class="dn">跌停鎖死</td></tr>
+<tr class="hl"><td>2345</td><td>智邦</td><td class="n">1,245</td><td class="n">1,380</td><td class="n dn">-9.78%</td><td class="n">1,245</td><td class="dn">跌停鎖死</td></tr>
+<tr><td>2308</td><td>台達電</td><td class="n">—</td><td class="n">1,130</td><td class="n">—</td><td class="n">1,020</td><td class="dn">無成交</td></tr>
+<tr><td>1303</td><td>南亞</td><td class="n">—</td><td class="n">249.00</td><td class="n">—</td><td class="n">224.5</td><td class="dn">無成交</td></tr>
+<tr><td>2383</td><td>台光電</td><td class="n">—</td><td class="n">4,100</td><td class="n">—</td><td class="n">3,690</td><td class="dn">無成交</td></tr>
+<tr><td>2344</td><td>華邦電</td><td class="n">—</td><td class="n">127.50</td><td class="n">—</td><td class="n">114.5</td><td class="dn">無成交</td></tr>
+</tbody></table>
+</div>
+<p class="tiny">「跌停鎖死」指開盤價＝最高價＝最低價＝官方跌停價，盤中未脫離跌停。「無成交」為 MIS 回傳最新成交價 <code>-</code>，且最佳買價亦無報價。跌停價取自 MIS 官方 <code>w</code> 欄位。</p>
+
+<div class="box red">
+  <div class="bt">台積電開盤就在跌停</div>
+  <p><strong>台積電官方跌停價 2,020，今日開盤價正是 2,020</strong>，盤中回到 <strong>2,070（-7.59%）</strong>，量 40,278 張。</p>
+  <p style="margin-bottom:0">對照 11/05：台積電收 2,240，當天只跌 <strong>0.88%</strong>，而指數跌 3.20% ——
+  它是昨天最抗跌的權值股。<strong>今天它開在跌停，意味著最後一道緩衝也被打開了。</strong>
+  依準則第 6 條，權值的參與度決定反彈天花板；反過來，權值一起跌，指數就沒有遮蔽效應可言 ——
+  今天加權 -7.51% 與櫃買 -7.87% 幾乎同步，就是這個意思。</p>
+</div>
+
+<h4>相對抗跌者（仍為全面下跌，僅跌幅較小）</h4>
+<div class="bar"><div class="bl">中華電 2412</div><div class="bt2"><div class="bf" style="width:22.2%;background:var(--amb)"></div></div><div class="bv dn">-2.17%</div></div>
+<div class="bar"><div class="bl">中鋼 2002</div><div class="bt2"><div class="bf" style="width:40.5%;background:var(--amb)"></div></div><div class="bv dn">-3.96%</div></div>
+<div class="bar"><div class="bl">友達 2409</div><div class="bt2"><div class="bf" style="width:62.0%;background:var(--grn)"></div></div><div class="bv dn">-6.06%</div></div>
+<div class="bar"><div class="bl">廣達 2382</div><div class="bt2"><div class="bf" style="width:63.1%;background:var(--grn)"></div></div><div class="bv dn">-6.17%</div></div>
+<div class="bar"><div class="bl">華碩 2357</div><div class="bt2"><div class="bf" style="width:63.7%;background:var(--grn)"></div></div><div class="bv dn">-6.23%</div></div>
+<div class="bar"><div class="bl">台塑 1301</div><div class="bt2"><div class="bf" style="width:64.4%;background:var(--grn)"></div></div><div class="bv dn">-6.30%</div></div>
+<div class="bar"><div class="bl">瑞昱 2379</div><div class="bt2"><div class="bf" style="width:66.8%;background:var(--grn)"></div></div><div class="bv dn">-6.53%</div></div>
+<div class="bar"><div class="bl"><strong>加權指數</strong></div><div class="bt2"><div class="bf" style="width:76.8%;background:var(--red)"></div></div><div class="bv dn"><strong>-7.51%</strong></div></div>
+<div class="bar"><div class="bl">台積電 2330</div><div class="bt2"><div class="bf" style="width:77.6%;background:var(--red)"></div></div><div class="bv dn">-7.59%</div></div>
+<div class="bar"><div class="bl">富邦金 2881</div><div class="bt2"><div class="bf" style="width:88.8%;background:var(--red)"></div></div><div class="bv dn">-8.68%</div></div>
+<p class="tiny">條長以 -10%（跌停）為滿格。</p>
+
+<p class="muted small"><strong>金融股的轉變值得記下：</strong>11/05 富邦金 <strong>+0.65%</strong>、中信金 <strong>+2.32%</strong>，是當天唯二收紅的重點股；
+今天富邦金 <strong>-8.68%</strong>、中信金 <strong>-7.74%</strong>，雙雙比大盤更弱。<strong>最後一個防禦族群在今天失效。</strong>
+目前唯一真正抗跌的是中華電 -2.17%。</p>
+</section>
+
+<!-- 02 -->
+<section>
+<h2>02 · 隔夜：歷史級的半導體崩跌</h2>
+
+<div class="grid g4">
+  <div class="kpi"><div class="lab">費半 ^SOX</div><div class="val dn n">-12.25%</div><div class="note">9,011.14</div></div>
+  <div class="kpi"><div class="lab">納斯達克</div><div class="val dn n">-5.52%</div><div class="note">24,315.00，進入修正區</div></div>
+  <div class="kpi"><div class="lab">S&amp;P 500</div><div class="val dn n">-4.36%</div><div class="note">7,353.73</div></div>
+  <div class="kpi"><div class="lab">VIX</div><div class="val dn n">28.18</div><div class="note"><strong>+69.66%</strong></div></div>
+</div>
+
+<div class="box red">
+  <div class="bt">三個「數年來最大」同時出現</div>
+  <ul style="margin-bottom:0">
+    <li><strong>半導體 ETF（SOXX）單日跌幅為 2020 年 3 月以來最大</strong>；費半 30 檔成分股中 <strong>28 檔已處於熊市</strong>。</li>
+    <li><strong>納斯達克為 2025 年 4 月以來最差單日</strong>，並正式進入修正區間。</li>
+    <li><strong>VIX 單日升幅為近兩年最大</strong>，並創七個月新高（28.18）。報導指全市場市值蒸發約 2.5 兆美元。</li>
+  </ul>
+</div>
+
+<h4>原因：兩條，而且第一條正是我昨天才補上的管道</h4>
+<ol>
+  <li><strong>民主黨期中選舉大勝引發 AI 建置放緩疑慮</strong> —— 具體擔憂為
+      <strong>資料中心的監管趨嚴與建設可能受限</strong>，進而壓抑 AI 資本支出。這是昨夜的主因。</li>
+  <li><strong>Qualcomm 財測不佳</strong> —— 公布的當季展望低於預期，NVDA 與 QCOM 單日均跌超過 9%。</li>
+</ol>
+
+<div class="box amb">
+  <div class="bt">把三天的敘事接起來看</div>
+  <div class="tw" style="margin-bottom:0">
+  <table style="min-width:600px">
+  <thead><tr><th>日期</th><th>事件</th><th>殺的是什麼</th></tr></thead><tbody>
+    <tr><td>10/30</td><td>Intel Q4 指引 150–160 億（預期 170 億），單日 <strong>-28.58%</strong></td><td>記憶體成本壓抑 PC 需求 → <strong>成本面</strong></td></tr>
+    <tr><td>11/02–11/03</td><td>鎧俠財測拖累記憶體，南亞科、華邦電、群聯跌停</td><td>記憶體漲價被重新定價為需求破壞 → <strong>需求面</strong></td></tr>
+    <tr class="hl"><td>11/05</td><td>期中選舉結果＋Qualcomm 財測，費半 <strong>-12.25%</strong></td><td>AI 資本支出的<strong>政策可見度</strong> → <strong>投資面</strong></td></tr>
+  </tbody></table>
+  </div>
+</div>
+<p class="muted small">依準則第 9 條，這三者全部屬於<strong>殺獲利預期，不是殺評價</strong>。
+印證：昨夜美債 10Y 反而下降至 <strong>4.84%</strong>（11/02 以來連續走低），債息降而半導體崩 ——
+<strong>利率不是問題，獲利預期才是，而這需要財報與訂單修正，不是央行能解決的。</strong></p>
+
+<h4>其他市場</h4>
+<div class="tw">
+<table>
+<thead><tr><th>標的</th><th>11/05</th><th>單日</th><th>解讀</th></tr></thead>
+<tbody>
+<tr class="hl"><td>USD/TWD</td><td class="n">33.00（今晨）</td><td class="n dn">+0.54%</td><td><strong>首次站上 33，本波新貶</strong></td></tr>
+<tr><td>美元指數</td><td class="n">101.60</td><td class="n up">+0.09%</td><td>幾乎不動 → <strong>台幣是自身賣壓</strong></td></tr>
+<tr><td>美債 10Y</td><td class="n">4.84%</td><td class="n dn">-1.16%</td><td>避險買盤，連四日走低</td></tr>
+<tr><td>黃金</td><td class="n">4,076.00</td><td class="n up">+0.07%</td><td>幾乎持平，未出現恐慌性買金</td></tr>
+<tr><td>布蘭特原油</td><td class="n">99.25</td><td class="n up">+4.89%</td><td>自 94.62 反彈，三日崩跌後止穩</td></tr>
+</tbody></table>
+</div>
+
+<div class="box red">
+  <div class="bt">匯率：準則第 4 條第五次確認</div>
+  <p style="margin-bottom:0"><strong>美元指數僅 +0.09% 幾乎不動，台幣卻貶破 33.00</strong> ——
+  依準則第 4 條，這是台幣自身賣壓，也就是外資賣股匯出。
+  自 10/29 的 32.38 到今晨 33.00，<strong>六個交易日貶值 1.91%</strong>，而同期美元指數從 102.04 跌到 101.60（<strong>-0.43%</strong>）。
+  <strong>美元走弱、台幣創新貶，這個組合在本波從未給過錯誤訊號。</strong></p>
+</div>
+</section>
+
+<!-- 03 -->
+<section>
+<h2>03 · 開盤傳導係數今天破了，而且破法有規律</h2>
+
+<div class="tw">
+<table>
+<thead><tr><th>日期</th><th>隔夜費半</th><th>台股開盤</th><th>傳導係數</th><th>判定</th></tr></thead>
+<tbody>
+<tr><td>10/30 → 11/02</td><td class="n">-7.20%</td><td class="n">-0.39%</td><td class="n">0.05x</td><td>區間內</td></tr>
+<tr><td>11/02 → 11/03</td><td class="n">-3.37%</td><td class="n">-0.98%</td><td class="n">0.29x</td><td>區間內</td></tr>
+<tr><td>11/03 → 11/04</td><td class="n up">+2.63%</td><td class="n up">+0.33%</td><td class="n">0.12x</td><td>區間內</td></tr>
+<tr class="hl2"><td>11/04 → 11/05</td><td class="n">-3.13%</td><td class="n">-0.66%</td><td class="n">0.21x</td><td class="up">區間內 ✅ 預測成功</td></tr>
+<tr class="hl"><td><strong>11/05 → 11/06</strong></td><td class="n dn"><strong>-12.25%</strong></td><td class="n dn"><strong>-6.40%</strong></td><td class="n dn"><strong>0.52x</strong></td><td class="dn"><strong>遠超區間上緣</strong></td></tr>
+</tbody></table>
+</div>
+
+<div class="box red">
+  <div class="bt">🔴 我的 0.05x–0.30x 區間有適用範圍，昨天沒寫出來</div>
+  <p>若照昨天的方法推估今日開盤：<strong>-12.25% × 0.05~0.30 = -0.61% ~ -3.68% → 40,045–41,320</strong>。
+  <strong>實際開盤 38,915.76，比區間下緣還低 1,129 點。</strong></p>
+  <p><strong>規律很清楚：傳導係數隨外部跌幅的量級上升。</strong>
+  -3% 量級約 0.21–0.29x、-7% 量級 0.05x（那次台股已先跌過）、<strong>-12% 量級跳到 0.52x</strong>。</p>
+  <p style="margin-bottom:0"><strong>✅ 修正：</strong>
+  <strong>隔夜費半跌幅在約 5% 以內時，台股用「盤中陰跌」反映（開盤傳導 0.05–0.30x）；
+  超過約 10% 時，台股改用「跳空」反映（傳導升至 0.5x 以上）。</strong>
+  這兩種是不同的機制 —— 前者是外資分批調節，後者是流動性缺口與跌停鎖死。
+  <strong>只有一個極端樣本，係數的確切轉折點與斜率都還不知道，不要當成校準過的公式用。</strong></p>
+</div>
+</section>
+
+<!-- 04 -->
+<section>
+<h2>04 · 技術面：最後一條主要均線也失守</h2>
+
+<div class="tw">
+<table>
+<thead><tr><th>均線</th><th>數值</th><th>11/05 收盤</th><th>今日盤中 38,450.84</th><th>今日低 37,837.05</th></tr></thead>
+<tbody>
+<tr><td>MA5</td><td class="n">43,592.63</td><td class="n dn">-4.63%</td><td class="n dn">-11.80%</td><td class="n dn">-13.20%</td></tr>
+<tr><td>MA10</td><td class="n">45,039.25</td><td class="n dn">-7.69%</td><td class="n dn">-14.63%</td><td class="n dn">-15.99%</td></tr>
+<tr><td>MA20（月線）</td><td class="n">46,640.00</td><td class="n dn">-10.86%</td><td class="n dn">-17.56%</td><td class="n dn">-18.87%</td></tr>
+<tr><td>MA60（季線）</td><td class="n">46,490.63</td><td class="n dn">-10.57%</td><td class="n dn">-17.29%</td><td class="n dn">-18.61%</td></tr>
+<tr><td>MA120（半年線）</td><td class="n">45,360.93</td><td class="n dn">-8.35%</td><td class="n dn">-15.23%</td><td class="n dn">-16.59%</td></tr>
+<tr class="hl"><td><strong>MA240（年線）</strong></td><td class="n"><strong>38,784.53</strong></td><td class="n up">+7.19%</td><td class="n dn"><strong>-0.86%</strong></td><td class="n dn"><strong>-2.44%</strong></td></tr>
+</tbody></table>
+</div>
+
+<div class="box red">
+  <div class="bt">年線 38,784.53 今天被跌破</div>
+  <p>我在 11/04 與 11/05 兩份報告裡都寫「年線是<strong>唯一仍在價格下方的主要均線</strong>」，並列為結構性支撐。
+  <strong>今天開盤 38,915.76 距它只有 +0.34%，盤中就跌破了，最低 37,837.05 低於年線 2.44%。</strong></p>
+  <p style="margin-bottom:0"><strong>意義：六條主要均線全部站在價格上方，而且往下已經沒有均線可以參考。</strong>
+  這同時結案了我在第五章列的待驗證假設 ——「年線是否構成有效支撐」：
+  <strong>它在第一次測試時就沒有撐住，連一個交易日都沒有。</strong>
+  往下的參考位只剩前波低點與整數關卡，那些不是技術支撐，是心理價位。</p>
+</div>
+
+<div class="grid g4">
+  <div class="kpi"><div class="lab">RSI 14</div><div class="val n" style="color:var(--blu)">23.72</div><div class="note">11/04 為 27.89，持續轉弱</div></div>
+  <div class="kpi"><div class="lab">布林下軌</div><div class="val n">42,096.88</div><div class="note">盤中位置 <strong>-40.1%</strong></div></div>
+  <div class="kpi"><div class="lab">布林帶寬</div><div class="val n">19.48%</div><div class="note">11/04 為 17.28%，持續擴大</div></div>
+  <div class="kpi"><div class="lab">MACD 柱</div><div class="val dn n">-621.17</div><div class="note">11/04 -526.69，仍在擴大</div></div>
+</div>
+
+<p class="muted small">布林位置 -40.1% 指盤中價已低於下軌達帶寬的四成 —— 這是極端讀數，統計上屬於尾部事件。
+但 <strong>MACD 柱連續四日擴大（-365.74 → -466.83 → -526.69 → -621.17）</strong>，下跌動能完全沒有收斂。
+依準則，<strong>超賣與極端布林位置都是「跌得太急」的描述，不是訊號</strong>；
+而帶寬 19.48% 已使均線與布林的統計假設可靠度打折。</p>
+</section>
+
+<!-- 05 -->
+<section>
+<h2>05 · 籌碼與槓桿</h2>
+
+<div class="tw">
+<table>
+<thead><tr><th>日期</th><th>外資（張）</th><th>投信（張）</th><th>自營（張）</th><th>指數</th><th>股票跌停</th></tr></thead>
+<tbody>
+<tr><td>10/30</td><td class="n dn">-655,516</td><td class="n up">+46,268</td><td class="n dn">-2,555,779</td><td class="n dn">-2.49%</td><td class="n">11</td></tr>
+<tr><td>11/02</td><td class="n dn">-213,106</td><td class="n up">+89,177</td><td class="n dn">-1,094,488</td><td class="n dn">-0.64%</td><td class="n">5</td></tr>
+<tr><td>11/03</td><td class="n dn">-970,007</td><td class="n up">+68,768</td><td class="n dn">-2,683,892</td><td class="n dn">-3.59%</td><td class="n">33</td></tr>
+<tr><td>11/04</td><td class="n dn">-661,066</td><td class="n up">+74,442</td><td class="n dn">-2,158,074</td><td class="n dn">-0.83%</td><td class="n up">2</td></tr>
+<tr class="hl"><td>11/05</td><td class="n dn">-721,277</td><td class="n up">+90,570</td><td class="n dn">-2,204,875</td><td class="n dn">-3.20%</td><td class="n dn"><strong>56</strong></td></tr>
+<tr class="tot"><td>五日累計</td><td class="n dn"><strong>-3,220,972</strong></td><td class="n up">+369,225</td><td class="n dn">-10,697,108</td><td class="n dn">-14.40%</td><td class="n">—</td></tr>
+</tbody></table>
+</div>
+
+<div class="dv"><div class="dl">10/30</div><div class="dt"><div class="dmid"></div><div class="dfn" style="width:33.8%"></div></div><div class="dvv dn">-655,516</div></div>
+<div class="dv"><div class="dl">11/02</div><div class="dt"><div class="dmid"></div><div class="dfn" style="width:11.0%"></div></div><div class="dvv dn">-213,106</div></div>
+<div class="dv"><div class="dl">11/03</div><div class="dt"><div class="dmid"></div><div class="dfn" style="width:50.0%"></div></div><div class="dvv dn">-970,007</div></div>
+<div class="dv"><div class="dl">11/04</div><div class="dt"><div class="dmid"></div><div class="dfn" style="width:34.1%"></div></div><div class="dvv dn">-661,066</div></div>
+<div class="dv"><div class="dl">11/05</div><div class="dt"><div class="dmid"></div><div class="dfn" style="width:37.2%"></div></div><div class="dvv dn">-721,277</div></div>
+<p class="tiny">條長以 ±970,007 張為滿格。外資欄為「外陸資買賣超（不含外資自營商）」。</p>
+
+<div class="two">
+<div class="card">
+  <h4 style="color:var(--amb)">投信連五日買超，而且天天加量</h4>
+  <p>+46,268 → +89,177 → +68,768 → +74,442 → <strong>+90,570 張</strong>，五日累計 <strong>+369,225 張</strong>，11/05 是單日最大。</p>
+  <p style="margin-bottom:0"><strong>但依準則第 2 條，這不能用來預測價格。</strong>
+  投信買最多的 11/05，指數跌 3.20%、56 檔股票跌停。投信買超衡量的是配置意願與法規要求下的持股水位，不是動能。
+  它唯一可靠的用途是：<strong>告訴我們這波賣壓的來源不是國內法人</strong>。</p>
+</div>
+<div class="card">
+  <h4 style="color:var(--grn)">融資終於開始減，但遠不到清洗</h4>
+  <div class="tw" style="margin:8px 0">
+  <table style="min-width:300px">
+  <thead><tr><th></th><th>11/04</th><th>11/05</th></tr></thead><tbody>
+    <tr><td>融資（張）</td><td class="n">9,514,913</td><td class="n">9,440,455</td></tr>
+    <tr><td>日變動</td><td class="n dn">+0.34%</td><td class="n">-0.78%</td></tr>
+    <tr><td>融資金額（億）</td><td class="n">5,969.46</td><td class="n">5,764.09</td></tr>
+    <tr><td>融券（張）</td><td class="n">246,812</td><td class="n up">277,051</td></tr>
+  </tbody></table>
+  </div>
+  <p style="margin-bottom:0">11/05 融資張數終於轉減，但 <strong>-0.78% 仍低於我設的 2% 門檻</strong>。
+  自 10/22 至今指數跌了 <strong>9.70%</strong>（46,041.43 → 41,574.72），融資張數只減 <strong>1.71%</strong>。
+  <strong>槓桿還在，多殺多尚未真正發生。</strong>
+  融券同日增 30,239 張（+12.25%），把 11/04 回補掉的又補回去了。</p>
+</div>
+</div>
+
+<p class="muted small"><strong>ETF 占比續創新高：</strong>11/05 ETF 成交 1,589.7 億，占總成交 <strong>16.11%</strong>（11/03 為 14.56%、11/04 為 13.48%）；
+ETF 成交筆數 2,968,932，達一般股票筆數的 <strong>76.6%</strong>。依準則第 7 條的修正，要同時看外資在 ETF 上的方向 ——
+<strong>11/05 外資賣超前 10 名有 6 檔是 ETF</strong>（00406A -169,622、0050 -72,290、00981A -61,099、00403A -34,025、009828 -33,421、00400A -24,455 張），
+且指數未被撐住 → 這是<strong>贖回，不是護盤</strong>。</p>
+</section>
+
+<!-- 06 -->
+<section>
+<h2>06 · 今日待驗證條件</h2>
+
+<div class="box blu">
+  <div class="bt">情境先認定：續跌（不是反轉）</div>
+  <p style="margin-bottom:0">依準則第 8 條，情境須在盤前／盤中認定且收盤後不得更換。
+  今日開盤即最高、盤中最大跌幅 -8.99%、年線失守 —— <strong>認定為續跌情境，門檻用「量縮」</strong>。
+  <strong>注意：昨天我用錯過一次（把 11/04 判為反轉情境），所以這次的認定要特別說明理由</strong> ——
+  今日開盤 38,915.76 即為當日最高，不符合「盤中攻高後回吐」的反轉型態，而是直接跳空破底。</p>
+</div>
+
+<div class="tw">
+<table>
+<thead><tr><th>#</th><th>條件</th><th>判定門檻</th><th>目前（09:40）</th></tr></thead>
+<tbody>
+<tr><td>①</td><td><strong>收復年線 38,784.53</strong></td><td>收盤站上 = 跌破只是單日穿刺</td><td class="n dn">38,450.84（差 0.86%）</td></tr>
+<tr><td>②</td><td>今日最低 37,837.05</td><td>再被跌破 = 下一段開始</td><td class="n">現價高於其 1.62%</td></tr>
+<tr><td>③</td><td>收盤位置</td><td>&gt; 50% 才算低點被吸收</td><td class="n" style="color:var(--amb)">56.9%</td></tr>
+<tr><td>④</td><td>成交金額（<strong>續跌情境看量縮</strong>）</td><td>&lt; 8,000 億 = 賣壓耗盡；&gt; 1.2 兆 = 失血擴大</td><td class="n">—（MIS 不提供盤中累計）</td></tr>
+<tr><td>⑤</td><td>跌停家數（昨日股票 56 檔）</td><td>收盤時減少 = 恐慌收斂</td><td class="n dn">至少 6 檔鎖死、4 檔無成交</td></tr>
+<tr><td>⑥</td><td><strong>台積電能否脫離跌停區</strong></td><td>收盤 &gt; 2,100 = 權值未失控</td><td class="n">2,070（跌停 2,020）</td></tr>
+<tr><td>⑦</td><td>櫃買 vs 加權</td><td>櫃買優於加權 = 中小型股止血</td><td class="n dn">-7.87% vs -7.51%，仍較弱</td></tr>
+<tr><td>⑧</td><td>今晚 18:00 T86 外資</td><td>需<strong>連兩日</strong>買超（準則第 1 條）</td><td class="n dn">連四日賣，五日 -322.1 萬張</td></tr>
+<tr><td>⑨</td><td><strong>USD/TWD 33.00 能否守住不破</strong></td><td>升值訊號需升破 32.30＋連兩日＋外資連兩日買（第 4b 條）</td><td class="n dn">33.00，本波新貶</td></tr>
+<tr><td>⑩</td><td>融資張數</td><td>單日減 &gt; 2% = 槓桿開始清洗</td><td class="n dn">11/05 僅 -0.78%</td></tr>
+</tbody></table>
+</div>
+</section>
+
+<!-- 07 -->
+<section>
+<h2>07 · 三段式情境框架</h2>
+<p class="muted small">以下為情境框架與風險控制邏輯，不是針對任何特定資金規模的配置建議。</p>
+
+<div class="box amb">
+  <div class="bt">先把能力邊界說清楚</div>
+  <p style="margin-bottom:0"><strong>我沒有辨識底部的方法，而且本波已經錯過兩次型態判斷</strong>（10/28 的低量反彈、11/04 的長下影線）。
+  在六條主要均線全部失守、往下沒有技術參考位、外資五日賣超 322 萬張、融資尚未清洗的狀況下，
+  <strong>任何「這裡是底」的說法我都提不出可驗證的依據。</strong>
+  以下寫的是風險控制，不是抄底規劃。</p>
+</div>
+
+<div class="two">
+<div class="card">
+  <h4>🛡️ 防守型</h4>
+  <p><strong>現金維持 85–90%，不因跌幅擴大而降低。</strong></p>
+  <p>三項進場條件仍是<strong>零項成立</strong>，且全部在惡化：</p>
+  <ul class="chk small">
+    <li><span class="ic dn">✗</span>台幣升破 32.30 連兩日 → 今晨 <strong>33.00</strong>，六日貶 1.91%</li>
+    <li><span class="ic dn">✗</span>外資連兩日買超 → <strong>連四日賣</strong>，五日 -322.1 萬張</li>
+    <li><span class="ic dn">✗</span>融資張數單日減 &gt; 2% → 11/05 僅 -0.78%</li>
+  </ul>
+  <p class="small" style="margin-bottom:0"><strong>跌幅大不是進場理由。</strong>
+  指數自高點 -22.82%，但這三項條件在整個下跌過程中沒有任何一項接近達成 ——
+  依準則，條件不成立就不進場，與跌幅無關。</p>
+</div>
+<div class="card">
+  <h4>⚖️ 均衡型</h4>
+  <p><strong>維持不加碼。持股是否減，取決於個人停損紀律，本報告不代為判斷。</strong></p>
+  <p>四項條件目前成立 <strong>零項</strong>：台幣連兩日升破 32.30 ✗、外資連兩日買 ✗、收盤位置連兩日 &gt;50% ✗（11/05 僅 4.5%）、反彈日量 &gt;1 兆 ✗。</p>
+  <p class="small" style="margin-bottom:0"><strong>一個務實的提醒：</strong>今天多檔個股跌停鎖死（欣興、南亞科、緯穎、日月光、京元電、智邦）或無成交（台達電、南亞、台光電、華邦電）。
+  <strong>跌停鎖死時賣不掉</strong> —— 這是準則裡「流動性風險」的具體樣貌：
+  想調整部位的能力，在最需要的時候反而消失。這一點在跌幅擴大前就該納入考量。</p>
+</div>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <h4>⚔️ 進攻型</h4>
+  <p><strong>不提供標的，且今天的理由比前幾份更強。</strong></p>
+  <p>11/05 又多了一個樣本：台光電連三日逆勢走強（我當時明確拒絕推薦），隔日<strong>跌停 -9.99%</strong>；
+  11/05 唯二收紅的富邦金（+0.65%）與中信金（+2.32%），今天分別 <strong>-8.68%、-7.74%，雙雙比大盤更弱</strong>。</p>
+  <p style="margin-bottom:0"><strong>「昨天的強勢」在本波的預測力接近於零，而且經常直接反向。</strong>
+  這是準則第 2 條的核心，到今天為止已累積六個樣本（友達、中鋼、緯創、台光電、富邦金、中信金）。
+  在這個環境下給名單，等於把已被反覆證偽的方法再用一次。</p>
+</div>
+</section>
+
+<footer>
+<h2>資料日期與限制</h2>
+<ul>
+  <li><strong>今日盤中</strong>：TWSE MIS 即時 API（<code>mis.twse.com.tw/stock/api/getStockInfo.jsp</code>），報價時間 <strong>2026-11-06 09:40</strong>，
+      含加權（<code>tse_t00.tw</code>）與櫃買（<code>otc_o00.tw</code>）。
+      <strong>指數盤中累計成交量該 API 不提供</strong>，故條件 ④ 無法於盤中判定。
+      多檔個股回傳 <code>-</code>（該瞬間無成交），已改用最佳買價；台達電、南亞、台光電、華邦電連最佳買價亦無報價，表格標為「無成交」。
+      漲跌停價取自官方 <code>u</code>／<code>w</code> 欄位。</li>
+  <li><strong>11/05 指數日 OHLC</strong>：TWSE <code>MI_5MINS_HIST</code> —— 開 42,666.13／高 42,873.81／低 41,513.57／收 41,574.72。</li>
+  <li><strong>11/05 成交金額與筆數</strong>：TWSE <code>FMTQIK</code> —— 9,871.0 億元／6,951,911 筆。</li>
+  <li><strong>11/05 漲跌家數與量能拆分</strong>：TWSE <code>MI_INDEX?type=ALLBUT0999</code> —— 股票 167 漲（5 漲停）／857 跌（<strong>56 跌停</strong>）；
+      整體市場 2,663 漲（12）／11,496 跌（347）；一般股票 8,235.6 億、ETF 1,589.7 億。</li>
+  <li><strong>11/05 三大法人</strong>：TWSE <code>T86?selectType=ALLBUT0999</code>，已公布並納入。
+      <strong>今日（11/06）籌碼約 18:00 後才公布，本報告未納入。</strong></li>
+  <li><strong>11/05 融資融券</strong>：TWSE <code>MI_MARGN?selectType=MS</code> —— 融資 9,440,455 張／5,764.09 億，融券 277,051 張。</li>
+  <li><strong>11/05 個股收盤</strong>：TWSE <code>STOCK_DAY</code>。</li>
+  <li><strong>全球指數</strong>：yfinance，<strong>11/05（週四）</strong>美股收盤。
+      <code>^TWII</code> 序列落後，技術指標已改以 TWSE 官方 11/05 收盤 41,574.72 接續後重算。</li>
+  <li><strong>🔴 美股個股未納入</strong>：yfinance 對 NVDA／TSM／AMD／MU／AMAT／AVGO 等個股<strong>仍只回傳 11/04 資料</strong>（落後指數一日，為已知現象）。
+      因此本報告<strong>沒有引用任何美股個股的 11/05 收盤價</strong>；
+      文中「NVDA 與 QCOM 單日均跌超過 9%」、「Qualcomm 財測不佳」來自媒體報導，非 API 數據。</li>
+  <li><strong>匯率</strong>：11/05 收 32.82、今晨 <strong>33.00</strong>，均為 yfinance <code>TWD=X</code> 境外報價；台北收盤官方值未取得，兩個口徑可能有小幅差異。</li>
+  <li><strong>條件 ⑦ 無法完整判定</strong>：櫃買指數歷史序列（<code>^TWOII</code>）無法取得，僅有 MIS 即時值，故「11/05 櫃買 vs 加權」無基準可比，表格標為「無法判定」。</li>
+  <li><strong>媒體數據的口徑衝突</strong>：關於 11/05 美股，不同來源對費半跌幅（盤中 11% vs 收盤 12%）與 VIX 升幅（48% vs 70%）說法不一致。
+      本報告一律採用 yfinance 收盤值：<code>^SOX</code> 9,011.14（-12.25%）、<code>^VIX</code> 28.18（+69.66%）。
+      「SOXX 為 2020 年 3 月以來最大單日跌幅」、「費半 30 檔中 28 檔處於熊市」、「納斯達克為 2025 年 4 月以來最差」、
+      「市值蒸發約 2.5 兆美元」均為媒體報導，非本報告計算。</li>
+  <li><strong>未納入的項目</strong>：
+      ① TAIFEX 期貨外資未平倉 —— API 回傳億級口數等異常值，一律排除；
+      ② 選擇權 Put/Call ratio 與最大未平倉履約價未取得；
+      ③ 11/05 夜盤台指期收盤值未取得（依準則，夜盤僅判方向不推點位）。</li>
+</ul>
+<p style="margin-top:16px"><strong>本報告於盤中 09:40 產製，距 13:30 收盤尚有近四小時，型態未定。</strong>
+依本工作流準則第 5 條，盤中不對當日方向下結論；第 06 節條件已寫成可用當日數據判定的形式，收盤後逐項回填且不更換標準。
+報告中的三段式策略為情境框架與風險控制邏輯，<strong>不構成投資建議</strong>，亦非針對任何特定資金規模的配置建議。</p>
+<p class="tiny" style="margin-top:14px">產製時間 2026-11-06 09:40（GMT+8）· 資料來源：臺灣證券交易所公開 API、yfinance、公開媒體報導</p>
+</footer>
+
+</div>
+</body>
+</html>
