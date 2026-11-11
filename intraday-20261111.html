@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>台股盤中分析 | 2026-11-11 10:16</title>
+<style>
+:root{
+  --bg:#0d1117; --panel:#161b22; --panel2:#1c2129; --line:#30363d;
+  --txt:#e6edf3; --dim:#8b949e; --dim2:#6e7681;
+  --red:#f85149; --redbg:rgba(248,81,73,.12);
+  --grn:#3fb950; --grnbg:rgba(63,185,80,.12);
+  --amb:#d29922; --ambbg:rgba(210,153,34,.12);
+  --blu:#58a6ff; --blubg:rgba(88,166,255,.12);
+  --pur:#bc8cff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,"Segoe UI",sans-serif;
+  font-size:15px;line-height:1.7;-webkit-text-size-adjust:100%}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px 80px}
+header{padding:34px 0 24px;border-bottom:1px solid var(--line);margin-bottom:28px}
+.kick{font-size:12px;letter-spacing:.22em;color:var(--dim2);text-transform:uppercase}
+h1{font-size:30px;margin:10px 0 6px;font-weight:700;letter-spacing:-.01em}
+.sub{color:var(--dim);font-size:14px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{font-size:12.5px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--dim)}
+.badge.red{color:var(--red);border-color:rgba(248,81,73,.45);background:var(--redbg)}
+.badge.grn{color:var(--grn);border-color:rgba(63,185,80,.45);background:var(--grnbg)}
+.badge.amb{color:var(--amb);border-color:rgba(210,153,34,.45);background:var(--ambbg)}
+.badge.blu{color:var(--blu);border-color:rgba(88,166,255,.45);background:var(--blubg)}
+section{margin:38px 0}
+h2{font-size:12px;letter-spacing:.2em;color:var(--dim2);text-transform:uppercase;
+  margin:0 0 14px;padding-bottom:9px;border-bottom:1px solid var(--line);font-weight:600}
+h3{font-size:17px;margin:26px 0 10px;font-weight:650}
+h4{font-size:14.5px;margin:18px 0 8px;font-weight:650}
+p{margin:10px 0}
+.lead{font-size:16.5px;line-height:1.75}
+.muted{color:var(--dim)} .small{font-size:13px}
+.tiny{font-size:12px;color:var(--dim2)}
+.n{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.up{color:var(--red)} .dn{color:var(--grn)}
+.hero{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;margin:22px 0}
+.heroTop{display:flex;flex-wrap:wrap;align-items:flex-end;gap:18px}
+.bigpx{font-size:44px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.bigch{font-size:19px;font-weight:650}
+.heroMeta{color:var(--dim);font-size:13px;margin-top:4px}
+.grid{display:grid;gap:12px;margin:18px 0}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:820px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px 14px}
+.kpi .lab{font-size:11.5px;color:var(--dim2);letter-spacing:.04em}
+.kpi .val{font-size:22px;font-weight:700;margin-top:3px;line-height:1.15}
+.kpi .note{font-size:12px;color:var(--dim);margin-top:3px}
+.box{border:1px solid var(--line);border-left-width:3px;border-radius:9px;padding:15px 17px;margin:16px 0;background:var(--panel)}
+.box.red{border-left-color:var(--red)} .box.grn{border-left-color:var(--grn)}
+.box.amb{border-left-color:var(--amb)} .box.blu{border-left-color:var(--blu)}
+.box .bt{font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:7px;font-weight:650}
+.box.red .bt{color:var(--red)} .box.grn .bt{color:var(--grn)}
+.box.amb .bt{color:var(--amb)} .box.blu .bt{color:var(--blu)}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0;border:1px solid var(--line);border-radius:9px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:13.5px}
+th,td{padding:8px 11px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:var(--panel2);color:var(--dim);font-weight:600;font-size:12px;letter-spacing:.04em}
+td:first-child,th:first-child{text-align:left}
+tbody tr:last-child td{border-bottom:none}
+tr.hl td{background:var(--redbg)} tr.hl2 td{background:var(--grnbg)}
+tr.tot td{font-weight:650;background:var(--panel2)}
+.dv{display:flex;align-items:center;gap:9px;margin:5px 0;font-size:13px}
+.dv .dl{width:100px;flex:0 0 100px;color:var(--dim)}
+.dv .dt{flex:1;height:17px;background:var(--panel2);border-radius:3px;position:relative}
+.dv .dmid{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--line)}
+.dv .dfp{position:absolute;left:50%;top:0;bottom:0;background:var(--red);border-radius:0 3px 3px 0}
+.dv .dfn{position:absolute;right:50%;top:0;bottom:0;background:var(--grn);border-radius:3px 0 0 3px}
+.dv .dvv{width:96px;flex:0 0 96px;text-align:right;font-variant-numeric:tabular-nums}
+.bar{display:flex;align-items:center;gap:9px;margin:5px 0;font-size:13px}
+.bar .bl{width:120px;flex:0 0 120px;color:var(--dim)}
+.bar .bt2{flex:1;height:17px;background:var(--panel2);border-radius:3px;overflow:hidden}
+.bar .bf{height:100%;border-radius:3px}
+.bar .bv{width:96px;flex:0 0 96px;text-align:right;font-variant-numeric:tabular-nums}
+ul,ol{margin:10px 0;padding-left:22px} li{margin:6px 0}
+li::marker{color:var(--dim2)}
+.chk li{list-style:none;margin-left:-14px}
+.ic{display:inline-block;width:19px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.card h4{margin-top:0}
+footer{margin-top:54px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--dim2);line-height:1.8}
+code{background:var(--panel2);padding:1px 5px;border-radius:4px;font-size:12.5px;color:var(--pur)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kick">台股大盤 · 盤中快報</div>
+  <h1>條件通過了，但反彈只剩台積電</h1>
+  <div class="sub">2026 年 11 月 11 日（三）· 報價時間 10:16 · 補 11/06 收盤、11/09、11/10 三個交易日</div>
+  <div class="badges">
+    <span class="badge amb">盤中 43,211.48　+1.17%</span>
+    <span class="badge grn">自 11/06 低點 +14.20%</span>
+    <span class="badge grn">融資 11/06 單日減 4.26%</span>
+    <span class="badge grn">外資連兩日買超</span>
+    <span class="badge red">台幣 32.85，連兩日回貶</span>
+  </div>
+</header>
+
+<!-- 00 -->
+<section>
+<h2>00 · 前次報告回填（11/06 盤中，10:34）</h2>
+
+<div class="box blu">
+  <div class="bt">先更正我自己的一個日期錯誤</div>
+  <p style="margin-bottom:0">11/06 的報告裡，後驗條件①我寫「<strong>11/07（下週一）判定</strong>」。
+  <strong>11/06 是星期五，11/07 是星期六，下一個交易日是 11/09（週一）。</strong>
+  這個括號寫錯了。實際判定日為 11/09，以下按正確日期回填。</p>
+</div>
+
+<h3>十項條件：8 項達成、1 項未達、1 項無法判定</h3>
+<div class="tw">
+<table>
+<thead><tr><th>#</th><th>條件</th><th>門檻</th><th>實際</th><th>判定</th></tr></thead>
+<tbody>
+<tr class="hl2"><td>①</td><td><strong>後驗一：次一交易日守住 37,837.05</strong></td><td>跌破 = 假訊號確立</td><td class="n up">11/09 最低 <strong>40,347.28</strong>（高出 6.63%）</td><td class="up">✅</td></tr>
+<tr class="hl2"><td>②</td><td><strong>後驗二：外資兩日內轉為買超</strong></td><td>需連兩日</td><td class="n up">11/09 <strong>+305,446</strong>、11/10 <strong>+186,970</strong> 張</td><td class="up">✅✅</td></tr>
+<tr class="hl2"><td>③</td><td>收盤站上年線 38,784.53</td><td>站上 = 單日穿刺</td><td class="n up">11/06 收 <strong>39,701.64</strong>（+2.37%）</td><td class="up">✅</td></tr>
+<tr class="hl2"><td>④</td><td>收盤位置 &gt; 50%</td><td>低點被吸收</td><td class="n up"><strong>71.7%</strong></td><td class="up">✅</td></tr>
+<tr class="hl2"><td>⑤</td><td>成交金額 &gt; 1 兆（反轉類必要條件）</td><td>有量承接</td><td class="n up"><strong>1 兆 3,211 億</strong>（本波最大）</td><td class="up">✅</td></tr>
+<tr class="hl2"><td>⑥</td><td>跌停家數大幅減少</td><td>恐慌收斂</td><td class="n up">股票 56 → <strong>24 檔</strong></td><td class="up">✅</td></tr>
+<tr class="hl2"><td>⑦</td><td>台積電收在 2,100 之上</td><td>權值未失控</td><td class="n up">收 <strong>2,135</strong>（開盤即跌停 2,020）</td><td class="up">✅</td></tr>
+<tr><td>⑧</td><td>櫃買收復開盤 313.77</td><td>中小型股跟上</td><td class="n">當日櫃買收盤值未保存（見 footer）</td><td class="n">無法判定</td></tr>
+<tr class="hl"><td>⑨</td><td>USD/TWD 33.00 不再破底</td><td>最重要的一條</td><td class="n dn">11/06 收 <strong>33.11</strong>，當日破底</td><td class="dn">✗</td></tr>
+<tr class="hl2"><td>⑩</td><td><strong>融資張數單日減 &gt; 2%</strong></td><td>槓桿清洗</td><td class="n up">11/06 <strong>-4.26%</strong>（-402,517 張）</td><td class="up">✅✅</td></tr>
+</tbody></table>
+</div>
+
+<div class="box grn">
+  <div class="bt">🟢「反轉類」情境第一次通過 —— 它在 11/05 是 0 勝 1 敗</div>
+  <p>11/05 我在準則裡為這個情境補了兩個後驗條件，並寫明「<strong>下次出現同型態時，應先假設它是假訊號，由後驗條件推翻</strong>」。
+  11/06 就是那個「下次」，而這次<strong>兩項後驗條件都通過了</strong>：</p>
+  <ul style="margin-bottom:0">
+    <li><strong>① 11/09 最低 40,347.28</strong>，比 11/06 低點 37,837.05 高出 <strong>6.63%</strong> —— 不只守住，是大幅跳開。</li>
+    <li><strong>② 外資 11/09 +305,446、11/10 +186,970 張</strong> —— 連五日賣超（10/30–11/06）後首次連兩日買超。</li>
+  </ul>
+</div>
+
+<div class="box grn">
+  <div class="bt">🟢 槓桿清洗門檻終於觸發，而且是我自訂門檻的第一次實際樣本</div>
+  <p>我在 11/04 自訂了「融資張數單日減幅 &gt; 2%」當作槓桿已清洗的判準，並在第五章標明「<strong>沒有歷史樣本支撐，要在實際出現時回來驗</strong>」。</p>
+  <div class="tw">
+  <table style="min-width:520px">
+  <thead><tr><th>日期</th><th>融資張數</th><th>日變動</th><th>融資金額(億)</th><th>融券張數</th></tr></thead><tbody>
+    <tr><td>11/05</td><td class="n">9,440,455</td><td class="n">-0.78%</td><td class="n">5,764.09</td><td class="n">277,051</td></tr>
+    <tr class="hl2"><td><strong>11/06</strong></td><td class="n"><strong>9,037,948</strong></td><td class="n up"><strong>-4.26%</strong></td><td class="n">5,340.53（-7.35%）</td><td class="n">242,766</td></tr>
+    <tr class="hl"><td>11/09</td><td class="n">9,153,428</td><td class="n dn"><strong>+1.28%</strong></td><td class="n">5,399.16</td><td class="n">222,076</td></tr>
+    <tr><td>11/10</td><td class="n">9,096,065</td><td class="n">-0.63%</td><td class="n">5,366.79</td><td class="n">211,131</td></tr>
+  </tbody></table>
+  </div>
+  <p style="margin-bottom:0"><strong>11/06 當日「現金償還」34,402 張、融資賣出 928,520 張，是一次真正的斷頭。</strong>
+  <strong>🔴 但要同時記下另一半：11/09 融資立刻回加 +1.28%。</strong>
+  自 11/06 洗完到 11/10，融資張數反而淨增 <strong>+58,117 張（+0.64%）</strong> ——
+  <strong>槓桿只被洗了一天，隔一個交易日就補回來了。</strong>
+  這個門檻驗證了「會觸發」，但沒有驗證「觸發後槓桿就消失」。</p>
+</div>
+
+<div class="box red">
+  <div class="bt">🔴 唯一沒過的那一條，正好是我說過最可靠的指標</div>
+  <p>條件⑨（台幣不再破底）當日就失敗 —— 11/06 台幣收 <strong>33.11</strong>，又破一次底。而且更關鍵的是後續：</p>
+  <div class="tw">
+  <table style="min-width:420px">
+  <thead><tr><th>日期</th><th>USD/TWD</th><th>方向</th><th>加權指數</th></tr></thead><tbody>
+    <tr class="hl"><td>11/06</td><td class="n">33.11</td><td class="dn">貶 · 本波最貶</td><td class="n dn">-4.51%</td></tr>
+    <tr><td>11/09</td><td class="n up">32.76</td><td class="up">升</td><td class="n up">+4.94%</td></tr>
+    <tr class="hl"><td>11/10</td><td class="n dn">32.79</td><td class="dn">貶</td><td class="n up">+2.52%</td></tr>
+    <tr class="hl"><td>11/11 今晨</td><td class="n dn">32.85</td><td class="dn">貶 · 連兩日</td><td class="n up">+1.17% 盤中</td></tr>
+  </tbody></table>
+  </div>
+  <p style="margin-bottom:0"><strong>台幣只升了一天（11/09），接著連兩日回貶，而且距我設的 32.30 門檻還有 1.68%。</strong>
+  依準則第 4 條：「<strong>股市反彈但匯率未回升 → 反彈多為本地資金／融券回補推動，持續性存疑</strong>」。
+  同期美元指數從 101.65 升到 102.21（+0.55%），所以這次台幣的貶值有一部分來自美元轉強 ——
+  但<strong>依第 4b 條，升值訊號需「升破 32.30 + 連兩日維持 + 外資連兩日買」三者齊備，目前只有第三項成立。</strong></p>
+</div>
+</section>
+
+<!-- 01 -->
+<section>
+<h2>01 · 四個交易日全貌</h2>
+
+<div class="hero">
+  <div class="heroTop">
+    <div><div class="bigpx up n">43,211.48</div><div class="heroMeta">加權指數 · 昨收 42,711.92</div></div>
+    <div><div class="bigch up n">+499.56　+1.17%</div><div class="heroMeta">開 43,135.76　高 43,385.84　低 42,708.05</div></div>
+  </div>
+  <div class="grid g4" style="margin-bottom:0">
+    <div class="kpi"><div class="lab">自 11/06 低 37,837.05</div><div class="val up n">+14.20%</div><div class="note">今日高點時 +14.66%</div></div>
+    <div class="kpi"><div class="lab">自 10/06 高 49,822.55</div><div class="val dn n">-13.27%</div><div class="note">11/06 最低時曾 -24.06%</div></div>
+    <div class="kpi"><div class="lab">現價區間位置</div><div class="val up n">74.3%</div><div class="note">連三日 &gt; 50%</div></div>
+    <div class="kpi"><div class="lab">櫃買</div><div class="val n" style="color:var(--amb)">+0.56%</div><div class="note">僅加權的一半</div></div>
+  </div>
+</div>
+
+<div class="tw">
+<table>
+<thead><tr><th>日期</th><th>開</th><th>高</th><th>低</th><th>收</th><th>%</th><th>收盤位置</th><th>金額(億)</th><th>股票漲/跌</th><th>漲停/跌停</th></tr></thead>
+<tbody>
+<tr><td>11/05</td><td class="n">42,666.13</td><td class="n">42,873.81</td><td class="n">41,513.57</td><td class="n">41,574.72</td><td class="n dn">-3.20%</td><td class="n dn">4.5%</td><td class="n">9,871</td><td class="n dn">167 / 857</td><td class="n dn">5 / 56</td></tr>
+<tr class="hl"><td><strong>11/06</strong></td><td class="n">38,915.76</td><td class="n">40,435.83</td><td class="n"><strong>37,837.05</strong></td><td class="n">39,701.64</td><td class="n dn">-4.51%</td><td class="n up"><strong>71.7%</strong></td><td class="n up"><strong>13,211</strong></td><td class="n dn">105 / 952</td><td class="n">4 / 24</td></tr>
+<tr class="hl2"><td>11/09</td><td class="n">40,347.28</td><td class="n">42,349.36</td><td class="n">40,347.28</td><td class="n">41,661.70</td><td class="n up"><strong>+4.94%</strong></td><td class="n up">65.7%</td><td class="n">8,770</td><td class="n up">804 / 229</td><td class="n up"><strong>121 / 2</strong></td></tr>
+<tr class="hl2"><td>11/10</td><td class="n">42,130.33</td><td class="n">43,135.92</td><td class="n">41,930.03</td><td class="n">42,711.92</td><td class="n up">+2.52%</td><td class="n up">64.8%</td><td class="n">10,340</td><td class="n up">526 / 491</td><td class="n">30 / 2</td></tr>
+<tr class="tot"><td>11/11 盤中</td><td class="n">43,135.76</td><td class="n">43,385.84</td><td class="n">42,708.05</td><td class="n">43,211.48</td><td class="n up">+1.17%</td><td class="n up">74.3%</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+</tbody></table>
+</div>
+
+<div class="box amb">
+  <div class="bt">⚠️ 家數在兩個交易日內就收窄了 —— 這是最該注意的一條</div>
+  <div class="tw" style="margin:12px 0">
+  <table style="min-width:440px">
+  <thead><tr><th>日期</th><th>股票上漲</th><th>股票下跌</th><th>漲停</th><th>漲跌比</th></tr></thead><tbody>
+    <tr class="hl2"><td>11/09</td><td class="n up"><strong>804</strong></td><td class="n">229</td><td class="n up"><strong>121</strong></td><td class="n up"><strong>3.51 : 1</strong></td></tr>
+    <tr><td>11/10</td><td class="n">526</td><td class="n">491</td><td class="n">30</td><td class="n" style="color:var(--amb)">1.07 : 1</td></tr>
+  </tbody></table>
+  </div>
+  <p style="margin-bottom:0"><strong>漲停家數 121 → 30 檔，漲跌比 3.51:1 → 1.07:1，只花了一個交易日。</strong>
+  11/09 是全面反彈，11/10 已經變成接近對半。而今日盤中（見第 03 節）<strong>29 檔重點股有 17 檔是下跌的，指數卻漲 1.17%</strong>。
+  依準則第 7 條，這是「<strong>家數差、指數撐住</strong>」的型態，不是「家數熱」的型態。</p>
+</div>
+
+<h4>ETF 成交占比：恐慌管道已經正常化</h4>
+<div class="bar"><div class="bl">11/05</div><div class="bt2"><div class="bf" style="width:85.8%;background:var(--amb)"></div></div><div class="bv">16.11%</div></div>
+<div class="bar"><div class="bl">11/06</div><div class="bt2"><div class="bf" style="width:100%;background:var(--red)"></div></div><div class="bv">18.78%</div></div>
+<div class="bar"><div class="bl">11/09</div><div class="bt2"><div class="bf" style="width:70.7%;background:var(--amb)"></div></div><div class="bv">13.27%</div></div>
+<div class="bar"><div class="bl">11/10</div><div class="bt2"><div class="bf" style="width:50.2%;background:var(--grn)"></div></div><div class="bv">9.42%</div></div>
+<p class="tiny">ETF 成交金額占集中市場總成交金額比重。條長以 18.78% 為滿格。11/06 的 2,480.7 億為本波最高，ETF 成交筆數達 360.5 萬筆。</p>
+<p class="muted small">依準則第 7 條的修正，ETF 占比高本身不是護盤也不是恐慌 —— 要看外資在 ETF 的方向與指數是否撐住。
+<strong>11/06 占比衝到 18.78% 而指數跌 4.51%</strong>（贖回／恐慌），<strong>11/10 已回落到 9.42%</strong> —— 這條管道的壓力確實解除了。</p>
+</section>
+
+<!-- 02 -->
+<section>
+<h2>02 · 籌碼：連兩日買超，但五日累計仍是賣超</h2>
+
+<div class="tw">
+<table>
+<thead><tr><th>日期</th><th>外資（張）</th><th>投信（張）</th><th>自營（張）</th><th>指數</th></tr></thead>
+<tbody>
+<tr><td>11/04</td><td class="n dn">-661,066</td><td class="n up">+74,442</td><td class="n dn">-2,158,074</td><td class="n dn">-0.83%</td></tr>
+<tr><td>11/05</td><td class="n dn">-721,277</td><td class="n up">+90,570</td><td class="n dn">-2,204,875</td><td class="n dn">-3.20%</td></tr>
+<tr><td>11/06</td><td class="n dn">-205,606</td><td class="n up">+78,506</td><td class="n dn">-2,447,934</td><td class="n dn">-4.51%</td></tr>
+<tr class="hl2"><td>11/09</td><td class="n up"><strong>+305,446</strong></td><td class="n up">+58,393</td><td class="n dn">-1,578,723</td><td class="n up">+4.94%</td></tr>
+<tr class="hl2"><td>11/10</td><td class="n up"><strong>+186,970</strong></td><td class="n up">+28,216</td><td class="n dn">-485,089</td><td class="n up">+2.52%</td></tr>
+<tr class="tot"><td>五日累計（11/04–11/10）</td><td class="n dn"><strong>-1,095,533</strong></td><td class="n up">+330,127</td><td class="n dn">-8,874,695</td><td class="n dn">-4.90%</td></tr>
+<tr class="tot"><td>最近兩日</td><td class="n up"><strong>+492,416</strong></td><td class="n up">+86,609</td><td class="n dn">-2,063,812</td><td class="n up">+7.58%</td></tr>
+</tbody></table>
+</div>
+
+<div class="dv"><div class="dl">11/04</div><div class="dt"><div class="dmid"></div><div class="dfn" style="width:45.8%"></div></div><div class="dvv dn">-661,066</div></div>
+<div class="dv"><div class="dl">11/05</div><div class="dt"><div class="dmid"></div><div class="dfn" style="width:50.0%"></div></div><div class="dvv dn">-721,277</div></div>
+<div class="dv"><div class="dl">11/06</div><div class="dt"><div class="dmid"></div><div class="dfn" style="width:14.3%"></div></div><div class="dvv dn">-205,606</div></div>
+<div class="dv"><div class="dl">11/09</div><div class="dt"><div class="dmid"></div><div class="dfp" style="width:21.2%"></div></div><div class="dvv up">+305,446</div></div>
+<div class="dv"><div class="dl">11/10</div><div class="dt"><div class="dmid"></div><div class="dfp" style="width:13.0%"></div></div><div class="dvv up">+186,970</div></div>
+<p class="tiny">條長以 ±721,277 張為滿格。外資欄為「外陸資買賣超（不含外資自營商）」。</p>
+
+<div class="box amb">
+  <div class="bt">兩個指標說不同的話，要兩個都寫出來</div>
+  <p><strong>我設的後驗條件②（連兩日買超）達成了。但依準則第 1 條用五日累計判方向，外資仍是 -109.6 萬張。</strong></p>
+  <p style="margin-bottom:0">這兩者不矛盾，是看的時間窗不同：
+  <strong>五日累計告訴我們「這一波外資整體還是淨流出」，兩日轉買告訴我們「最近的邊際行為改變了」。</strong>
+  我不把其中一個當成另一個的反駁 —— 條件②的用途是判定 11/06 反轉型態是真是假（它判為真），
+  而第 1 條的用途是判斷趨勢方向（仍是賣方）。<strong>型態成立不等於趨勢反轉。</strong></p>
+</div>
+
+<h4>11/10 外資買賣超：方向很分散</h4>
+<div class="tw">
+<table>
+<thead><tr><th>買超</th><th>張</th><th>賣超</th><th>張</th></tr></thead>
+<tbody>
+<tr><td>1303 南亞</td><td class="n up">+8,221</td><td>2303 聯電</td><td class="n dn">-14,637</td></tr>
+<tr><td>2408 南亞科</td><td class="n up">+7,280</td><td>2409 友達</td><td class="n dn">-13,635</td></tr>
+<tr><td>2412 中華電</td><td class="n up">+3,208</td><td>2002 中鋼</td><td class="n dn">-9,361</td></tr>
+<tr><td>3037 欣興</td><td class="n up">+2,795</td><td>2891 中信金</td><td class="n dn">-9,755</td></tr>
+<tr><td>1301 台塑</td><td class="n up">+2,822</td><td>3231 緯創</td><td class="n dn">-8,523</td></tr>
+<tr><td>2317 鴻海</td><td class="n up">+2,303</td><td>6770 力積電</td><td class="n dn">-8,352</td></tr>
+<tr><td>—</td><td class="n">—</td><td><strong>2330 台積電</strong></td><td class="n dn"><strong>-8,182</strong></td></tr>
+</tbody></table>
+</div>
+<p class="muted small"><strong>注意：11/10 外資在台積電仍是賣超 8,182 張，而投信買 5,634 張。</strong>
+全市場外資買超 +186,970 張主要來自 ETF（主動統一升級50 +97,135、台玻 +83,717、華航 +58,257 張）。
+<strong>依準則第 2 條，這不用於預測價格 —— 但它說明一件事：外資的買超不是買在權值股上。</strong></p>
+</section>
+
+<!-- 03 -->
+<section>
+<h2>03 · 今日盤中：29 檔重點股有 17 檔下跌，指數卻漲 1.17%</h2>
+
+<div class="box red">
+  <div class="bt">🔴 今天的漲幅幾乎全部來自台積電</div>
+  <p>台積電 <strong>+2.41%（2,340）</strong>，而指數 +1.17%。<strong>台積電在加權指數的權重約三分之一</strong>（準則第 6 條），
+  以此粗估它單獨貢獻約 <strong>0.80 個百分點</strong>，約為今日全部漲幅的 <strong>七成</strong>。</p>
+  <p style="margin-bottom:0"><strong>⚠️ 這是推估值</strong> —— 我沒有精確的即時權重資料，權重「約三分之一」是準則裡沿用的近似值，
+  實際貢獻度可能有出入。但方向很明確：<strong>29 檔重點股中 17 檔下跌，而指數上漲。</strong></p>
+</div>
+
+<div class="two">
+<div class="card">
+  <h4 style="color:var(--red)">上漲（12 檔）</h4>
+  <div class="tw" style="margin-bottom:0">
+  <table style="min-width:260px">
+  <tbody>
+    <tr class="hl2"><td>1303 南亞</td><td class="n up">+4.15%</td></tr>
+    <tr class="hl2"><td>2609 陽明</td><td class="n up">+2.58%</td></tr>
+    <tr class="hl2"><td><strong>2330 台積電</strong></td><td class="n up"><strong>+2.41%</strong></td></tr>
+    <tr><td>2409 友達</td><td class="n up">+1.26%</td></tr>
+    <tr><td>6239 力成</td><td class="n up">+1.09%</td></tr>
+    <tr><td>2379 瑞昱</td><td class="n up">+1.07%</td></tr>
+    <tr><td>2357 華碩</td><td class="n up">+0.79%</td></tr>
+    <tr><td>3481 群創</td><td class="n up">+0.77%</td></tr>
+    <tr><td>2891 中信金</td><td class="n up">+0.54%</td></tr>
+    <tr><td>2303 聯電</td><td class="n up">+0.50%</td></tr>
+    <tr><td>2881 富邦金</td><td class="n up">+0.33%</td></tr>
+    <tr><td>2412 中華電 / 2603 長榮</td><td class="n">0.00%</td></tr>
+  </tbody></table>
+  </div>
+</div>
+<div class="card">
+  <h4 style="color:var(--grn)">下跌（17 檔）</h4>
+  <div class="tw" style="margin-bottom:0">
+  <table style="min-width:260px">
+  <tbody>
+    <tr class="hl"><td>2344 華邦電</td><td class="n dn">-4.07%</td></tr>
+    <tr class="hl"><td>6770 力積電</td><td class="n dn">-3.72%</td></tr>
+    <tr class="hl"><td>2308 台達電</td><td class="n dn">-3.14%</td></tr>
+    <tr class="hl"><td>2345 智邦</td><td class="n dn">-2.91%</td></tr>
+    <tr><td>2449 京元電</td><td class="n dn">-2.20%</td></tr>
+    <tr><td>2382 廣達</td><td class="n dn">-1.68%</td></tr>
+    <tr><td>4938 和碩</td><td class="n dn">-1.56%</td></tr>
+    <tr><td>2408 南亞科</td><td class="n dn">-1.44%</td></tr>
+    <tr><td>3711 日月光投控</td><td class="n dn">-1.32%</td></tr>
+    <tr><td>1301 台塑</td><td class="n dn">-1.14%</td></tr>
+    <tr><td>2317 鴻海</td><td class="n dn">-1.04%</td></tr>
+    <tr><td>6669 緯穎</td><td class="n dn">-0.89%</td></tr>
+    <tr><td>3037 欣興</td><td class="n dn">-0.85%</td></tr>
+    <tr><td>2383 台光電</td><td class="n dn">-0.69%</td></tr>
+    <tr><td>2454 聯發科</td><td class="n dn">-0.39%</td></tr>
+    <tr><td>3231 緯創 / 2002 中鋼</td><td class="n dn">-0.29% / -0.27%</td></tr>
+  </tbody></table>
+  </div>
+</div>
+</div>
+
+<div class="box red">
+  <div class="bt">下跌的族群有明顯共同點：AI 伺服器鏈與記憶體</div>
+  <p><strong>AI 伺服器／網通：</strong>台達電 -3.14%、智邦 -2.91%、廣達 -1.68%、緯穎 -0.89%
+  <br><strong>記憶體：</strong>華邦電 -4.07%、力積電 -3.72%、南亞科 -1.44%</p>
+  <p style="margin-bottom:0">這與隔夜美股的分化完全對應 —— <strong>NVDA 11/10 單日 -5.47%，自 11/03 的 206.69 跌到 168.89，累計 -18.3%</strong>，
+  而<strong>台積電 ADR 同日 +2.02%、AMD +1.30%、博通 +3.91%</strong>。
+  <strong>AI 的領頭羊還在破底，晶圓代工在修復 —— 台股今天複製了同一個分化。</strong></p>
+</div>
+
+<h4>美股隔夜（11/10）：指數持平，但內部分化劇烈</h4>
+<div class="tw">
+<table>
+<thead><tr><th>標的</th><th>11/10</th><th>單日</th><th>自 11/03</th><th>自 11/05 低點</th></tr></thead>
+<tbody>
+<tr class="hl"><td>NVDA</td><td class="n">168.89</td><td class="n dn">-5.47%</td><td class="n dn">-18.3%</td><td class="n dn">-7.0%</td></tr>
+<tr><td>Intel</td><td class="n">58.13</td><td class="n dn">-2.09%</td><td class="n dn">-4.0%</td><td class="n up">+11.3%</td></tr>
+<tr><td>美光</td><td class="n">725.11</td><td class="n dn">-1.10%</td><td class="n dn">-15.2%</td><td class="n up">+10.5%</td></tr>
+<tr class="hl2"><td>博通 AVGO</td><td class="n">331.98</td><td class="n up">+3.91%</td><td class="n dn">-0.0%</td><td class="n up">+13.9%</td></tr>
+<tr class="hl2"><td>台積電 ADR</td><td class="n">396.48</td><td class="n up">+2.02%</td><td class="n dn">-2.1%</td><td class="n up">+12.3%</td></tr>
+<tr><td>AMD</td><td class="n">515.21</td><td class="n up">+1.30%</td><td class="n up">+6.5%</td><td class="n up">+27.4%</td></tr>
+<tr><td>費半 ^SOX</td><td class="n">9,998.33</td><td class="n dn">-0.35%</td><td class="n dn">-5.7%</td><td class="n up">+11.0%</td></tr>
+<tr><td>VIX</td><td class="n">19.46</td><td class="n dn">-2.31%</td><td class="n dn">—</td><td class="n dn">自 28.18 回落</td></tr>
+<tr class="hl"><td>美債 10Y</td><td class="n">4.98%</td><td class="n dn">+2.45%</td><td class="n">—</td><td class="n dn">自 4.84% 回升</td></tr>
+<tr class="hl"><td>美元指數</td><td class="n">102.21</td><td class="n dn">+0.55%</td><td class="n">—</td><td class="n dn">兩個月區間上緣</td></tr>
+</tbody></table>
+</div>
+<p class="muted small"><strong>兩個逆風回來了：</strong>美債 10Y 自 4.84% 回升到 <strong>4.98%</strong>（+2.45%），美元指數升到 <strong>102.21</strong>（兩個月區間上緣）。
+依準則第 4 條，<strong>美元轉強是台幣貶值的部分解釋</strong>，但也意味著外資回流的誘因在減弱。</p>
+</section>
+
+<!-- 04 -->
+<section>
+<h2>04 · 技術面：MACD 柱首次連兩日收斂</h2>
+
+<div class="tw">
+<table>
+<thead><tr><th>均線</th><th>數值</th><th>11/10 收盤</th><th>盤中 43,211.48</th><th>狀態</th></tr></thead>
+<tbody>
+<tr class="hl2"><td>MA5</td><td class="n">41,719.78</td><td class="n up">+2.38%</td><td class="n up">+3.58%</td><td class="up">站上</td></tr>
+<tr class="hl"><td><strong>MA10</strong></td><td class="n"><strong>43,544.23</strong></td><td class="n dn">-1.91%</td><td class="n dn"><strong>-0.76%</strong></td><td class="dn">差 333 點未站上</td></tr>
+<tr><td>MA20（月線）</td><td class="n">45,396.65</td><td class="n dn">-5.91%</td><td class="n dn">-4.81%</td><td class="dn">跌破</td></tr>
+<tr><td>MA60（季線）</td><td class="n">46,320.63</td><td class="n dn">-7.79%</td><td class="n dn">-6.71%</td><td class="dn">跌破</td></tr>
+<tr><td>MA120（半年線）</td><td class="n">45,359.07</td><td class="n dn">-5.84%</td><td class="n dn">-4.73%</td><td class="dn">跌破</td></tr>
+<tr class="hl2"><td>MA240（年線）</td><td class="n">38,954.41</td><td class="n up">+9.65%</td><td class="n up"><strong>+10.93%</strong></td><td class="up">站穩</td></tr>
+</tbody></table>
+</div>
+<p class="tiny">依準則第 10 條，以上均線值為以 11/10 收盤為基準所算，均線每日移動，明日判定須重算，不可當固定門檻。</p>
+
+<div class="grid g4">
+  <div class="kpi"><div class="lab">RSI 14</div><div class="val n" style="color:var(--blu)">38.98</div><div class="note">11/06 曾低至 <strong>19.45</strong></div></div>
+  <div class="kpi"><div class="lab">MACD 柱</div><div class="val n" style="color:var(--amb)">-518.02</div><div class="note">11/06 -762.83 → <strong>連兩日收斂</strong></div></div>
+  <div class="kpi"><div class="lab">布林下軌</div><div class="val n">40,202.04</div><div class="note">盤中位置 29.0%</div></div>
+  <div class="kpi"><div class="lab">布林帶寬</div><div class="val n">22.89%</div><div class="note">仍在擴大，可靠度打折</div></div>
+</div>
+
+<div class="box amb">
+  <div class="bt">MACD 柱的收斂是本波第一次，但它落後於價格</div>
+  <div class="tw" style="margin:12px 0">
+  <table style="min-width:360px">
+  <thead><tr><th>日期</th><th>MACD 柱</th><th>變化</th></tr></thead><tbody>
+    <tr><td>11/05</td><td class="n">-621.18</td><td class="n">擴大</td></tr>
+    <tr><td>11/06</td><td class="n dn">-762.83</td><td class="n dn">擴大（本波最大）</td></tr>
+    <tr class="hl2"><td>11/09</td><td class="n">-680.27</td><td class="n up">收斂</td></tr>
+    <tr class="hl2"><td>11/10</td><td class="n">-518.02</td><td class="n up"><strong>收斂</strong></td></tr>
+  </tbody></table>
+  </div>
+  <p style="margin-bottom:0">自 10/22 以來 MACD 柱連續擴大了十個交易日，11/09 起首次收斂。<strong>但它仍是負值 -518.02</strong>，
+  且 MACD 本身是落後指標。<strong>更實用的一條是 MA10 = 43,544.23 —— 盤中 43,211.48 距它僅 -0.76%（333 點）</strong>，
+  這是今日第一個可驗證的價格門檻。月線、季線、半年線都還在 4.7%–6.7% 之上。</p>
+</div>
+</section>
+
+<!-- 05 -->
+<section>
+<h2>05 · 進場條件：三項成立兩項，依規則不進場</h2>
+
+<div class="box blu">
+  <div class="bt">把規則的「代價」也算出來，不只在它救我的時候才提</div>
+  <p>我在 11/04 設的三項防守型進場條件要求<strong>同時成立</strong>。目前狀況：</p>
+  <ul class="chk" style="margin-bottom:0">
+    <li><span class="ic dn">✗</span><strong>USD/TWD 升破 32.30 連兩日</strong> → 最佳僅 32.76（11/09），今晨 <strong>32.85 連兩日回貶</strong>，距門檻 1.68%</li>
+    <li><span class="ic up">✓</span><strong>外資連兩日買超</strong> → 11/09 +305,446、11/10 +186,970 張</li>
+    <li><span class="ic up">✓</span><strong>融資張數單日減 &gt; 2%</strong> → 11/06 <strong>-4.26%</strong></li>
+  </ul>
+</div>
+
+<div class="box red">
+  <div class="bt">🔴 這條規則這次的代價：約 8.8%</div>
+  <p><strong>若當時採用「三項中兩項即可」，進場點會在 11/06 收盤 39,701.64 附近，到今日盤中 43,211.48 是 +8.84%。</strong>
+  這是堅持「三項同時成立」實際放棄的報酬，我把它寫出來，因為：</p>
+  <p style="margin-bottom:0">我的報告規範第 8 條寫「<strong>做對的也要寫</strong>」—— 但只在規則救我的時候才提它、在規則讓我錯過時不提，
+  同樣是一種偏誤。<strong>10/22 我因「條件改善中」把現金由 85% 降到 80%，隨後 -7.82%；這次嚴格守規則，放棄了 +8.84%。</strong>
+  兩次加總，規則目前是淨負的。<strong>但我不因此改規則</strong> ——
+  兩個樣本不足以判斷門檻該是二還是三，而且降低門檻的那次（10/22）錯誤的根源是「用型態與單一價位替代條件」，
+  與門檻數字無關。<strong>要改門檻，需要的是更多樣本，不是一次錯過。</strong></p>
+</div>
+
+<div class="two">
+<div class="card">
+  <h4>🛡️ 防守型：維持 85–90% 現金</h4>
+  <p>三項條件成立兩項，依規則不進場。<strong>唯一缺的那一項是匯率，而它是本波唯一從未給過錯誤方向訊號的指標。</strong></p>
+  <p><strong>完成條件的精確觸發：</strong></p>
+  <ul class="small" style="margin-bottom:0">
+    <li>USD/TWD <strong>收在 32.30 以下，且連兩個交易日維持</strong></li>
+    <li>同期外資須維持買超（目前已連兩日，不可中斷）</li>
+    <li>三項齊備即視為條件完成，與指數位置無關</li>
+  </ul>
+</div>
+<div class="card">
+  <h4>⚖️ 均衡型：維持不加碼</h4>
+  <p>四項條件目前成立 <strong>兩項</strong>（&lt; 三項門檻）：</p>
+  <ul class="chk small">
+    <li><span class="ic dn">✗</span>台幣連兩日升且升破 32.30</li>
+    <li><span class="ic up">✓</span>外資連兩日買超</li>
+    <li><span class="ic up">✓</span>收盤位置連兩日 &gt; 50%（11/09 65.7%、11/10 64.8%）</li>
+    <li><span class="ic dn">✗</span>反彈日成交金額 &gt; 1 兆 —— <strong>11/09 僅 8,770 億</strong>（+4.94% 那天反而是縮量）</li>
+  </ul>
+  <p class="small" style="margin-bottom:0"><strong>第四項值得特別記下：11/09 大漲 4.94% 的那天量能只有 8,770 億，比 11/06 的 1.3211 兆少 34%。</strong>
+  依準則第 8 條，<strong>反彈情境量 &lt; 9,500 億「不足採信」</strong> —— 這與 10/28 低量反彈（7,503 億）的性質相同，
+  而那次兩天後就破功。11/10 的 1.0340 兆才回到 1 兆以上。</p>
+</div>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <h4>⚔️ 進攻型：不提供標的</h4>
+  <p>第 2 條的樣本本週再多一個可觀察的對照：<strong>智邦 11/06 跌停收 1,280 → 11/09 +9.77% → 11/10 +9.96%（1,545）→ 今日 -2.91%</strong>；
+  <strong>華邦電 11/06 收 120.50 → 11/09 +9.96% → 11/10 +1.89% → 今日 -4.07%</strong>。
+  兩檔都是兩日急漲後第三日轉弱。</p>
+  <p style="margin-bottom:0"><strong>而 11/10 外資在台積電仍賣超 8,182 張，台積電今日卻是最強的權值股（+2.41%）。</strong>
+  籌碼與當日漲跌的關係在這個環境下依舊接近隨機。
+  六個歷史樣本（三次推薦全錯、三次不推薦全對）說明這條規則的用途是「<strong>拒絕</strong>」，不是「挑選」。</p>
+</div>
+</section>
+
+<!-- 06 -->
+<section>
+<h2>06 · 今日收盤前的判定條件</h2>
+
+<div class="box blu">
+  <div class="bt">情境先認定：反彈（不是反轉類）</div>
+  <p style="margin-bottom:0">依準則第 8 條的兩層分類 —— <strong>第一層「盤中最大跌幅」：今日盤中最低 42,708.05 僅低於昨收 0.01%</strong>，
+  遠低於 2.5% 門檻 → 落入第二層；<strong>現價區間位置 74.3% &gt; 70% → 認定為「反彈情境」，門檻用量增 &gt; 1 兆</strong>。
+  此認定寫於盤中，收盤後不更換標準。</p>
+</div>
+
+<div class="tw">
+<table>
+<thead><tr><th>#</th><th>條件</th><th>判定門檻</th><th>目前（10:16）</th></tr></thead>
+<tbody>
+<tr><td>①</td><td><strong>收盤站上 MA10（當日重算）</strong></td><td>以 11/10 為基準為 43,544.23</td><td class="n dn">43,211.48，差 333 點</td></tr>
+<tr><td>②</td><td>成交金額（<strong>反彈情境看量增</strong>）</td><td>&gt; 1 兆有效；&lt; 9,500 億不足採信</td><td class="n">—（MIS 不提供盤中累計）</td></tr>
+<tr><td>③</td><td>收盤位置</td><td>連四日 &gt; 50%</td><td class="n up">74.3%（已連三日）</td></tr>
+<tr><td>④</td><td><strong>股票上漲家數能否 &gt; 下跌家數</strong></td><td>11/10 僅 526:491，需擴大</td><td class="n dn">重點股 12 漲 / 17 跌</td></tr>
+<tr><td>⑤</td><td><strong>櫃買漲幅能否追上加權</strong></td><td>中小型股跟上的證據</td><td class="n dn">+0.56% vs +1.17%</td></tr>
+<tr><td>⑥</td><td>台積電貢獻度</td><td>若指數漲而重點股多跌，為權值撐盤</td><td class="n dn">+2.41%，推估貢獻約七成</td></tr>
+<tr><td>⑦</td><td>今晚 18:00 T86 外資</td><td>需<strong>連三日</strong>買超才強化方向判斷</td><td class="n up">已連兩日（+49.2 萬張）</td></tr>
+<tr class="hl"><td>⑧</td><td><strong>USD/TWD 32.85 能否止貶</strong></td><td>升破 32.30 連兩日才算條件完成</td><td class="n dn">連兩日回貶</td></tr>
+<tr><td>⑨</td><td>融資張數</td><td>若續增，代表 11/06 的清洗已失效</td><td class="n dn">自 11/06 淨增 +0.64%</td></tr>
+</tbody></table>
+</div>
+
+<p class="muted small"><strong>依準則第 5 條，盤中不下方向結論。</strong>
+11/06 當天 09:40 我看到的是 -7.51%、區間位置 3.3%、年線失守；10:34 變成 -4.08%、位置 99.8%、年線收復；
+收盤是 -4.51%、位置 71.7%。<strong>同一天三個時點、三個不同畫面。</strong>距 13:30 還有超過三小時。</p>
+</section>
+
+<footer>
+<h2>資料日期與限制</h2>
+<ul>
+  <li><strong>今日盤中</strong>：TWSE MIS 即時 API，報價時間 <strong>2026-11-11 10:16</strong>（加權 <code>tse_t00.tw</code>、櫃買 <code>otc_o00.tw</code>）。
+      多數個股在擷取瞬間無最新成交價（回傳 <code>-</code>），已改用<strong>最佳買價</strong>計算，實際成交價可能略高。
+      <strong>MIS 不提供指數盤中累計成交量</strong>，故條件 ② 盤中無法判定，須等 17:00 後的 <code>FMTQIK</code>。</li>
+  <li><strong>指數日 OHLC</strong>：TWSE <code>MI_5MINS_HIST</code>，涵蓋 11/02–11/10。</li>
+  <li><strong>成交金額與筆數</strong>：TWSE <code>FMTQIK</code> 官方序列，至 11/10（11/06 為 1 兆 3,210.7 億／8,402,054 筆）。</li>
+  <li><strong>漲跌家數與 ETF／一般股票量能拆分</strong>：TWSE <code>MI_INDEX?type=ALLBUT0999</code>，11/06、11/09、11/10 三日。</li>
+  <li><strong>三大法人</strong>：TWSE <code>T86?selectType=ALLBUT0999</code>，至 11/10。
+      <strong>今日（11/11）籌碼約 18:00 後才公布，未納入。</strong>單位張，取「外陸資買賣超（不含外資自營商）」欄位。</li>
+  <li><strong>融資融券</strong>：TWSE <code>MI_MARGN?selectType=MS</code>，至 11/10。
+      ⚠️ 11/05 報表的融資餘額為 9,440,455 張，11/06 報表的「前日餘額」為 9,440,465 張，<strong>相差 10 張</strong>（官方事後微調）。
+      本報告的 -4.26% 以 11/06 報表的 9,440,465 → 9,037,948 計算。</li>
+  <li><strong>個股收盤</strong>：TWSE <code>STOCK_DAY</code>，11/06、11/09、11/10。</li>
+  <li><strong>全球指標</strong>：yfinance，美股為 <strong>11/10（週二）</strong>收盤，為今日的隔夜資訊。
+      <code>^TWII</code> 序列落後，技術指標已改以 TWSE 官方 11/06、11/09、11/10 收盤值接續後重算。</li>
+  <li><strong>匯率</strong>：11/06 的 33.11、11/09 的 32.76、11/10 的 32.79、今晨 32.85 皆為 yfinance <code>TWD=X</code> 境外報價；
+      <strong>台北收盤官方值未取得</strong>，兩個口徑可能有小幅差異。</li>
+  <li><strong>🔴 條件⑧（櫃買收復 11/06 開盤 313.77）無法回填</strong>：MIS 為即時 API，不提供歷史值，
+      而 <code>^TWOII</code> 櫃買指數歷史序列無法取得（已知限制）。11/06 的櫃買收盤值因此缺漏，
+      本報告不以任何方式推估，直接標為「無法判定」。</li>
+  <li><strong>台積電貢獻度為推估值</strong>：以準則沿用的「權重約三分之一」近似計算（2.41% × ⅓ ≈ 0.80pp，占指數 +1.17% 的約七成）。
+      <strong>本報告未取得即時權重資料</strong>，實際貢獻可能有出入，但「29 檔重點股 17 檔下跌而指數上漲」是直接觀察值。</li>
+  <li><strong>未納入</strong>：① TAIFEX 期貨外資未平倉（API 回傳億級口數等異常值，一律排除）；
+      ② 選擇權 Put/Call ratio 與最大未平倉履約價；③ 夜盤台指期（依準則僅判方向不推點位）。</li>
+</ul>
+<p style="margin-top:16px"><strong>本報告為盤中快報，資料截至 10:16，距 13:30 收盤尚有超過三小時，型態未定。</strong>
+依本工作流準則第 5 條，盤中不對當日方向下結論；第 06 節條件已寫成可用當日數據判定的形式，
+收盤後逐項回填，且情境分類與門檻不因結果更換。
+報告中的三段式策略為情境框架與風險控制邏輯，<strong>不構成投資建議</strong>，亦非針對任何特定資金規模的配置建議。</p>
+<p class="tiny" style="margin-top:14px">產製時間 2026-11-11 10:16（GMT+8）· 資料來源：臺灣證券交易所公開 API、yfinance</p>
+</footer>
+
+</div>
+</body>
+</html>
