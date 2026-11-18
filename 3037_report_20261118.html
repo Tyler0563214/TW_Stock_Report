@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>欣興(3037) 深度研究報告 第10次 | 2026-11-18</title>
+<style>
+:root{
+  --accent:#500724;
+  --accent2:#831843;
+  --accent3:#be185d;
+  --bg:#F0F4F8; --card:#FFFFFF;
+  --ink:#1f2937; --ink2:#4b5563; --ink3:#6b7280;
+  --line:#e5e7eb; --line2:#d1d5db;
+  --up:#c81e1e; --dn:#047857;
+  --warn:#b45309; --warnbg:#fffbeb;
+  --ok:#047857; --okbg:#ecfdf5;
+  --bad:#b91c1c; --badbg:#fef2f2;
+  --info:#1d4ed8; --infobg:#eff6ff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);
+ font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,"Segoe UI",sans-serif;
+ font-size:15px;line-height:1.75;-webkit-text-size-adjust:100%}
+.wrap{max-width:1140px;margin:0 auto;padding:0 16px 72px}
+.n{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+.up{color:var(--up)} .dn{color:var(--dn)}
+.small{font-size:13px} .tiny{font-size:12px;color:var(--ink3)}
+.muted{color:var(--ink2)}
+
+/* cover */
+.cover{background:linear-gradient(135deg,#500724 0%,#831843 55%,#9d174d 100%);
+ color:#fff;border-radius:0 0 22px 22px;padding:40px 28px 32px;margin:0 -16px 26px;
+ box-shadow:0 10px 30px rgba(80,7,36,.25)}
+.cover .kick{font-size:12px;letter-spacing:.24em;opacity:.78;text-transform:uppercase}
+.cover h1{font-size:33px;margin:12px 0 4px;font-weight:800;letter-spacing:-.01em}
+.cover .sub{opacity:.9;font-size:14.5px}
+.cover .px{display:flex;flex-wrap:wrap;align-items:flex-end;gap:20px;margin-top:22px}
+.cover .big{font-size:46px;font-weight:800;line-height:1}
+.cover .chg{font-size:19px;font-weight:700}
+.cvb{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.cvb span{font-size:12.5px;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.16);
+ border:1px solid rgba(255,255,255,.3)}
+.cvb span.hot{background:#fff;color:var(--accent);font-weight:700;border-color:#fff}
+
+section{margin:34px 0}
+h2{font-size:12px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;
+ margin:0 0 14px;padding-bottom:9px;border-bottom:2px solid var(--accent);font-weight:800}
+h3{font-size:18px;margin:26px 0 10px;font-weight:750;color:var(--accent)}
+h4{font-size:14.5px;margin:18px 0 8px;font-weight:700}
+p{margin:10px 0}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;
+ box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.grid{display:grid;gap:13px;margin:18px 0}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:860px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:540px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px 15px}
+.kpi .lab{font-size:11.5px;color:var(--ink3);letter-spacing:.03em;font-weight:600}
+.kpi .val{font-size:23px;font-weight:800;margin:4px 0 2px;line-height:1.1}
+.kpi .note{font-size:12px;color:var(--ink2);line-height:1.5}
+
+.concl{background:linear-gradient(135deg,#500724,#9d174d);color:#fff;border-radius:14px;padding:24px 24px}
+.concl h3{color:#fff;margin-top:0}
+.concl .row{display:grid;gap:16px;grid-template-columns:repeat(3,1fr);margin-top:14px}
+@media(max-width:760px){.concl .row{grid-template-columns:1fr}}
+.concl .box{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:14px}
+.concl .box .t{font-size:11.5px;letter-spacing:.14em;opacity:.8;text-transform:uppercase;font-weight:700}
+.concl .box .v{font-size:21px;font-weight:800;margin-top:5px}
+
+.box{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;
+ padding:15px 17px;margin:16px 0;background:var(--card)}
+.box.ok{border-left-color:var(--ok);background:var(--okbg)}
+.box.bad{border-left-color:var(--bad);background:var(--badbg)}
+.box.warn{border-left-color:var(--warn);background:var(--warnbg)}
+.box.info{border-left-color:var(--info);background:var(--infobg)}
+.box .bt{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;margin-bottom:7px}
+.box.ok .bt{color:var(--ok)} .box.bad .bt{color:var(--bad)}
+.box.warn .bt{color:var(--warn)} .box.info .bt{color:var(--info)}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0;
+ border:1px solid var(--line);border-radius:10px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:13.5px}
+th,td{padding:9px 11px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:#f8fafc;color:var(--ink2);font-weight:700;font-size:12px;letter-spacing:.03em}
+td:first-child,th:first-child{text-align:left}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#fafafa}
+tr.hl td{background:#fff1f2}
+tr.hl2 td{background:#ecfdf5}
+tr.tot td{font-weight:750;background:#f1f5f9}
+
+canvas{display:block;margin:6px auto}
+.chartbox{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:16px}
+.chartbox .ct{font-size:14px;font-weight:750;margin-bottom:4px}
+.chartbox .cn{font-size:11.5px;color:var(--ink3);margin-top:6px}
+
+.bar{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:13px}
+.bar .bl{width:150px;flex:0 0 150px;color:var(--ink2)}
+.bar .bt2{flex:1;height:18px;background:#eef2f7;border-radius:4px;overflow:hidden}
+.bar .bf{height:100%;border-radius:4px}
+.bar .bv{width:96px;flex:0 0 96px;text-align:right;font-variant-numeric:tabular-nums;font-weight:650}
+@media(max-width:560px){.bar .bl{width:104px;flex:0 0 104px}.bar .bv{width:80px;flex:0 0 80px}}
+
+ul,ol{margin:10px 0;padding-left:22px} li{margin:7px 0}
+li::marker{color:var(--accent3)}
+.chk li{list-style:none;margin-left:-16px}
+.ic{display:inline-block;width:20px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:780px){.two{grid-template-columns:1fr}}
+.badge{display:inline-block;font-size:12px;font-weight:750;padding:3px 10px;border-radius:999px}
+.badge.r{background:#fee2e2;color:#991b1b}
+.badge.a{background:#fef3c7;color:#92400e}
+.badge.g{background:#d1fae5;color:#065f46}
+.badge.b{background:#dbeafe;color:#1e40af}
+code{background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:12.5px;color:var(--accent2)}
+.disc{background:var(--warnbg);border:1px solid #fcd34d;border-radius:12px;padding:20px}
+.disc h3{color:var(--warn);margin-top:0}
+footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line2);font-size:12px;color:var(--ink3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ============ 01 封面 ============ -->
+<div class="cover">
+  <div class="kick">個股深度研究 · 第 10 次</div>
+  <h1>欣興 3037</h1>
+  <div class="sub">2026 年 11 月 18 日（三）· 報價時間 10:48 盤中 · 上市 · ABF 載板／PCB</div>
+  <div class="px">
+    <div>
+      <div class="big n">617.00</div>
+      <div style="opacity:.82;font-size:13px;margin-top:4px">盤中最佳買價 · 昨收 637.00</div>
+    </div>
+    <div>
+      <div class="chg n">-20.00　-3.14%</div>
+      <div style="opacity:.82;font-size:13px;margin-top:4px">開 690　高 691　低 607</div>
+    </div>
+    <div>
+      <div class="chg n">市值 1.0127 兆元</div>
+      <div style="opacity:.82;font-size:13px;margin-top:4px">617 × 1,641,291,596 股（集保）</div>
+    </div>
+  </div>
+  <div class="cvb">
+    <span class="hot">風險等級 5.3 / 10　中等</span>
+    <span>自 10/05 高 1,420 → -55.14%</span>
+    <span>自 11/11 高 864 → -28.59%</span>
+    <span>官方漲停 700　跌停 574</span>
+    <span>TTM P/E 31.90x　P/B 5.69x</span>
+  </div>
+</div>
+
+<!-- ============ 02 核心結論 ============ -->
+<section>
+<h2>02 · 核心結論</h2>
+
+<div class="concl">
+  <h3 style="font-size:20px">財報是本系列看過最乾淨的一季，而股價在六個交易日跌了 26%</h3>
+  <p style="margin-bottom:0;opacity:.95">Q3'26 毛利率連四季升至 <strong>28.85%</strong>、營益率 <strong>20.00%</strong>、
+  <strong>邊際毛利率 46.63%</strong>（遠高於整體，代表新增的生意比舊的更賺）、業外佔稅前由 Q2 的 57.30% 降到 <strong>20.03%</strong>、
+  折舊 ÷ 營業利益由 202.1% 降到 <strong>48.27%</strong>、淨現金 <strong>+1,265.98 億</strong>。
+  <strong>但這些全部在 10/27 財報公布時就已知，股價的 26% 跌幅發生在之後。</strong>
+  本報告的結論是：這一波殺的不是欣興的獲利，是整個 AI 載板族群的「時程可見度」與風險偏好。</p>
+  <div class="row">
+    <div class="box">
+      <div class="t">投資評級</div>
+      <div class="v">觀望</div>
+      <div class="small" style="opacity:.9;margin-top:6px">不加碼、不提供進場區間。<br>大盤前提（必要條件）未成立</div>
+    </div>
+    <div class="box">
+      <div class="t">三法併用合理價</div>
+      <div class="v">540 – 670 元</div>
+      <div class="small" style="opacity:.9;margin-top:6px">現價 617 位於區間 <strong>59%</strong> 位置<br>振幅比 1.023 → 三法併用</div>
+    </div>
+    <div class="box">
+      <div class="t">最大風險</div>
+      <div class="v">時程不在公司手上</div>
+      <div class="small" style="opacity:.9;margin-top:6px">Vera Rubin 遞延<strong>未獲輝達官方證實</strong><br>HBM4 瓶頸、說法仍不一致</div>
+    </div>
+  </div>
+</div>
+
+<div class="box bad">
+  <div class="bt">🔴 本次最重要的新發現：第 9 次把導火線只歸因於 Vera Rubin，漏了一件更早的事</div>
+  <p>第 9 次報告（11/17）把這波下跌的導火線寫成「Vera Rubin 放量時程遞延」。
+  <strong>但時序對不上 —— Vera Rubin 的傳聞是 11/16 才出現的，而欣興的波段高點是 11/11。</strong></p>
+  <div class="table-wrap">
+  <table>
+  <thead><tr><th>日期</th><th>欣興收盤</th><th>當日</th><th>同時發生的事</th></tr></thead>
+  <tbody>
+    <tr class="hl"><td>11/11（二）</td><td class="n">864</td><td class="n up">+4.35%</td><td><strong>輝達董事會當日接受黃仁勳辭去執行長、總裁、董事，即刻生效</strong>（SEC 8-K）</td></tr>
+    <tr><td>11/12（三）</td><td class="n">792</td><td class="n dn">-8.33%</td><td>輝達對外公告，CFO Colette Kress 暫代執行長</td></tr>
+    <tr><td>11/13（四）</td><td class="n">785</td><td class="n dn">-0.88%</td><td>—</td></tr>
+    <tr class="hl"><td>11/16（一）</td><td class="n">707</td><td class="n dn">-9.94% 跌停</td><td><strong>Vera Rubin 延後放量傳聞（HBM4 瓶頸）；台股當日重挫 2,635 點、-6.03%</strong></td></tr>
+    <tr class="hl"><td>11/17（二）</td><td class="n">637</td><td class="n dn">-9.90% 跌停</td><td>載板三雄再度全面跌停，量放大至 2.00 倍</td></tr>
+  </tbody>
+  </table>
+  </div>
+  <p style="margin-bottom:0"><strong>修正：這是兩個重疊的衝擊，不是一個。</strong>
+  11/11–11/13 的 -9.14% 對應的是輝達的管理層真空（AI 敘事的領導者消失），
+  11/16–11/17 的 -18.86% 才是 Vera Rubin 的時程衝擊。
+  <strong>第 9 次只寫了後者，而前者是有 SEC 文件可查的確定事實，不是傳聞。</strong>
+  這個疏漏的性質屬於準則 1.3（漏掉重大營運事件）—— 只是這次漏的是<strong>客戶的</strong>重大事件。</p>
+</div>
+</section>
+
+<!-- ============ 03 對帳計分卡 ============ -->
+<section>
+<h2>03 · 對帳計分卡（vs 第 9 次，2026-11-17）</h2>
+<p class="muted small">依準則 8.6，第 N 次報告開頭須對上一次逐項計分，命中與落空都要列並附具體數字。</p>
+
+<div class="table-wrap">
+<table style="min-width:720px">
+<thead><tr><th>#</th><th>第 9 次寫的</th><th>門檻／預估</th><th>實際</th><th>判定</th></tr></thead>
+<tbody>
+<tr class="hl2"><td>①</td><td><strong>停損條件改為單一門檻（跌破 ≥ 1% 即價格單腿成立）</strong></td><td>收盤跌破布林下軌 722.5 達 1% 以上</td><td class="n">11/16 收 <strong>707</strong>，跌破 <strong>2.15%</strong>（量僅 0.73 倍）</td><td><span class="badge g">✅ 正確觸發</span><br><span class="tiny">舊的「兩條腿」與跳空例外都不會觸發</span></td></tr>
+<tr class="hl2"><td>②</td><td>合理價區間</td><td class="n">600 – 745 元</td><td class="n">11/17 收 <strong>637</strong>、今日盤中最低 <strong>607</strong>（距下緣 600 僅 1.17%）</td><td><span class="badge g">✅ 區間有效</span><br><span class="tiny">下緣尚未破，但已被測試</span></td></tr>
+<tr class="hl2"><td>③</td><td><strong>產業同步性判定（準則 8.9）</strong></td><td>同族群跌幅差距 &lt; 1pp → 產業事件</td><td class="n">11/11→11/17：欣興 -26.27%、南電 -26.67%、景碩 -26.86%，<strong>差距 0.58pp</strong></td><td><span class="badge g">✅ 第二個樣本成立</span></td></tr>
+<tr class="hl2"><td>④</td><td><strong>大盤前提列為必要條件</strong></td><td>加權須站上當日重算 MA20</td><td class="n">11/17 收 40,092.11 距 MA20（43,986.95）<strong>-8.85%</strong>；今日盤中 <strong>-10.10%</strong></td><td><span class="badge g">✅ 判斷正確<br>（持續不成立）</span></td></tr>
+<tr><td>⑤</td><td>融資清洗追蹤項</td><td>單日減幅 <strong>&gt; 4%</strong>（約 1,400 張）且其後三日淨變動為負</td><td class="n">11/17 減 <strong>1,033 張（-2.92%）</strong>，現金償還 30 張</td><td><span class="badge a">🟡 部分命中</span><br><span class="tiny">未達自訂的 4%，但方向已轉<br>（通用 2% 門檻已觸發）</span></td></tr>
+<tr><td>⑥</td><td>更早的檢驗點</td><td>11 月營收 &lt; 180 億或月增轉負（12/10 前公告）</td><td class="n">11 月營收<strong>尚未公告</strong>；10 月已公告 <strong>189.86 億</strong>（月增 +1.80%、年增 +67.62%）</td><td><span class="badge b">待驗證</span></td></tr>
+<tr><td>⑦</td><td>殺評價 → 殺獲利的分界線</td><td>法人下修 FY2027E 由 40 元以上降至 <strong>35 元以下</strong></td><td class="n">本次搜尋<strong>查無 11 月的正式下修</strong>；所見目標價 1,200–1,500 元皆<strong>日期不明或為舊值</strong></td><td><span class="badge b">未觸發</span><br><span class="tiny">依準則 1.1 不作錨點</span></td></tr>
+<tr class="hl"><td>⑧</td><td><strong>其他非流動負債 716.52 億的性質</strong></td><td>查 Q3 季報附註／法說會</td><td class="n"><strong>第四份報告仍未確認</strong>（本次新增一個閉合檢驗，見第 06 節）</td><td><span class="badge r">❌ 仍未解</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box ok">
+  <div class="bt">🟢 第 9 次當天才改的停損規則，隔一個交易日就驗證了 —— 這是本系列最快的一次</div>
+  <p>11/17 的報告把「兩條腿」改成單一門檻：<strong>跌破 ≥ 1% 即價格單腿成立，&lt; 1% 才需量能確認</strong>。
+  理由是 11/16 的「量縮跌停」（量僅 20 日均量的 0.73 倍）讓舊規則與智邦的跳空例外都不觸發。</p>
+  <p style="margin-bottom:0"><strong>而 11/17 的量能恰好給了這條規則的反面樣本：38,290 張 ＝ 20 日均量的 1.46 倍、較 11/16 放大 2.00 倍。</strong>
+  <strong>也就是說「量縮跌停」與「放量跌停」兩種臉，在兩個連續交易日裡都出現了。</strong>
+  新規則在兩天都成立（兩天的跌破幅度都 ≥ 1%），而舊規則在 11/16 會漏掉、在 11/17 才成立 —— 慢了一天、一個跌停板。</p>
+</div>
+</section>
+
+<!-- ============ 04 關鍵財務 KPI ============ -->
+<section>
+<h2>04 · 關鍵財務 KPI（Q3'26 / 2026-09-30）</h2>
+<div class="grid g4">
+  <div class="kpi"><div class="lab">單季營收</div><div class="val n">526.50 億</div><div class="note">QoQ +22.76%、YoY +54.88%<br>創歷史新高</div></div>
+  <div class="kpi"><div class="lab">單季毛利率</div><div class="val n up">28.85%</div><div class="note">連<strong>四季</strong>走高<br>15.77→17.96→24.80→28.85%</div></div>
+  <div class="kpi"><div class="lab">單季營益率</div><div class="val n up">20.00%</div><div class="note">連四季走高<br>6.82→7.36→15.51→20.00%</div></div>
+  <div class="kpi"><div class="lab">邊際毛利率</div><div class="val n up">46.63%</div><div class="note">新增 97.60 億營收帶來 45.51 億毛利<br>遠高於整體 28.85%</div></div>
+  <div class="kpi"><div class="lab">單季歸母 EPS</div><div class="val n">6.12 元</div><div class="note">FinMind／媒體的 6.36 元<br>含非控制權益，高估 3.7%</div></div>
+  <div class="kpi"><div class="lab">業外佔稅前</div><div class="val n up">20.03%</div><div class="note">Q2 為 <strong>57.30%</strong><br>獲利純度大幅改善</div></div>
+  <div class="kpi"><div class="lab">折舊 ÷ 營業利益</div><div class="val n up">48.27%</div><div class="note">Q4'24 曾達 646%<br>TTM 仍 88.65%</div></div>
+  <div class="kpi"><div class="lab">淨現金</div><div class="val n up">+1,265.98 億</div><div class="note">現金 1,596.94 − 總借款 330.96<br>純現金基礎自算</div></div>
+</div>
+<div class="grid g4">
+  <div class="kpi"><div class="lab">TTM 還原 EPS</div><div class="val n">19.34 元</div><div class="note">歸母 317.45 億 ÷ 16.413 億股</div></div>
+  <div class="kpi"><div class="lab">本業 TTM EPS</div><div class="val n">10.85 元</div><div class="note">剔除業外後，僅帳面的 56%</div></div>
+  <div class="kpi"><div class="lab">每股淨值</div><div class="val n">108.35 元</div><div class="note">歸母權益 1,778.33 億<br>增資前為 77.97 元</div></div>
+  <div class="kpi"><div class="lab">現金含量（9M）</div><div class="val n up">0.862 倍</div><div class="note">OCF 251.22 ÷ 淨利 291.43 億<br>Q3 單季 1.13 倍</div></div>
+</div>
+<p class="tiny">所有數字取自 FinMind 綜合損益表／資產負債表／現金流量表（2026-09-30 季報）與集保發行股數（2026-11-17），單季值由累計值相減求得。</p>
+</section>
+
+<!-- ============ 05 財務趨勢圖 ============ -->
+<section>
+<h2>05 · 財務趨勢圖</h2>
+<div class="grid g2">
+  <div class="chartbox">
+    <div class="ct">單季歸母 EPS（還原至現行 16.413 億股）</div>
+    <canvas id="epsChart" width="460" height="260" style="width:100%;height:auto;"></canvas>
+    <div class="cn">★ 全部為「稅後歸母淨利 ÷ 現行發行股數」自行還原，與公司公告的加權平均股數口徑不同（見第 06 節）。最新季以主題色標示。</div>
+  </div>
+  <div class="chartbox">
+    <div class="ct">月營收（實際月份，億元）</div>
+    <canvas id="revChart" width="460" height="260" style="width:100%;height:auto;"></canvas>
+    <div class="cn">★ 全部為實際公告值。月份已依 <code>revenue_year</code>／<code>revenue_month</code> 欄位校正（見第 06 節校準表）。最新月 2026-10 以主題色標示。</div>
+  </div>
+</div>
+<div class="grid g2">
+  <div class="chartbox">
+    <div class="ct">單季毛利率與營益率（%）</div>
+    <canvas id="marginChart" width="460" height="260" style="width:100%;height:auto;"></canvas>
+    <div class="cn">★ 由損益表的毛利、營業利益除以營收自算。深色＝毛利率，淺色＝營益率。</div>
+  </div>
+  <div class="chartbox">
+    <div class="ct">本益比階梯比較（倍）</div>
+    <canvas id="peChart" width="460" height="260" style="width:100%;height:auto;"></canvas>
+    <div class="cn">★ 本股以現價 617 元計算。FY2026E 為本報告自估；FY2027E 取第 9 次記錄的法人 40.7 元。同業與大盤為參考值，來源見免責聲明。</div>
+  </div>
+</div>
+</section>
+
+<!-- ============ 06 口徑校準與資料驗證 ============ -->
+<section>
+<h2>06 · 口徑校準與資料驗證（本系列簽名動作）</h2>
+
+<h3>6-1　月營收口徑校準（準則 2.1）</h3>
+<p>FinMind 的 <code>date</code> 欄位是<strong>申報月</strong>，實際月份要讀 <code>revenue_year</code>／<code>revenue_month</code>。本次三季全部閉合：</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>季度</th><th>月營收加總（實際月份）</th><th>合併財報季營收</th><th>誤差</th><th>校準係數</th></tr></thead>
+<tbody>
+<tr><td>Q1'26（1+2+3 月）</td><td class="n">127.67 + 116.00 + 130.79 = 374.46 億</td><td class="n">374.46 億</td><td class="n up">0.00%</td><td class="n">1.000</td></tr>
+<tr><td>Q2'26（4+5+6 月）</td><td class="n">139.33 + 140.60 + 148.97 = 428.90 億</td><td class="n">428.90 億</td><td class="n up">0.00%</td><td class="n">1.000</td></tr>
+<tr class="hl2"><td><strong>Q3'26（7+8+9 月）</strong></td><td class="n">162.54 + 177.46 + 186.51 = <strong>526.51 億</strong></td><td class="n"><strong>526.50 億</strong></td><td class="n up"><strong>0.002%</strong></td><td class="n">1.000</td></tr>
+<tr><td>2025 全年（12 個月）</td><td class="n">1,312.79 億</td><td class="n">1,312.41 億（四季加總）</td><td class="n">0.029%</td><td class="n">1.000</td></tr>
+</tbody>
+</table>
+</div>
+<p class="muted small"><strong>四個獨立檢查點全部通過</strong>，慣例確認。依準則 2.1，2025 年全年月加總與財報年營收的對照是第四個檢查點，本次新增使用。</p>
+
+<div class="box warn">
+  <div class="bt">⚠️ 依準則 8.7：未來兩個月的比較基期是該年最高的兩個月</div>
+  <div class="table-wrap" style="margin-bottom:0">
+  <table style="min-width:520px">
+  <thead><tr><th>比較基期</th><th>金額</th><th>在 2025 年的位置</th><th>若 2026 同月維持 190 億，年增率</th></tr></thead>
+  <tbody>
+    <tr><td>2025-10（已用於 10 月）</td><td class="n">113.27 億</td><td>第 5 高</td><td class="n up">實際 +67.62%</td></tr>
+    <tr class="hl"><td><strong>2025-11</strong></td><td class="n">115.41 億</td><td><strong>該年次高月</strong></td><td class="n">+64.6%</td></tr>
+    <tr class="hl"><td><strong>2025-12</strong></td><td class="n">118.22 億</td><td><strong>該年最高月</strong></td><td class="n">+60.7%</td></tr>
+  </tbody>
+  </table>
+  </div>
+  <p style="margin:12px 0 0"><strong>所以未來兩個月的年增率「會自然下滑」，那是基期造成的，不是動能轉弱。</strong>
+  依準則 8.7，真正的動能指標是<strong>月增率</strong>（無基期問題）：2026 年 4 月以來月增率為
+  +6.53%、+0.91%、+5.95%、+9.11%、+9.18%、<strong>+1.80%（10 月）</strong> ——
+  <strong>10 月的 +1.80% 是六個月來最低，這才是值得盯的數字</strong>，而不是 +67.62% 的年增率。</p>
+</div>
+
+<h3>6-2　腳本輸出錯誤校正表（準則 第三章，四類判定）</h3>
+<div class="table-wrap">
+<table style="min-width:760px">
+<thead><tr><th>項目</th><th>腳本輸出</th><th>正確值</th><th>原因</th><th>判定</th></tr></thead>
+<tbody>
+<tr><td>MA5 / MA10 / MA20 / MA60</td><td class="n">757.0 / 778.5 / 911.65 / 1,033.1</td><td class="n">完全相同</td><td>依賴 <code>close</code> 序列</td><td><span class="badge g">① 可採用</span></td></tr>
+<tr><td>MACD（DIF / MACD / 柱）</td><td class="n">-102.78 / -79.24 / -23.54</td><td class="n">完全相同</td><td>依賴 <code>close</code></td><td><span class="badge g">① 可採用</span></td></tr>
+<tr><td>布林通道（上／中／下）</td><td class="n">1,209.9 / 911.65 / 613.4</td><td class="n">1,217.65 / 911.65 / <strong>605.65</strong></td><td>標準差樣本自由度不同（ddof）</td><td><span class="badge a">③ 差異但非錯誤</span></td></tr>
+<tr><td>均線排列判定</td><td>「空頭排列（糾結）」</td><td>MA5 &lt; MA10 &lt; MA20 &lt; MA60 → <strong>完整空頭排列</strong></td><td>驗算後支持「空頭」，但不是「糾結」</td><td><span class="badge a">④ 方向對但措辭錯</span></td></tr>
+<tr class="hl"><td><strong>漲停 / 跌停</strong></td><td class="n">777.7 / 636.3</td><td class="n"><strong>700 / 574</strong></td><td><strong>昨收取用 11/16 的 707（落後一日）</strong>，且未套檔位</td><td><span class="badge r">② 需重算</span></td></tr>
+<tr class="hl"><td><strong>「今日成交量」</strong></td><td class="n">24 張（即時）／38,289,520 股</td><td class="n">今日 10:48 累計 <strong>24,923 張</strong>；11/17 為 <strong>38,289 張</strong></td><td>即時量取到 0 附近；38,289,520 股其實是<strong>前一交易日</strong>的量</td><td><span class="badge r">② 需重算</span></td></tr>
+<tr class="hl"><td><strong>三大法人</strong></td><td class="n">全部 0（2026-11-17）</td><td class="n">11/17 外資 <strong>+4,405</strong>、投信 <strong>-4,801</strong>、自營 +528 張</td><td>FinMind 資料缺口 → 改用證交所 T86</td><td><span class="badge r">② 需重算</span></td></tr>
+<tr class="hl"><td><strong>融資融券</strong></td><td class="n">全部 0，並輸出「融券餘額 0 張，放空比例偏高，需注意軋空風險」</td><td class="n">11/17 融資 <strong>34,396 張</strong>、融券 <strong>3,455 張</strong></td><td>資料缺口 → 改用證交所 <code>MI_MARGN</code>。<strong>該句文案自相矛盾，依準則一律刪除</strong></td><td><span class="badge r">② 需重算</span></td></tr>
+<tr><td>本益比</td><td class="n">34.31x</td><td class="n"><strong>31.90x</strong></td><td>反推隱含 EPS = 617 ÷ 34.31 = <strong>17.98 元</strong> → 接近<strong>前三季公告累計 17.85 元</strong>，即「只算前三季、未滾動四季」</td><td><span class="badge r">② 需重算</span><br><span class="tiny">口徑已可還原</span></td></tr>
+<tr><td>股價淨值比</td><td class="n">5.7097x</td><td class="n">5.69x</td><td>反推每股淨值 108.06 元（用股本 ÷ 10 的 16.439 億股）；本報告採集保 16.413 億股得 108.35 元</td><td><span class="badge g">① 可採用</span><br><span class="tiny">差 0.27%</span></td></tr>
+<tr><td>市值</td><td class="n">1.017 兆</td><td class="n">1.0127 兆</td><td>同上，股數來源不同</td><td><span class="badge g">① 可採用</span></td></tr>
+<tr><td>RSI(14)</td><td class="n">27.43</td><td class="n">Wilder 27.43／簡單平均 <strong>19.26</strong></td><td>腳本用 Wilder's EMA，本系列自算用簡單平均，<strong>兩者都是合法定義</strong></td><td><span class="badge a">③ 差異但非錯誤</span></td></tr>
+</tbody>
+</table>
+</div>
+<div class="box info">
+  <div class="bt">判準第七次驗證，並新增一種樣態</div>
+  <p>準則的判準是「<strong>先看它依賴哪個輸入欄位</strong>」：依賴 <code>close</code> 的通常對，依賴昨收／今日量／股數的要全部重算。
+  <strong>本次依賴 <code>close</code> 的 4 項全對，依賴昨收／今日量／股數／法人資料的 6 項全錯</strong> —— 第七次成立。</p>
+  <p style="margin-bottom:0"><strong>🟢 新增一項可記錄的進展：本益比的口徑這次「可以還原」了。</strong>
+  反推隱含 EPS 為 17.98 元，幾乎等於前三季公告累計的 17.85 元 → <strong>腳本是「只算前三季、未滾動四季」</strong>，
+  而不是過去智邦遇到的「口徑無法還原」。依準則 2.5，<strong>這是一個時點診斷，下一份報告要重做一次反推，不可沿用本次結論。</strong></p>
+</div>
+
+<h3>6-3　發行股數與增資偵測（準則 1.12，起點回推兩個季度以上）</h3>
+<p>第 9 次記錄過「<code>diff()</code> 的觀察窗太短會漏掉已完成的增資」。本次起點設在 <strong>2026-03-02</strong>（177 個交易日），結果：</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>日期</th><th>發行股數</th><th>變動</th><th>推斷</th></tr></thead>
+<tbody>
+<tr><td>2026-05-14</td><td class="n">1,589,228,785</td><td class="n up">+13,697,588</td><td>應付公司債轉換（+0.87%）</td></tr>
+<tr><td>2026-06-02</td><td class="n">1,588,872,956</td><td class="n dn">-355,829</td><td>零星調整</td></tr>
+<tr class="hl"><td><strong>2026-07-09</strong></td><td class="n"><strong>1,641,322,596</strong></td><td class="n up"><strong>+52,449,640</strong></td><td><strong>現金增資完成登記（+3.30%）</strong></td></tr>
+<tr><td>2026-09-03</td><td class="n">1,641,291,596</td><td class="n dn">-31,000</td><td>零星調整；<strong>此後至 11/17 未再變動</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p class="muted small"><strong>第二種偵測法（準則 5.2：股本合計 vs 普通股股本）本季的結果是「差額為 0」</strong>：
+Q3'26 <code>CapitalStock</code> 與 <code>OrdinaryShare</code> 同為 <strong>164.39 億</strong>。
+對照 2025-12-31 的 170.03 億 vs 152.96 億（差 <strong>17.07 億＝預收股款</strong>）—— 那個差額在 2026-03-31 消失，而增資在 7/09 才登記，
+<strong>確認了「預收股款比集保 diff 早一到兩季顯示增資即將發生」這個前瞻訊號。</strong></p>
+<p class="muted small"><strong>第三種檢查（<code>CapitalStock ÷ 10</code> vs 集保）仍有 0.16% 差距</strong>：164.39 億 ÷ 10 ＝ 1,643,900,000 股 vs 集保 1,641,291,596 股，
+差 2,608,404 股。依準則已停下來查：最可能是已登記但集保未更新的零星公司債轉換（本檔仍有 <strong>50.47 億</strong>應付公司債在外），
+<strong>無法確認</strong>。因影響不超過 0.2%，本報告一律採集保股數（較保守）並揭露。</p>
+
+<h3>6-4　增資後每股淨值公式的第六次驗證（準則 1.13）</h3>
+<p>Q2→Q3 股本 +5.26 億、資本公積 +430.92 億 → <strong>募資額 436.18 億</strong>，除以 52,449,640 股得發行價約 <strong>832 元/股</strong>。</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>項目</th><th>數值</th></tr></thead>
+<tbody>
+<tr><td>增資前每股淨值（Q2 歸母 1,238.86 億 ÷ 15.88873 億股）</td><td class="n">77.97 元</td></tr>
+<tr><td>溢價倍數（832 ÷ 77.97）</td><td class="n">10.67 倍</td></tr>
+<tr><td>募資額佔原淨值比重（436.18 ÷ 1,238.86）</td><td class="n">35.2%</td></tr>
+<tr><td>股數稀釋率</td><td class="n">3.30%</td></tr>
+<tr><td>公式 (1＋0.352) ÷ (1＋0.0330) ＝ 1.3089 → 77.97 × 1.3089</td><td class="n"><strong>102.08 元</strong></td></tr>
+<tr class="hl2"><td><strong>Q3 資產負債表實際每股淨值</strong></td><td class="n"><strong>108.35 元</strong></td></tr>
+<tr class="tot"><td>差額 108.35 − 102.08 ＝ 6.27 元　vs　Q3 單季還原 EPS <strong>6.12 元</strong></td><td class="n"><strong>誤差 0.15 元（2.5%）</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p class="muted small">公式算的是「<strong>增資完成當下</strong>」的每股淨值，對帳時要先扣掉當季損益。
+本次殘差 0.15 元（約 0.14 個百分點）最可能來自其他綜合損益（Q3 為 +2.84 億＝每股 0.17 元）與發行費用，<strong>方向與量級都吻合</strong>。
+<strong>連帶更正一處表述</strong>：77.97 → 108.35 是 +38.96%，但其中 6.12 元來自 Q3 獲利，<strong>純增資效果是 +30.9%</strong>。</p>
+
+<h3>6-5　其他非流動負債 716.52 億 —— 連續第四份報告未確認</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>季度</th><th>其他非流動負債</th><th>季變動</th><th>佔總資產</th></tr></thead>
+<tbody>
+<tr><td>2025-06-30</td><td class="n">47.51 億</td><td class="n">—</td><td class="n">2.05%</td></tr>
+<tr><td>2025-09-30</td><td class="n">103.77 億</td><td class="n up">+56.26</td><td class="n">4.37%</td></tr>
+<tr><td>2025-12-31</td><td class="n">99.58 億</td><td class="n dn">-4.19</td><td class="n">3.89%</td></tr>
+<tr><td>2026-03-31</td><td class="n">130.66 億</td><td class="n up">+31.08</td><td class="n">4.90%</td></tr>
+<tr class="hl"><td>2026-06-30</td><td class="n">473.54 億</td><td class="n up"><strong>+342.88</strong></td><td class="n">15.12%</td></tr>
+<tr class="hl"><td><strong>2026-09-30</strong></td><td class="n"><strong>716.52 億</strong></td><td class="n up"><strong>+242.98</strong></td><td class="n"><strong>17.92%</strong></td></tr>
+</tbody>
+</table>
+</div>
+<div class="box warn">
+  <div class="bt">本次新增的閉合檢驗：這筆錢確實以現金形式進到公司</div>
+  <div class="table-wrap" style="margin-bottom:0">
+  <table style="min-width:480px">
+  <thead><tr><th>項目</th><th>Q1'26 → Q3'26 變動</th></tr></thead>
+  <tbody>
+    <tr><td>現金及約當現金　601.79 → 1,596.94 億</td><td class="n up">+995.15 億</td></tr>
+    <tr><td>其他非流動負債　130.66 → 716.52 億</td><td class="n up">+585.86 億</td></tr>
+    <tr><td>增資募資額（Q2→Q3 股本＋資本公積）</td><td class="n up">+436.18 億</td></tr>
+    <tr><td>三項借款合計　386.67 → 330.96 億</td><td class="n dn">-55.71 億</td></tr>
+    <tr class="tot"><td>585.86 ＋ 436.18 − 55.71 ＝ 966.33 億　vs　現金實增 995.15 億</td><td class="n"><strong>差 28.82 億（2.9%）</strong></td></tr>
+  </tbody>
+  </table>
+  </div>
+  <p style="margin:12px 0 0"><strong>已確認的三件事：</strong>① 確實以現金進到公司（閉合差 2.9%，餘額由營運現金流與投資活動解釋）；
+  ② <strong>不是借款</strong>（三項借款同期反而減少 55.71 億）；③ 本檔 9M 利息費用 19.16 億，相對 716.52 億的負債而言<strong>不計息或計息極低</strong>。</p>
+  <p style="margin-bottom:0"><strong>🔴 仍未確認的：這筆是什麼。</strong>
+  「客戶長期產能預付款」自第 7 次起即為<strong>本系列推論，公司從未確認</strong>。
+  本次 WebSearch 仍查無 11 月法說會日期或內容，Q3 季報附註需查財報原文（本報告未取得）。
+  <strong>同期公司把長交期設備預下訂單額度累計到約 825 億，兩個數字只差 13% —— 這個對應關係是本檔最大的未解項，連續四份報告如此。</strong></p>
+</div>
+</section>
+
+<!-- ============ 07 公司概覽 ============ -->
+<section>
+<h2>07 · 公司概覽</h2>
+<div class="two">
+<div class="card">
+  <h4 style="margin-top:0">基本資料（每一項都標來源）</h4>
+  <div class="table-wrap" style="margin:0;border:none">
+  <table style="min-width:auto">
+  <tbody>
+    <tr><td>股票代號 / 名稱</td><td class="n">3037 / 欣興（Unimicron）</td></tr>
+    <tr><td>市場別</td><td class="n">臺灣證券交易所上市（TWSE）</td></tr>
+    <tr><td>發行股數</td><td class="n">1,641,291,596 股<br><span class="tiny">集保 2026-11-17</span></td></tr>
+    <tr><td>股本</td><td class="n">164.39 億元<br><span class="tiny">Q3'26 資產負債表 CapitalStock</span></td></tr>
+    <tr><td>市值</td><td class="n"><strong>1.0127 兆元</strong><br><span class="tiny">617 × 1,641,291,596（自算）</span></td></tr>
+    <tr><td>歸母權益</td><td class="n">1,778.33 億元<br><span class="tiny">Q3'26</span></td></tr>
+    <tr><td>總資產</td><td class="n">3,998.44 億元<br><span class="tiny">Q3'26</span></td></tr>
+    <tr><td>最近現金股利</td><td class="n">1.98 元（2026-07-12）<br><span class="tiny">前次 1.50 元（2025-07-18）</span></td></tr>
+  </tbody>
+  </table>
+  </div>
+</div>
+<div class="card">
+  <h4 style="margin-top:0">🔴 依準則 1.10：市值的量級要完整算一次</h4>
+  <p>準則的快速自檢是「股價 &gt; 1,000 元且股數 &gt; 5 億股 → 必為兆級」。
+  <strong>欣興現價只有 617 元，遠低於 1,000 —— 但市值仍是 1.0127 兆元。</strong></p>
+  <div class="table-wrap" style="margin:8px 0 0">
+  <table style="min-width:auto">
+  <thead><tr><th>個股</th><th>股價 × 股數</th><th>市值</th></tr></thead>
+  <tbody>
+    <tr><td>智邦 2345</td><td class="n">1,525 × 5.611 億股</td><td class="n">8,557 億（億級）</td></tr>
+    <tr class="hl"><td><strong>欣興 3037</strong></td><td class="n">617 × 16.413 億股</td><td class="n"><strong>1.0127 兆（兆級）</strong></td></tr>
+  </tbody>
+  </table>
+  </div>
+  <p class="small" style="margin-bottom:0"><strong>股價較低的那一檔反而是兆級 —— 股數的量級比股價的量級更關鍵。</strong>
+  快速自檢是「<strong>充分條件而非必要條件</strong>」：通過它可以確定是兆級，沒通過不代表不是。
+  本系列已在市值單位上犯錯三次（台達電、智邦兩次市值 ＋ 智邦融資佔比），所以這一步沒有例外。</p>
+</div>
+</div>
+
+<h3>主要業務與產業位置</h3>
+<p>欣興為全球 ABF 載板（Ansys Build-up Film，用於高階 CPU／GPU／AI 加速器的覆晶封裝基板）主要供應商之一，
+同時經營一般 PCB、HDI 板與 IC 載板。<strong>台廠「載板三雄」為欣興 3037、南電 8046、景碩 3189</strong>，
+本報告第 09 節以這三檔的同步性作為「產業事件 vs 公司事件」的判別工具。</p>
+
+<div class="box info">
+  <div class="bt">本報告對「護城河」的處理方式</div>
+  <p style="margin-bottom:0"><strong>本報告不對市占率、客戶名單、各產品線營收佔比給出數字。</strong>
+  原因：公司財報未揭露產品線營收拆分，本次 WebSearch 取得的市占數字（「ABF 市占逾 7 成」）
+  <strong>來自新聞標題、無發布機構與日期</strong>，依準則 1.1 的精神不作為報告中的事實。
+  可以確定並有數據支撐的是三件事：
+  ① Q3 營收創歷史新高 526.50 億、② 邊際毛利率 46.63% 遠高於整體 28.85%（新增訂單的品質優於存量）、
+  ③ 設備預下訂單額度累計約 825 億（長交期設備，顯示公司自身對產能需求的判斷）。</p>
+</div>
+</section>
+
+<!-- ============ 08 基本面分析 ============ -->
+<section>
+<h2>08 · 基本面分析</h2>
+
+<h3>8-1　八季損益表（單位：億元）</h3>
+<div class="table-wrap">
+<table style="min-width:900px">
+<thead><tr><th>季度</th><th>營收</th><th>毛利</th><th>毛利率</th><th>營業利益</th><th>營益率</th><th>業外</th><th>稅前</th><th>業外佔稅前</th><th>歸母</th><th>還原 EPS</th></tr></thead>
+<tbody>
+<tr><td>Q4'24</td><td class="n">293.81</td><td class="n">33.98</td><td class="n">11.57%</td><td class="n">6.79</td><td class="n">2.31%</td><td class="n dn">-3.60</td><td class="n">3.19</td><td class="n">-112.9%</td><td class="n">0.56</td><td class="n">0.03</td></tr>
+<tr><td>Q1'25</td><td class="n">300.90</td><td class="n">40.26</td><td class="n">13.38%</td><td class="n">12.67</td><td class="n">4.21%</td><td class="n">1.07</td><td class="n">13.73</td><td class="n">7.8%</td><td class="n">9.15</td><td class="n">0.56</td></tr>
+<tr><td>Q2'25</td><td class="n">324.66</td><td class="n">42.46</td><td class="n">13.08%</td><td class="n">15.09</td><td class="n">4.65%</td><td class="n dn">-11.53</td><td class="n">3.57</td><td class="n">-322.9%</td><td class="n">0.30</td><td class="n">0.02</td></tr>
+<tr><td>Q3'25</td><td class="n">339.94</td><td class="n">45.49</td><td class="n">13.38%</td><td class="n">15.33</td><td class="n">4.51%</td><td class="n">14.14</td><td class="n">29.47</td><td class="n">48.0%</td><td class="n">21.94</td><td class="n">1.34</td></tr>
+<tr><td>Q4'25</td><td class="n">346.91</td><td class="n">54.72</td><td class="n">15.77%</td><td class="n">23.66</td><td class="n">6.82%</td><td class="n">17.85</td><td class="n">41.50</td><td class="n">43.0%</td><td class="n">35.35</td><td class="n">2.15</td></tr>
+<tr><td>Q1'26</td><td class="n">374.46</td><td class="n">67.26</td><td class="n">17.96%</td><td class="n">27.57</td><td class="n">7.36%</td><td class="n">35.42</td><td class="n">62.99</td><td class="n">56.2%</td><td class="n">50.43</td><td class="n">3.07</td></tr>
+<tr><td>Q2'26</td><td class="n">428.90</td><td class="n">106.38</td><td class="n">24.80%</td><td class="n">66.51</td><td class="n">15.51%</td><td class="n">89.25</td><td class="n">155.76</td><td class="n dn">57.3%</td><td class="n">131.15</td><td class="n">7.99</td></tr>
+<tr class="hl2"><td><strong>Q3'26</strong></td><td class="n"><strong>526.50</strong></td><td class="n"><strong>151.89</strong></td><td class="n up"><strong>28.85%</strong></td><td class="n"><strong>105.28</strong></td><td class="n up"><strong>20.00%</strong></td><td class="n">26.36</td><td class="n">131.63</td><td class="n up"><strong>20.0%</strong></td><td class="n"><strong>100.52</strong></td><td class="n"><strong>6.12</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box ok">
+  <div class="bt">🟢 Q3 是本系列看過最乾淨的一季之一，五項同時改善</div>
+  <ul style="margin-bottom:0">
+    <li><strong>毛利率連四季走高</strong>：11.57 → 13.38 → 13.08 → 13.38 → 15.77 → 17.96 → 24.80 → <strong>28.85%</strong></li>
+    <li><strong>邊際毛利率 46.63%</strong>（準則 5.9b）：Q2→Q3 多賣 97.60 億帶來 45.51 億毛利 ——
+        <strong>新增的生意比存量的生意更賺</strong>。這與智邦 2345 的 9.74%（遠低於整體 17.62%，指向產品組合惡化）正好相反。</li>
+    <li><strong>增量營業利益率 39.72%</strong>（準則 5.7）：(105.28−66.51) ÷ (526.50−428.90)，<strong>營業槓桿極高</strong>，固定成本已攤完。</li>
+    <li><strong>業外佔稅前由 57.30% 降到 20.03%</strong>：獲利的純度大幅改善，EPS 的方向開始由本業決定。</li>
+    <li><strong>折舊 ÷ 營業利益由 Q4'24 的 646% 降到 48.27%</strong>（準則 5.8）：
+        <strong>而且折舊本身還在增加</strong>（47.81 → 49.17 → 49.92 → <strong>50.82 億</strong>）——
+        是營業利益從 23.66 億衝到 105.28 億把比率壓下去的，<strong>這是最健康的跨越方式</strong>。</li>
+  </ul>
+</div>
+
+<h3>8-2　業外佔稅前的比較階梯與振幅比（準則 5.1）</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>個股／期間</th><th>業外佔稅前</th><th>定位</th></tr></thead>
+<tbody>
+<tr><td>德宏 5475（Q2'26）</td><td class="n">-0.17%</td><td>目前最乾淨</td></tr>
+<tr><td>智邦 2345（Q3'26 單季）</td><td class="n">0.58%</td><td>極乾淨</td></tr>
+<tr class="hl2"><td><strong>欣興 3037（Q3'26 單季）</strong></td><td class="n"><strong>20.03%</strong></td><td><strong>本業主導（本檔歷史最佳之一）</strong></td></tr>
+<tr><td>台達電 2308（TTM）</td><td class="n">7.17%</td><td>本業主導</td></tr>
+<tr><td>環球晶 6488（TTM, 2026-11）</td><td class="n">41.62%</td><td>業外近半</td></tr>
+<tr class="hl"><td><strong>欣興 3037（TTM）</strong></td><td class="n"><strong>43.09%</strong></td><td><strong>業外近半（被前三季墊高）</strong></td></tr>
+<tr><td>欣興 3037（Q2'26 單季）</td><td class="n">57.30%</td><td>業外主導</td></tr>
+<tr><td>大洋 1321</td><td class="n">92%</td><td>幾乎全靠業外</td></tr>
+</tbody>
+</table>
+</div>
+<p class="muted small"><strong>單季 20.03% 與 TTM 43.09% 的巨大落差，正是準則「單季與 TTM 兩個口徑都要算」的理由</strong> ——
+只看單季會高估品質，只看 TTM 會錯過轉折。</p>
+
+<div class="box">
+  <div class="bt">振幅比：1.023 倍（近 10 季）→ 三法併用</div>
+  <p>業外區間 <strong>-11.53 ~ +89.25 億（寬 100.78 億）</strong>；營業利益區間 <strong>6.79 ~ 105.28 億（寬 98.49 億）</strong>
+  → 振幅比 <strong>100.78 ÷ 98.49 = 1.023 倍</strong>。</p>
+  <div class="table-wrap" style="margin-bottom:0">
+  <table style="min-width:520px">
+  <thead><tr><th>個股</th><th>振幅比</th><th>估值工具</th></tr></thead>
+  <tbody>
+    <tr><td>智邦 2345</td><td class="n">0.247 倍</td><td>&lt; 0.5 → 用 P/E</td></tr>
+    <tr class="hl"><td><strong>欣興 3037</strong></td><td class="n"><strong>1.023 倍</strong></td><td><strong>臨界值 → 三法併用（P/E、P/B、本業 P/E）</strong></td></tr>
+    <tr><td>環球晶 6488</td><td class="n">2.173 倍</td><td>&gt; 1.0 → 改用 P/B</td></tr>
+  </tbody>
+  </table>
+  </div>
+  <p style="margin:12px 0 0"><strong>⚠️ 1.023 剛好踩在準則的 1.0 門檻上</strong>，依字面應改用 P/B，但差距只有 2.3%。
+  <strong>本報告採三法併用並把三個結果都列出，不自行選一個較有利的。</strong>
+  值得注意的是：<strong>若只看 Q3 單季（業外佔 20.03%），振幅比的意義會下降</strong> ——
+  如果 Q4 的業外繼續收斂，下一份報告的振幅比可能跌破 1.0 而改用 P/E。這是一個要回來驗的項目。</p>
+</div>
+
+<h3>8-3　EPS 的兩個口徑（準則 5.2，絕對不可混用）</h3>
+<div class="table-wrap">
+<table style="min-width:680px">
+<thead><tr><th>口徑</th><th>前三季 EPS</th><th>分母</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td><strong>公司公告（加權平均流通股數）</strong></td><td class="n"><strong>17.85 元</strong></td><td class="n">15.804 億股<br><span class="tiny">因 7/09 增資，加權平均低於現行</span></td><td><strong>算「隱含 Q4 EPS」用這個</strong>（準則 1.7 的算術檢驗，因法人年度預估也是公告口徑）</td></tr>
+<tr><td><strong>還原至現行股數</strong></td><td class="n"><strong>17.19 元</strong></td><td class="n">16.413 億股</td><td><strong>算「本益比」用這個</strong>（分母必須與現行股數一致）</td></tr>
+<tr><td>FinMind／媒體（含非控制權益）</td><td class="n">18.09 元（單季相加）</td><td class="n">—</td><td><strong>不可用</strong>。Q3 的 NCI 為 3.68 億（佔稅後 3.5%），使 EPS 高估 3.7%</td></tr>
+</tbody>
+</table>
+</div>
+<p class="muted small">若誤用 17.85 元去算本益比，會把便宜程度<strong>高估 3.8%</strong>。
+本報告的 TTM 與前瞻本益比一律採還原口徑。</p>
+
+<h3>8-4　FY2026E 自估與假設（準則 8.6：毛利率假設要單獨列並標為最大變數）</h3>
+<div class="table-wrap">
+<table style="min-width:620px">
+<thead><tr><th>項目</th><th>假設／數值</th><th>說明</th></tr></thead>
+<tbody>
+<tr><td>Q4'26 營收</td><td class="n">約 573 億（QoQ +8.8%）</td><td>10 月 189.86 億<strong>已公告</strong>；11、12 月各假設 190、193 億</td></tr>
+<tr class="hl"><td><strong>Q4'26 毛利率（最大變數）</strong></td><td class="n"><strong>28.5%</strong></td><td><strong>略低於 Q3 的 28.85%</strong>，理由是 10 月月增率已降到 +1.80%（六個月最低）</td></tr>
+<tr><td>營業費用</td><td class="n">約 50 億</td><td>Q3 為 46.80 億，隨營收微增</td></tr>
+<tr><td>業外</td><td class="n">約 25 億</td><td>接近 Q3 的 26.36 億（不假設回到 Q2 的 89.25 億）</td></tr>
+<tr><td>實質稅率</td><td class="n">16.82%</td><td>9M'26 實績（291.43 ÷ 350.38 反推）</td></tr>
+<tr class="tot"><td><strong>Q4'26E 還原 EPS</strong></td><td class="n"><strong>約 6.73 元</strong></td><td>歸母約 110.4 億</td></tr>
+<tr class="tot"><td><strong>FY2026E 還原 EPS</strong></td><td class="n"><strong>約 23.9 元</strong></td><td>17.19 ＋ 6.73</td></tr>
+<tr><td>FY2026E 公告口徑（供比對法人）</td><td class="n">約 24.6 元</td><td>17.85 ＋ 6.73</td></tr>
+</tbody>
+</table>
+</div>
+<p class="muted small"><strong>算術失效檢驗（準則 1.7）</strong>：隱含 Q4 公告口徑 EPS 為 6.73 元，
+對照 Q3 公告口徑單季 6.36 元 ＝ <strong>+5.8% QoQ</strong>，而營收假設 +8.8% QoQ —— <strong>通過檢驗，且屬保守</strong>
+（若毛利率維持 Q3 的 28.85%，Q4 可達約 6.9 元）。
+<strong>🔴 最大的下行風險不在毛利率，而在營收</strong>：若 Vera Rubin 的遞延在 Q4 就反映到拉貨，11、12 月營收可能低於 190 億。</p>
+
+<h3>8-5　本益比階梯與跨個股估值效率（準則 6.1）</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>口徑</th><th>EPS</th><th>@617 元</th><th>備註</th></tr></thead>
+<tbody>
+<tr><td>本業 TTM（剔除業外）</td><td class="n">10.85 元</td><td class="n dn"><strong>56.87x</strong></td><td>最保守的口徑</td></tr>
+<tr><td>TTM 帳面（還原股數）</td><td class="n">19.34 元</td><td class="n"><strong>31.90x</strong></td><td>歸母 317.45 億 ÷ 16.413 億股</td></tr>
+<tr class="hl2"><td><strong>FY2026E（本報告自估）</strong></td><td class="n">23.9 元</td><td class="n up"><strong>25.8x</strong></td><td>假設見 8-4</td></tr>
+<tr><td>FY2027E（第 9 次記錄的法人）</td><td class="n">40.7 元</td><td class="n up"><strong>15.2x</strong></td><td>該筆對應目標價 1,025 元</td></tr>
+<tr><td>FY2027E（FactSet 共識，第 9 次記錄）</td><td class="n">43.36 元</td><td class="n up"><strong>14.2x</strong></td><td>該筆對應目標價 1,400 元</td></tr>
+</tbody>
+</table>
+</div>
+<p class="muted small"><strong>最高與最低相差 4.0 倍</strong>（56.87x vs 14.2x）—— 依準則 6.1，把這個差距畫出來本身就是結論：
+<strong>現價 617 元在 FY2027E 上看起來很便宜（14~15 倍），在本業 TTM 上看起來很貴（56.87 倍）。
+買在這裡等於在為 2027 年的放量付錢，而 2027 年的放量時程正是這波被質疑的那一件事。</strong></p>
+
+<div class="table-wrap">
+<table style="min-width:680px">
+<thead><tr><th>個股</th><th>TTM P/E</th><th>FY2026E P/E</th><th>最新季營收 YoY</th><th>業外佔稅前(TTM)</th><th>振幅比</th></tr></thead>
+<tbody>
+<tr class="hl2"><td><strong>欣興 3037 @617（第10次）</strong></td><td class="n"><strong>31.90x</strong></td><td class="n"><strong>25.8x</strong>（自估）</td><td class="n up"><strong>+54.88%</strong></td><td class="n">43.09%</td><td class="n">1.023</td></tr>
+<tr><td>欣興 3037 @828（第8次）</td><td class="n">42.8x</td><td class="n">—</td><td class="n">+54.9%</td><td class="n">43.09%</td><td class="n">1.023</td></tr>
+<tr><td>智邦 2345 @1,525（第5次）</td><td class="n">20.88x</td><td class="n">18.72x</td><td class="n">+65.5%</td><td class="n">3.59%</td><td class="n">0.247</td></tr>
+<tr><td>環球晶 6488 @622（第4次）</td><td class="n">35.0x</td><td class="n">—</td><td class="n">+2.6%</td><td class="n">41.62%</td><td class="n">2.173</td></tr>
+<tr><td>台達電 2308</td><td class="n">51.4x</td><td class="n">42.5x</td><td class="n">+31.1%</td><td class="n">7.17%</td><td class="n">—</td></tr>
+<tr><td>山太士 3595 @889（興櫃）</td><td class="n">145.8x</td><td class="n">109.1x</td><td class="n">+30.5%</td><td class="n">0.59%</td><td class="n">0.034</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>8-6　現金、借款與營運資金</h3>
+<div class="grid g4">
+  <div class="kpi"><div class="lab">現金及約當現金</div><div class="val n">1,596.94 億</div><div class="note">Q1'26 為 601.79 億<br>兩季增 995.15 億</div></div>
+  <div class="kpi"><div class="lab">總借款</div><div class="val n">330.96 億</div><div class="note">短借 110.83 ＋ 長借 169.66<br>＋ 公司債 50.47</div></div>
+  <div class="kpi"><div class="lab">淨現金（純現金基礎）</div><div class="val n up">+1,265.98 億</div><div class="note">依準則 5.8b 自算<br>公司口徑未揭露，無法對照</div></div>
+  <div class="kpi"><div class="lab">現金循環天數 CCC</div><div class="val n">76.3 天</div><div class="note">Q2 為 76.4 天<br>幾乎不變</div></div>
+</div>
+<div class="table-wrap">
+<table style="min-width:620px">
+<thead><tr><th>季度</th><th>存貨天數</th><th>應收天數</th><th>應付天數</th><th>CCC</th><th>淨營運資金</th></tr></thead>
+<tbody>
+<tr><td>Q2'26</td><td class="n">58.0</td><td class="n">67.7</td><td class="n">49.3</td><td class="n">76.4</td><td class="n">350.06 億</td></tr>
+<tr class="hl2"><td><strong>Q3'26</strong></td><td class="n">60.4</td><td class="n">67.0</td><td class="n">51.1</td><td class="n"><strong>76.3</strong></td><td class="n">425.91 億</td></tr>
+<tr class="tot"><td>變動</td><td class="n">+2.4</td><td class="n up">-0.7</td><td class="n up">+1.8</td><td class="n up">-0.1</td><td class="n">+75.85 億</td></tr>
+</tbody>
+</table>
+</div>
+<p class="muted small">依準則 5.10，CCC 的變動要逐項拆解：存貨 +2.4、應收 −0.7、應付 −(+1.8) ＝ <strong>−0.1 天</strong>。
+<strong>三項都在 2 天以內，沒有任何一項惡化</strong> —— 這與智邦 2345 的「存貨改善 9.2 天但應付被收回 13.9 天、CCC 反而惡化 7 天」完全不同。
+<strong>現金含量 9M 0.862 倍、Q3 單季 1.13 倍</strong>（OCF 117.99 ÷ 歸母前淨利 104.20 億），依準則 5.9 <strong>不構成扣分項</strong>。</p>
+
+<div class="box bad">
+  <div class="bt">🔴 Q3 單季利息費用由 2.54 億跳增至 14.03 億，原因仍未查得</div>
+  <p style="margin-bottom:0">累計利息費用 Q1 2.59 億 → H1 5.13 億 → <strong>9M 19.16 億</strong>，
+  推得 Q3 單季 <strong>14.03 億</strong>，是 Q2 的 <strong>5.5 倍</strong>。
+  <strong>而同期總借款是減少的（386.67 → 330.96 億）</strong> —— 借款減少而利息暴增，方向矛盾。
+  第 9 次已標為「疑有重分類」，<strong>本次仍未查得原因（需 Q3 季報附註原文，本報告未取得）</strong>。
+  依準則，這筆若為持續性，會直接污染業外的「確定會持續的那一塊」。</p>
+</div>
+</section>
+
+<!-- ============ 09 籌碼面 ============ -->
+<section>
+<h2>09 · 籌碼面分析</h2>
+
+<h3>9-1　三大法人（證交所 T86，單位：張）</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>日期</th><th>外資</th><th>投信</th><th>自營</th><th>三大合計</th><th>當日股價</th></tr></thead>
+<tbody>
+<tr><td>11/10</td><td class="n up">+2,795</td><td class="n up">+248</td><td class="n dn">-336</td><td class="n up">+2,707</td><td class="n up">+9.38%</td></tr>
+<tr><td>11/11</td><td class="n dn">-2,625</td><td class="n up">+591</td><td class="n up">+119</td><td class="n dn">-1,915</td><td class="n up">+4.35%</td></tr>
+<tr><td>11/12</td><td class="n dn">-1,391</td><td class="n up">+129</td><td class="n dn">-298</td><td class="n dn">-1,560</td><td class="n dn">-8.33%</td></tr>
+<tr><td>11/13</td><td class="n dn">-2,566</td><td class="n dn">-360</td><td class="n up">+188</td><td class="n dn">-2,738</td><td class="n dn">-0.88%</td></tr>
+<tr><td>11/16</td><td class="n dn">-3,545</td><td class="n dn">-1,059</td><td class="n up">+47</td><td class="n dn">-4,557</td><td class="n dn">-9.94% 跌停</td></tr>
+<tr class="hl"><td><strong>11/17</strong></td><td class="n up"><strong>+4,405</strong></td><td class="n dn"><strong>-4,801</strong></td><td class="n up">+528</td><td class="n up">+132</td><td class="n dn">-9.90% 跌停</td></tr>
+<tr class="tot"><td>11/11–11/17 五日累計</td><td class="n dn"><strong>-5,722</strong></td><td class="n dn">-5,500</td><td class="n up">+584</td><td class="n dn">-10,638</td><td class="n dn">-26.27%</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box warn">
+  <div class="bt">11/17 的外資與投信方向完全相反，而且有第二個官方來源佐證</div>
+  <p>在第二個跌停板、成交量放大到 2.00 倍的那一天：
+  <strong>外資轉為買超 +4,405 張，投信反手賣超 -4,801 張。</strong></p>
+  <p><strong>交叉驗證</strong>：集保的外資持股由 11/16 的 637,703,256 股增至 11/17 的 <strong>642,032,810 股</strong>，
+  單日 <strong>+4,329,554 股 ＝ +4,330 張</strong> —— 與 T86 的 +4,405 張吻合（差異來自外資自營商）。
+  <strong>兩個獨立的官方來源同向，這個轉買是可信的。</strong></p>
+  <p style="margin-bottom:0"><strong>⚠️ 但依準則 1.2 與大盤準則第 2 條，籌碼不能用來預測隔日價格。</strong>
+  本系列已累積六個「用籌碼選標的」失準的樣本。<strong>這張表的用途是描述「誰在賣」，不是「要不要買」</strong> ——
+  而它描述的事實是：<strong>這波的賣方主力是外資（五日 -5,722 張）與投信（-5,500 張），而 11/17 外資先停手了。</strong></p>
+</div>
+
+<h3>9-2　外資持股（集保，統一分母＝最新發行股數）</h3>
+<p class="muted small">依準則 2.3，增資期間 <code>ForeignInvestmentSharesRatio</code> 不可直接比較，一律用統一分母重算。</p>
+<div class="bar"><div class="bl">11/02</div><div class="bt2"><div class="bf" style="width:100%;background:#9ca3af"></div></div><div class="bv">41.07%</div></div>
+<div class="bar"><div class="bl">11/05</div><div class="bt2"><div class="bf" style="width:98.1%;background:#9ca3af"></div></div><div class="bv">40.30%</div></div>
+<div class="bar"><div class="bl">11/09</div><div class="bt2"><div class="bf" style="width:95.6%;background:#be185d"></div></div><div class="bv">39.26%</div></div>
+<div class="bar"><div class="bl">11/12</div><div class="bt2"><div class="bf" style="width:95.4%;background:#be185d"></div></div><div class="bv">39.19%</div></div>
+<div class="bar"><div class="bl">11/16（波段最低）</div><div class="bt2"><div class="bf" style="width:94.6%;background:#500724"></div></div><div class="bv">38.85%</div></div>
+<div class="bar"><div class="bl"><strong>11/17（回升）</strong></div><div class="bt2"><div class="bf" style="width:95.2%;background:#047857"></div></div><div class="bv up"><strong>39.12%</strong></div></div>
+<p class="tiny">條長以 41.07% 為滿格。外資自 11/02 的 674,095,301 股減至 11/16 的 637,703,256 股（<strong>-36,392,045 股，-5.40%</strong>），
+11/17 回加 <strong>+4,329,554 股</strong>，是本段期間<strong>第一次單日增加</strong>。</p>
+
+<h3>9-3　產業同步性檢驗（準則 8.9）—— 本次出現方向性變化</h3>
+<div class="box ok">
+  <div class="bt">階段一（11/11 → 11/17）：產業事件判定延續成立</div>
+  <div class="table-wrap" style="margin-bottom:0">
+  <table style="min-width:560px">
+  <thead><tr><th>標的</th><th>11/11 收盤</th><th>11/17 收盤</th><th>變動</th></tr></thead>
+  <tbody>
+    <tr><td>欣興 3037</td><td class="n">864</td><td class="n">637</td><td class="n dn">-26.27%</td></tr>
+    <tr><td>南電 8046</td><td class="n">1,080</td><td class="n">792</td><td class="n dn">-26.67%</td></tr>
+    <tr><td>景碩 3189</td><td class="n">741</td><td class="n">542</td><td class="n dn">-26.86%</td></tr>
+    <tr class="tot"><td><strong>跌幅差距</strong></td><td colspan="2"></td><td class="n"><strong>0.58 個百分點</strong></td></tr>
+    <tr><td>加權指數（對照）</td><td class="n">44,257.15</td><td class="n">40,092.11</td><td class="n dn">-9.41%</td></tr>
+  </tbody>
+  </table>
+  </div>
+  <p style="margin:12px 0 0"><strong>差距 0.58pp &lt; 1pp → 依準則 8.9 判定為「產業事件」，且三檔跌幅是加權的 2.8 倍。</strong>
+  第 9 次在 11/11→11/16 測得 0.59pp，<strong>多一個交易日後差距幾乎不變 —— 這是準則 8.9 的第二個樣本，成立。</strong></p>
+</div>
+
+<div class="box bad">
+  <div class="bt">🔴 階段二（11/17 → 今日盤中）：同步性首次瓦解，差距擴大到 8.20 個百分點</div>
+  <div class="table-wrap">
+  <table style="min-width:680px">
+  <thead><tr><th>標的</th><th>昨收</th><th>開盤</th><th>當日高</th><th>當日低</th><th>現價 10:48</th><th>當日%</th><th>自開盤</th></tr></thead>
+  <tbody>
+    <tr><td>欣興 3037</td><td class="n">637</td><td class="n up">690（+8.32%）</td><td class="n">691</td><td class="n">607</td><td class="n">617</td><td class="n dn">-3.14%</td><td class="n dn">-10.58%</td></tr>
+    <tr class="hl"><td>南電 8046</td><td class="n">792</td><td class="n up">837（+5.68%）</td><td class="n">846</td><td class="n">716</td><td class="n">730</td><td class="n dn"><strong>-7.83%</strong></td><td class="n dn">-12.78%</td></tr>
+    <tr class="hl2"><td>景碩 3189</td><td class="n">542</td><td class="n up"><strong>596（＝漲停，+9.96%）</strong></td><td class="n">596</td><td class="n">530</td><td class="n">544</td><td class="n up"><strong>+0.37%</strong></td><td class="n dn">-8.72%</td></tr>
+    <tr class="tot"><td><strong>漲跌幅差距</strong></td><td colspan="5"></td><td class="n"><strong>8.20pp</strong></td><td class="n">—</td></tr>
+  </tbody>
+  </table>
+  </div>
+  <p><strong>依準則 8.9 的判準，差距 8.20pp 遠大於 1pp → 今日已不是「產業事件」，而是「個股分化」。
+  這是該規則第一次在反方向被測試。</strong></p>
+  <p style="margin-bottom:0"><strong>但三檔有一個共同點不能忽略：全部開高走低。</strong>
+  景碩開在漲停 596 元、現在只剩 +0.37%；欣興開 +8.32%、現在 -3.14%。
+  三檔自開盤的回落幅度分別是 -8.72%、-10.58%、-12.78% —— <strong>差距只有 4.06pp，比收盤漲跌幅的 8.20pp 集中得多</strong>。
+  <strong>意思是：開高是族群性的（反彈買盤），走低也是族群性的（賣壓承接不住），
+  真正造成 8.20pp 差距的是「各檔吐回多少」的程度差異，不是方向差異。</strong>
+  依準則第 5 條（收盤位置 &gt; 盤中強弱），<strong>這三檔的區間位置分別只有 11.9%、10.8%、21.2%，距收盤還有近三小時，型態未定。</strong></p>
+</div>
+
+<h3>9-4　大盤前提（準則 8.9 列為必要條件）</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>項目</th><th>數值</th><th>11/17 收盤 40,092.11</th><th>今日盤中 39,542.10</th></tr></thead>
+<tbody>
+<tr><td>加權 MA5</td><td class="n">42,431.27</td><td class="n dn">-5.51%</td><td class="n dn">-6.81%</td></tr>
+<tr class="hl"><td><strong>加權 MA20（必要條件）</strong></td><td class="n"><strong>43,986.95</strong></td><td class="n dn"><strong>-8.85%</strong></td><td class="n dn"><strong>-10.10%</strong></td></tr>
+<tr><td>加權 MA60</td><td class="n">46,047.96</td><td class="n dn">-12.93%</td><td class="n dn">-14.13%</td></tr>
+<tr><td>櫃買指數（今日）</td><td class="n">295.42</td><td class="n">—</td><td class="n dn">-3.65%（弱於加權）</td></tr>
+</tbody>
+</table>
+</div>
+<p class="muted small"><strong>大盤前提明確不成立，而且比第 9 次更差</strong>（11/16 時距 MA20 為 -7.44%，今日 -10.10%）。
+依準則，這是進攻型策略的<strong>必要條件</strong>，不是加分項 —— <strong>只要它不成立，個股的基本面條件再好都不進攻。</strong>
+今日加權同樣開高走低（開 40,720.09、高 40,938.20、低 39,260.99），與三檔載板同構。</p>
+</section>
+
+<!-- ============ 10 技術面 ============ -->
+<section>
+<h2>10 · 技術分析</h2>
+
+<div class="box warn">
+  <div class="bt">⚠️ 先說可靠度：布林帶寬 67.13%，技術面結論要打折</div>
+  <p style="margin-bottom:0">依準則 4.4，<strong>帶寬超過 50% 時，均線與布林的統計假設已被破壞</strong>。
+  欣興目前帶寬 <strong>67.13%</strong>（上軌 1,217.65、下軌 605.65、中軌 911.65），
+  僅低於山太士 3595 的興櫃 71~75%，<strong>是本系列上市股中最高的一次</strong>。
+  以下價位一律當「觀察點」，不當「訊號」。</p>
+</div>
+
+<h3>10-1　均線與指標（以 11/17 收盤 637 為基準重算）</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>均線／指標</th><th>數值</th><th>11/17 收 637 距離</th><th>今日盤中 617 距離</th><th>判讀</th></tr></thead>
+<tbody>
+<tr><td>MA5</td><td class="n">757.00</td><td class="n dn">-15.85%</td><td class="n dn">-18.49%</td><td class="dn">跌破</td></tr>
+<tr><td>MA10</td><td class="n">778.50</td><td class="n dn">-18.18%</td><td class="n dn">-20.75%</td><td class="dn">跌破</td></tr>
+<tr><td>MA20（月線）</td><td class="n">911.65</td><td class="n dn">-30.13%</td><td class="n dn">-32.32%</td><td class="dn">跌破</td></tr>
+<tr><td>MA60（季線）</td><td class="n">1,033.10</td><td class="n dn">-38.34%</td><td class="n dn">-40.28%</td><td class="dn">跌破</td></tr>
+<tr><td>MA120（半年線）</td><td class="n">986.38</td><td class="n dn">-35.42%</td><td class="n dn">-37.45%</td><td class="dn">跌破</td></tr>
+<tr class="hl"><td><strong>布林下軌</strong></td><td class="n"><strong>605.65</strong></td><td class="n up">+5.18%</td><td class="n up">+1.88%</td><td class="up"><strong>尚未跌破</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p class="muted small"><strong>均線排列 MA5 &lt; MA10 &lt; MA20 &lt; MA60 → 完整空頭排列。</strong>
+依準則，這些是會移動的值，<strong>明日判定須以當日重算的數字為準，不可把本表當固定門檻。</strong></p>
+
+<div class="grid g4">
+  <div class="kpi"><div class="lab">RSI(14) 簡單平均</div><div class="val n" style="color:var(--info)">19.26</div><div class="note">本系列上市股最低之一<br>近五日 35.3→27.3→27.6→25.6→19.3</div></div>
+  <div class="kpi"><div class="lab">RSI(14) Wilder EMA</div><div class="val n" style="color:var(--info)">27.43</div><div class="note">＝腳本值。<strong>兩者都合法</strong><br>準則「差異非錯誤」第二次驗證</div></div>
+  <div class="kpi"><div class="lab">MACD 柱</div><div class="val n dn">-23.54</div><div class="note">前日 -19.93 → <strong>仍在擴大</strong><br>DIF -102.78 / MACD -79.24</div></div>
+  <div class="kpi"><div class="lab">布林位置</div><div class="val n">5.1%</div><div class="note">11/17 收盤位置<br>今日盤中 617 為 1.9%</div></div>
+</div>
+
+<div class="box info">
+  <div class="bt">一個容易被誤讀的事實：兩個跌停板之後，收盤仍沒跌破布林下軌</div>
+  <p style="margin-bottom:0">11/17 收 637，<strong>仍在下軌 605.65 之上 5.18%</strong>；今日盤中最低 607，也只在下軌之上 0.22%。
+  <strong>原因是下軌本身在快速下移</strong>（第 9 次時為 722.5，現在 605.65，兩個交易日下移 16.2%）——
+  這正是準則「不要把會移動的均線寫成固定門檻」的實例：
+  <strong>若沿用第 9 次的 722.5 當門檻，會以為已經「深度跌破 12%」；用當日重算的 605.65，答案是「還沒破」。</strong>
+  兩個結論的操作意涵完全不同。</p>
+</div>
+
+<h3>10-2　量能：兩天內出現「量縮跌停」與「放量跌停」兩種臉</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>日期</th><th>成交量（張）</th><th>÷ 20 日均量</th><th>股價</th><th>型態</th></tr></thead>
+<tbody>
+<tr><td>11/06</td><td class="n">37,991</td><td class="n">1.44 倍</td><td class="n dn">-9.13%</td><td>放量下跌</td></tr>
+<tr><td>11/09</td><td class="n">42,782</td><td class="n">1.63 倍</td><td class="n up">+4.13%</td><td>放量反彈</td></tr>
+<tr><td>11/12</td><td class="n">28,644</td><td class="n">1.09 倍</td><td class="n dn">-8.33%</td><td>正常量</td></tr>
+<tr><td>11/13</td><td class="n">29,259</td><td class="n">1.11 倍</td><td class="n dn">-0.88%</td><td>正常量</td></tr>
+<tr class="hl"><td><strong>11/16</strong></td><td class="n"><strong>19,186</strong></td><td class="n"><strong>0.73 倍</strong></td><td class="n dn">-9.94% 跌停</td><td><strong>量縮跌停 ＝ 沒有人想買</strong></td></tr>
+<tr class="hl"><td><strong>11/17</strong></td><td class="n"><strong>38,290</strong></td><td class="n"><strong>1.46 倍</strong></td><td class="n dn">-9.90% 跌停</td><td><strong>放量跌停 ＝ 有人認賠殺出</strong></td></tr>
+<tr><td>今日 10:48（累計）</td><td class="n">24,923</td><td class="n">—</td><td class="n dn">-3.14%</td><td>開高走低中</td></tr>
+</tbody>
+</table>
+</div>
+<div class="box ok">
+  <div class="bt">🟢 這兩天正好是準則 8.6 新規則的正反樣本</div>
+  <p>第 9 次把「兩條腿」改為單一門檻的理由是：<strong>量能作為「確認」只在放量下跌時有效，量縮下跌代表無人承接，反而更危險，
+  而量能條件剛好把它過濾掉了。</strong></p>
+  <p style="margin-bottom:0"><strong>11/16（0.73 倍）與 11/17（1.46 倍）在兩個連續交易日裡提供了兩種臉。</strong>
+  新規則（跌破 ≥ 1% 即價格單腿成立）在兩天都正確觸發；
+  舊的「兩條腿 ＋ 跳空例外」在 11/16 不觸發、要等到 11/17 才成立 —— <strong>慢了一天，也就是一整個跌停板（-9.90%）。</strong>
+  <strong>這是新規則的第四個樣本，4 勝 0 敗。</strong></p>
+</div>
+
+<h3>10-3　關鍵價位（支撐／壓力）</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>方向</th><th>價位</th><th>依據</th><th>距現價 617</th></tr></thead>
+<tbody>
+<tr><td class="dn">壓力③</td><td class="n">911.65</td><td>MA20（月線）</td><td class="n up">+47.8%</td></tr>
+<tr><td class="dn">壓力②</td><td class="n">757.00</td><td>MA5</td><td class="n up">+22.7%</td></tr>
+<tr><td class="dn">壓力①</td><td class="n">700.00</td><td><strong>今日官方漲停價</strong>（MIS <code>u</code> 欄位）</td><td class="n up">+13.5%</td></tr>
+<tr><td class="dn">壓力⓪</td><td class="n">690 / 691</td><td>今日開盤價 / 當日最高</td><td class="n up">+11.8%</td></tr>
+<tr class="hl"><td><strong>現價</strong></td><td class="n"><strong>617.00</strong></td><td>10:48 最佳買價</td><td class="n">—</td></tr>
+<tr class="hl2"><td class="up">支撐①</td><td class="n"><strong>607.00</strong></td><td><strong>今日最低</strong></td><td class="n dn">-1.6%</td></tr>
+<tr class="hl2"><td class="up">支撐②</td><td class="n"><strong>605.65</strong></td><td><strong>布林下軌（當日重算）</strong></td><td class="n dn">-1.8%</td></tr>
+<tr><td class="up">支撐③</td><td class="n">574.00</td><td><strong>今日官方跌停價</strong>（MIS <code>w</code> 欄位）</td><td class="n dn">-7.0%</td></tr>
+</tbody>
+</table>
+</div>
+<div class="box">
+  <div class="bt">🟢 官方漲跌停價與自算檔位完全一致 —— 準則 4.1 第四次驗證</div>
+  <p style="margin-bottom:0">昨收 637 元落在 500~1,000 元區間 → 檔位 <strong>1 元</strong>。
+  漲停 637 × 1.1 ＝ 700.7 → 向昨收方向（下）進位 ＝ <strong>700</strong>；
+  跌停 637 × 0.9 ＝ 573.3 → 向昨收方向（上）進位 ＝ <strong>574</strong>。
+  <strong>與 MIS 官方 <code>u</code>／<code>w</code> 欄位回傳的 700／574 完全一致。</strong>
+  此後漲跌停一律取 MIS 官方值，自算只作交叉驗證。</p>
+</div>
+</section>
+
+<!-- ============ 11 融資融券 ============ -->
+<section>
+<h2>11 · 融資融券（證交所 MI_MARGN，單位：張）</h2>
+<div class="table-wrap">
+<table style="min-width:800px">
+<thead><tr><th>日期</th><th>融資買進</th><th>融資賣出</th><th>現金償還</th><th>融資餘額</th><th>日變動</th><th>佔發行股數</th><th>融券餘額</th></tr></thead>
+<tbody>
+<tr class="hl2"><td>11/06</td><td class="n">1,272</td><td class="n">2,111</td><td class="n">151</td><td class="n">34,040</td><td class="n up">-2.83%</td><td class="n">2.074%</td><td class="n">545</td></tr>
+<tr><td>11/09</td><td class="n">2,503</td><td class="n">439</td><td class="n">43</td><td class="n">36,061</td><td class="n dn">+5.94%</td><td class="n">2.197%</td><td class="n">249</td></tr>
+<tr><td>11/10</td><td class="n">977</td><td class="n">1,834</td><td class="n">2</td><td class="n">35,202</td><td class="n">-2.38%</td><td class="n">2.145%</td><td class="n up">3,657</td></tr>
+<tr><td>11/11</td><td class="n">1,237</td><td class="n">1,009</td><td class="n">7</td><td class="n">35,423</td><td class="n dn">+0.63%</td><td class="n">2.158%</td><td class="n">3,625</td></tr>
+<tr><td>11/12</td><td class="n">1,039</td><td class="n">1,685</td><td class="n">2</td><td class="n">34,775</td><td class="n">-1.83%</td><td class="n">2.119%</td><td class="n">3,573</td></tr>
+<tr><td>11/13</td><td class="n">1,249</td><td class="n">649</td><td class="n">1</td><td class="n">35,374</td><td class="n dn">+1.72%</td><td class="n">2.155%</td><td class="n">3,528</td></tr>
+<tr class="hl"><td><strong>11/16</strong>（跌停）</td><td class="n">1,216</td><td class="n">1,154</td><td class="n">7</td><td class="n">35,429</td><td class="n dn"><strong>+0.16%</strong></td><td class="n">2.159%</td><td class="n">3,533</td></tr>
+<tr class="hl2"><td><strong>11/17</strong>（跌停）</td><td class="n">1,345</td><td class="n">2,348</td><td class="n">30</td><td class="n"><strong>34,396</strong></td><td class="n up"><strong>-2.92%</strong></td><td class="n"><strong>2.096%</strong></td><td class="n">3,455</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box warn">
+  <div class="bt">第 9 次記下的「最反常紀錄」，在隔一個交易日被修正了</div>
+  <p>第 9 次寫：「<strong>在收盤跌停的那一天（11/16），融資戶沒有被清，反而有人加碼 55 張，現金償還只有 7 張，
+  清洗規模只有 11/06 的二十分之一</strong>」，並把它列為本系列最反常的一筆紀錄。</p>
+  <p><strong>11/17 的答案是：清洗延後了一天，但發生了。</strong>
+  融資減 <strong>1,033 張（-2.92%）</strong>、現金償還 <strong>30 張</strong>（是 11/16 的 4.3 倍）、融資賣出 2,348 張（本段期間最大）。</p>
+  <p style="margin-bottom:0"><strong>但依準則第 9 次自訂的追蹤項「單日減幅 &gt; 4%（約 1,400 張）」衡量，-2.92% 並未達標。</strong>
+  本報告如實判為<strong>部分命中</strong>：通用的 2% 門檻已觸發，自訂的 4% 門檻未觸發。
+  <strong>而「清洗後三日淨變動」這一項今天才第一天，要到 11/20 才能判定。</strong></p>
+</div>
+
+<div class="box bad">
+  <div class="bt">🔴 整段區間的核心事實：股價跌 55%，融資張數只減 7.7%</div>
+  <div class="table-wrap">
+  <table style="min-width:520px">
+  <thead><tr><th>項目</th><th>10/21</th><th>11/17</th><th>變動</th></tr></thead>
+  <tbody>
+    <tr><td>股價</td><td class="n">1,100</td><td class="n">637</td><td class="n dn"><strong>-42.1%</strong></td></tr>
+    <tr><td>自 10/05 盤中高 1,420 起算</td><td class="n">—</td><td class="n">637</td><td class="n dn"><strong>-55.1%</strong></td></tr>
+    <tr><td>融資餘額（張）</td><td class="n">36,309</td><td class="n">34,396</td><td class="n"><strong>-5.27%</strong></td></tr>
+    <tr><td>融資佔發行股數</td><td class="n">2.212%</td><td class="n">2.096%</td><td class="n">-0.116pp</td></tr>
+  </tbody>
+  </table>
+  </div>
+  <p><strong>依準則 4.5：融資金額的下降幾乎全部來自市值縮水，不是部位平倉。</strong>
+  而本檔<strong>融資佔發行股數 2.096% 仍在 2% 之上 —— 這正是「清洗後是否回補」這個判準最有意義的水位</strong>
+  （對照智邦 0.430%、環球晶 0.170%，那兩檔的這個判準意義很小）。</p>
+  <p style="margin-bottom:0"><strong>依準則 1.14 推論下一步：</strong>34,396 張 ＝ 3,440 萬股。
+  融資在 10/21 的 36,309 張時股價為 1,100 元，此後張數只減 5.27% —— <strong>平均成本幾乎確定在 800 元以上，帳面虧損應在 20~40%，維持率已接近追繳門檻。</strong>
+  <strong>可驗證的追蹤項（沿用並下調門檻）：融資張數出現單日減幅 &gt; 3%（約 1,030 張，即 11/17 的規模再現）且其後三日淨變動為負。</strong></p>
+</div>
+
+<p class="muted small"><strong>融券</strong>：由 11/09 的 249 張暴增至 11/10 的 <strong>3,657 張</strong>（單日 +3,408 張），其後緩步回補至 11/17 的 3,455 張。
+<strong>融券佔發行股數僅 0.211%，不構成軋空動能。</strong>
+註：腳本輸出的「融券餘額 0 張，放空比例偏高，需注意軋空風險」一句<strong>本身自相矛盾</strong>（融券 0 ＝ 沒人放空），依準則一律刪除、不引用。</p>
+</section>
+
+<!-- ============ 12 研究員辯論 ============ -->
+<section>
+<h2>12 · 研究員辯論</h2>
+<div class="two">
+<div class="card" style="border-top:4px solid var(--up)">
+  <h4 style="margin-top:0;color:var(--up)">看多研究員（7 點）</h4>
+  <ol class="small">
+    <li><strong>Q3 財報是本檔歷史最佳。</strong>營收 526.50 億創高（YoY +54.88%、QoQ +22.76%）、毛利率 <strong>28.85%</strong> 連四季走高、營益率 <strong>20.00%</strong>。</li>
+    <li><strong>邊際毛利率 46.63% 遠高於整體 28.85%。</strong>新增的 97.60 億營收帶來 45.51 億毛利 —— 依準則 5.9b，這代表<strong>產品組合在改善</strong>，不是降價換量。</li>
+    <li><strong>增量營業利益率 39.72%。</strong>營業槓桿極高，固定成本已攤完；對照折舊仍在增加（50.82 億）而折舊 ÷ 營業利益由 646% 壓到 <strong>48.27%</strong>。</li>
+    <li><strong>獲利純度大幅改善。</strong>業外佔稅前由 Q2 的 57.30% 降到 <strong>20.03%</strong> —— EPS 開始由本業決定，而不是評價損益。</li>
+    <li><strong>財務結構極強。</strong>現金 1,596.94 億、總借款 330.96 億 → <strong>淨現金 +1,265.98 億</strong>；現金含量 9M 0.862 倍、Q3 單季 1.13 倍；CCC 76.3 天與上季持平。</li>
+    <li><strong>估值已壓縮一半。</strong>TTM P/E 由第 8 次 @828 的 42.8x 降到 <strong>31.90x</strong>；FY2027E 以法人 40.7 元計僅 <strong>15.2x</strong>。</li>
+    <li><strong>11/17 外資在第二個跌停板轉為買超 +4,405 張</strong>，且集保持股同步回加 +4,329,554 股（兩個官方來源同向），是本段期間首次。</li>
+  </ol>
+</div>
+<div class="card" style="border-top:4px solid var(--dn)">
+  <h4 style="margin-top:0;color:var(--dn)">看空研究員（7 點）</h4>
+  <ol class="small">
+    <li><strong>殺的是時程可見度，而時程不在公司手上。</strong>Vera Rubin 放量遞延（傳 HBM4 瓶頸、恐延至 2027H1）<strong>至今未獲輝達官方證實</strong>，且另有「主機板翹曲」的說法，<strong>連原因都還沒有共識</strong>。</li>
+    <li><strong>客戶端出現管理層真空。</strong>黃仁勳 11/11 辭去輝達執行長、總裁與董事（SEC 8-K，11/12 公告），CFO 暫代；董事長公開表示<strong>不考慮讓他回任</strong>。AI 資本支出敘事的領導者消失，重定價尚未結束。</li>
+    <li><strong>融資完全沒被洗掉。</strong>股價自高點 -55.1%，融資張數自 10/21 只減 5.27%，佔發行股數仍 <strong>2.096%</strong>；推估平均成本在 800 元以上、帳面虧損 20~40%，<strong>追繳賣壓尚未釋放</strong>。</li>
+    <li><strong>大盤前提明確不成立。</strong>加權距 MA20 <strong>-10.10%</strong>（比第 9 次的 -7.44% 更差），櫃買今日 -3.65% 更弱。依準則這是必要條件。</li>
+    <li><strong>本業估值並不便宜。</strong>剔除業外後本業 TTM EPS 僅 10.85 元 → <strong>本業 P/E 56.87x</strong>。買在 617 元等於為 2027 年的放量付錢，而那正是被質疑的那件事。</li>
+    <li><strong>月營收動能已經在放緩。</strong>10 月月增率 <strong>+1.80%</strong>，是六個月來最低（前五個月為 +6.53/+0.91/+5.95/+9.11/+9.18%）。而 11、12 月的比較基期是 2025 年<strong>最高的兩個月</strong>，年增率必然下滑。</li>
+    <li><strong>716.52 億的其他非流動負債性質不明，連續四份報告未確認。</strong>佔總資產 17.92%；若為客戶預付款，則「淨現金 1,266 億」當中有相當部分是客戶的錢，不是公司的。</li>
+  </ol>
+</div>
+</div>
+
+<div class="box">
+  <div class="bt">辯論裁決：看多 42% vs 看空 58% —— 但分歧點不在基本面</div>
+  <p><strong>雙方對 Q3 財報的解讀沒有分歧</strong>：七點看多當中有五點是財報事實，看空方沒有一點反駁這些數字。
+  真正的分歧在三件事：</p>
+  <ol>
+    <li><strong>時程（權重最高）</strong>：Q3 的 28.85% 毛利率是「已經發生」的，而 617 元的股價反映的是「2027 年會不會繼續」。
+    Vera Rubin 的遞延<strong>連官方確認都還沒有</strong>，這種不確定性無法用財報消除。</li>
+    <li><strong>籌碼</strong>：融資 2.096% 的水位沒洗掉，是一個可量化、方向明確的賣壓來源。</li>
+    <li><strong>系統性風險</strong>：大盤距 MA20 -10.10%，依準則個股條件在系統性回檔中會失效 —— 這已在 11/06 與 11/16 實證兩次。</li>
+  </ol>
+  <p style="margin-bottom:0"><strong>給一般投資人的話：</strong>
+  這檔的財報和股價現在講兩個不同的故事，而兩邊都沒說錯 ——
+  <strong>財報講的是「過去這一季做得很好」，股價講的是「下一年的訂單時程還沒確定」。</strong>
+  要判斷哪一邊對，不需要再看財報，而是要等三件可驗證的事：
+  <strong>① 輝達對 Vera Rubin 時程的官方說法；② 11 月營收（12/10 前公告）；③ 法人對 FY2027E 的 EPS 是否被下修到 35 元以下。</strong>
+  在這三件事都還沒有答案之前，<strong>多空權重 42:58 的意思不是「該放空」，而是「等待的成本低於猜錯的成本」。</strong></p>
+</div>
+</section>
+
+<!-- ============ 13 風控六維 ============ -->
+<section>
+<h2>13 · 風控六維評估</h2>
+<p class="muted small">權重：估值 30% ＋ 財務 25% ＋ 流動性 10% ＋ 產業 15% ＋ 總經 10% ＋ 籌碼 10%（1~3 低／4~6 中等／7~8 高／9~10 極高）</p>
+
+<div class="bar"><div class="bl">估值風險　30%</div><div class="bt2"><div class="bf" style="width:50%;background:#be185d"></div></div><div class="bv">5.0</div></div>
+<div class="bar"><div class="bl">財務風險　25%</div><div class="bt2"><div class="bf" style="width:35%;background:#047857"></div></div><div class="bv">3.5</div></div>
+<div class="bar"><div class="bl">流動性風險　10%</div><div class="bt2"><div class="bf" style="width:40%;background:#059669"></div></div><div class="bv">4.0</div></div>
+<div class="bar"><div class="bl">產業風險　15%</div><div class="bt2"><div class="bf" style="width:75%;background:#b91c1c"></div></div><div class="bv">7.5</div></div>
+<div class="bar"><div class="bl">總經風險　10%</div><div class="bt2"><div class="bf" style="width:70%;background:#c81e1e"></div></div><div class="bv">7.0</div></div>
+<div class="bar"><div class="bl">籌碼風險　10%</div><div class="bt2"><div class="bf" style="width:70%;background:#c81e1e"></div></div><div class="bv">7.0</div></div>
+<div class="bar"><div class="bl"><strong>綜合加權</strong></div><div class="bt2"><div class="bf" style="width:53%;background:#500724"></div></div><div class="bv"><strong>5.3</strong></div></div>
+<p class="tiny">5.0×0.30 ＋ 3.5×0.25 ＋ 4.0×0.10 ＋ 7.5×0.15 ＋ 7.0×0.10 ＋ 7.0×0.10 ＝ <strong>5.30</strong>　<span class="badge a">中等風險</span></p>
+
+<div class="table-wrap">
+<table style="min-width:720px">
+<thead><tr><th>維度</th><th>分數</th><th>vs 第 9 次</th><th>理由</th></tr></thead>
+<tbody>
+<tr><td>估值</td><td class="n">5.0</td><td class="n up">↓ 下降</td><td>股價再跌 28.6%；TTM 31.90x、FY2026E 25.8x、FY2027E 15.2x、P/B 5.69x。但<strong>本業 TTM 56.87x 仍不低</strong>，故未給更低分</td></tr>
+<tr class="hl2"><td><strong>財務（最低）</strong></td><td class="n up"><strong>3.5</strong></td><td class="n up">↓ 下降</td><td>淨現金 +1,266 億、現金含量 0.862 倍、毛利率連四升、CCC 持平、折舊 ÷ 營益 48.27%。<strong>扣分項：716.52 億性質不明、Q3 利息費用跳增 5.5 倍未解</strong></td></tr>
+<tr><td>流動性</td><td class="n">4.0</td><td class="n dn">↑ 由 3.0 上調</td><td>兩日收盤跌停、今日單日振幅 13.84%（691→607）；同業 11/17 曾開盤即跌停且最佳買價無值。<strong>但本檔 11/17 量放大至 1.46 倍、今日量仍有 2.5 萬張，流動性未消失</strong></td></tr>
+<tr class="hl"><td><strong>產業（最高）</strong></td><td class="n dn"><strong>7.5</strong></td><td class="n">＝ 持平</td><td>Vera Rubin 遞延<strong>未獲官方證實</strong>、HBM4 瓶頸與主機板翹曲說法不一；需求能見度被打斷，而這不是公司能控制的</td></tr>
+<tr><td>總經</td><td class="n dn">7.0</td><td class="n">＝ 持平</td><td>加權距 MA20 -10.10%；<strong>黃仁勳辭任後 AI 敘事重定價尚未結束</strong>，董事會表態不考慮其回任</td></tr>
+<tr><td>籌碼</td><td class="n dn">7.0</td><td class="n up">↓ 由 7.5 微降</td><td>融資 2.096% 未充分清洗、投信 11/17 單日賣 4,801 張。<strong>減分理由：11/17 融資終於減 2.92%、外資轉買且集保佐證</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="box info">
+  <div class="bt">風險結構的特徵（準則要求）：公司做對了所有事，而風險在客戶的時程表上</div>
+  <p><strong>六維中最低的是財務（3.5），最高的兩個是產業（7.5）與總經（7.0）—— 而這兩個都不在公司手上。</strong>
+  這延續第 9 次「<strong>風險移到族群層級</strong>」的型態，而且本次更極端：Q3 財報五項同時改善，股價卻再跌 26%。</p>
+  <p style="margin-bottom:0"><strong>這個風險會不會因為公司變好而消失？</strong>
+  <strong>部分會，部分不會。</strong>
+  估值風險會（獲利長大或股價下跌都能解決，而兩者都在進行）；籌碼風險會（融資清洗已經開始）；
+  <strong>但產業與總經兩項不會 —— 它們要等輝達的官方說法與大盤的風險偏好，公司把財報做得再好都不能加速。</strong>
+  <strong>而今日同業同步性由 0.58pp 擴大到 8.20pp，是這個「族群層級風險」第一次出現鬆動的跡象</strong>（見第 09 節），
+  但一天不足以判定，須觀察是否連續。</p>
+</div>
+</section>
+
+<!-- ============ 14 三段式策略 ============ -->
+<section>
+<h2>14 · 台股三段式策略</h2>
+<p class="muted small">以下為情境框架與風險控制邏輯，<strong>不是針對任何特定資金規模的配置建議</strong>（準則 11.1）。</p>
+
+<div class="grid g3">
+<div class="card" style="border-top:4px solid var(--up)">
+  <h4 style="margin-top:0">⚔️ 進攻型</h4>
+  <p><strong>不執行。</strong>必要條件未成立。</p>
+  <p class="small"><strong>必要條件（缺一不進攻，準則 8.9）：</strong></p>
+  <ul class="chk small">
+    <li><span class="ic dn">✗</span>加權站上<strong>當日重算</strong> MA20（現距 -10.10%）</li>
+    <li><span class="ic dn">✗</span>台幣升破 32.30 且連兩日維持</li>
+    <li><span class="ic dn">✗</span>融資單日減 &gt; 3% 且其後三日淨變動為負</li>
+  </ul>
+  <p class="small" style="margin-bottom:0"><strong>個股條件（必要條件成立後才看）：</strong>
+  ① 收盤站上當日重算 MA5；② 11 月營收 ≥ 190 億且月增為正；③ 輝達對 Vera Rubin 時程有官方說法。</p>
+</div>
+<div class="card" style="border-top:4px solid var(--warn)">
+  <h4 style="margin-top:0">⚖️ 均衡型</h4>
+  <p><strong>維持觀望，不加碼。</strong></p>
+  <p class="small">現價 617 元位於三法合理價 540~670 元的 <strong>59%</strong> 位置 ——
+  <strong>不是便宜，也不是貴，是「合理但前提未定」。</strong></p>
+  <p class="small"><strong>重新評估的三個時點：</strong></p>
+  <ol class="small" style="margin-bottom:0">
+    <li><strong>11/20（三個交易日後）</strong>：融資清洗後三日淨變動是否為負</li>
+    <li><strong>12/10 前</strong>：11 月營收公告（門檻 190 億、月增為正）</li>
+    <li><strong>時點未定</strong>：輝達官方對 Vera Rubin 時程的說明</li>
+  </ol>
+</div>
+<div class="card" style="border-top:4px solid var(--dn)">
+  <h4 style="margin-top:0">🛡️ 防守型</h4>
+  <p><strong>停損條件（準則 8.6 單一門檻版）：</strong></p>
+  <p class="small"><strong>收盤跌破當日重算的布林下軌達 1% 以上。</strong><br>
+  今日基準：下軌 <strong>605.65</strong> → 門檻 <strong>≤ 599.6 元</strong>。</p>
+  <p class="small"><strong>⚠️ 這是會移動的值</strong>（第 9 次為 722.5，今日 605.65，兩日下移 16.2%），
+  <strong>每日須重算，不可當固定門檻。</strong></p>
+  <p class="small" style="margin-bottom:0"><strong>轉空條件（殺評價 → 殺獲利的分界，準則 8.10）：</strong>
+  法人下修 FY2027E 由 40 元以上降至 <strong>35 元以下</strong>。
+  此條一旦成立，表示市場重新定價的是獲利而非倍數，依準則第 9 條<strong>難度與時間都大幅上升</strong>。</p>
+</div>
+</div>
+
+<h3>14-1　三法合理價</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>方法</th><th>基礎</th><th>倍數區間</th><th>合理價</th><th>現價 617 位置</th></tr></thead>
+<tbody>
+<tr><td>本益比法</td><td class="n">FY2026E 還原 23.9 元</td><td class="n">22 ~ 28 倍</td><td class="n">526 ~ 670 元</td><td class="n">63%</td></tr>
+<tr><td>股價淨值比法</td><td class="n">每股淨值 108.35 元</td><td class="n">5.0 ~ 6.3 倍</td><td class="n">542 ~ 683 元</td><td class="n">53%</td></tr>
+<tr><td>本業本益比法</td><td class="n">本業 TTM 10.85 元</td><td class="n">48 ~ 60 倍</td><td class="n">521 ~ 651 元</td><td class="n">74%</td></tr>
+<tr class="tot"><td><strong>三法併用綜合</strong></td><td colspan="2"></td><td class="n"><strong>540 ~ 670 元</strong></td><td class="n"><strong>59%</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p class="muted small">倍數區間以本檔 2026 年 10 月至 11 月的實際成交區間為錨（期間 P/E 由 42.8x 壓縮到 31.90x、P/B 由 7.6x 壓縮到 5.69x）。
+<strong>對照：第 9 次給 600~745 元，本次下調至 540~670 元</strong>，原因是 Q4 毛利率假設調降（28.5%）與月增率放緩。
+<strong>而第 9 次記錄的法人目標價 1,025 元隱含 FY2026E 約 42 倍，高於本報告上緣 53%</strong> ——
+差異在於「要不要為 2027 年的成長預先付倍數」，這個分歧本報告無法代為解決。</p>
+
+<h3>14-2　催化劑時程表（由近到遠，準則 1.4）</h3>
+<div class="table-wrap">
+<table>
+<thead><tr><th>時點</th><th>事件</th><th>性質</th><th>可驗證門檻</th></tr></thead>
+<tbody>
+<tr class="hl"><td><strong>今日 13:30</strong></td><td>收盤型態確立</td><td>中性</td><td>收盤位置 &gt; 50%（現 11.9%）／是否跌破 607</td></tr>
+<tr><td>今晚 18:00</td><td>T86 三大法人</td><td>中性</td><td>外資能否<strong>連兩日</strong>買超（單日不算）</td></tr>
+<tr class="hl"><td><strong>11/20</strong></td><td>融資清洗後三日淨變動</td><td>偏多（若為負）</td><td>自 34,396 張是否繼續下降</td></tr>
+<tr><td>12/10 前</td><td><strong>11 月營收公告</strong></td><td>雙向</td><td>≥ 190 億且月增為正＝偏多；&lt; 180 億或月增轉負＝偏空</td></tr>
+<tr><td>時點未定</td><td><strong>輝達對 Vera Rubin 時程的官方說法</strong></td><td>雙向·權重最高</td><td>確認遞延至 2027H1 ＝ 偏空；否認或維持原時程 ＝ 偏多</td></tr>
+<tr><td>時點未定</td><td>法人 FY2027E EPS 調整</td><td>雙向</td><td>降至 35 元以下 ＝ 轉空條件成立</td></tr>
+<tr><td>2027/01 中旬</td><td>12 月營收 ＋ Q4 財報預告</td><td>雙向</td><td>Q4 毛利率 ≥ 28.5% ＝ 本報告假設成立</td></tr>
+<tr><td>2027/03</td><td>Q4'26 財報</td><td>雙向</td><td><strong>716.52 億的性質應可由季報附註確認</strong></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- ============ 15 名詞小教室 ============ -->
+<section>
+<h2>15 · 名詞小教室</h2>
+<div class="grid g2">
+  <div class="card"><h4 style="margin-top:0">ABF 載板</h4><p class="small" style="margin-bottom:0">高階晶片（CPU／GPU／AI 加速器）用的「地基」。晶片要和主機板溝通，中間需要一塊線路極細的基板，ABF 是目前最高階的材料。
+  <strong>白話：它是 AI 晶片的「墊子」，墊子做不出來，晶片就出不了貨。</strong></p></div>
+  <div class="card"><h4 style="margin-top:0">邊際毛利率</h4><p class="small" style="margin-bottom:0">「這一季多賣的東西，毛利率是多少」。算法是（本季毛利 − 上季毛利）÷（本季營收 − 上季營收）。
+  <strong>白話：整體毛利率講平均，邊際毛利率講方向。欣興的 46.63% 比整體 28.85% 高，表示新接的訂單比舊的更賺。</strong></p></div>
+  <div class="card"><h4 style="margin-top:0">業外佔稅前</h4><p class="small" style="margin-bottom:0">公司賺的錢裡，有多少不是靠本業（而是轉投資、匯兌、資產評價）。
+  <strong>白話：這個比率越低，獲利越「乾淨」、越能預測。欣興 Q3 由 57% 降到 20%，是明顯的改善。</strong></p></div>
+  <div class="card"><h4 style="margin-top:0">折舊 ÷ 營業利益</h4><p class="small" style="margin-bottom:0">重資產公司的關鍵指標。機器設備每年要攤提成本（折舊），這筆錢佔本業獲利多少。
+  <strong>白話：跌破 100% 代表「本業終於賺得比機器折舊多」。欣興由 646% 降到 48.27%，而且折舊還在增加 —— 是靠獲利變大做到的。</strong></p></div>
+  <div class="card"><h4 style="margin-top:0">現金循環天數（CCC）</h4><p class="small" style="margin-bottom:0">存貨天數 ＋ 應收天數 − 應付天數。從付錢買料到收到客戶的錢，中間要墊多少天。
+  <strong>白話：天數越短，公司的錢轉得越快。欣興 76.3 天與上季持平，沒有惡化。</strong></p></div>
+  <div class="card"><h4 style="margin-top:0">融資餘額與維持率</h4><p class="small" style="margin-bottom:0">融資＝向券商借錢買股票。股價跌到一定程度，券商會要求補錢（追繳），補不出來就被強制賣出（斷頭）。
+  <strong>白話：融資佔發行股數 2.096% 且平均成本在 800 元以上，表示還有一批借錢買的人沒走，他們的賣壓還在。</strong></p></div>
+  <div class="card"><h4 style="margin-top:0">布林通道與帶寬</h4><p class="small" style="margin-bottom:0">以 20 日均線為中軸、上下各加減兩個標準差畫出的通道。帶寬＝通道寬度 ÷ 中軸。
+  <strong>白話：帶寬 67.13% 表示波動極大，這時候均線和通道的統計假設已經不成立，技術面的結論要打折看。</strong></p></div>
+  <div class="card"><h4 style="margin-top:0">殺評價 vs 殺獲利</h4><p class="small" style="margin-bottom:0">股價下跌有兩種：市場願意付的倍數變低（殺評價）、或公司的獲利預估被下調（殺獲利）。
+  <strong>白話：殺評價只要風險偏好回來就結束；殺獲利要等財報和訂單修正，難得多。欣興目前是前者 —— EPS 預估還在 40 元以上，被砍的是倍數。</strong></p></div>
+</div>
+</section>
+
+<!-- ============ 16 免責聲明 ============ -->
+<section>
+<h2>16 · 免責聲明與資料來源</h2>
+<div class="disc">
+<h3>⚠️ 本報告僅供研究參考，不構成投資建議</h3>
+
+<h4>資料來源與日期</h4>
+<ul class="small">
+  <li><strong>即時報價</strong>：TWSE MIS API（<code>mis.twse.com.tw</code>），<strong>2026-11-18 10:48</strong>。
+  欣興回傳最新成交價為 <code>-</code>，<strong>617.00 為最佳買價</strong>，實際成交價可能略高。
+  南電、景碩亦同。<strong>官方漲跌停取 <code>u</code>／<code>w</code> 欄位（700／574）。</strong></li>
+  <li><strong>日 K 與成交量</strong>：TWSE <code>STOCK_DAY</code>，至 2026-11-17。</li>
+  <li><strong>三大法人</strong>：TWSE <code>T86?selectType=ALLBUT0999</code>，11/10–11/17。<strong>今日籌碼約 18:00 後才公布，未納入。</strong></li>
+  <li><strong>融資融券</strong>：TWSE <code>MI_MARGN?selectType=STOCK</code>，11/06–11/17，單位張。</li>
+  <li><strong>財報</strong>：FinMind 綜合損益表／資產負債表／現金流量表，最新為 <strong>2026-09-30（Q3'26）</strong>。單季值由累計值相減。</li>
+  <li><strong>月營收</strong>：FinMind，最新為 <strong>2026 年 10 月（189.86 億）</strong>，月份已依 <code>revenue_year</code>／<code>revenue_month</code> 校正。</li>
+  <li><strong>發行股數與外資持股</strong>：集保每日申報，<strong>2026-11-17（1,641,291,596 股）</strong>。</li>
+  <li><strong>加權指數均線</strong>：yfinance 一年序列接上 TWSE 官方 11/17 收盤 40,092.11 後重算。</li>
+</ul>
+
+<h4>🔴 未能取得的項目（逐項列出原因）</h4>
+<ul class="small">
+  <li><strong>716.52 億「其他非流動負債」的性質 —— 連續第四份報告未確認。</strong>
+  本次 WebSearch 查無 11 月法說會日期或內容；Q3 季報附註需查財報原文，本報告未取得。
+  「客戶長期產能預付款」為<strong>本系列自第 7 次起的推論，公司從未確認</strong>。</li>
+  <li><strong>Q3 單季利息費用由 2.54 億跳增至 14.03 億的原因</strong>：疑有重分類，需季報附註，未取得。</li>
+  <li><strong>Vera Rubin 遞延的幅度與確切內容</strong>：媒體僅稱「放量時程恐延至 2027H1」「HBM4 供應瓶頸」，
+  <strong>至今未獲輝達官方證實</strong>，且另有「主機板翹曲」的不同說法。無具體季度或數量。</li>
+  <li><strong>市占率、客戶名單、各產品線營收佔比</strong>：公司未揭露。搜尋取得的「ABF 市占逾 7 成」來自新聞標題、<strong>無發布機構與日期</strong>，依準則不作為本報告的事實。</li>
+  <li><strong>11 月的法人目標價與評等調整</strong>：本次搜尋<strong>查無 11 月的正式下修報導</strong>。
+  所見目標價 1,200–1,500 元（含「調降至 1,200 元」「上修至 1,225 元」「由 1,100 上調至 1,500 元」等）
+  <strong>日期標示互相矛盾、多指向 7 月法說會前後</strong>，依準則 1.1（目標價須同時具備發布機構＋日期）<strong>一律不作為錨點</strong>。</li>
+  <li><strong>欣興 11 月營收</strong>：12/10 前才公告。</li>
+</ul>
+
+<h4>⚠️ 來源衝突與處理方式</h4>
+<ul class="small">
+  <li><strong>每股 EPS 有三個口徑</strong>：FinMind／媒體 6.36 元（含非控制權益）、本報告還原 6.12 元（歸母 ÷ 現行股數）、公司公告累計 17.85 元（加權平均股數）。
+  <strong>本報告：算本益比用還原口徑、算隱含 Q4 用公告口徑，兩者並列且不混用。</strong></li>
+  <li><strong>發行股數有兩個來源</strong>：集保 1,641,291,596 股 vs 股本 ÷ 10 的 1,643,900,000 股，差 <strong>0.16%</strong>。
+  依準則已停下來查，最可能是零星公司債轉換（仍有 50.47 億應付公司債在外），<strong>無法確認</strong>。
+  <strong>本報告一律採集保（較保守）。</strong></li>
+  <li><strong>RSI 有兩個合法定義</strong>：Wilder's EMA 27.43（腳本值）vs 簡單平均 19.26（本系列自算）。
+  <strong>兩者都正確，方向一致，本報告並列並說明差異原因。</strong></li>
+  <li><strong>布林下軌有兩個值</strong>：腳本 613.4 vs 自算 605.65，差異來自標準差自由度（ddof）設定。
+  <strong>本報告採自算值，並於停損條件中註明須每日重算。</strong></li>
+  <li><strong>11/17 欣興是否收在跌停</strong>：部分媒體報導為「盤中跌幅逾 9%」，部分為「跌停」。
+  <strong>以 TWSE 官方 <code>STOCK_DAY</code> 為準：開 648、高 677、低 637、收 637、漲跌 -70，收盤價＝當日最低＝官方跌停價。</strong></li>
+  <li><strong>黃仁勳辭任</strong>：辭職本身有輝達董事會聲明與 SEC 8-K 文件佐證（董事會 11/11 接受辭呈、即刻生效，11/12 公告，CFO Colette Kress 暫代）。
+  <strong>離職背景的報導（婚外情、與特定商人的關係）來自路透、紐約時報等媒體與匿名消息來源，本報告不引用、亦不作為分析依據</strong>，僅使用「管理層變動」這個已證實的事實。</li>
+</ul>
+
+<h4>推算值標示</h4>
+<ul class="small">
+  <li><strong>FY2026E 還原 EPS 23.9 元為本報告自估</strong>，假設已於第 08 節 8-4 逐項列出，<strong>最大變數為 Q4 毛利率（假設 28.5%）</strong>。</li>
+  <li><strong>合理價 540~670 元的倍數區間以本檔 2026 年 10–11 月的實際成交區間為錨</strong>，非法人共識。</li>
+  <li><strong>「融資平均成本在 800 元以上、帳面虧損 20~40%」為依融資餘額與股價軌跡的推論</strong>，非實際數據。</li>
+  <li><strong>FY2027E 的 40.7 元（法人）與 43.36 元（FactSet）為第 9 次報告記錄的數值</strong>，本次未重新取得，可能已有調整。</li>
+  <li><strong>風控六維分數為本報告依準則權重自行評定</strong>，非任何機構評等。</li>
+  <li>圖表註腳已標示「★ 實際公告」與「推算值」。</li>
+</ul>
+
+<p class="small" style="margin-bottom:0"><strong>本報告於 2026-11-18 10:48 盤中產製，距 13:30 收盤尚有近三小時，當日型態未定。</strong>
+依本工作流準則，報告中的三段式策略為情境框架與風險控制邏輯，<strong>不構成投資建議，亦非針對任何特定資金規模的配置建議</strong>。
+作者非持牌投資顧問。所有數字以官方 API 為準，引用媒體時已標明來源性質與日期限制。</p>
+</div>
+</section>
+
+<footer>
+欣興(3037) 深度研究報告 第 10 次 · 產製時間 2026-11-18 10:48（GMT+8）<br>
+資料來源：臺灣證券交易所公開 API（MIS／STOCK_DAY／T86／MI_MARGN）、FinMind、臺灣集中保管結算所、yfinance、公開媒體報導
+</footer>
+
+</div>
+
+<script>
+(function(){
+function px(c){var r=window.devicePixelRatio||1,w=c.width,h=c.height;
+ c.width=w*r;c.height=h*r;var x=c.getContext('2d');x.scale(r,r);return {x:x,w:w,h:h};}
+function fmt(v,d){return v.toFixed(d===undefined?2:d);}
+
+function drawBarChart(id,labels,vals,color,hiColor,unit,dec){
+ var c=document.getElementById(id); if(!c) return; var o=px(c),x=o.x,W=o.w,H=o.h;
+ var PL=48,PR=14,PT=22,PB=38; var cw=W-PL-PR, ch=H-PT-PB;
+ var mx=Math.max.apply(null,vals), mn=Math.min.apply(null,vals);
+ if(mn>0) mn=0; if(mx<0) mx=0; var rng=(mx-mn)||1; mx+=rng*0.12; rng=mx-mn;
+ x.font='10px sans-serif';
+ for(var i=0;i<=4;i++){var v=mn+rng*i/4, y=PT+ch-ch*i/4;
+  x.strokeStyle='#eef2f7';x.lineWidth=1;x.beginPath();x.moveTo(PL,y);x.lineTo(W-PR,y);x.stroke();
+  x.fillStyle='#9ca3af';x.textAlign='right';x.fillText(fmt(v,dec),PL-6,y+3);}
+ var zy=PT+ch-((0-mn)/rng)*ch;
+ x.strokeStyle='#cbd5e1';x.beginPath();x.moveTo(PL,zy);x.lineTo(W-PR,zy);x.stroke();
+ var bw=cw/vals.length, bar=Math.min(bw*0.62,40);
+ for(var j=0;j<vals.length;j++){
+  var cx=PL+bw*j+bw/2, vy=PT+ch-((vals[j]-mn)/rng)*ch;
+  x.fillStyle=(j===vals.length-1)?hiColor:color;
+  x.fillRect(cx-bar/2,Math.min(vy,zy),bar,Math.abs(zy-vy)||1);
+  x.fillStyle='#374151';x.font='bold 10px sans-serif';x.textAlign='center';
+  x.fillText(fmt(vals[j],dec)+(unit||''),cx,(vals[j]>=0?vy-5:vy+12));
+  x.fillStyle='#6b7280';x.font='9.5px sans-serif';
+  x.fillText(labels[j],cx,H-PB+15);}
+}
+
+function drawLineChart(id,labels,vals,color,hiColor,unit,dec){
+ var c=document.getElementById(id); if(!c) return; var o=px(c),x=o.x,W=o.w,H=o.h;
+ var PL=52,PR=16,PT=24,PB=38; var cw=W-PL-PR, ch=H-PT-PB;
+ var mx=Math.max.apply(null,vals), mn=Math.min.apply(null,vals);
+ var pad=(mx-mn)*0.18||1; mx+=pad; mn-=pad; var rng=mx-mn;
+ x.font='10px sans-serif';
+ for(var i=0;i<=4;i++){var v=mn+rng*i/4, y=PT+ch-ch*i/4;
+  x.strokeStyle='#eef2f7';x.beginPath();x.moveTo(PL,y);x.lineTo(W-PR,y);x.stroke();
+  x.fillStyle='#9ca3af';x.textAlign='right';x.fillText(fmt(v,dec),PL-6,y+3);}
+ var step=cw/(vals.length-1||1);
+ x.strokeStyle=color;x.lineWidth=2.4;x.beginPath();
+ for(var j=0;j<vals.length;j++){var cx=PL+step*j, vy=PT+ch-((vals[j]-mn)/rng)*ch;
+  if(j===0)x.moveTo(cx,vy);else x.lineTo(cx,vy);} x.stroke();
+ for(var k=0;k<vals.length;k++){var cx2=PL+step*k, vy2=PT+ch-((vals[k]-mn)/rng)*ch;
+  x.fillStyle=(k===vals.length-1)?hiColor:color;x.beginPath();x.arc(cx2,vy2,(k===vals.length-1)?5:3.4,0,7);x.fill();
+  x.fillStyle=(k===vals.length-1)?hiColor:'#374151';x.font=(k===vals.length-1)?'bold 10.5px sans-serif':'10px sans-serif';
+  x.textAlign='center';x.fillText(fmt(vals[k],dec)+(unit||''),cx2,vy2-9);
+  x.fillStyle='#6b7280';x.font='9.5px sans-serif';x.fillText(labels[k],cx2,H-PB+15);}
+}
+
+function drawMultiBar(id,labels,s1,s2,c1,c2,n1,n2,unit,dec){
+ var c=document.getElementById(id); if(!c) return; var o=px(c),x=o.x,W=o.w,H=o.h;
+ var PL=46,PR=14,PT=30,PB=38; var cw=W-PL-PR, ch=H-PT-PB;
+ var all=s1.concat(s2); var mx=Math.max.apply(null,all); mx*=1.16; var mn=0, rng=mx-mn;
+ x.font='10px sans-serif';
+ for(var i=0;i<=4;i++){var v=mn+rng*i/4, y=PT+ch-ch*i/4;
+  x.strokeStyle='#eef2f7';x.beginPath();x.moveTo(PL,y);x.lineTo(W-PR,y);x.stroke();
+  x.fillStyle='#9ca3af';x.textAlign='right';x.fillText(fmt(v,0),PL-6,y+3);}
+ var bw=cw/s1.length, bar=Math.min(bw*0.3,17);
+ for(var j=0;j<s1.length;j++){
+  var base=PL+bw*j+bw/2;
+  var y1=PT+ch-((s1[j]-mn)/rng)*ch, y2=PT+ch-((s2[j]-mn)/rng)*ch;
+  x.fillStyle=c1;x.fillRect(base-bar-1,y1,bar,PT+ch-y1);
+  x.fillStyle=c2;x.fillRect(base+1,y2,bar,PT+ch-y2);
+  x.fillStyle='#374151';x.font='bold 9px sans-serif';x.textAlign='center';
+  x.fillText(fmt(s1[j],dec),base-bar/2-1,y1-4);
+  x.fillStyle='#6b7280';x.fillText(fmt(s2[j],dec),base+bar/2+1,y2-4);
+  x.fillStyle='#6b7280';x.font='9.5px sans-serif';x.fillText(labels[j],base,H-PB+15);}
+ x.textAlign='left';x.font='10px sans-serif';
+ x.fillStyle=c1;x.fillRect(PL,10,11,9);x.fillStyle='#374151';x.fillText(n1,PL+15,18);
+ x.fillStyle=c2;x.fillRect(PL+88,10,11,9);x.fillStyle='#374151';x.fillText(n2,PL+103,18);
+}
+
+function drawHBarChart(id,labels,vals,colors,unit,dec){
+ var c=document.getElementById(id); if(!c) return; var o=px(c),x=o.x,W=o.w,H=o.h;
+ var PL=150,PR=56,PT=14,PB=14; var cw=W-PL-PR, chh=H-PT-PB;
+ var mx=Math.max.apply(null,vals)*1.04||1;
+ var bh=chh/vals.length, bar=Math.min(bh*0.6,22);
+ x.font='10.5px sans-serif';
+ for(var j=0;j<vals.length;j++){
+  var cy=PT+bh*j+bh/2;
+  x.fillStyle='#eef2f7';x.fillRect(PL,cy-bar/2,cw,bar);
+  x.fillStyle=colors[j]||'#be185d';x.fillRect(PL,cy-bar/2,cw*(vals[j]/mx),bar);
+  x.fillStyle='#374151';x.textAlign='right';x.font='10.5px sans-serif';
+  x.fillText(labels[j],PL-8,cy+4);
+  x.textAlign='left';x.font='bold 10.5px sans-serif';
+  x.fillText(fmt(vals[j],dec)+(unit||''),PL+cw*(vals[j]/mx)+6,cy+4);}
+}
+
+// 05-1 單季歸母 EPS（還原至 16.413 億股）
+drawBarChart('epsChart',
+ ["Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"],
+ [0.03,0.56,0.02,1.34,2.15,3.07,7.99,6.12],
+ '#d8b4c4','#500724','',2);
+
+// 05-2 月營收（實際月份，億元）
+drawLineChart('revChart',
+ ["05月","06月","07月","08月","09月","10月"],
+ [140.60,148.97,162.54,177.46,186.51,189.86],
+ '#9d174d','#500724','',1);
+
+// 05-3 毛利率與營益率
+drawMultiBar('marginChart',
+ ["Q4'24","Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"],
+ [11.57,13.38,13.08,13.38,15.77,17.96,24.80,28.85],
+ [2.31,4.21,4.65,4.51,6.82,7.36,15.51,20.00],
+ '#500724','#e8a7bd','毛利率 %','營益率 %','',1);
+
+// 05-4 本益比階梯
+drawHBarChart('peChart',
+ ['本業 TTM 56.87x','TTM 帳面 31.90x','FY2026E 自估 25.8x','FY2027E 法人 15.2x','FY2027E FactSet 14.2x'],
+ [56.87,31.90,25.80,15.20,14.20],
+ ['#500724','#831843','#be185d','#059669','#047857'],
+ 'x',2);
+})();
+</script>
+</body>
+</html>
